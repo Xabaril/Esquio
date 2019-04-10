@@ -4,6 +4,6 @@ namespace Esquio.Abstractions
 {
     public interface IFeatureService
     {
-        Task<bool> IsEnabledAsync(string application, string feature);
+        Task<bool> IsEnabledAsync(string applicationName, string featureName);
     }
 }

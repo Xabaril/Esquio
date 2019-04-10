@@ -3,7 +3,6 @@ using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
 using Esquio.AspNetCore.Extensions;
 using Esquio.AspNetCore.Providers;
-using Esquio.InMemoryStore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -18,7 +17,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddSingleton<IFeatureStore, InMemoryFeatureStore>();
 
             return builder;
         }

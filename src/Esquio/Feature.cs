@@ -2,7 +2,7 @@
 
 namespace Esquio
 {
-    class Feature
+    public class Feature
     {
         public string Name
         {

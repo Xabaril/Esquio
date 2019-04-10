@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Esquio.InMemoryStore\Esquio.InMemoryStore.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
 
