@@ -83,12 +83,12 @@ namespace Esquio
 
             private static readonly Action<ILogger, string, string, Exception> _featureServiceNotFound = LoggerMessage.Define<string, string>(
                 LogLevel.Warning,
-                EventIds.DefaultFeatureServiceBegin,
+                EventIds.FeatureNotFound,
                 "The feature {feature} is not configured in the store for application {application}.");
 
             private static readonly Action<ILogger, string, string, Exception> _featureServiceNotActive = LoggerMessage.Define<string, string>(
                LogLevel.Debug,
-               EventIds.DefaultFeatureServiceBegin,
+               EventIds.FeatureNotActive,
                "The feature {feature} is not active on application {application}.");
 
             private static readonly Action<ILogger, string, string, Exception> _featureServiceThrow = LoggerMessage.Define<string, string>(
@@ -100,6 +100,8 @@ namespace Esquio
         internal static class EventIds
         {
             public static readonly EventId DefaultFeatureServiceBegin = new EventId(100, nameof(DefaultFeatureServiceBegin));
+            public static readonly EventId FeatureNotFound = new EventId(101, nameof(FeatureNotFound));
+            public static readonly EventId FeatureNotActive = new EventId(102, nameof(FeatureNotActive));
             public static readonly EventId DefaultFeatureServiceThrows = new EventId(110, nameof(DefaultFeatureServiceThrows));
         }
     }
