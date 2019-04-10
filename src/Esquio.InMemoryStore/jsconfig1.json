@@ -1,0 +1,28 @@
+{
+  "Esquio": {
+    "Application": [
+      {
+        "Name": "MediaSet",
+        "Features": [
+          {
+            "Name": "FeatureA",
+            "IsEnabled": "true",
+            "Toggles": [
+              {
+                "Type": "OnToggle"
+              },
+              {
+                "Type": "UserNameToggle", //out-of-box no sino FQN
+                "Parameters": [
+                  {
+                    "Name": "Users",
+                    "Value" : "usuario1;usuario2;usuario3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
+    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
+    <Description>Feature Toogles Library for ASP.NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
+    <PackageTags>Esquio;Feature Toggles;AB Testing;AspNetCore</PackageTags>
+    <Version>$(XabarilMvc)</Version>
+    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+    <Company>$(Company)</Company>
+    <Authors>$(Authors)</Authors>
+    <PackageId>Esquio.AspNetCore</PackageId>
+    <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(microsoftaspnetcorehttpabstractions)" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="$(microsoftaspnetcorerouting)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjection)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Esquio.InMemoryStore\Esquio.InMemoryStore.csproj" />
+    <ProjectReference Include="..\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+</Project>

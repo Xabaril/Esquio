@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup Label="SDK Versions">
+    <NetStandardTargetVersion>netstandard2.1</NetStandardTargetVersion>
+    <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
+    <NetTestSdk>15.9.0</NetTestSdk>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package information">
+    <PackageLicenseUrl>https://github.com/Xabaril/Esquio/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>http://github.com/xabaril/Esquio</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/xabaril/Esquio</RepositoryUrl>
+    <Authors>Xabaril Contributors</Authors>
+    <Company>Xabaril</Company>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Versions">
+    <xunit>2.4.0</xunit>
+    <xunitrunner>2.4.0</xunitrunner>
+    <microsoftextensionsdependencyinjection>3.0.0-preview4.19122.3</microsoftextensionsdependencyinjection>
+    <microsoftextensionsloggingabstractions>3.0.0-preview4.19122.3</microsoftextensionsloggingabstractions>
+    <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>
+    <microsoftaspnetcorerouting>3.0.0-preview4-19121-14</microsoftaspnetcorerouting>
+    <newtonsoftjson>12.0.1</newtonsoftjson>
+    <fluentassertions>5.6.0</fluentassertions>
+  </PropertyGroup>
+
+  <PropertyGroup Label="CLI Tools Versions">
+    <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
+    <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Esquio Package Versions">
+  </PropertyGroup>
+</Project>
