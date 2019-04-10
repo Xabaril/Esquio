@@ -18,23 +18,21 @@ namespace Esquio.Toggles
             var roleNameProviderService = context.ServiceProvider.GetService<IRoleNameProviderService>();
             var featureStore = context.ServiceProvider.GetService<IFeatureStore>();
 
-            if(roleNameProviderService != null && featureStore != null )
-            {
-                var currentRole = await roleNameProviderService
+            var currentRole = await roleNameProviderService
                 .GetCurrentRoleNameAsync();
 
-                if (currentRole != null)
-                {
-                    var activeRoles = (string)await featureStore
-                        .GetParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Roles);
+            if (currentRole != null)
+            {
+                var activeRoles = (string)await featureStore
+                    .GetParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Roles);
 
-                    if (activeRoles != null &&
-                        activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))
-                    {
-                        return true;
-                    }
+                if (activeRoles != null &&
+                    activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    return true;
                 }
             }
+
             return false;
         }
     }

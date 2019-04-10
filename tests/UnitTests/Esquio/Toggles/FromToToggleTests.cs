@@ -12,13 +12,15 @@ namespace UnitTests.Esquio.Toggles
     public class FromToToggleShould
     {
         [Fact]
-        public async Task be_not_active_if_store_service_is_null()
+        public async Task throw_if_store_service_is_null()
         {
             var featureContext = Builders.FeatureContextBuilder()
                 .Build();
 
-            var active = await new FromToToggle().IsActiveAsync(featureContext);
-            active.Should().BeFalse();
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+            {
+                await new FromToToggle().IsActiveAsync(featureContext);
+            });
         }
         [Fact]
         public async Task be_not_active_if_now_is_not_between_configured_dates()

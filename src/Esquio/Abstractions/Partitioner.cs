@@ -7,7 +7,7 @@ namespace Esquio.Abstractions
     /// Non crypto hash with Jenkins function
     /// https://en.wikipedia.org/wiki/Jenkins_hash_function
     /// </summary>
-    internal static class Partitioner
+    public static class Partitioner
     {
         public static short ResolveToLogicalPartition(string value, short entityPartitionCount)
         {

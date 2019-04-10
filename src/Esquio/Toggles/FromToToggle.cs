@@ -18,23 +18,21 @@ namespace Esquio.Toggles
         {
             var featureStore = context.ServiceProvider.GetService<IFeatureStore>();
 
-            if (featureStore != null)
+            var fromValue = (string)await featureStore
+                 .GetParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, From);
+
+            var toValue = (string)await featureStore
+                     .GetParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, To);
+
+            var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var toDate = DateTime.ParseExact(toValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var now = DateTime.UtcNow;
+
+            if (now > fromDate && now < toDate)
             {
-                var fromValue = (string)await featureStore
-                     .GetParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, From);
-
-                var toValue = (string)await featureStore
-                         .GetParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, To);
-
-                var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-                var toDate = DateTime.ParseExact(toValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-                var now = DateTime.UtcNow;
-
-                if (now > fromDate && now < toDate)
-                {
-                    return true;
-                }   
+                return true;
             }
+
             return false;
         }
     }

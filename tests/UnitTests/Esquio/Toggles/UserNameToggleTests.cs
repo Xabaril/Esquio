@@ -19,8 +19,10 @@ namespace UnitTests.Esquio.Toggles
                 .WithService<IFeatureStore, DelegatedFeatureStore>(new DelegatedFeatureStore(() => "user1;user2"))
                 .Build();
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
-            active.Should().BeFalse();
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+            {
+                await new UserNameToggle().IsActiveAsync(featureContext);
+            });
         }
         [Fact]
         public async Task be_not_active_if_user_is_null()

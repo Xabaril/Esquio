@@ -18,20 +18,18 @@ namespace Esquio.Toggles
             var userNameProviderService = context.ServiceProvider.GetService<IUserNameProviderService>();
             var featureStore = context.ServiceProvider.GetService<IFeatureStore>();
 
-            if (userNameProviderService != null && featureStore != null)
+            var currentUserName = await userNameProviderService
+                .GetCurrentUserNameAsync();
+
+            if (currentUserName != null)
             {
-                var currentUserName = await userNameProviderService.GetCurrentUserNameAsync();
+                var activeUserNames = (string)await featureStore
+                    .GetParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Users);
 
-                if (currentUserName != null)
+                if (activeUserNames != null &&
+                    activeUserNames.Split(SPLIT_SEPARATOR).Contains(currentUserName, StringComparer.CurrentCultureIgnoreCase))
                 {
-                    var activeUserNames = (string)await featureStore
-                        .GetParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Users);
-
-                    if (activeUserNames != null &&
-                        activeUserNames.Split(SPLIT_SEPARATOR).Contains(currentUserName, StringComparer.CurrentCultureIgnoreCase))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 

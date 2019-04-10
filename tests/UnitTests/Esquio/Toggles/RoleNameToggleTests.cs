@@ -18,8 +18,10 @@ namespace UnitTests.Esquio.Toggles
                 .WithService<IFeatureStore, DelegatedFeatureStore>(new DelegatedFeatureStore(() => "rol1;rol2"))
                 .Build();
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
-            active.Should().BeFalse();
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+            {
+                await new RoleNameToggle().IsActiveAsync(featureContext);
+            });
         }
         [Fact]
         public async Task be_not_active_if_role_is_null()
