@@ -9,13 +9,16 @@ namespace Esquio
         : IFeatureService
     {
         private readonly IFeatureStore _featureStore;
+        private readonly IToggleActivator _toggleActivator;
+        private readonly IFeatureContextFactory _featureContextFactory;
         private readonly ILogger<DefaultFeatureService> _logger;
-        public DefaultFeatureService(IFeatureStore store, ILogger<DefaultFeatureService> logger)
+        public DefaultFeatureService(IFeatureStore store, IToggleActivator toggeActivator, IFeatureContextFactory featureContextFactory, ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
-            _logger = logger;
+            _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
+            _featureContextFactory = featureContextFactory ?? throw new ArgumentNullException(nameof(featureContextFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
         public async Task<bool> IsEnabledAsync(string applicationName, string featureName)
         {
             try
@@ -27,20 +30,18 @@ namespace Esquio
                 if (feature != null)
                 {
                     var togglesTypes = await _featureStore.FindTogglesTypesAsync(applicationName, featureName);
+                    var context = _featureContextFactory.Create(applicationName, featureName);
 
-                    foreach (var toggle in togglesTypes)
+                    foreach (var type in togglesTypes)
                     {
-                        //TODO: Work on activators here and execute toggle instance
+                        var toggle = _toggleActivator.ActivateToggle(type);
 
-                        var toggleResult = false;
-
-                        if (!toggleResult)
+                        if (!await toggle.IsActiveAsync(context))
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
                             return false;
                         }
                     }
-
                     return true;
                 }
                 else
@@ -52,11 +53,9 @@ namespace Esquio
             catch (Exception exception)
             {
                 Log.FeatureServiceProcessingFail(_logger, featureName, applicationName, exception);
-
                 return false;
             }
         }
-
         private static class Log
         {
             public static void FeatureServiceProcessingBegin(ILogger logger, string featureName, string applicationName)
