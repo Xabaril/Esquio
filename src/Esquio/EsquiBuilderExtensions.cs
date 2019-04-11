@@ -1,7 +1,6 @@
-﻿using Esquio.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Esquio.AspNetCore.Extensions
+namespace Esquio.Abstractions
 {
     public static class EsquioBuilderExtensions
     {
