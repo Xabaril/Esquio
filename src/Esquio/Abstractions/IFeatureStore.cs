@@ -4,20 +4,14 @@ using System.Threading.Tasks;
 
 namespace Esquio.Abstractions
 {
-    public interface IFeatureStore : IFeatureStoreReadOnly
+    public interface IFeatureStore
     {
         Task<bool> AddFeatureAsync(string applicationName, string featureName, bool enabled = false);
         Task<bool> AddToggleAsync<TToggle>(string applicationName, string featureName, IDictionary<string, object> parameterValues)
              where TToggle : IToggle;
-    }
-
-    public interface IFeatureStoreReadOnly
-    {
         Task<object> GetParameterValueAsync<TToggle>(string applicationName, string featureName, string parameterName)
             where TToggle : IToggle;
-
         Task<Feature> FindFeatureAsync(string applicationName, string featureName);
-
         Task<IEnumerable<Type>> FindTogglesTypesAsync(string applicationName, string featureName);
     }
 }
