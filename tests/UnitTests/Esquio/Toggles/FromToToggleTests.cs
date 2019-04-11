@@ -1,4 +1,5 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
 using Esquio.Toggles;
 using FluentAssertions;
@@ -78,6 +79,16 @@ namespace UnitTests.Esquio.Toggles
             public Task<bool> AddToggleAsync<TToggle>(string application, string feature, IDictionary<string, object> parameterValues) where TToggle : IToggle
             {
                 return Task.FromResult(true);
+            }
+
+            public Task<Feature> FindFeatureAsync(string applicationName, string featureName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IEnumerable<Type>> FindTogglesTypesAsync(string applicationName, string featureName)
+            {
+                throw new NotImplementedException();
             }
         }
         class DelegatedRoleNameProviderService

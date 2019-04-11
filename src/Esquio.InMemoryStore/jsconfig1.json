@@ -6,7 +6,8 @@
         "Features": [
           {
             "Name": "FeatureA",
-            "IsEnabled": "true",
+            "Enabled": "true",
+            "CreatedOn": "",
             "Toggles": [
               {
                 "Type": "OnToggle"
@@ -16,7 +17,7 @@
                 "Parameters": [
                   {
                     "Name": "Users",
-                    "Value" : "usuario1;usuario2;usuario3"
+                    "Value": "usuario1;usuario2;usuario3"
                   }
                 ]
               }
@@ -25,4 +26,5 @@
         ]
       }
     ]
+  }
 }

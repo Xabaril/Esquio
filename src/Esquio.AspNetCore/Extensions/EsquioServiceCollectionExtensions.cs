@@ -1,7 +1,6 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
-using Esquio.AspNetCore.Extensions;
 using Esquio.AspNetCore.Providers;
 
 namespace Microsoft.Extensions.DependencyInjection
