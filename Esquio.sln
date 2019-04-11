@@ -20,7 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{29B9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.AspNetCore", "src\Esquio.AspNetCore\Esquio.AspNetCore.csproj", "{30D6728B-3E8C-44F0-895C-9D91010C8B4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.InMemoryStore", "src\Esquio.InMemoryStore\Esquio.InMemoryStore.csproj", "{4598AC94-11EE-45F8-A573-572FB659A6C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.InMemoryStore", "src\Esquio.InMemoryStore\Esquio.InMemoryStore.csproj", "{4598AC94-11EE-45F8-A573-572FB659A6C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.Configuration.Store", "src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj", "{2BD25641-0976-4680-93F1-B6B16CDBC42D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{4598AC94-11EE-45F8-A573-572FB659A6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4598AC94-11EE-45F8-A573-572FB659A6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4598AC94-11EE-45F8-A573-572FB659A6C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD25641-0976-4680-93F1-B6B16CDBC42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD25641-0976-4680-93F1-B6B16CDBC42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD25641-0976-4680-93F1-B6B16CDBC42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD25641-0976-4680-93F1-B6B16CDBC42D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
