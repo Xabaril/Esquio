@@ -9,10 +9,10 @@ namespace Esquio
         : IFeatureService
     {
         private readonly IFeatureStore _featureStore;
-        private readonly IToggleActivator _toggleActivator;
+        private readonly IToggleTypeActivator _toggleActivator;
         private readonly IFeatureContextFactory _featureContextFactory;
         private readonly ILogger<DefaultFeatureService> _logger;
-        public DefaultFeatureService(IFeatureStore store, IToggleActivator toggeActivator, IFeatureContextFactory featureContextFactory, ILogger<DefaultFeatureService> logger)
+        public DefaultFeatureService(IFeatureStore store, IToggleTypeActivator toggeActivator, IFeatureContextFactory featureContextFactory, ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
@@ -34,7 +34,7 @@ namespace Esquio
 
                     foreach (var type in togglesTypes)
                     {
-                        var toggle = _toggleActivator.ActivateToggle(type);
+                        var toggle = _toggleActivator.CreateInstance(type);
 
                         if (!await toggle.IsActiveAsync(context))
                         {
