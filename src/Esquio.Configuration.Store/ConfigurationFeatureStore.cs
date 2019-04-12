@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Esquio.Configuration.Store
@@ -13,12 +14,14 @@ namespace Esquio.Configuration.Store
     {
         private readonly IConfigurationSection _configuration;
         private readonly ILogger<ConfigurationFeatureStore> _logger;
+        private readonly IEnumerable<string> _assemblies;
         private readonly EsquioSection esquio;
 
-        public ConfigurationFeatureStore(IConfigurationSection configuration, ILogger<ConfigurationFeatureStore> logger)
+        public ConfigurationFeatureStore(IConfigurationSection configuration, ILogger<ConfigurationFeatureStore> logger, IEnumerable<string> assemblies)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _assemblies = assemblies;
 
             esquio = new EsquioSection();
             _configuration.Bind(esquio);
@@ -48,7 +51,7 @@ namespace Esquio.Configuration.Store
         {
             var application = GetApplicationOrThrow(applicationName);
             var feature = GetFeatureOrThrow(application, featureName);
-            return Task.FromResult(Enumerable.Empty<Type>());
+            return Task.FromResult(feature.Toggles.Select(t => FindType(t.Type)));
         }
 
         public Task<object> GetParameterValueAsync<TToggle>(string applicationName, string featureName, string parameterName) where TToggle : IToggle
@@ -84,5 +87,29 @@ namespace Esquio.Configuration.Store
 
             return feature;
         }
+
+        private Type FindType(string typeName)
+        {
+            foreach (var assembly in _assemblies)
+            {
+                try
+                {
+                    var type = Assembly.Load(new AssemblyName(assembly))
+                        .GetType(typeName);
+
+                    if (type != null)
+                    {
+                        return type;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

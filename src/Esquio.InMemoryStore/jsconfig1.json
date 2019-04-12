@@ -13,7 +13,7 @@
                 "Type": "OnToggle"
               },
               {
-                "Type": "UserNameToggle", //out-of-box no sino FQN
+                "Type": "UserNameToggle",
                 "Parameters": [
                   {
                     "Name": "Users",
