@@ -10,8 +10,8 @@ namespace Esquio.Abstractions
         /// <summary>
         /// Create a new instance of the type <paramref name="toggle"/>.
         /// </summary>
-        /// <param name="toggle">The type of the toggle to create.</param>
+        /// <param name="toggleTypeName">The type of the toggle to create.</param>
         /// <returns>A new instance of the type <paramref name="toggle"/>.</returns>
-        IToggle CreateInstance(Type toggle);
+        IToggle CreateInstance(string toggleTypeName);
     }
 }

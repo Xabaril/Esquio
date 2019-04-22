@@ -1,6 +1,6 @@
-﻿namespace Esquio.Configuration.Store.Entities
+﻿namespace Esquio.Configuration.Store.Configuration
 {
-    public class Parameter
+    internal class ParameterConfiguration
     {
         public string Name { get; set; }
         public string Value { get; set; }

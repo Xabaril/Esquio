@@ -22,4 +22,9 @@ namespace Esquio.Abstractions
         /// </summary>
         IServiceProvider ServiceProvider { get; }
     }
+
+    public interface IFeatureContextFactory
+    {
+        IFeatureContext Create(string applicationName, string featureName);
+    }
 }

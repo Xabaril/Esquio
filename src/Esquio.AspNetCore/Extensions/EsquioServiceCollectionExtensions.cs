@@ -11,10 +11,17 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var builder = new EsquioBuilder(serviceCollection);
 
-            builder.Services.AddTransient<IFeatureService, DefaultFeatureService>();
+
             builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();
+            builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
+            builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
+            builder.Services.AddScoped<IFeatureContextFactory>(sp =>
+            {
+                return new AspNetCoreFeatureContextFactory(sp);
+            });
+
             builder.Services.AddHttpContextAccessor();
 
             return builder;

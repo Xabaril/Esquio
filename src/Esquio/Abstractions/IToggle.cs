@@ -10,7 +10,7 @@ namespace Esquio.Abstractions
         /// <summary>
         /// Check if the toggle is active on specified feature context.
         /// </summary>
-        /// <param name="context"><see cref="Esquio.Abstractions.IFeatureContext"/>.</param>
+        /// <param name="context"><see cref="Esquio.Abstractions.IFeatureContextFactory"/>.</param>
         /// <returns>True if context is active, else False.</returns>
         Task<bool> IsActiveAsync(IFeatureContext context);
     }

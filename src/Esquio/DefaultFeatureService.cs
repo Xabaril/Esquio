@@ -36,6 +36,8 @@ namespace Esquio
                     {
                         var toggle = _toggleActivator.CreateInstance(type);
 
+                        //TODO: Issues on create instances, user defined fallback behavior!!!!!
+
                         if (!await toggle.IsActiveAsync(context))
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);

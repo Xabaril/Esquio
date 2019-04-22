@@ -22,10 +22,10 @@ namespace Esquio.AspNetCore.Toggles
             var contextAccessor = context.ServiceProvider.GetService<IHttpContextAccessor>();
 
             var headerName = (string)await store
-                .GetParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, HeaderName);
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, HeaderName);
 
             var percentage = (int)await store
-              .GetParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, Percentage);
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, Percentage);
 
             var values = contextAccessor.HttpContext.Request.Headers[headerName];
 

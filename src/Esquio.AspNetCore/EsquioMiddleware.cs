@@ -1,51 +1,33 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Routing.Template;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore
 {
-
-    //TODO: Create default json serialization settings, try PathString instead string ,remove aspnet core dependencies or check this with core 3
     public class EsquioMiddleware
     {
-        private TemplateMatcher _requestPathMatcher;
-        private readonly RequestDelegate _next;
-        private readonly string _path;
+        const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
+        const string APPLICATIONNAME_QUERY_PARAMETER_NAME = "applicationName";
 
-        public EsquioMiddleware(
-            RequestDelegate next,
-            string path)
+        private readonly RequestDelegate _next;
+
+        public EsquioMiddleware(RequestDelegate next)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _path = path;
-
-            _requestPathMatcher = new TemplateMatcher(
-                TemplateParser.Parse(path),
-                new RouteValueDictionary());
         }
-
-        public async Task Invoke(HttpContext context, IFeatureService featuresService)
+        public async Task Invoke(HttpContext context, IFeatureService featureService)
         {
-            if (!IsEsquioRequest(context.Request))
-            {
-                await _next(context);
-
-                return;
-            }
-
             var statusCode = StatusCodes.Status200OK;
 
-            var featureName = context.Request.Query["featureName"];
+            var featureName = context.Request.Query[FEATURENAME_QUERY_PARAMETER_NAME];
+            var applicationName = context.Request.Query[APPLICATIONNAME_QUERY_PARAMETER_NAME];
             var json = String.Empty;
 
             try
             {
-                //TODO: Add aaplication id
-                var isEnabled = await featuresService.IsEnabledAsync("",featureName);
+                var isEnabled = await featureService.IsEnabledAsync(applicationName, featureName);
                 var data = new { isEnabled };
                 json = JsonConvert.SerializeObject(data);
             }
@@ -59,13 +41,6 @@ namespace Esquio.AspNetCore
                 json,
                 "application/json",
                 statusCode);
-        }
-
-        private bool IsEsquioRequest(HttpRequest request)
-        {
-            return request.Method == HttpMethods.Get &&
-                   _requestPathMatcher.TryMatch(request.Path, new RouteValueDictionary()) &&
-                   request.Query.ContainsKey("featureName");
         }
 
         private Task WriteResponseAsync(

@@ -11,11 +11,13 @@ namespace UnitTests.Seedwork
     {
         private readonly Func<string, object> _getDelegatedValueFunc;
 
+        public bool IsReadOnly => true;
+
         public DelegatedValueFeatureStore(Func<string, object> getDelegatedValueFunc)
         {
             _getDelegatedValueFunc = getDelegatedValueFunc;
         }
-        public Task<object> GetParameterValueAsync<TToggle>(string applicationName, string featureName, string parameterName) where TToggle : IToggle
+        public Task<object> GetToggleParameterValueAsync<TToggle>(string applicationName, string featureName, string parameterName) where TToggle : IToggle
         {
             return Task.FromResult(_getDelegatedValueFunc(parameterName));
         }
@@ -33,7 +35,7 @@ namespace UnitTests.Seedwork
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Type>> FindTogglesTypesAsync(string applicationName, string featureName)
+        public Task<IEnumerable<string>> FindTogglesTypesAsync(string applicationName, string featureName)
         {
             throw new NotImplementedException();
         }

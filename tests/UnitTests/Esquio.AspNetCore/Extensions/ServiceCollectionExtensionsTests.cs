@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Abstractions.Providers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -15,7 +16,13 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            serviceProvider.GetService<IFeatureService>()
+            serviceProvider.GetService<IUserNameProviderService>()
+                .Should().NotBeNull();
+
+            serviceProvider.GetService<IRoleNameProviderService>()
+                .Should().NotBeNull();
+
+            serviceProvider.GetService<IGeoLocationProviderService>()
                 .Should().NotBeNull();
         }
     }

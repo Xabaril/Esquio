@@ -24,7 +24,7 @@ namespace Esquio.Toggles
             if (currentRole != null)
             {
                 var activeRoles = (string)await featureStore
-                    .GetParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Roles);
+                    .GetToggleParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Roles);
 
                 if (activeRoles != null &&
                     activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))

@@ -1,27 +1,20 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Configuration.Store;
+using Esquio.Configuration.Store.Configuration;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
-using System.Linq;
 
-namespace Esquio.Configuration.Store
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ConfigurationFeatureStoreExtensions
     {
         private const string DefaultSectionName = "Esquio";
 
-        public static IEsquioBuilder AddConfigurationStore(this IEsquioBuilder builder, IConfiguration configuration)
+        public static IEsquioBuilder AddConfigurationStore(this IEsquioBuilder builder, IConfiguration configuration, string key)
         {
-            var libraries = DependencyContext
-                .Default
-                .CompileLibraries
-                .Select(c => c.Name);
-
-            builder.Services.AddSingleton<IFeatureStore>(sp =>
-                new ConfigurationFeatureStore(
-                    configuration.GetSection(DefaultSectionName),
-                    null,
-                    libraries));
+            builder.Services
+                .AddOptions()
+                .Configure<EsquioConfiguration>(configuration.GetSection(key))
+                .AddScoped<IFeatureStore, ConfigurationFeatureStore>();
 
             return builder;
         }

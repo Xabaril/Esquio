@@ -17,19 +17,21 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Versions">
-    <xunit>2.4.0</xunit>
-    <xunitrunner>2.4.0</xunitrunner>
-    <microsoftextensionsdependencyinjection>3.0.0-preview4.19122.3</microsoftextensionsdependencyinjection>
-    <microsoftextensionsloggingabstractions>3.0.0-preview4.19122.3</microsoftextensionsloggingabstractions>
-    <microsoftextensionslogging>3.0.0-preview4.19122.3</microsoftextensionslogging>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview4.19216.2</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsloggingabstractions>3.0.0-preview4.19216.2</microsoftextensionsloggingabstractions>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview4.19216.2</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsoptions>3.0.0-preview4.19216.2</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationbinder>3.0.0-preview4.19216.2</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsdependencyinjection>3.0.0-preview4.19216.2</microsoftextensionsdependencyinjection>
+    <microsoftextensionslogging>3.0.0-preview4.19216.2</microsoftextensionslogging>
+    <microsoftextensionsconfigurationjson>3.0.0-preview4.19216.2</microsoftextensionsconfigurationjson>
+    
     <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>
     <microsoftaspnetcorerouting>3.0.0-preview4-19121-14</microsoftaspnetcorerouting>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview3.19153.1</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview4.19122.3</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsconfigurationbinder>3.0.0-preview3.19153.1</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsdependencyModel>3.0.0-preview5-27611-05</microsoftextensionsdependencyModel>
-    <microsoftextensionsconfigurationjson>3.0.0-preview3.19153.1</microsoftextensionsconfigurationjson>
-    <newtonsoftjson>12.0.1</newtonsoftjson>
+    
+    <xunit>2.4.0</xunit>
+    <xunitrunner>2.4.0</xunitrunner>
+    <newtonsoftjson>12.0.2</newtonsoftjson>
     <fluentassertions>5.6.0</fluentassertions>
   </PropertyGroup>
 
