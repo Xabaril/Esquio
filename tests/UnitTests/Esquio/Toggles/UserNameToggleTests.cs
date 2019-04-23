@@ -15,79 +15,77 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_not_active_if_user_provider_is_null()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-                .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user1;user2"))
-                .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user1;user2");
 
-            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new UserNameToggle().IsActiveAsync(featureContext);
+                await new UserNameToggle(null, store).IsActiveAsync(featureContext);
             });
         }
         [Fact]
         public async Task be_not_active_if_user_is_null()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user2"))
-              .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => null))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user2");
+            var userNameProvider = new DelegatedUserNameProviderService(() => null);
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeFalse();
         }
         [Fact]
         public async Task be_not_active_if_parameter_is_not_configured()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => null))
-              .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => "user1"))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => null);
+            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeFalse();
         }
         [Fact]
         public async Task be_not_active_if_user_is_not_contained_on_users_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user2"))
-              .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => "user1"))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user1");
+            var userNameProvider = new DelegatedUserNameProviderService(() => "user2");
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeFalse();
         }
         [Fact]
         public async Task be_active_if_user_is_equal_to_users_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user1"))
-               .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => "user1"))
-               .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user1");
+            var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
             active.Should().BeTrue();
         }
         [Fact]
         public async Task be_active_if_user_is_equal_non_sensitive_to_users_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user1"))
-               .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => "UsEr1"))
-               .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user1");
+            var userNameProvider = new DelegatedUserNameProviderService(() => "UsEr1");
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeTrue();
         }
         [Fact]
         public async Task be_active_if_user_is_contained_on_users_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user1;user2"))
-               .WithService<IUserNameProviderService, DelegatedUserNameProviderService>(new DelegatedUserNameProviderService(() => "user1"))
-               .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user1;user2");
+            var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle().IsActiveAsync(featureContext);
+            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeTrue();
         }
     }

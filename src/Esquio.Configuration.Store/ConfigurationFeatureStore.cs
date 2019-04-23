@@ -12,7 +12,6 @@ namespace Esquio.Configuration.Store
 {
     internal class ConfigurationFeatureStore : IFeatureStore
     {
-        private readonly IConfigurationSection _configuration;
         private readonly ILogger<ConfigurationFeatureStore> _logger;
         private readonly EsquioConfiguration _esquio;
 

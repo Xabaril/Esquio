@@ -24,7 +24,6 @@ namespace Esquio.AspNetCore.Providers
 
         public string ApplicationName { get; }
 
-        IServiceProvider _provider;
         public IServiceProvider ServiceProvider { get; }
 
         internal AspNetCoreFeatureContext(string applicationName, string featureName, IServiceProvider serviceProvider)

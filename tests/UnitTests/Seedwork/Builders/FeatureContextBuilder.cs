@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace UnitTests.Seedwork.Builders
@@ -20,15 +19,6 @@ namespace UnitTests.Seedwork.Builders
         public FeatureContextBuilder WithApplicationName(string applicationName)
         {
             _applicationName = applicationName;
-            return this;
-        }
-
-        public FeatureContextBuilder WithService<TService, TImplementation>(TImplementation implementation)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            _services.AddTransient<TService>(_ => implementation);
-
             return this;
         }
 

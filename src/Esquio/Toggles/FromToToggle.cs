@@ -13,15 +13,19 @@ namespace Esquio.Toggles
         internal const string FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
         const string From = nameof(From);
         const string To = nameof(From);
+        private readonly IFeatureStore _featureStore;
+
+        public FromToToggle(IFeatureStore featureStore)
+        {
+            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
+        }
 
         public async Task<bool> IsActiveAsync(IFeatureContext context)
         {
-            var featureStore = context.ServiceProvider.GetService<IFeatureStore>();
-
-            var fromValue = (string)await featureStore
+            var fromValue = (string)await _featureStore
                  .GetToggleParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, From);
 
-            var toValue = (string)await featureStore
+            var toValue = (string)await _featureStore
                 .GetToggleParameterValueAsync<FromToToggle>(context.ApplicationName, context.FeatureName, To);
 
             var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);

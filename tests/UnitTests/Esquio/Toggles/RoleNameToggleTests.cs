@@ -1,6 +1,4 @@
-﻿using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
-using Esquio.Toggles;
+﻿using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -14,46 +12,44 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_not_active_if_role_provider_is_null()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-                .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "rol1;rol2"))
-                .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "rol1;rol2");
 
-            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new RoleNameToggle().IsActiveAsync(featureContext);
+                await new RoleNameToggle(null, store).IsActiveAsync(featureContext);
             });
         }
         [Fact]
         public async Task be_not_active_if_role_is_null()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "rol1"))
-              .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => null))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "rol1");
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeFalse();
         }
         [Fact]
         public async Task be_not_active_if_parameter_is_not_configured()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => null))
-              .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => "rol1"))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => null);
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => "rol1");
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
+
             active.Should().BeFalse();
         }
         [Fact]
         public async Task be_not_active_if_role_is_not_contained_on_roles_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-              .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "user2"))
-              .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => "user1"))
-              .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "user2");
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => "user1");
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
             active.Should().BeFalse();
         }
         [Fact]
@@ -62,11 +58,11 @@ namespace UnitTests.Esquio.Toggles
             var featureContext = Builders.FeatureContextBuilder()
                .WithFeatureName("feature")
                .WithApplicationName("application")
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "rol1"))
-               .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => "rol1"))
                .Build();
+            var store = new DelegatedValueFeatureStore(_ => "rol1");
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => "rol1");
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
             active.Should().BeTrue();
         }
         [Fact]
@@ -75,22 +71,22 @@ namespace UnitTests.Esquio.Toggles
             var featureContext = Builders.FeatureContextBuilder()
                .WithFeatureName("feature")
                .WithApplicationName("application")
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "rol1"))
-               .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => "RoL1"))
                .Build();
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var store = new DelegatedValueFeatureStore(_ => "rol1");
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => "RoL1");
+
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
             active.Should().BeTrue();
         }
         [Fact]
         public async Task be_active_if_role_is_contained_on_roles_parameters_value()
         {
-            var featureContext = Builders.FeatureContextBuilder()
-               .WithService<IFeatureStore, DelegatedValueFeatureStore>(new DelegatedValueFeatureStore(_ => "rol1;rol2"))
-               .WithService<IRoleNameProviderService, DelegatedRoleNameProviderService>(new DelegatedRoleNameProviderService(() => "rol1"))
-               .Build();
+            var featureContext = Builders.FeatureContextBuilder().Build();
+            var store = new DelegatedValueFeatureStore(_ => "rol1;rol2");
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => "rol1");
 
-            var active = await new RoleNameToggle().IsActiveAsync(featureContext);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(featureContext);
             active.Should().BeTrue();
         }
     }
