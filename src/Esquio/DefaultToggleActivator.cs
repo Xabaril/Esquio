@@ -1,33 +1,27 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Diagnostics;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Reflection;
 
 namespace Esquio
 {
     public class DefaultToggleTypeActivator
         : IToggleTypeActivator
     {
-        private readonly Assembly[] _assemblies;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DefaultToggleTypeActivator> _logger;
 
-        public DefaultToggleTypeActivator()
+        public DefaultToggleTypeActivator(IServiceProvider serviceProvider,ILogger<DefaultToggleTypeActivator> logger)
         {
-            _assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            //TODO: Improve performance on this class ( IEsquioBuilder can be configure toggle assemblies and set as constructor parameter)
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public IToggle CreateInstance(string toggleTypeName)
         {
-            foreach (var assembly in _assemblies)
-            {
-                var type = assembly.GetType(toggleTypeName);
+            Log.DefaultToggleTypeActivatorResolveTypeBegin(_logger, toggleTypeName);
 
-                if (type != null)
-                {
-                    return (IToggle)Activator.CreateInstance(type);
-                }
-            }
-
-            return default;
+            var type = Type.GetType(toggleTypeName);
+            return (IToggle)_serviceProvider.GetService(type);
         }
     }
 }

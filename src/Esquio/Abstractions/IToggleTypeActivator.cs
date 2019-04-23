@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Esquio.Abstractions
+﻿namespace Esquio.Abstractions
 {
     /// <summary>
     /// Represent the contract for Toggle type activators.

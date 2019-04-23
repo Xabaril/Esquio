@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
-using System;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -12,16 +11,20 @@ namespace Esquio.Toggles
         const string Percentage = nameof(Percentage);
         const string AnonymoysUser = nameof(AnonymoysUser);
         const int Partitions = 10;
+        private readonly IUserNameProviderService _userNameProviderService;
+        private readonly IFeatureStore _featureStore;
 
-        public async Task<bool> IsActiveAsync(IFeatureContext context)
+        public RolloutUserNameToggle(IUserNameProviderService userNameProviderService, IFeatureStore featureStore)
         {
-            var userNameProviderService = context.ServiceProvider.GetService<IUserNameProviderService>();
-            var featureStore = context.ServiceProvider.GetService<IFeatureStore>();
+            _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
+            _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));
+        }
+        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        {
+            var percentage = (int)await _featureStore
+                  .GetToggleParameterValueAsync<RolloutUserNameToggle>(featureName, applicationName, Percentage);
 
-            var percentage = (int)await featureStore
-                  .GetToggleParameterValueAsync<RolloutUserNameToggle>(context.ApplicationName, context.FeatureName, Percentage);
-
-            var currentUserName = await userNameProviderService
+            var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync() ?? AnonymoysUser;
 
             var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);

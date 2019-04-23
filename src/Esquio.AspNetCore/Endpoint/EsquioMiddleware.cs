@@ -27,7 +27,7 @@ namespace Esquio.AspNetCore.Endpoint
 
             try
             {
-                var isEnabled = await featureService.IsEnabledAsync(applicationName, featureName);
+                var isEnabled = await featureService.IsEnabledAsync(featureName,applicationName);
                 var data = new { isEnabled };
                 json = JsonConvert.SerializeObject(data);
             }

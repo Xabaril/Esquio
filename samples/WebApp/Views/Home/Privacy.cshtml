@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 
-    if(featureService.IsEnabledAsync("WebApp","NavigationSection").Result)
+    if(featureService.IsEnabledAsync(Flags.NavigationSection).Result)
     {
         ViewData["FeatureStatus"] = "IsActive";
     }

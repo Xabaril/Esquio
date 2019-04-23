@@ -6,7 +6,7 @@ namespace Esquio.Toggles
     public class OnToggle
         : IToggle
     {
-        public Task<bool> IsActiveAsync(IFeatureContext context)
+        public Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
             return Task.FromResult<bool>(true);
         }

@@ -1,5 +1,4 @@
-﻿using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
+﻿using Esquio.Abstractions.Providers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

@@ -1,61 +1,44 @@
 ﻿using Esquio.Abstractions;
-using Esquio.Configuration.Store;
-using Esquio.Configuration.Store.Configuration;
 using Esquio.Toggles;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace FunctionalTests.Esquio.Configuration.Store
 {
-    public class ConfigurationFeatureStoreShould
+    public class ConfigurationFeatureStoreShould : IClassFixture<Fixture>
     {
+        private readonly Fixture _fixture;
 
-        private readonly ConfigurationFeatureStore _featureStore;
-
-        public ConfigurationFeatureStoreShould()
+        public ConfigurationFeatureStoreShould(Fixture fixture)
         {
-            var configuration = new ConfigurationBuilder()
-               .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Esquio.Configuration.Store"))
-               .AddJsonFile("appsettings.json")
-               .Build();
-
-            var esquio = new EsquioConfiguration();
-            configuration.Bind("Esquio", esquio);
-
-            var options = Options.Create(esquio);
-            var logger = new LoggerFactory().CreateLogger<ConfigurationFeatureStore>();
-
-            _featureStore = new ConfigurationFeatureStore(options, logger);
+            _fixture = fixture ?? throw new System.ArgumentNullException(nameof(fixture));
         }
+
         [Fact]
         public async Task return_false_when_try_to_add_new_feature()
         {
-            (await _featureStore.AddFeatureAsync("applicationName", "featureName", enabled: true))
+            (await _fixture.FeatureStore.AddFeatureAsync("featureName", "applicationName", enabled: true))
                 .Should().BeFalse();
         }
         [Fact]
         public async Task return_null_when_find_a_non_existing_feature()
         {
-            (await _featureStore.FindFeatureAsync("non-valid-application-name","non-valid-feature-name"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name"))
                 .Should().BeNull();
 
-            (await _featureStore.FindFeatureAsync("MySampleApplication", "non-valid-feature-name"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "MySampleApplication"))
                 .Should().BeNull();
         }
         [Fact]
         public async Task return_feature_if_is_configured()
         {
-            (await _featureStore.FindFeatureAsync("non-valid-application-name", "non-valid-feature-name"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name"))
                 .Should().BeNull();
 
-            var feature = await _featureStore.FindFeatureAsync("MySampleApplication", "FeatureA");
+            var feature = await _fixture.FeatureStore.FindFeatureAsync("FeatureA", "MySampleApplication");
 
             feature.Should().NotBeNull();
 
@@ -65,19 +48,19 @@ namespace FunctionalTests.Esquio.Configuration.Store
         [Fact]
         public async Task return_false_when_try_to_add_new_toggle()
         {
-            (await _featureStore.AddToggleAsync<FakeToggle>("applicationName", "featureName",new Dictionary<string,object>()))
+            (await _fixture.FeatureStore.AddToggleAsync<FakeToggle>("featureName", "applicationName", new Dictionary<string, object>()))
                .Should().BeFalse();
         }
         [Fact]
         public async Task return_empty_collection_when_find_toggle_types_on_non_existing_feature()
         {
-            (await _featureStore.FindTogglesTypesAsync("applicationName", "featureName"))
+            (await _fixture.FeatureStore.FindTogglesTypesAsync("featureName", "applicationName"))
                .Any().Should().BeFalse();
         }
         [Fact]
         public async Task return_configured_toggle_types()
         {
-            var configuredTypes = await _featureStore.FindTogglesTypesAsync("MySampleApplication", "FeatureA");
+            var configuredTypes = await _fixture.FeatureStore.FindTogglesTypesAsync("FeatureA", "MySampleApplication");
 
             configuredTypes.Count().Should().Be(2);
 
@@ -87,19 +70,19 @@ namespace FunctionalTests.Esquio.Configuration.Store
         [Fact]
         public async Task return_null_when_find_parameter_value_on_non_existing_feature()
         {
-            (await _featureStore.GetToggleParameterValueAsync<UserNameToggle>("MySampleApplication", "FeatureB","Users"))
+            (await _fixture.FeatureStore.GetToggleParameterValueAsync<UserNameToggle>("FeatureB", "MySampleApplication", "Users"))
                 .Should().BeNull();
         }
         [Fact]
         public async Task return_null_when_find_parameter_value_on_non_existing_toggle()
         {
-            (await _featureStore.GetToggleParameterValueAsync<OffToggle>("MySampleApplication", "FeatureA", "Users"))
+            (await _fixture.FeatureStore.GetToggleParameterValueAsync<OffToggle>("FeatureA", "MySampleApplication", "Users"))
                 .Should().BeNull();
         }
         [Fact]
         public async Task return_parameter_value_on_existing_feature()
         {
-            var parameterValue = await _featureStore.GetToggleParameterValueAsync<UserNameToggle>("MySampleApplication", "FeatureA", "Users");
+            var parameterValue = await _fixture.FeatureStore.GetToggleParameterValueAsync<UserNameToggle>("FeatureA", "MySampleApplication", "Users");
 
             parameterValue.Should().NotBeNull();
             parameterValue.Should().BeEquivalentTo("user1;user2;user3");
@@ -108,7 +91,7 @@ namespace FunctionalTests.Esquio.Configuration.Store
 
     class FakeToggle : IToggle
     {
-        public Task<bool> IsActiveAsync(IFeatureContext context)
+        public Task<bool> IsActiveAsync(string applicationName, string featureName)
         {
             return Task.FromResult(false);
         }

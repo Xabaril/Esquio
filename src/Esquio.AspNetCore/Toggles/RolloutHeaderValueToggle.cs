@@ -15,19 +15,23 @@ namespace Esquio.AspNetCore.Toggles
         const string HeaderName = nameof(HeaderName);
         const string Percentage = nameof(Percentage);
         const int Partitions = 10;
+        private readonly IFeatureStore _featureStore;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public async Task<bool> IsActiveAsync(IFeatureContext context)
+        public RolloutHeaderValueToggle(IFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
-            var store = context.ServiceProvider.GetService<IFeatureStore>();
-            var contextAccessor = context.ServiceProvider.GetService<IHttpContextAccessor>();
+            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        }
+        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        {
+            var headerName = (string)await _featureStore
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(featureName, applicationName, HeaderName);
 
-            var headerName = (string)await store
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, HeaderName);
+            var percentage = (int)await _featureStore
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(featureName, applicationName, Percentage);
 
-            var percentage = (int)await store
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, Percentage);
-
-            var values = contextAccessor.HttpContext.Request.Headers[headerName];
+            var values = _httpContextAccessor.HttpContext.Request.Headers[headerName];
 
             var headerValue = values != StringValues.Empty ? values.First() : "NoHeaderValue";
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -15,17 +11,20 @@ namespace WebApp.Controllers
         {
             return View();
         }
-        [Flag(ApplicationName = Flags.ApplicationName, FeatureName = Flags.NavigationSection)]
+
+        [Flag(FeatureName = Flags.NavigationSection)]
         [ActionName("Privacy")]
         public IActionResult PrivacyWhenFlagsIsActive()
         {
             return View();
         }
+
         [ActionName("Privacy")]
         public IActionResult PrivacyWhenFlagIsNotActive()
         {
             return View();
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
