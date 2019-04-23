@@ -91,7 +91,7 @@ namespace FunctionalTests.Esquio.Configuration.Store
 
     class FakeToggle : IToggle
     {
-        public Task<bool> IsActiveAsync(IFeatureContext context)
+        public Task<bool> IsActiveAsync(string applicationName, string featureName)
         {
             return Task.FromResult(false);
         }

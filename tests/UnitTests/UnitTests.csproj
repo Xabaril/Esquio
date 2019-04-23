@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Seedwork\Builders\" />
+  </ItemGroup>
+
 </Project>

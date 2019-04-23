@@ -10,13 +10,11 @@ namespace Esquio
     {
         private readonly IFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
-        private readonly IFeatureContextFactory _featureContextFactory;
         private readonly ILogger<DefaultFeatureService> _logger;
-        public DefaultFeatureService(IFeatureStore store, IToggleTypeActivator toggeActivator, IFeatureContextFactory featureContextFactory, ILogger<DefaultFeatureService> logger)
+        public DefaultFeatureService(IFeatureStore store, IToggleTypeActivator toggeActivator, ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
-            _featureContextFactory = featureContextFactory ?? throw new ArgumentNullException(nameof(featureContextFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<bool> IsEnabledAsync(string applicationName, string featureName)
@@ -30,7 +28,6 @@ namespace Esquio
                 if (feature != null)
                 {
                     var togglesTypes = await _featureStore.FindTogglesTypesAsync(applicationName, featureName);
-                    var context = _featureContextFactory.Create(applicationName, featureName);
 
                     foreach (var type in togglesTypes)
                     {
@@ -38,7 +35,7 @@ namespace Esquio
 
                         //TODO: Issues on create instances, user defined fallback behavior!!!!!
 
-                        if (!await toggle.IsActiveAsync(context))
+                        if (!await toggle.IsActiveAsync(applicationName, featureName))
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
                             return false;

@@ -21,7 +21,7 @@ namespace Esquio.Toggles
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
 
-        public async Task<bool> IsActiveAsync(IFeatureContext context)
+        public async Task<bool> IsActiveAsync(string applicationName, string featureName)
         {
             var currentRole = await _roleNameProviderService
                 .GetCurrentRoleNameAsync();
@@ -29,7 +29,7 @@ namespace Esquio.Toggles
             if (currentRole != null)
             {
                 var activeRoles = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(context.ApplicationName, context.FeatureName, Roles);
+                    .GetToggleParameterValueAsync<UserNameToggle>(applicationName, featureName, Roles);
 
                 if (activeRoles != null &&
                     activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))

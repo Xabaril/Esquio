@@ -22,11 +22,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IFeatureContextFactory>(sp =>
-            {
-                return new AspNetCoreFeatureContextFactory(sp);
-            });
-
             builder.Services.AddHttpContextAccessor();
 
             return builder;

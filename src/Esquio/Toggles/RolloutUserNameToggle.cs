@@ -20,10 +20,10 @@ namespace Esquio.Toggles
             _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));
         }
 
-        public async Task<bool> IsActiveAsync(IFeatureContext context)
+        public async Task<bool> IsActiveAsync(string applicationName, string featureName)
         {
             var percentage = (int)await _featureStore
-                  .GetToggleParameterValueAsync<RolloutUserNameToggle>(context.ApplicationName, context.FeatureName, Percentage);
+                  .GetToggleParameterValueAsync<RolloutUserNameToggle>(applicationName, featureName, Percentage);
 
             var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync() ?? AnonymoysUser;

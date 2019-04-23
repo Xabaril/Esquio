@@ -8,10 +8,11 @@ namespace Esquio.Abstractions
     public interface IToggle
     {
         /// <summary>
-        /// Check if the toggle is active on specified feature context.
+        /// Check if the toggle is active for an application and feature.
         /// </summary>
-        /// <param name="context"><see cref="Esquio.Abstractions.IFeatureContextFactory"/>.</param>
-        /// <returns>True if context is active, else False.</returns>
-        Task<bool> IsActiveAsync(IFeatureContext context);
+        /// <param name="applicationName">The application name.</param>
+        /// <param name="featureName">The feature name.</param>
+        /// <returns></returns>
+        Task<bool> IsActiveAsync(string applicationName, string featureName);
     }
 }

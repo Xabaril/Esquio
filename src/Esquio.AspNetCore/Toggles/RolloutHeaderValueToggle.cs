@@ -1,7 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,19 +14,24 @@ namespace Esquio.AspNetCore.Toggles
         const string HeaderName = nameof(HeaderName);
         const string Percentage = nameof(Percentage);
         const int Partitions = 10;
+        private readonly IFeatureStore _featureStore;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public async Task<bool> IsActiveAsync(IFeatureContext context)
+        public RolloutHeaderValueToggle(IFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
-            var store = context.ServiceProvider.GetService<IFeatureStore>();
-            var contextAccessor = context.ServiceProvider.GetService<IHttpContextAccessor>();
+            _featureStore = featureStore;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-            var headerName = (string)await store
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, HeaderName);
+        public async Task<bool> IsActiveAsync(string applicationName, string featureName)
+        {
+            var headerName = (string)await _featureStore
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(applicationName, featureName, HeaderName);
 
-            var percentage = (int)await store
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(context.ApplicationName, context.FeatureName, Percentage);
+            var percentage = (int)await _featureStore
+                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(applicationName, featureName, Percentage);
 
-            var values = contextAccessor.HttpContext.Request.Headers[headerName];
+            var values = _httpContextAccessor.HttpContext.Request.Headers[headerName];
 
             var headerValue = values != StringValues.Empty ? values.First() : "NoHeaderValue";
 
