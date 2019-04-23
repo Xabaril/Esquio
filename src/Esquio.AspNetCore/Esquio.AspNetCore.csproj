@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
@@ -14,10 +13,10 @@
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(microsoftaspnetcorehttpabstractions)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(microsoftaspnetcorehttpabstractions)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="$(microsoftaspnetcoremvcabstractions)" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="$(microsoftaspnetcorerouting)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjection)" />
@@ -26,11 +25,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
-
 </Project>

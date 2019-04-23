@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion>netstandard2.1</NetStandardTargetVersion>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
-    <NetTestSdk>15.9.0</NetTestSdk>
+    <NetTestSdk>16.0.1</NetTestSdk>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -25,14 +25,19 @@
     <microsoftextensionsdependencyinjection>3.0.0-preview4.19216.2</microsoftextensionsdependencyinjection>
     <microsoftextensionslogging>3.0.0-preview4.19216.2</microsoftextensionslogging>
     <microsoftextensionsconfigurationjson>3.0.0-preview4.19216.2</microsoftextensionsconfigurationjson>
-    
+    <microsoftextensionshosting>3.0.0-preview4.19216.2</microsoftextensionshosting>
+
+
+    <microsoftaspnetcore>3.0.0-preview4-19121-14</microsoftaspnetcore>
     <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>
     <microsoftaspnetcorerouting>3.0.0-preview4-19121-14</microsoftaspnetcorerouting>
+    <microsoftaspnetcoremvcabstractions>3.0.0-preview4-19121-14</microsoftaspnetcoremvcabstractions>
     
-    <xunit>2.4.0</xunit>
-    <xunitrunner>2.4.0</xunitrunner>
+    <xunit>2.4.1</xunit>
+    <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
     <fluentassertions>5.6.0</fluentassertions>
+    <microsoftaspnetcoretesthost>3.0.0-preview4-19216-03</microsoftaspnetcoretesthost>
   </PropertyGroup>
 
   <PropertyGroup Label="CLI Tools Versions">

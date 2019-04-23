@@ -11,7 +11,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var builder = new EsquioBuilder(serviceCollection);
 
-
             builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();

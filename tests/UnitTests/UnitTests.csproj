@@ -7,6 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="$(microsoftaspnetcore)"/>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(microsoftaspnetcoretesthost)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="$(microsoftaspnetcoremvcabstractions)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(microsoftaspnetcoremvcabstractions)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(microsoftextensionshosting)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(NetTestSdk)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunitrunner)" />
@@ -15,6 +21,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

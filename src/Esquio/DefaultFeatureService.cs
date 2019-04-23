@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -96,14 +97,6 @@ namespace Esquio
                 LogLevel.Error,
                 EventIds.DefaultFeatureServiceThrows,
                 "DefaultFeatureService threw an unhandled exception checking {featureName} for application {application}");
-        }
-
-        internal static class EventIds
-        {
-            public static readonly EventId DefaultFeatureServiceBegin = new EventId(100, nameof(DefaultFeatureServiceBegin));
-            public static readonly EventId FeatureNotFound = new EventId(101, nameof(FeatureNotFound));
-            public static readonly EventId FeatureNotActive = new EventId(102, nameof(FeatureNotActive));
-            public static readonly EventId DefaultFeatureServiceThrows = new EventId(110, nameof(DefaultFeatureServiceThrows));
         }
     }
 }

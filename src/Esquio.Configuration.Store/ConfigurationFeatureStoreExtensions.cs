@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         private const string DefaultSectionName = "Esquio";
 
-        public static IEsquioBuilder AddConfigurationStore(this IEsquioBuilder builder, IConfiguration configuration, string key)
+        public static IEsquioBuilder AddConfigurationStore(this IEsquioBuilder builder, IConfiguration configuration, string key = DefaultSectionName)
         {
             builder.Services
                 .AddOptions()

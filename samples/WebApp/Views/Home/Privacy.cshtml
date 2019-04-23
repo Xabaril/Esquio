@@ -1,6 +1,19 @@
-﻿@{
+﻿@inject IFeatureService featureService
+@{
     ViewData["Title"] = "Privacy Policy";
+
+    if(featureService.IsEnabledAsync("WebApp","NavigationSection").Result)
+    {
+        ViewData["FeatureStatus"] = "IsActive";
+    }
+    else
+    {
+        ViewData["FeatureStatus"] = "IsNotActive";
+    }
 }
+
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+
+<p>The feature NavigationSection status is @ViewData["FeatureStatus"]</p>

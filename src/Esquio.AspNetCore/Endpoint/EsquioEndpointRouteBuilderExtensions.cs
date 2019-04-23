@@ -1,4 +1,4 @@
-﻿using Esquio.AspNetCore;
+﻿using Esquio.AspNetCore.Endpoint;
 using Microsoft.AspNetCore.Routing;
 using System;
 

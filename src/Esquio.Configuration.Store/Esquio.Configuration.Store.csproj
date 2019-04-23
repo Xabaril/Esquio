@@ -20,7 +20,6 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(microsoftextensionsconfigurationbinder)" />
-    <!--<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(microsoftextensionsdependencyModel)" />-->
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
       <PrivateAssets>all</PrivateAssets>

@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stores", "Stores", "{C18E0B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{E04DC89F-C473-412B-BA60-25C50361FBB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "samples\WebApp\WebApp.csproj", "{31B26C85-D240-4EF3-BB59-AF113B3E204B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "samples\WebApp\WebApp.csproj", "{31B26C85-D240-4EF3-BB59-AF113B3E204B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

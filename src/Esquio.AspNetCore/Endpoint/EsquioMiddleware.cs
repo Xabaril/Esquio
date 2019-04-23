@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace Esquio.AspNetCore
+namespace Esquio.AspNetCore.Endpoint
 {
     public class EsquioMiddleware
     {

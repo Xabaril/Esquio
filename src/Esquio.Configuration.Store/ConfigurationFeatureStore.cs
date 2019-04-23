@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store.Configuration;
+using Esquio.Configuration.Store.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -77,7 +78,7 @@ namespace Esquio.Configuration.Store
                 if (toggle != null)
                 {
                     var parameterValue = toggle.Parameters
-                    .SingleOrDefault(t => t.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
+                        .SingleOrDefault(t => t.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
 
                     if (parameterName != null)
                     {
@@ -148,12 +149,6 @@ namespace Esquio.Configuration.Store
                 LogLevel.Debug,
                 EventIds.FindFeature,
                 "The store is trying to find feature {featureName} for application {applicationName} on the store.");
-        }
-        internal static class EventIds
-        {
-            public static readonly EventId StoreIsReadOnly = new EventId(200, nameof(StoreIsReadOnly));
-            public static readonly EventId FeatureNotExist = new EventId(201, nameof(FeatureNotExist));
-            public static readonly EventId FindFeature = new EventId(220, nameof(FindFeature));
         }
     }
 }
