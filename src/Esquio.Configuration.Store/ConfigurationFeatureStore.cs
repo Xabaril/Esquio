@@ -15,7 +15,7 @@ namespace Esquio.Configuration.Store
         private readonly ILogger<ConfigurationFeatureStore> _logger;
         private readonly EsquioConfiguration _esquio;
 
-        public ConfigurationFeatureStore(IOptions<EsquioConfiguration> options, ILogger<ConfigurationFeatureStore> logger)
+        public ConfigurationFeatureStore(IOptionsSnapshot<EsquioConfiguration> options, ILogger<ConfigurationFeatureStore> logger)
         {
             _esquio = options?.Value ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

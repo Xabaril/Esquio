@@ -2,6 +2,11 @@
 {
     internal class EsquioConfiguration
     {
+        public EsquioConfiguration()
+        {
+
+        }
+
         public ApplicationConfiguration[] Applications { get; set; }
     }
 }
