@@ -49,19 +49,19 @@ namespace Esquio.AspNetCore.Mvc
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<FlagSwitch>>();
                 var featureservice = scope.ServiceProvider.GetRequiredService<IFeatureService>();
 
-                Log.FeatureFlagConstraintBegin(logger, _featureName, _applicationName);
+                Log.FlagSwitchBegin(logger, _featureName, _applicationName);
 
                 var executingTask = featureservice.IsEnabledAsync(_featureName, _applicationName);
                 executingTask.Wait();
 
                 if (executingTask.IsCompletedSuccessfully)
                 {
-                    Log.FeatureFlagConstraintSuccess(logger, _featureName, _applicationName);
+                    Log.FlagSwitchSuccess(logger, _featureName, _applicationName);
                     return executingTask.Result;
                 }
                 else
                 {
-                    Log.FeatureFlagConstraintThrow(logger, _featureName, _applicationName, executingTask.Exception);
+                    Log.FlagSwitchThrow(logger, _featureName, _applicationName, executingTask.Exception);
                     return false;
                 }
             }

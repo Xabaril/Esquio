@@ -1,6 +1,7 @@
 ﻿using Esquio.AspNetCore.Mvc;
 using FluentAssertions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +16,9 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         public async Task clean_content_when_feature_is_not_active()
         {
             var featureService = new DelegatedFeatureService((_, __) => false);
+            var logger = new LoggerFactory().CreateLogger<FlagTagHelper>();
 
-            var tagHelper = new FlagTagHelper(featureService)
+            var tagHelper = new FlagTagHelper(featureService, logger)
             {
                 FeatureName = "Feature-1"
             };
@@ -34,8 +36,9 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         public async Task preserve_content_when_feature_is_active()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
+            var logger = new LoggerFactory().CreateLogger<FlagTagHelper>();
 
-            var tagHelper = new FlagTagHelper(featureService)
+            var tagHelper = new FlagTagHelper(featureService, logger)
             {
                 FeatureName = "Feature-1"
             };

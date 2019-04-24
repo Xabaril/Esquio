@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Esquio.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,25 +49,31 @@ namespace Esquio.AspNetCore.Mvc
             {
                 var logger = scope.ServiceProvider
                     .GetRequiredService<ILogger<Flag>>();
-
                 var featureService = scope.ServiceProvider
                     .GetRequiredService<IFeatureService>();
-
                 var fallbackService = scope.ServiceProvider
                     .GetService<IMvcFallbackService>();
 
+                Log.FlagBegin(logger, _featureName, _applicationName);
+
                 if (await featureService.IsEnabledAsync(_featureName, _applicationName))
                 {
+                    Log.FlagExecutingAction(logger, _featureName, _applicationName);
+
                     await next();
                 }
                 else
                 {
+                    Log.FlagNonExecuteAction(logger, _featureName, _applicationName);
+
                     if (fallbackService != null)
                     {
                         context.Result = fallbackService.GetFallbackActionResult(context);
                     }
                     else
                     {
+                        Log.FlagFallbackServiceIsNotConfigured(logger);
+
                         context.Result = new NotFoundResult()
                         {
 

@@ -5,29 +5,77 @@ namespace Esquio.AspNetCore.Diagnostics
 {
     static class Log
     {
-        public static void FeatureFlagConstraintBegin(ILogger logger, string featureName, string applicationName)
+        public static void FlagSwitchBegin(ILogger logger, string featureName, string applicationName)
         {
-            _featureFlagConstraintBegin(logger, featureName, applicationName ?? "(default application)", null);
+            _flagSwitchBegin(logger, featureName, applicationName ?? "(default application)", null);
         }
-        public static void FeatureFlagConstraintSuccess(ILogger logger, string featureName, string applicationName)
+        public static void FlagSwitchSuccess(ILogger logger, string featureName, string applicationName)
         {
-            _featureFlagConstraintSuccess(logger, featureName, applicationName ?? "(default application)", null);
+            _flagSwitchSuccess(logger, featureName, applicationName ?? "(default application)", null);
         }
-        public static void FeatureFlagConstraintThrow(ILogger logger, string featureName, string applicationName, Exception exception)
+        public static void FlagSwitchThrow(ILogger logger, string featureName, string applicationName, Exception exception)
         {
-            _featureFlagConstraintThrow(logger, featureName, applicationName ?? "(default application)", exception);
+            _flagSwitchThrow(logger, featureName, applicationName ?? "(default application)", exception);
         }
-        private static readonly Action<ILogger, string, string, Exception> _featureFlagConstraintBegin = LoggerMessage.Define<string, string>(
+        public static void FlagBegin(ILogger logger, string featureName, string applicationName)
+        {
+            _flagBegin(logger, featureName, applicationName ?? "(default application)", null);
+        }
+        public static void FlagExecutingAction(ILogger logger, string featureName, string applicationName)
+        {
+            _flagActionExecuted(logger, featureName, applicationName ?? "(default application)", null);
+        }
+        public static void FlagNonExecuteAction(ILogger logger, string featureName, string applicationName)
+        {
+            _flagNonExecutedAction(logger, featureName, applicationName ?? "(default application)", null);
+        }
+        public static void FlagFallbackServiceIsNotConfigured(ILogger logger)
+        {
+            _flagFallbackServiceIsNotConfigured(logger, null);
+        }
+        public static void FlagTagHelperBegin(ILogger logger, string featureName, string applicationName)
+        {
+            _flagTagHelperBegin(logger, featureName, applicationName ?? "(default application)", null);
+        }
+        public static void FlagTagHelperClearContent(ILogger logger, string featureName, string applicationName)
+        {
+            _flagTagHelperClearContent(logger, featureName, applicationName ?? "(default application)", null);
+        }
+        private static readonly Action<ILogger, string, string, Exception> _flagSwitchBegin = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
-            EventIds.FeatureFlagConstraintBeginProcess,
-            "FeatureFlag constraint begin check if {featureName} for application {applicationName} is enabled.");
-        private static readonly Action<ILogger, string, string, Exception> _featureFlagConstraintSuccess = LoggerMessage.Define<string, string>(
+            EventIds.FlagSwitchBeginProcess,
+            "FeatureFlag constraint begin check if {featureName} for application {applicationName} is active.");
+        private static readonly Action<ILogger, string, string, Exception> _flagSwitchSuccess = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
-            EventIds.FeatureFlagConstraintSuccess,
-            "FeatureFlag constraint successfully check if  {featureName} for application {applicationName} is enabled.");
-        private static readonly Action<ILogger, string, string, Exception> _featureFlagConstraintThrow = LoggerMessage.Define<string, string>(
+            EventIds.FlagSwitchSuccess,
+            "FeatureFlag constraint successfully check if  {featureName} for application {applicationName} is active.");
+        private static readonly Action<ILogger, string, string, Exception> _flagSwitchThrow = LoggerMessage.Define<string, string>(
             LogLevel.Error,
-            EventIds.FeatureFlagConstraintThrow,
+            EventIds.FlagSwitchThrow,
             "Feature service throw an error trying to check the feature {featureName} for application {applicationName}.");
+        private static readonly Action<ILogger, string, string, Exception> _flagBegin = LoggerMessage.Define<string, string>(
+           LogLevel.Debug,
+           EventIds.FlagBeginProcess,
+           "FlagFilter begin check if {featureName} for application {applicationName} is enabled.");
+        private static readonly Action<ILogger, string, string, Exception> _flagActionExecuted = LoggerMessage.Define<string, string>(
+           LogLevel.Debug,
+           EventIds.FlagExecutingAction,
+           "FlagFilter check feature {featureName} for application {applicationName} is active and execute action.");
+        private static readonly Action<ILogger, string, string, Exception> _flagNonExecutedAction = LoggerMessage.Define<string, string>(
+           LogLevel.Debug,
+           EventIds.FlagNonExcuteAction,
+           "FlagFilter check feature {featureName} for application {applicationName} is not active, action is not executed.");
+        private static readonly Action<ILogger, Exception> _flagFallbackServiceIsNotConfigured = LoggerMessage.Define(
+           LogLevel.Warning,
+           EventIds.FallbackServiceIsNotConfigured,
+           "Esquio FallbackService is not configured, setting default action result as NotFoundResult.");
+        private static readonly Action<ILogger, string, string, Exception> _flagTagHelperBegin = LoggerMessage.Define<string, string>(
+            LogLevel.Debug,
+            EventIds.FlagTagHelperBeginProcess,
+            "Flag TagHelper begin check if {featureName} for application {applicationName} is active.");
+        private static readonly Action<ILogger, string, string, Exception> _flagTagHelperClearContent = LoggerMessage.Define<string, string>(
+            LogLevel.Debug,
+            EventIds.FlagTagHelperClearContent,
+            "Flag TagHelper is clearing inner content because {featureName} for application {applicationName} is not active.");
     }
 }
