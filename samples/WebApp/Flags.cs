@@ -2,6 +2,7 @@
 {
     public static class Flags
     {
-        public const string NavigationSection = nameof(NavigationSection);
+        public const string Privacy = nameof(Privacy);
+        public const string FeaturedContent = nameof(FeaturedContent);
     }
 }

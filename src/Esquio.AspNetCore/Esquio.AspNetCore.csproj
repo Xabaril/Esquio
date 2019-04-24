@@ -17,6 +17,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(microsoftaspnetcorehttpabstractions)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="$(microsoftaspnetcorehttpabstractions)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="$(microsoftaspnetcoremvcabstractions)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="$(microsoftaspnetcoremvccore)"/>
+    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="$(microsoftaspnetcorerazor)" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="$(microsoftaspnetcorerouting)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjection)" />

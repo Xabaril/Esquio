@@ -6,8 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Seedwork\Builders\**" />
+    <EmbeddedResource Remove="Seedwork\Builders\**" />
+    <None Remove="Seedwork\Builders\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="$(microsoftaspnetcore)"/>
+    <PackageReference Include="Microsoft.AspNetCore" Version="$(microsoftaspnetcore)" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(microsoftaspnetcoretesthost)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="$(microsoftaspnetcoremvcabstractions)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(microsoftaspnetcoremvcabstractions)" />
@@ -28,10 +34,6 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Seedwork\Builders\" />
   </ItemGroup>
 
 </Project>

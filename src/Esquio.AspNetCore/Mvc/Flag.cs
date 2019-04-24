@@ -1,64 +1,77 @@
 ﻿using Esquio.Abstractions;
-using Esquio.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
 {
+    /// <summary>
+    /// Use this attribute to filter if an MVC action can be executed depending on the configured
+    /// feature activation state. If the configured feature is active this action can be executed, if not
+    /// by default a NotFound result is the returned action result. You can modify the default action using
+    /// the extension method AddMvcFallbackAction in <see cref="IEsquioBuilder"/> interface when register Esquio services.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class Flag
-        : Attribute, IActionConstraintFactory
+        : Attribute, IFilterFactory
     {
+        public bool IsReusable => false;
         public string FeatureName { get; set; }
-
         public string ApplicationName { get; set; }
 
-        public bool IsReusable => false;
-
-        public IActionConstraint CreateInstance(IServiceProvider serviceProvider)
+        public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            return new FlagConstraint(scopeFactory, FeatureName, ApplicationName);
+
+            return new FlagFilter(scopeFactory, FeatureName, ApplicationName);
         }
     }
-    internal class FlagConstraint
-        : IActionConstraint
+    internal class FlagFilter
+        : IAsyncResourceFilter
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly string _applicationName;
         private readonly string _featureName;
+        private readonly string _applicationName;
 
-        public int Order => 0;
-
-        public FlagConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
+        public FlagFilter(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _featureName = featureName;
             _applicationName = applicationName;
-
         }
-        public bool Accept(ActionConstraintContext context)
+        public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Flag>>();
-                var featureservice = scope.ServiceProvider.GetRequiredService<IFeatureService>();
+                var logger = scope.ServiceProvider
+                    .GetRequiredService<ILogger<Flag>>();
 
-                Log.FeatureFlagConstraintBegin(logger, _featureName, _applicationName);
+                var featureService = scope.ServiceProvider
+                    .GetRequiredService<IFeatureService>();
 
-                var executingTask = featureservice.IsEnabledAsync(_featureName, _applicationName);
-                executingTask.Wait();
+                var fallbackService = scope.ServiceProvider
+                    .GetService<IMvcFallbackService>();
 
-                if (executingTask.IsCompletedSuccessfully)
+                if (await featureService.IsEnabledAsync(_featureName, _applicationName))
                 {
-                    Log.FeatureFlagConstraintSuccess(logger, _featureName, _applicationName);
-                    return executingTask.Result;
+                    await next();
                 }
                 else
                 {
-                    Log.FeatureFlagConstraintThrow(logger, _featureName, _applicationName, executingTask.Exception);
-                    return false;
+                    if (fallbackService != null)
+                    {
+                        context.Result = fallbackService.GetFallbackActionResult(context);
+                    }
+                    else
+                    {
+                        context.Result = new NotFoundResult()
+                        {
+
+                        };
+                    }
                 }
             }
         }

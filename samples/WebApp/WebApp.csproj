@@ -15,4 +15,11 @@
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

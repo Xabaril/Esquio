@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Esquio.Abstractions;
 
-namespace Esquio.Abstractions
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class EsquioBuilderExtensions
     {

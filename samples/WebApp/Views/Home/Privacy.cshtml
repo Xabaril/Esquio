@@ -1,14 +1,14 @@
 ﻿@inject IFeatureService featureService
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
 
-    if(featureService.IsEnabledAsync(Flags.NavigationSection).Result)
+    if(featureService.IsEnabledAsync(Flags.Privacy).Result)
     {
-        ViewData["FeatureStatus"] = "IsActive";
+        ViewData["FeatureStatus"] = "Active";
     }
     else
     {
-        ViewData["FeatureStatus"] = "IsNotActive";
+        ViewData["FeatureStatus"] = "Non Active";
     }
 }
 
@@ -16,4 +16,4 @@
 
 
 
-<p>The feature NavigationSection status is @ViewData["FeatureStatus"]</p>
+<p>The feature Privacy is @ViewData["FeatureStatus"]</p>

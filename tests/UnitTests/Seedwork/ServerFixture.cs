@@ -58,6 +58,19 @@ namespace UnitTests.Seedwork
             services.AddMvc()
                 .Services
                 .AddEsquio()
+                .AddMvcFallbackAction((context)=>
+                {
+                    var actionName = context.ActionDescriptor.RouteValues["action"];
+
+                    if (actionName != "ActionWithNoActiveFlag")
+                    {
+                        return new RedirectResult("/controller/action");
+                    }
+                    else
+                    {
+                        return new NotFoundResult();
+                    }
+                })
                 .AddConfigurationStore(_configuration, "Esquio");
         }
 
@@ -78,36 +91,43 @@ namespace UnitTests.Seedwork
 
     public class TestController : Controller
     {
-        public IActionResult Index()
-        {
-            return Ok();
-        }
-
-        [ActionName("ActionWithFlag")]
-        [Flag(ApplicationName = "TestApp",FeatureName ="Sample1")]
+        [ActionName("ActionWithFlagSwitch")]
+        [FlagSwitch(ApplicationName = "TestApp",FeatureName ="Sample1")]
         public IActionResult Sample1()
         {
             return Content("Active");
         }
-
-        [ActionName("ActionWithFlag")]
+        [ActionName("ActionWithFlagSwitch")]
         public IActionResult Sample11()
         {
             return Content("NonActive");
         }
-
-
-        [ActionName("ActionWithFlagNoActive")]
-        [Flag(ApplicationName = "TestApp", FeatureName = "Sample2")]
+        [ActionName("ActionWithFlagSwitchNoActive")]
+        [FlagSwitch(ApplicationName = "TestApp", FeatureName = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Active");
         }
-
-        [ActionName("ActionWithFlagNoActive")]
+        [ActionName("ActionWithFlagSwitchNoActive")]
         public IActionResult Sample22()
         {
             return Content("NonActive");
+        }
+        [Flag(FeatureName="Sample1")]
+        public IActionResult ActionWithActiveFlag()
+        {
+            return Ok();
+        }
+        [Flag(FeatureName = "Sample2")]
+        public IActionResult ActionWithNoActiveFlag()
+        {
+            return Ok();
+        }
+
+        [Flag(FeatureName = "Sample2")]
+        public IActionResult ActionWithNoActiveFlagAndFallbackAction()
+        {
+            return Ok();
         }
     }
 }

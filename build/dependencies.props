@@ -32,6 +32,8 @@
     <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>
     <microsoftaspnetcorerouting>3.0.0-preview4-19121-14</microsoftaspnetcorerouting>
     <microsoftaspnetcoremvcabstractions>3.0.0-preview4-19121-14</microsoftaspnetcoremvcabstractions>
+    <microsoftaspnetcoremvccore>3.0.0-preview4-19121-14</microsoftaspnetcoremvccore>
+    <microsoftaspnetcorerazor>3.0.0-preview4-19121-14</microsoftaspnetcorerazor>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>

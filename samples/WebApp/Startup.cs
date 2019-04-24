@@ -13,10 +13,7 @@ namespace WebApp
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -32,8 +29,6 @@ namespace WebApp
                 .AddEsquio()
                     .AddConfigurationStore(Configuration, "Esquio");
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -46,8 +41,6 @@ namespace WebApp
             }
 
             app.UseStaticFiles();
-
-
             app.UseRouting(routes =>
             {
                 routes.MapEsquio("esquio");
@@ -58,7 +51,6 @@ namespace WebApp
             });
 
             app.UseCookiePolicy();
-
             app.UseAuthorization();
         }
     }

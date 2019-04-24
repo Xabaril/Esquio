@@ -13,11 +13,11 @@ namespace Esquio.Configuration.Store
     internal class ConfigurationFeatureStore : IFeatureStore
     {
         private readonly ILogger<ConfigurationFeatureStore> _logger;
-        private readonly EsquioConfiguration _esquio;
+        private readonly IOptionsSnapshot<EsquioConfiguration> _options;
 
         public ConfigurationFeatureStore(IOptionsSnapshot<EsquioConfiguration> options, ILogger<ConfigurationFeatureStore> logger)
         {
-            _esquio = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public bool IsReadOnly
@@ -94,7 +94,7 @@ namespace Esquio.Configuration.Store
         {
             Log.FindFeature(_logger, featureName, applicationName);
 
-            var application = _esquio
+            var application = _options?.Value
                 .Applications
                 .FirstOrDefault(a => a.Name.Equals(applicationName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(applicationName));
 
