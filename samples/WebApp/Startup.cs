@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,14 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc()
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup=>
+                {
+                    setup.LoginPath = "/account/login";
+                })
+                .Services
+                .AddMvc()
                     .AddNewtonsoftJson()
                 .Services
                 .AddEsquio()
@@ -40,8 +48,12 @@ namespace WebApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCookiePolicy();
             app.UseStaticFiles();
+
             app.UseRouting();
+            app.UseAuthorization();
+            app.UseAuthentication();
             app.UseEndpoints(routes =>
             {
                 //routes.MapEsquio("esquio");
@@ -50,9 +62,6 @@ namespace WebApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRazorPages();
             });
-
-            app.UseCookiePolicy();
-            app.UseAuthorization();
         }
     }
 }

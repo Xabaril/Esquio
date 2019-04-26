@@ -1,0 +1,18 @@
+﻿@model LoginModel
+
+<div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+        <h1 class="text-center">Login</h1>
+        <form asp-action="Login" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label asp-for="UserName" class="col-sm-2"></label>
+                <div class="col-sm-10">
+                    <input asp-for="UserName" class="form-control" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <div asp-validation-summary="All"></div>
+        </form>
+        <a asp-action="ForgotPassword">Forgot Password?</a>
+    </div>
+</div>
