@@ -51,7 +51,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
-
                         }
                     </ul>
                 </div>
@@ -60,7 +59,7 @@
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
+        <main role="main" class="pt-3">
             @RenderBody()
         </main>
     </div>
@@ -72,7 +71,7 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - @Localizer["Home_Title"]
         </div>
     </footer>
 

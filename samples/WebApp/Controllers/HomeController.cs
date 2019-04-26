@@ -2,13 +2,22 @@ using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApp.Models;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMatchService matchService;
+
+        public HomeController(IMatchService matchService)
+        {
+            this.matchService = matchService;
+        }
+
         public IActionResult Index()
         {
+            this.matchService.GetNextMatches(10);
             return View();
         }
 
