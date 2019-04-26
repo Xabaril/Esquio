@@ -41,12 +41,13 @@ namespace WebApp
             }
 
             app.UseStaticFiles();
-            app.UseRouting(routes =>
+            app.UseRouting();
+            app.UseEndpoints(routes =>
             {
-                routes.MapEsquio("esquio");
+                //routes.MapEsquio("esquio");
                 routes.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRazorPages();
             });
 
