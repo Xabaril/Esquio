@@ -23,6 +23,9 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
 
             serviceProvider.GetService<IGeoLocationProviderService>()
                 .Should().NotBeNull();
+
+            serviceProvider.GetService<IEnvironmentNameProviderService>()
+                .Should().NotBeNull();
         }
     }
 }
