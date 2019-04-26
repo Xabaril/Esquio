@@ -68,7 +68,7 @@ namespace WebApp
                 //routes.MapEsquio("esquio");
                 routes.MapControllerRoute(
                         name: "default",
-                        pattern: "{controller=Home}/{action=Index}/{id?}");
+                        pattern: "{controller=Match}/{action=Index}/{id?}");
                 routes.MapRazorPages();
             });
         }

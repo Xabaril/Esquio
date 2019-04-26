@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<WebApp.Models.Match>
+
+<div class="container">
+    <div class="row justify-content-start">
+        @foreach (var match in Model)
+        {
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                @* // TODO: show classes with better logic, not this if *@
+                <div class="@("card mb-3 " + (match.State == MatchState.Pending ? "border-light" : match.State == MatchState.Started ? "border-success" : "bg-light" ))">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>@match.State</span>
+                        <span class="badge badge-primary badge-pill">@match.Time</span>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-truncate" title="@match.Local - @match.Visitor">@match.Local - @match.Visitor</h4>
+                        <p class="card-text">@match.Description</p>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Match" asp-action="Detail" asp-route-id="@match.Id">
+                                <button type="button" class="btn btn-info btn-sm">@Localizer["Open"]</button>
+                            </a>
+                        }
+
+                        <flag featureName="@Flags.ByUser">
+                            <button type="button" class="btn btn-danger btn-sm">@Localizer["Delete"]</button>
+                        </flag>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

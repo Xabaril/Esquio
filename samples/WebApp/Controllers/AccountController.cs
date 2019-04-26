@@ -30,14 +30,14 @@ namespace WebApp.Controllers
                 IsPersistent = true
             });
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Match");
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Match");
         }
     }
 }

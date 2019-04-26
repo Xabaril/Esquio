@@ -8,16 +8,8 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMatchService matchService;
-
-        public HomeController(IMatchService matchService)
-        {
-            this.matchService = matchService;
-        }
-
         public IActionResult Index()
         {
-            this.matchService.GetNextMatches(10);
             return View();
         }
 

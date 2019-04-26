@@ -23,12 +23,12 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home_Title"]</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Match" asp-action="Index">@Localizer["Title"]</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav mr-auto">
+                <div class="navbar-collapse collapse justify-content-end">
+                    <ul class="navbar-nav">
                         <flag featureName="@Flags.Privacy">
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -43,7 +43,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout (@User.Identity.Name)</a>
                             </li>
                         }
                         else
@@ -64,14 +64,9 @@
         </main>
     </div>
 
-    <div>
-        <flag featureName="@Flags.ByUser">
-            <p>This content is only visible for Users:unai|luru|ckgrafico</p>
-        </flag>
-    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - @Localizer["Home_Title"]
+            &copy; 2019 - @Localizer["Title"]
         </div>
     </footer>
 
