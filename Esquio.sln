@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FA3A9027-821
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "samples\WebApp\WebApp.csproj", "{31B26C85-D240-4EF3-BB59-AF113B3E204B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppCustomToggle", "samples\WebAppCustomToggle\WebAppCustomToggle.csproj", "{7A3A0196-8078-4EBD-A600-41F4F8E5867E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{31B26C85-D240-4EF3-BB59-AF113B3E204B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31B26C85-D240-4EF3-BB59-AF113B3E204B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31B26C85-D240-4EF3-BB59-AF113B3E204B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A3A0196-8078-4EBD-A600-41F4F8E5867E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A3A0196-8078-4EBD-A600-41F4F8E5867E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A3A0196-8078-4EBD-A600-41F4F8E5867E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A3A0196-8078-4EBD-A600-41F4F8E5867E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{30D6728B-3E8C-44F0-895C-9D91010C8B4D} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 		{2BD25641-0976-4680-93F1-B6B16CDBC42D} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 		{31B26C85-D240-4EF3-BB59-AF113B3E204B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
+		{7A3A0196-8078-4EBD-A600-41F4F8E5867E} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}
