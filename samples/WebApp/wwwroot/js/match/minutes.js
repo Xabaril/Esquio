@@ -36,7 +36,7 @@
                 lastPosition = -1;
             }
 
-            setTimeout(() => {
+            setTimeout(function() {
                 sessionStorage[POSITION_KEY] = lastPosition + 1;
                 location.reload();
             }, TIME);
