@@ -86,5 +86,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        (function () {
+            document.querySelector('body').dispatchEvent(new Event('scriptsLoaded'));
+        })();
+    </script>
 </body>
 </html>

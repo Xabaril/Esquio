@@ -16,6 +16,12 @@
     <h4>@Localizer["Current"]</h4>
     @if (Model.Minutes != null)
     {
-        <partial name="_Minutes" model="Model" />
+        // In an ideal world here we need a flagSwitch
+        <flag featureName="@Flags.AlphaUser">
+            <partial name="_LiveMinutes" model="Model" />
+        </flag>
+        <div class="js-alpha-live-disable">
+            <partial name="_Minutes" model="Model" />
+        </div>
     }
 </div>
