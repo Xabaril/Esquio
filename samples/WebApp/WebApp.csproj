@@ -37,6 +37,11 @@
 
 
   <ItemGroup>
+    <Compile Update="Resources\Views.Match.Detail.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Views.Match.Detail.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Views.Match.Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -70,6 +75,10 @@
 
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Views.Match.Detail.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Views.Match.Detail.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views.Shared._Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Views.Shared._Layout.Designer.cs</LastGenOutput>
