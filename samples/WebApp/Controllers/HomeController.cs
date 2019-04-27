@@ -26,12 +26,6 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
         
-        [Flag(FeatureName = Flags.FeaturedContent)]
-        public IActionResult Featured()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

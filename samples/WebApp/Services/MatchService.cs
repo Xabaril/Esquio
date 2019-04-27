@@ -15,7 +15,9 @@ namespace WebApp.Services
                 Visitor = "PSG",
                 Time = "20:00",
                 State = MatchState.Finished,
-                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis.",
+                ScoreLocal = 2,
+                ScoreVisitor = 1
             },
             new Match
             {
@@ -23,8 +25,10 @@ namespace WebApp.Services
                 Local = "Barcelona",
                 Visitor = "Manchester City",
                 Time = "19:00",
-                State = MatchState.Started,
-                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
+                State = MatchState.Finished,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis.",
+                ScoreLocal = 4,
+                ScoreVisitor = 2
             },
             new Match
             {
@@ -32,7 +36,7 @@ namespace WebApp.Services
                 Local = "Dortmund",
                 Visitor = "Bayern",
                 Time = "21:00",
-                State = MatchState.Pending,
+                State = MatchState.Started,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -41,7 +45,6 @@ namespace WebApp.Services
                 Local = "Manchester City",
                 Visitor = "Barcelona",
                 Time = "19:45",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -50,7 +53,6 @@ namespace WebApp.Services
                 Local = "Bayern",
                 Visitor = "Dortmund",
                 Time = "20:45",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -59,7 +61,6 @@ namespace WebApp.Services
                 Local = "Sevilla",
                 Visitor = "Liverpool",
                 Time = "21:00",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -68,7 +69,6 @@ namespace WebApp.Services
                 Local = "PSG",
                 Visitor = "Real Madrid",
                 Time = "20:00",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -77,7 +77,6 @@ namespace WebApp.Services
                 Local = "Ajax",
                 Visitor = "Juventus",
                 Time = "19:00",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -86,7 +85,6 @@ namespace WebApp.Services
                 Local = "Milan",
                 Visitor = "Lyon",
                 Time = "21:00",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             },
             new Match
@@ -95,7 +93,6 @@ namespace WebApp.Services
                 Local = "Juventus",
                 Visitor = "Ajax",
                 Time = "20:30",
-                State = MatchState.Pending,
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque sed dolor vitae iaculis."
             }
         };

@@ -11,21 +11,34 @@
                 <div class="@("card mb-3 " + (match.State == MatchState.Pending ? "border-light" : match.State == MatchState.Started ? "border-success" : "bg-light" ))">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>@match.State</span>
-                        <span class="badge badge-primary badge-pill">@match.Time</span>
+
+                        @if (match.State == MatchState.Finished)
+                        {
+                            <flag featureName="@Flags.ByUser">
+                                <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
+                            </flag>
+                        }
+                        else
+                        {
+                            <span class="badge badge-primary badge-pill">@match.Time</span>
+
+                        }
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title text-truncate" title="@match.Local - @match.Visitor">@match.Local - @match.Visitor</h4>
+                        <h4 class="card-title text-truncate" title="@match.Local - @match.Visitor"> @match.Local - @match.Visitor </h4>
+
                         <p class="card-text">@match.Description</p>
-                        @if (User.Identity.IsAuthenticated)
+
+                        @if (User.Identity.IsAuthenticated && match.State == MatchState.Started)
                         {
                             <a asp-controller="Match" asp-action="Detail" asp-route-id="@match.Id">
                                 <button type="button" class="btn btn-info btn-sm">@Localizer["Open"]</button>
                             </a>
                         }
-
-                        <flag featureName="@Flags.ByUser">
-                            <button type="button" class="btn btn-danger btn-sm">@Localizer["Delete"]</button>
-                        </flag>
+                        else if (User.Identity.IsAuthenticated)
+                        {
+                            <button type="button" class="btn btn-info btn-sm disabled">@Localizer["Open"]</button>
+                        }
                     </div>
                 </div>
             </div>

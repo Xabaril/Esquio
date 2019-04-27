@@ -20,7 +20,14 @@ namespace WebApp.Controllers
 
         public IActionResult Detail(int id)
         {
-            return View(this.matchService.Get(id));
+            var match = this.matchService.Get(id);
+
+            if (!User.Identity.IsAuthenticated || match.State != Models.MatchState.Started)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(match);
         }
     }
 }
