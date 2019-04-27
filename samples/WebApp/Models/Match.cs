@@ -1,4 +1,6 @@
-﻿namespace WebApp.Models
+﻿using System.Collections.Generic;
+
+namespace WebApp.Models
 {
     public class Match
     {
@@ -10,5 +12,6 @@
         public string Description { get; set; }
         public int ScoreLocal { get; set; } = 0;
         public int ScoreVisitor { get; set; } = 0;
+        public IEnumerable<MatchMinute> Minutes { get; set; } 
     }
 }
