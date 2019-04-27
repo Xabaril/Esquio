@@ -14,7 +14,7 @@
 
                         @if (match.State == MatchState.Finished)
                         {
-                            <flag featureName="@Flags.ByUser">
+                            <flag featureName="@Flags.MatchScore">
                                 <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
                             </flag>
                         }
