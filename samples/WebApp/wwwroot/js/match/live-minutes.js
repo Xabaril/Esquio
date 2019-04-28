@@ -4,8 +4,6 @@
 
     document.querySelector('body').addEventListener('scriptsLoaded', function () {
         (function ($) {
-            $('.js-alpha-live-disable').remove();
-
             // Use requestAnimationFrame if you care about performance (not in this demo :D)
             var TIME = 10 * 1000;
             var POSITION_KEY = 'last-position';

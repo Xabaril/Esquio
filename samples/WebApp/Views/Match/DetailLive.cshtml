@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model WebApp.Models.Match
+
+<div class="container">
+    <div class="jumbotron p-sm-3">
+        <h3 class="d-flex justify-content-between">
+            @Localizer["LiveScore"] @Model.Local - @Model.Visitor
+            <span class="badge badge-pill">@Model.Time</span>
+        </h3>
+
+        <p class="lead">@Localizer["TitleLive"]</p>
+        <p>@Model.Description</p>
+    </div>
+
+    <h4>@Localizer["Current"]</h4>
+    @if (Model.Minutes != null)
+    {
+        <div class="progress mb-4">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success js-live-minutes-progress" role="progressbar" aria-valuemin="0"></div>
+        </div>
+
+        <div class="container pb-4 js-live-minutes is-hidden">
+            @foreach (var minute in Model.Minutes)
+        {
+            <div class="row minute pb-1 pt-1 js-live-minute is-hidden">
+                <div class="col-1 text-center">@minute.Minute'</div>
+                <div class="col-1 text-center">@minute.Event</div>
+                <div class="col-10">@minute.Text</div>
+            </div>
+        }
+        </div>
+
+        @* Section not allowed in partial but this is enough for example purposes *@
+        <script src="~/js/match/live-minutes.js" asp-append-version="true"></script>
+    }
+</div>

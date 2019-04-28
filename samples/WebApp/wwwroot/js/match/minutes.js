@@ -4,10 +4,6 @@
 
     document.querySelector('body').addEventListener('scriptsLoaded', function () {
         (function ($) {
-            if (!$('.js-alpha-live-disable').get(0)) {
-                return;
-            }
-
             // The idea of this code is to simulate that each minute (10s) the page reloads and retrieves more info from server
             var POSITION_KEY = 'last_position';
             var TIME = 10 * 1000;
