@@ -19,6 +19,7 @@ namespace WebApp.Controllers
             return View(this.matchService.GetNextMatches(5));
         }
 
+        // Somethings is not working well here
         [FlagSwitch(FeatureName = Flags.MinutesRealTime)]
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsActive(int id)

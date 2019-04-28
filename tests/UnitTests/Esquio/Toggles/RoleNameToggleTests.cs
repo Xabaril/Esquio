@@ -9,13 +9,23 @@ namespace UnitTests.Esquio.Toggles
     public class RoleNameToggleShould
     {
         [Fact]
-        public async Task be_not_active_if_role_provider_is_null()
+        public async Task throw_if_role_provider_is_null()
         {
             var store = new DelegatedValueFeatureStore(_ => "rol1;rol2");
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
                 await new RoleNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            });
+        }
+        [Fact]
+        public async Task throw_if_store_is_null()
+        {
+            var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            {
+                await new RoleNameToggle(roleNameProvider, null).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
             });
         }
         [Fact]
