@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Builder
                 .UseMiddleware<EsquioMiddleware>()
                 .Build();
 
-            return endpoints.Map(pattern, DisplayName, pipeline);
+            return endpoints.MapGet(pattern, DisplayName, pipeline);
         }
     }
 }

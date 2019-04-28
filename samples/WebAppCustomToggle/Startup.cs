@@ -56,7 +56,6 @@ namespace WebAppCustomToggle
             app.UseRouting();
             app.UseEndpoints(routes =>
             {
-                //routes.MapEsquio("esquio");
                 routes.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
