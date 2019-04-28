@@ -17,7 +17,7 @@
     @if (Model.Minutes != null)
     {
         // In an ideal world here we need a flagSwitch
-        <flag featureName="@Flags.AlphaUser">
+        <flag featureName="@Flags.MinutesRealTime">
             <partial name="_LiveMinutes" model="Model" />
         </flag>
         <div class="js-alpha-live-disable">
