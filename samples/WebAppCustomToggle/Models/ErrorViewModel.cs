@@ -1,5 +1,3 @@
-using System;
-
 namespace WebAppCustomToggle.Models
 {
     public class ErrorViewModel
