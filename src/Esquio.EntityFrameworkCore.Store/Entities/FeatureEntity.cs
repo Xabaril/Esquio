@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    internal class FeatureEntity
+    public class FeatureEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

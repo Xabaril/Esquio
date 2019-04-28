@@ -3,7 +3,7 @@ using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Xabaril.EntityFrameworkCoreStore.EntityConfigurations
+namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
     internal class ParameterEntityConfiguration : IEntityTypeConfiguration<ParameterEntity>
     {

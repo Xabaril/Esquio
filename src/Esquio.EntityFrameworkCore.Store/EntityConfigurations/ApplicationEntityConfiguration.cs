@@ -15,7 +15,7 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 
         public void Configure(EntityTypeBuilder<Entities.ApplicationEntity> builder)
         {
-            builder.ToTable(storeOption.Features);
+            builder.ToTable(storeOption.Applications);
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Name).IsUnique();
             builder.Property(x => x.Id).ValueGeneratedOnAdd();

@@ -2,7 +2,7 @@
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    internal class ToggleEntity
+    public class ToggleEntity
     {
         public int Id { get; set; }
         public string Type { get; set; }

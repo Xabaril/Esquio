@@ -28,6 +28,10 @@
     <microsoftextensionshosting>3.0.0-preview4.19216.2</microsoftextensionshosting>
     <microsoftentityframeworkcore>3.0.0-preview4.19216.3</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.0.0-preview4.19216.3</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0-preview4.19216.3</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview4.19216.3</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview4.19216.3</microsoftentityframeworkcoreinmemory>
+    <npgsqlentityframeworkcorepostgresql>3.0.0-preview4</npgsqlentityframeworkcorepostgresql>
 
     <microsoftaspnetcore>3.0.0-preview4-19121-14</microsoftaspnetcore>
     <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>

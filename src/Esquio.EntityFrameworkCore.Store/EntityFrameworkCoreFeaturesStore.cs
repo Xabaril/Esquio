@@ -20,20 +20,22 @@ namespace Esquio.EntityFrameworkCore.Store
             _dbContext = dbContext;
         }
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => false;
 
         public async Task<bool> AddFeatureAsync(string featureName, string applicationName, bool enabled = false)
         {
             var application = new ApplicationEntity
             {
-                Name = applicationName
+                Name = applicationName,
+                Description = applicationName
             };
 
             var feature = new FeatureEntity
             {
                 Name = featureName,
                 CreatedOn = DateTime.UtcNow,
-                Enabled = enabled
+                Enabled = enabled,
+                Description = featureName
             };
 
             application.Features.Add(feature);

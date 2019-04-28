@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Esquio.EntityFrameworkCore.Store
 {
-    internal class StoreDbContext : DbContext
+    public class StoreDbContext : DbContext
     {
         private readonly StoreOptions storeOptions;
 

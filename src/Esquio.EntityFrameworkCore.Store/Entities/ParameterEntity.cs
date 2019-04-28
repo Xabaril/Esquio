@@ -1,6 +1,6 @@
 ﻿namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    internal class ParameterEntity
+    public class ParameterEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

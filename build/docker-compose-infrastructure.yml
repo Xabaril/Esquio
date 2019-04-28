@@ -1,0 +1,27 @@
+version: '3'
+services:
+    sqlserver:
+        image: microsoft/mssql-server-linux
+        restart: always
+        ports:
+            - ${SQLSERVER_PORT}:1433
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=${SQLSERVER_PASSWORD}
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        ports:
+            - ${POSTGRES_PORT}:5432
+    mysql:
+        image: mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - ${MYSQL_PORT}:3306
+    redis:
+        image: redis:alpine
+        ports:
+            - ${REDIS_PORT}:6379

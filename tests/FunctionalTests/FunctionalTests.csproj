@@ -12,10 +12,15 @@
     <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunitrunner)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(microsoftentityframeworkcoresqlite)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(microsoftentityframeworkcoreinmemory)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(npgsqlentityframeworkcorepostgresql)" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
   </ItemGroup>
 
   <ItemGroup>
