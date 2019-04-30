@@ -61,7 +61,7 @@ namespace WebApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Live Score App.
+        ///   Looks up a localized string similar to Live Score.
         /// </summary>
         public static string Title {
             get {

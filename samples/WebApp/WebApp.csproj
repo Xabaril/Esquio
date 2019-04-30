@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\assets\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Remove="Resources\Views.Match.Index.resx" />
   </ItemGroup>
 

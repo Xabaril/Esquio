@@ -23,7 +23,10 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Match" asp-action="Index">@Localizer["Title"]</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Match" asp-action="Index">
+                    <img class="logo" src="~/assets/images/logo.png" alt="Logo" />
+                    <span class="pl-2">@Localizer["Title"]</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

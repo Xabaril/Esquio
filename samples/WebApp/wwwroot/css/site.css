@@ -1,20 +1,23 @@
-﻿/* Cards */
-.card-title {
-    font-size: 1.1rem;
+﻿/* General */
+@font-face {
+    /* https://www.behance.net/gallery/18713007/Atletico-(Free)-Font */
+    font-family: 'PopWarner';
+    src: url('/assets/fonts/Atletico.woff2') format('woff2'), url('/assets/fonts/Atletico.woff') format('woff');
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-    position: relative;
-    min-height: 100%;
-}
-
+html,
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    font-family: PopWarner;
+    font-size: 16px;
 }
 
+/* Logo */
+.logo {
+    max-width: 3rem;
+    width: 100%;
+}
+
+/* Footer */
 .footer {
     position: absolute;
     bottom: 0;
@@ -23,6 +26,11 @@ body {
     /* Set the fixed height of the footer here */
     height: 60px;
     line-height: 60px; /* Vertically center the text there */
+}
+
+/* Cards */
+.card-title {
+    font-size: 1.1rem;
 }
 
 /* States */
