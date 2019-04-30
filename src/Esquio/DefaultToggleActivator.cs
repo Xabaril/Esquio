@@ -5,7 +5,7 @@ using System;
 
 namespace Esquio
 {
-    public class DefaultToggleTypeActivator
+    public sealed class DefaultToggleTypeActivator
         : IToggleTypeActivator
     {
         private readonly IServiceProvider _serviceProvider;

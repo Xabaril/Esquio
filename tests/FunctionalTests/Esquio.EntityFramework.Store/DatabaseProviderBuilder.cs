@@ -12,47 +12,33 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             builder.UseInMemoryDatabase(name);
             return builder.Options;
         }
-
         public static DbContextOptions<T> BuildSqlite<T>(string name) where T : DbContext
         {
             var builder = new DbContextOptionsBuilder<T>();
-            builder.UseSqlite($"Filename=./Test.Esquio.EntityFramework-2.2.0.{name}.db");
+            builder.UseSqlite($"Filename=./Test.Esquio.EntityFramework-3.0.0.{name}.db");
             return builder.Options;
         }
-
         public static DbContextOptions<T> BuildLocalDb<T>(string name) where T : DbContext
         {
             var builder = new DbContextOptionsBuilder<T>();
             builder.UseSqlServer(
-                $@"Data Source=(LocalDb)\MSSQLLocalDB;database=Test.Esquio.EntityFramework-2.2.0.{name};trusted_connection=yes;");
+                $@"Data Source=(LocalDb)\MSSQLLocalDB;database=Test.Esquio.EntityFramework-3.0.0.{name};trusted_connection=yes;");
             return builder.Options;
         }
-
         public static DbContextOptions<T> BuildSqlServer<T>(string name) where T : DbContext
         {
             var connectionString = ExecutionFixture.IsAppVeyorExecution ?
-                $@"Server=(local)\SQL2016;Database=Test.Esquio.EntityFramework-2.2.0.{name};User ID=sa;Password=Password12!" :
-                $@"Server=tcp:localhost,1833;Database=Test.Esquio.EntityFramework-2.2.0.{name};User ID=sa;Password=Password12!";
+                $@"Server=(local)\SQL2016;Database=Test.Esquio.EntityFramework-3.0.0.{name};User ID=sa;Password=Password12!" :
+                $@"Server=tcp:localhost,1833;Database=Test.Esquio.EntityFramework-3.0.0.{name};User ID=sa;Password=Password12!";
             var builder = new DbContextOptionsBuilder<T>();
             builder.UseSqlServer(connectionString);
             return builder.Options;
         }
-
-        //public static DbContextOptions<T> BuildMySql<T>(string name) where T : DbContext
-        //{
-        //    var connectionString = ExecutionFixture.IsAppVeyorExecution ?
-        //       $@"server=localhost;database=Test.Esquio-2.2.0.{name};userid=root;pwd=Password12!;port=3306;persistsecurityinfo=True;" :
-        //       $@"server=localhost;database=Test.Esquio-2.2.0.{name};userid=root;pwd=Password12!;port=3306;persistsecurityinfo=True;";
-        //    var builder = new DbContextOptionsBuilder<T>();
-        //    builder.UseMySql(connectionString);
-        //    return builder.Options;
-        //}
-
         public static DbContextOptions<T> BuildPostgreSql<T>(string name) where T : DbContext
         {
             var connectionString = ExecutionFixture.IsAppVeyorExecution ?
-                $@"Host=localhost;Database=Test.Esquio-2.2.0.{name};Username=postgres;Password=Password12!;Port=5432;" :
-                $@"Host=localhost;Database=Test.Esquio-2.2.0.{name};Username=postgres;Password=Password12!;Port=5432;";
+                $@"Host=localhost;Database=Test.Esquio-3.0.0.{name};Username=postgres;Password=Password12!;Port=5432;" :
+                $@"Host=localhost;Database=Test.Esquio-3.0.0.{name};Username=postgres;Password=Password12!;Port=5432;";
            var builder = new DbContextOptionsBuilder<T>();
             builder.UseNpgsql(connectionString);
             return builder.Options;

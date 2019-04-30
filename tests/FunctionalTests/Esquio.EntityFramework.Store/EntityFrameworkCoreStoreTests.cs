@@ -42,8 +42,6 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>
             new TheoryData<DbContextOptions<StoreDbContext>>
             {
-                //DatabaseProviderBuilder.BuildMySql<StoreDbContext>(nameof(EntityFrameworkCoreStoreTests)),
-                DatabaseProviderBuilder.BuildPostgreSql<StoreDbContext>(nameof(EntityFrameworkCoreStoreTests)),
                 DatabaseProviderBuilder.BuildPostgreSql<StoreDbContext>(nameof(EntityFrameworkCoreStoreTests)),
                 DatabaseProviderBuilder.BuildSqlServer<StoreDbContext>(nameof(EntityFrameworkCoreStoreTests)),
                 DatabaseProviderBuilder.BuildLocalDb<StoreDbContext>(nameof(EntityFrameworkCoreStoreTests)),
