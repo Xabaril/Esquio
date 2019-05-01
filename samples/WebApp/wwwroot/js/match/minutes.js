@@ -6,11 +6,14 @@
     var POSITION_KEY = 'last_position';
     var TIME = 5 * 1000;
     var MAX = 60;
+    var MIN = 3;
     var HIDDEN_CLASS = 'is-hidden';
     var lastPosition = sessionStorage[POSITION_KEY];
 
+    var $minutesProgress = $('.js-minutes-progress');
+
     if (!lastPosition) {
-        lastPosition = '0';
+        lastPosition = MIN + '';
     }
 
     lastPosition = Number(lastPosition);
@@ -23,11 +26,11 @@
     });
 
     $('.js-minutes').removeClass(HIDDEN_CLASS);
-    $('.js-minutes-progress').css('width', lastPosition + '%');
+    $minutesProgress.css('width', lastPosition + '%');
 
     // We can reset when the number is too big for demo
     if (lastPosition > MAX) {
-        lastPosition = -1;
+        lastPosition = MIN;
     }
 
     setTimeout(function () {

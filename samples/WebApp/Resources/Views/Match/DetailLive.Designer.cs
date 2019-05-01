@@ -70,15 +70,6 @@ namespace WebApp.Resources.Views.Match {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Live Score.
-        /// </summary>
-        public static string LiveScore {
-            get {
-                return ResourceManager.GetString("LiveScore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Follow the match minute by minute (5 seconds on this demo are like 1 minute in the real match)..
         /// </summary>
         public static string Title {

@@ -46,11 +46,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Login.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views\Match\Detail - Copy.Designer.cs">
-      <DependentUpon>Detail.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Resources\Views\Match\DetailLive.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -4,11 +4,9 @@
     {
         Default,
         Change,
-        Chance,
         Var,
         Injury,
         Corner,
-        FreeKick,
-        Goal,
+        Goal
     }
 }

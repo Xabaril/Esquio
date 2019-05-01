@@ -5,7 +5,11 @@
 <div class="container">
     <div class="jumbotron p-sm-3">
         <h3 class="d-flex justify-content-between">
-            @Localizer["LiveScore"] @Model.Local - @Model.Visitor
+            <span>
+                <span class="card-colors" style="background: linear-gradient(to right, @Model.Local.PrimaryColor 0%,  @Model.Local.PrimaryColor 50%,  @Model.Local.SecondaryColor 50%,  @Model.Local.SecondaryColor 100%);"></span>
+                <span>@Model.Local.Name - @Model.Visitor.Name</span>
+                <span class="card-colors" style="background: linear-gradient(to right, @Model.Visitor.PrimaryColor 0%,  @Model.Visitor.PrimaryColor 50%,  @Model.Visitor.SecondaryColor 50%,  @Model.Visitor.SecondaryColor 100%);"></span>
+            </span>
             <span class="badge badge-pill">@Model.Time</span>
         </h3>
 
@@ -25,11 +29,13 @@
         <div class="container pb-4 js-minutes is-hidden">
             @foreach (var minute in Model.Minutes)
             {
-                <div class="row minute pb-1 pt-1 js-minute is-hidden">
-                    <div class="col-1 text-center">@minute.Minute'</div>
-                    <div class="col-1 text-center">@minute.Event</div>
-                    <div class="col-10">@minute.Text</div>
+            <div class="row minute pb-1 pt-1 js-live-minute is-hidden">
+                <div class="col-auto text-center">@minute.Minute'</div>
+                <div class="col-auto text-center">
+                    <i class="@(" detail-icon icon icon-" + minute.Event)"></i>
                 </div>
+                <div class="col-10">@minute.Text</div>
+            </div>
             }
         </div>
     }
