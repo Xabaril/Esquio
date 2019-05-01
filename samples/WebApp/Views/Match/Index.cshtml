@@ -32,12 +32,12 @@
                         @if (User.Identity.IsAuthenticated && match.State == MatchState.Started)
                         {
                             <a asp-controller="Match" asp-action="Detail" asp-route-id="@match.Id">
-                                <button type="button" class="btn btn-info btn-sm">@Localizer["Open"]</button>
+                                <button type="button" class="btn btn-primary btn-sm">@Localizer["Open"]</button>
                             </a>
                         }
                         else if (User.Identity.IsAuthenticated)
                         {
-                            <button type="button" class="btn btn-info btn-sm disabled">@Localizer["Open"]</button>
+                            <button type="button" class="btn btn-primary btn-sm disabled">@Localizer["Open"]</button>
                         }
                     </div>
                 </div>
