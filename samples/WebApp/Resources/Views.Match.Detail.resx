@@ -124,6 +124,6 @@
     <value>Live Score</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Follow the match minute by minute (10 seconds on this demo are like 1 minute in the real match). The page will be refreshed automatically.</value>
+    <value>Follow the match minute by minute (5 seconds on this demo are like 1 minute in the real match). The page will be refreshed automatically.</value>
   </data>
 </root>

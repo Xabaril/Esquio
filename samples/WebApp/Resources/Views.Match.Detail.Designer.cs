@@ -79,7 +79,7 @@ namespace WebApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Follow the match minute by minute (10 seconds on this demo are like 1 minute in the real match). The page will be refreshed automatically..
+        ///   Looks up a localized string similar to Follow the match minute by minute (5 seconds on this demo are like 1 minute in the real match). The page will be refreshed automatically..
         /// </summary>
         public static string Title {
             get {

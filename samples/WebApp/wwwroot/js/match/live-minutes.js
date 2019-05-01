@@ -1,14 +1,14 @@
 ﻿(function ($) {
-    // This JavaScript code helps to simulates how the data is live loading each minute (now 10s)
+    // This JavaScript code helps to simulates how the data is live loading each minute (now 5s)
     // In a real match we will receive the new info from server
 
-    var TIME = 10 * 1000;
+    var TIME = 5 * 1000;
     var POSITION_KEY = 'last-position';
     var MAX = 60;
     var HIDDEN_CLASS = 'is-hidden';
 
     function loadInfo() {
-        // The idea of this code is to simulate that each minute (10s) the loads more info from server
+        // The idea of this code is to simulate that each minute (5s) the loads more info from server
         var lastPosition = sessionStorage[POSITION_KEY];
 
         if (!lastPosition) {

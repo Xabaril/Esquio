@@ -1,10 +1,10 @@
 ﻿(function ($) {
-    // This JavaScript code helps to simulates how the page is reloading each minute (now 10s) and show new info
+    // This JavaScript code helps to simulates how the page is reloading each minute (now 5s) and show new info
     // In a real match we will receive the new info from server
 
-    // The idea of this code is to simulate that each minute (10s) the page reloads and retrieves more info from server
+    // The idea of this code is to simulate that each minute (5s) the page reloads and retrieves more info from server
     var POSITION_KEY = 'last_position';
-    var TIME = 10 * 1000;
+    var TIME = 5 * 1000;
     var MAX = 60;
     var HIDDEN_CLASS = 'is-hidden';
     var lastPosition = sessionStorage[POSITION_KEY];
