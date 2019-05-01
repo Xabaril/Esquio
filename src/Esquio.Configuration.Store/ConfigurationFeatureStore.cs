@@ -32,6 +32,11 @@ namespace Esquio.Configuration.Store
             Log.StoreIsReadOnly(_logger);
             return Task.FromResult(false);
         }
+        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            return Task.FromResult(false);
+        }
         public Task<bool> AddToggleAsync<TToggle>(string featureName, string applicationName, IDictionary<string, object> parameterValues)
             where TToggle : IToggle
         {
