@@ -11,13 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="Resources\Views.Match.Index.resx" />
+    <EmbeddedResource Remove="Resources\Index.resx" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Resources\Views.Match.Index.resx">
+    <None Include="Resources\Views\Match\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Views.Match.Index.Designer.cs</LastGenOutput>
+      <LastGenOutput>Index.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -41,20 +41,30 @@
 
 
   <ItemGroup>
-    <Compile Update="Resources\Views.Match.Detail.Designer.cs">
+    <Compile Update="Resources\Views\Account\Login.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Views.Match.Detail.resx</DependentUpon>
+      <DependentUpon>Login.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views.Match.Index.Designer.cs">
+    <Compile Update="Resources\Views\Match\Detail - Copy.Designer.cs">
+      <DependentUpon>Detail.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Views.Match.Index.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views.Shared._Layout.Designer.cs">
+    <Compile Update="Resources\Views\Match\DetailLive.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Views.Shared._Layout.resx</DependentUpon>
+      <DependentUpon>DetailLive.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Match\Index.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Index.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Shared\_Layout.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_Layout.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -79,13 +89,21 @@
 
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Views.Match.Detail.resx">
+    <EmbeddedResource Update="Resources\Views\Account\Login.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Views.Match.Detail.Designer.cs</LastGenOutput>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views.Shared._Layout.resx">
+    <EmbeddedResource Update="Resources\Views\Match\DetailLive.resx">
+      <LastGenOutput>DetailLive.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Views.Shared._Layout.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Match\Detail.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DetailLive.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_Layout.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

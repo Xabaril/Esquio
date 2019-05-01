@@ -17,16 +17,69 @@ body {
     width: 100%;
 }
 
-/* Footer */
-.footer {
-    height: 60px;
-    line-height: 60px; 
+/* Cards */
+.card {
+    border: 0;
+    box-shadow: rgba(0, 0, 0, 0.10) 0px 2px 2px;
+    min-height: 20rem;
+    transition: box-shadow .5s;
+}
+
+    .card:hover {
+        box-shadow: rgba(0, 0, 0, 0.075) 0px 10px 18px;
+    }
+
+.card--Finished {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-colors {
+    border: 1px solid #E4E4E4;
+    border-radius: 50%;
+    display: inline-block;
+    height: 1rem;
+    transform: translateY(.1rem);
+    width: 1rem;
+}
+
+.card-button {
+    background-color: #FBFBFB;
+    border-radius: 0;
+    bottom: 0;
+    font-size: .75rem;
+    left: 0;
+    padding: .5rem;
+    position: absolute;
+    text-transform: uppercase;
     width: 100%;
 }
 
-/* Cards */
-.card-title {
-    font-size: 1.1rem;
+.card--Started .card-header {
+    background-color: #18BC9C;
+    color: white;
+}
+
+    .card--Started .card-header .badge {
+        background-color: #084C3F;
+    }
+
+.card--Finished .card-button {
+    display: none;
+}
+
+.card--Pending .card-button {
+    pointer-events: none;
+}
+
+.card--Started .card-button:hover {
+    background-color: #094179;
+    color: white;
 }
 
 /* States */

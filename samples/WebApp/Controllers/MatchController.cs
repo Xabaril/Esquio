@@ -1,5 +1,4 @@
 using Esquio.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Services;
 
@@ -16,7 +15,7 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(this.matchService.GetNextMatches(5));
+            return View(this.matchService.GetNextMatches(50));
         }
 
         // Somethings is not working well here
