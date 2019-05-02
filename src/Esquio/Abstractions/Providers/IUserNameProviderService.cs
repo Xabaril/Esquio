@@ -3,14 +3,14 @@
 namespace Esquio.Abstractions.Providers
 {
     /// <summary>
-    /// Base contract for the UserNameProviderService used on different Toggles.
+    /// Base contract for username provider.
     /// </summary>
     public interface IUserNameProviderService
     {
         /// <summary>
-        /// Get the current UserName.
+        /// Get the current user name.
         /// </summary>
-        /// <returns>The current UserName.</returns>
+        /// <returns>A <see cref="Task{string}"/> that complete when the provider service has finished, yielding the current username.</returns>
         Task<string> GetCurrentUserNameAsync();
     }
 }

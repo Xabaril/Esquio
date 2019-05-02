@@ -12,7 +12,7 @@ namespace Esquio.Abstractions
         /// </summary>
         /// <param name="featureName">The feature name.</param>
         /// <param name="applicationName">The application name.Optional</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Task{bool}"/> that complete when finished, yielding True if the toggle is active, else false.</returns>
         Task<bool> IsActiveAsync(string featureName, string applicationName = null);
     }
 }
