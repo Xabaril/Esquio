@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store;
 using Esquio.Configuration.Store.Configuration;
+using Esquio.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection

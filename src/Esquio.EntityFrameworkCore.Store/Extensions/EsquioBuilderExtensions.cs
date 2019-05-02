@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Esquio.DependencyInjection;
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.EntityFrameworkCore.Store.Options;
 using System;

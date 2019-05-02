@@ -1,4 +1,6 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,22 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        public static IEsquioBuilder AddEsquio(this IServiceCollection serviceCollection, Action<EsquioOptions> setup = null)
+        {
+            var options = new EsquioOptions();
+            setup?.Invoke(options);
+
+            options.AssembliesToRegister
+                .Add(typeof(ServiceCollectionExtensions).Assembly);
+
+            var builder = new EsquioBuilder(serviceCollection);
+            builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
+            builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
+            builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);
+
+            return builder;
+        }
+
         public static IServiceCollection AddTogglesFromAssemblies(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var assembly in assemblies)
@@ -45,8 +63,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var toggleType = typeof(IToggle);
 
             return from type in exportedTypes
-                where !type.IsAbstract && toggleType.IsAssignableFrom(type)
-                select type;
+                   where !type.IsAbstract && toggleType.IsAssignableFrom(type)
+                   select type;
         }
     }
 }

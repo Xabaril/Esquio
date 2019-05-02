@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Esquio
 {
-    public sealed class DefaultFeatureService
+    internal sealed class DefaultFeatureService
         : IFeatureService
     {
         private readonly IFeatureStore _featureStore;
