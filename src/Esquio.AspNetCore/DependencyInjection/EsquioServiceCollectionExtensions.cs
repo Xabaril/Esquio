@@ -1,7 +1,10 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using Esquio.AspNetCore.Mvc;
 using Esquio.AspNetCore.Providers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -22,6 +25,10 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
+            builder.Services.TryAddSingleton<IMvcFallbackService>(sp =>
+            {
+                return new DelegatedMvcFallbackService(_ => new NotFoundResult());
+            });
             builder.Services.AddHttpContextAccessor();
 
             return builder;

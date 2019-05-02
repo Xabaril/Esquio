@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -66,19 +65,7 @@ namespace Esquio.AspNetCore.Mvc
                 {
                     Log.FeatureFilterNonExecuteAction(logger, _featureName, _applicationName);
 
-                    if (fallbackService != null)
-                    {
-                        context.Result = fallbackService.GetFallbackActionResult(context);
-                    }
-                    else
-                    {
-                        Log.FlagFallbackServiceIsNotConfigured(logger);
-
-                        context.Result = new NotFoundResult()
-                        {
-
-                        };
-                    }
+                    context.Result = fallbackService.GetFallbackActionResult(context);
                 }
             }
         }
