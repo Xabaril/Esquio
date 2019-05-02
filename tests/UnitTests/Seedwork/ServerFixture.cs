@@ -92,7 +92,7 @@ namespace UnitTests.Seedwork
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FlagSwitch(ApplicationName = "TestApp",FeatureName ="Sample1")]
+        [FeatureSwitch(ApplicationName = "TestApp",FeatureName ="Sample1")]
         public IActionResult Sample1()
         {
             return Content("Active");
@@ -103,7 +103,7 @@ namespace UnitTests.Seedwork
             return Content("NonActive");
         }
         [ActionName("ActionWithFlagSwitchNoActive")]
-        [FlagSwitch(ApplicationName = "TestApp", FeatureName = "Sample2")]
+        [FeatureSwitch(ApplicationName = "TestApp", FeatureName = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Active");
@@ -113,18 +113,18 @@ namespace UnitTests.Seedwork
         {
             return Content("NonActive");
         }
-        [Flag(FeatureName="Sample1")]
+        [FeatureFilter(FeatureName="Sample1")]
         public IActionResult ActionWithActiveFlag()
         {
             return Ok();
         }
-        [Flag(FeatureName = "Sample2")]
+        [FeatureFilter(FeatureName = "Sample2")]
         public IActionResult ActionWithNoActiveFlag()
         {
             return Ok();
         }
 
-        [Flag(FeatureName = "Sample2")]
+        [FeatureFilter(FeatureName = "Sample2")]
         public IActionResult ActionWithNoActiveFlagAndFallbackAction()
         {
             return Ok();

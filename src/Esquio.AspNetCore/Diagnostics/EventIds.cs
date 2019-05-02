@@ -4,14 +4,14 @@ namespace Esquio.AspNetCore.Diagnostics
 {
     internal static class EventIds
     {
-        public static readonly EventId FlagSwitchBeginProcess = new EventId(300, nameof(FlagSwitchBeginProcess));
-        public static readonly EventId FlagSwitchSuccess = new EventId(300, nameof(FlagSwitchSuccess));
-        public static readonly EventId FlagSwitchThrow = new EventId(301, nameof(FlagSwitchThrow));
-        public static readonly EventId FlagBeginProcess = new EventId(302, nameof(FlagBeginProcess));
-        public static readonly EventId FlagExecutingAction = new EventId(302, nameof(FlagExecutingAction));
-        public static readonly EventId FlagNonExcuteAction = new EventId(303, nameof(FlagNonExcuteAction));
+        public static readonly EventId FeatureSwitchBeginProcess = new EventId(300, nameof(FeatureSwitchBeginProcess));
+        public static readonly EventId FeatureSwitchSuccess = new EventId(300, nameof(FeatureSwitchSuccess));
+        public static readonly EventId FeatureSwitchThrow = new EventId(301, nameof(FeatureSwitchThrow));
+        public static readonly EventId FeatureFilterBeginProcess = new EventId(302, nameof(FeatureFilterBeginProcess));
+        public static readonly EventId FeatureFilterExecutingAction = new EventId(302, nameof(FeatureFilterExecutingAction));
+        public static readonly EventId FeatureFilterNonExcuteAction = new EventId(303, nameof(FeatureFilterNonExcuteAction));
         public static readonly EventId FallbackServiceIsNotConfigured = new EventId(304, nameof(FallbackServiceIsNotConfigured));
-        public static readonly EventId FlagTagHelperBeginProcess = new EventId(305, nameof(FlagTagHelperBeginProcess));
-        public static readonly EventId FlagTagHelperClearContent = new EventId(305, nameof(FlagTagHelperClearContent));
+        public static readonly EventId FeatureTagHelperBeginProcess = new EventId(305, nameof(FeatureTagHelperBeginProcess));
+        public static readonly EventId FeatureTagHelperClearContent = new EventId(305, nameof(FeatureTagHelperClearContent));
     }
 }

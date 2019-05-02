@@ -10,21 +10,21 @@ using Xunit;
 
 namespace UnitTests.Esquio.AspNetCore.Mvc
 {
-    public class FlagTagHelperShould
+    public class FeatureTagHelperShould
     {
         [Fact]
         public async Task clean_content_when_feature_is_not_active()
         {
             var featureService = new DelegatedFeatureService((_, __) => false);
-            var logger = new LoggerFactory().CreateLogger<FlagTagHelper>();
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
 
-            var tagHelper = new FlagTagHelper(featureService, logger)
+            var tagHelper = new FeatureTagHelper(featureService, logger)
             {
                 FeatureName = "Feature-1"
             };
 
             var context = CreateTagHelperContext();
-            var output = CreateTagHelperOutput(tag: "flag", innerContent: "<p>some content</p>");
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
 
             await tagHelper.ProcessAsync(context, output);
 
@@ -36,15 +36,15 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         public async Task preserve_content_when_feature_is_active()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
-            var logger = new LoggerFactory().CreateLogger<FlagTagHelper>();
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
 
-            var tagHelper = new FlagTagHelper(featureService, logger)
+            var tagHelper = new FeatureTagHelper(featureService, logger)
             {
                 FeatureName = "Feature-1"
             };
 
             var context = CreateTagHelperContext();
-            var output = CreateTagHelperOutput(tag: "flag", innerContent: "<p>some content</p>");
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
 
             await tagHelper.ProcessAsync(context, output);
 

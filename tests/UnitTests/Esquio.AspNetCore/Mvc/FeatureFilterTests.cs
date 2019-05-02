@@ -8,10 +8,10 @@ using Xunit;
 namespace UnitTests.Esquio.AspNetCore.Mvc
 {
     [Collection(nameof(AspNetCoreServer))]
-    public class FlagShould
+    public class FeatureFilterShould
     {
         private readonly ServerFixture _fixture;
-        public FlagShould(ServerFixture fixture)
+        public FeatureFilterShould(ServerFixture fixture)
         {
             _fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
         }

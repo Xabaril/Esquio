@@ -6,11 +6,11 @@ using Xunit;
 namespace UnitTests.Esquio.AspNetCore.Mvc
 {
     [Collection(nameof(AspNetCoreServer))]
-    public class FlagSwitchConstrainShould
+    public class FeatureSwitchConstrainShould
     {
         ServerFixture _fixture;
 
-        public FlagSwitchConstrainShould(ServerFixture fixture)
+        public FeatureSwitchConstrainShould(ServerFixture fixture)
         {
             _fixture = fixture;
         }
