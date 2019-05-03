@@ -76,7 +76,7 @@ namespace Esquio.Configuration.Store
             if (feature != null)
             {
                 var toggle = feature.Toggles
-                    .Where(t => t.Type == typeof(TToggle).FullName)
+                    .Where(t => t.Type.Contains(typeof(TToggle).FullName))
                     .SingleOrDefault();
 
                 if (toggle != null)
