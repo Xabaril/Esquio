@@ -2,6 +2,7 @@
 using Esquio.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading.Tasks;
 
@@ -13,18 +14,27 @@ namespace Esquio.AspNetCore.Mvc
     /// <code>
     /// <![CDATA[<flag featureName="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
     /// </code>
-    [HtmlTargetElement("feature", Attributes = FEATURE_NAME_ATTRIBUTE)]
     public class FeatureTagHelper
         : TagHelper
     {
         private const string FEATURE_NAME_ATTRIBUTE = "featureName";
+        private const string INCLUDE_NAME_ATTRIBUTE = "include";
+        private const string EXCLUDE_NAME_ATTRIBUTE = "exclude";
         private const string APPLICATION_NAME_ATTRIBUTE = "applicationName";
+
+        private static readonly char[] FeatureSeparator = new[] { ',' };
 
         private readonly IFeatureService _featuresService;
         private readonly ILogger<FeatureTagHelper> _logger;
 
         [HtmlAttributeName(FEATURE_NAME_ATTRIBUTE)]
         public string FeatureName { get; set; }
+
+        [HtmlAttributeName(INCLUDE_NAME_ATTRIBUTE)]
+        public string Include { get; set; }
+
+        [HtmlAttributeName(EXCLUDE_NAME_ATTRIBUTE)]
+        public string Exclude { get; set; }
 
         [HtmlAttributeName(APPLICATION_NAME_ATTRIBUTE)]
         public string ApplicationName { get; set; }
@@ -39,20 +49,69 @@ namespace Esquio.AspNetCore.Mvc
         {
             Log.FeatureTagHelperBegin(_logger, FeatureName, ApplicationName);
 
-            var childContent = await output.GetChildContentAsync();
+            output.TagName = null; //remove <feature> tag from the output
 
-            if (!childContent.IsEmptyOrWhiteSpace)
+            if (String.IsNullOrWhiteSpace(FeatureName)
+                &&
+                String.IsNullOrWhiteSpace(Include)
+                &&
+                String.IsNullOrWhiteSpace(Exclude))
             {
-                var isActive = await _featuresService.IsEnabledAsync(FeatureName, ApplicationName);
+                return;
+            }
 
-                if (!isActive)
+            bool featureActive = false;
+
+            if (Exclude != null)
+            {
+                var excludeFeatures = new StringTokenizer(Exclude, FeatureSeparator);
+
+                foreach (var item in excludeFeatures)
+                {
+                    featureActive = await _featuresService
+                        .IsEnabledAsync(featureName: item.Trim().Value, ApplicationName);
+
+                    if (featureActive)
+                    {
+                        Log.FeatureTagHelperClearContent(_logger, FeatureName, ApplicationName);
+
+                        output.SuppressOutput();
+                        return;
+                    }
+                }
+            }
+
+            if (Include != null)
+            {
+                var includeFeatures = new StringTokenizer(Include, FeatureSeparator);
+
+                foreach (var item in includeFeatures)
+                {
+                    featureActive = await _featuresService
+                        .IsEnabledAsync(item.Trim().Value, ApplicationName);
+
+                    if (!featureActive)
+                    {
+                        Log.FeatureTagHelperClearContent(_logger, FeatureName, ApplicationName);
+
+                        output.SuppressOutput();
+                        return;
+                    }
+                }
+            }
+
+            if (FeatureName != null)
+            {
+                featureActive = await _featuresService
+                  .IsEnabledAsync(FeatureName, ApplicationName);
+
+                if (!featureActive)
                 {
                     Log.FeatureTagHelperClearContent(_logger, FeatureName, ApplicationName);
 
-                    output.Content.SetContent(string.Empty);
+                    output.SuppressOutput();
+                    return;
                 }
-
-                output.TagName = null;
             }
         }
     }
