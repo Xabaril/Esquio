@@ -13,7 +13,7 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddEsquio()
-                .AddAspNetCore();
+                .AddAspNetCoreDefaultServices();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 

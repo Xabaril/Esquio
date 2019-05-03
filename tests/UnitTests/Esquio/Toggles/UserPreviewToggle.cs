@@ -107,7 +107,7 @@ namespace UnitTests.Esquio.Toggles
             });
             var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
             active.Should().BeTrue();
         }
         [Fact]
@@ -122,7 +122,7 @@ namespace UnitTests.Esquio.Toggles
             });
             var userNameProvider = new DelegatedUserNameProviderService(() => "UsEr1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
             active.Should().BeTrue();
         }
     }

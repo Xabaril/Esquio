@@ -1,6 +1,6 @@
 ﻿namespace Esquio.Configuration.Store.Configuration
 {
-    internal class ApplicationConfiguration
+    internal class ProductConfiguration
     {
         public string Name { get; set; }
 

@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class EsquioBuilderExtensions
     {
-        public static IEsquioBuilder AddAspNetCore(this IEsquioBuilder builder)
+        public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
             builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();

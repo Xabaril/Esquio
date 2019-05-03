@@ -35,7 +35,7 @@ namespace WebApp
                     .AddNewtonsoftJson()
                 .Services
                 .AddEsquio()
-                    .AddAspNetCore()
+                    .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio");
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
