@@ -5,12 +5,11 @@ using System.Diagnostics;
 
 namespace Esquio
 {
-
     /// <summary>
     /// Will throw exceptions when conditions are not satisfied.
     /// </summary>
     [DebuggerStepThrough]
-    public static class Ensure
+    internal static class Ensure
     {
         /// <summary>
         /// Ensures that the given expression is true
