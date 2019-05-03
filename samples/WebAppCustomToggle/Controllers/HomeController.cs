@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Esquio.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using WebAppCustomToggle.Models;
 
@@ -6,9 +9,18 @@ namespace WebAppCustomToggle.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IFeatureService _featureService;
+
+        public HomeController(IFeatureService featureService)
         {
-            return View();
+            _featureService = featureService ?? throw new ArgumentNullException(nameof(featureService));
+        }
+        public async Task<IActionResult> Index()
+        {
+            return await _featureService.Do<IActionResult>(
+                featureName: "IberianRequest",
+                whenTrue: () => View(),
+                whenFalse: () => NotFound());
         }
 
         public IActionResult Privacy()

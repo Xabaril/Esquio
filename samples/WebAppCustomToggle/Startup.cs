@@ -28,12 +28,16 @@ namespace WebAppCustomToggle
             });
 
 
+
             services
-                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<MyCustomToggle>())
-                .AddConfigurationStore(Configuration, "Esquio")
+                .AddHttpClient()
+                .AddTransient<ILocationProviderService, IPApiLocationProviderService>()
+                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<LocationToggle>())
+                    .AddAspNetCoreDefaultServices()
+                    .AddConfigurationStore(Configuration, "Esquio")
                 .Services
                 .AddMvc()
-                .AddNewtonsoftJson();
+                    .AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,7 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.TryAddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
             builder.Services
                 .TryAddSingleton<IMvcFallbackService>(sp =>
