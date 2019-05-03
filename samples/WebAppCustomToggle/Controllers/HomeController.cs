@@ -17,12 +17,10 @@ namespace WebAppCustomToggle.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            if ( await _featureService.IsEnabledAsync(featureName:"IberianRequests"))
-            {
-                return View();
-            }
-
-            return NotFound();
+            return await _featureService.Do<IActionResult>(
+                featureName: "IberianRequest",
+                whenTrue: () => View(),
+                whenFalse: () => NotFound());
         }
 
         public IActionResult Privacy()
