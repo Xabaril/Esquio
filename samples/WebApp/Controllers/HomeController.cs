@@ -12,19 +12,6 @@ namespace WebApp.Controllers
         {
             return View();
         }
-
-        [FlagSwitch(FeatureName = Flags.Privacy)]
-        [ActionName("Privacy")]
-        public IActionResult PrivacyWhenFlagsIsActive()
-        {
-            return View();
-        }
-
-        [ActionName("Privacy")]
-        public IActionResult PrivacyWhenFlagIsNotActive()
-        {
-            return RedirectToAction(nameof(Index));
-        }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebApp</title>
+    <title>Live Score</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootswatch/flatly/bootstrap.css" />
@@ -33,22 +33,22 @@
                 </button>
                 <div class="navbar-collapse collapse justify-content-end">
                     <ul class="navbar-nav">
-                        <flag featureName="@Flags.Privacy">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </flag>
-
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <flag featureName="@Flags.Preview">
+                                <li class="nav-item">
+                                    <a class="nav-link js-panel-trigger" href="#">@Localizer["Menu_Preview"]</a>
+                                </li>
+                            </flag>
+
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout (@User.Identity.Name)</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Menu_Logout"] (@User.Identity.Name)</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Menu_Login"]</a>
                             </li>
                         }
                     </ul>
@@ -57,10 +57,10 @@
         </nav>
     </header>
     <div class="container">
-        <partial name="_CookieConsentPartial" />
         <main role="main" class="pt-3">
             @RenderBody()
         </main>
+        <partial name="_PreviewPanel" />
     </div>
 
     <environment include="Development">

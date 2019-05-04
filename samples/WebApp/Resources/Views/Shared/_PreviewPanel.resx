@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Menu_Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Menu_Logout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
-  <data name="Menu_Preview" xml:space="preserve">
-    <value>Preview</value>
+  <data name="Description" xml:space="preserve">
+    <value>The following preview features are available for your evaluation. Help us make them better!</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Live Score</value>
+    <value>Preview features</value>
   </data>
 </root>

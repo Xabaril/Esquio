@@ -56,10 +56,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views\Shared\_Layout.Designer.cs">
+    <Compile Update="Resources\Views\Shared\_Layout - Copy.Designer.cs">
+      <DependentUpon>_Layout.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>_Layout.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Shared\_PreviewPanel.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_PreviewPanel.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -75,9 +80,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Views\Home\Index.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="Views\Home\Privacy.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
@@ -96,9 +98,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DetailLive.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_PreviewPanel.resx">
+      <LastGenOutput>_PreviewPanel.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+      <LastGenOutput>_PreviewPanel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

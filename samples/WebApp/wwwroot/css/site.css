@@ -148,3 +148,74 @@ body {
 .is-hidden {
     display: none;
 }
+
+/* Panel */
+.panel {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
+    height: 100vh;
+    max-width: 90vw;
+    min-width: 30vw;
+    padding: 1.5rem 1.75rem;
+    position: fixed;
+    right: 0;
+    transform: translateX(100vw);
+    transition: all .5s;
+    top: 0;
+}
+
+    .panel.is-visible {
+        box-shadow: rgba(0, 0, 0, 0.3) -10px 0px 20px 0px;
+        right: 0;
+        transform: translateX(0);
+    }
+
+.panel-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.panel-description {
+    font-size: .9rem;
+    max-width: 20rem;
+}
+
+.panel-close {
+    cursor: pointer;
+    font-size: 2rem;
+    position: absolute;
+    right: 1rem;
+    top: .75rem;
+}
+
+.panel-items {
+    padding: 0;
+    list-style: none;
+}
+
+.panel-item {
+    border-bottom: 1px solid #EBEBEB;
+    padding: .5rem 0;
+    position: relative;
+}
+
+    .panel-item:last-of-type {
+        border-color: transparent;
+    }
+
+.panel-name {
+    display: block;
+    font-weight: 600;
+    padding-bottom: .5rem;
+}
+
+.panel-text {
+    font-size: .9rem;
+}
+
+.panel-switch {
+    position: absolute;
+    right: 0;
+    top: .5rem;
+    transform: scale(1.25);
+}

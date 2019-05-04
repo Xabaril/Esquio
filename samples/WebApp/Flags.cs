@@ -2,7 +2,7 @@
 {
     public static class Flags
     {
-        public const string Privacy = nameof(Privacy);
+        public const string Preview = nameof(Preview);
         public const string MatchScore = nameof(MatchScore);
         public const string MinutesProgressBar = nameof(MinutesProgressBar);
         public const string MinutesRealTime = nameof(MinutesRealTime);

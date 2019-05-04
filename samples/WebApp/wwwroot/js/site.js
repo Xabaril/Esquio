@@ -1,4 +1,10 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Panel
+(function ($) {
+    var $panel = $('.js-panel');
+    var $trigger = $('.js-panel-trigger');
+    var visibleClass = 'is-visible';
 
-// Write your JavaScript code.
+    $trigger.on('click', function () {
+        $panel.toggleClass(visibleClass);
+    });
+}) (jQuery);
