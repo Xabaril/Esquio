@@ -2,32 +2,42 @@
 using Esquio.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
 {
     /// <summary>
-    /// Razor TagHelper for enable or disable inner content depending on a feature activation state.
+    /// Razor TagHelper for enable or disable  content depending on a feature activation state.
     /// </summary>
     /// <code>
-    /// <![CDATA[<flag featureName="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
+    /// <![CDATA[<feature names="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
     /// </code>
-    [HtmlTargetElement("feature", Attributes = FEATURE_NAME_ATTRIBUTE)]
     public class FeatureTagHelper
         : TagHelper
     {
-        private const string FEATURE_NAME_ATTRIBUTE = "featureName";
-        private const string APPLICATION_NAME_ATTRIBUTE = "applicationName";
+        private const string FEATURE_NAME_ATTRIBUTE = "names";
+        private const string INCLUDE_NAME_ATTRIBUTE = "include";
+        private const string EXCLUDE_NAME_ATTRIBUTE = "exclude";
+        private const string PRODUCT_NAME_ATTRIBUTE = "product";
+
+        private static readonly char[] FeatureSeparator = new[] { ',' };
 
         private readonly IFeatureService _featuresService;
         private readonly ILogger<FeatureTagHelper> _logger;
 
         [HtmlAttributeName(FEATURE_NAME_ATTRIBUTE)]
-        public string FeatureName { get; set; }
+        public string Names { get; set; }
 
-        [HtmlAttributeName(APPLICATION_NAME_ATTRIBUTE)]
-        public string ApplicationName { get; set; }
+        [HtmlAttributeName(INCLUDE_NAME_ATTRIBUTE)]
+        public string Include { get; set; }
+
+        [HtmlAttributeName(EXCLUDE_NAME_ATTRIBUTE)]
+        public string Exclude { get; set; }
+
+        [HtmlAttributeName(PRODUCT_NAME_ATTRIBUTE)]
+        public string ProductName { get; set; }
 
         public FeatureTagHelper(IFeatureService featuresService, ILogger<FeatureTagHelper> logger)
         {
@@ -37,22 +47,71 @@ namespace Esquio.AspNetCore.Mvc
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            Log.FeatureTagHelperBegin(_logger, FeatureName, ApplicationName);
+            Log.FeatureTagHelperBegin(_logger, Names, ProductName);
 
-            var childContent = await output.GetChildContentAsync();
+            output.TagName = null; //remove <feature> tag from the output
 
-            if (!childContent.IsEmptyOrWhiteSpace)
+            if (String.IsNullOrWhiteSpace(Names)
+                &&
+                String.IsNullOrWhiteSpace(Include)
+                &&
+                String.IsNullOrWhiteSpace(Exclude))
             {
-                var isActive = await _featuresService.IsEnabledAsync(FeatureName, ApplicationName);
+                return;
+            }
 
-                if (!isActive)
+            bool featureActive = false;
+
+            if (Exclude != null)
+            {
+                var excludeFeatures = new StringTokenizer(Exclude, FeatureSeparator);
+
+                foreach (var item in excludeFeatures)
                 {
-                    Log.FeatureTagHelperClearContent(_logger, FeatureName, ApplicationName);
+                    featureActive = await _featuresService
+                        .IsEnabledAsync(featureName: item.Trim().Value, ProductName);
 
-                    output.Content.SetContent(string.Empty);
+                    if (featureActive)
+                    {
+                        Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+
+                        output.SuppressOutput();
+                        return;
+                    }
                 }
+            }
 
-                output.TagName = null;
+            if (Include != null)
+            {
+                var includeFeatures = new StringTokenizer(Include, FeatureSeparator);
+
+                foreach (var item in includeFeatures)
+                {
+                    featureActive = await _featuresService
+                        .IsEnabledAsync(item.Trim().Value, ProductName);
+
+                    if (!featureActive)
+                    {
+                        Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+
+                        output.SuppressOutput();
+                        return;
+                    }
+                }
+            }
+
+            if (Names != null)
+            {
+                featureActive = await _featuresService
+                  .IsEnabledAsync(Names, ProductName);
+
+                if (!featureActive)
+                {
+                    Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+
+                    output.SuppressOutput();
+                    return;
+                }
             }
         }
     }

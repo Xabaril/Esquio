@@ -20,13 +20,13 @@ namespace Esquio.AspNetCore.Mvc
     {
         public bool IsReusable => false;
         public string FeatureName { get; set; }
-        public string ApplicationName { get; set; }
+        public string ProductName { get; set; }
 
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
-            return new FeatureResourceFilter(scopeFactory, FeatureName, ApplicationName);
+            return new FeatureResourceFilter(scopeFactory, FeatureName, ProductName);
         }
     }
     internal class FeatureResourceFilter
@@ -34,13 +34,13 @@ namespace Esquio.AspNetCore.Mvc
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly string _featureName;
-        private readonly string _applicationName;
+        private readonly string _productName;
 
-        public FeatureResourceFilter(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
+        public FeatureResourceFilter(IServiceScopeFactory serviceScopeFactory, string featureName, string productName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _featureName = featureName;
-            _applicationName = applicationName;
+            _productName = productName;
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
@@ -53,17 +53,17 @@ namespace Esquio.AspNetCore.Mvc
                 var fallbackService = scope.ServiceProvider
                     .GetService<IMvcFallbackService>();
 
-                Log.FeatureFilterBegin(logger, _featureName, _applicationName);
+                Log.FeatureFilterBegin(logger, _featureName, _productName);
 
-                if (await featureService.IsEnabledAsync(_featureName, _applicationName))
+                if (await featureService.IsEnabledAsync(_featureName, _productName))
                 {
-                    Log.FeatureFilterExecutingAction(logger, _featureName, _applicationName);
+                    Log.FeatureFilterExecutingAction(logger, _featureName, _productName);
 
                     await next();
                 }
                 else
                 {
-                    Log.FeatureFilterNonExecuteAction(logger, _featureName, _applicationName);
+                    Log.FeatureFilterNonExecuteAction(logger, _featureName, _productName);
 
                     context.Result = fallbackService.GetFallbackActionResult(context);
                 }

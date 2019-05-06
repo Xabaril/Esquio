@@ -17,30 +17,30 @@ namespace Esquio.AspNetCore.Mvc
     {
         public string FeatureName { get; set; }
 
-        public string ApplicationName { get; set; }
+        public string ProductName { get; set; }
 
         public bool IsReusable => false;
 
         public IActionConstraint CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            return new FeatureSwitchConstraint(scopeFactory, FeatureName, ApplicationName);
+            return new FeatureSwitchConstraint(scopeFactory, FeatureName, ProductName);
         }
     }
     internal class FeatureSwitchConstraint
         : IActionConstraint
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly string _applicationName;
+        private readonly string _productName;
         private readonly string _featureName;
 
         public int Order => 0;
 
-        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
+        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string productName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _featureName = featureName;
-            _applicationName = applicationName;
+            _productName = productName;
         }
         public bool Accept(ActionConstraintContext context)
         {
@@ -49,19 +49,19 @@ namespace Esquio.AspNetCore.Mvc
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<FeatureSwitch>>();
                 var featureservice = scope.ServiceProvider.GetRequiredService<IFeatureService>();
 
-                Log.FeatureSwitchBegin(logger, _featureName, _applicationName);
+                Log.FeatureSwitchBegin(logger, _featureName, _productName);
 
-                var executingTask = featureservice.IsEnabledAsync(_featureName, _applicationName);
+                var executingTask = featureservice.IsEnabledAsync(_featureName, _productName);
                 executingTask.Wait();
 
                 if (executingTask.IsCompletedSuccessfully)
                 {
-                    Log.FeatureSwitchSuccess(logger, _featureName, _applicationName);
+                    Log.FeatureSwitchSuccess(logger, _featureName, _productName);
                     return executingTask.Result;
                 }
                 else
                 {
-                    Log.FeatureSwitchThrow(logger, _featureName, _applicationName, executingTask.Exception);
+                    Log.FeatureSwitchThrow(logger, _featureName, _productName, executingTask.Exception);
                     return false;
                 }
             }
