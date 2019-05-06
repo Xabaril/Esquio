@@ -1,6 +1,6 @@
 ﻿using Esquio;
-using Esquio.DependencyInjection;
 using Esquio.Abstractions;
+using Esquio.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,11 +56,10 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IEnumerable<Type> FindTogglesInAssembly(Assembly assembly)
         {
             var exportedTypes = assembly.GetExportedTypes();
-            var toggleType = typeof(IToggle);
 
             return from type in exportedTypes
-                where !type.IsAbstract && toggleType.IsAssignableFrom(type)
-                select type;
+                   where !type.IsAbstract && typeof(IToggle).IsAssignableFrom(type)
+                   select type;
         }
     }
 }

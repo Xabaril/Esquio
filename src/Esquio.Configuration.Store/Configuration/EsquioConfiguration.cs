@@ -7,6 +7,6 @@
 
         }
 
-        public ApplicationConfiguration[] Applications { get; set; }
+        public ProductConfiguration[] Products { get; set; }
     }
 }

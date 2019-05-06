@@ -13,15 +13,15 @@ namespace Esquio.AspNetCore.Mvc
     /// <code>
     /// <![CDATA[<flag featureName="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
     /// </code>
-    [HtmlTargetElement("flag", Attributes = FEATURE_NAME_ATTRIBUTE)]
-    public class FlagTagHelper
+    [HtmlTargetElement("feature", Attributes = FEATURE_NAME_ATTRIBUTE)]
+    public class FeatureTagHelper
         : TagHelper
     {
         private const string FEATURE_NAME_ATTRIBUTE = "featureName";
         private const string APPLICATION_NAME_ATTRIBUTE = "applicationName";
 
         private readonly IFeatureService _featuresService;
-        private readonly ILogger<FlagTagHelper> _logger;
+        private readonly ILogger<FeatureTagHelper> _logger;
 
         [HtmlAttributeName(FEATURE_NAME_ATTRIBUTE)]
         public string FeatureName { get; set; }
@@ -29,7 +29,7 @@ namespace Esquio.AspNetCore.Mvc
         [HtmlAttributeName(APPLICATION_NAME_ATTRIBUTE)]
         public string ApplicationName { get; set; }
 
-        public FlagTagHelper(IFeatureService featuresService, ILogger<FlagTagHelper> logger)
+        public FeatureTagHelper(IFeatureService featuresService, ILogger<FeatureTagHelper> logger)
         {
             _featuresService = featuresService ?? throw new ArgumentNullException(nameof(featuresService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -37,7 +37,7 @@ namespace Esquio.AspNetCore.Mvc
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            Log.FlagTagHelperBegin(_logger, FeatureName, ApplicationName);
+            Log.FeatureTagHelperBegin(_logger, FeatureName, ApplicationName);
 
             var childContent = await output.GetChildContentAsync();
 
@@ -47,10 +47,12 @@ namespace Esquio.AspNetCore.Mvc
 
                 if (!isActive)
                 {
-                    Log.FlagTagHelperClearContent(_logger, FeatureName, ApplicationName);
+                    Log.FeatureTagHelperClearContent(_logger, FeatureName, ApplicationName);
 
                     output.Content.SetContent(string.Empty);
                 }
+
+                output.TagName = null;
             }
         }
     }

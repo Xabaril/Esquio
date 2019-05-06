@@ -31,16 +31,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <flag featureName="@Flags.Privacy">
+                        <feature featureName="@Flags.Privacy">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
-                        </flag>
-                        <flag featureName="@Flags.FeaturedContent">
+                        </feature>
+                        <feature featureName="@Flags.FeaturedContent">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Featured">Featured Content</a>
                             </li>
-                        </flag>
+                        </feature>
                     </ul>
                 </div>
             </div>
@@ -54,9 +54,9 @@
     </div>
 
     <div>
-        <flag featureName="@Flags.ByUser">
+        <feature featureName="@Flags.ByUser">
             <p>This content is only visible for Users:unai|luru|ckgrafico</p>
-        </flag>
+        </feature>
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">

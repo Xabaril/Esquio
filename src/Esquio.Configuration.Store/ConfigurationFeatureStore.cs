@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store.Configuration;
 using Esquio.Configuration.Store.Diagnostics;
+using Esquio.Toggles;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -28,6 +29,11 @@ namespace Esquio.Configuration.Store
             }
         }
         public Task<bool> AddFeatureAsync(string featureName, string applicationName, bool enabled = false)
+        {
+            Log.StoreIsReadOnly(_logger);
+            return Task.FromResult(false);
+        }
+        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
         {
             Log.StoreIsReadOnly(_logger);
             return Task.FromResult(false);
@@ -70,7 +76,7 @@ namespace Esquio.Configuration.Store
             if (feature != null)
             {
                 var toggle = feature.Toggles
-                    .Where(t => t.Type == typeof(TToggle).FullName)
+                    .Where(t => t.Type.Contains(typeof(TToggle).FullName))
                     .SingleOrDefault();
 
                 if (toggle != null)
@@ -95,17 +101,16 @@ namespace Esquio.Configuration.Store
             Log.FindFeature(_logger, featureName, applicationName);
 
             var application = _options?.Value
-                .Applications
+                .Products
                 .FirstOrDefault(a => a.Name.Equals(applicationName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(applicationName));
 
             if (application != null)
             {
                 return application
-                .Features
-                .SingleOrDefault(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
+                    .Features
+                    .SingleOrDefault(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
             }
             return null;
         }
-
     }
 }

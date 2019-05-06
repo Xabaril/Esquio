@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +15,7 @@ namespace Esquio.AspNetCore.Mvc
     /// the extension method AddMvcFallbackAction in <see cref="IEsquioBuilder"/> interface when register Esquio services.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class Flag
+    public class FeatureFilter
         : Attribute, IFilterFactory
     {
         public bool IsReusable => false;
@@ -27,17 +26,17 @@ namespace Esquio.AspNetCore.Mvc
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
-            return new FlagFilter(scopeFactory, FeatureName, ApplicationName);
+            return new FeatureResourceFilter(scopeFactory, FeatureName, ApplicationName);
         }
     }
-    internal class FlagFilter
+    internal class FeatureResourceFilter
         : IAsyncResourceFilter
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly string _featureName;
         private readonly string _applicationName;
 
-        public FlagFilter(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
+        public FeatureResourceFilter(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _featureName = featureName;
@@ -48,37 +47,25 @@ namespace Esquio.AspNetCore.Mvc
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var logger = scope.ServiceProvider
-                    .GetRequiredService<ILogger<Flag>>();
+                    .GetRequiredService<ILogger<FeatureFilter>>();
                 var featureService = scope.ServiceProvider
                     .GetRequiredService<IFeatureService>();
                 var fallbackService = scope.ServiceProvider
                     .GetService<IMvcFallbackService>();
 
-                Log.FlagBegin(logger, _featureName, _applicationName);
+                Log.FeatureFilterBegin(logger, _featureName, _applicationName);
 
                 if (await featureService.IsEnabledAsync(_featureName, _applicationName))
                 {
-                    Log.FlagExecutingAction(logger, _featureName, _applicationName);
+                    Log.FeatureFilterExecutingAction(logger, _featureName, _applicationName);
 
                     await next();
                 }
                 else
                 {
-                    Log.FlagNonExecuteAction(logger, _featureName, _applicationName);
+                    Log.FeatureFilterNonExecuteAction(logger, _featureName, _applicationName);
 
-                    if (fallbackService != null)
-                    {
-                        context.Result = fallbackService.GetFallbackActionResult(context);
-                    }
-                    else
-                    {
-                        Log.FlagFallbackServiceIsNotConfigured(logger);
-
-                        context.Result = new NotFoundResult()
-                        {
-
-                        };
-                    }
+                    context.Result = fallbackService.GetFallbackActionResult(context);
                 }
             }
         }

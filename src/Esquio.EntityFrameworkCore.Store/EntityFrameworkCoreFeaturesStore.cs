@@ -45,6 +45,21 @@ namespace Esquio.EntityFrameworkCore.Store
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        {
+            var application = new ApplicationEntity
+            {
+                Name = applicationName,
+                Description = applicationName
+            };
+
+            application.Features.Add(feature.To());
+
+            await _dbContext.Applications.AddAsync(application);
+
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> AddToggleAsync<TToggle>(string featureName, string applicationName, IDictionary<string, object> parameterValues) where TToggle : IToggle
         {
             var feature = await FindFeatureEntityAsync(featureName, applicationName);

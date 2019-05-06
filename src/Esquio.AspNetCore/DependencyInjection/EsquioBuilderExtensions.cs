@@ -4,6 +4,7 @@ using Esquio.AspNetCore.Providers;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -12,14 +13,18 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
-            builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
-            builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.AddTransient<IGeoLocationProviderService, NoGeoLocationProviderService>();
-            builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+            builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
+            builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
+            builder.Services.TryAddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+            builder.Services
+                .TryAddSingleton<IMvcFallbackService>(sp =>
+                {
+                    return new DelegatedMvcFallbackService(_ => new NotFoundResult());
+                });
             builder.Services.AddHttpContextAccessor();
-
             return builder;
         }
+
         public static IEsquioBuilder AddMvcFallbackAction(this IEsquioBuilder builder, Func<ResourceExecutingContext, IActionResult> fallback)
         {
             builder.Services

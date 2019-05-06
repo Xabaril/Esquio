@@ -12,7 +12,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        [FlagSwitch(FeatureName = Flags.Privacy)]
+        [FeatureSwitch(FeatureName = Flags.Privacy)]
         [ActionName("Privacy")]
         public IActionResult PrivacyWhenFlagsIsActive()
         {
@@ -25,7 +25,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
         
-        [Flag(FeatureName = Flags.FeaturedContent)]
+        [FeatureFilter(FeatureName = Flags.FeaturedContent)]
         public IActionResult Featured()
         {
             return View();

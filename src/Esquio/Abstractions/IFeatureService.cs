@@ -13,7 +13,7 @@ namespace Esquio.Abstractions
         /// </summary>
         /// <param name="featureName">The specified feature name.</param>
         /// <param name="applicationName">The specified application name or null for default application.</param>
-        /// <returns>True if feature <paramref name="featureName"/> is active on application <paramref name="applicationName"/>.</returns>
+        /// <returns>A <see cref="Task{bool}"/> that complete when service finished, yielding True if feature <paramref name="featureName"/> is active on application <paramref name="applicationName"/>.</returns>
         Task<bool> IsEnabledAsync(string featureName, string applicationName = null);
     }
 }

@@ -14,19 +14,9 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
         public int ApplicationId { get; set; }
         public ApplicationEntity Application { get; set; }
 
-        public static FeatureEntity New(string name, bool enabled)
-        {
-            return new FeatureEntity
-            {
-                Name = name,
-                CreatedOn = DateTime.UtcNow,
-                Enabled = enabled
-            };
-        }
-
         public Feature To()
         {
-            return new Feature(Name, CreatedOn, Enabled);
+            return new Feature(Name, Description, CreatedOn, Enabled);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Esquio.AspNetCore.Mvc
     /// feature activation state. If the configured feature is not active this action is not executed.
     /// Typically this attribute is used to switch between two MVC actions with the same name.
     /// </summary>
-    public class FlagSwitch
+    public class FeatureSwitch
         : Attribute, IActionConstraintFactory
     {
         public string FeatureName { get; set; }
@@ -24,10 +24,10 @@ namespace Esquio.AspNetCore.Mvc
         public IActionConstraint CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            return new FlagSwitchConstraint(scopeFactory, FeatureName, ApplicationName);
+            return new FeatureSwitchConstraint(scopeFactory, FeatureName, ApplicationName);
         }
     }
-    internal class FlagSwitchConstraint
+    internal class FeatureSwitchConstraint
         : IActionConstraint
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
@@ -36,7 +36,7 @@ namespace Esquio.AspNetCore.Mvc
 
         public int Order => 0;
 
-        public FlagSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
+        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string applicationName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _featureName = featureName;
@@ -46,22 +46,22 @@ namespace Esquio.AspNetCore.Mvc
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<FlagSwitch>>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<FeatureSwitch>>();
                 var featureservice = scope.ServiceProvider.GetRequiredService<IFeatureService>();
 
-                Log.FlagSwitchBegin(logger, _featureName, _applicationName);
+                Log.FeatureSwitchBegin(logger, _featureName, _applicationName);
 
                 var executingTask = featureservice.IsEnabledAsync(_featureName, _applicationName);
                 executingTask.Wait();
 
                 if (executingTask.IsCompletedSuccessfully)
                 {
-                    Log.FlagSwitchSuccess(logger, _featureName, _applicationName);
+                    Log.FeatureSwitchSuccess(logger, _featureName, _applicationName);
                     return executingTask.Result;
                 }
                 else
                 {
-                    Log.FlagSwitchThrow(logger, _featureName, _applicationName, executingTask.Exception);
+                    Log.FeatureSwitchThrow(logger, _featureName, _applicationName, executingTask.Exception);
                     return false;
                 }
             }

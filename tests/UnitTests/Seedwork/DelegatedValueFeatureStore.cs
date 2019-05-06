@@ -39,5 +39,10 @@ namespace UnitTests.Seedwork
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
