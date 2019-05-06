@@ -27,8 +27,9 @@ namespace Esquio.Toggles
 
             if (currentUserName != null)
             {
-                var activeUserNames = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, Users);
+                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var toggle = feature.GetToggle(this.GetType().FullName);
+                var activeUserNames = toggle.GetParameterValue(Users).ToString();
 
                 if (activeUserNames != null &&
                     activeUserNames.Split(SPLIT_SEPARATOR).Contains(currentUserName, StringComparer.CurrentCultureIgnoreCase))

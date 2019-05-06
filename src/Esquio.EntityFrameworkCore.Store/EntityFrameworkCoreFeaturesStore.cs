@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

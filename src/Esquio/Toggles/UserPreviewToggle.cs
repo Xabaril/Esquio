@@ -30,11 +30,10 @@ namespace Esquio.Toggles
 
             if (currentUserName != null)
             {
-                var previewUsers = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, PreviewUsers);
-
-                var enabledUsers = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, EnabledUsers);
+                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var toggle = feature.GetToggle(this.GetType().FullName);
+                var previewUsers = toggle.GetParameterValue(PreviewUsers).ToString();
+                var enabledUsers = toggle.GetParameterValue(EnabledUsers).ToString();
 
                 if (previewUsers != null 
                     &&

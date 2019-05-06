@@ -1,7 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store.Configuration;
 using Esquio.Configuration.Store.Diagnostics;
-using Esquio.Toggles;
+using Esquio.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -100,13 +100,13 @@ namespace Esquio.Configuration.Store
         {
             Log.FindFeature(_logger, featureName, applicationName);
 
-            var application = _options?.Value
+            var product = _options?.Value
                 .Products
                 .FirstOrDefault(a => a.Name.Equals(applicationName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(applicationName));
 
-            if (application != null)
+            if (product != null)
             {
-                return application
+                return product
                     .Features
                     .SingleOrDefault(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
             }

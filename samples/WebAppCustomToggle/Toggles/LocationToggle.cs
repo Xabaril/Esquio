@@ -24,9 +24,9 @@ namespace WebAppCustomToggle.Toggles
 
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var allowedCountries = ((string)await _featureStore
-                .GetToggleParameterValueAsync<LocationToggle>(featureName, applicationName, Countries));
-
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var allowedCountries = toggle.GetParameterValue(Countries).ToString();
             var currentCountry = await _locationProviderService
                 .GetCountryName(GetRemoteIpAddress());
 

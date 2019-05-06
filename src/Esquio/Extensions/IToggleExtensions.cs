@@ -1,12 +1,14 @@
-﻿using Esquio.Toggles;
+﻿using Esquio.Model;
+using Esquio.Toggles;
+using System;
 
 namespace Esquio.Abstractions
 {
     public static class IToggleExtensions
     {
-        public static bool IsUserPreview(this IToggle toggle)
+        public static bool IsUserPreview(this Toggle toggle)
         {
-            return toggle.GetType() == typeof(UserPreviewToggle);
+            return toggle.Type.Equals(typeof(UserPreviewToggle).FullName, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Esquio;
-using Esquio.Abstractions;
+﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using Esquio.Model;
 using Esquio.Toggles;
 using FluentAssertions;
 using NSubstitute;
@@ -16,14 +16,14 @@ namespace UnitTests.Esquio
         public void not_allow_create_with_an_invalid_name()
         {
             Action act = () => new Feature(name: null, description: "description");
-            act.Should().Throw<ArgumentException>().WithMessage("name");
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
         public void not_allow_create_with_an_invalid_description()
         {
             Action act = () => new Feature(name: "name", description: null);
-            act.Should().Throw<ArgumentException>().WithMessage("description");
+            act.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -50,12 +50,10 @@ namespace UnitTests.Esquio
         public void not_allow_to_add_more_than_one_toggle_when_is_marked_as_preview()
         {
             var feature = new Feature("test", "test", isPreview: true);
-            var toggles = new List<IToggle>
+            var toggles = new List<Toggle>
             {
-                new OnToggle(),
-                new UserNameToggle(
-                    Substitute.For<IUserNameProviderService>(),
-                    Substitute.For<IFeatureStore>())
+                new Toggle(type: typeof(OnToggle).FullName),
+                new Toggle(type: typeof(UserNameToggle).FullName)
             };
 
             Action act = () => feature.AddToggles(toggles);
@@ -67,11 +65,9 @@ namespace UnitTests.Esquio
         public void not_allow_to_add_a_toogle_that_is_not_of_the_type_userpreviewtoggle_when_is_marked_as_preview()
         {
             var feature = new Feature("test", "test", isPreview: true);
-            var toggles = new List<IToggle>
+            var toggles = new List<Toggle>
             {
-                new UserNameToggle(
-                    Substitute.For<IUserNameProviderService>(),
-                    Substitute.For<IFeatureStore>())
+                new Toggle(type: typeof(UserNameToggle).FullName)
             };
 
             Action act = () => feature.AddToggles(toggles);
@@ -83,11 +79,9 @@ namespace UnitTests.Esquio
         public void allow_to_add_a_toogle_that_is_of_the_type_userpreviewtoggle_when_is_marked_as_preview()
         {
             var feature = new Feature("test", "test", isPreview: true);
-            var toggles = new List<IToggle>
+            var toggles = new List<Toggle>
             {
-                new UserPreviewToggle(
-                    Substitute.For<IUserNameProviderService>(),
-                    Substitute.For<IFeatureStore>())
+                new Toggle(type: typeof(UserPreviewToggle).FullName)
             };
 
             Action act = () => feature.AddToggles(toggles);

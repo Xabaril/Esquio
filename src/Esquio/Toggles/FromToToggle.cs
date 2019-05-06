@@ -21,12 +21,10 @@ namespace Esquio.Toggles
         }
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var fromValue = (string)await _featureStore
-                 .GetToggleParameterValueAsync<FromToToggle>(featureName, applicationName, From);
-
-            var toValue = (string)await _featureStore
-                .GetToggleParameterValueAsync<FromToToggle>(featureName, applicationName, To);
-
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var fromValue = toggle.GetParameterValue(From).ToString();
+            var toValue = toggle.GetParameterValue(To).ToString();
             var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var toDate = DateTime.ParseExact(toValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var now = DateTime.UtcNow;

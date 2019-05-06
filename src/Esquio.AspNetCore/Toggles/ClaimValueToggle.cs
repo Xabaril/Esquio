@@ -24,11 +24,10 @@ namespace Esquio.AspNetCore.Toggles
         }
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var claimType = ((string)await _featureStore
-                .GetToggleParameterValueAsync<ClaimValueToggle>(featureName, applicationName, ClaimType));
-
-            var allowedValues = ((string)await _featureStore
-                .GetToggleParameterValueAsync<ClaimValueToggle>(featureName, applicationName, ClaimValues));
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var claimType = toggle.GetParameterValue(ClaimType).ToString();
+            var allowedValues = toggle.GetParameterValue(ClaimValues).ToString();
 
             if (claimType != null
                 &&

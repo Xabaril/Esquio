@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Esquio.Model;
+using System;
 using System.Collections.Generic;
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
