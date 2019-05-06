@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Esquio
+namespace Esquio.DependencyInjection
 {
     public sealed class EsquioBuilder
         : IEsquioBuilder

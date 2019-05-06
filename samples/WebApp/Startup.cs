@@ -5,28 +5,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Esquio.DependencyInjection;
 namespace WebApp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup=>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
                 {
                     setup.LoginPath = "/account/login";
                 })
@@ -35,6 +34,7 @@ namespace WebApp
                     .AddNewtonsoftJson()
                 .Services
                 .AddEsquio()
+                    .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio");
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

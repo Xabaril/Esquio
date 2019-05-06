@@ -1,4 +1,4 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

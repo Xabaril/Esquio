@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Esquio
+namespace Esquio.DependencyInjection
 {
     public class EsquioOptions
     {

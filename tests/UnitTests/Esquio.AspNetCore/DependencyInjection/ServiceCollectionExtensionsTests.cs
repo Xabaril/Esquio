@@ -12,7 +12,8 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
         public void AddEsquio_include_mandatory_services_in_container()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddEsquio();
+            serviceCollection.AddEsquio()
+                .AddAspNetCoreDefaultServices();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
