@@ -66,10 +66,10 @@ namespace WebApp
 
             app.UseCookiePolicy();
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseAuthentication();
             app.UseCors();
 
             app.UseEndpoints(routes =>
