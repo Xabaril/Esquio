@@ -9,7 +9,7 @@ using WebApp.Models;
 namespace WebApp.Controllers
 {
     public class AccountController
-        :Controller
+        : Controller
     {
         public IActionResult Login()
         {
@@ -17,27 +17,27 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public  async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model)
         {
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
 
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,new AuthenticationProperties()
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties()
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 IsPersistent = true
             });
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Match");
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Match");
         }
     }
 }

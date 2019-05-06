@@ -34,7 +34,7 @@ namespace Esquio.AspNetCore.Mvc
         private readonly string _productName;
         private readonly string _featureName;
 
-        public int Order => 0;
+        public int Order =>-1000;
 
         public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string productName)
         {

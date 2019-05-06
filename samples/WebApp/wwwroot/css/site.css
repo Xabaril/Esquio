@@ -1,56 +1,221 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿/* General */
+@font-face {
+    /* https://www.behance.net/gallery/18713007/Atletico-(Free)-Font */
+    font-family: 'PopWarner';
+    src: url('/assets/fonts/Atletico.woff2') format('woff2'), url('/assets/fonts/Atletico.woff') format('woff');
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@font-face {
+    font-family: 'icomoon';
+    src: url('/assets/fonts/icomoon/icomoon.eot?16a5x7');
+    src: url('/assets/fonts/icomoon/icomoon.eot?16a5x7#iefix') format('embedded-opentype'), url('/assets/fonts/icomoon/icomoon.ttf?16a5x7') format('truetype'), url('/assets/fonts/icomoon/icomoon.woff?16a5x7') format('woff'), url('/assets/fonts/icomoon/icomoon.svg?16a5x7#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.icon-Default {
+    display: inline-block;
+    width: 2rem;
 }
 
+.icon-Goal:before {
+    content: "\e901";
+}
+
+.icon-Var:before {
+    content: "\e902";
+}
+
+.icon-Change:before {
+    content: "\e903";
+}
+
+.icon-Corner:before {
+    content: "\e904";
+}
+
+.icon-Injury:before {
+    content: "\e905";
+}
+
+
+html,
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    font-family: PopWarner;
+    font-size: 16px;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
+
+/* Logo */
+.logo {
+    max-width: 3rem;
+    width: 100%;
+}
+
+/* Cards */
+.card {
+    border: 0;
+    box-shadow: rgba(0, 0, 0, 0.10) 0px 2px 2px;
+    min-height: 20rem;
+    transition: box-shadow .5s;
+}
+
+    .card:hover {
+        box-shadow: rgba(0, 0, 0, 0.075) 0px 10px 18px;
+    }
+
+.card--Finished {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-colors {
+    border: 1px solid #E4E4E4;
+    border-radius: 50%;
+    display: inline-block;
+    height: 1rem;
+    transform: translateY(.1rem);
+    width: 1rem;
+}
+
+.card-button {
+    background-color: #FBFBFB;
+    border-radius: 0;
+    bottom: 0;
+    font-size: .75rem;
+    left: 0;
+    padding: .5rem;
+    position: absolute;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.card--Started .card-header {
+    background-color: #18BC9C;
+    color: white;
+}
+
+    .card--Started .card-header .badge {
+        background-color: #084C3F;
+    }
+
+.card--Finished .card-button {
+    display: none;
+}
+
+.card--Pending .card-button {
+    pointer-events: none;
+}
+
+.card--Started .card-button:hover {
+    background-color: #094179;
+    color: white;
+}
+
+/* Detail */
+.detail-colors {
+    border: 1px solid #E4E4E4;
+    border-radius: 50%;
+    display: inline-block;
+    height: 2rem;
+    transform: translateY(.25rem);
+    width: 2rem;
+}
+
+.detail-icon {
+    font-size: 1.5rem;
+}
+
+/* States */
+.is-hidden {
+    display: none;
+}
+
+/* Panel */
+.panel {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
+    height: 100vh;
+    max-width: 90vw;
+    min-width: 30vw;
+    padding: 1.5rem 1.75rem;
+    position: fixed;
+    right: 0;
+    transform: translateX(100vw);
+    transition: all .5s;
+    top: 0;
+}
+
+    .panel.is-visible {
+        box-shadow: rgba(0, 0, 0, 0.3) -10px 0px 20px 0px;
+        right: 0;
+        transform: translateX(0);
+    }
+
+.panel-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.panel-description {
+    font-size: .9rem;
+    max-width: 20rem;
+}
+
+.panel-close {
+    cursor: pointer;
+    font-size: 2rem;
+    position: absolute;
+    right: 1rem;
+    top: .75rem;
+}
+
+.panel-items {
+    padding: 0;
+    list-style: none;
+}
+
+.panel-item {
+    border-bottom: 1px solid #EBEBEB;
+    padding: .5rem 0;
+    position: relative;
+}
+
+    .panel-item:last-of-type {
+        border-color: transparent;
+    }
+
+.panel-name {
+    display: block;
+    font-weight: 600;
+    padding-bottom: .5rem;
+}
+
+.panel-text {
+    font-size: .9rem;
+}
+
+.panel-switch {
+    position: absolute;
+    right: 0;
+    top: .5rem;
+    transform: scale(1.25);
 }

@@ -1,18 +1,30 @@
-﻿@model LoginModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model LoginModel
 
-<div class="row">
-    <div class="col-xs-8 col-xs-offset-2">
-        <h1 class="text-center">Login</h1>
-        <form asp-action="Login" method="post" class="form-horizontal">
-            <div class="form-group">
-                <label asp-for="UserName" class="col-sm-2"></label>
-                <div class="col-sm-10">
-                    <input asp-for="UserName" class="form-control" />
+<div class="container">
+    <div class="row justify-content-center align-content-center">
+        <div class="col-5 mt-2 mt-sm-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>@Localizer["LoginIn"]</span>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Login" method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <label asp-for="UserName">@Localizer["User"]</label>
+                            <input asp-for="UserName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">@Localizer["Password"]</label>
+                            <input id="Password" type="password" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div asp-validation-summary="All"></div>
+                    </form>
+                    <a class="small" asp-action="ForgotPassword">I've forgot my password.</a>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <div asp-validation-summary="All"></div>
-        </form>
-        <a asp-action="ForgotPassword">Forgot Password?</a>
+        </div>
     </div>
 </div>

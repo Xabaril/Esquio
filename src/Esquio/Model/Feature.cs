@@ -56,14 +56,17 @@ namespace Esquio.Model
         {
             Ensure.NotNull(toggle, nameof(toggle));
 
-            if (IsPreview
+            if ((IsPreview
                 && !_toggles.Any()
                 && toggle.IsUserPreview())
+                || !IsPreview)
             {
                 _toggles.Add(toggle);
             }
-
-            throw new InvalidOperationException($"Preview features only supports once {nameof(UserPreviewToggle)} toggle.");
+            else
+            {
+                throw new InvalidOperationException($"Preview features only supports once {nameof(UserPreviewToggle)} toggle.");
+            }   
         }
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
