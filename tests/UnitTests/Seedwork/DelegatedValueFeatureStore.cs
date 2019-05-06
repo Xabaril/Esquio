@@ -1,5 +1,5 @@
-﻿using Esquio;
-using Esquio.Abstractions;
+﻿using Esquio.Abstractions;
+using Esquio.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

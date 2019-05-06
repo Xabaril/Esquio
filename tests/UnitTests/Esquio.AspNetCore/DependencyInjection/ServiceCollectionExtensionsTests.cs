@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions.Providers;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

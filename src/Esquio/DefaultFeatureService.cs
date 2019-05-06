@@ -28,13 +28,13 @@ namespace Esquio
 
                 if (feature != null)
                 {
-                    var togglesTypes = await _featureStore.FindTogglesTypesAsync(featureName, applicationName);
+                    var toggles = feature.GetToggles();
 
-                    foreach (var type in togglesTypes)
+                    foreach (var toggle in toggles)
                     {
-                        var toggle = _toggleActivator.CreateInstance(type);
+                        var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
 
-                        if (!await toggle.IsActiveAsync(featureName, applicationName))
+                        if (!await toggleInstance.IsActiveAsync(featureName, applicationName))
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
                             return false;

@@ -1,4 +1,5 @@
 ﻿using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.Model;
 
 namespace Esquio
 {
