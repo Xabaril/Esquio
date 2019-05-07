@@ -13,7 +13,7 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
         public DateTime CreatedOn { get; set; }
         public List<ToggleEntity> Toggles { get; set; } = new List<ToggleEntity>();
         public int ApplicationId { get; set; }
-        public ApplicationEntity Application { get; set; }
+        public ProductEntity Application { get; set; }
 
         public Feature To()
         {

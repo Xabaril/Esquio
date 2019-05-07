@@ -13,7 +13,7 @@ namespace Esquio.EntityFrameworkCore.Store
             this.storeOptions = storeOptions;
         }
 
-        public DbSet<ApplicationEntity> Applications { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
         public DbSet<FeatureEntity> Features { get; set; }
         public DbSet<ToggleEntity> Toggles { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }

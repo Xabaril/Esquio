@@ -13,6 +13,10 @@ namespace Esquio.Diagnostics
         {
             _featureServiceNotFound(logger, featureName, applicationName ?? "(default application)", null);
         }
+        public static void FeatureServiceDisabledFeature(ILogger logger, string featureName, string applicationName)
+        {
+            _featureServiceNotFound(logger, featureName, applicationName ?? "(default application)", null);
+        }
         public static void FeatureServiceToggleIsNotActive(ILogger logger, string featureName, string applicationName)
         {
             _featureServiceNotActive(logger, featureName, applicationName ?? "(default application)", null);
@@ -35,6 +39,10 @@ namespace Esquio.Diagnostics
             LogLevel.Warning,
             EventIds.FeatureNotFound,
             "The feature {feature} is not configured in the store for application {application}.");
+        private static readonly Action<ILogger, string, string, Exception> _featureServiceDisabled = LoggerMessage.Define<string, string>(
+            LogLevel.Warning,
+            EventIds.FeatureDisabled,
+            "The feature {feature} is disabled in the store for application {application}.");
 
         private static readonly Action<ILogger, string, string, Exception> _featureServiceNotActive = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
