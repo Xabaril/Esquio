@@ -3,7 +3,7 @@
 namespace Esquio.DependencyInjection
 {
     /// <summary>
-    /// The builder used to register Esquio.
+    /// The builder used to register Esquio and dependant services.
     /// </summary>
     public interface IEsquioBuilder
     {

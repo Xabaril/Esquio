@@ -17,7 +17,7 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public Feature To()
         {
-            return new Feature(Name, Description, CreatedOn, Enabled);
+            return new Feature(Name, Description, CreatedOn);
         }
     }
 }

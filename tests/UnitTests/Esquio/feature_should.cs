@@ -42,7 +42,8 @@ namespace UnitTests.Esquio
         [Fact]
         public void not_allow_to_add_more_than_one_toggle_when_is_marked_as_preview()
         {
-            var feature = new Feature("test", "test", isPreview: true);
+            var feature = new Feature("test", "test");
+            feature.MarkAsPreview();
             var toggles = new List<Toggle>
             {
                 new Toggle(type: typeof(OnToggle).FullName),
@@ -57,7 +58,8 @@ namespace UnitTests.Esquio
         [Fact]
         public void not_allow_to_add_a_toogle_that_is_not_of_the_type_userpreviewtoggle_when_is_marked_as_preview()
         {
-            var feature = new Feature("test", "test", isPreview: true);
+            var feature = new Feature("test", "test");
+            feature.MarkAsPreview();
             var toggles = new List<Toggle>
             {
                 new Toggle(type: typeof(UserNameToggle).FullName)
@@ -71,7 +73,8 @@ namespace UnitTests.Esquio
         [Fact]
         public void allow_to_add_a_toogle_that_is_of_the_type_userpreviewtoggle_when_is_marked_as_preview()
         {
-            var feature = new Feature("test", "test", isPreview: true);
+            var feature = new Feature("test", "test");
+            feature.MarkAsPreview();
             var toggles = new List<Toggle>
             {
                 new Toggle(type: typeof(UserPreviewToggle).FullName)

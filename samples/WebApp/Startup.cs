@@ -2,41 +2,56 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using WebApp.Services;
 
 namespace WebApp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup=>
-                {
-                    setup.LoginPath = "/account/login";
-                })
-                .Services
+                .AddSingleton<IMatchService, MatchService>();
+
+            services
+                .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
+                    .AddViewLocalization(
+                        LanguageViewLocationExpanderFormat.Suffix,
+                        opts => { opts.ResourcesPath = "Resources"; })
                     .AddNewtonsoftJson()
                 .Services
                 .AddEsquio()
                     .AddAspNetCoreDefaultServices()
-                    .AddConfigurationStore(Configuration, "Esquio");
+                    .AddConfigurationStore(Configuration, "Esquio")
+                .Services
+                .AddAuthentication(setup =>
+                {
+                    setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
+                {
+                    setup.LoginPath = "/account/login";
+                });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -51,16 +66,18 @@ namespace WebApp
 
             app.UseCookiePolicy();
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseAuthentication();
+            app.UseCors();
+
             app.UseEndpoints(routes =>
             {
                 //routes.MapEsquio("esquio");
                 routes.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                        name: "default",
+                        pattern: "{controller=Match}/{action=Index}/{id?}");
                 routes.MapRazorPages();
             });
         }

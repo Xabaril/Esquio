@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Esquio.Abstractions;
+using Esquio.Toggles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Esquio.Abstractions;
-using Esquio.Toggles;
 
 namespace Esquio.Model
 {
@@ -31,18 +31,14 @@ namespace Esquio.Model
         }
         public Feature(
             string name,
-            string description,
-            DateTime createdOn = default,
-            bool enabled = false,
-            bool isPreview = false)
+            string description = default,
+            DateTime createdOn = default)
         {
             Ensure.Argument.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Description = description;
             CreatedOn = createdOn == default ? DateTime.UtcNow : createdOn;
-            IsEnabled = enabled;
-            IsPreview = isPreview;
         }
         public Toggle GetToggle(string type)
         {
@@ -56,23 +52,35 @@ namespace Esquio.Model
         {
             Ensure.NotNull(toggle, nameof(toggle));
 
-            if (IsPreview && !toggle.IsUserPreview())
+            if ((IsPreview && !_toggles.Any() && toggle.IsUserPreview())
+                || !IsPreview)
             {
-                throw new InvalidOperationException($"Preview features only supports {nameof(UserPreviewToggle)}");
+                _toggles.Add(toggle);
             }
-
-            _toggles.Add(toggle);
+            else
+            {
+                throw new InvalidOperationException($"Preview features only supports once {nameof(UserPreviewToggle)} toggle.");
+            }   
         }
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
             Ensure.NotNull(toggles, nameof(toggles));
 
-            if (IsPreview && (toggles.Count() > 1 || !toggles.First().IsUserPreview()))
+            if(toggles.Any())
             {
-                throw new InvalidOperationException($"Preview features only supports one {nameof(UserPreviewToggle)}");
+                if (toggles.Count() == 1)
+                {
+                    AddToggle(toggles.Single());
+                }
+                else
+                {
+                    if (IsPreview)
+                    {
+                        throw new InvalidOperationException($"Preview features only supports once {nameof(UserPreviewToggle)} toggle.");
+                    }
+                    _toggles.AddRange(toggles);
+                }
             }
-
-            _toggles.AddRange(toggles);
         }
         public void Enabled()
         {
@@ -85,10 +93,6 @@ namespace Esquio.Model
         public void MarkAsPreview()
         {
             IsPreview = true;
-        }
-        public void UnmarkAsPreview()
-        {
-            IsPreview = false;
         }
     }
 }

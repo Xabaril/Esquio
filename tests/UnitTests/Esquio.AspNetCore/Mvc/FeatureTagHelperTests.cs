@@ -20,7 +20,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             var tagHelper = new FeatureTagHelper(featureService, logger)
             {
-                FeatureName = "Feature-1"
+                Names = "Feature-1"
             };
 
             var context = CreateTagHelperContext();
@@ -33,6 +33,89 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .BeTrue();
         }
         [Fact]
+        public async Task clean_content_when_feature_is_active_and_is_on_exclude_attribute()
+        {
+            var featureService = new DelegatedFeatureService((_, __) => true);
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
+
+            var tagHelper = new FeatureTagHelper(featureService, logger)
+            {
+                Exclude = "Feature-1"
+            };
+
+            var context = CreateTagHelperContext();
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
+
+            await tagHelper.ProcessAsync(context, output);
+
+            output.Content.IsEmptyOrWhiteSpace
+                .Should()
+                .BeTrue();
+        }
+        [Fact]
+        public async Task preserve_content_when_feature_is_not_active_and_is_on_exclude_attribute()
+        {
+            var featureService = new DelegatedFeatureService((_, __) => false);
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
+
+            var tagHelper = new FeatureTagHelper(featureService, logger)
+            {
+                Exclude = "Feature-1"
+            };
+
+            var context = CreateTagHelperContext();
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
+
+            await tagHelper.ProcessAsync(context, output);
+
+            output.Content.IsEmptyOrWhiteSpace
+                .Should()
+                .BeFalse();
+        }
+
+
+        [Fact]
+        public async Task preserve_content_when_feature_is_active_and_is_on_include_attribute()
+        {
+            var featureService = new DelegatedFeatureService((_, __) => true);
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
+
+            var tagHelper = new FeatureTagHelper(featureService, logger)
+            {
+                Include = "Feature-1"
+            };
+
+            var context = CreateTagHelperContext();
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
+
+            await tagHelper.ProcessAsync(context, output);
+
+            output.Content.IsEmptyOrWhiteSpace
+                .Should()
+                .BeFalse();
+        }
+        [Fact]
+        public async Task clean_content_when_feature_is_not_active_and_is_on_include_attribute()
+        {
+            var featureService = new DelegatedFeatureService((_, __) => false);
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
+
+            var tagHelper = new FeatureTagHelper(featureService, logger)
+            {
+                Include = "Feature-1"
+            };
+
+            var context = CreateTagHelperContext();
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
+
+            await tagHelper.ProcessAsync(context, output);
+
+            output.Content.IsEmptyOrWhiteSpace
+                .Should()
+                .BeTrue();
+        }
+
+        [Fact]
         public async Task preserve_content_when_feature_is_active()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
@@ -40,7 +123,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             var tagHelper = new FeatureTagHelper(featureService, logger)
             {
-                FeatureName = "Feature-1"
+                Names = "Feature-1"
             };
 
             var context = CreateTagHelperContext();

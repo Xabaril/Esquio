@@ -25,7 +25,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
-
         public static IServiceCollection AddTogglesFromAssemblies(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var assembly in assemblies)
@@ -35,7 +34,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-
         public static IServiceCollection AddTogglesFromAssembly(this IServiceCollection services, Assembly assembly, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var toggle in FindTogglesInAssembly(assembly))
@@ -45,7 +43,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-
         private static IServiceCollection AddScanResult(this IServiceCollection services, Type type, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             services.Add(
@@ -56,14 +53,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-
         private static IEnumerable<Type> FindTogglesInAssembly(Assembly assembly)
         {
             var exportedTypes = assembly.GetExportedTypes();
-            var toggleType = typeof(IToggle);
 
             return from type in exportedTypes
-                   where !type.IsAbstract && toggleType.IsAssignableFrom(type)
+                   where !type.IsAbstract && typeof(IToggle).IsAssignableFrom(type)
                    select type;
         }
     }

@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootswatch@4.3.1",
+      "destination": "wwwroot/lib/bootswatch/",
+      "files": [
+        "flatly/bootstrap.css",
+        "flatly/bootstrap.min.css"
+      ]
+    },
+    {
+      "library": "jquery@3.4.0",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.js"
+      ]
+    },
+    {
+      "library": "twitter-bootstrap@4.3.1",
+      "destination": "wwwroot/lib/twitter-bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "js/bootstrap.js",
+        "js/bootstrap.js.map"
+      ]
+    }
+  ]
+}

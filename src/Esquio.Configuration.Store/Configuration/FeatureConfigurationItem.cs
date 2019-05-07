@@ -13,7 +13,21 @@ namespace Esquio.Configuration.Store.Configuration
         public ToggleConfiguration[] Toggles { get; set; }
         public Feature To()
         {
-            var feature = new Feature(Name, Description,DateTime.UtcNow, Enabled);
+            var feature = new Feature(Name, Description,DateTime.UtcNow);
+
+            if (IsPreview)
+            {
+                feature.MarkAsPreview();
+            }
+
+            if (Enabled)
+            {
+                feature.Enabled();
+            }
+            else
+            {
+                feature.Disabled();
+            }
 
             foreach (var toggleConfiguration in Toggles)
             {
