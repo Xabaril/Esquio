@@ -8,7 +8,7 @@ namespace Esquio.Configuration.Store.Configuration
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsEnabled { get; set; }
+        public bool Enabled { get; set; }
         public bool IsPreview { get; set; }
         public ToggleConfiguration[] Toggles { get; set; }
         public Feature To()
@@ -20,7 +20,7 @@ namespace Esquio.Configuration.Store.Configuration
                 feature.MarkAsPreview();
             }
 
-            if (IsEnabled)
+            if (Enabled)
             {
                 feature.Enabled();
             }

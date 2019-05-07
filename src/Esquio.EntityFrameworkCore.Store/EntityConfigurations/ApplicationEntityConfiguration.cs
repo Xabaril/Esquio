@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
-    internal class ApplicationEntityConfiguration : IEntityTypeConfiguration<Entities.ApplicationEntity>
+    internal class ApplicationEntityConfiguration : IEntityTypeConfiguration<Entities.ProductEntity>
     {
         private readonly StoreOptions storeOption;
 
@@ -13,7 +13,7 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             this.storeOption = storeOption;
         }
 
-        public void Configure(EntityTypeBuilder<Entities.ApplicationEntity> builder)
+        public void Configure(EntityTypeBuilder<Entities.ProductEntity> builder)
         {
             builder.ToTable(storeOption.Applications);
             builder.HasKey(x => x.Id);

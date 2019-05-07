@@ -25,7 +25,7 @@ namespace Esquio.EntityFrameworkCore.Store
 
         public async Task<bool> AddFeatureAsync(string featureName, string applicationName, bool enabled = false)
         {
-            var application = new ApplicationEntity
+            var application = new ProductEntity
             {
                 Name = applicationName,
                 Description = applicationName
@@ -41,14 +41,14 @@ namespace Esquio.EntityFrameworkCore.Store
 
             application.Features.Add(feature);
 
-            await _dbContext.Applications.AddAsync(application);
+            await _dbContext.Products.AddAsync(application);
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> AddFeatureAsync(string applicationName, Feature feature)
         {
-            var application = new ApplicationEntity
+            var application = new ProductEntity
             {
                 Name = applicationName,
                 Description = applicationName
@@ -56,7 +56,7 @@ namespace Esquio.EntityFrameworkCore.Store
 
             application.Features.Add(feature.To());
 
-            await _dbContext.Applications.AddAsync(application);
+            await _dbContext.Products.AddAsync(application);
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
@@ -103,7 +103,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public async Task<IEnumerable<string>> FindTogglesTypesAsync(string featureName, string applicationName)
         {
             var toggles = await _dbContext
-                .Applications
+                .Products
                 .Where(a => a.Name == applicationName)
                 .Join(_dbContext.Features,
                     a => a.Id,
@@ -123,7 +123,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public async Task<object> GetToggleParameterValueAsync<TToggle>(string featureName, string applicationName, string parameterName) where TToggle : IToggle
         {
             var parameter = await _dbContext
-                .Applications
+                .Products
                 .Where(a => a.Name == applicationName)
                 .Join(_dbContext.Features,
                     a => a.Id,
@@ -152,7 +152,7 @@ namespace Esquio.EntityFrameworkCore.Store
         private async Task<FeatureEntity> FindFeatureEntityAsync(string featureName, string applicationName)
         {
             return await _dbContext
-                .Applications
+                .Products
                 .Where(a => a.Name == applicationName)
                 .Join(_dbContext.Features,
                     a => a.Id,
