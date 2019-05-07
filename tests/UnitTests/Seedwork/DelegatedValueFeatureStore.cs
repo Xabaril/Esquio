@@ -18,17 +18,17 @@ namespace UnitTests.Seedwork
             _getDelegatedFeatureFunc = getDelegatedFeatureFunc;
         }
 
-        public Task<bool> AddFeatureAsync(string applicationName, string featureName, bool enabled = false)
+        public Task<bool> AddFeatureAsync(string productName, string featureName, bool enabled = false)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Feature> FindFeatureAsync(string applicationName, string featureName)
+        public Task<Feature> FindFeatureAsync(string productName, string featureName)
         {
-            return Task.FromResult(_getDelegatedFeatureFunc(applicationName, featureName));
+            return Task.FromResult(_getDelegatedFeatureFunc(productName, featureName));
         }
 
-        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        public Task<bool> AddFeatureAsync(string productName, Feature feature)
         {
             throw new NotImplementedException();
         }
