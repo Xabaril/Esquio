@@ -41,7 +41,7 @@ namespace FunctionalTests.Esquio.Configuration.Store
             feature.Should().NotBeNull();
 
             feature.Name.Should().BeEquivalentTo("FeatureA");
-            feature.Enabled.Should().BeTrue();
+            feature.IsEnabled.Should().BeTrue();
         }
     }
 

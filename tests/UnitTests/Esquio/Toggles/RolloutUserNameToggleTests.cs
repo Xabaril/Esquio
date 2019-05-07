@@ -2,6 +2,7 @@
 using Esquio.Toggles;
 using FluentAssertions;
 using System.Threading.Tasks;
+using UnitTests.Builders;
 using UnitTests.Seedwork;
 using Xunit;
 
@@ -9,17 +10,21 @@ namespace UnitTests.Esquio.Toggles
 {
     public class RolloutUserNameToggleShould
     {
+        private const string Percentage = nameof(Percentage);
+
         [Fact]
         public async Task be_active_when_percentage_is_hundred_percent()
         {
-            var store = new DelegatedValueFeatureStore(_ =>
-            {
-                return 100;
-            });
-            var userNameProvider = new DelegatedUserNameProviderService(() =>
-            {
-                return "User1";
-            });
+            var toggle = Build
+                   .Toggle<RolloutUserNameToggle>()
+                   .AddOneParameter(Percentage, 100)
+                   .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
             var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
 
@@ -28,14 +33,16 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_no_active_when_percentage_is_zero_percent()
         {
-            var store = new DelegatedValueFeatureStore(_ =>
-            {
-                return 0;
-            });
-            var userNameProvider = new DelegatedUserNameProviderService(() =>
-            {
-                return "User1";
-            });
+            var toggle = Build
+                   .Toggle<RolloutUserNameToggle>()
+                   .AddOneParameter(Percentage, 0)
+                   .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
             var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
 
@@ -54,17 +61,19 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_active_when_user_partition_is_on_percent_bucket(string username,int percentage)
         {
             var partition = Partitioner.ResolveToLogicalPartition(username, 10);
-            var store = new DelegatedValueFeatureStore(_ =>
-            {
-                return percentage;
-            });
-            var userNameProvider = new DelegatedUserNameProviderService(() =>
-            {
-                return username;
-            });
+            var expected = partition <= ((10 * percentage) / 100);
+            var toggle = Build
+                   .Toggle<RolloutUserNameToggle>()
+                   .AddOneParameter(Percentage, percentage)
+                   .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var userNameProvider = new DelegatedUserNameProviderService(() => username);
 
             var actual = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
-            var expected = partition <= ((10 * percentage) / 100);
 
             actual.Should().Be(expected);
         }

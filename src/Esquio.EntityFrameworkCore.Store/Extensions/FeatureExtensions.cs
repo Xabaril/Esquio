@@ -11,7 +11,7 @@ namespace Esquio
             {
                 Name = feature.Name,
                 Description = feature.Description,
-                Enabled = feature.Enabled,
+                Enabled = feature.IsEnabled,
                 CreatedOn = feature.CreatedOn
             };
         }

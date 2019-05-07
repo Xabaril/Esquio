@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
-    [DesignTypeParameter(ParameterName = Enviroments, ParameterType = "System.String", ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
+    [DesignTypeParameter(ParameterName = Environments, ParameterType = "System.String", ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
     public class EnvironmentToggle
         : IToggle
     {
-        private const string Enviroments = nameof(Enviroments);
+        private const string Environments = nameof(Environments);
         const string SPLIT_SEPARATOR = ";";
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
@@ -24,7 +24,7 @@ namespace Esquio.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var environments = toggle.GetParameterValue(Enviroments).ToString();
+            var environments = toggle.GetParameterValue<string>(Environments);
 
             var currentEnvironment = await _environmentNameProviderService
                 .GetEnvironmentNameAsync();

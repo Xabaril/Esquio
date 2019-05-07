@@ -27,8 +27,8 @@ namespace Esquio.AspNetCore.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var headerName = toggle.GetParameterValue(HeaderName).ToString();
-            var percentage = (int)toggle.GetParameterValue(Percentage);
+            var headerName = toggle.GetParameterValue<string>(HeaderName);
+            var percentage = toggle.GetParameterValue<int>(Percentage);
             var values = _httpContextAccessor.HttpContext.Request.Headers[headerName];
             var headerValue = values != StringValues.Empty ? values.First() : "NoHeaderValue";
             var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);

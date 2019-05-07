@@ -24,16 +24,16 @@ namespace Esquio.Model
         {
             _parameters.AddRange(parameters);
         }
-        public object GetParameterValue(string name)
+        public T GetParameterValue<T>(string name)
         {
             var parameter = _parameters.SingleOrDefault(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
             if (parameter != null)
             {
-                return parameter.Value;
+                return (T)parameter.Value;
             }
 
-            return null;
+            return default;
         }
     }
 }

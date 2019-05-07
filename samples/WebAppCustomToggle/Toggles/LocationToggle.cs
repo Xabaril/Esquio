@@ -26,7 +26,7 @@ namespace WebAppCustomToggle.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var allowedCountries = toggle.GetParameterValue(Countries).ToString();
+            var allowedCountries = toggle.GetParameterValue<string>(Countries);
             var currentCountry = await _locationProviderService
                 .GetCountryName(GetRemoteIpAddress());
 

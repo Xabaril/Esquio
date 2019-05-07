@@ -17,7 +17,7 @@ namespace Esquio.Model
         {
             get; private set;
         }
-        public bool Enabled
+        public bool IsEnabled
         {
             get; private set;
         }
@@ -41,7 +41,7 @@ namespace Esquio.Model
             Name = name;
             Description = description;
             CreatedOn = createdOn == default ? DateTime.UtcNow : createdOn;
-            Enabled = enabled;
+            IsEnabled = enabled;
             IsPreview = isPreview;
         }
         public Toggle GetToggle(string type)
@@ -73,6 +73,22 @@ namespace Esquio.Model
             }
 
             _toggles.AddRange(toggles);
+        }
+        public void Enabled()
+        {
+            IsEnabled = true;
+        }
+        public void Disabled()
+        {
+            IsEnabled = false;
+        }
+        public void MarkAsPreview()
+        {
+            IsPreview = true;
+        }
+        public void UnmarkAsPreview()
+        {
+            IsPreview = false;
         }
     }
 }

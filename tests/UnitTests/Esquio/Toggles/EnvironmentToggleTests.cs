@@ -1,7 +1,9 @@
-﻿using Esquio.Toggles;
+﻿using Esquio.Model;
+using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
+using UnitTests.Builders;
 using UnitTests.Seedwork;
 using Xunit;
 
@@ -9,10 +11,14 @@ namespace UnitTests.Esquio.Toggles
 {
     public class EnvironmentToggleShould
     {
+        private const string Development = "development";
+        private const string Production = "production";
+        private const string Environments = nameof(Environments);
+
         [Fact]
-        public async Task throw_if_role_provider_is_null()
+        public async Task throw_if_environment_provider_is_null()
         {
-            var store = new DelegatedValueFeatureStore(_ => string.Empty);
+            var store = new DelegatedValueFeatureStore((_, __) => null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
@@ -32,7 +38,15 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_not_active_if_current_environment_is_null()
         {
-            var store = new DelegatedValueFeatureStore(_ => "development;production");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .AddOneParameter(Environments, $"{Development}:{Production}")
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => null);
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
@@ -42,8 +56,15 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_not_active_if_parameter_value_is_null()
         {
-            var store = new DelegatedValueFeatureStore(_ => null);
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
 
@@ -52,8 +73,17 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_not_active_if_current_environment_is_not_configured()
         {
-            var store = new DelegatedValueFeatureStore(_ => "production");
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .AddOneParameter(Environments, Production)
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+
+            var store = new DelegatedValueFeatureStore((_,__) => feature);
+            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
 
@@ -62,7 +92,15 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_active_if_current_environment_is_configured()
         {
-            var store = new DelegatedValueFeatureStore(_ => "development");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .AddOneParameter(Environments, Development)
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
@@ -72,7 +110,15 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_active_if_current_environment_is_configured_with_different_case()
         {
-            var store = new DelegatedValueFeatureStore(_ => "development");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .AddOneParameter(Environments, Development)
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
@@ -82,7 +128,15 @@ namespace UnitTests.Esquio.Toggles
         [Fact]
         public async Task be_active_if_current_environment_is_configured_in_a_list()
         {
-            var store = new DelegatedValueFeatureStore(_ => "production;development");
+            var toggle = Build
+                .Toggle<EnvironmentToggle>()
+                .AddOneParameter(Environments, $"{Development};{Production}")
+                .Build();
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
             var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);

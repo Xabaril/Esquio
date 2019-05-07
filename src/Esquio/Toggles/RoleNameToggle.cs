@@ -29,7 +29,7 @@ namespace Esquio.Toggles
             {
                 var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
                 var toggle = feature.GetToggle(this.GetType().FullName);
-                var activeRoles = toggle.GetParameterValue(Roles).ToString();
+                var activeRoles = toggle.GetParameterValue<string>(Roles);
 
                 if (activeRoles != null &&
                     activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))

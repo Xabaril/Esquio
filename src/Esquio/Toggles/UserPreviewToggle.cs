@@ -32,8 +32,8 @@ namespace Esquio.Toggles
             {
                 var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
                 var toggle = feature.GetToggle(this.GetType().FullName);
-                var previewUsers = toggle.GetParameterValue(PreviewUsers).ToString();
-                var enabledUsers = toggle.GetParameterValue(EnabledUsers).ToString();
+                var previewUsers = toggle.GetParameterValue<string>(PreviewUsers);
+                var enabledUsers = toggle.GetParameterValue<string>(EnabledUsers);
 
                 if (previewUsers != null 
                     &&

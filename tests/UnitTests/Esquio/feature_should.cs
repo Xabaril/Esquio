@@ -20,13 +20,6 @@ namespace UnitTests.Esquio
         }
 
         [Fact]
-        public void not_allow_create_with_an_invalid_description()
-        {
-            Action act = () => new Feature(name: "name", description: null);
-            act.Should().Throw<ArgumentNullException>();
-        }
-
-        [Fact]
         public void not_allow_to_add_null_toggle()
         {
             var feature = new Feature("test", "test");

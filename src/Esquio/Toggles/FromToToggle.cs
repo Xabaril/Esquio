@@ -12,7 +12,7 @@ namespace Esquio.Toggles
     {
         internal const string FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
         const string From = nameof(From);
-        const string To = nameof(From);
+        const string To = nameof(To);
         private readonly IFeatureStore _featureStore;
 
         public FromToToggle(IFeatureStore featureStore)
@@ -23,8 +23,8 @@ namespace Esquio.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var fromValue = toggle.GetParameterValue(From).ToString();
-            var toValue = toggle.GetParameterValue(To).ToString();
+            var fromValue = toggle.GetParameterValue<string>(From);
+            var toValue = toggle.GetParameterValue<string>(To);
             var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var toDate = DateTime.ParseExact(toValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var now = DateTime.UtcNow;
