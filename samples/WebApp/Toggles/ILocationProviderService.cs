@@ -56,6 +56,12 @@ namespace WebApp.Toggles
 
         private async Task<IPApiData> GetIpDataFrom(string ipaddress)
         {
+#if DEBUG
+            if(ipaddress == "0.0.0.1")
+            {
+                ipaddress = "213.97.0.42";
+            }
+#endif
             var httpClient = _httpClientFactory
                 .CreateClient(IP_API_LOCATION_SERVICE);
 

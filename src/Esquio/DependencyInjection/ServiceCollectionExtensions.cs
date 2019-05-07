@@ -15,9 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
             var options = new EsquioOptions();
             setup?.Invoke(options);
 
-            options.AssembliesToRegister
-                .Add(typeof(ServiceCollectionExtensions).Assembly);
-
             var builder = new EsquioBuilder(serviceCollection);
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();

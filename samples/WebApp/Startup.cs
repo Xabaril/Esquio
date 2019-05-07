@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using WebApp.Services;
+using WebApp.Toggles;
 
 namespace WebApp
 {
@@ -37,10 +38,12 @@ namespace WebApp
                         opts => { opts.ResourcesPath = "Resources"; })
                     .AddNewtonsoftJson()
                 .Services
-                .AddEsquio()
-                    .AddAspNetCoreDefaultServices()
-                    .AddConfigurationStore(Configuration, "Esquio")
+                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(Configuration, "Esquio")
                 .Services
+                .AddHttpClient()
+                .AddTransient<ILocationProviderService, IPApiLocationProviderService>()
                 .AddAuthentication(setup =>
                 {
                     setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
