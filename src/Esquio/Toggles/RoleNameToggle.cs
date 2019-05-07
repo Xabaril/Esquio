@@ -10,7 +10,7 @@ namespace Esquio.Toggles
     public class RoleNameToggle
        : IToggle
     {
-        const string SPLIT_SEPARATOR = ";";
+        const char SPLIT_SEPARATOR = ';';
         const string Roles = nameof(Roles);
         private readonly IRoleNameProviderService _roleNameProviderService;
         private readonly IFeatureStore _featureStore;

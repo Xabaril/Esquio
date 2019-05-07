@@ -12,15 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="$(microsoftaspnetcore)" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(microsoftnetcoreapp)"/>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(microsoftaspnetcoretesthost)" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="$(microsoftaspnetcoremvcabstractions)" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="$(microsoftaspnetcoremvcabstractions)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(microsoftextensionshosting)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(NetTestSdk)" />
-    <PackageReference Include="NSubstitute" Version="4.0.0" />
+    <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunitrunner)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />

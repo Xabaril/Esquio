@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAppCustomToggle.Toggles
+namespace WebApp.Toggles
 {
     public class LocationToggle
         : IToggle

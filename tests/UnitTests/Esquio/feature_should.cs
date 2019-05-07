@@ -1,9 +1,6 @@
-﻿using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
-using Esquio.Model;
+﻿using Esquio.Model;
 using Esquio.Toggles;
 using FluentAssertions;
-using NSubstitute;
 using System;
 using System.Collections.Generic;
 using Xunit;

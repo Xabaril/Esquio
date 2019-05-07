@@ -76,16 +76,16 @@ namespace UnitTests.Seedwork
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseRouting(routes =>
-            {
-                routes.MapEsquio("esquio");
-                routes.MapControllerRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRazorPages();
-            });
-
             app.UseAuthorization();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapEsquio("esquio");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
         }
     }
 

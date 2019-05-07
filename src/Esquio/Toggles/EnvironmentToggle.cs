@@ -11,7 +11,7 @@ namespace Esquio.Toggles
         : IToggle
     {
         private const string Environments = nameof(Environments);
-        const string SPLIT_SEPARATOR = ";";
+        const char SPLIT_SEPARATOR = ';';
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
         private readonly IFeatureStore _featureStore;

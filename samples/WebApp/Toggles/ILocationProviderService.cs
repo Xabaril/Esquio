@@ -3,7 +3,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace WebAppCustomToggle.Toggles
+namespace WebApp.Toggles
 {
     public interface ILocationProviderService
     {
