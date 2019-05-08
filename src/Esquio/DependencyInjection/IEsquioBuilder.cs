@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Esquio.DependencyInjection
 {
@@ -12,5 +13,19 @@ namespace Esquio.DependencyInjection
         /// Esquio services should be registered.
         /// </summary>
         IServiceCollection Services { get; }
+    }
+
+    internal sealed class EsquioBuilder
+        : IEsquioBuilder
+    {
+        public IServiceCollection Services
+        {
+            get;
+        }
+
+        public EsquioBuilder(IServiceCollection serviceCollection)
+        {
+            Services = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
+        }
     }
 }
