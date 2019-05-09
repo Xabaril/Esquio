@@ -1,4 +1,4 @@
-﻿namespace UnitTests
+﻿namespace FunctionalTests
 {
     public static class Constants
     {

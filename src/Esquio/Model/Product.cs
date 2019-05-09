@@ -9,8 +9,9 @@ namespace Esquio.Model
 
         public Product(string name, string description)
         {
-            Ensure.That<ArgumentException>(string.IsNullOrWhiteSpace(name));
-            Ensure.That<ArgumentException>(string.IsNullOrWhiteSpace(description));
+            Ensure.Argument.NotNullOrEmpty(name, nameof(name));
+            Name = name;
+            Description = description;
         }
     }
 }

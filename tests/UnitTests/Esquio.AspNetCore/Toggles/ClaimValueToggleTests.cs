@@ -18,7 +18,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
                 var accessor = new FakeHttpContextAccesor();
-                await new ClaimValueToggle(accessor, null).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new ClaimValueToggle(accessor, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -27,7 +27,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
                 await new ClaimValueToggle(null, new DelegatedValueFeatureStore((_, __) => null))
-                    .IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                    .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]

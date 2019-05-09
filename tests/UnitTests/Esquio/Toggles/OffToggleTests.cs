@@ -9,7 +9,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_always_no_active()
         {
             var toggle = new OnToggle();
-            var active = await toggle.IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await toggle.IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }

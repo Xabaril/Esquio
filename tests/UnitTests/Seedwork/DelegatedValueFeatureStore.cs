@@ -1,7 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Model;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -17,18 +16,32 @@ namespace UnitTests.Seedwork
         {
             _getDelegatedFeatureFunc = getDelegatedFeatureFunc;
         }
-
-        public Task<bool> AddFeatureAsync(string productName, string featureName, bool enabled = false)
+        public Task AddFeatureAsync(string productName, Feature feature)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Feature> FindFeatureAsync(string productName, string featureName)
+        public Task AddProductAsync(Product product)
         {
-            return Task.FromResult(_getDelegatedFeatureFunc(productName, featureName));
+            throw new NotImplementedException();
         }
 
-        public Task<bool> AddFeatureAsync(string productName, Feature feature)
+        public Task UpdateProductAsync(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteProductAsync(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Feature> FindFeatureAsync(string featureName, string productName)
+        {
+            return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName));
+        }
+
+        public Task<Product> FindProductAsync(string name)
         {
             throw new NotImplementedException();
         }

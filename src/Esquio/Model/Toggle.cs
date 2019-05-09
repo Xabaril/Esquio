@@ -35,5 +35,9 @@ namespace Esquio.Model
 
             return default;
         }
+        public IEnumerable<Parameter> GetParameters()
+        {
+            return _parameters;
+        }
     }
 }

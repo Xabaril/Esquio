@@ -20,7 +20,7 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.HasIndex(x => x.Name).IsUnique();
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
+            builder.Property(x => x.Description).HasMaxLength(2000);
             builder.HasMany(x => x.Toggles).WithOne(x => x.Feature).HasForeignKey(x => x.FeatureId);
         }
     }

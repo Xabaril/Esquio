@@ -28,7 +28,7 @@ namespace UnitTests.Esquio.Toggles
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new UserPreviewToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new UserPreviewToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -45,7 +45,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => null);
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -63,7 +63,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -81,7 +81,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -100,7 +100,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User2");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -119,7 +119,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User2");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -138,7 +138,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             active.Should().BeTrue();
         }
         [Fact]
@@ -156,7 +156,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "UsEr1");
 
-            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new UserPreviewToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             active.Should().BeTrue();
         }
     }

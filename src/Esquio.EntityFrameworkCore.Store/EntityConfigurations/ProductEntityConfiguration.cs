@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
-    internal class ApplicationEntityConfiguration : IEntityTypeConfiguration<Entities.ProductEntity>
+    internal class ProductEntityConfiguration : IEntityTypeConfiguration<Entities.ProductEntity>
     {
         private readonly StoreOptions storeOption;
 
-        public ApplicationEntityConfiguration(StoreOptions storeOption)
+        public ProductEntityConfiguration(StoreOptions storeOption)
         {
             this.storeOption = storeOption;
         }
@@ -20,8 +20,8 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.HasIndex(x => x.Name).IsUnique();
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
-            builder.HasMany(x => x.Features).WithOne(x => x.Application).HasForeignKey(x => x.ApplicationId);
+            builder.Property(x => x.Description).HasMaxLength(2000);
+            builder.HasMany(x => x.Features).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
         }
     }
 }
