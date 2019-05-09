@@ -1,5 +1,8 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.Model;
 using FluentAssertions;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,10 +19,11 @@ namespace FunctionalTests.Esquio.Configuration.Store
         }
 
         [Fact]
-        public async Task return_false_when_try_to_add_new_feature()
+        public void return_false_when_try_to_add_new_feature()
         {
-            (await _fixture.FeatureStore.AddFeatureAsync("featureName", "applicationName", enabled: true))
-                .Should().BeFalse();
+            Action act = () => _fixture.FeatureStore.AddFeatureAsync("product", new Feature("featureTest")).RunSynchronously();
+
+            act.Should().Throw<EsquioException>();
         }
         [Fact]
         public async Task return_null_when_find_a_non_existing_feature()

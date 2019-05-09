@@ -26,7 +26,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
@@ -44,7 +44,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -73,7 +73,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => username);
 
-            var actual = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var actual = await new RolloutUserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             actual.Should().Be(expected);
         }

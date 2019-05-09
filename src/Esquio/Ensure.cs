@@ -9,7 +9,7 @@ namespace Esquio
     /// Will throw exceptions when conditions are not satisfied.
     /// </summary>
     [DebuggerStepThrough]
-    internal static class Ensure
+    public static class Ensure
     {
         /// <summary>
         /// Ensures that the given expression is true

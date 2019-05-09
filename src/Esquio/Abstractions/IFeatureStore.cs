@@ -6,8 +6,11 @@ namespace Esquio.Abstractions
     public interface IFeatureStore
     {
         bool IsReadOnly { get; }
-        Task<bool> AddFeatureAsync(string product, Feature feature);
-        Task<bool> AddFeatureAsync(string featureName, string product, bool enabled = false);
-        Task<Feature> FindFeatureAsync(string featureName, string product);
+        Task<Product> FindProductAsync(string name);
+        Task AddProductAsync(Product product);
+        Task UpdateProductAsync(Product product);
+        Task DeleteProductAsync(Product product);
+        Task AddFeatureAsync(string product, Feature feature);
+        Task<Feature> FindFeatureAsync(string featureName, string productName);
     }
 }

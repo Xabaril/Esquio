@@ -22,7 +22,7 @@ namespace UnitTests.Esquio.Toggles
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new EnvironmentToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new EnvironmentToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -32,7 +32,7 @@ namespace UnitTests.Esquio.Toggles
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new EnvironmentToggle(provider, null).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new EnvironmentToggle(provider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -49,7 +49,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => null);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -66,7 +66,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -85,7 +85,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_,__) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -103,7 +103,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
@@ -121,7 +121,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
@@ -139,7 +139,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }

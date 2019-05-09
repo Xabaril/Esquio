@@ -17,7 +17,7 @@ namespace UnitTests.Esquio.Toggles
         {
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new FromToToggle(null).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new FromToToggle(null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -34,7 +34,7 @@ namespace UnitTests.Esquio.Toggles
                 .Build();
             var store = new DelegatedValueFeatureStore((_, __) => feature);
 
-            var active = await new FromToToggle(store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new FromToToggle(store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -52,7 +52,7 @@ namespace UnitTests.Esquio.Toggles
                 .Build();
             var store = new DelegatedValueFeatureStore((_, __) => feature);
 
-            var active = await new FromToToggle(store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new FromToToggle(store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }

@@ -18,7 +18,7 @@ namespace UnitTests.Esquio.Toggles
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new RoleNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new RoleNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -28,7 +28,7 @@ namespace UnitTests.Esquio.Toggles
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await new RoleNameToggle(roleNameProvider, null).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+                await new RoleNameToggle(roleNameProvider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
         [Fact]
@@ -45,7 +45,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -62,7 +62,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "role1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -80,7 +80,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "user1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeFalse();
         }
@@ -98,7 +98,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "role1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
@@ -116,7 +116,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "RoLe1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
@@ -134,7 +134,7 @@ namespace UnitTests.Esquio.Toggles
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "role1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ApplicationName);
+            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
 
             active.Should().BeTrue();
         }
