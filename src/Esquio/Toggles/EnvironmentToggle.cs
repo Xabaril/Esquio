@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Esquio.Toggles
         : IToggle
     {
         private const string Environments = nameof(Environments);
-        const char SPLIT_SEPARATOR = ';';
+        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
         private readonly IFeatureStore _featureStore;
@@ -31,8 +32,10 @@ namespace Esquio.Toggles
 
             if (environments != null && currentEnvironment != null)
             {
-                return environments.Split(SPLIT_SEPARATOR)
-                    .Contains(currentEnvironment, StringComparer.InvariantCultureIgnoreCase);
+                var tokenizer = new StringTokenizer(environments, SPLIT_SEPARATOR);
+
+                return tokenizer.Contains(
+                    currentEnvironment,StringSegmentComparer.OrdinalIgnoreCase);
             }
             return false;
         }
