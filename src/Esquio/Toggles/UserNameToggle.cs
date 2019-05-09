@@ -10,7 +10,7 @@ namespace Esquio.Toggles
     public class UserNameToggle
         : IToggle
     {
-        const string SPLIT_SEPARATOR = ";";
+        const char SPLIT_SEPARATOR = ';';
         const string Users = nameof(Users);
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IFeatureStore _featureStore;

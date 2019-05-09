@@ -11,7 +11,7 @@ namespace Esquio.Toggles
     public class UserPreviewToggle
          : IToggle
     {
-        const string SPLIT_SEPARATOR = ";";
+        const char SPLIT_SEPARATOR = ';';
         const string PreviewUsers = nameof(PreviewUsers);
         const string EnabledUsers = nameof(EnabledUsers);
 

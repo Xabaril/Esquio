@@ -42,7 +42,7 @@ namespace Esquio.Model
         }
         public Toggle GetToggle(string type)
         {
-            return _toggles.SingleOrDefault(t => t.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase));
+            return _toggles.SingleOrDefault(t => t.Type.StartsWith(type,StringComparison.InvariantCultureIgnoreCase));
         }
         public IEnumerable<Toggle> GetToggles()
         {

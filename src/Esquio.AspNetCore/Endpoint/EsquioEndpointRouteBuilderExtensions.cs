@@ -8,8 +8,6 @@ namespace Microsoft.AspNetCore.Builder
     {
         public static IEndpointConventionBuilder MapEsquio(this IEndpointRouteBuilder endpoints, string pattern)
         {
-            const string DisplayName = "Esquio";
-
             if (endpoints == null)
             {
                 throw new ArgumentNullException(nameof(endpoints));
@@ -19,7 +17,7 @@ namespace Microsoft.AspNetCore.Builder
                 .UseMiddleware<EsquioMiddleware>()
                 .Build();
 
-            return endpoints.MapGet(pattern, DisplayName, pipeline);
+            return endpoints.MapGet(pattern, pipeline);
         }
     }
 }

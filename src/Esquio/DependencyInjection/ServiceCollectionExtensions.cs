@@ -8,15 +8,21 @@ using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// Provides Esquio extensions methods for <see cref="IServiceCollection"/>
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Add default Esquio dependencies into the <paramref name="serviceCollection"/>.
+        /// </summary>
+        /// <param name="serviceCollection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="setup">The action method to configure <see cref="EsquioOptions"/>. Optional, default is null.</param>
+        /// <returns></returns>
         public static IEsquioBuilder AddEsquio(this IServiceCollection serviceCollection, Action<EsquioOptions> setup = null)
         {
             var options = new EsquioOptions();
             setup?.Invoke(options);
-
-            options.AssembliesToRegister
-                .Add(typeof(ServiceCollectionExtensions).Assembly);
 
             var builder = new EsquioBuilder(serviceCollection);
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
@@ -25,6 +31,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return builder;
         }
+        /// <summary>
+        /// Add all <see cref="IToggle"/> types from specified assemblies.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> used to register the toggles.</param>
+        /// <param name="assemblies">The assemblies with custom toggles to be registered.</param>
+        /// <param name="lifetime">The lifetime registration to be used.Optional, default is Transient.</param>
+        /// <returns></returns>
         public static IServiceCollection AddTogglesFromAssemblies(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var assembly in assemblies)
@@ -34,6 +47,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+        /// <summary>
+        /// Addd all <see cref="IToggle"/> types from specified assembly.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> used to register the toggles.</param>
+        /// <param name="assembly">The assembly with custom toggles to be registered.</param>
+        /// <param name="lifetime">The lifetime registration to be used.Optional, default is Transient.</param>
+        /// <returns></returns>
         public static IServiceCollection AddTogglesFromAssembly(this IServiceCollection services, Assembly assembly, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var toggle in FindTogglesInAssembly(assembly))
