@@ -1,3 +1,3 @@
 ##TODO List
-- Add user panel to enable some features (user can enable these features)
-	- Event animations 
+- Add real form in panel
+- Use location instead of boolean in BuyTickets

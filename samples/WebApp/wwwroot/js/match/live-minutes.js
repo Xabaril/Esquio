@@ -24,7 +24,19 @@
                 return;
             }
 
-            $(minute).removeClass(HIDDEN_CLASS);
+            var $minute = $(minute);
+            $minute.removeClass(HIDDEN_CLASS);
+            if (i === lastPosition) {
+                var $icon = $minute.find('.js-icon-animate');
+                var $tempIcon = $icon.clone();
+                $icon.parent().append($tempIcon);
+                $tempIcon.addClass('live-animation');
+
+                setTimeout(function () {
+                    $tempIcon.removeClass('live-animation');
+                    $tempIcon.remove();
+                }, 1000);
+            }
         });
 
         $('.js-live-minutes').removeClass(HIDDEN_CLASS);

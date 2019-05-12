@@ -27,13 +27,18 @@
         <div class="container pb-4 js-live-minutes is-hidden">
             @foreach (var minute in Model.Minutes)
             {
-                <div class="row minute pb-1 pt-1 js-live-minute is-hidden">
-                    <div class="col-auto text-center js-live-minute-time">@minute.Minute'</div>
-                    <div class="col-auto text-center">
+            <div class="row minute pb-1 pt-1 js-live-minute is-hidden">
+                <div class="col-auto text-center js-live-minute-time">@minute.Minute'</div>
+                <div class="col-auto text-center">
+                    <feature exclude="@Flags.AnimationsMatch">
                         <i class="@("detail-icon icon icon-" + minute.Event)"></i>
-                    </div>
-                    <div class="col-10">@minute.Text</div>
+                    </feature>
+                    <feature include="@Flags.AnimationsMatch">
+                        <i class="@("detail-icon js-icon-animate icon icon-" + minute.Event)"></i>
+                    </feature>
                 </div>
+                <div class="col-10">@minute.Text</div>
+            </div>
             }
         </div>
     }
