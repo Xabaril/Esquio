@@ -215,6 +215,9 @@ body {
 
 .panel-text {
     font-size: .9rem;
+    max-width: 20rem;
+    display: inline-block;
+    padding-bottom: 1rem;
 }
 
 .panel-switch {

@@ -120,6 +120,18 @@
   <data name="Description" xml:space="preserve">
     <value>The following preview features are available for your evaluation. Help us make them better!</value>
   </data>
+  <data name="Feature_Animations_Name" xml:space="preserve">
+    <value>Match Animations</value>
+  </data>
+  <data name="Feature_Animations_Text" xml:space="preserve">
+    <value>Enable or disable Animations on matches, the user will watch some different animations on the important events of the match.</value>
+  </data>
+  <data name="Feature_Dark_Name" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
+  <data name="Feature_Dark_Text" xml:space="preserve">
+    <value>Enable or disable the Dark Mode button, the user will be able to change between 'Light' or 'Dark' themes.</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Preview features</value>
   </data>
