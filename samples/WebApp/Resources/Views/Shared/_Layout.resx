@@ -123,6 +123,9 @@
   <data name="Menu_Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="Menu_Mode" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
   <data name="Menu_Preview" xml:space="preserve">
     <value>Preview</value>
   </data>

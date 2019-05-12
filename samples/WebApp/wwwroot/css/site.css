@@ -149,6 +149,10 @@ body {
     display: none;
 }
 
+.is-semi {
+    opacity: .75;
+}
+
 /* Panel */
 .panel {
     background: white;

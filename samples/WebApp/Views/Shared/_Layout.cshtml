@@ -36,23 +36,28 @@
                 </button>
                 <div class="navbar-collapse collapse justify-content-end">
                     <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <feature names="@Flags.Preview">
+                        <feature names="@Flags.DarkMode">
                             <li class="nav-item">
-                                <a class="nav-link js-panel-trigger" href="#">@Localizer["Menu_Preview"]</a>
+                                <a class="nav-link js-mode-trigger" href="#">@Localizer["Menu_Mode"]</a>
                             </li>
                         </feature>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Menu_Logout"] (@User.Identity.Name)</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <feature names="@Flags.Preview">
+                                <li class="nav-item">
+                                    <a class="nav-link js-panel-trigger" href="#">@Localizer["Menu_Preview"]</a>
+                                </li>
+                            </feature>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Menu_Logout"] (@User.Identity.Name)</a>
+                            </li>
 
                         }
                         else
                         {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Menu_Login"]</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Menu_Login"]</a>
+                            </li>
                         }
                     </ul>
                 </div>
