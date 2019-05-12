@@ -108,6 +108,10 @@ body {
     width: 100%;
 }
 
+.card-button--top {
+    bottom: 2.25rem;
+}
+
 .card--Started .card-header {
     background-color: #18BC9C;
     color: white;
@@ -121,11 +125,12 @@ body {
     display: none;
 }
 
-.card--Pending .card-button {
+.card--Pending .card-button:not(.card-button--top) {
     pointer-events: none;
 }
 
-.card--Started .card-button:hover {
+.card--Started .card-button:hover,
+.card-button--top:hover {
     background-color: #094179;
     color: white;
 }
