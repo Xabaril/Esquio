@@ -44,5 +44,10 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
             return feature;
         }
+
+        public void CopyFrom(Feature feature)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

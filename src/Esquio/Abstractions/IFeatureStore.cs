@@ -10,7 +10,9 @@ namespace Esquio.Abstractions
         Task AddProductAsync(Product product);
         Task UpdateProductAsync(Product product);
         Task DeleteProductAsync(Product product);
-        Task AddFeatureAsync(string product, Feature feature);
         Task<Feature> FindFeatureAsync(string featureName, string productName);
+        Task AddFeatureAsync(string product, Feature feature);
+        Task UpdateFeatureAsync(string product, Feature feature);
+        Task DeleteFeatureAsync(string product, Feature feature);
     }
 }

@@ -60,7 +60,6 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             expected.Should().Throw<EsquioException>();
         }
 
-
         [Theory]
         [MemberData(nameof(Data))]
         public async Task persisted_the_feature_on_database(DbContextOptions<StoreDbContext> options)
@@ -99,6 +98,31 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
         [Theory]
         [MemberData(nameof(Data))]
+        public async Task update_a_feature_when_it_does_exist_on_database(DbContextOptions<StoreDbContext> options)
+        {
+            var store = new EntityFrameworkCoreStoreBuilder().Build(options);
+            var product = ProductObjectMother.Create();
+            var toggle = Build
+                .Toggle<UserNameToggle>()
+                .AddOneParameter(Users, "user1;user2")
+                .Build();
+            var feature = Build
+                .Feature($"{Constants.FeatureName}-{Guid.NewGuid()}")
+                .Enabled()
+                .AddOne(toggle)
+                .Build();
+
+            await store.AddProductAsync(product);
+            await store.AddFeatureAsync(product.Name, feature);
+            feature.Disabled();
+            await store.UpdateFeatureAsync(product.Name, feature);
+            var expected = await store.FindFeatureAsync(feature.Name, product.Name);
+
+            expected.IsEnabled.Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(Data))]
         public async Task remove_a_feature_when_it_does_exist_on_database(DbContextOptions<StoreDbContext> options)
         {
             var store = new EntityFrameworkCoreStoreBuilder().Build(options);
@@ -109,10 +133,10 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
             await store.AddProductAsync(product);
             await store.AddFeatureAsync(product.Name, feature);
-            var expected = await store.FindFeatureAsync(feature.Name, product.Name);
+            await store.DeleteFeatureAsync(product.Name, feature);
+            Func<Task> expected = async () => await store.FindFeatureAsync(feature.Name, product.Name);
 
-            feature.Should().BeEquivalentTo(expected);
-            feature.GetToggles().Count().Should().Be(expected.GetToggles().Count());
+            expected.Should().Throw<EsquioException>();
         }
 
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>

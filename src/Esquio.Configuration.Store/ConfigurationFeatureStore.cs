@@ -27,11 +27,6 @@ namespace Esquio.Configuration.Store
                 return true;
             }
         }
-        public Task AddFeatureAsync(string applicationName, Feature feature)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
         public Task<Product> FindProductAsync(string name)
         {
             var product = _options?.Value
@@ -41,6 +36,17 @@ namespace Esquio.Configuration.Store
             return Task.FromResult(product.To());
         }
 
+        public Task<Feature> FindFeatureAsync(string featureName, string applicationName)
+        {
+            var feature = GetFeatureFromConfiguration(featureName, applicationName);
+
+            if (feature != null)
+            {
+                return Task.FromResult(feature.To());
+            }
+            Log.FeatureNotExist(_logger, featureName, applicationName);
+            return Task.FromResult<Feature>(null);
+        }
         public Task AddProductAsync(Product product)
         {
             Log.StoreIsReadOnly(_logger);
@@ -57,18 +63,23 @@ namespace Esquio.Configuration.Store
             Log.StoreIsReadOnly(_logger);
             throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
         }
-
-        public Task<Feature> FindFeatureAsync(string featureName, string applicationName)
+        public Task AddFeatureAsync(string applicationName, Feature feature)
         {
-            var feature = GetFeatureFromConfiguration(featureName, applicationName);
-
-            if (feature != null)
-            {
-                return Task.FromResult(feature.To());
-            }
-            Log.FeatureNotExist(_logger, featureName, applicationName);
-            return Task.FromResult<Feature>(null);
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
         }
+        public Task UpdateFeatureAsync(string product, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+
+        public Task DeleteFeatureAsync(string product, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+
 
         private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string applicationName)
         {

@@ -25,19 +25,9 @@ namespace Esquio.EntityFrameworkCore.Store
 
         public bool IsReadOnly => false;
 
-        public async Task AddFeatureAsync(string productName, Feature feature)
-        {
-            Ensure.Argument.NotNullOrEmpty(productName);
-            Ensure.Argument.NotNull(feature);
-
-            var productEntity = await GetProductOrThrow(productName);
-            productEntity.Features.Add(feature.To());
-
-            await _dbContext.SaveChangesAsync();
-        }
         public async Task<Product> FindProductAsync(string name)
         {
-            var productEntity = await GetProductOrThrow(name);
+            var productEntity = await GetProductEntityOrThrow(name);
             return productEntity.To();
         }
 
@@ -53,36 +43,66 @@ namespace Esquio.EntityFrameworkCore.Store
         {
             Ensure.Argument.NotNull(product, nameof(product));
 
-            var productEntity = await GetProductOrThrow(product.Name);
+            var productEntity = await GetProductEntityOrThrow(product.Name);
             productEntity.CopyFrom(product);
             await _dbContext.SaveChangesAsync();
         }
-
 
         public async Task DeleteProductAsync(Product product)
         {
             Ensure.Argument.NotNull(product, nameof(product));
 
-            var productEntity = await GetProductOrThrow(product.Name);
+            var productEntity = await GetProductEntityOrThrow(product.Name);
             _dbContext.Remove(productEntity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddFeatureAsync(string productName, Feature feature)
+        {
+            Ensure.Argument.NotNullOrEmpty(productName);
+            Ensure.Argument.NotNull(feature);
+
+            var productEntity = await GetProductEntityOrThrow(productName);
+            productEntity.Features.Add(feature.To());
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateFeatureAsync(string product, Feature feature)
+        {
+            Ensure.Argument.NotNullOrEmpty(product);
+            Ensure.Argument.NotNull(feature);
+
+            await DeleteFeatureAsync(product, feature);
+            await AddFeatureAsync(product, feature);
+        }
+
+        public async Task DeleteFeatureAsync(string product, Feature feature)
+        {
+            Ensure.Argument.NotNullOrEmpty(product);
+            Ensure.Argument.NotNull(feature);
+
+            var featureEntity = await GetFeatureEntityOrThrow(feature.Name, product);
+            _dbContext.Remove(featureEntity);
+
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<Feature> FindFeatureAsync(string featureName, string productName)
         {
-            FeatureEntity feature = await FindFeatureEntityAsync(featureName, productName);
+            var featureEntity = await GetFeatureEntityOrThrow(featureName, productName);
 
-            if (feature != null)
+            if (featureEntity != null)
             {
-                return feature.To();
+                return featureEntity.To();
             }
 
             return null;
         }
 
-        private async Task<FeatureEntity> FindFeatureEntityAsync(string featureName, string productName)
+        private async Task<FeatureEntity> GetFeatureEntityOrThrow(string featureName, string productName)
         {
-            return await _dbContext
+            var featureEntity = await _dbContext
                 .Products
                 .Where(a => a.Name == productName)
                 .Join(_dbContext.Features,
@@ -92,9 +112,17 @@ namespace Esquio.EntityFrameworkCore.Store
                 .Include(f => f.Toggles)
                 .ThenInclude(t => t.Parameters)
                 .SingleOrDefaultAsync(f => f.Name == featureName);
+
+            if (featureEntity == null)
+            {
+                Log.FeatureNotExist(_logger, featureName, productName);
+                throw new EsquioException($"The feature with name ${featureName} for product ${productName} does not exist.");
+            }
+
+            return featureEntity;
         }
 
-        private async Task<ProductEntity> GetProductOrThrow(string productName)
+        private async Task<ProductEntity> GetProductEntityOrThrow(string productName)
         {
             var productEntity = await _dbContext.Products.SingleOrDefaultAsync(p => p.Name == productName);
 

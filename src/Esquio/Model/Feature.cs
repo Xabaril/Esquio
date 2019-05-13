@@ -50,7 +50,7 @@ namespace Esquio.Model
         }
         public void AddToggle(Toggle toggle)
         {
-            Ensure.NotNull(toggle, nameof(toggle));
+            Ensure.Argument.NotNull(toggle, nameof(toggle));
 
             if ((IsPreview && !_toggles.Any() && toggle.IsUserPreview())
                 || !IsPreview)
@@ -64,7 +64,7 @@ namespace Esquio.Model
         }
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
-            Ensure.NotNull(toggles, nameof(toggles));
+            Ensure.Argument.NotNull(toggles, nameof(toggles));
 
             if(toggles.Any())
             {
@@ -82,6 +82,16 @@ namespace Esquio.Model
                 }
             }
         }
+        public void RemoveToggle(Toggle toggle)
+        {
+            Ensure.Argument.NotNull(toggle);
+
+            _toggles.Remove(toggle);
+        }
+        public void RemoveToggles()
+        {
+            _toggles.Clear();
+        }
         public void Enabled()
         {
             IsEnabled = true;
@@ -92,6 +102,11 @@ namespace Esquio.Model
         }
         public void MarkAsPreview()
         {
+            if (IsPreview || _toggles.Any() && (_toggles.Count() != 1 || !_toggles.First().IsUserPreview()))
+            {
+                throw new EsquioException("Only non-preview features could be mark as preview features.");
+            }
+
             IsPreview = true;
         }
     }

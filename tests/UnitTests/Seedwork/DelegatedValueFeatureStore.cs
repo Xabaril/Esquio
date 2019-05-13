@@ -45,5 +45,15 @@ namespace UnitTests.Seedwork
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateFeatureAsync(string product, Feature feature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteFeatureAsync(string product, Feature feature)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

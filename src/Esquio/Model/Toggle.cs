@@ -39,5 +39,9 @@ namespace Esquio.Model
         {
             return _parameters;
         }
+        public void ClearParameters()
+        {
+            _parameters.Clear();
+        }
     }
 }
