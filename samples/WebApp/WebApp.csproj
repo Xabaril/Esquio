@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Views\Shared\_Layout - Copy.Designer.cs" />
+    <Compile Remove="Resources\Views\Shared\_Layout.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\assets\.DS_Store" />
   </ItemGroup>
 
@@ -55,11 +60,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Shared\_Layout - Copy.Designer.cs">
-      <DependentUpon>_Layout.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Resources\Views\Shared\_PreviewPanel.Designer.cs">
       <DesignTime>True</DesignTime>

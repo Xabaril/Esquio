@@ -24,6 +24,7 @@
     <microsoftextensionsconfigurationbinder>3.0.0-preview5.19227.9</microsoftextensionsconfigurationbinder>
     <microsoftextensionsconfigurationjson>3.0.0-preview5.19227.9</microsoftextensionsconfigurationjson>
     <microsoftextensionshosting>3.0.0-preview5.19227.9</microsoftextensionshosting>
+    <microsoftextensionsprimitives>3.0.0-preview5.19227.9</microsoftextensionsprimitives>
 
     <microsoftentityframeworkcore>3.0.0-preview5.19227.1</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.0.0-preview5.19227.1</microsoftentityframeworkcorerelational>

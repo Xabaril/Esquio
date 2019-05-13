@@ -19,6 +19,9 @@
     </environment>
     <link rel="stylesheet" href="~/css/light-theme.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <feature names="@Flags.DarkMode">
+        <link rel="stylesheet" href="~/css/dark-theme.css" />
+    </feature>
 </head>
 <body>
     <header>
@@ -33,6 +36,11 @@
                 </button>
                 <div class="navbar-collapse collapse justify-content-end">
                     <ul class="navbar-nav">
+                        <feature names="@Flags.DarkMode">
+                            <li class="nav-item">
+                                <a class="nav-link js-mode-trigger" href="#">@Localizer["Menu_Mode"]</a>
+                            </li>
+                        </feature>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <feature names="@Flags.Preview">

@@ -70,6 +70,42 @@ namespace WebApp.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Match Animations.
+        /// </summary>
+        public static string Feature_Animations_Name {
+            get {
+                return ResourceManager.GetString("Feature_Animations_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable or disable Animations on matches, the user will watch some different animations on the important events of the match..
+        /// </summary>
+        public static string Feature_Animations_Text {
+            get {
+                return ResourceManager.GetString("Feature_Animations_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark Mode.
+        /// </summary>
+        public static string Feature_Dark_Name {
+            get {
+                return ResourceManager.GetString("Feature_Dark_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable or disable the Dark Mode button, the user will be able to change between &apos;Light&apos; or &apos;Dark&apos; themes..
+        /// </summary>
+        public static string Feature_Dark_Text {
+            get {
+                return ResourceManager.GetString("Feature_Dark_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preview features.
         /// </summary>
         public static string Title {

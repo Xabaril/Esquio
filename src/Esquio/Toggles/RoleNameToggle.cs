@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Esquio.Toggles
     public class RoleNameToggle
        : IToggle
     {
-        const char SPLIT_SEPARATOR = ';';
+        static char[] SPLIT_SEPARATOR = new char[] { ';' };
         const string Roles = nameof(Roles);
         private readonly IRoleNameProviderService _roleNameProviderService;
         private readonly IFeatureStore _featureStore;
@@ -31,10 +32,12 @@ namespace Esquio.Toggles
                 var toggle = feature.GetToggle(this.GetType().FullName);
                 var activeRoles = toggle.GetParameterValue<string>(Roles);
 
-                if (activeRoles != null &&
-                    activeRoles.Split(SPLIT_SEPARATOR).Contains(currentRole, StringComparer.InvariantCultureIgnoreCase))
+                if (activeRoles != null)
                 {
-                    return true;
+                    var tokenizer = new StringTokenizer(activeRoles, SPLIT_SEPARATOR);
+
+                    return tokenizer.Contains(
+                        currentRole, StringSegmentComparer.OrdinalIgnoreCase);
                 }
             }
 
