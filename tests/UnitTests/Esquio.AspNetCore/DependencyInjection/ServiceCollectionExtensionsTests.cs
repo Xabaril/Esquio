@@ -16,7 +16,7 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            serviceProvider.GetService<IUserNameProviderService>()
+            serviceProvider.GetService<IRoleNameProviderService>()
                 .Should().NotBeNull();
 
             serviceProvider.GetService<IRoleNameProviderService>()

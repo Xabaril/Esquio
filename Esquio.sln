@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "samples\WebApp\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.EntityFrameworkCore.Store", "src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj", "{56731D44-11AE-41EA-A5A8-3713C961F3CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "samples\Worker\Worker.csproj", "{64A0E5B7-2126-4366-A583-50618E6000E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{56731D44-11AE-41EA-A5A8-3713C961F3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56731D44-11AE-41EA-A5A8-3713C961F3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56731D44-11AE-41EA-A5A8-3713C961F3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A0E5B7-2126-4366-A583-50618E6000E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A0E5B7-2126-4366-A583-50618E6000E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A0E5B7-2126-4366-A583-50618E6000E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A0E5B7-2126-4366-A583-50618E6000E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{2BD25641-0976-4680-93F1-B6B16CDBC42D} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 		{31B26C85-D240-4EF3-BB59-AF113B3E204B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{56731D44-11AE-41EA-A5A8-3713C961F3CC} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
+		{64A0E5B7-2126-4366-A583-50618E6000E1} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}

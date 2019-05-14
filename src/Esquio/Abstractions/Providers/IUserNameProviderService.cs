@@ -13,4 +13,12 @@ namespace Esquio.Abstractions.Providers
         /// <returns>A <see cref="Task{string}"/> that complete when the provider service has finished, yielding the current username.</returns>
         Task<string> GetCurrentUserNameAsync();
     }
+    internal sealed class NoUserNameProviderService
+        : IUserNameProviderService
+    {
+        public Task<string> GetCurrentUserNameAsync()
+        {
+            return Task.FromResult<string>(null);
+        }
+    }
 }

@@ -14,4 +14,13 @@ namespace Esquio.Abstractions.Providers
         /// <returns>A <see cref="Task{string}"/> that complete when the provider has finished, yielding the name of the current environment.</returns>
         Task<string> GetEnvironmentNameAsync();
     }
+
+    internal sealed class NoEnvironmentNameProviderService
+        : IEnvironmentNameProviderService
+    {
+        public Task<string> GetEnvironmentNameAsync()
+        {
+            return Task.FromResult<string>(null);
+        }
+    }
 }

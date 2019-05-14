@@ -1,6 +1,8 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
+using Esquio.Abstractions.Providers;
 using Esquio.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,9 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = new EsquioBuilder(serviceCollection);
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
+            builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
+            builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
+            builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);
 
             return builder;

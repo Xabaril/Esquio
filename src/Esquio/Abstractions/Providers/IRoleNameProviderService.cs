@@ -13,4 +13,13 @@ namespace Esquio.Abstractions.Providers
         /// <returns>A <see cref="Task{string}"/> that complete when the provider service has finished, yielding the current role name.</returns>
         Task<string> GetCurrentRoleNameAsync();
     }
+
+    internal sealed class NoRoleNameProviderService
+        : IRoleNameProviderService
+    {
+        public Task<string> GetCurrentRoleNameAsync()
+        {
+            return Task.FromResult<string>(null);
+        }
+    }
 }
