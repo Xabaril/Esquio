@@ -76,23 +76,23 @@ namespace UnitTests.Seedwork
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseRouting(routes =>
-            {
-                routes.MapEsquio("esquio");
-                routes.MapControllerRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRazorPages();
-            });
-
             app.UseAuthorization();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapEsquio("esquio");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
         }
     }
 
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(ApplicationName = "TestApp",FeatureName ="Sample1")]
+        [FeatureSwitch(ProductName = "TestApp",FeatureName ="Sample1")]
         public IActionResult Sample1()
         {
             return Content("Active");
@@ -103,7 +103,7 @@ namespace UnitTests.Seedwork
             return Content("NonActive");
         }
         [ActionName("ActionWithFlagSwitchNoActive")]
-        [FeatureSwitch(ApplicationName = "TestApp", FeatureName = "Sample2")]
+        [FeatureSwitch(ProductName = "TestApp", FeatureName = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Active");

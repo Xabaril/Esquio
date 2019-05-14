@@ -26,27 +26,32 @@ namespace Esquio
 
                 var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
 
-                if (feature != null)
-                {
-                    var togglesTypes = await _featureStore.FindTogglesTypesAsync(featureName, applicationName);
-
-                    foreach (var type in togglesTypes)
-                    {
-                        var toggle = _toggleActivator.CreateInstance(type);
-
-                        if (!await toggle.IsActiveAsync(featureName, applicationName))
-                        {
-                            Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                else
+                if (feature == null)
                 {
                     Log.FeatureServiceNotFoundFeature(_logger, featureName, applicationName);
                     return false;
                 }
+
+                if (!feature.IsEnabled)
+                {
+                    Log.FeatureServiceDisabledFeature(_logger, featureName, applicationName);
+                    return false;
+                }
+
+                var toggles = feature.GetToggles();
+
+                foreach (var toggle in toggles)
+                {
+                    var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
+
+                    if (!await toggleInstance.IsActiveAsync(featureName, applicationName))
+                    {
+                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
+                        return false;
+                    }
+                }
+
+                return true;
             }
             catch (Exception exception)
             {

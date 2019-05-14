@@ -1,7 +1,6 @@
-﻿using Esquio;
-using Esquio.Abstractions;
+﻿using Esquio.Abstractions;
+using Esquio.Model;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -9,38 +8,50 @@ namespace UnitTests.Seedwork
     class DelegatedValueFeatureStore
         : IFeatureStore
     {
-        private readonly Func<string, object> _getDelegatedValueFunc;
+        private readonly Func<string, string, Feature> _getDelegatedFeatureFunc;
 
         public bool IsReadOnly => true;
 
-        public DelegatedValueFeatureStore(Func<string, object> getDelegatedValueFunc)
+        public DelegatedValueFeatureStore(Func<string, string, Feature> getDelegatedFeatureFunc)
         {
-            _getDelegatedValueFunc = getDelegatedValueFunc;
+            _getDelegatedFeatureFunc = getDelegatedFeatureFunc;
         }
-        public Task<object> GetToggleParameterValueAsync<TToggle>(string applicationName, string featureName, string parameterName) where TToggle : IToggle
-        {
-            return Task.FromResult(_getDelegatedValueFunc(parameterName));
-        }
-        public Task<bool> AddFeatureAsync(string applicationName, string featureName, bool enabled = false)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<bool> AddToggleAsync<TToggle>(string applicationName, string featureName, IDictionary<string, object> parameterValues) where TToggle : IToggle
+        public Task AddFeatureAsync(string productName, Feature feature)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Feature> FindFeatureAsync(string applicationName, string featureName)
+        public Task AddProductAsync(Product product)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> FindTogglesTypesAsync(string applicationName, string featureName)
+        public Task UpdateProductAsync(Product product)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        public Task DeleteProductAsync(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Feature> FindFeatureAsync(string featureName, string productName)
+        {
+            return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName));
+        }
+
+        public Task<Product> FindProductAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateFeatureAsync(string product, Feature feature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteFeatureAsync(string product, Feature feature)
         {
             throw new NotImplementedException();
         }

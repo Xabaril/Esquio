@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<WebApp.Models.Match>
+
+    <div class="container">
+        <div class="row justify-content-start">
+            @foreach (var match in Model)
+            {
+            <div class="col-12 col-sm-6 col-lg-4 pb-sm-2">
+                <div class="@(" card mb-3 card--" + match.State)">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>@match.State</span>
+
+                        @if (match.State == MatchState.Finished)
+                        {
+                        <feature names="@Flags.MatchScore">
+                            <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
+                        </feature>
+                        }
+                        else
+                        {
+                        <span class="badge badge-primary badge-pill">@match.Time</span>
+
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-truncate" title="@match.Local.Name - @match.Visitor.Name">
+                            <span class="card-colors" style="background: linear-gradient(to right, @match.Local.PrimaryColor 0%,  @match.Local.PrimaryColor 50%,  @match.Local.SecondaryColor 50%,  @match.Local.SecondaryColor 100%);"></span>
+                            <span>@match.Local.Name - @match.Visitor.Name</span>
+                            <span class="card-colors" style="background: linear-gradient(to right, @match.Visitor.PrimaryColor 0%,  @match.Visitor.PrimaryColor 50%,  @match.Visitor.SecondaryColor 50%,  @match.Visitor.SecondaryColor 100%);"></span>
+                        </h4>
+
+                        <p class="card-text">@match.Description</p>
+
+                        @if (User.Identity.IsAuthenticated && match.State == MatchState.Started)
+                        {
+                            <a asp-controller="Match" asp-action="Detail" asp-route-id="@match.Id">
+                                <button type="button" class="card-button btn">@Localizer["Open"]</button>
+                            </a>
+                        }
+                        else if (User.Identity.IsAuthenticated)
+                        {
+                            <feature names="@Flags.BuyTickets">
+                                <button type="button" class="card-button card-button--top btn">@Localizer["BuyTickets"]</button>
+                            </feature>
+
+                            <button type="button" class="card-button btn">@Localizer["OpenSoon"]</button>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>

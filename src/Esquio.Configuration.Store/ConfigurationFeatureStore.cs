@@ -1,11 +1,10 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store.Configuration;
 using Esquio.Configuration.Store.Diagnostics;
-using Esquio.Toggles;
+using Esquio.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,22 +27,15 @@ namespace Esquio.Configuration.Store
                 return true;
             }
         }
-        public Task<bool> AddFeatureAsync(string featureName, string applicationName, bool enabled = false)
+        public Task<Product> FindProductAsync(string name)
         {
-            Log.StoreIsReadOnly(_logger);
-            return Task.FromResult(false);
+            var product = _options?.Value
+                .Products
+                .FirstOrDefault(a => a.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(name));
+
+            return Task.FromResult(product.To());
         }
-        public Task<bool> AddFeatureAsync(string applicationName, Feature feature)
-        {
-            Log.StoreIsReadOnly(_logger);
-            return Task.FromResult(false);
-        }
-        public Task<bool> AddToggleAsync<TToggle>(string featureName, string applicationName, IDictionary<string, object> parameterValues)
-            where TToggle : IToggle
-        {
-            Log.StoreIsReadOnly(_logger);
-            return Task.FromResult(false);
-        }
+
         public Task<Feature> FindFeatureAsync(string featureName, string applicationName)
         {
             var feature = GetFeatureFromConfiguration(featureName, applicationName);
@@ -55,62 +47,56 @@ namespace Esquio.Configuration.Store
             Log.FeatureNotExist(_logger, featureName, applicationName);
             return Task.FromResult<Feature>(null);
         }
-        public Task<IEnumerable<string>> FindTogglesTypesAsync(string featureName, string applicationName)
+        public Task AddProductAsync(Product product)
         {
-            var feature = GetFeatureFromConfiguration(featureName, applicationName);
-
-            if (feature != null)
-            {
-                var types = feature.Toggles
-                    .Select(t => t.Type);
-
-                return Task.FromResult(types);
-            }
-            Log.FeatureNotExist(_logger, featureName, applicationName);
-            return Task.FromResult(Enumerable.Empty<string>());
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
         }
-        public Task<object> GetToggleParameterValueAsync<TToggle>(string featureName, string applicationName, string parameterName) where TToggle : IToggle
+
+        public Task DeleteProductAsync(Product product)
         {
-            var feature = GetFeatureFromConfiguration(featureName, applicationName);
-
-            if (feature != null)
-            {
-                var toggle = feature.Toggles
-                    .Where(t => t.Type.Contains(typeof(TToggle).FullName))
-                    .SingleOrDefault();
-
-                if (toggle != null)
-                {
-                    var parameterValue = toggle.Parameters
-                        .SingleOrDefault(t => t.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
-
-                    if (parameterName != null)
-                    {
-                        return Task.FromResult<object>(parameterValue.Value);
-                    }
-                }
-
-                Log.ParameterNotExist(_logger, featureName, applicationName, parameterName);
-                return Task.FromResult<object>(null);
-            }
-            Log.FeatureNotExist(_logger, featureName, applicationName);
-            return Task.FromResult<object>(null);
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
         }
+        public Task UpdateProductAsync(Product product)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+        public Task AddFeatureAsync(string applicationName, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+        public Task UpdateFeatureAsync(string product, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+
+        public Task DeleteFeatureAsync(string product, Feature feature)
+        {
+            Log.StoreIsReadOnly(_logger);
+            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
+        }
+
+
         private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string applicationName)
         {
             Log.FindFeature(_logger, featureName, applicationName);
 
-            var application = _options?.Value
+            var product = _options?.Value
                 .Products
                 .FirstOrDefault(a => a.Name.Equals(applicationName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(applicationName));
 
-            if (application != null)
+            if (product != null)
             {
-                return application
+                return product
                     .Features
                     .SingleOrDefault(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
             }
             return null;
         }
+
     }
 }

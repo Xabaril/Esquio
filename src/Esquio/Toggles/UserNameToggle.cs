@@ -1,5 +1,6 @@
 using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +11,9 @@ namespace Esquio.Toggles
     public class UserNameToggle
         : IToggle
     {
-        const string SPLIT_SEPARATOR = ";";
         const string Users = nameof(Users);
+
+        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IFeatureStore _featureStore;
 
@@ -27,16 +29,18 @@ namespace Esquio.Toggles
 
             if (currentUserName != null)
             {
-                var activeUserNames = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, Users);
+                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var toggle = feature.GetToggle(this.GetType().FullName);
+                var activeUserNames = toggle.GetParameterValue<string>(Users);
 
-                if (activeUserNames != null &&
-                    activeUserNames.Split(SPLIT_SEPARATOR).Contains(currentUserName, StringComparer.CurrentCultureIgnoreCase))
+                if (activeUserNames != null)
                 {
-                    return true;
+                    var tokenizer = new StringTokenizer(activeUserNames, SPLIT_SEPARATOR);
+
+                    return tokenizer.Contains(
+                        currentUserName, StringSegmentComparer.OrdinalIgnoreCase);
                 }
             }
-
             return false;
         }
     }

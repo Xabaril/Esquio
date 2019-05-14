@@ -21,15 +21,16 @@ namespace Esquio.Toggles
         }
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var percentage = (int)await _featureStore
-                  .GetToggleParameterValueAsync<RolloutUserNameToggle>(featureName, applicationName, Percentage);
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var percentage = toggle.GetParameterValue<int>(Percentage);
 
             var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync() ?? AnonymoysUser;
 
             var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
 
-            return assignedPartition <= ((Partitions * percentage) / 100);
+            return assignedPartition <= (Partitions * percentage / 100);
         }
     }
 }

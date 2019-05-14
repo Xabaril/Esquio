@@ -11,7 +11,7 @@ namespace Esquio.Toggles
     public class UserPreviewToggle
          : IToggle
     {
-        const string SPLIT_SEPARATOR = ";";
+        const char SPLIT_SEPARATOR = ';';
         const string PreviewUsers = nameof(PreviewUsers);
         const string EnabledUsers = nameof(EnabledUsers);
 
@@ -30,11 +30,10 @@ namespace Esquio.Toggles
 
             if (currentUserName != null)
             {
-                var previewUsers = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, PreviewUsers);
-
-                var enabledUsers = (string)await _featureStore
-                    .GetToggleParameterValueAsync<UserNameToggle>(featureName, applicationName, EnabledUsers);
+                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var toggle = feature.GetToggle(this.GetType().FullName);
+                var previewUsers = toggle.GetParameterValue<string>(PreviewUsers);
+                var enabledUsers = toggle.GetParameterValue<string>(EnabledUsers);
 
                 if (previewUsers != null 
                     &&

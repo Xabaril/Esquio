@@ -20,7 +20,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             var tagHelper = new FeatureTagHelper(featureService, logger)
             {
-                FeatureName = "Feature-1"
+                Names = "Feature-1"
             };
 
             var context = CreateTagHelperContext();
@@ -123,7 +123,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             var tagHelper = new FeatureTagHelper(featureService, logger)
             {
-                FeatureName = "Feature-1"
+                Names = "Feature-1"
             };
 
             var context = CreateTagHelperContext();

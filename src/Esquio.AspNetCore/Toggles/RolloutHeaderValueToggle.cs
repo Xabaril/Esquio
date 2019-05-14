@@ -25,16 +25,12 @@ namespace Esquio.AspNetCore.Toggles
         }
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var headerName = (string)await _featureStore
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(featureName, applicationName, HeaderName);
-
-            var percentage = (int)await _featureStore
-                .GetToggleParameterValueAsync<RolloutHeaderValueToggle>(featureName, applicationName, Percentage);
-
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var headerName = toggle.GetParameterValue<string>(HeaderName);
+            var percentage = toggle.GetParameterValue<int>(Percentage);
             var values = _httpContextAccessor.HttpContext.Request.Headers[headerName];
-
             var headerValue = values != StringValues.Empty ? values.First() : "NoHeaderValue";
-
             var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
 
             return assignedPartition <= ((Partitions * percentage) / 100);

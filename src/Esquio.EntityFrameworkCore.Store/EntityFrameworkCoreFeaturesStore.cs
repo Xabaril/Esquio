@@ -1,9 +1,9 @@
 ﻿using Esquio.Abstractions;
+using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,148 +16,124 @@ namespace Esquio.EntityFrameworkCore.Store
 
         public EntityFrameworkCoreFeaturesStore(ILogger<EntityFrameworkCoreFeaturesStore> logger, StoreDbContext dbContext)
         {
+            Ensure.Argument.NotNull(logger, nameof(logger));
+            Ensure.Argument.NotNull(dbContext, nameof(dbContext));
+
             _logger = logger;
             _dbContext = dbContext;
         }
 
         public bool IsReadOnly => false;
 
-        public async Task<bool> AddFeatureAsync(string featureName, string applicationName, bool enabled = false)
+        public async Task<Product> FindProductAsync(string name)
         {
-            var application = new ApplicationEntity
-            {
-                Name = applicationName,
-                Description = applicationName
-            };
-
-            var feature = new FeatureEntity
-            {
-                Name = featureName,
-                CreatedOn = DateTime.UtcNow,
-                Enabled = enabled,
-                Description = featureName
-            };
-
-            application.Features.Add(feature);
-
-            await _dbContext.Applications.AddAsync(application);
-
-            return await _dbContext.SaveChangesAsync() > 0;
+            var productEntity = await GetProductEntityOrThrow(name);
+            return productEntity.To();
         }
 
-        public async Task<bool> AddFeatureAsync(string applicationName, Feature feature)
+        public async Task AddProductAsync(Product product)
         {
-            var application = new ApplicationEntity
-            {
-                Name = applicationName,
-                Description = applicationName
-            };
+            Ensure.Argument.NotNull(product, nameof(product));
 
-            application.Features.Add(feature.To());
-
-            await _dbContext.Applications.AddAsync(application);
-
-            return await _dbContext.SaveChangesAsync() > 0;
+            await _dbContext.Products.AddAsync(product.To());
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> AddToggleAsync<TToggle>(string featureName, string applicationName, IDictionary<string, object> parameterValues) where TToggle : IToggle
+        public async Task UpdateProductAsync(Product product)
         {
-            var feature = await FindFeatureEntityAsync(featureName, applicationName);
+            Ensure.Argument.NotNull(product, nameof(product));
 
-            if (feature == null)
-            {
-                return false;
-            }
-
-            var toggle = new ToggleEntity
-            {
-                FeatureId = feature.Id,
-                Parameters = parameterValues
-                    .Select(p =>
-                        new ParameterEntity
-                        {
-                            Name = p.Key,
-                            Value = p.Value.ToString()
-                        })
-                    .ToList()
-            };
-
-            await _dbContext.AddAsync(toggle);
-
-            return await _dbContext.SaveChangesAsync() > 0;
+            var productEntity = await GetProductEntityOrThrow(product.Name);
+            productEntity.CopyFrom(product);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string applicationName)
+        public async Task DeleteProductAsync(Product product)
         {
-            FeatureEntity feature = await FindFeatureEntityAsync(featureName, applicationName);
+            Ensure.Argument.NotNull(product, nameof(product));
 
-            if (feature != null)
-            {
-                return feature.To();
-            }
-
-            return null;
+            var productEntity = await GetProductEntityOrThrow(product.Name);
+            _dbContext.Remove(productEntity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<string>> FindTogglesTypesAsync(string featureName, string applicationName)
+        public async Task AddFeatureAsync(string productName, Feature feature)
         {
-            var toggles = await _dbContext
-                .Applications
-                .Where(a => a.Name == applicationName)
-                .Join(_dbContext.Features,
-                    a => a.Id,
-                    f => f.ApplicationId,
-                    (a, f) => f)
-                .Where(f => f.Name == featureName)
-                .Join(_dbContext.Toggles,
-                    f => f.Id,
-                    t => t.FeatureId,
-                    (f,t) => t)
-                .Select(t => t.Type)
-                .ToListAsync();
+            Ensure.Argument.NotNullOrEmpty(productName);
+            Ensure.Argument.NotNull(feature);
 
-            return toggles.AsEnumerable();
+            var productEntity = await GetProductEntityOrThrow(productName);
+            productEntity.Features.Add(feature.To());
+
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<object> GetToggleParameterValueAsync<TToggle>(string featureName, string applicationName, string parameterName) where TToggle : IToggle
+        public async Task UpdateFeatureAsync(string product, Feature feature)
         {
-            var parameter = await _dbContext
-                .Applications
-                .Where(a => a.Name == applicationName)
-                .Join(_dbContext.Features,
-                    a => a.Id,
-                    f => f.ApplicationId,
-                    (a, f) => f)
-                .Where(f => f.Name == featureName)
-                .Join(_dbContext.Toggles,
-                    f => f.Id,
-                    t => t.FeatureId,
-                    (f, t) => t)
-                .Where(t => t.Type == typeof(TToggle).FullName)
-                .Join(_dbContext.Parameters,
-                    t => t.Id,
-                    p => p.ToggleId,
-                    (t, p) => p)
-                .SingleOrDefaultAsync(p => p.Name == parameterName);
+            Ensure.Argument.NotNullOrEmpty(product);
+            Ensure.Argument.NotNull(feature);
 
-            if (parameter != null)
+            await DeleteFeatureAsync(product, feature);
+            await AddFeatureAsync(product, feature);
+        }
+
+        public async Task DeleteFeatureAsync(string product, Feature feature)
+        {
+            Ensure.Argument.NotNullOrEmpty(product);
+            Ensure.Argument.NotNull(feature);
+
+            var featureEntity = await GetFeatureEntityOrThrow(feature.Name, product);
+            _dbContext.Remove(featureEntity);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName)
+        {
+            var featureEntity = await GetFeatureEntityOrThrow(featureName, productName);
+
+            if (featureEntity != null)
             {
-                return parameter.Value;
+                return featureEntity.To();
             }
 
             return null;
         }
 
-        private async Task<FeatureEntity> FindFeatureEntityAsync(string featureName, string applicationName)
+        private async Task<FeatureEntity> GetFeatureEntityOrThrow(string featureName, string productName)
         {
-            return await _dbContext
-                .Applications
-                .Where(a => a.Name == applicationName)
+            var featureEntity = await _dbContext
+                .Products
+                .Where(a => a.Name == productName)
                 .Join(_dbContext.Features,
                     a => a.Id,
-                    f => f.ApplicationId,
+                    f => f.ProductId,
                     (a, f) => f)
+                .Include(f => f.Toggles)
+                .ThenInclude(t => t.Parameters)
                 .SingleOrDefaultAsync(f => f.Name == featureName);
+
+            if (featureEntity == null)
+            {
+                Log.FeatureNotExist(_logger, featureName, productName);
+                throw new EsquioException($"The feature with name ${featureName} for product ${productName} does not exist.");
+            }
+
+            return featureEntity;
         }
+
+        private async Task<ProductEntity> GetProductEntityOrThrow(string productName)
+        {
+            var productEntity = await _dbContext.Products.SingleOrDefaultAsync(p => p.Name == productName);
+
+            if (productEntity == null)
+            {
+                Log.ProductNotExist(_logger, productName);
+                throw new EsquioException($"The product with name {productName} not exists.");
+            }
+
+            return productEntity;
+        }
+
     }
 }

@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace Esquio
 {
-
     /// <summary>
     /// Will throw exceptions when conditions are not satisfied.
     /// </summary>

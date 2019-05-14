@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
-    <NetStandardTargetVersion>netstandard2.1</NetStandardTargetVersion>
+    <NetStandardTargetVersion>netstandard2.0</NetStandardTargetVersion>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
     <NetTestSdk>16.0.1</NetTestSdk>
     <LangVersion>preview</LangVersion>
@@ -15,43 +15,39 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-
   <PropertyGroup Label="Package Versions">
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview4.19216.2</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsloggingabstractions>3.0.0-preview4.19216.2</microsoftextensionsloggingabstractions>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview4.19216.2</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsoptions>3.0.0-preview4.19216.2</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationbinder>3.0.0-preview4.19216.2</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsdependencyinjection>3.0.0-preview4.19216.2</microsoftextensionsdependencyinjection>
-    <microsoftextensionslogging>3.0.0-preview4.19216.2</microsoftextensionslogging>
-    <microsoftextensionsconfigurationjson>3.0.0-preview4.19216.2</microsoftextensionsconfigurationjson>
-    <microsoftextensionshosting>3.0.0-preview4.19216.2</microsoftextensionshosting>
-    <microsoftentityframeworkcore>3.0.0-preview4.19216.3</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.0.0-preview4.19216.3</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.0.0-preview4.19216.3</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoresqlite>3.0.0-preview4.19216.3</microsoftentityframeworkcoresqlite>
-    <microsoftentityframeworkcoreinmemory>3.0.0-preview4.19216.3</microsoftentityframeworkcoreinmemory>
-    <npgsqlentityframeworkcorepostgresql>3.0.0-preview4</npgsqlentityframeworkcorepostgresql>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview5.19227.9</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsloggingabstractions>3.0.0-preview5.19227.9</microsoftextensionsloggingabstractions>
+    <microsoftextensionslogging>3.0.0-preview5.19227.9</microsoftextensionslogging>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview5.19227.9</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationbinder>3.0.0-preview5.19227.9</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0-preview5.19227.9</microsoftextensionsconfigurationjson>
+    <microsoftextensionshosting>3.0.0-preview5.19227.9</microsoftextensionshosting>
+    <microsoftextensionsprimitives>3.0.0-preview5.19227.9</microsoftextensionsprimitives>
 
-    <microsoftaspnetcore>3.0.0-preview4-19121-14</microsoftaspnetcore>
-    <microsoftaspnetcorehttpabstractions>3.0.0-preview4-19121-14</microsoftaspnetcorehttpabstractions>
-    <microsoftaspnetcorerouting>3.0.0-preview4-19121-14</microsoftaspnetcorerouting>
-    <microsoftaspnetcoremvcabstractions>3.0.0-preview4-19121-14</microsoftaspnetcoremvcabstractions>
-    <microsoftaspnetcoremvccore>3.0.0-preview4-19121-14</microsoftaspnetcoremvccore>
-    <microsoftaspnetcorerazor>3.0.0-preview4-19121-14</microsoftaspnetcorerazor>
+    <microsoftentityframeworkcore>3.0.0-preview5.19227.1</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.0.0-preview5.19227.1</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0-preview5.19227.1</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview5.19227.1</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview5.19227.1</microsoftentityframeworkcoresqlite>
+    <npgsqlentityframeworkcorepostgresql>3.0.0-preview5</npgsqlentityframeworkcorepostgresql>
+
+    <microsoftnetcoreapp>3.0.0-preview5-19227-01</microsoftnetcoreapp>
+    
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview5-19227-01</microsoftaspnetcoremvcnewtonsoftjson>
+
+    <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
     <fluentassertions>5.6.0</fluentassertions>
-    <microsoftaspnetcoretesthost>3.0.0-preview4-19216-03</microsoftaspnetcoretesthost>
   </PropertyGroup>
-
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>
   </PropertyGroup>
-
   <PropertyGroup Label="Esquio Package Versions">
   </PropertyGroup>
 </Project>

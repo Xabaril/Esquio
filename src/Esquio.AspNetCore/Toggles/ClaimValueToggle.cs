@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Esquio.AspNetCore.Toggles
     {
         const string ClaimType = nameof(ClaimType);
         const string ClaimValues = nameof(ClaimValues);
-        const char SPLIT_CHARACTER = ';';
+        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IFeatureStore _featureStore;
@@ -24,11 +25,10 @@ namespace Esquio.AspNetCore.Toggles
         }
         public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
         {
-            var claimType = ((string)await _featureStore
-                .GetToggleParameterValueAsync<ClaimValueToggle>(featureName, applicationName, ClaimType));
-
-            var allowedValues = ((string)await _featureStore
-                .GetToggleParameterValueAsync<ClaimValueToggle>(featureName, applicationName, ClaimValues));
+            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var toggle = feature.GetToggle(this.GetType().FullName);
+            var claimType = toggle.GetParameterValue<string>(ClaimType);
+            var allowedValues = toggle.GetParameterValue<string>(ClaimValues);
 
             if (claimType != null
                 &&
@@ -42,9 +42,10 @@ namespace Esquio.AspNetCore.Toggles
 
                     if (value != null)
                     {
-                        return allowedValues
-                           .Split(SPLIT_CHARACTER)
-                           .Contains(value, StringComparer.InvariantCultureIgnoreCase);
+                        var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
+
+                        return tokenizer.Contains(
+                            value, StringSegmentComparer.OrdinalIgnoreCase);
                     }
                 }
             }

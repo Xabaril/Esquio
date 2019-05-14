@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+    <aside class="panel js-panel">
+        @* Temporal panel without logic meanwhile we have real toggles for users *@
+
+        <h2 class="panel-title">@Localizer["Title"]</h2>
+        <p class="panel-description">@Localizer["Description"]</p>
+
+        <span class="panel-close js-panel-trigger">×</span>
+
+        <ul class="panel-items">
+            <li class="panel-item">
+                <span class="panel-name">@Localizer["Feature_Dark_Name"]</span>
+                <span class="panel-text">@Localizer["Feature_Dark_Text"]</span>
+                <div class="panel-switch custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="checked">
+                    <label class="custom-control-label" for="customSwitch1"></label>
+                </div>
+            </li>
+
+            <li class="panel-item">
+                <span class="panel-name">@Localizer["Feature_Animations_Name"]</span>
+                <span class="panel-text">@Localizer["Feature_Animations_Text"]</span>
+                <div class="panel-switch custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                    <label class="custom-control-label" for="customSwitch2"></label>
+                </div>
+            </li>
+        </ul>
+    </aside>
