@@ -70,16 +70,16 @@ if (-Not (Test-Path 'env:APPVEYOR')) {
 }
 
 if ($suffix -eq "") {
-    exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
-	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
-	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
-	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
+    exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o .\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o .\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o .\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o .\artifacts --include-symbols --no-build }
 }
 
 else {
-    exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
-	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
-	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
-	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
+    exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
 }
 
