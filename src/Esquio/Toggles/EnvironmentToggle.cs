@@ -15,8 +15,8 @@ namespace Esquio.Toggles
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
-        private readonly IFeatureStore _featureStore;
-        public EnvironmentToggle(IEnvironmentNameProviderService environmentNameProviderService, IFeatureStore featureStore)
+        private readonly IRuntimeFeatureStore _featureStore;
+        public EnvironmentToggle(IEnvironmentNameProviderService environmentNameProviderService, IRuntimeFeatureStore featureStore)
         {
             _environmentNameProviderService = environmentNameProviderService ?? throw new ArgumentNullException(nameof(environmentNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));

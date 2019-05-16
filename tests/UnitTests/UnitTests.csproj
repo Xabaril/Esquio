@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(microsoftnetcoreapp)"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(microsoftaspnetcoretesthost)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(microsoftextensionshosting)" />

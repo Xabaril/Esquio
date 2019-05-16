@@ -5,9 +5,19 @@ namespace Esquio.EntityFrameworkCore.Store.Diagnostics
 {
     static class Log
     {
-        public static void ProductNotExist(ILogger logger, string productName)
+        public static void FindFeature(ILogger logger, string featureName, string productName)
         {
-            _productNotExist(logger, productName ?? "(default product)", null);
+            _findFeature(logger, featureName, productName ?? "(default product)", null);
+        }
+
+        public static void FindUserPreviewFeatures(ILogger logger, string productName)
+        {
+            _findUserPreviewFeatures(logger, productName ?? "(default product)", null);
+        }
+
+        public static void EnablingUserOnPreviewFeature(ILogger logger, string featureName, string userName, string productName)
+        {
+            _enablingUserNameOnPreviewFeature(logger, userName, featureName, productName ?? "(default product)", null);
         }
 
         public static void FeatureNotExist(ILogger logger, string featureName, string productName)
@@ -15,33 +25,35 @@ namespace Esquio.EntityFrameworkCore.Store.Diagnostics
             _featureNotExist(logger, featureName, productName ?? "(default product)", null);
         }
 
-        public static void ParameterNotExist(ILogger logger, string featureName, string productName, string parameterName)
+        public static void FeatureIsNotPreviewOrNotExist(ILogger logger, string featureName, string productName)
         {
-            _parameterNotExist(logger, featureName, productName ?? "(default product)", parameterName, null);
+            _featureNotExistOrIsNotPreview(logger, featureName, productName ?? "(default product)", null);
         }
-
-        public static void FindFeature(ILogger logger, string featureName, string productName)
-        {
-            _findFeature(logger, featureName, productName ?? "(default product)", null);
-        }
-        private static readonly Action<ILogger, string, Exception> _productNotExist = LoggerMessage.Define<string>(
-           LogLevel.Warning,
-           EventIds.ProductNotExist,
-           "The product with name {productName} not exists.");
 
         private static readonly Action<ILogger, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotExist,
             "The feature with name {featureName} is not configured for product {productName}.");
 
-        private static readonly Action<ILogger, string, string, string, Exception> _parameterNotExist = LoggerMessage.Define<string, string, string>(
-            LogLevel.Warning,
-            EventIds.FeatureNotExist,
-            "The feature with name {featureName} for product {productName} not contains a parameter with name {parameterName} for specified Toggle.");
+        private static readonly Action<ILogger, string, string, Exception> _featureNotExistOrIsNotPreview = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.FeatureIsNotPreviewOrNotExist,
+          "The feature with name {featureName} is not a User Preview feature or is not configured for product {productName}.");
 
         private static readonly Action<ILogger, string, string, Exception> _findFeature = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FindFeature,
-            "The store is trying to find feature {featureName} for product {productName} on the store.");
+            "Finding feature with name {featureName} for product {productName}.");
+
+        private static readonly Action<ILogger, string, Exception> _findUserPreviewFeatures = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            EventIds.FindUserPreviewFeatures,
+            "Finding User Preview features for product {productName}.");
+
+        private static readonly Action<ILogger, string, string, string, Exception> _enablingUserNameOnPreviewFeature = LoggerMessage.Define<string, string, string>(
+            LogLevel.Debug,
+            EventIds.EnablingUserOnPreviewFeature,
+            "Enabling user {userName} on feature {featureName} for product {productName}.");
+
     }
 }

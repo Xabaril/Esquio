@@ -13,9 +13,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
-            builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
-            builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.TryAddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+            builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
+            builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
+            builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
             builder.Services
                 .TryAddSingleton<IMvcFallbackService>(sp =>
                 {

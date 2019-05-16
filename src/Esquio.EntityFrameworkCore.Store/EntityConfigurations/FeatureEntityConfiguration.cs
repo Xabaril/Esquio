@@ -1,4 +1,5 @@
-﻿using Esquio.EntityFrameworkCore.Store.Options;
+﻿using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,12 +17,21 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
         public void Configure(EntityTypeBuilder<Entities.FeatureEntity> builder)
         {
             builder.ToTable(storeOption.Features);
-            builder.HasKey(x => x.Id);
-            builder.HasIndex(x => x.Name).IsUnique();
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000);
-            builder.HasMany(x => x.Toggles).WithOne(x => x.Feature).HasForeignKey(x => x.FeatureId);
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+            builder.HasIndex(p => p.Name)
+                .IsUnique();
+            builder.Property(p => p.Description)
+                .IsRequired(false)
+                .HasMaxLength(2000);
+            builder.Property(p => p.Enabled)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.HasOne(f => f.ProductEntity)
+                .WithMany(p => p.Features)
+                .HasForeignKey(f => f.ProductEntityId);
         }
     }
 }

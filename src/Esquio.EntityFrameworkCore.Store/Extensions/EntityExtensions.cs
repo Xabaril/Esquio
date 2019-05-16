@@ -1,18 +1,16 @@
-﻿using Esquio.Model;
+﻿using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.Model;
 using System.Linq;
 
-namespace Esquio.Configuration.Store.Configuration
+namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    internal class FeatureConfiguration
+    public static class EntityExtensions
     {
-        public string Name { get; set; }
-        public bool Enabled { get; set; }
-        public ToggleConfiguration[] Toggles { get; set; }
-        public Feature To()
+        public static Feature To(this FeatureEntity featureEntity)
         {
-            var feature = new Feature(Name);
+            var feature = new Feature(featureEntity.Name);
 
-            if (Enabled)
+            if (featureEntity.Enabled)
             {
                 feature.Enabled();
             }
@@ -21,7 +19,7 @@ namespace Esquio.Configuration.Store.Configuration
                 feature.Disabled();
             }
 
-            foreach (var toggleConfiguration in Toggles)
+            foreach (var toggleConfiguration in featureEntity.Toggles)
             {
                 var toggle = new Toggle(toggleConfiguration.Type);
                 toggle.AddParameters(toggleConfiguration.Parameters.Select(p => new Parameter(p.Name, p.Value)));

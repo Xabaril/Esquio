@@ -13,9 +13,9 @@ namespace Esquio.Toggles
         internal const string FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
         const string From = nameof(From);
         const string To = nameof(To);
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
 
-        public FromToToggle(IFeatureStore featureStore)
+        public FromToToggle(IRuntimeFeatureStore featureStore)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }

@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTest
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{49E15DAE-6733-4E02-80BA-BF0407761A68}"
 	ProjectSection(SolutionItems) = preProject
+		build.ps1 = build.ps1
 		build\dependencies.props = build\dependencies.props
 		NuGet.config = NuGet.config
 	EndProjectSection
@@ -29,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "samples\WebApp\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.EntityFrameworkCore.Store", "src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj", "{56731D44-11AE-41EA-A5A8-3713C961F3CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "samples\Worker\Worker.csproj", "{64A0E5B7-2126-4366-A583-50618E6000E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "samples\Worker\Worker.csproj", "{64A0E5B7-2126-4366-A583-50618E6000E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -15,10 +15,10 @@ namespace Esquio.AspNetCore.Toggles
         const string HeaderName = nameof(HeaderName);
         const string Percentage = nameof(Percentage);
         const int Partitions = 10;
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RolloutHeaderValueToggle(IFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public RolloutHeaderValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));

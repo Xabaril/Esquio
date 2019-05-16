@@ -5,12 +5,13 @@ using Esquio.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esquio.Configuration.Store
 {
-    internal class ConfigurationFeatureStore : IFeatureStore
+    internal class ConfigurationFeatureStore : IRuntimeFeatureStore
     {
         private readonly ILogger<ConfigurationFeatureStore> _logger;
         private readonly IOptionsSnapshot<EsquioConfiguration> _options;
@@ -20,74 +21,26 @@ namespace Esquio.Configuration.Store
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public Task<Product> FindProductAsync(string name)
-        {
-            var product = _options?.Value
-                .Products
-                .FirstOrDefault(a => a.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(name));
 
-            return Task.FromResult(product.To());
-        }
-
-        public Task<Feature> FindFeatureAsync(string featureName, string applicationName)
+        public Task<Feature> FindFeatureAsync(string featureName, string productName)
         {
-            var feature = GetFeatureFromConfiguration(featureName, applicationName);
+            var feature = GetFeatureFromConfiguration(featureName, productName);
 
             if (feature != null)
             {
                 return Task.FromResult(feature.To());
             }
-            Log.FeatureNotExist(_logger, featureName, applicationName);
+            Log.FeatureNotExist(_logger, featureName, productName);
             return Task.FromResult<Feature>(null);
         }
-        public Task AddProductAsync(Product product)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
 
-        public Task DeleteProductAsync(Product product)
+        private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string productName)
         {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
-        public Task UpdateProductAsync(Product product)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
-        public Task AddFeatureAsync(string applicationName, Feature feature)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
-        public Task UpdateFeatureAsync(string product, Feature feature)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
-
-        public Task DeleteFeatureAsync(string product, Feature feature)
-        {
-            Log.StoreIsReadOnly(_logger);
-            throw new EsquioException($"Store {nameof(ConfigurationFeatureStore)} is read only, this action can't be performed.");
-        }
-
-
-        private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string applicationName)
-        {
-            Log.FindFeature(_logger, featureName, applicationName);
+            Log.FindFeature(_logger, featureName, productName);
 
             var product = _options?.Value
                 .Products
-                .FirstOrDefault(a => a.Name.Equals(applicationName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(applicationName));
+                .FirstOrDefault(a => a.Name.Equals(productName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(productName));
 
             if (product != null)
             {

@@ -37,7 +37,7 @@ echo "build: Package version suffix is $suffix"
 echo "build: Build version suffix is $buildSuffix"
 
 exec { & dotnet build Esquio.sln -c Release --version-suffix=$buildSuffix -v q /nologo }
-
+	
 echo "Running unit tests"
 
 try {
@@ -49,11 +49,11 @@ Push-Location -Path .\tests\UnitTests
 }
 
 
-# if (-Not (Test-Path 'env:APPVEYOR')) {
-# 	exec { & docker-compose up -d }
-# }
+if (-Not (Test-Path 'env:APPVEYOR')) {
+	exec { & docker-compose -f build\docker-compose-infrastructure.yml up -d }
+}
 
-# echo "compose up done"
+echo "compose up done"
 
 echo "Running functional tests"
 
@@ -65,12 +65,21 @@ Push-Location -Path .\tests\FunctionalTests
         Pop-Location
 }
 
+if (-Not (Test-Path 'env:APPVEYOR')) {
+	exec { & docker-compose -f build\docker-compose-infrastructure.yml down }
+}
 
 if ($suffix -eq "") {
     exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
+	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build }
 }
 
 else {
     exec { & dotnet pack .\src\Esquio\Esquio.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
+	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o ..\..\artifacts --include-symbols --no-build --version-suffix=$suffix }
 }
 

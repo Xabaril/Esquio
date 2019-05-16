@@ -15,9 +15,9 @@ namespace Esquio.Toggles
 
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
         private readonly IUserNameProviderService _userNameProviderService;
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
 
-        public UserNameToggle(IUserNameProviderService userNameProviderService, IFeatureStore featureStore)
+        public UserNameToggle(IUserNameProviderService userNameProviderService, IRuntimeFeatureStore featureStore)
         {
             _userNameProviderService = userNameProviderService ?? throw new ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));

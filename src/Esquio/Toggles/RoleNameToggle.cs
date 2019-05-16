@@ -14,9 +14,9 @@ namespace Esquio.Toggles
         static char[] SPLIT_SEPARATOR = new char[] { ';' };
         const string Roles = nameof(Roles);
         private readonly IRoleNameProviderService _roleNameProviderService;
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
 
-        public RoleNameToggle(IRoleNameProviderService roleNameProviderService, IFeatureStore featureStore)
+        public RoleNameToggle(IRoleNameProviderService roleNameProviderService, IRuntimeFeatureStore featureStore)
         {
             _roleNameProviderService = roleNameProviderService ?? throw new ArgumentNullException(nameof(roleNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));

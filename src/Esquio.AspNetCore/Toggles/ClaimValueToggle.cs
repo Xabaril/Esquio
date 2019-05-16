@@ -17,8 +17,8 @@ namespace Esquio.AspNetCore.Toggles
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IFeatureStore _featureStore;
-        public ClaimValueToggle(IHttpContextAccessor httpContextAccessor, IFeatureStore store)
+        private readonly IRuntimeFeatureStore _featureStore;
+        public ClaimValueToggle(IHttpContextAccessor httpContextAccessor, IRuntimeFeatureStore store)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));

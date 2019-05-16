@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.ConfigureDbContext?.Invoke(optionsAction);
             });
 
-            builder.Services.AddScoped<IFeatureStore, EntityFrameworkCoreFeaturesStore>();
+            builder.Services.AddScoped<IRuntimeFeatureStore, EntityFrameworkCoreFeaturesStore>();
 
             return builder;
         }

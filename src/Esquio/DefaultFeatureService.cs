@@ -9,10 +9,10 @@ namespace Esquio
     internal sealed class DefaultFeatureService
         : IFeatureService
     {
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
         private readonly ILogger<DefaultFeatureService> _logger;
-        public DefaultFeatureService(IFeatureStore store, IToggleTypeActivator toggeActivator, ILogger<DefaultFeatureService> logger)
+        public DefaultFeatureService(IRuntimeFeatureStore store, IToggleTypeActivator toggeActivator, ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));

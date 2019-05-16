@@ -8,7 +8,7 @@ namespace UnitTests.Builders
 
         public FeatureBuilder(string name)
         {
-            feature = new Feature(name, name);
+            feature = new Feature(name);
         }
 
         public FeatureBuilder AddOne(Toggle toggle)
@@ -28,11 +28,6 @@ namespace UnitTests.Builders
             return this;
         }
 
-        public FeatureBuilder Preview()
-        {
-            feature.MarkAsPreview();
-            return this;
-        }
 
         public Feature Build()
         {

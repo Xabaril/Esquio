@@ -11,7 +11,7 @@ namespace FunctionalTests.Esquio.Configuration.Store
 {
     public class Fixture
     {
-        public IFeatureStore FeatureStore { get; }
+        public IRuntimeFeatureStore FeatureStore { get; }
 
         public Fixture()
         {

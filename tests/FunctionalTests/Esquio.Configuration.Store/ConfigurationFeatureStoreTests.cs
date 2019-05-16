@@ -19,13 +19,6 @@ namespace FunctionalTests.Esquio.Configuration.Store
         }
 
         [Fact]
-        public void return_false_when_try_to_add_new_feature()
-        {
-            Action act = () => _fixture.FeatureStore.AddFeatureAsync("product", new Feature("featureTest")).RunSynchronously();
-
-            act.Should().Throw<EsquioException>();
-        }
-        [Fact]
         public async Task return_null_when_find_a_non_existing_feature()
         {
             (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name"))

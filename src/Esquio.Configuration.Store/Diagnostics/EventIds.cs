@@ -7,5 +7,6 @@ namespace Esquio.Configuration.Store.Diagnostics
         public static readonly EventId StoreIsReadOnly = new EventId(200, nameof(StoreIsReadOnly));
         public static readonly EventId FeatureNotExist = new EventId(201, nameof(FeatureNotExist));
         public static readonly EventId FindFeature = new EventId(220, nameof(FindFeature));
+        public static readonly EventId FindAllPreviewFeatures = new EventId(221, nameof(FindAllPreviewFeatures));
     }
 }

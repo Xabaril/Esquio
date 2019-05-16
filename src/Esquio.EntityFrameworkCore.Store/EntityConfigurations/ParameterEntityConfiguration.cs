@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
-    internal class ParameterEntityConfiguration : IEntityTypeConfiguration<ParameterEntity>
+    internal class ParameterEntityTypeConfiguration : IEntityTypeConfiguration<ParameterEntity>
     {
         private readonly StoreOptions storeOptions;
 
-        public ParameterEntityConfiguration(StoreOptions storeOptions)
+        public ParameterEntityTypeConfiguration(StoreOptions storeOptions)
         {
             this.storeOptions = storeOptions;
         }
@@ -18,9 +18,14 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
         {
             builder.ToTable(storeOptions.Parameters);
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Value).HasMaxLength(1000).IsRequired();
-            builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            builder.Property(p => p.Name)
+               .IsRequired()
+               .HasMaxLength(200);
+            builder.Property(p => p.Value)
+              .IsRequired()
+              .HasMaxLength(4000);
+            builder.HasIndex(p => p.Name)
+                .IsUnique();
         }
     }
 }

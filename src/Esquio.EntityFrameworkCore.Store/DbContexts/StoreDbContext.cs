@@ -16,6 +16,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<FeatureEntity> Features { get; set; }
         public DbSet<ToggleEntity> Toggles { get; set; }
+        public DbSet<TagEntity> Tags { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -12,9 +12,9 @@ namespace Esquio.Toggles
         const string AnonymoysUser = nameof(AnonymoysUser);
         const int Partitions = 10;
         private readonly IUserNameProviderService _userNameProviderService;
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
 
-        public RolloutUserNameToggle(IUserNameProviderService userNameProviderService, IFeatureStore featureStore)
+        public RolloutUserNameToggle(IUserNameProviderService userNameProviderService, IRuntimeFeatureStore featureStore)
         {
             _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));

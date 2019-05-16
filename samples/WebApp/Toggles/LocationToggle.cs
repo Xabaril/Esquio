@@ -11,11 +11,11 @@ namespace WebApp.Toggles
     {
         const string Countries = nameof(Countries);
 
-        private readonly IFeatureStore _featureStore;
+        private readonly IRuntimeFeatureStore _featureStore;
         private readonly ILocationProviderService _locationProviderService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LocationToggle(IFeatureStore featureStore, IHttpContextAccessor httpContextAccessor, ILocationProviderService locationProviderService)
+        public LocationToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor, ILocationProviderService locationProviderService)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException();
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));

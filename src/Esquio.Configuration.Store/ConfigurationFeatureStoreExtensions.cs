@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services
                 .AddOptions()
                 .Configure<EsquioConfiguration>(configuration.GetSection(key))
-                .AddScoped<IFeatureStore, ConfigurationFeatureStore>();
+                .AddScoped<IRuntimeFeatureStore, ConfigurationFeatureStore>();
 
             return builder;
         }

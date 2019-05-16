@@ -1,4 +1,5 @@
-﻿using Esquio.EntityFrameworkCore.Store.Options;
+﻿using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,13 +16,16 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 
         public void Configure(EntityTypeBuilder<Entities.ProductEntity> builder)
         {
-            builder.ToTable(storeOption.Applications);
-            builder.HasKey(x => x.Id);
-            builder.HasIndex(x => x.Name).IsUnique();
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000);
-            builder.HasMany(x => x.Features).WithOne(x => x.Product).HasForeignKey(x => x.ProductId);
+            builder.ToTable(storeOption.Products);
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+            builder.HasIndex(p => p.Name)
+                .IsUnique();
+            builder.Property(p => p.Description)
+                .IsRequired(false)
+                .HasMaxLength(2000);
         }
     }
 }
