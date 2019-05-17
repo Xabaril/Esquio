@@ -77,7 +77,7 @@ namespace WebApp
 
             app.UseEndpoints(routes =>
             {
-                //routes.MapEsquio("esquio");
+                routes.MapEsquio(pattern: "esquio");
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");

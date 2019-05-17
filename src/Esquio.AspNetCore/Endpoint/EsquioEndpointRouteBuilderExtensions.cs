@@ -6,7 +6,7 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class EsquioEndpointRouteBuilderExtensions
     {
-        public static IEndpointConventionBuilder MapEsquio(this IEndpointRouteBuilder endpoints, string pattern)
+        public static IEndpointConventionBuilder MapEsquio(this IEndpointRouteBuilder endpoints, string pattern = "esquio")
         {
             if (endpoints == null)
             {
