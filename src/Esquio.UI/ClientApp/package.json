@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "bootstrap-material-design": "^4.1.1",
     "bootstrap-vue": "^2.0.0-rc.16",
     "core-js": "^2.6.5",
+    "daemonite-material": "^4.1.1",
     "inversify-props": "^1.0.2",
     "jquery": "^3.4.1",
     "localforage": "^1.7.3",

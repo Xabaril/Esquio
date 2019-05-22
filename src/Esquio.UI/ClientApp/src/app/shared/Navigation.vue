@@ -1,8 +1,8 @@
 <template>
 <div class="navigation">
   <div class="container navigation-container">
-    <div>
-      XXXX
+    <div class="navigation-title">
+      {{'common.title' | t}}
     </div>
     <div>
       <router-link class="navigation-link" :to="{ name: 'home'}" active-class="active">{{'common.menu.home' | t}}</router-link>
@@ -34,6 +34,11 @@ export default class extends Vue {
     display: flex;
     height: 100%;
     justify-content: space-between;
+  }
+
+  &-title {
+    color: get-color(basic, brightest);
+    font-size: get-font-size(xl);
   }
 
   &-link {

@@ -15,79 +15,56 @@ $container-max-widths: (
   xl: get-media(l)
 );
 
-$primary: get-color(primary);
-$secondary: get-color(secondary);
+$primary: (
+  color: get-color(primary),
+  dark:  get-color(primary, dark),
+  light: get-color(primary, bright)
+);
+
+$secondary: (
+  color: get-color(secondary),
+  dark:  get-color(secondary, dark),
+  light: get-color(secondary, bright)
+);
 
 $link-color: auto;
 $link-hover-color: auto;
 $link-hover-decoration: none;
 
+
 // Bootstrap material config
-@import '../../../node_modules/bootstrap-material-design/scss/variables';
-@import '../../../node_modules/bootstrap-material-design/scss/mixins';
+@import '../../../node_modules/daemonite-material/assets/scss/colors';
+@import '../../../node_modules/daemonite-material/assets/scss/functions';
+@import '../../../node_modules/daemonite-material/assets/scss/mixins';
+@import '../../../node_modules/daemonite-material/assets/scss/variables';
+@import '../../../node_modules/daemonite-material/assets/scss/base/base';
+@import '../../../node_modules/daemonite-material/assets/scss/base/grid';
+@import '../../../node_modules/daemonite-material/assets/scss/base/typography';
 
-// Bootstrap
-@import '../../../node_modules/bootstrap/scss/functions';
-@import '../../../node_modules/bootstrap/scss/variables';
-@import '../../../node_modules/bootstrap/scss/mixins';
-@import '../../../node_modules/bootstrap/scss/root';
-// @import '../../../node_modules/bootstrap/scss/reboot';
-@import '../../../node_modules/bootstrap/scss/images';
-// @import '../../../node_modules/bootstrap/scss/type';
-// @import '../../../node_modules/bootstrap/scss/code';
-@import '../../../node_modules/bootstrap/scss/grid';
-// @import '../../../node_modules/bootstrap/scss/tables';
-// @import '../../../node_modules/bootstrap/scss/forms';
-@import '../../../node_modules/bootstrap/scss/buttons';
-// @import '../../../node_modules/bootstrap/scss/transitions';
-@import '../../../node_modules/bootstrap/scss/dropdown';
-// @import '../../../node_modules/bootstrap/scss/button-group';
-// @import '../../../node_modules/bootstrap/scss/input-group';
-// @import '../../../node_modules/bootstrap/scss/custom-forms';
-@import '../../../node_modules/bootstrap/scss/nav';
-@import '../../../node_modules/bootstrap/scss/navbar';
-// @import '../../../node_modules/bootstrap/scss/card';
-// @import '../../../node_modules/bootstrap/scss/breadcrumb';
-// @import '../../../node_modules/bootstrap/scss/pagination';
-// @import '../../../node_modules/bootstrap/scss/badge';
-// @import '../../../node_modules/bootstrap/scss/jumbotron';
-// @import '../../../node_modules/bootstrap/scss/alert';
-// @import '../../../node_modules/bootstrap/scss/progress';
-// @import '../../../node_modules/bootstrap/scss/media';
-// @import '../../../node_modules/bootstrap/scss/list-group';
-// @import '../../../node_modules/bootstrap/scss/close';
-// @import '../../../node_modules/bootstrap/scss/modal';
-// @import '../../../node_modules/bootstrap/scss/tooltip';
-// @import '../../../node_modules/bootstrap/scss/popover';
-// @import '../../../node_modules/bootstrap/scss/carousel';
-@import '../../../node_modules/bootstrap/scss/utilities';
-// @import '../../../node_modules/bootstrap/scss/print';
-
-
-// Bootstrap material
-@import '../../../node_modules/bootstrap-material-design/scss/reboot';
-@import '../../../node_modules/bootstrap-material-design/scss/layout';
-@import '../../../node_modules/bootstrap-material-design/scss/buttons';
-@import '../../../node_modules/bootstrap-material-design/scss/checkboxes';
-// @import '../../../node_modules/bootstrap-material-design/scss/custom-forms';
-@import '../../../node_modules/bootstrap-material-design/scss/switches';
-@import '../../../node_modules/bootstrap-material-design/scss/radios';
-// @import '../../../node_modules/bootstrap-material-design/scss/forms';
-@import '../../../node_modules/bootstrap-material-design/scss/input-group';
-@import '../../../node_modules/bootstrap-material-design/scss/list-group';
-// @import '../../../node_modules/bootstrap-material-design/scss/tables';
-@import '../../../node_modules/bootstrap-material-design/scss/nav';
-@import '../../../node_modules/bootstrap-material-design/scss/navbar';
-// @import '../../../node_modules/bootstrap-material-design/scss/alerts';
-// @import '../../../node_modules/bootstrap-material-design/scss/progress';
-// @import '../../../node_modules/bootstrap-material-design/scss/pagination';
-// @import '../../../node_modules/bootstrap-material-design/scss/type';
-// @import '../../../node_modules/bootstrap-material-design/scss/tooltip';
-// @import '../../../node_modules/bootstrap-material-design/scss/popover';
-// @import '../../../node_modules/bootstrap-material-design/scss/cards';
-// @import '../../../node_modules/bootstrap-material-design/scss/modal';
-// @import '../../../node_modules/bootstrap-material-design/scss/dropdown';
-// @import '../../../node_modules/bootstrap-material-design/scss/drawer';
-@import '../../../node_modules/bootstrap-material-design/scss/themes';
-@import '../../../node_modules/bootstrap-material-design/scss/ripples';
-@import '../../../node_modules/bootstrap-material-design/scss/extensions';
+// Material
+@import '../../../node_modules/daemonite-material/assets/scss/material/button';
+@import '../../../node_modules/daemonite-material/assets/scss/material/button-flat';
+@import '../../../node_modules/daemonite-material/assets/scss/material/button-float';
+@import '../../../node_modules/daemonite-material/assets/scss/material/button-group';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/card';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/chip';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/data-table';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/dialog';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/expansion-panel';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/menu';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/navdrawer';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/picker';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/progress';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/progress-circular';
+@import '../../../node_modules/daemonite-material/assets/scss/material/selection-control';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/slider';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/snackbar';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/stepper';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/tab';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/text-field';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/text-field-box';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/text-field-floating-label';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/text-field-input-group';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/toolbar';
+// @import '../../../node_modules/daemonite-material/assets/scss/material/tooltip';
+@import '../../../node_modules/daemonite-material/assets/scss/utilities';
