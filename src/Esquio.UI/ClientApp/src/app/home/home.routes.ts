@@ -4,6 +4,7 @@ export default (): RouteConfig[] => {
     return [
         {
             path: '/',
+            name: 'home',
             component: () => import('./Home.vue')
         }
     ];
