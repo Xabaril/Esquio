@@ -7,7 +7,7 @@ html,
 body {
   $font-size: 16px;
 
-  background: get-color(secondary, dark);
+  background: get-color(basic, brightest);
   color: get-color(basic, darkest);
   font-family: OpenSans;
   font-size: $font-size * .65;
