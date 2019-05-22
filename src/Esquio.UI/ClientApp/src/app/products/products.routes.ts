@@ -4,6 +4,7 @@ export default (): RouteConfig[] => {
     return [
         {
             path: '/products',
+            name: 'products', // remove when children
             component: () => import('./Products.vue'),
             children: [
                 // {

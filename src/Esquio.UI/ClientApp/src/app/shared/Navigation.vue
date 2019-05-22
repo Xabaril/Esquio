@@ -6,7 +6,7 @@
     </div>
     <div>
       <router-link class="navigation-link" :to="{ name: 'home'}" active-class="active">{{'common.menu.home' | t}}</router-link>
-      <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{'common.menu.products' | t}}</router-link>
+      <router-link class="navigation-link" :to="{ name: 'products'}" active-class="active">{{'common.menu.products' | t}}</router-link>
     </div>
   </div>
 </div>
@@ -43,13 +43,14 @@ export default class extends Vue {
     display: inline-flex;
     height: $height * .35;
     margin-left: 1rem;
+    transition: border-bottom-color get-time(normal);
 
-    &-hover {
-      border-bottom-color: rgba(get-color(secondary), .75);
+    &:hover {
+      border-bottom-color: rgba(get-color(primary, brighter), .5);
     }
 
-    &.active {
-      border-bottom-color: get-color(secondary);
+    &.router-link-exact-active {
+      border-bottom-color: get-color(primary, brighter);
     }
   }
 }

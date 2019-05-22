@@ -19,7 +19,7 @@
 // Font Face
 // =============================================================================
 
-@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff ttf svg) {
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff woff2 ttf svg) {
     $src: null;
 
     $extmods: ( eot: '?', svg: '#' + str-replace($name, ' ', '_') );
