@@ -29,11 +29,11 @@ export {
     // Modal,
     // Nav,
     // Navbar,
-    // Pagination,
+    Pagination,
     // PaginationNav,
     // Popover,
     // Progress,
-    // Table,
+    Table,
     // Tabs,
     // Tooltip
 } from 'bootstrap-vue/es/components/';
