@@ -1,0 +1,15 @@
+/* stylelint-disable */
+@import '../../node_modules/normalize-scss/sass/_normalize';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a,
+a:active,
+a:hover,
+a:visited {
+  text-decoration: none;
+}

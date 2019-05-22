@@ -1,0 +1,18 @@
+{
+    "common": {
+        "title": "App Title",
+        "menu": {
+            "weather": "Weather",
+            "cities": "Cities"
+        }
+    },
+    "cities": {
+        "title": "Cities",
+        "search": "Search city"
+    },
+    "weather": {
+        "title": "Weather",
+        "sunrise": "Sunrise",
+        "sunset": "Sunset"
+    }
+}

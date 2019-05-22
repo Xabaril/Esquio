@@ -1,0 +1,87 @@
+//
+// Basic variables for the application,
+// to import variables you have to import
+// the file `variables.scss`.
+//
+// Consider to use 'shirt' sizes for naming if you can,
+// typical shirt sizes are xs, s, m, l ,xl
+// but you can add more xxxs, xxs, s, sm, m, ml, xxxxxl.
+//
+
+// Colors
+$color-primary: (
+  brightest: null,
+  brighter: null,
+  bright: #48DDDD,
+  normal: #06B2B1,
+  dark: #0E2E2E,
+  darker: null,
+  darkest: #06131F
+);
+
+$color-secondary: (
+  normal: #FFDD2E,
+  dark: #D1B425,
+);
+
+$color-basic: (
+  brightest: #FFFFFF,
+  brighter: #E7E7E7,
+  bright: #DADADA,
+  normal: null,
+  dark: #9C9C9C,
+  darker: #585858,
+  darkest: #131313
+);
+
+// Add all colors to this map
+$color: (
+  primary: $color-primary,
+  secondary: $color-secondary,
+  basic: $color-basic,
+);
+
+// Times
+$time: (
+  slow: .5s,
+  normal: .35s,
+  fast: .15s
+);
+
+// Fonts
+$font-weight: (
+  light: 200,
+  semilight: 300,
+  normal: 500,
+  semibold: 600,
+  bold: 700,
+  black: 800
+);
+
+$font-size: (
+  xs: .5rem,   // 8px
+  s: .85rem,   // 13.6px
+  m: 1rem,     // [16px]
+  l: 1.25rem,  // 20px
+  xl: 1.5rem   // 24px
+);
+
+// Medias (Only as example, use the values you really need)
+$media: (
+  xxs: 360px,
+  xs: 640px,
+  s: 768px,
+  m: 1024px,
+  l: 1280px,
+  xl: 1440px
+);
+
+// Z-index
+$z: (
+  xs: 1,
+  s: 10,
+  m: 20,
+  l: 30,
+  xl: 50,
+  xxl: 100
+);

@@ -1,0 +1,29 @@
+//
+// Helpers with typical values that you need,
+// in the app, by default we usually use
+// Bootstrap utilities but, you can define more here.
+//
+// How to use:
+// <div class="u-align-center">
+//
+
+@import './mixins/map-utilities';
+
+.u {
+p, span > .d > #s,
+  &-align {
+    &-center {
+      text-align: center;
+    }
+
+    &-left {
+      text-align: left;
+    }
+
+    &-right {
+      text-align: right;
+    }
+  }
+
+  @include map-utilities(color, get-color, secondary, dark);
+}

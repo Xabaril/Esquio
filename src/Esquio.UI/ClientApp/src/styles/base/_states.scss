@@ -1,0 +1,23 @@
+
+//
+// States to use on the elements of the app,
+// are useful to define a temporary class that
+// will be added or removed via JavaScript event.
+//
+// How to use:
+// <div class="is-disabled">
+//
+
+@import 'mixins/media-suffixes';
+
+.is {
+  &-hidden {
+    display: none;
+  }
+
+  &-disabled {
+    @include media-suffixes {
+      opacity: .5;
+    }
+  }
+}
