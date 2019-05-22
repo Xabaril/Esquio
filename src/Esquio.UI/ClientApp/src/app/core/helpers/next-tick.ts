@@ -1,8 +1,8 @@
 /**
  * Awaits to the new cycle of the ui
  */
-export function nextTick() {
+export function nextTick(time = 10) {
     return new Promise(resolve => {
-        setTimeout(resolve, 10);
+        setTimeout(resolve, time);
     });
 }

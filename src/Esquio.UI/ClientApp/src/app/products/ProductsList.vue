@@ -6,13 +6,20 @@
       :items="items"
       :fields="fields"
     ></b-table>
+
+    <Floating />
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Floating } from '~/shared';
 
-@Component
+@Component({
+  components: {
+    Floating
+  }
+})
 export default class extends Vue {
   public name = "ProductsList";
 

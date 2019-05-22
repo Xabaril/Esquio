@@ -1,34 +1,8 @@
 <template>
   <div class="floating">
-    <div class="btn-float-dropdown dropup">
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="btn btn-float btn-primary"
-        data-toggle="dropdown"
-        type="button"
-      ><i class="material-icons">add</i></button>
-      <div class="dropdown-menu">
-        <button
-          class="btn btn-float btn-light btn-sm"
-          type="button"
-        ><i class="material-icons">link</i></button>
-        <button
-          class="btn btn-float btn-light btn-sm"
-          type="button"
-        ><i class="material-icons">link</i></button>
-        <button
-          class="btn btn-float btn-light btn-sm"
-          type="button"
-        ><i class="material-icons">link</i></button>
-      </div>
-    </div>
-
-    <b-dropdown class="btn-float-dropdown dropup btn btn-float btn-primary">
-      <b-dropdown-item class="btn btn-float btn-primary"><i class="material-icons">link</i></b-dropdown-item>
-      <b-dropdown-item class="btn btn-float btn-primary"><i class="material-icons">link</i></b-dropdown-item>
-      <b-dropdown-item class="btn btn-float btn-primary"><i class="material-icons">link</i></b-dropdown-item>
-    </b-dropdown>
+    <button type="button" class="btn btn-primary bmd-btn-fab">
+  <i class="material-icons">grade</i>
+</button>
   </div>
 </template>
 

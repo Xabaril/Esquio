@@ -1,5 +1,6 @@
 import { Vue } from 'vue-property-decorator';
 
+import { Material } from '~/core/material';
 import { vendor } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
@@ -14,6 +15,7 @@ export class AppModule {
         containerBuilder();
 
         Vue.use(new Filters());
+        Vue.use(Material);
         vendor.forEach(library => Vue.use(library));
 
         this.bootstrap();
