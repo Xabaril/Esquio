@@ -58,6 +58,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<EnvironmentToggle>()
+                .AddOneParameter("Environments","Production")
                 .Build();
             var feature = Build
                 .Feature(Constants.FeatureName)

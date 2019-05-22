@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace Esquio.Model
@@ -14,34 +15,42 @@ namespace Esquio.Model
 
             Type = type;
         }
+
         public string Type { get; }
 
-        public void AddParameter(Parameter parameter)
+        public dynamic GetData()
         {
-            _parameters.Add(parameter);
+            var data = new ExpandoObject();
+            var dataDictionary = (IDictionary<string, object>)data;
+
+            foreach(var item in _parameters.ToDictionary(k=>k.Name,k=>k.Value))
+            {
+                dataDictionary.Add(item);
+            }
+
+            return data;
         }
-        public void AddParameters(IEnumerable<Parameter> parameters)
-        {
-            _parameters.AddRange(parameters);
-        }
-        public T GetParameterValue<T>(string name)
+
+        public TValue GetToggleParameterValue<TValue>(string name)
         {
             var parameter = _parameters.SingleOrDefault(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
             if (parameter != null)
             {
-                return (T)parameter.Value;
+                return (TValue)parameter.Value;
             }
 
             return default;
         }
-        public IEnumerable<Parameter> GetParameters()
+       
+        public void AddParameters(IEnumerable<Parameter> parameters)
+        {
+            _parameters.AddRange(parameters);
+        }
+        
+        internal IEnumerable<Parameter> GetParameters()
         {
             return _parameters;
-        }
-        public void ClearParameters()
-        {
-            _parameters.Clear();
         }
     }
 }

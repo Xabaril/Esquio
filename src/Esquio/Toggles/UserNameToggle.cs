@@ -31,7 +31,9 @@ namespace Esquio.Toggles
             {
                 var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
                 var toggle = feature.GetToggle(this.GetType().FullName);
-                var activeUserNames = toggle.GetParameterValue<string>(Users);
+                var data = toggle.GetData();
+
+                string activeUserNames = data.Users?.ToString();
 
                 if (activeUserNames != null)
                 {

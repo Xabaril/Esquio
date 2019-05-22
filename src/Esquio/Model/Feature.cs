@@ -17,10 +17,6 @@ namespace Esquio.Model
         {
             get; private set;
         }
-        public bool IsUserPreview
-        {
-            get; private set;
-        }
 
         public Feature(string name)
         {

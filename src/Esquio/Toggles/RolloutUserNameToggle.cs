@@ -23,7 +23,9 @@ namespace Esquio.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var percentage = toggle.GetParameterValue<int>(Percentage);
+            var data = toggle.GetData();
+
+            int percentage = data.Percentage;
 
             var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync() ?? AnonymoysUser;

@@ -13,7 +13,11 @@ namespace FunctionalTests.Base.Builders
 
         public ToggleBuilder AddOneParameter(string name, object value)
         {
-            _toggle.AddParameter(new Parameter(name, value));
+            _toggle.AddParameters(new Parameter[]
+            {
+                new Parameter(name, value)
+            });
+
             return this;
         }
 

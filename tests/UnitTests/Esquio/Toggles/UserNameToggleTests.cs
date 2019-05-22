@@ -53,6 +53,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
+                .AddOneParameter("Users","SomeUser")
                 .Build();
             var feature = Build
                 .Feature(Constants.FeatureName)

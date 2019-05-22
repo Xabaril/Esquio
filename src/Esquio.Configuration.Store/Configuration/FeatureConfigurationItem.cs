@@ -24,7 +24,7 @@ namespace Esquio.Configuration.Store.Configuration
             foreach (var toggleConfiguration in Toggles)
             {
                 var toggle = new Toggle(toggleConfiguration.Type);
-                toggle.AddParameters(toggleConfiguration.Parameters.Select(p => new Parameter(p.Name, p.Value)));
+                toggle.AddParameters(toggleConfiguration.Parameters.Select(p => new Parameter(p.Key, p.Value)));
                 feature.AddToggle(toggle);
             }
 

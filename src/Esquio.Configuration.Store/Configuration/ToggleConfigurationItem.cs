@@ -1,8 +1,10 @@
-﻿namespace Esquio.Configuration.Store.Configuration
+﻿using System.Collections.Generic;
+
+namespace Esquio.Configuration.Store.Configuration
 {
     internal class ToggleConfiguration
     {
         public string Type { get; set; }
-        public ParameterConfiguration[] Parameters { get; set; } = new ParameterConfiguration[0];
+        public Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
     }
 }

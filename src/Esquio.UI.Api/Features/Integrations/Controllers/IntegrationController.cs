@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Esquio.UI.Api.Features.Integrations.Controllers
 {
-    [Route("api/v1&[controller]")]
+    [Route("api/[controller]")]
     public class IntegrationController
         : Controller
     {
@@ -13,7 +13,7 @@ namespace Esquio.UI.Api.Features.Integrations.Controllers
             return Ok();
         }
 
-        [HttpPost("product/{productName}/features/rollout/{featureName}")]
+        [HttpPost("product/{productName}/features/{featureName}/rollout")]
         public IActionResult RolloutFeature(string featureName, string productName)
         {
             return Ok();

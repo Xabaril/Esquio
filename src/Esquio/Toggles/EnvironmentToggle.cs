@@ -25,7 +25,9 @@ namespace Esquio.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var environments = toggle.GetParameterValue<string>(Environments);
+            var data = toggle.GetData();
+
+            string environments = data.Environments?.ToString();
 
             var currentEnvironment = await _environmentNameProviderService
                 .GetEnvironmentNameAsync();

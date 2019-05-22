@@ -23,10 +23,10 @@ namespace Esquio.Toggles
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
             var toggle = feature.GetToggle(this.GetType().FullName);
-            var fromValue = toggle.GetParameterValue<string>(From);
-            var toValue = toggle.GetParameterValue<string>(To);
-            var fromDate = DateTime.ParseExact(fromValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            var toDate = DateTime.ParseExact(toValue, FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var data = toggle.GetData();
+
+            var fromDate = DateTime.ParseExact(data.From.ToString(), FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var toDate = DateTime.ParseExact(data.To.ToString(), FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             var now = DateTime.UtcNow;
 
             if (now > fromDate && now < toDate)
