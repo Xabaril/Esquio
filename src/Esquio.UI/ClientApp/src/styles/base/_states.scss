@@ -12,12 +12,8 @@
 
 .is {
   &-hidden {
-    display: none;
-  }
-
-  &-disabled {
     @include media-suffixes {
-      opacity: .5;
+      display: none !important;
     }
   }
 }

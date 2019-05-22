@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 import { Floating } from '~/shared';
 
 @Component({
@@ -21,27 +21,27 @@ import { Floating } from '~/shared';
   }
 })
 export default class extends Vue {
-  public name = "ProductsList";
+  public name = 'ProductsList';
 
   fields = [
     {
-      key: "first_name",
-      label: "col 1",
+      key: 'first_name',
+      label: 'col 1',
       sortable: true
     },
     {
-      key: "last_name",
+      key: 'last_name',
     },
     {
-      key: "age",
+      key: 'age',
     }
   ];
 
   items = [
-    { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-    { age: 21, first_name: "Larsen", last_name: "Shaw" },
-    { age: 89, first_name: "Geneva", last_name: "Wilson" },
-    { age: 38, first_name: "Jami", last_name: "Carney" }
+    { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+    { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+    { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+    { age: 38, first_name: 'Jami', last_name: 'Carney' }
   ];
 }
 </script>

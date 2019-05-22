@@ -18,6 +18,11 @@ $container-max-widths: (
 $primary: get-color(primary);
 $secondary: get-color(secondary);
 
+$theme-colors: (
+  primary: $primary,
+  secondary: $secondary
+);
+
 $link-color: auto;
 $link-hover-color: auto;
 $link-hover-decoration: none;
@@ -90,7 +95,5 @@ $link-hover-decoration: none;
 // @import '../../../node_modules/bootstrap-material-design/scss/dropdown';
 // @import '../../../node_modules/bootstrap-material-design/scss/drawer';
 @import '../../../node_modules/bootstrap-material-design/scss/themes';
-
 @import '../../../node_modules/bootstrap-material-design/scss/ripples';
-
 @import '../../../node_modules/bootstrap-material-design/scss/extensions';
