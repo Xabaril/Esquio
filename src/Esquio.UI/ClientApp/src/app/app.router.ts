@@ -1,20 +1,16 @@
 import VueRouter from 'vue-router';
 import { Vue } from 'vue-property-decorator';
-import { citiesModule } from './cities';
-import { weatherModule } from './weather';
+import { productsModule } from './products';
+import { homeModule } from './home';
 
 Vue.use(VueRouter);
 
 export function router() {
-    return new VueRouter({
-        mode: 'history',
-        routes: [
-            {
-                path: '/',
-                redirect: '/weather',
-            },
-            ...citiesModule.routes(),
-            ...weatherModule.routes()
-        ]
-    });
+  return new VueRouter({
+    mode: 'history',
+    routes: [
+      ...homeModule.routes(),
+      ...productsModule.routes()
+    ]
+  });
 }

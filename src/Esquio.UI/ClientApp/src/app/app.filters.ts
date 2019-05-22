@@ -5,12 +5,10 @@ import * as s from '~/shared';
 import { IFilter } from '~/core';
 
 export class Filters {
-    @Inject() dateService: s.IDateService;
     @Inject() translateService: s.ITranslateService;
 
     public install(): void {
         let filters: any[] = [
-            this.dateService,
             this.translateService,
         ];
 

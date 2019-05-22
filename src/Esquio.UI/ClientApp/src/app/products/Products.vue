@@ -1,8 +1,8 @@
 <template>
-  <section class="weather container-medium">
-    <header class="weather-header text-big">{{'weather.title' | t }}</header>
-    <router-view></router-view>
-  </section>
+<section class="products container-medium">
+  <header class="products-header text-big">{{'products.title' | t }}</header>
+  <router-view></router-view>
+</section>
 </template>
 
 <script lang="ts">
@@ -10,12 +10,12 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class extends Vue {
-  public name = 'Weather';
+  public name = 'Products';
 }
 </script>
 
 <style lang="scss" scoped>
-.weather {
+.products {
   &-header {
     color: get-color(primary);
   }

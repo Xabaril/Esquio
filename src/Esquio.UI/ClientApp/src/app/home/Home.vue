@@ -1,8 +1,7 @@
 <template>
-<section class="cities container-medium">
-  <header class="cities-header text-big">{{'cities.title' | t }}</header>
-  <router-view></router-view>
-</section>
+  <section class="home container-medium">
+    <header class="home-header text-big">{{'home.title' | t }}</header>
+  </section>
 </template>
 
 <script lang="ts">
@@ -10,12 +9,12 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class extends Vue {
-  public name = 'Cities';
+  public name = 'Home';
 }
 </script>
 
 <style lang="scss" scoped>
-.cities {
+.home {
   &-header {
     color: get-color(primary);
   }

@@ -2,17 +2,14 @@
     "common": {
         "title": "App Title",
         "menu": {
-            "weather": "Weather",
-            "cities": "Cities"
+            "home": "Home",
+            "products": "Products"
         }
     },
-    "cities": {
-        "title": "Cities",
-        "search": "Search city"
+    "products": {
+        "title": "Products"
     },
-    "weather": {
-        "title": "Weather",
-        "sunrise": "Sunrise",
-        "sunset": "Sunset"
+    "home": {
+        "title": "Home page"
     }
 }

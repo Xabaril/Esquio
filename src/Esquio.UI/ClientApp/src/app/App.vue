@@ -1,8 +1,8 @@
 <template>
   <div class="app">
     <div class="tabs">
-      <router-link class="tab" :to="{ name: 'weather-list'}" active-class="active">{{'common.menu.weather' | t}}</router-link>
-      <router-link class="tab" :to="{ name: 'city-list'}" active-class="active">{{'common.menu.cities' | t }}</router-link>
+      <router-link class="tab" :to="{ name: 'home'}" active-class="active">{{'common.menu.home' | t}}</router-link>
+      <router-link class="tab" :to="{ name: 'products-list'}" active-class="active">{{'common.menu.products' | t }}</router-link>
     </div>
     <router-view class="section"></router-view>
   </div>
