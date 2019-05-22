@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 // const rules = require('require.all')('./tasks/rules');
 const plugins = require('require.all')('./tasks/plugins');
 
@@ -18,7 +19,14 @@ module.exports = env => {
       }
     },
     configureWebpack: {
-      plugins: [],
+      plugins: [
+        // For Bootstrap material
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          Popper: ['popper.js', 'default']
+        })
+      ],
       optimization: {
         splitChunks: {
           cacheGroups: {

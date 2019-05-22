@@ -22,6 +22,11 @@ $link-color: auto;
 $link-hover-color: auto;
 $link-hover-decoration: none;
 
+// Bootstrap material config
+@import '../../../node_modules/bootstrap-material-design/scss/variables';
+@import '../../../node_modules/bootstrap-material-design/scss/mixins';
+
+// Bootstrap
 @import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';
 @import '../../../node_modules/bootstrap/scss/mixins';
@@ -57,3 +62,35 @@ $link-hover-decoration: none;
 // @import '../../../node_modules/bootstrap/scss/carousel';
 @import '../../../node_modules/bootstrap/scss/utilities';
 // @import '../../../node_modules/bootstrap/scss/print';
+
+
+// Bootstrap material
+@import '../../../node_modules/bootstrap-material-design/scss/reboot';
+
+@import '../../../node_modules/bootstrap-material-design/scss/layout';
+@import '../../../node_modules/bootstrap-material-design/scss/buttons';
+@import '../../../node_modules/bootstrap-material-design/scss/checkboxes';
+// @import '../../../node_modules/bootstrap-material-design/scss/custom-forms';
+@import '../../../node_modules/bootstrap-material-design/scss/switches';
+@import '../../../node_modules/bootstrap-material-design/scss/radios';
+// @import '../../../node_modules/bootstrap-material-design/scss/forms';
+@import '../../../node_modules/bootstrap-material-design/scss/input-group';
+@import '../../../node_modules/bootstrap-material-design/scss/list-group';
+// @import '../../../node_modules/bootstrap-material-design/scss/tables';
+@import '../../../node_modules/bootstrap-material-design/scss/nav';
+@import '../../../node_modules/bootstrap-material-design/scss/navbar';
+// @import '../../../node_modules/bootstrap-material-design/scss/alerts';
+// @import '../../../node_modules/bootstrap-material-design/scss/progress';
+// @import '../../../node_modules/bootstrap-material-design/scss/pagination';
+// @import '../../../node_modules/bootstrap-material-design/scss/type';
+// @import '../../../node_modules/bootstrap-material-design/scss/tooltip';
+// @import '../../../node_modules/bootstrap-material-design/scss/popover';
+// @import '../../../node_modules/bootstrap-material-design/scss/cards';
+// @import '../../../node_modules/bootstrap-material-design/scss/modal';
+// @import '../../../node_modules/bootstrap-material-design/scss/dropdown';
+// @import '../../../node_modules/bootstrap-material-design/scss/drawer';
+@import '../../../node_modules/bootstrap-material-design/scss/themes';
+
+@import '../../../node_modules/bootstrap-material-design/scss/ripples';
+
+@import '../../../node_modules/bootstrap-material-design/scss/extensions';
