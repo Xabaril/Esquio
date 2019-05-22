@@ -4,7 +4,7 @@
 // Import Vue vendor
 import * as bootstrap from './bootstrap';
 // import 'jquery'; // For bootstrap material
-import 'daemonite-material';
+import 'bootstrap-material-design';
 
 export const vendor = [
     ...(<any>Object).values(bootstrap)
