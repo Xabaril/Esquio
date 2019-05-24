@@ -1,4 +1,7 @@
-﻿using FluentValidation.AspNetCore;
+﻿using Esquio.UI.Api.Features.Products.Add;
+using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,16 +12,21 @@ namespace Esquio.UI.Api
     {
         public static IServiceCollection ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-              .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(EsquioUIApiConfiguration).Assembly))
-              .AddNewtonsoftJson();
+            services
+                .AddMediatR(typeof(EsquioUIApiConfiguration))
+                .AddCustomProblemDetails()
+                .AddMvc(options => options.EnableEndpointRouting = false)
+                .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
+                .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
+                .AddNewtonsoftJson();
 
             return services;
         }
 
         public static IApplicationBuilder Configure(IApplicationBuilder app, Func<IApplicationBuilder, IApplicationBuilder> configureHost)
         {
-            return configureHost(app);
+            return configureHost(app)
+                .UseProblemDetails();
         }
     }
 }

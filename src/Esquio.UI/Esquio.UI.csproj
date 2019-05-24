@@ -12,6 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0-preview5.19227.1" />
+  </ItemGroup>
+  
+   <ItemGroup>
+    <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
