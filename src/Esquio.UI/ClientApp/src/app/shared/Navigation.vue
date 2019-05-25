@@ -2,11 +2,11 @@
 <div class="navigation">
   <div class="container navigation-container">
     <div class="navigation-title">
-      {{'common.title' | t}}
+      {{$t('common.title')}}
     </div>
     <div>
-      <router-link class="navigation-link" :to="{ name: 'home'}" active-class="active">{{'common.menu.home' | t}}</router-link>
-      <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{'common.menu.products' | t}}</router-link>
+      <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link>
+      <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
     </div>
   </div>
 </div>
@@ -55,7 +55,8 @@ export default class extends Vue {
       border-bottom-color: rgba(get-color(primary, brighter), .5);
     }
 
-    &.router-link-exact-active {
+    &.router-link-exact-active,
+    &.active:not(.navigation-link--home) {
       border-bottom-color: get-color(primary, brighter);
     }
   }

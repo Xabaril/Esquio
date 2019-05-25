@@ -25,5 +25,12 @@ p, span > .d > #s,
     }
   }
 
+  &-container {
+    &-medium {
+      margin: 0 auto;
+      max-width: 60rem !important;
+    }
+  }
+
   @include map-utilities(color, get-color, secondary, dark);
 }

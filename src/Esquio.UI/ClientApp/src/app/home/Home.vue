@@ -1,6 +1,6 @@
 <template>
   <section class="home container-medium">
-    <header class="home-header text-big">{{'home.title' | t }}</header>
+    <header class="home-header text-big">{{$t('home.title')}}</header>
   </section>
 </template>
 

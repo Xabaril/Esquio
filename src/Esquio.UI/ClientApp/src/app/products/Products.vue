@@ -1,6 +1,5 @@
 <template>
-<section class="products container-medium">
-  <header class="products-header text-big">{{'products.title' | t }}</header>
+<section class="products">
   <router-view></router-view>
 </section>
 </template>

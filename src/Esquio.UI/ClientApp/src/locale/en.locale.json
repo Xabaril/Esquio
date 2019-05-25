@@ -7,7 +7,18 @@
         }
     },
     "products": {
-        "title": "Products"
+        "actions": {
+          "add": "Add product",
+          "save": "Save product"
+        },
+        "fields": {
+          "id": "Identifier",
+          "name": "Product"
+        },
+        "placeholders": {
+          "name": "My first Esquio product",
+          "nameHelp": "Lorem ipsum"
+        }
     },
     "home": {
         "title": "Home page"

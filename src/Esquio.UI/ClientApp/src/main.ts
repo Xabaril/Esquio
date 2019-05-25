@@ -1,4 +1,5 @@
 import { Vue } from 'vue-property-decorator';
+import { Inject } from 'inversify-props';
 
 import { Material } from '~/core/material';
 import { vendor } from './app/vendor';
@@ -9,30 +10,34 @@ import store from './app/app.store';
 import App from './app/App.vue';
 
 import './styles/app.scss';
+import { ITranslateService } from '~/shared';
 
 export class AppModule {
-    constructor() {
-        containerBuilder();
+  @Inject() translateService: ITranslateService;
 
-        Vue.use(new Filters());
-        Vue.use(Material);
-        vendor.forEach(library => Vue.use(library));
+  constructor() {
+    containerBuilder();
 
-        this.bootstrap();
-    }
+    Vue.use(new Filters());
+    Vue.use(Material);
+    vendor.forEach(library => Vue.use(library));
+
+    this.bootstrap();
+  }
 
 
 
-    private async bootstrap(): Promise<Vue> {
-        let options = {
-            el: '#app',
-            router: router(),
-            store,
-            render: create => create(App)
-        };
+  private async bootstrap(): Promise<Vue> {
+    let options = {
+      el: '#app',
+      router: router(),
+      store,
+      i18n: this.translateService.i18n,
+      render: create => create(App)
+    };
 
-        return new Vue(options);
-    }
+    return new Vue(options);
+  }
 }
 
 new AppModule();

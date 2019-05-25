@@ -8,7 +8,7 @@ import { ITranslateService } from '.';
 @injectable()
 export class TranslateService implements ITranslateService, IFilter {
     public filterName = 't';
-    private i18n: VueI18n;
+    public i18n: VueI18n;
 
     constructor() {
         Vue.use(VueI18n);

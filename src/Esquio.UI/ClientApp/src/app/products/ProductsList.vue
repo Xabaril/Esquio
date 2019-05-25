@@ -7,13 +7,14 @@
       :fields="fields"
     ></b-table>
 
-    <Floating />
+    <Floating :text="$t('products.actions.add')" :to="{name: 'products-add'}"/>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Floating } from '~/shared';
+import { Product } from './product.model';
 
 @Component({
   components: {
@@ -22,34 +23,28 @@ import { Floating } from '~/shared';
 })
 export default class extends Vue {
   public name = 'ProductsList';
+  public fields;
+  public items: Product[] = [
+    { id: '1xk23', name: 'My first product'},
+    { id: '1xk24', name: 'My second product'},
+    { id: '1xk25', name: 'My third product'},
+    { id: '1xk26', name: 'My fourth product'},
+    { id: '1xk27', name: 'My fifth product'}
+  ];
 
-  fields = [
+  public created() {
+    this.fields = [
     {
-      key: 'first_name',
-      label: 'col 1',
+      key: 'id',
+      label: this.$t('products.fields.id'),
       sortable: true
     },
     {
-      key: 'last_name',
-    },
-    {
-      key: 'age',
+      key: 'name',
+      label: this.$t('products.fields.name')
     }
   ];
-
-  items = [
-    { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-    { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-    { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-    { age: 38, first_name: 'Jami', last_name: 'Carney' }
-  ];
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-.products {
-  &-header {
-    color: get-color(primary);
-  }
-}
-</style>

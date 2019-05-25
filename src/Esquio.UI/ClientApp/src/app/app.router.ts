@@ -10,7 +10,11 @@ export function router() {
     mode: 'history',
     routes: [
       ...homeModule.routes(),
-      ...productsModule.routes()
+      ...productsModule.routes(),
+      {
+        path: '*',
+        redirect: '/'
+      }
     ]
   });
 }
