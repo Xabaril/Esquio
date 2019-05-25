@@ -22,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { Floating, FloatingModifier, FloatingIcon } from "~/shared";
-import { Product } from "./product.model";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Floating, FloatingModifier, FloatingIcon } from '~/shared';
+import { Product } from './product.model';
 
 @Component({
   components: {
@@ -32,7 +32,7 @@ import { Product } from "./product.model";
   }
 })
 export default class extends Vue {
-  public name = "ProductsForm";
+  public name = 'ProductsForm';
   public product: Product;
   public floatingModifier = FloatingModifier.Success;
   public floatingIcon = FloatingIcon.Save;

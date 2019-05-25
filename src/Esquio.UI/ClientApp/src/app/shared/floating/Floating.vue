@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RouteConfig } from 'vue-router';
 import { FloatingIcon } from './floating-icon';
 import { FloatingModifier } from './floating-modifier';
 
 @Component
 export default class extends Vue {
-  public name = "Floating";
+  public name = 'Floating';
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({})}) to: RouteConfig;
