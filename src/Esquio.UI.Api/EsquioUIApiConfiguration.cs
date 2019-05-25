@@ -15,7 +15,8 @@ namespace Esquio.UI.Api
             services
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                 .AddCustomProblemDetails()
-                .AddMvc(options => options.EnableEndpointRouting = false)
+                //.AddMvc(options => options.EnableEndpointRouting = false)
+                .AddMvc()
                 .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
                 .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
                 .AddNewtonsoftJson();
