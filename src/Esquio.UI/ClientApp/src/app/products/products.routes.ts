@@ -17,17 +17,20 @@ export default (): RouteConfig[] => {
                     component: () => import('./ProductsForm.vue')
                 },
                 {
+                  path: 'edit',
+                  redirect: '/products'
+                },
+                {
                   path: 'edit/:id',
                   name: 'products-edit',
                     component: () => import('./ProductsForm.vue'),
                     props: true
                 },
-                // {
-                //     path: ':id',
-                //     name: 'products-detail',
-                //     component: () => import('./ProductsDetail/ProductsDetail.vue'),
-                //     props: true
-                // }
+                {
+                  path: 'add-feature',
+                  name: 'features-add',
+                    component: () => import('./FeaturesForm.vue')
+                },
             ]
         }
     ];

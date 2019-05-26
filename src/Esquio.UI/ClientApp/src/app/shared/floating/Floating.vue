@@ -1,5 +1,5 @@
 <template>
-  <div class="floating">
+  <div class="floating" :class="{'floating--top': isTop}">
     <router-link :to="to">
       <button
       type="button"
@@ -8,7 +8,7 @@
       title="Example text"
     >
       <div class="floating-content">
-        <i class="material-icons">{{icon}}</i>
+        <i class="floating-icon material-icons">{{icon}}</i>
         <span class="floating-text is-hidden@s">{{text}}</span>
       </div>
     </button>
@@ -25,17 +25,25 @@ import { FloatingModifier } from './floating-modifier';
 @Component
 export default class extends Vue {
   public name = 'Floating';
+  public modifier: FloatingModifier = FloatingModifier.Primary;
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({})}) to: RouteConfig;
   @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
-  @Prop({ default: FloatingModifier.Secondary }) modifier: FloatingModifier;
+  @Prop({ default: false }) isTop: boolean;
+
+  public created() {
+    if (this.isTop) {
+      this.modifier = FloatingModifier.Secondary;
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .floating {
   $margin: 5vh;
+  $top-height: 2rem;
 
   position: fixed;
   bottom: $margin;
@@ -49,6 +57,10 @@ export default class extends Vue {
     }
   }
 
+  &-icon {
+    font-size: get-font-size(xl);
+  }
+
   &-content {
     align-content: center;
     align-items: center;
@@ -56,15 +68,49 @@ export default class extends Vue {
     display: flex;
     font-size: get-font-size(m);
     justify-content: center;
-
-    @media screen and (min-width: get-media(m)) {
-      transform: translateY(-.15rem);
-    }
   }
 
   &-text {
     display: inline-flex;
     padding-left: .5rem;
+  }
+
+  &--top {
+    bottom: initial;
+    position: absolute;
+    right: 0;
+    top: -$top-height;
+  }
+
+  &--top &-button {
+    $small-size: 1.75rem;
+
+    height: $small-size;
+    margin: 0;
+    min-width: $small-size;
+    width: $small-size;
+
+    @media screen and (min-width: get-media(xs)) {
+      height: $top-height;
+      border-radius: 2rem !important;
+      min-width: 3.5rem;
+      padding: .25rem .75rem !important;
+      width: auto !important;
+    }
+  }
+
+  &--top &-content {
+    font-size: get-font-size(s);
+  }
+
+  &--top &-icon {
+    font-size: get-font-size(l);
+  }
+
+  &--top &-text {
+    @media screen and (min-width: get-media(xs)) {
+      display: inline-flex !important;
+    }
   }
 }
 </style>

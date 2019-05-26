@@ -4,7 +4,7 @@
     <div class="navigation-title">
       {{$t('common.title')}}
     </div>
-    <div>
+    <div class="navigation-items">
       <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link>
       <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
     </div>
@@ -23,7 +23,7 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .navigation {
-  $height: 5rem;
+  $height: $navigation-height;
 
   background-color: get-color(primary);
   height: $height;
@@ -39,6 +39,16 @@ export default class extends Vue {
   &-title {
     color: get-color(basic, brightest);
     font-size: get-font-size(xl);
+
+    @media screen and (min-width: get-media(xs)) {
+      position: absolute;
+    }
+  }
+
+  &-items {
+    @media screen and (min-width: get-media(xs)) {
+      margin: 0 auto;
+    }
   }
 
   &-link {

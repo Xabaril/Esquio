@@ -9,15 +9,20 @@
     "products": {
         "actions": {
           "add": "Add product",
-          "save": "Save product"
+          "addFeature": "Add feature",
+          "save": "Save product",
+          "see_detail": "Open"
         },
         "fields": {
           "id": "Identifier",
-          "name": "Product"
+          "name": "Product",
+          "description": "Description"
         },
         "placeholders": {
           "name": "My first Esquio product",
-          "nameHelp": "Lorem ipsum"
+          "nameHelp": "Lorem ipsum",
+          "description": "Lorem ipsum",
+          "descriptionHelp": "Lorem ipsum"
         }
     },
     "home": {

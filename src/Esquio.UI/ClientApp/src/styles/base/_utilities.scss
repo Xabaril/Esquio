@@ -27,6 +27,7 @@ p, span > .d > #s,
 
   &-container {
     &-medium {
+      position: relative;
       margin: 0 auto;
       max-width: 60rem !important;
     }
