@@ -17,8 +17,8 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Acheve.TestHost" Version="2.2.1" />
     
+    <PackageReference Include="Acheve.TestHost" Version="$(achevetesthost)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(microsoftextensionslogging)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(NetTestSdk)" />
