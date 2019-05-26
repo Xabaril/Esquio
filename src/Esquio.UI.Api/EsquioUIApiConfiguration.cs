@@ -12,22 +12,27 @@ namespace Esquio.UI.Api
     {
         public static IServiceCollection ConfigureServices(IServiceCollection services)
         {
-            services
+            return services
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                 .AddCustomProblemDetails()
-                //.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddMvc()
-                .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
-                .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
-                .AddNewtonsoftJson();
-
-            return services;
+                    .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
+                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
+                    .AddNewtonsoftJson()
+                .Services;
         }
 
         public static IApplicationBuilder Configure(IApplicationBuilder app, Func<IApplicationBuilder, IApplicationBuilder> configureHost)
         {
             return configureHost(app)
-                .UseProblemDetails();
+                .UseProblemDetails()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
+                });
         }
     }
 }

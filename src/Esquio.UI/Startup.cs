@@ -51,8 +51,6 @@ namespace Esquio.UI
                     .UseStaticFiles()
                     .UseSpaStaticFiles();
 
-
-
                 host
                     .UseMvc(routes =>
                     {

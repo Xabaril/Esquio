@@ -1,14 +1,18 @@
-﻿using Esquio.UI.Api;
+﻿using Acheve.AspNetCore.TestHost.Security;
+using Acheve.TestHost;
+using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using Xunit;
 
-namespace FunctionalTests.Esquio.UI.Api
+namespace FunctionalTests.Esquio.UI.Api.Seedwork
 {
     public class ServerFixture
     {
@@ -54,22 +58,31 @@ namespace FunctionalTests.Esquio.UI.Api
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            EsquioUIApiConfiguration.ConfigureServices(services);
+            EsquioUIApiConfiguration.ConfigureServices(services)
+                .AddAuthorization()
+                .AddAuthentication(setup =>
+                {
+                    setup.DefaultAuthenticateScheme = TestServerDefaults.AuthenticationScheme;
+                    setup.DefaultChallengeScheme = TestServerDefaults.AuthenticationScheme;
+                })
+                .AddTestServer()
+                .Services
+                .AddDbContext<StoreDbContext>(setup=>
+                {
+                    setup.UseSqlServer(_configuration.GetConnectionString("Esquio"), opt =>
+                    {
+                    });
+                });
         }
 
         public void Configure(IApplicationBuilder app)
         {
             EsquioUIApiConfiguration.Configure(app, host =>
             {
-                return host.UseAuthorization()
+                return host
                 .UseRouting()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=Home}/{action=Index}/{id?}");
-                    endpoints.MapRazorPages();
-                });
+                .UseAuthentication()
+                .UseAuthorization();
             });
         }
     }

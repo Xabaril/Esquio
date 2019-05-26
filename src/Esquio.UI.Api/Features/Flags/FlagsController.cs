@@ -19,8 +19,8 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Route("api/v1/product/{productId:int}/flags/{featureId:int}/rollout")]
-        public async Task<IActionResult> Rollout([FromQuery]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
+        [Route("api/v1/product/{ProductId:int:min(1)}/flags/{FeatureId:int:min(1)}/rollout")]
+        public async Task<IActionResult> Rollout([FromRoute]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rolloutFlagRequest, cancellationToken);
 
