@@ -1,4 +1,6 @@
-﻿using Esquio.UI.Api.Features.Flags.Rollout;
+﻿using Esquio.UI.Api.Features.Flags.Delete;
+using Esquio.UI.Api.Features.Flags.Details;
+using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Route("api/v1/product/{ProductId:int:min(1)}/flags/{FeatureId:int:min(1)}/rollout")]
+        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}/rollout")]
         public async Task<IActionResult> Rollout([FromRoute]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rolloutFlagRequest, cancellationToken);
@@ -27,42 +29,22 @@ namespace Esquio.UI.Api.Features.Flags
             return Ok();
         }
 
+        [HttpGet]
+        [Route("api/v1/product/{id:int}/flags/{id:int}")]
+        public IActionResult GetBy(DetailsFlagRequest request, CancellationToken cancellationToken = default)
+        {
+            var flag = _mediator.Send(request, cancellationToken);
 
-        //[HttpGet]
-        //[Route("api/v1/product/{id:int}/flags/{id:int}")]
-        //public IActionResult GetBy(int productId, int flagId)
-        //{
-        //    return Ok();
-        //}
+            return Ok(flag);
+        }
 
-        //[HttpGet]
-        //[Route("api/v1/product/{id:int}/flags")]
-        //public IActionResult GetBy(int productId)
-        //{
-        //    return Ok();
-        //}
+        [HttpDelete]
+        [Route("api/v1/features/{id:int}")]
+        public async Task<IActionResult> Delete(DeleteFlagRequest request)
+        {
+            await _mediator.Send(request);
 
-        //[HttpPost]
-        //[Route("api/v1/product/{id:int}/flags")]
-        //public IActionResult Add(int productId)
-        //{
-        //    return Created(string.Empty, null);
-        //}
-
-        //[HttpPut]
-        //[Route("api/v1/features")]
-        //public IActionResult Update()
-        //{
-        //    return Ok();
-        //}
-
-        
-
-        //[HttpDelete]
-        //[Route("api/v1/features/{id:int}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }
