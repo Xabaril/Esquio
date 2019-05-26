@@ -75,7 +75,7 @@ import { Feature } from './features';
   }
 })
 export default class extends Vue {
-  public name = "ProductsForm";
+  public name = 'ProductsForm';
   public product: Product;
   public floatingIcon = FloatingIcon.Save;
 
