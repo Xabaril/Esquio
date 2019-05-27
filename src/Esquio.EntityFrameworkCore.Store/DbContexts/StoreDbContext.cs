@@ -8,6 +8,8 @@ namespace Esquio.EntityFrameworkCore.Store
     {
         private readonly StoreOptions storeOptions;
 
+        public StoreDbContext(DbContextOptions<StoreDbContext> options) : this(options, new StoreOptions()) { }
+
         public StoreDbContext(DbContextOptions<StoreDbContext> options, StoreOptions storeOptions) : base(options)
         {
             this.storeOptions = storeOptions;

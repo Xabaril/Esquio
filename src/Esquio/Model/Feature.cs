@@ -1,5 +1,3 @@
-﻿using Esquio.Abstractions;
-using Esquio.Toggles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +12,10 @@ namespace Esquio.Model
             get; private set;
         }
         public bool IsEnabled
+        {
+            get; private set;
+        }
+        public bool IsUserPreview
         {
             get; private set;
         }

@@ -13,7 +13,6 @@ namespace Esquio.Toggles
     {
         const string Users = nameof(Users);
 
-        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
 
@@ -37,7 +36,7 @@ namespace Esquio.Toggles
 
                 if (activeUserNames != null)
                 {
-                    var tokenizer = new StringTokenizer(activeUserNames, SPLIT_SEPARATOR);
+                    var tokenizer = new StringTokenizer(activeUserNames, Globals.DEFAULT_SPLIT_SEPARATOR);
 
                     return tokenizer.Contains(
                         currentUserName, StringSegmentComparer.OrdinalIgnoreCase);

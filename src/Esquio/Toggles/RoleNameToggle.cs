@@ -11,7 +11,6 @@ namespace Esquio.Toggles
     public class RoleNameToggle
        : IToggle
     {
-        static char[] SPLIT_SEPARATOR = new char[] { ';' };
         const string Roles = nameof(Roles);
         private readonly IRoleNameProviderService _roleNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
@@ -35,7 +34,7 @@ namespace Esquio.Toggles
                 string activeRoles = data.Roles?.ToString();
                 if (activeRoles != null)
                 {
-                    var tokenizer = new StringTokenizer(activeRoles, SPLIT_SEPARATOR);
+                    var tokenizer = new StringTokenizer(activeRoles, Globals.DEFAULT_SPLIT_SEPARATOR);
 
                     return tokenizer.Contains(
                         currentRole, StringSegmentComparer.OrdinalIgnoreCase);

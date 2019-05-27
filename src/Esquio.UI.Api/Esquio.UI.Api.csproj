@@ -7,11 +7,19 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Integrations\Validators\" />
+    <ProjectReference Include="..\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
+    <ProjectReference Include="..\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Parameters\" />
+    <Folder Include="Features\Toggles\" />
   </ItemGroup>
 
 </Project>

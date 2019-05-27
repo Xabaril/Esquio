@@ -12,7 +12,6 @@ namespace Esquio.Toggles
         : IToggle
     {
         private const string Environments = nameof(Environments);
-        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
@@ -34,7 +33,7 @@ namespace Esquio.Toggles
 
             if (environments != null && currentEnvironment != null)
             {
-                var tokenizer = new StringTokenizer(environments, SPLIT_SEPARATOR);
+                var tokenizer = new StringTokenizer(environments, Globals.DEFAULT_SPLIT_SEPARATOR);
 
                 return tokenizer.Contains(
                     currentEnvironment,StringSegmentComparer.OrdinalIgnoreCase);
