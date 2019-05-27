@@ -17,6 +17,8 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
+
+            Features = new List<FeatureEntity>();
         }
     }
 }

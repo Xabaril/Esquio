@@ -1,6 +1,4 @@
-﻿using Esquio.UI.Api.Features.Flags.Delete;
-using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.Rollout;
+﻿using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

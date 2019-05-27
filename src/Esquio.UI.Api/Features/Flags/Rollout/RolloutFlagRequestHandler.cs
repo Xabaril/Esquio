@@ -36,6 +36,8 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
                     feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
 
                     await _context.SaveChangesAsync(cancellationToken);
+
+                    return Unit.Value;
                 }
             }
 

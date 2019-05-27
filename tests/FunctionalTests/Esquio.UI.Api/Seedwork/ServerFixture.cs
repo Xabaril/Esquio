@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Respawn;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork
@@ -21,6 +23,11 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 
         public TestServer TestServer { get; private set; }
 
+        public Given Given { get; private set; }
+
+
+        private IHost _host;
+
         public ServerFixture()
         {
             InitializeTestServer();
@@ -30,7 +37,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             var testServer = new TestServer();
 
-            var host = Host.CreateDefaultBuilder()
+            _host = Host.CreateDefaultBuilder()
                  .UseContentRoot(Directory.GetCurrentDirectory())
                  .ConfigureAppConfiguration((_, cfg) =>
                  {
@@ -43,24 +50,30 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                      .UseStartup<TestStartup>();
                  }).Build();
 
-            host.StartAsync().Wait();
+            _host.StartAsync().Wait();
 
-            host.MigrateDbContext<StoreDbContext>((store, sp) =>
+            _host.MigrateDbContext<StoreDbContext>((store, sp) =>
             {
 
             });
 
-            TestServer = host.GetTestServer();
+            TestServer = _host.GetTestServer();
+            Given = new Given(this);
         }
 
-        //private void MigrateDatabase()
-        //{
-        //    var context = TestServer.Host
-        //        .MigrateDbContext<StoreDbContext>((store, sp) =>
-        //        {
+        public async Task ExecuteScopeAsync(Func<IServiceProvider, Task> func)
+        {
+            using (var scope = _host.Services.GetService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                await func(scope.ServiceProvider);
+            }
+        }
 
-        //        });
-        //}
+        public async Task ExecuteDbContextAsync(Func<StoreDbContext, Task> func)
+        {
+            await ExecuteScopeAsync(sp => func(sp.GetService<StoreDbContext>()));
+        }
 
         internal static void ResetDatabase()
         {

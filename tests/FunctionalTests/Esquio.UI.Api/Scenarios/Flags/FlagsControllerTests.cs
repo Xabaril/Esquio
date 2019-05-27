@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
+using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
@@ -56,7 +57,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status404NotFound);
         }
 
-        [Fact] 
+        [Fact]
+        [ResetDatabase]
         public async Task response_bad_request_if_product_not_exist()
         {
             var response = await _fixture.TestServer
@@ -67,6 +69,52 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task response_bad_request_if_feature_not_exist()
+        {
+            var product = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(product.Id, 1))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task response_ok_if_feature_toggles_is_empty()
+        {
+            var product = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature")
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+           
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(product.Id, 1))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
         }
     }
 }

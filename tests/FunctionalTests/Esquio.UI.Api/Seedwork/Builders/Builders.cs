@@ -6,5 +6,15 @@
         {
             return new IdentityBuilder();
         }
+
+        public static ProductEntityBuilder Product()
+        {
+            return new ProductEntityBuilder();
+        }
+        
+        public static FeatureEntityBuilder Feature()
+        {
+            return new FeatureEntityBuilder();
+        }
     }
 }
