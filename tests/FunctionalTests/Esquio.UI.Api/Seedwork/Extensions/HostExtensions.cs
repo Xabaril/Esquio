@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.Hosting
 
                 try
                 {
+                    context.Database.EnsureDeleted();
                     context.Database.Migrate();
 
                     seeder(context, scope.ServiceProvider);

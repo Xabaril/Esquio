@@ -19,7 +19,11 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 {
     public class ServerFixture
     {
-        static Checkpoint _checkpoint = new Checkpoint();
+        static Checkpoint _checkpoint = new Checkpoint()
+        {
+            TablesToIgnore = new string[] { "__EFMigrationsHistory" },
+            WithReseed = true
+        };
 
         public TestServer TestServer { get; private set; }
 
@@ -83,13 +87,14 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             var connectionString = configurationBuilder.Build()
                 .GetConnectionString("Esquio");
 
-            _checkpoint.Reset(connectionString).Wait();
+            var task = _checkpoint.Reset(connectionString);
+            task.Wait();
         }
     }
 
     [CollectionDefinition(nameof(AspNetCoreServer))]
     public class AspNetCoreServer
-        : IClassFixture<ServerFixture>
+        : ICollectionFixture<ServerFixture>
     {
 
     }

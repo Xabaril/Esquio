@@ -16,5 +16,10 @@
         {
             return new FeatureEntityBuilder();
         }
+        
+        public static ToggleEntityBuilder Toggle()
+        {
+            return new ToggleEntityBuilder();
+        }
     }
 }

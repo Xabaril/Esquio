@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Api.Features.Flags.Rollout;
+﻿using Esquio.UI.Api.Features.Flags.Delete;
+using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,15 @@ namespace Esquio.UI.Api.Features.Flags
             return Ok();
         }
 
+        [HttpDelete]
+        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request)
+        {
+            await _mediator.Send(request);
+
+            return NoContent();
+        }
+
         //[HttpGet]
         //[Route("api/v1/product/{id:int}/flags/{id:int}")]
         //public IActionResult GetBy(DetailsFlagRequest request, CancellationToken cancellationToken = default)
@@ -36,13 +46,6 @@ namespace Esquio.UI.Api.Features.Flags
         //    return Ok(flag);
         //}
 
-        //[HttpDelete]
-        //[Route("api/v1/features/{id:int}")]
-        //public async Task<IActionResult> Delete(DeleteFlagRequest request)
-        //{
-        //    await _mediator.Send(request);
 
-        //    return NoContent();
-        //}
     }
 }

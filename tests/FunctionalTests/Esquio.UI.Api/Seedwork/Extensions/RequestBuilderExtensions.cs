@@ -10,5 +10,9 @@ namespace Microsoft.AspNetCore.TestHost
         {
             return requestBuilder.SendAsync(HttpMethods.Put);
         }
+        public static Task<HttpResponseMessage> DeleteAsync(this RequestBuilder requestBuilder)
+        {
+            return requestBuilder.SendAsync(HttpMethods.Delete);
+        }
     }
 }

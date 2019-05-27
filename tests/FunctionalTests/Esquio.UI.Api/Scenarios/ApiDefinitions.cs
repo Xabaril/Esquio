@@ -14,6 +14,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios
                 {
                     return $"api/v1/product/{productId}/flags/{featureId}/rollout";
                 }
+                public static string Delete(int productId, int featureId)
+                {
+                    return $"api/v1/product/{productId}/flags/{featureId}";
+                }
             }
         }
     }

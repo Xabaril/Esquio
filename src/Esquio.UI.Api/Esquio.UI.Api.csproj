@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="Features\Parameters\" />
     <Folder Include="Features\Toggles\" />
+    <Folder Include="Diagnostics\" />
   </ItemGroup>
 
 </Project>
