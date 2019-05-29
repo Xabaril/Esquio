@@ -20,7 +20,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
 
         public async Task<Unit> Handle(DeleteFlagRequest request, CancellationToken cancellationToken)
         {
-            var feature = _storeDbContext
+            var feature = await _storeDbContext
                 .Features
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(f => f.Id == request.FeatureId && f.ProductEntityId == request.ProductId, cancellationToken);

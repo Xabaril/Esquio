@@ -18,7 +18,7 @@
   <PropertyGroup Label="Package Versions">
     <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview5.19227.9</microsoftextensionsdependencyinjectionabstractions>
     <microsoftextensionsloggingabstractions>3.0.0-preview5.19227.9</microsoftextensionsloggingabstractions>
-    <microsoftextensionslogging>3.0.0-preview5.19227.9</microsoftextensionslogging>
+    <microsoftextensionslogging>3.0.0-preview5.1922it p7.9</microsoftextensionslogging>
     <microsoftextensionsconfigurationabstractions>3.0.0-preview5.19227.9</microsoftextensionsconfigurationabstractions>
     <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
     <microsoftextensionsconfigurationbinder>3.0.0-preview5.19227.9</microsoftextensionsconfigurationbinder>

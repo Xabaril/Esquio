@@ -1,4 +1,6 @@
 ﻿using Esquio.UI.Api.Features.Flags.Delete;
+using Esquio.UI.Api.Features.Flags.Details;
+using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,22 +32,36 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpDelete]
         [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request)
+        public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request, CancellationToken cancellationToken = default)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
 
             return NoContent();
         }
 
-        //[HttpGet]
-        //[Route("api/v1/product/{id:int}/flags/{id:int}")]
-        //public IActionResult GetBy(DetailsFlagRequest request, CancellationToken cancellationToken = default)
-        //{
-        //    var flag = _mediator.Send(request, cancellationToken);
+        [HttpGet]
+        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}")]
+        public async Task<IActionResult> GetBy([FromRoute]DetailsFlagRequest request, CancellationToken cancellationToken = default)
+        {
+            var feature = await _mediator.Send(request, cancellationToken);
 
-        //    return Ok(flag);
-        //}
+            if (feature != null)
+            {
+                return Ok(feature);
+            }
 
+            return NotFound();
+        }
 
+        [HttpGet]
+        [Route("api/v1/product/{productId:int:min(1)}/flags")]
+        public async Task<IActionResult> Get(int productId, [FromQuery]ListFlagRequest request, CancellationToken cancellationToken = default)
+        {
+            request.ProductId = productId;
+
+            var list = await _mediator.Send(request, cancellationToken);
+
+            return Ok(list);
+        }
     }
 }

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Parameters\**" />
+    <EmbeddedResource Remove="Features\Parameters\**" />
+    <None Remove="Features\Parameters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview1" />
@@ -18,8 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Parameters\" />
-    <Folder Include="Features\Toggles\" />
     <Folder Include="Diagnostics\" />
   </ItemGroup>
 

@@ -21,5 +21,10 @@
         {
             return new ToggleEntityBuilder();
         }
+
+        public static ParameterEntityBuilder Parameter()
+        {
+            return new ParameterEntityBuilder();
+        }
     }
 }
