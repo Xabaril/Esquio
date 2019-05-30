@@ -10,6 +10,14 @@
                 {
                     return $"api/v1/product";
                 }
+                public static string Add()
+                {
+                    return $"api/v1/product";
+                }
+                public static string Get(int productId)
+                {
+                    return $"api/v1/product/{productId}";
+                }
                 public static string List(int pageIndex, int pageCount)
                 {
                     return $"api/v1/product?pageIndex={pageIndex}&pageCount={pageCount}";

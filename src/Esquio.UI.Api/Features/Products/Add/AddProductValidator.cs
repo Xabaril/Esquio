@@ -2,7 +2,8 @@
 
 namespace Esquio.UI.Api.Features.Products.Add
 {
-    public class AddProductValidator : AbstractValidator<AddProductRequest>
+    public class AddProductValidator
+        : AbstractValidator<AddProductRequest>
     {
         public AddProductValidator()
         {
@@ -10,6 +11,7 @@ namespace Esquio.UI.Api.Features.Products.Add
                 .NotEmpty()
                 .MinimumLength(5)
                 .MaximumLength(250);
+
             RuleFor(x => x.Description)
                 .MaximumLength(500);
         }
