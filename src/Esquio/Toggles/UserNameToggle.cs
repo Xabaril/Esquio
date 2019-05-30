@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on current user name.")]
     [DesignTypeParameter(ParameterName = Users, ParameterType = "System.String", ParameterDescription = "The collection of user(s) to activate this toggle separated by ';' character")]
     public class UserNameToggle
         : IToggle

@@ -1,4 +1,8 @@
-﻿using Esquio.UI.Api.Features.Toggles.Details;
+﻿using Esquio.Toggles;
+using Esquio.UI.Api.Features.Toggles.Details;
+using Esquio.UI.Api.Features.Toggles.Known;
+using Esquio.UI.Api.Features.Toggles.Parameter;
+using Esquio.UI.Api.Features.Toggles.Post;
 using Esquio.UI.Api.Features.Toggles.Reveal;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
@@ -7,6 +11,7 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -47,6 +52,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task get_response_not_found_if_toggle_not_exist()
         {
             var product = Builders.Product()
@@ -262,6 +268,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
         }
+
         [Fact]
         [ResetDatabase]
         public async Task reveal_response_ok_if_toggle_exist_and_parameters_can_be_revealed()
@@ -330,5 +337,376 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Description
                 .Should().NotBeNull();
         }
+
+        [Fact]
+        public async Task knowntypes_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        public async Task knowntypes_response_ok()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var content = await response.Content
+                .ReadAs<KnownToggleResponse>();
+
+            content.ScannedAssemblies
+                .Should()
+                .BeGreaterThan(0);
+
+            content.Toggles
+                .Where(t => t.Assembly == (typeof(OnToggle).Assembly.FullName))
+                .Any().Should().BeTrue();
+
+            content.Toggles
+              .Where(t => t.Type == (typeof(OnToggle).FullName))
+              .Any().Should().BeTrue();
+
+            content.Toggles
+              .Where(t => t.Type == (typeof(OnToggle).FullName))
+              .Select(t => t.Description)
+              .Single()
+              .Should().BeEquivalentTo("Toggle that always is active.");
+        }
+
+        [Fact]
+        public async Task post_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .PostAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task post_response_bad_request_if_try_to_duplicate_toggle()
+        {
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType(typeof(EnvironmentToggle).FullName)
+              .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var body = new PostToggleRequest()
+            {
+                FeatureId = feature.Id,
+                ToggleType = typeof(EnvironmentToggle).FullName,
+                Parameters = new Dictionary<string, string>()
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(body);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task post_response_created_when_add_new_toggle()
+        {
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var body = new PostToggleRequest()
+            {
+                FeatureId = feature.Id,
+                ToggleType = typeof(EnvironmentToggle).FullName,
+                Parameters = new Dictionary<string, string>()
+                {
+                    {"Environments","Development"}
+                }
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(body);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status201Created);
+        }
+
+        [Fact]
+        public async Task postparameter_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .PostAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        public async Task postparameter_response_bad_request_if_toggleid_is_non_positve_int()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = -1,
+                Name = "Environments",
+                Value = "Development"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task postparameter_response_bad_request_if_name_is_null()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = 1,
+                Name = null,
+                Value = "Development"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task postparameter_response_bad_request_if_name_is_empty()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = 1,
+                Name = string.Empty,
+                Value = "Development"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task postparameter_response_bad_request_if_value_is_null()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = 1,
+                Name = "Environment",
+                Value = null
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task postparameter_response_bad_request_if_value_is_empty()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = 1,
+                Name = "Environment",
+                Value = string.Empty
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+
+        [Fact]
+        [ResetDatabase]
+        public async Task postparameter_response_badrequest_if_toggle_does_not_exist()
+        {
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = 100,
+                Name = "Environments",
+                Value = "Development"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task postparameter_response_ok_if_toggle_exist_but_is_new_parameter()
+        {
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType(typeof(EnvironmentToggle).FullName)
+              .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = toggle.Id,
+                Name = "Environments",
+                Value = "Production"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status201Created);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task postparameter_response_ok_if_toggle_and_parameter_already_exit()
+        {
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType(typeof(EnvironmentToggle).FullName)
+              .Build();
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var parameterToggleRequest = new ParameterToggleRequest()
+            {
+                ToogleId = toggle.Id,
+                Name = "Environments",
+                Value = "Development"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status201Created);
+        }
+
     }
 }

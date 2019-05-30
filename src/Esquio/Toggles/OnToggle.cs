@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that always is active.")]
     public class OnToggle
         : IToggle
     {

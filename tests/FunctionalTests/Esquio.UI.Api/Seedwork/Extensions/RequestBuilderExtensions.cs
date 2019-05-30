@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.TestHost
@@ -13,6 +15,15 @@ namespace Microsoft.AspNetCore.TestHost
         public static Task<HttpResponseMessage> DeleteAsync(this RequestBuilder requestBuilder)
         {
             return requestBuilder.SendAsync(HttpMethods.Delete);
+        }
+        public static Task<HttpResponseMessage> PostAsJsonAsync<TEntity>(this RequestBuilder requestBuilder, TEntity entity)
+        {
+            return requestBuilder.And(message =>
+            {
+                var body = JsonConvert.SerializeObject(entity);
+                message.Content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            }).SendAsync(HttpMethods.Post);
         }
     }
 }

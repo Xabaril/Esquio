@@ -3,7 +3,7 @@ using System;
 
 namespace Esquio.UI.Api.Features.Flags.Delete
 {
-    class DeleteFlagRequestValidator
+    public class DeleteFlagRequestValidator
         : AbstractValidator<DeleteFlagRequest>
     {
         public DeleteFlagRequestValidator()

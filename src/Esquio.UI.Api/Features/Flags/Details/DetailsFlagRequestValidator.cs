@@ -3,7 +3,7 @@ using System;
 
 namespace Esquio.UI.Api.Features.Flags.Details
 {
-    class DetailsFlagRequestValidator
+    public class DetailsFlagRequestValidator
         : AbstractValidator<DetailsFlagRequest>
     {
         public DetailsFlagRequestValidator()

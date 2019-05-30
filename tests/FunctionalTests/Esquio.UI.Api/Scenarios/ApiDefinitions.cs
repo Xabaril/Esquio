@@ -22,7 +22,7 @@
                 {
                     return $"api/v1/product/{productId}/flags";
                 }
-                public static string List(int productId,int pageIndex,int pageCount)
+                public static string List(int productId, int pageIndex, int pageCount)
                 {
                     return $"api/v1/product/{productId}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
@@ -40,6 +40,18 @@
                 public static string Reveal(int toggleId)
                 {
                     return $"api/v1/toggle/{toggleId}/parameters/reveal";
+                }
+                public static string KnownTypes()
+                {
+                    return $"api/v1/toggle/knowntypes";
+                }
+                public static string Post()
+                {
+                    return "api/v1/toggle";
+                }
+                public static string PostParameter()
+                {
+                    return "api/v1/toggle/parameter";
                 }
             }
         }

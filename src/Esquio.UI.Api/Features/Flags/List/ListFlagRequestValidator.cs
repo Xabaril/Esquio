@@ -3,7 +3,7 @@ using System;
 
 namespace Esquio.UI.Api.Features.Flags.List
 {
-    class ListFlagRequestValidator
+    public class ListFlagRequestValidator
         : AbstractValidator<ListFlagRequest>
     {
         public ListFlagRequestValidator()

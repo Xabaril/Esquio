@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on the bucket name created with current request header name/value pair.")]
     [DesignTypeParameter(ParameterName = Percentage, ParameterType = "System.Int32", ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
     [DesignTypeParameter(ParameterName = HeaderName, ParameterType = "System.String", ParameterDescription = "The name of the header to get the value and create partitions buckets over this.")]
     public class RolloutHeaderValueToggle

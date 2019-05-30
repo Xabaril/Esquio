@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on current user role name.")]
     [DesignTypeParameter(ParameterName = Roles, ParameterType = "System.String", ParameterDescription = "The collection of rol(es) to activate this toggle separated by ';' character")]
     public class RoleNameToggle
        : IToggle

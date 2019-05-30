@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description ="Toggle that is active depending on execution environment name.")]
     [DesignTypeParameter(ParameterName = Environments, ParameterType = "System.String", ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
     public class EnvironmentToggle
         : IToggle

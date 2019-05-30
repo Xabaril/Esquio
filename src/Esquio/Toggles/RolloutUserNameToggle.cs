@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on the bucket name created with user name value and the rollout percentage.")]
     [DesignTypeParameter(ParameterName = Percentage, ParameterType = "System.Int32", ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
     public class RolloutUserNameToggle
         : IToggle

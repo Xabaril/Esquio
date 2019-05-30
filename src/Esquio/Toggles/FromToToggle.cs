@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on current UTC date.")]
     [DesignTypeParameter(ParameterName = From, ParameterType = "System.DateTime", ParameterDescription = "The from date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
     [DesignTypeParameter(ParameterName = To, ParameterType = "System.DateTime", ParameterDescription = "The to date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
     public class FromToToggle
