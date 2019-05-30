@@ -8,6 +8,7 @@ using System.Threading;
 using Esquio.UI.Api.Features.Products.Delete;
 using System;
 using Esquio.UI.Api.Features.Products.List;
+using Esquio.UI.Api.Features.Products.Details;
 
 namespace Esquio.UI.Api.Features.Products
 {
@@ -24,41 +25,34 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpGet]
         [Route("api/v1/product")]
-        public async Task<IActionResult> Get(int productId, [FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> List(int productId, [FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
             return Ok(list);
         }
 
-        //[HttpGet]
-        //[Route("{id:int}")]
-        //public IActionResult GetBy(int id)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet]
+        [Route("api/v1/product/{productId:int:min(1)}")]
+        public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
+        {
+            var product = await _mediator.Send(request, cancellationToken);
 
-        //[HttpGet]
-        //[Route("")]
-        //public IActionResult GetBy()
-        //{
-        //    return Ok();
-        //}
+            if (product != null)
+            {
+                return Ok(product);
+            }
+            return NotFound();
+        }
 
-        //[HttpPost]
-        //[Route("")]
-        //public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        //{
-        //    await _mediator.Send(request, cancellationToken);
-        //    return Created(string.Empty, null);
-        //}
+        [HttpPost]
+        [Route("api/v1/product")]
+        public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
+        {
+            var idProduct = await _mediator.Send(request, cancellationToken);
 
-        //[HttpPut]
-        //[Route("")]
-        //public IActionResult Update()
-        //{
-        //    return Ok();
-        //}
+            return Created($"api/v1/product/{idProduct}", null);
+        }
 
         //[HttpDelete]
         //[Route("{id:int}")]
