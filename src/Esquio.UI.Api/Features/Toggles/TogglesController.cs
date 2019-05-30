@@ -40,7 +40,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        [Route("api/v1/toggle/{toggleId:int:min(1)}/parameters/reveal")]
+        [Route("api/v1/toggle/{toggleId:int:min(1)}/parameter/reveal")]
         public async Task<IActionResult> Reveal([FromRoute]RevealToggleRequest revealToggleRequest, CancellationToken cancellationToken = default)
         {
             var reveal = await _mediator.Send(revealToggleRequest, cancellationToken);
@@ -49,7 +49,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        [Route("api/v1/toggle/knowntypes")]
+        [Route("api/v1/toggle/knowntype")]
         public async Task<IActionResult> KnownTypes(CancellationToken cancellationToken = default)
         {
             var toggleList = await _mediator.Send(new KnownToggleRequest(), cancellationToken);

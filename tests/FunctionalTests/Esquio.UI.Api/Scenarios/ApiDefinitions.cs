@@ -4,27 +4,38 @@
     {
         public static class V1
         {
+            public static class Product
+            {
+                public static string List()
+                {
+                    return $"api/v1/product";
+                }
+                public static string List(int pageIndex, int pageCount)
+                {
+                    return $"api/v1/product?pageIndex={pageIndex}&pageCount={pageCount}";
+                }
+            }
             public static class Flags
             {
                 public static string Rollout(int productId, int featureId)
                 {
-                    return $"api/v1/product/{productId}/flags/{featureId}/rollout";
+                    return $"api/v1/product/{productId}/flag/{featureId}/rollout";
                 }
                 public static string Delete(int productId, int featureId)
                 {
-                    return $"api/v1/product/{productId}/flags/{featureId}";
+                    return $"api/v1/product/{productId}/flag/{featureId}";
                 }
                 public static string Get(int productId, int featureId)
                 {
-                    return $"api/v1/product/{productId}/flags/{featureId}";
+                    return $"api/v1/product/{productId}/flag/{featureId}";
                 }
                 public static string List(int productId)
                 {
-                    return $"api/v1/product/{productId}/flags";
+                    return $"api/v1/product/{productId}/flag";
                 }
                 public static string List(int productId, int pageIndex, int pageCount)
                 {
-                    return $"api/v1/product/{productId}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
+                    return $"api/v1/product/{productId}/flag?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
             }
             public static class Toggles
@@ -39,11 +50,11 @@
                 }
                 public static string Reveal(int toggleId)
                 {
-                    return $"api/v1/toggle/{toggleId}/parameters/reveal";
+                    return $"api/v1/toggle/{toggleId}/parameter/reveal";
                 }
                 public static string KnownTypes()
                 {
-                    return $"api/v1/toggle/knowntypes";
+                    return $"api/v1/toggle/knowntype";
                 }
                 public static string Post()
                 {

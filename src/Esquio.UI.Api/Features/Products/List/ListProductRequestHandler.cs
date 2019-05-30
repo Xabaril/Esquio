@@ -5,42 +5,40 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.List
+namespace Esquio.UI.Api.Features.Products.List
 {
-    public class ListFlagRequestHandler : IRequestHandler<ListFlagRequest, ListFlagResponse>
+    public class ListProductRequestHandler : IRequestHandler<ListProductRequest, ListProductResponse>
     {
         private readonly StoreDbContext _storeDbContext;
 
-        public ListFlagRequestHandler(StoreDbContext context)
+        public ListProductRequestHandler(StoreDbContext context)
         {
             Ensure.Argument.NotNull(context, nameof(context));
 
             _storeDbContext = context;
         }
-        public async Task<ListFlagResponse> Handle(ListFlagRequest request, CancellationToken cancellationToken)
+        public async Task<ListProductResponse> Handle(ListProductRequest request, CancellationToken cancellationToken)
         {
             var total = await _storeDbContext
-                .Features
-                .Where(f => f.ProductEntityId == request.ProductId)
+                .Products
                 .CountAsync(cancellationToken);
 
             var features = await _storeDbContext
-                .Features
-                .Where(f => f.ProductEntityId == request.ProductId)
+                .Products
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
 
-            return new ListFlagResponse()
+            return new ListProductResponse()
             {
                 Count = features.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = features.Select(f => new ListFlagResponseDetail
+                Result = features.Select(p => new ListProductResponseDetail
                 {
-                    Id = f.Id,
-                    Enabled = f.Enabled,
-                    Name = f.Name
+                    Id = p.Id,
+                    Description = p.Description,
+                    Name = p.Name
                 }).ToList()
             };
         }

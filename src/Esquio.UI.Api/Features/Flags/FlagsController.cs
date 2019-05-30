@@ -22,7 +22,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}/rollout")]
+        [Route("api/v1/product/{productId:int:min(1)}/flag/{featureId:int:min(1)}/rollout")]
         public async Task<IActionResult> Rollout([FromRoute]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rolloutFlagRequest, cancellationToken);
@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpDelete]
-        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}")]
+        [Route("api/v1/product/{productId:int:min(1)}/flag/{featureId:int:min(1)}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -40,7 +40,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
-        [Route("api/v1/product/{productId:int:min(1)}/flags/{featureId:int:min(1)}")]
+        [Route("api/v1/product/{productId:int:min(1)}/flag/{featureId:int:min(1)}")]
         public async Task<IActionResult> GetBy([FromRoute]DetailsFlagRequest request, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(request, cancellationToken);
@@ -54,7 +54,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
-        [Route("api/v1/product/{productId:int:min(1)}/flags")]
+        [Route("api/v1/product/{productId:int:min(1)}/flag")]
         public async Task<IActionResult> Get(int productId, [FromQuery]ListFlagRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductId = productId;

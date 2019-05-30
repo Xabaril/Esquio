@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using System;
 
-namespace Esquio.UI.Api.Features.Flags.List
+namespace Esquio.UI.Api.Features.Products.List
 {
-    public class ListFlagRequestValidator
-        : AbstractValidator<ListFlagRequest>
+    public class ListProductRequestValidator
+        : AbstractValidator<ListProductRequest>
     {
-        public ListFlagRequestValidator()
+        public ListProductRequestValidator()
         {
             this.RuleFor(rf => rf.PageIndex)
                 .GreaterThanOrEqualTo(0)

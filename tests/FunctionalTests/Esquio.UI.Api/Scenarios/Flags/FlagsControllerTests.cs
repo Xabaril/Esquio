@@ -421,6 +421,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
         }
+
         [Fact]
         public async Task list_response_unauthorizaed_when_user_is_not_authenticated()
         {
@@ -432,6 +433,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
         }
+
         [Fact]
         public async Task list_response_notfound_when_productid_is_not_positive_int()
         {
