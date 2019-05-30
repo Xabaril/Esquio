@@ -26,7 +26,7 @@ namespace Esquio.UI.Api.Features.Toggles.Parameter
                 .Toggles
                 .Include(t => t.Parameters)
                 .Where(t => t.Id == request.ToogleId)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (toggle != null)
             {
@@ -44,7 +44,7 @@ namespace Esquio.UI.Api.Features.Toggles.Parameter
                         .Add(new ParameterEntity(toggle.Id, request.Name, request.Value));
                 }
 
-                await _storeDbContext.SaveChangesAsync();
+                await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
             }

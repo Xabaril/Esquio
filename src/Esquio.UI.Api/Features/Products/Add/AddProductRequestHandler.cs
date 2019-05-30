@@ -20,7 +20,7 @@ namespace Esquio.UI.Api.Features.Products.Add
 
         public async Task<int> Handle(AddProductRequest request, CancellationToken cancellationToken)
         {
-            var existing = _dbContext
+            var existing = await _dbContext
                 .Products
                 .Where(p => p.Name == request.Name)
                 .SingleOrDefaultAsync(cancellationToken);
@@ -28,7 +28,9 @@ namespace Esquio.UI.Api.Features.Products.Add
             if (existing == null)
             {
                 var product = new ProductEntity(request.Name, request.Description);
-                await _dbContext.AddAsync(product);
+                _dbContext.Add(product);
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return product.Id;
             }

@@ -41,7 +41,7 @@ namespace Esquio.UI.Api.Features.Toggles.Post
                 }
 
                 feature.Toggles.Add(toggle);
-                await _storeDbContext.SaveChangesAsync();
+                await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return toggle.Id;
             }
