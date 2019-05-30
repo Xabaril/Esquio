@@ -65,6 +65,14 @@
                     return "api/v1/toggle/parameter";
                 }
             }
+
+            public static class Tags
+            {
+                public static string Delete(string tag, int featureId)
+                {
+                    return $"api/v1/tags/{tag}/flags/{featureId}";
+                }
+            }
         }
     }
 }

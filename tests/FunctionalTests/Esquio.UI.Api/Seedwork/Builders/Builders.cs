@@ -26,5 +26,15 @@
         {
             return new ParameterEntityBuilder();
         }
+        public static TagBuilder Tag()
+        {
+            return new TagBuilder();
+        }
+
+
+        public static FeatureTagBuilder FeatureTag()
+        {
+            return new FeatureTagBuilder();
+        }
     }
 }
