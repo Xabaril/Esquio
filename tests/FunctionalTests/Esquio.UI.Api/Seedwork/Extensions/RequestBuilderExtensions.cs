@@ -25,5 +25,14 @@ namespace Microsoft.AspNetCore.TestHost
 
             }).SendAsync(HttpMethods.Post);
         }
+        public static Task<HttpResponseMessage> PutAsJsonAsync<TEntity>(this RequestBuilder requestBuilder, TEntity entity)
+        {
+            return requestBuilder.And(message =>
+            {
+                var body = JsonConvert.SerializeObject(entity);
+                message.Content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            }).SendAsync(HttpMethods.Put);
+        }
     }
 }

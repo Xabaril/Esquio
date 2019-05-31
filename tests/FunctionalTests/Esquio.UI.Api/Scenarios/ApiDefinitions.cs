@@ -15,6 +15,12 @@
                     return $"api/v1/product";
                 }
 
+                public static string Update()
+                {
+                    return $"api/v1/product";
+                }
+
+
                 public static string Delete(int productId)
                 {
                     return $"api/v1/product/{productId}";

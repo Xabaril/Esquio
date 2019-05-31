@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Features.Products.Add;
 using Esquio.UI.Api.Features.Products.Details;
 using Esquio.UI.Api.Features.Products.List;
+using Esquio.UI.Api.Features.Products.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -428,7 +429,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-            public async Task delete_response_no_content_when_delete_product_with_features_toggles_and_parameters()
+        public async Task delete_response_no_content_when_delete_product_with_features_toggles_and_parameters()
         {
             var product = Builders.Product()
                 .WithName("product#1")
@@ -469,5 +470,143 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status204NoContent);
         }
 
+        [Fact]
+        public async Task update_response_unauthorizaed_when_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        public async Task update_response_bad_request_if_product_not_positive_int()
+        {
+            var request = new UpdateProductRequest()
+            {
+                ProductId = -1,
+                Name = "name",
+                Description = "description"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task update_response_bad_request_if_product_does_not_exist()
+        {
+            var request = new UpdateProductRequest()
+            {
+                ProductId = 1,
+                Name = "name",
+                Description = "description"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        public async Task update_response_bad_request_if_product_name_is_less_than_5()
+        {
+            var request = new UpdateProductRequest()
+            {
+                ProductId = 1,
+                Name = new string('n', 2),
+                Description = "description"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        public async Task update_response_bad_request_if_product_name_is_greater_than_250()
+        {
+            var request = new UpdateProductRequest()
+            {
+                ProductId = 1,
+                Name = new string('n',251),
+                Description = "description"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task update_response_bad_request_if_product_description_is_greater_than_500()
+        {
+            var request = new UpdateProductRequest()
+            {
+                ProductId = 1,
+                Name = "product#2",
+                Description = new string('d', 501)
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+
+        [Fact]
+        [ResetDatabase]
+        public async Task update_response_no_conent_if_product_is_updated()
+        {
+            var product = Builders.Product()
+            .WithName("product#1")
+            .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var request = new UpdateProductRequest()
+            {
+                ProductId = product.Id,
+                Name = "product#2",
+                Description = "description for product#2"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
     }
 }
