@@ -2,6 +2,7 @@
 using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollout;
+using Esquio.UI.Api.Features.Tags.Add;
 using Esquio.UI.Api.Features.Tags.Delete;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,15 @@ namespace Esquio.UI.Api.Features.Flags
             await _mediator.Send(request, cancellationToken);
 
             return NoContent();
+        }
+
+        [HttpPost]
+        [Route("api/v1/tags")]
+        public async Task<IActionResult> Add(AddTagRequest request, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(request, cancellationToken);
+
+            return Ok();
         }
     }
 }

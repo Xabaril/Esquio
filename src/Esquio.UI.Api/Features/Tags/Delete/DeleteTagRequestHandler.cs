@@ -20,20 +20,16 @@ namespace Esquio.UI.Api.Features.Tags.Delete
 
         public async Task<Unit> Handle(DeleteTagRequest request, CancellationToken cancellationToken)
         {
-            var featureTag = await _storeDbContext
-                .FeatureTagEntities
-                .Include(ft => ft.TagEntity)
-                .SingleOrDefaultAsync(ft => ft.FeatureEntityId == request.FeatureId && ft.TagEntity.Name == request.Tag, cancellationToken);
+            var featureTag = await _storeDbContext.GetFeatureTagOrThrow(
+                request.FeatureId,
+                request.Tag,
+                cancellationToken);
 
-            if (featureTag != null)
-            {
-                _storeDbContext.Remove(featureTag);
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
+            _storeDbContext.Remove(featureTag);
 
-                return Unit.Value;
-            }
+            await _storeDbContext.SaveChangesAsync(cancellationToken);
 
-            throw new InvalidOperationException($"There is no tagged feature with the tag {request.Tag}");
+            return Unit.Value;
         }
     }
 }

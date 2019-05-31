@@ -91,6 +91,11 @@
                 {
                     return $"api/v1/tags/{tag}/flags/{featureId}";
                 }
+
+                public static string Add()
+                {
+                    return $"api/v1/tags";
+                }
             }
         }
     }
