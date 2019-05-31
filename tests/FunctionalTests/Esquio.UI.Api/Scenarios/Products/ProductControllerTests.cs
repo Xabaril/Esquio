@@ -366,5 +366,108 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Should().BeEquivalentTo("product#1");
         }
 
+        [Fact]
+        public async Task delete_response_unauthorizaed_when_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(1))
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        public async Task delete_response_notfound_if_product_is_not_positive_int()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(-1))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status404NotFound);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_badrequest_if_product_not_exist()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(11))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_no_content_when_delete_product_without_features()
+        {
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(product.Id))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
+
+        [Fact]
+        [ResetDatabase]
+            public async Task delete_response_no_content_when_delete_product_with_features_toggles_and_parameters()
+        {
+            var product = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType("toggle-type-1")
+              .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("param#1")
+                .WithValue("value#1")
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(product.Id))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
+
     }
 }

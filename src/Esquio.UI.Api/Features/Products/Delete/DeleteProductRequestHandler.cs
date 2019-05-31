@@ -1,7 +1,8 @@
-﻿using MediatR;
+﻿using Esquio.EntityFrameworkCore.Store;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,9 +10,31 @@ namespace Esquio.UI.Api.Features.Products.Delete
 {
     public class DeleteProductRequestHandler : IRequestHandler<DeleteProductRequest>
     {
-        public Task<Unit> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
+        private readonly StoreDbContext _storeDbContext;
+
+        public DeleteProductRequestHandler(StoreDbContext context)
         {
-            throw new NotImplementedException();
+            Ensure.Argument.NotNull(context, nameof(context));
+
+            _storeDbContext = context;
+        }
+        public async Task<Unit> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
+        {
+            var product = await _storeDbContext
+                .Products
+                .Where(p=>p.Id == request.ProductId)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (product != null)
+            {
+                _storeDbContext.Remove(product);
+
+                await _storeDbContext.SaveChangesAsync(cancellationToken);
+
+                return Unit.Value;
+            }
+
+            throw new InvalidOperationException($"The product with identifier {request.ProductId} does not exist.");
         }
     }
 }
