@@ -81,14 +81,19 @@
 
             public static class Tags
             {
-                public static string Delete(string tag, int featureId)
+                public static string List(int featureId)
                 {
-                    return $"api/v1/tags/{tag}/flags/{featureId}";
+                    return $"api/v1/tags/{featureId}";
                 }
 
-                public static string Add()
+                public static string Untag(string tag, int featureId)
                 {
-                    return $"api/v1/tags";
+                    return $"api/v1/tags/{featureId}/{tag}";
+                }
+
+                public static string Tag(int featureId)
+                {
+                    return $"api/v1/tags/{featureId}";
                 }
             }
         }
