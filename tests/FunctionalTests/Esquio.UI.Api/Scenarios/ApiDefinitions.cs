@@ -14,6 +14,11 @@
                 {
                     return $"api/v1/product";
                 }
+
+                public static string Delete(int productId)
+                {
+                    return $"api/v1/product/{productId}";
+                }
                 public static string Get(int productId)
                 {
                     return $"api/v1/product/{productId}";

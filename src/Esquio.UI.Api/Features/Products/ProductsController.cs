@@ -54,12 +54,13 @@ namespace Esquio.UI.Api.Features.Products
             return Created($"api/v1/product/{idProduct}", null);
         }
 
-        //[HttpDelete]
-        //[Route("{id:int}")]
-        //public async Task<IActionResult> Delete(DeleteProductRequest request)
-        //{
-        //    await _mediator.Send(request);
-        //    return NoContent();
-        //}
+        [HttpDelete]
+        [Route("api/v1/product/{productId:int:min(1)}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request)
+        {
+            await _mediator.Send(request);
+
+            return NoContent();
+        }
     }
 }
