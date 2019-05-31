@@ -1,8 +1,8 @@
 ﻿using Esquio.Toggles;
+using Esquio.UI.Api.Features.Toggles.Add;
+using Esquio.UI.Api.Features.Toggles.AddParameter;
 using Esquio.UI.Api.Features.Toggles.Details;
-using Esquio.UI.Api.Features.Toggles.Known;
-using Esquio.UI.Api.Features.Toggles.Parameter;
-using Esquio.UI.Api.Features.Toggles.Post;
+using Esquio.UI.Api.Features.Toggles.KnownTypes;
 using Esquio.UI.Api.Features.Toggles.Reveal;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
@@ -234,7 +234,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task reveal_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal(toggleId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.OnToggle"))
                   .GetAsync();
 
             response.StatusCode
@@ -242,25 +242,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Be(StatusCodes.Status401Unauthorized);
         }
 
-        [Fact]
-        public async Task reveal_response_badrequest_if_toggle_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal(toggleId: -1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .GetAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
 
         [Fact]
         [ResetDatabase]
         public async Task reveal_response_badrequest_if_toggle_not_exist()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal(toggleId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.NonExisting"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -303,7 +291,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal(toggleId: toggle.Id))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -363,7 +351,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<KnownToggleResponse>();
+                .ReadAs<KnownTypesToggleResponse>();
 
             content.ScannedAssemblies
                 .Should()
@@ -429,7 +417,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddProduct(product);
 
-            var body = new PostToggleRequest()
+            var body = new AddToggleRequest()
             {
                 FeatureId = feature.Id,
                 ToggleType = typeof(EnvironmentToggle).FullName,
@@ -464,7 +452,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddProduct(product);
 
-            var body = new PostToggleRequest()
+            var body = new AddToggleRequest()
             {
                 FeatureId = feature.Id,
                 ToggleType = typeof(EnvironmentToggle).FullName,
@@ -488,7 +476,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task postparameter_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 1))
                   .PostAsync();
 
             response.StatusCode
@@ -497,37 +485,35 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
-        public async Task postparameter_response_bad_request_if_toggleid_is_non_positve_int()
+        public async Task postparameter_response_notfound_if_toggleid_is_non_positve_int()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = -1,
                 Name = "Environments",
                 Value = "Development"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: -1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status400BadRequest);
+                .Be(StatusCodes.Status404NotFound);
         }
 
         [Fact]
         public async Task postparameter_response_bad_request_if_name_is_null()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = 1,
                 Name = null,
                 Value = "Development"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -539,15 +525,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [Fact]
         public async Task postparameter_response_bad_request_if_name_is_empty()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = 1,
                 Name = string.Empty,
                 Value = "Development"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -559,15 +544,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [Fact]
         public async Task postparameter_response_bad_request_if_value_is_null()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = 1,
                 Name = "Environment",
                 Value = null
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -579,15 +563,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [Fact]
         public async Task postparameter_response_bad_request_if_value_is_empty()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = 1,
                 Name = "Environment",
                 Value = string.Empty
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -601,15 +584,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task postparameter_response_badrequest_if_toggle_does_not_exist()
         {
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = 100,
                 Name = "Environments",
                 Value = "Development"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: 100))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -650,15 +632,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddProduct(product);
 
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = toggle.Id,
                 Name = "Environments",
                 Value = "Production"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: toggle.Id))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -691,15 +672,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddProduct(product);
 
-            var parameterToggleRequest = new ParameterToggleRequest()
+            var parameterToggleRequest = new AddParameterToggleRequest()
             {
-                ToogleId = toggle.Id,
                 Name = "Environments",
                 Value = "Development"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: toggle.Id))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 

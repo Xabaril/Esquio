@@ -21,9 +21,10 @@ namespace Esquio.UI.Api.Features.Flags.Details
         {
             var feature = await _storeDbContext
                .Features
-               .Include(f=>f.ProductEntity)
+               .Where(f => f.Id == request.FeatureId)
+               .Include(f => f.ProductEntity)
                .Include(f => f.Toggles)
-               .SingleOrDefaultAsync(f => f.Id == request.FeatureId && f.ProductEntityId == request.ProductId, cancellationToken);
+               .SingleOrDefaultAsync(f => f.Id == request.FeatureId, cancellationToken);
 
             if (feature != null)
             {

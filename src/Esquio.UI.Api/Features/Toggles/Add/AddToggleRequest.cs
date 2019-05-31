@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Toggles.Post
+namespace Esquio.UI.Api.Features.Toggles.Add
 {
-    public class PostToggleRequest : IRequest<int>
+    public class AddToggleRequest : IRequest<int>
     {
         public int FeatureId { get; set; }
 

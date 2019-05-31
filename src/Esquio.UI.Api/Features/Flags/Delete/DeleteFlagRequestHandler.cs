@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,8 +23,9 @@ namespace Esquio.UI.Api.Features.Flags.Delete
         {
             var feature = await _storeDbContext
                 .Features
+                .Where(f => f.Id == request.FeatureId)
                 .Include(f => f.Toggles)
-                .SingleOrDefaultAsync(f => f.Id == request.FeatureId && f.ProductEntityId == request.ProductId, cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (feature != null)
             {

@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Api.Features.Flags.Details;
+﻿using Esquio.UI.Api.Features.Flags.Add;
+using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
@@ -27,7 +28,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         public async Task rollout_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V1.Flags.Rollout(1, 1))
+                .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: 1))
                 .PutAsync();
 
             response.StatusCode
@@ -35,24 +36,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status401Unauthorized);
         }
 
-        [Fact]
-        public async Task rollout_response_not_found_if_product_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Rollout(productId: -1, featureId: 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
 
         [Fact]
         public async Task rollout_response_not_found_if_feature_is_not_positive_int()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Rollout(productId: 1, featureId: -1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: -1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsync();
 
@@ -61,19 +50,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status404NotFound);
         }
 
-        [Fact]
-        [ResetDatabase]
-        public async Task rollout_response_bad_request_if_product_not_exist()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Rollout(productId: 10000, featureId: 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsync();
 
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status400BadRequest);
-        }
         [Fact]
         [ResetDatabase]
         public async Task rollout_response_bad_request_if_feature_not_exist()
@@ -85,7 +62,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(product.Id, featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: 1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -112,7 +89,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(product.Id, featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: 1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -144,7 +121,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Delete(product.Id, feature.Id))
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -170,7 +147,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Delete(product.Id, feature.Id))
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -210,7 +187,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(product.Id, featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: 1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -218,23 +195,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status200OK);
         }
-        [Fact]
-        public async Task delete_response_not_found_if_product_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(productId: -1, featureId: 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
 
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
         [Fact]
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(productId: 1, featureId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: 1))
                   .DeleteAsync();
 
             response.StatusCode
@@ -245,7 +211,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         public async Task delete_response_not_found_if_feature_is_not_positive_int()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(productId: 1, featureId: -1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: -1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -254,19 +220,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status404NotFound);
         }
 
-        [Fact]
-        [ResetDatabase]
-        public async Task delete_response_not_found_if_specified_product_not_exist()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(productId: 1, featureId: 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
 
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status400BadRequest);
-        }
         [Fact]
         [ResetDatabase]
         public async Task delete_response_not_found_if_specified_feature_not_exist()
@@ -278,7 +232,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-                   .CreateRequest(ApiDefinitions.V1.Flags.Delete(product.Id, featureId: 1))
+                   .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: 1))
                    .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                    .DeleteAsync();
 
@@ -319,7 +273,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Id, feature.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(feature.Id))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -354,19 +308,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .ContainEquivalentOf("toggle-type-2");
         }
-        [Fact]
-        [ResetDatabase]
-        public async Task get_response_bad_request_if_product_not_exist()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(productId: 10000, featureId: 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .GetAsync();
 
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
         [Fact]
         [ResetDatabase]
         public async Task get_response_bad_request_if_feature_not_exist()
@@ -378,7 +320,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Id, featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: 1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -386,23 +328,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status404NotFound);
         }
-        [Fact]
-        public async Task get_response_not_found_if_product_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(-1, 1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
 
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
         [Fact]
         public async Task get_response_not_found_if_feature_is_not_positive_int()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(productId: 1, featureId: -1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: -1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -414,7 +345,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(productId: 1, featureId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: 1))
                   .DeleteAsync();
 
             response.StatusCode
@@ -637,6 +568,148 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             content.Result
                 .Count
                 .Should().Be(0);
+        }
+
+        [Fact]
+        public async Task add_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+
+                  .PostAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        public async Task add_response_badrequest_if_name_is_greater_than_200()
+        {
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = new string('c', 201),
+                Description = "description",
+                Enabled = true,
+                ProductId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task add_response_badrequest_if_description_is_greater_than_2000()
+        {
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = "name",
+                Description = new string('c', 2001),
+                Enabled = true,
+                ProductId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_product_does_not_exist()
+        {
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = new string('c', 201),
+                Description = "description",
+                Enabled = true,
+                ProductId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_feature_with_the_same_name_already_exist()
+        {
+            var product = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            var feature1 = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            product.Features
+                .Add(feature1);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = "feature#1",
+                Description = "description",
+                Enabled = true,
+                ProductId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_ok_when_create_the_feature()
+        {
+            var product = Builders.Product()
+              .WithName("product#1")
+              .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = "feature#1",
+                Description = "description",
+                Enabled = true,
+                ProductId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status201Created);
         }
     }
 }

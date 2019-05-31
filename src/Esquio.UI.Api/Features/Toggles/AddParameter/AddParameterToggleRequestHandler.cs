@@ -7,25 +7,25 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Parameter
+namespace Esquio.UI.Api.Features.Toggles.AddParameter
 {
-    public class ParameterToggleRequestHandler : IRequestHandler<ParameterToggleRequest>
+    public class AddParameterToggleRequestHandler : IRequestHandler<AddParameterToggleRequest>
     {
         private readonly StoreDbContext _storeDbContext;
 
-        public ParameterToggleRequestHandler(StoreDbContext context)
+        public AddParameterToggleRequestHandler(StoreDbContext context)
         {
             Ensure.Argument.NotNull(context, nameof(context));
 
             _storeDbContext = context;
         }
 
-        public async Task<Unit> Handle(ParameterToggleRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddParameterToggleRequest request, CancellationToken cancellationToken)
         {
             var toggle = await _storeDbContext
                 .Toggles
                 .Include(t => t.Parameters)
-                .Where(t => t.Id == request.ToogleId)
+                .Where(t => t.Id == request.ToggleId)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (toggle != null)
@@ -49,7 +49,7 @@ namespace Esquio.UI.Api.Features.Toggles.Parameter
                 return Unit.Value;
             }
 
-            throw new InvalidOperationException($"Toggle with id {request.ToogleId} does not exist.");
+            throw new InvalidOperationException($"Toggle with id {request.ToggleId} does not exist.");
         }
     }
 }

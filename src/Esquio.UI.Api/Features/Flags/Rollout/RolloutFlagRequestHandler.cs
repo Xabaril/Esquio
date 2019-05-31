@@ -3,6 +3,7 @@ using Esquio.EntityFrameworkCore.Store.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,29 +20,23 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
         }
         public async Task<Unit> Handle(RolloutFlagRequest request, CancellationToken cancellationToken)
         {
-            var product = await _context
-                .Products
-                .FindAsync(request.ProductId);
+            var feature = await _context
+                .Features
+                .Where(f => f.Id == request.FeatureId)
+                .Include(f => f.Toggles)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            if (product != null)
+            if (feature != null)
             {
-                var feature = await _context
-                    .Features
-                    .Include(f => f.Toggles)
-                    .SingleOrDefaultAsync(f => f.Id == request.FeatureId);
+                feature.Toggles.Clear();
+                feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
 
-                if (feature != null)
-                {
-                    feature.Toggles.Clear();
-                    feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
+                await _context.SaveChangesAsync(cancellationToken);
 
-                    await _context.SaveChangesAsync(cancellationToken);
-
-                    return Unit.Value;
-                }
+                return Unit.Value;
             }
 
-            throw new InvalidOperationException("Product or Feature doent's exist in the store.");
+            throw new InvalidOperationException("Feature does not exist in the store.");
         }
     }
 }

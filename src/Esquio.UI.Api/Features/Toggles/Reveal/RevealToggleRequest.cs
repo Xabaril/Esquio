@@ -4,6 +4,6 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 {
     public class RevealToggleRequest : IRequest<RevealToggleResponse>
     {
-        public int ToggleId { get; set; }
+        public string  ToggleType { get; set; }
     }
 }

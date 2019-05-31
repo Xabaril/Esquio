@@ -24,59 +24,58 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 
         public async Task<RevealToggleResponse> Handle(RevealToggleRequest request, CancellationToken cancellationToken)
         {
-            var toggle = await _storeDbContext
-                .Toggles
-                .Where(t => t.Id == request.ToggleId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (toggle != null)
+            try
             {
-                try
+                //TODO: wich assemblies?
+                var assembly = Assembly.GetAssembly(typeof(Esquio.Toggles.OnToggle));
+
+                var type = assembly.GetExportedTypes()
+                    .Where(type => type.FullName.Equals(request.ToggleType, StringComparison.InvariantCultureIgnoreCase))
+                    .SingleOrDefault();
+
+                if (type != null)
                 {
-                    //TODO: wich assemblies?
-                    var assembly = Assembly.GetAssembly(typeof(Esquio.Toggles.OnToggle));
+                    var attributes = type.GetCustomAttributes(typeof(DesignTypeParameterAttribute), inherit: true);
 
-                    var type = assembly.GetExportedTypes()
-                        .Where(type => type.FullName.Equals(toggle.Type, StringComparison.InvariantCultureIgnoreCase))
-                        .SingleOrDefault();
-
-                    if (type != null)
+                    if (attributes != null && attributes.Any())
                     {
-                        var attributes = type.GetCustomAttributes(typeof(DesignTypeParameterAttribute), inherit: true);
-
-                        if (attributes != null && attributes.Any())
+                        var parametersDescription = attributes.Select(item =>
                         {
-                            var parametersDescription = attributes.Select(item =>
+                            var attribute = ((DesignTypeParameterAttribute)item);
+                            return new RevealToggleParameterResponse()
                             {
-                                var attribute = ((DesignTypeParameterAttribute)item);
-                                return new RevealToggleParameterResponse()
-                                {
-                                    Name = attribute.ParameterName,
-                                    ClrType = attribute.ParameterType,
-                                    Description = attribute.ParameterDescription
-                                };
-                            }).ToList();
-
-                            return new RevealToggleResponse()
-                            {
-
-                                Type = toggle.Type,
-                                Parameters = parametersDescription
+                                Name = attribute.ParameterName,
+                                ClrType = attribute.ParameterType,
+                                Description = attribute.ParameterDescription
                             };
-                        }
+                        }).ToList();
+
+                        return new RevealToggleResponse()
+                        {
+
+                            Type = request.ToggleType,
+                            Parameters = parametersDescription
+                        };
                     }
                     else
                     {
-                        throw new InvalidOperationException($"The toggle type {toggle.Type} can't be loaded and reveleaded.");
+                        return new RevealToggleResponse()
+                        {
+
+                            Type = request.ToggleType,
+                            Parameters = new List<RevealToggleParameterResponse>()
+                        };
                     }
                 }
-                catch 
+                else
                 {
-                    throw new InvalidOperationException($"The toggle type {toggle.Type} can't be revealed because unexpected exception is throwed.");
+                    throw new InvalidOperationException($"The toggle type {request.ToggleType} can't be loaded and reveleaded.");
                 }
             }
-
-            throw new InvalidOperationException("Toggle doent's exist in the store.");
+            catch
+            {
+                throw new InvalidOperationException($"The toggle type {request.ToggleType} can't be revealed because unexpected exception is throwed.");
+            }
         }
     }
 }

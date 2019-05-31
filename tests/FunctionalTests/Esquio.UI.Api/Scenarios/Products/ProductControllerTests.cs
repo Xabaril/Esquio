@@ -243,11 +243,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_badrequest_if_product_name_length_is_greater_than_250()
+        public async Task add_response_badrequest_if_product_name_length_is_greater_than_200()
         {
             var productRequest = new AddProductRequest()
             {
-                Name = new string('c', 251),
+                Name = new string('c', 201),
                 Description = "some description"
             };
 
@@ -263,12 +263,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_badrequest_if_description_length_is_greater_than_500()
+        public async Task add_response_badrequest_if_description_length_is_greater_than_2000()
         {
             var productRequest = new AddProductRequest()
             {
                 Name = "product#1",
-                Description = new string('d', 501)
+                Description = new string('d', 2001)
             };
 
             var response = await _fixture.TestServer
@@ -541,12 +541,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status400BadRequest);
         }
         [Fact]
-        public async Task update_response_bad_request_if_product_name_is_greater_than_250()
+        public async Task update_response_bad_request_if_product_name_is_greater_than_200()
         {
             var request = new UpdateProductRequest()
             {
                 ProductId = 1,
-                Name = new string('n',251),
+                Name = new string('n',201),
                 Description = "description"
             };
 
@@ -561,13 +561,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         }
 
         [Fact]
-        public async Task update_response_bad_request_if_product_description_is_greater_than_500()
+        public async Task update_response_bad_request_if_product_description_is_greater_than_2000()
         {
             var request = new UpdateProductRequest()
             {
                 ProductId = 1,
                 Name = "product#2",
-                Description = new string('d', 501)
+                Description = new string('d', 2001)
             };
 
             var response = await _fixture.TestServer

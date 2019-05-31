@@ -10,10 +10,10 @@ namespace Esquio.UI.Api.Features.Products.Add
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(250);
+                .MaximumLength(200);
 
             RuleFor(x => x.Description)
-                .MaximumLength(500);
+                .MaximumLength(2000);
         }
     }
 }

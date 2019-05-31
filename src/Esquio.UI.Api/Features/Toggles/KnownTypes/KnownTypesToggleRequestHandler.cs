@@ -5,13 +5,13 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Known
+namespace Esquio.UI.Api.Features.Toggles.KnownTypes
 {
-    public class KnownToggleRequestHandler : IRequestHandler<KnownToggleRequest, KnownToggleResponse>
+    public class KnownTypesToggleRequestHandler : IRequestHandler<KnownTypesToggleRequest, KnownTypesToggleResponse>
     {
-        public Task<KnownToggleResponse> Handle(KnownToggleRequest request, CancellationToken cancellationToken)
+        public Task<KnownTypesToggleResponse> Handle(KnownTypesToggleRequest request, CancellationToken cancellationToken)
         {
-            var scaneedToggles = new List<KnownToggleDetailResponse>();
+            var scaneedToggles = new List<KnownTypesToggleDetailResponse>();
 
             //TODO:witch assemblies?
 
@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Toggles.Known
                     var attribute = type.GetCustomAttribute<DesignTypeAttribute>();
                     var description = attribute != null ? attribute.Description : "No description";
 
-                    scaneedToggles.Add(new KnownToggleDetailResponse()
+                    scaneedToggles.Add(new KnownTypesToggleDetailResponse()
                     {
                         Type = type.FullName,
                         Assembly = assembly.FullName,
@@ -33,7 +33,7 @@ namespace Esquio.UI.Api.Features.Toggles.Known
                 }
             }
 
-            return Task.FromResult(new KnownToggleResponse()
+            return Task.FromResult(new KnownTypesToggleResponse()
             {
                 ScannedAssemblies = 1,
                 Toggles = scaneedToggles
