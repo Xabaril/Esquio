@@ -1,14 +1,14 @@
 ﻿using Esquio.UI.Api.Features.Products.Add;
+using Esquio.UI.Api.Features.Products.Delete;
+using Esquio.UI.Api.Features.Products.Details;
+using Esquio.UI.Api.Features.Products.List;
+using Esquio.UI.Api.Features.Products.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Esquio;
-using System.Threading.Tasks;
-using System.Threading;
-using Esquio.UI.Api.Features.Products.Delete;
 using System;
-using Esquio.UI.Api.Features.Products.List;
-using Esquio.UI.Api.Features.Products.Details;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Products
 {
@@ -52,6 +52,15 @@ namespace Esquio.UI.Api.Features.Products
             var idProduct = await _mediator.Send(request, cancellationToken);
 
             return Created($"api/v1/product/{idProduct}", null);
+        }
+
+        [HttpPut]
+        [Route("api/v1/product")]
+        public async Task<IActionResult> Update(UpdateProductRequest request, CancellationToken cancellationToken = default)
+        {
+             await _mediator.Send(request, cancellationToken);
+
+            return NoContent();
         }
 
         [HttpDelete]
