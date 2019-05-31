@@ -4,6 +4,7 @@ using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollout;
 using Esquio.UI.Api.Features.Tags.Add;
 using Esquio.UI.Api.Features.Tags.Delete;
+using Esquio.UI.Api.Features.Tags.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,18 @@ namespace Esquio.UI.Api.Features.Flags
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [HttpGet]
+        [Route("api/v1/tags/{featureId:int:min(1)}")]
+        public async Task<IActionResult> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
+        {
+            var list = await _mediator.Send(request, cancellationToken);
+
+            return Ok(list);
+        }
+
         [HttpDelete]
-        [Route("api/v1/tags/{tag}/flags/{featureId:int:min(1)}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
+        [Route("api/v1/tags/{featureId:int:min(1)}/{tag}")]
+        public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
 
@@ -33,9 +43,10 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPost]
-        [Route("api/v1/tags")]
-        public async Task<IActionResult> Add(AddTagRequest request, CancellationToken cancellationToken = default)
+        [Route("api/v1/tags/{featureId:int:min(1)}")]
+        public async Task<IActionResult> Tag(int featureId, AddTagRequest request, CancellationToken cancellationToken = default)
         {
+            request.FeatureId = featureId;
             await _mediator.Send(request, cancellationToken);
 
             return Ok();
