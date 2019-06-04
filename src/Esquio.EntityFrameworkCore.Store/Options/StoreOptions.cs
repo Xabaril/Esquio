@@ -14,5 +14,6 @@ namespace Esquio.EntityFrameworkCore.Store.Options
         public TableConfiguration Parameters { get; set; } = new TableConfiguration("Parameters");
         public TableConfiguration Tags { get; set; } = new TableConfiguration("Tags");
         public TableConfiguration FeatureTag { get; set; } = new TableConfiguration("FeatureTags");
+        public TableConfiguration ApiKeys { get; set; } = new TableConfiguration("ApiKeys");
     }
 }

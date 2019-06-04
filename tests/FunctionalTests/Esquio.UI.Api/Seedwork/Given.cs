@@ -11,6 +11,17 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             _serverFixture = serverFixture;
         }
+
+        public async Task AddApiKey(params ApiKeyEntity[] apikeys)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                db.AddRange(apikeys);
+
+                await db.SaveChangesAsync();
+            });
+        }
+
         public async Task AddProduct(params ProductEntity[] products)
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>

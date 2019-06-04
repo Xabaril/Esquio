@@ -40,11 +40,11 @@
                 {
                     return $"api/v1/flags";
                 }
-                public static string Rollout( int featureId)
+                public static string Rollout(int featureId)
                 {
                     return $"api/v1/flags/{featureId}/rollout";
                 }
-                public static string Delete( int featureId)
+                public static string Delete(int featureId)
                 {
                     return $"api/v1/flags/{featureId}";
                 }
@@ -59,6 +59,30 @@
                 public static string List(int productId, int pageIndex, int pageCount)
                 {
                     return $"api/v1/products/{productId}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
+                }
+            }
+
+            public static class ApiKeys
+            {
+                public static string Add()
+                {
+                    return $"api/v1/apikeys/";
+                }
+                public static string Delete(int apiKeyId)
+                {
+                    return $"api/v1/apikeys/{apiKeyId}";
+                }
+                public static string Get(int apiKeyId)
+                {
+                    return $"api/v1/apikeys/{apiKeyId}";
+                }
+                public static string List()
+                {
+                    return $"api/v1/apikeys/";
+                }
+                public static string List(int pageIndex, int pageCount)
+                {
+                    return $"api/v1/apikeys?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
             }
 

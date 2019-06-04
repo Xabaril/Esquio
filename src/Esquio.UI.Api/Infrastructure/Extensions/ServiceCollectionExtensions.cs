@@ -36,8 +36,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             ContentTypes =
                             {
-                                    ApiConstants.ContentTypes.ProblemJson,
-                                    ApiConstants.ContentTypes.ProblemXml
+                                ApiConstants.ContentTypes.ProblemJson,
+                                ApiConstants.ContentTypes.ProblemXml
                             }
                         };
                     };

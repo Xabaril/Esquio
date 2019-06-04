@@ -21,6 +21,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }
         public DbSet<FeatureTagEntity> FeatureTagEntities { get; set; }
+        public DbSet<ApiKeyEntity> ApiKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

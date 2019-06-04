@@ -36,5 +36,10 @@
         {
             return new FeatureTagBuilder();
         }
+
+        public static ApiKeyBuilder ApiKey()
+        {
+            return new ApiKeyBuilder();
+        }
     }
 }
