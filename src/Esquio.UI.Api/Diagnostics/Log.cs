@@ -9,6 +9,10 @@ namespace Esquio.UI.Api.Diagnostics
         {
             _apiKeyAlreadyExist(logger, apiKeyName, null);
         }
+        public static void ApiKeyNotExist(ILogger logger, string apiKeyId)
+        {
+            _apiKeyNotExist(logger, apiKeyId, null);
+        }
 
         public static void ExecutingCommand(ILogger logger, string commandName)
         {
@@ -23,6 +27,11 @@ namespace Esquio.UI.Api.Diagnostics
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
             "The ApiKey with name {apiKeyName} already exist in the store and can't be created.");
+
+        private static readonly Action<ILogger, string, Exception> _apiKeyNotExist = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            EventIds.ApiKeyNotExist,
+            "The ApiKey with identifier {apiKeyId} does not exist in database and can't be deleted.");
 
         private static readonly Action<ILogger, string, Exception> _executingCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
