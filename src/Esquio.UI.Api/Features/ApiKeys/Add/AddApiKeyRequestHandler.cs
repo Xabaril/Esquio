@@ -1,7 +1,9 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,12 +14,14 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
     public class AddAddApiKeyRequestHandler : IRequestHandler<AddApiKeyRequest, int>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<AddAddApiKeyRequestHandler> _logger;
 
         private IApiKeyGenerator ApiKeyGenerator { get; set; } = new DefaultRandomApiKeyGenerator();
 
-        public AddAddApiKeyRequestHandler(StoreDbContext storeDbContext)
+        public AddAddApiKeyRequestHandler(StoreDbContext storeDbContext, ILogger<AddAddApiKeyRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<int> Handle(AddApiKeyRequest request, CancellationToken cancellationToken)
@@ -29,19 +33,18 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
 
             if (existing == null)
             {
-                var key = ApiKeyGenerator
-                    .CreateApiKey();
-
                 var apiKey = new ApiKeyEntity(
                     request.Name,
                     request.Description,
-                    key);
+                    ApiKeyGenerator.CreateApiKey());
 
                 _storeDbContext.Add(apiKey);
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
+
                 return apiKey.Id;
             }
 
+            Log.ApiKeyAlreadyExist(_logger, request.Name);
             throw new InvalidOperationException($"A ApiKey with name {request.Name} already exist.");
         }
     }

@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Diagnostics\" />
-  </ItemGroup>
-
 </Project>

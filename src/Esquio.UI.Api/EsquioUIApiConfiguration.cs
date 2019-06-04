@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Features.Products.Add;
+using Esquio.UI.Api.Infrastructure.Behaviors;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;
@@ -14,6 +15,7 @@ namespace Esquio.UI.Api
         {
             return services
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
+                    .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
                 .AddCustomProblemDetails()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
