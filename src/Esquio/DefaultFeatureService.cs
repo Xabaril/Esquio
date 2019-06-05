@@ -18,23 +18,23 @@ namespace Esquio
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<bool> IsEnabledAsync(string featureName, string applicationName = null)
+        public async Task<bool> IsEnabledAsync(string featureName, string productName = null)
         {
             try
             {
-                Log.FeatureServiceProcessingBegin(_logger, featureName, applicationName);
+                Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
-                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var feature = await _featureStore.FindFeatureAsync(featureName, productName);
 
                 if (feature == null)
                 {
-                    Log.FeatureServiceNotFoundFeature(_logger, featureName, applicationName);
+                    Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
                     return false;
                 }
 
                 if (!feature.IsEnabled)
                 {
-                    Log.FeatureServiceDisabledFeature(_logger, featureName, applicationName);
+                    Log.FeatureServiceDisabledFeature(_logger, featureName, productName);
                     return false;
                 }
 
@@ -44,9 +44,9 @@ namespace Esquio
                 {
                     var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
 
-                    if (!await toggleInstance.IsActiveAsync(featureName, applicationName))
+                    if (!await toggleInstance.IsActiveAsync(featureName, productName))
                     {
-                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
+                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
                         return false;
                     }
                 }
@@ -55,7 +55,7 @@ namespace Esquio
             }
             catch (Exception exception)
             {
-                Log.FeatureServiceProcessingFail(_logger, featureName, applicationName, exception);
+                Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
                 return false;
             }
         }

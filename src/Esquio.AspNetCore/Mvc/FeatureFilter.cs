@@ -14,7 +14,7 @@ namespace Esquio.AspNetCore.Mvc
     /// by default a NotFound result is the returned action result. You can modify the default action using
     /// the extension method AddMvcFallbackAction in <see cref="IEsquioBuilder"/> interface when register Esquio services.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class FeatureFilter
         : Attribute, IFilterFactory
     {
