@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +12,10 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="3.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(microsoftaspnetcoremvcnewtonsoftjson)" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="$(hellangmiddlewareproblemdetails)" />
   </ItemGroup>
 
   <ItemGroup>

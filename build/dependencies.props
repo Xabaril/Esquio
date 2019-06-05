@@ -40,6 +40,10 @@
     <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview5-19227-01</microsoftaspnetcoremvcnewtonsoftjson>
 
     <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+
+    <hellangmiddlewareproblemdetails>3.0.1</hellangmiddlewareproblemdetails>
+    <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
+    <fluentvalidationaspnetcore>8.5.0-preview1</fluentvalidationaspnetcore>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
