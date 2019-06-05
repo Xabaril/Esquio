@@ -1,7 +1,9 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,12 +14,12 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
     public class AddParameterToggleRequestHandler : IRequestHandler<AddParameterToggleRequest>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<AddParameterToggleRequestHandler> _logger;
 
-        public AddParameterToggleRequestHandler(StoreDbContext context)
+        public AddParameterToggleRequestHandler(StoreDbContext storeDbContext, ILogger<AddParameterToggleRequestHandler> logger)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Unit> Handle(AddParameterToggleRequest request, CancellationToken cancellationToken)
@@ -40,8 +42,8 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
                 }
                 else
                 {
-                    toggle.Parameters
-                        .Add(new ParameterEntity(toggle.Id, request.Name, request.Value));
+                    toggle.Parameters.Add(
+                        new ParameterEntity(toggle.Id, request.Name, request.Value));
                 }
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
@@ -49,6 +51,7 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
                 return Unit.Value;
             }
 
+            Log.ToggleNotExist(_logger, request.ToggleId.ToString());
             throw new InvalidOperationException($"Toggle with id {request.ToggleId} does not exist.");
         }
     }

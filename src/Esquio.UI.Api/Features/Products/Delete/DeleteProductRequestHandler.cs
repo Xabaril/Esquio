@@ -1,6 +1,8 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,18 +13,18 @@ namespace Esquio.UI.Api.Features.Products.Delete
     public class DeleteProductRequestHandler : IRequestHandler<DeleteProductRequest>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<DeleteProductRequestHandler> _logger;
 
-        public DeleteProductRequestHandler(StoreDbContext context)
+        public DeleteProductRequestHandler(StoreDbContext storeDbContext, ILogger<DeleteProductRequestHandler> logger)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<Unit> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
         {
             var product = await _storeDbContext
                 .Products
-                .Where(p=>p.Id == request.ProductId)
+                .Where(p => p.Id == request.ProductId)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (product != null)
@@ -34,6 +36,7 @@ namespace Esquio.UI.Api.Features.Products.Delete
                 return Unit.Value;
             }
 
+            Log.ProductNotExist(_logger, request.ProductId.ToString());
             throw new InvalidOperationException($"The product with identifier {request.ProductId} does not exist.");
         }
     }

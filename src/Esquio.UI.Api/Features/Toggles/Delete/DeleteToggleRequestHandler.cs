@@ -1,6 +1,8 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,12 +13,12 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
     public class DeleteToggleRequestHandler : IRequestHandler<DeleteToggleRequest>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<DeleteToggleRequestHandler> _logger;
 
-        public DeleteToggleRequestHandler(StoreDbContext context)
+        public DeleteToggleRequestHandler(StoreDbContext storeDbContext, ILogger<DeleteToggleRequestHandler> logger)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Unit> Handle(DeleteToggleRequest request, CancellationToken cancellationToken)
@@ -34,7 +36,8 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
                 return Unit.Value;
             }
 
-            throw new InvalidOperationException("Specified toggle doent's exist.");
+            Log.ToggleNotExist(_logger, request.ToggleId.ToString());
+            throw new InvalidOperationException($"Toggle with id {request.ToggleId} does not exist in the store.");
         }
     }
 }

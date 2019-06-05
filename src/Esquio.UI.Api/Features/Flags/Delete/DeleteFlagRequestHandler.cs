@@ -1,6 +1,8 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,12 +13,12 @@ namespace Esquio.UI.Api.Features.Flags.Delete
     public class DeleteFlagRequestHandler : IRequestHandler<DeleteFlagRequest>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<DeleteFlagRequestHandler> _logger;
 
-        public DeleteFlagRequestHandler(StoreDbContext context)
+        public DeleteFlagRequestHandler(StoreDbContext storeDbContext, ILogger<DeleteFlagRequestHandler> logger)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Unit> Handle(DeleteFlagRequest request, CancellationToken cancellationToken)
@@ -35,7 +37,8 @@ namespace Esquio.UI.Api.Features.Flags.Delete
                 return Unit.Value;
             }
 
-            throw new InvalidOperationException("Product or Feature doent's exist in the store.");
+            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
+            throw new InvalidOperationException("Feature does not exist in the store.");
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
             }
 
             Log.ApiKeyNotExist(_logger, request.ApiKeyId.ToString());
-            throw new InvalidOperationException($"The ApiKey with identifier {request.ApiKeyId} does not exist.");
+            throw new InvalidOperationException($"The ApiKey with identifier {request.ApiKeyId} does not exist and can't be deleted.");
         }
     }
 }
