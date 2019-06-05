@@ -58,7 +58,7 @@ namespace UnitTests.Seedwork
             services.AddMvc()
                 .Services
                 .AddEsquio()
-                .AddMvcFallbackAction((context)=>
+                .AddMvcFallbackAction((context) =>
                 {
                     var actionName = context.ActionDescriptor.RouteValues["action"];
 
@@ -92,7 +92,7 @@ namespace UnitTests.Seedwork
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(ProductName = "TestApp",FeatureName ="Sample1")]
+        [FeatureSwitch(ProductName = "TestApp", FeatureName = "Sample1")]
         public IActionResult Sample1()
         {
             return Content("Active");
@@ -113,18 +113,30 @@ namespace UnitTests.Seedwork
         {
             return Content("NonActive");
         }
-        [FeatureFilter(FeatureName="Sample1")]
+        [FeatureFilter(Names = "Sample1")]
         public IActionResult ActionWithActiveFlag()
         {
             return Ok();
         }
-        [FeatureFilter(FeatureName = "Sample2")]
+
+        [FeatureFilter(Names = "Sample1;Sample1")]
+        public IActionResult ActionWithMultipleActiveFlag()
+        {
+            return Ok();
+        }
+        [FeatureFilter(Names = "Sample1;Sample2")]
+        public IActionResult ActionWithMultipleFlagAndNotActive()
+        {
+            return Ok();
+        }
+
+        [FeatureFilter(Names = "Sample2")]
         public IActionResult ActionWithNoActiveFlag()
         {
             return Ok();
         }
 
-        [FeatureFilter(FeatureName = "Sample2")]
+        [FeatureFilter(Names = "Sample2")]
         public IActionResult ActionWithNoActiveFlagAndFallbackAction()
         {
             return Ok();

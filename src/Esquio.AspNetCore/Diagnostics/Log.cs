@@ -56,15 +56,15 @@ namespace Esquio.AspNetCore.Diagnostics
         private static readonly Action<ILogger, string, string, Exception> _featureFilterBegin = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterBeginProcess,
-           "FeatureFilter begin check if {featureName} for product {productName} is enabled.");
+           "FeatureFilter begin check if {featureName} features for product {productName} is enabled.");
         private static readonly Action<ILogger, string, string, Exception> _featureFilterActionExecuted = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterExecutingAction,
-           "FeatureFilter check feature {featureName} for product {productName} is active and execute action.");
+           "FeatureFilter check that {featureName} features for product {productName} are active and execute action.");
         private static readonly Action<ILogger, string, string, Exception> _featureFilterNonExecutedAction = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterNonExcuteAction,
-           "FeatureFilter check feature {featureName} for product {productName} is not active, action is not executed.");
+           "FeatureFilter check that {featureName} feature for product {productName} is not active, action is not executed.");
         private static readonly Action<ILogger, Exception> _flagFallbackServiceIsNotConfigured = LoggerMessage.Define(
            LogLevel.Warning,
            EventIds.FallbackServiceIsNotConfigured,

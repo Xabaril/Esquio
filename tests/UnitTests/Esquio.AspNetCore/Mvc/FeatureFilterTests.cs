@@ -26,6 +26,26 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .Should().Be(StatusCodes.Status200OK);
         }
         [Fact]
+        public async Task excute_action_if_all_features_are_active()
+        {
+            var response = await _fixture.TestServer
+                .CreateClient()
+                .GetAsync("http://localhost/test/ActionWithMultipleActiveFlag");
+
+            response.StatusCode
+                .Should().Be(StatusCodes.Status200OK);
+        }
+        [Fact]
+        public async Task redirect_to_not_found_if_one_feature_is_not_active_when_use_multiple_features()
+        {
+            var response = await _fixture.TestServer
+                .CreateClient()
+                .GetAsync("http://localhost/test/ActionWithMultipleFlagAndNotActive");
+
+            response.StatusCode
+                .Should().Be(StatusCodes.Status302Found);
+        }
+        [Fact]
         public async Task redirect_to_not_found_if_feature_is_not_active_and_no_fallback_action_is_configured()
         {
             var response = await _fixture.TestServer
