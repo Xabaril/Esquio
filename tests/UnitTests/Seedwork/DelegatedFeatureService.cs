@@ -12,9 +12,9 @@ namespace UnitTests.Seedwork
         {
             _delegatedFunction = delegatedFunction ?? throw new ArgumentNullException(nameof(delegatedFunction));
         }
-        public Task<bool> IsEnabledAsync(string featureName, string applicationName = null)
+        public Task<bool> IsEnabledAsync(string featureName, string productName = null)
         {
-            return Task.FromResult(_delegatedFunction(featureName, applicationName));
+            return Task.FromResult(_delegatedFunction(featureName, productName));
         }
     }
 }

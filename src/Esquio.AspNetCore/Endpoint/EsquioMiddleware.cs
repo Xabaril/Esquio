@@ -9,7 +9,7 @@ namespace Esquio.AspNetCore.Endpoint
     public class EsquioMiddleware
     {
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
-        const string APPLICATIONNAME_QUERY_PARAMETER_NAME = "applicationName";
+        const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";
 
         private readonly RequestDelegate _next;
 
@@ -22,12 +22,12 @@ namespace Esquio.AspNetCore.Endpoint
             var statusCode = StatusCodes.Status200OK;
 
             var featureName = context.Request.Query[FEATURENAME_QUERY_PARAMETER_NAME];
-            var applicationName = context.Request.Query[APPLICATIONNAME_QUERY_PARAMETER_NAME];
+            var productName = context.Request.Query[PRODUCTNAME_QUERY_PARAMETER_NAME];
             var json = String.Empty;
 
             try
             {
-                var isEnabled = await featureService.IsEnabledAsync(featureName,applicationName);
+                var isEnabled = await featureService.IsEnabledAsync(featureName, productName);
                 var data = new { isEnabled };
                 json = JsonConvert.SerializeObject(data);
             }

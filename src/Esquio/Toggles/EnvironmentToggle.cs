@@ -21,9 +21,9 @@ namespace Esquio.Toggles
             _environmentNameProviderService = environmentNameProviderService ?? throw new ArgumentNullException(nameof(environmentNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 

@@ -24,9 +24,9 @@ namespace Esquio.AspNetCore.Toggles
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 

@@ -7,7 +7,7 @@ namespace Esquio.Toggles
     public class OffToggle
         : IToggle
     {
-        public Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        public Task<bool> IsActiveAsync(string featureName, string productName = null)
         {
             return Task.FromResult<bool>(false);
         }

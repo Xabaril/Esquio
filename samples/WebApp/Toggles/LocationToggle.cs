@@ -22,9 +22,9 @@ namespace WebApp.Toggles
             _locationProviderService = locationProviderService ?? throw new ArgumentNullException(nameof(locationProviderService));
         }
 
-        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+            var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
@@ -54,7 +54,7 @@ namespace WebApp.Toggles
                 .MapToIPv4()
                 .ToString();
 
-            if(_httpContextAccessor.HttpContext
+            if (_httpContextAccessor.HttpContext
                 .Request
                 .Headers
                 .ContainsKey(HEADER_X_FORWARDED_FOR))
