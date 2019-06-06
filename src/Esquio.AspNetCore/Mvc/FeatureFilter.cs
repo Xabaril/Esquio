@@ -19,20 +19,35 @@ namespace Esquio.AspNetCore.Mvc
     public class FeatureFilter
         : Attribute, IFilterFactory
     {
+        /// <inheritdoc />
         public bool IsReusable => false;
-        public string Names { get; set; }
-        public string ProductName { get; set; }
 
+        /// <summary>
+        /// A coma separated list of features names to be evaluated.
+        /// </summary>
+        /// <remarks>
+        /// The feature name are compared case insensitively with the name on the store.
+        /// </remarks>
+        public string Names { get; set; }
+
+        /// <summary>
+        /// The product name when the features are configured. If null a default product is used.
+        /// </summary>
+        public string Product { get; set; }
+
+        /// <inheritdoc />
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
-            return new FeatureResourceFilter(scopeFactory, Names, ProductName);
+            return new FeatureResourceFilter(scopeFactory, Names, Product);
         }
     }
     internal class FeatureResourceFilter
         : IAsyncResourceFilter
     {
+        private static readonly char[] FeatureSeparator = new[] { ',' };
+
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly string _featureNames;
         private readonly string _productName;
@@ -45,7 +60,6 @@ namespace Esquio.AspNetCore.Mvc
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
-            const char SPLIT_CHAR = ';';
 
             using (var scope = _serviceScopeFactory.CreateScope())
             {
@@ -60,16 +74,21 @@ namespace Esquio.AspNetCore.Mvc
 
                 Log.FeatureFilterBegin(logger, _featureNames, _productName);
 
-                var tokenizer = new StringTokenizer(_featureNames, new char[] { SPLIT_CHAR });
+                var tokenizer = new StringTokenizer(_featureNames, FeatureSeparator);
 
                 foreach (var item in tokenizer)
                 {
-                    if (!await featureService.IsEnabledAsync(item.Value, _productName))
-                    {
-                        Log.FeatureFilterNonExecuteAction(logger, item.Value, _productName);
-                        context.Result = fallbackService.GetFallbackActionResult(context);
+                    var featureName = item.Trim();
 
-                        return;
+                    if (featureName.HasValue && featureName.Length > 0)
+                    {
+                        if (!await featureService.IsEnabledAsync(featureName.Value, _productName))
+                        {
+                            Log.FeatureFilterNonExecuteAction(logger, item.Value, _productName);
+                            context.Result = fallbackService.GetFallbackActionResult(context);
+
+                            return;
+                        }
                     }
                 }
 

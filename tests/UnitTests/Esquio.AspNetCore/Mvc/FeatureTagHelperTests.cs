@@ -133,6 +133,28 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             output.Content.GetContent().Should().Contain("some content");
         }
+        [Fact]
+        public async Task preserve_content_when_feature_is_active_for_specified_product()
+        {
+            var featureService = new DelegatedFeatureService((_, _product) =>
+            {
+                return _product.Equals("name-product-1");
+            });
+            var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
+
+            var tagHelper = new FeatureTagHelper(featureService, logger)
+            {
+                Names = "Feature-1",
+                Product = "name-product-1"
+            };
+
+            var context = CreateTagHelperContext();
+            var output = CreateTagHelperOutput(tag: "feature", innerContent: "<p>some content</p>");
+
+            await tagHelper.ProcessAsync(context, output);
+
+            output.Content.GetContent().Should().Contain("some content");
+        }
         private TagHelperContext CreateTagHelperContext()
         {
             return new TagHelperContext(

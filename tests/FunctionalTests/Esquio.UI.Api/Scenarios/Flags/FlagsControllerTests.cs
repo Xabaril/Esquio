@@ -649,7 +649,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_badrequest_if_feature_with_the_same_name_already_exist()
+        public async Task add_response_badrequest_if_feature_with_the_same_name_already_exist_on_same_product()
         {
             var product = Builders.Product()
                 .WithName("product#1")
@@ -670,7 +670,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 Name = "feature#1",
                 Description = "description",
                 Enabled = true,
-                ProductId = 1
+                ProductId = product.Id
             };
 
             var response = await _fixture.TestServer
@@ -681,6 +681,46 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_ok_if_feature_with_the_same_name_already_exist_on_different_product()
+        {
+            var product1 = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            var product2 = Builders.Product()
+                .WithName("product#2")
+                .Build();
+
+            var feature1 = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            product1.Features
+                .Add(feature1);
+
+            await _fixture.Given
+                .AddProduct(product1,product2);
+
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = "feature#1",
+                Description = "description",
+                Enabled = true,
+                ProductId = product2.Id
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status201Created);
         }
 
         [Fact]
@@ -699,7 +739,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 Name = "feature#1",
                 Description = "description",
                 Enabled = true,
-                ProductId = 1
+                ProductId = product.Id
             };
 
             var response = await _fixture.TestServer

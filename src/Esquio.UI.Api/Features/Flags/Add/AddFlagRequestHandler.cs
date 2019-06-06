@@ -32,10 +32,10 @@ namespace Esquio.UI.Api.Features.Flags.Add
             if (product != null)
             {
                 var existingFeature = await _storeDbContext
-                .Features
-                .Include(t => t.Toggles)
-                .Where(t => t.Name == request.Name)
-                .SingleOrDefaultAsync(cancellationToken);
+                    .Features
+                    .Include(f=> f.Toggles)
+                    .Where(f => f.Name == request.Name && f.ProductEntityId == request.ProductId)
+                    .SingleOrDefaultAsync(cancellationToken);
 
                 if (existingFeature == null)
                 {

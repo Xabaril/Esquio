@@ -30,7 +30,7 @@ namespace WebApp.Controllers
             return View(this.matchService.GetNextMatches(50));
         }
 
-        [FeatureSwitch(FeatureName = Flags.MinutesRealTime)]
+        [FeatureSwitch(Names = Flags.MinutesRealTime)]
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsActive(int id)
         {

@@ -92,7 +92,7 @@ namespace UnitTests.Seedwork
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(ProductName = "TestApp", FeatureName = "Sample1")]
+        [FeatureSwitch(Product = "TestApp", Names = "Sample1")]
         public IActionResult Sample1()
         {
             return Content("Active");
@@ -103,7 +103,7 @@ namespace UnitTests.Seedwork
             return Content("NonActive");
         }
         [ActionName("ActionWithFlagSwitchNoActive")]
-        [FeatureSwitch(ProductName = "TestApp", FeatureName = "Sample2")]
+        [FeatureSwitch(Product = "TestApp", Names = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Active");
@@ -119,12 +119,12 @@ namespace UnitTests.Seedwork
             return Ok();
         }
 
-        [FeatureFilter(Names = "Sample1;Sample1")]
+        [FeatureFilter(Names = "Sample1,Sample1")]
         public IActionResult ActionWithMultipleActiveFlag()
         {
             return Ok();
         }
-        [FeatureFilter(Names = "Sample1;Sample2")]
+        [FeatureFilter(Names = "Sample1,Sample2")]
         public IActionResult ActionWithMultipleFlagAndNotActive()
         {
             return Ok();
