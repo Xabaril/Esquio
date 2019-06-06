@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Threading;
 
 namespace Esquio.AspNetCore.Mvc
 {
@@ -48,7 +49,7 @@ namespace Esquio.AspNetCore.Mvc
         private readonly string _productName;
         private readonly string _featureNames;
 
-        public int Order =>-1000;
+        public int Order => -1000;
 
         public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureNames, string productName)
         {
@@ -73,7 +74,9 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        if (!featureService.IsEnabledAsync(featureName.Value, _productName).Result)
+                        var cancellationToken = context.RouteContext.HttpContext?.RequestAborted ?? CancellationToken.None;
+
+                        if (!featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken).Result)
                         {
                             Log.FeatureSwitchFail(logger, _featureNames, _productName);
                             return false;
