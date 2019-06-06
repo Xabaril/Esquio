@@ -27,17 +27,41 @@ namespace Esquio.AspNetCore.Mvc
         private readonly IFeatureService _featuresService;
         private readonly ILogger<FeatureTagHelper> _logger;
 
+        /// <summary>
+        /// A coma separated list of features names to be evaluated.If any feature is not active 
+        /// this tag helper suppress  the content.
+        /// </summary>
+        /// <remarks>
+        /// The feature name are compared case insensitively with the name on the store.
+        /// </remarks>
         [HtmlAttributeName(FEATURE_NAME_ATTRIBUTE)]
         public string Names { get; set; }
 
+        /// <summary>
+        /// A coma separated list of features names to be evaluated. If any feature is not active 
+        /// this tag helper suppress  the content.
+        /// </summary>
+        /// <remarks>
+        /// The feature name are compared case insensitively with the name on the store.
+        /// </remarks>
         [HtmlAttributeName(INCLUDE_NAME_ATTRIBUTE)]
         public string Include { get; set; }
 
+        /// <summary>
+        /// A coma separated list of features names to be evaluated. If any feature is active
+        /// this tag helper suppress the content.
+        /// </summary>
+        /// <remarks>
+        /// The feature name are compared case insensitively with the name on the store.
+        /// </remarks>
         [HtmlAttributeName(EXCLUDE_NAME_ATTRIBUTE)]
         public string Exclude { get; set; }
 
+        /// <summary>
+        /// The product name when the features are configured. If null a default product is used.
+        /// </summary>
         [HtmlAttributeName(PRODUCT_NAME_ATTRIBUTE)]
-        public string ProductName { get; set; }
+        public string Product { get; set; }
 
         public FeatureTagHelper(IFeatureService featuresService, ILogger<FeatureTagHelper> logger)
         {
@@ -47,7 +71,7 @@ namespace Esquio.AspNetCore.Mvc
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            Log.FeatureTagHelperBegin(_logger, Names, ProductName);
+            Log.FeatureTagHelperBegin(_logger, Names, Product);
 
             output.TagName = null; //remove <feature> tag from the output
 
@@ -60,7 +84,7 @@ namespace Esquio.AspNetCore.Mvc
                 return;
             }
 
-            bool featureActive = false;
+            bool featureActive;
 
             if (Exclude != null)
             {
@@ -68,16 +92,21 @@ namespace Esquio.AspNetCore.Mvc
 
                 foreach (var item in excludeFeatures)
                 {
-                    featureActive = await _featuresService
-                        .IsEnabledAsync(featureName: item.Trim().Value, ProductName);
+                    var featureName = item.Trim();
 
-                    if (featureActive)
+                    if (featureName.HasValue && featureName.Length > 0)
                     {
-                        Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
 
-                        output.SuppressOutput();
-                        return;
+                        if (featureActive)
+                        {
+                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+
+                            output.SuppressOutput();
+                            return;
+                        }
                     }
+
                 }
             }
 
@@ -87,30 +116,44 @@ namespace Esquio.AspNetCore.Mvc
 
                 foreach (var item in includeFeatures)
                 {
-                    featureActive = await _featuresService
-                        .IsEnabledAsync(item.Trim().Value, ProductName);
+                    var featureName = item.Trim();
 
-                    if (!featureActive)
+                    if (featureName.HasValue && featureName.Length > 0)
                     {
-                        Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
 
-                        output.SuppressOutput();
-                        return;
+                        if (!featureActive)
+                        {
+                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+
+                            output.SuppressOutput();
+                            return;
+                        }
                     }
+
                 }
             }
 
             if (Names != null)
             {
-                featureActive = await _featuresService
-                  .IsEnabledAsync(Names, ProductName);
+                var namedFeatures = new StringTokenizer(Names, FeatureSeparator);
 
-                if (!featureActive)
+                foreach (var item in namedFeatures)
                 {
-                    Log.FeatureTagHelperClearContent(_logger, Names, ProductName);
+                    var featureName = item.Trim();
 
-                    output.SuppressOutput();
-                    return;
+                    if (featureName.HasValue && featureName.Length > 0)
+                    {
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
+
+                        if (!featureActive)
+                        {
+                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+
+                            output.SuppressOutput();
+                            return;
+                        }
+                    }
                 }
             }
         }

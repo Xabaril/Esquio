@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
+namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
 {
     [Collection(nameof(AspNetCoreServer))]
     public class apikeys_controller_should
