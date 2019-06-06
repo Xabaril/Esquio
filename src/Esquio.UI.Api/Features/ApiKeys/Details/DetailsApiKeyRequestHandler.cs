@@ -1,6 +1,7 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,18 +12,16 @@ namespace Esquio.UI.Api.Features.ApiKeys.Details
     {
         private readonly StoreDbContext _storeDbContext;
 
-        public DetailsApiKeyRequestHandler(StoreDbContext context)
+        public DetailsApiKeyRequestHandler(StoreDbContext storeDbContext)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
         public async Task<DetailsApiKeyResponse> Handle(DetailsApiKeyRequest request, CancellationToken cancellationToken)
         {
             var apiKey = await _storeDbContext
                .ApiKeys
                .Where(f => f.Id == request.ApiKeyId)
-               .SingleOrDefaultAsync(f => f.Id == request.ApiKeyId, cancellationToken);
+               .SingleOrDefaultAsync(cancellationToken);
 
             if (apiKey != null)
             {

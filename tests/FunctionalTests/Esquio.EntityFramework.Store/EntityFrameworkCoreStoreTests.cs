@@ -156,7 +156,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
     class EntityFrameworkCoreStoreBuilder
     {
-        private DbContextOptions<StoreDbContext> _options;
+        private readonly DbContextOptions<StoreDbContext> _options;
 
         public EntityFrameworkCoreStoreBuilder(DbContextOptions<StoreDbContext> options)
         {
@@ -168,7 +168,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var loggerFactory = new LoggerFactory();
             var logger = loggerFactory.CreateLogger<EntityFrameworkCoreFeaturesStore>();
             var dbContext = new StoreDbContext(_options, new StoreOptions());
-            var store = new EntityFrameworkCoreFeaturesStore(logger, dbContext);
+            var store = new EntityFrameworkCoreFeaturesStore(dbContext, logger);
 
             return store;
         }

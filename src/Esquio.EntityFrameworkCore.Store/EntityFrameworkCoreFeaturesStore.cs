@@ -4,7 +4,9 @@ using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.EntityFrameworkCore.Store
@@ -14,28 +16,27 @@ namespace Esquio.EntityFrameworkCore.Store
     {
         const string DEFAULT_PRODUCT_NAME = "default";
 
+        private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<EntityFrameworkCoreFeaturesStore> _logger;
-        private readonly StoreDbContext _dbContext;
 
-        public EntityFrameworkCoreFeaturesStore(ILogger<EntityFrameworkCoreFeaturesStore> logger, StoreDbContext dbContext)
+        public EntityFrameworkCoreFeaturesStore(StoreDbContext storeDbContext, ILogger<EntityFrameworkCoreFeaturesStore> logger)
         {
-            Ensure.Argument.NotNull(logger, nameof(logger));
-            Ensure.Argument.NotNull(dbContext, nameof(dbContext));
-
-            _logger = logger;
-            _dbContext = dbContext;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName = null)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             Log.FindFeature(_logger, featureName, productName);
 
             productName = productName ?? DEFAULT_PRODUCT_NAME;
 
-            var featureEntity = await _dbContext.Features
+            var featureEntity = await _storeDbContext
+                .Features
                 .Where(f => f.Name == featureName && f.ProductEntity.Name == productName)
-                .Include(f => f.Toggles).ThenInclude(t => t.Parameters)
-                .SingleOrDefaultAsync();
+                .Include(f => f.Toggles)
+                    .ThenInclude(t => t.Parameters)
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (featureEntity != null)
             {

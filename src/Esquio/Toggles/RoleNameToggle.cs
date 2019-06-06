@@ -33,6 +33,7 @@ namespace Esquio.Toggles
                 var data = toggle.GetData();
 
                 string activeRoles = data.Roles?.ToString();
+
                 if (activeRoles != null)
                 {
                     var tokenizer = new StringTokenizer(activeRoles, Globals.DEFAULT_SPLIT_SEPARATOR);
@@ -41,7 +42,6 @@ namespace Esquio.Toggles
                         currentRole, StringSegmentComparer.OrdinalIgnoreCase);
                 }
             }
-
             return false;
         }
     }

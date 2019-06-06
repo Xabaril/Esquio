@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
@@ -60,7 +61,6 @@ namespace Esquio.AspNetCore.Mvc
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
-
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var logger = scope.ServiceProvider
@@ -82,7 +82,9 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        if (!await featureService.IsEnabledAsync(featureName.Value, _productName))
+                        var cancellationToken = context.HttpContext?.RequestAborted ?? CancellationToken.None;
+
+                        if (!await featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken))
                         {
                             Log.FeatureFilterNonExecuteAction(logger, item.Value, _productName);
                             context.Result = fallbackService.GetFallbackActionResult(context);

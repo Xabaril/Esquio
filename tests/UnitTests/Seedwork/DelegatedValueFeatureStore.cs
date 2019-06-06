@@ -2,6 +2,7 @@
 using Esquio.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -17,9 +18,9 @@ namespace UnitTests.Seedwork
         {
             _getDelegatedFeatureFunc = getDelegatedFeatureFunc;
         }
-        
 
-        public Task<Feature> FindFeatureAsync(string featureName, string productName)
+
+        public Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName));
         }

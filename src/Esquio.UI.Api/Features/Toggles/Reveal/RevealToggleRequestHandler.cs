@@ -1,7 +1,5 @@
 ﻿using Esquio.Abstractions;
-using Esquio.EntityFrameworkCore.Store;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +11,7 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 {
     public class RevealToggleRequestHandler : IRequestHandler<RevealToggleRequest, RevealToggleResponse>
     {
-        private readonly StoreDbContext _storeDbContext;
-
-        public RevealToggleRequestHandler(StoreDbContext context)
-        {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
-        }
-
-        public async Task<RevealToggleResponse> Handle(RevealToggleRequest request, CancellationToken cancellationToken)
+        public Task<RevealToggleResponse> Handle(RevealToggleRequest request, CancellationToken cancellationToken)
         {
             try
             {
@@ -42,6 +31,7 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
                         var parametersDescription = attributes.Select(item =>
                         {
                             var attribute = ((DesignTypeParameterAttribute)item);
+
                             return new RevealToggleParameterResponse()
                             {
                                 Name = attribute.ParameterName,
@@ -50,21 +40,21 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
                             };
                         }).ToList();
 
-                        return new RevealToggleResponse()
+                        return Task.FromResult(new RevealToggleResponse()
                         {
 
                             Type = request.ToggleType,
                             Parameters = parametersDescription
-                        };
+                        });
                     }
                     else
                     {
-                        return new RevealToggleResponse()
+                        return Task.FromResult(new RevealToggleResponse()
                         {
 
                             Type = request.ToggleType,
                             Parameters = new List<RevealToggleParameterResponse>()
-                        };
+                        });
                     }
                 }
                 else

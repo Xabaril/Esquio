@@ -1,14 +1,13 @@
-﻿namespace Esquio.Model
+﻿using System;
+
+namespace Esquio.Model
 {
     public class Parameter
     {
         public Parameter(string name, object value)
         {
-            Ensure.Argument.NotNullOrEmpty(name, nameof(name));
-            Ensure.Argument.NotNull(value, nameof(value));
-
-            Name = name;
-            Value = value;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public string Name { get; }

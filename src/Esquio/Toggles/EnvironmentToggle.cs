@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
-    [DesignType(Description ="Toggle that is active depending on execution environment name.")]
+    [DesignType(Description = "Toggle that is active depending on execution environment value.")]
     [DesignTypeParameter(ParameterName = Environments, ParameterType = "System.String", ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
     public class EnvironmentToggle
         : IToggle
@@ -37,7 +37,7 @@ namespace Esquio.Toggles
                 var tokenizer = new StringTokenizer(environments, Globals.DEFAULT_SPLIT_SEPARATOR);
 
                 return tokenizer.Contains(
-                    currentEnvironment,StringSegmentComparer.OrdinalIgnoreCase);
+                    currentEnvironment, StringSegmentComparer.OrdinalIgnoreCase);
             }
             return false;
         }

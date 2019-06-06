@@ -5,13 +5,14 @@ using Esquio.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Configuration.Store
 {
-    internal class ConfigurationFeatureStore : IRuntimeFeatureStore
+    internal class ConfigurationFeatureStore
+        : IRuntimeFeatureStore
     {
         private readonly ILogger<ConfigurationFeatureStore> _logger;
         private readonly IOptionsSnapshot<EsquioConfiguration> _options;
@@ -22,7 +23,7 @@ namespace Esquio.Configuration.Store
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task<Feature> FindFeatureAsync(string featureName, string productName)
+        public Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
         {
             var feature = GetFeatureFromConfiguration(featureName, productName);
 
@@ -30,6 +31,7 @@ namespace Esquio.Configuration.Store
             {
                 return Task.FromResult(feature.To());
             }
+
             Log.FeatureNotExist(_logger, featureName, productName);
             return Task.FromResult<Feature>(null);
         }

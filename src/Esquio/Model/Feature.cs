@@ -22,9 +22,7 @@ namespace Esquio.Model
 
         public Feature(string name)
         {
-            Ensure.Argument.NotNullOrEmpty(name, nameof(name));
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
         public Toggle GetToggle(string type)
         {
@@ -36,22 +34,26 @@ namespace Esquio.Model
         }
         public void AddToggle(Toggle toggle)
         {
-            Ensure.Argument.NotNull(toggle, nameof(toggle));
+            if (toggle == null)
+            {
+                throw new ArgumentNullException(nameof(toggle));
+            }
 
             _toggles.Add(toggle);
         }
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
-            Ensure.Argument.NotNull(toggles, nameof(toggles));
-
-            if (toggles.Any())
+            if (toggles == null && toggles.Any())
             {
                 _toggles.AddRange(toggles);
             }
         }
         public void RemoveToggle(Toggle toggle)
         {
-            Ensure.Argument.NotNull(toggle);
+            if (toggle == null)
+            {
+                throw new ArgumentNullException(nameof(toggle));
+            }
 
             _toggles.Remove(toggle);
         }

@@ -1,9 +1,12 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
@@ -63,6 +66,10 @@ namespace Esquio.AspNetCore.Mvc
         [HtmlAttributeName(PRODUCT_NAME_ATTRIBUTE)]
         public string Product { get; set; }
 
+        /// <inheritdoc/>
+        [ViewContext]
+        public ViewContext ViewContext { get; set; }
+
         public FeatureTagHelper(IFeatureService featuresService, ILogger<FeatureTagHelper> logger)
         {
             _featuresService = featuresService ?? throw new ArgumentNullException(nameof(featuresService));
@@ -72,6 +79,10 @@ namespace Esquio.AspNetCore.Mvc
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             Log.FeatureTagHelperBegin(_logger, Names, Product);
+
+            var cancellationToken = ViewContext?
+                .HttpContext?
+                .RequestAborted ?? CancellationToken.None;
 
             output.TagName = null; //remove <feature> tag from the output
 
@@ -96,7 +107,7 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
 
                         if (featureActive)
                         {
@@ -120,7 +131,7 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
 
                         if (!featureActive)
                         {
@@ -144,7 +155,7 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
 
                         if (!featureActive)
                         {
