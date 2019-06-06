@@ -223,8 +223,6 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
         [Fact]
         public async Task response_empty_list_if_feature_is_not_specified()
         {
-            var featureName = "NonExisting";
-
             var response = await _fixture.TestServer
                 .CreateRequest($"esquio")
                 .GetAsync();

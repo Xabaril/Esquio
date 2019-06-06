@@ -12,13 +12,6 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 {
     public class RevealToggleRequestHandler : IRequestHandler<RevealToggleRequest, RevealToggleResponse>
     {
-        private readonly StoreDbContext _storeDbContext;
-
-        public RevealToggleRequestHandler(StoreDbContext storeDbContext)
-        {
-            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
-        }
-
         public Task<RevealToggleResponse> Handle(RevealToggleRequest request, CancellationToken cancellationToken)
         {
             try

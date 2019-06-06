@@ -22,10 +22,7 @@ namespace Esquio.Abstractions
                 return 0;
             }
 
-            uint hash1;
-            uint hash2;
-
-            Partitioner.ComputeHash(Encoding.ASCII.GetBytes(value.ToUpper()), 0U, 0U, out hash1, out hash2);
+            Partitioner.ComputeHash(Encoding.ASCII.GetBytes(value.ToUpper()), 0U, 0U, out uint hash1, out uint hash2);
 
             return (short)Math.Abs((long)(hash1 ^ hash2) % (long)entityPartitionCount);
         }

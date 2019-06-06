@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.EntityFrameworkCore.Store
@@ -24,7 +25,7 @@ namespace Esquio.EntityFrameworkCore.Store
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName = null)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             Log.FindFeature(_logger, featureName, productName);
 
@@ -35,7 +36,7 @@ namespace Esquio.EntityFrameworkCore.Store
                 .Where(f => f.Name == featureName && f.ProductEntity.Name == productName)
                 .Include(f => f.Toggles)
                     .ThenInclude(t => t.Parameters)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (featureEntity != null)
             {

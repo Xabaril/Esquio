@@ -20,7 +20,7 @@ namespace Esquio
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<bool> IsEnabledAsync(string featureName, string productName = null,CancellationToken cancellationToken = default)
+        public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             try
             {
