@@ -4,6 +4,7 @@ using Esquio.AspNetCore.Providers;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
@@ -22,6 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     return new DelegatedMvcFallbackService(_ => new NotFoundResult());
                 });
             builder.Services.AddHttpContextAccessor();
+            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
             return builder;
         }
 

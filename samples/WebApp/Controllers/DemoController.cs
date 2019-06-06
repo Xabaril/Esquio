@@ -9,9 +9,7 @@ namespace WebApp.Controllers
 {
     public class DemoController
         :Controller
-    {
-
-        [FeatureFilter(Names = "TheFeatureName")]
+    {      
         public IActionResult SomeAction()
         {
             return View();

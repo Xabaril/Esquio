@@ -81,6 +81,10 @@ namespace WebApp
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
+                routes.MapControllerRouteWithFeatureCondition(
+                       name: "demo",
+                       pattern: "ThisIsAMagicRoute",
+                       featureName: "feature1");
 
                 routes.MapRazorPages();
             });
