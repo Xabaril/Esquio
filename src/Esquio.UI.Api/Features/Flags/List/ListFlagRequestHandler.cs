@@ -1,6 +1,7 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +12,9 @@ namespace Esquio.UI.Api.Features.Flags.List
     {
         private readonly StoreDbContext _storeDbContext;
 
-        public ListFlagRequestHandler(StoreDbContext context)
+        public ListFlagRequestHandler(StoreDbContext storeDbContext)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
         public async Task<ListFlagResponse> Handle(ListFlagRequest request, CancellationToken cancellationToken)
         {

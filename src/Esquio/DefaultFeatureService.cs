@@ -2,6 +2,7 @@
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio
@@ -12,19 +13,21 @@ namespace Esquio
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
         private readonly ILogger<DefaultFeatureService> _logger;
+
         public DefaultFeatureService(IRuntimeFeatureStore store, IToggleTypeActivator toggeActivator, ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<bool> IsEnabledAsync(string featureName, string productName = null)
+        public async Task<bool> IsEnabledAsync(string featureName, string productName = null,CancellationToken cancellationToken = default)
         {
             try
             {
                 Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
-                var feature = await _featureStore.FindFeatureAsync(featureName, productName);
+                var feature = await _featureStore
+                    .FindFeatureAsync(featureName, productName);
 
                 if (feature == null)
                 {

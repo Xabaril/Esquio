@@ -11,9 +11,7 @@ namespace Esquio.Model
 
         public Toggle(string type)
         {
-            Ensure.Argument.NotNullOrEmpty(type, nameof(type));
-
-            Type = type;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
         public string Type { get; }

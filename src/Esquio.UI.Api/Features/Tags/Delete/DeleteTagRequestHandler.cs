@@ -1,6 +1,5 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +10,9 @@ namespace Esquio.UI.Api.Features.Tags.Delete
     {
         private readonly StoreDbContext _storeDbContext;
 
-        public DeleteTagRequestHandler(StoreDbContext context)
+        public DeleteTagRequestHandler(StoreDbContext storeDbContext)
         {
-            Ensure.Argument.NotNull(context, nameof(context));
-
-            _storeDbContext = context;
+            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
 
         public async Task<Unit> Handle(DeleteTagRequest request, CancellationToken cancellationToken)

@@ -13,6 +13,7 @@
     <PackageId>Esquio</PackageId>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
