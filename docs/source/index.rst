@@ -9,7 +9,14 @@ Welcome to Esquio
 .. toctree::
    :maxdepth: 3
    :hidden:
-   :caption: Introduction
+   :caption: About Esquio
 
    intro/terminology
    intro/contributing
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+   :caption: Getting Started Guide
+
+   started/aspnetcore
