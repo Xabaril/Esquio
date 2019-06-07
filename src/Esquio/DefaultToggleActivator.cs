@@ -11,7 +11,7 @@ namespace Esquio
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<DefaultToggleTypeActivator> _logger;
 
-        public DefaultToggleTypeActivator(IServiceProvider serviceProvider,ILogger<DefaultToggleTypeActivator> logger)
+        public DefaultToggleTypeActivator(IServiceProvider serviceProvider, ILogger<DefaultToggleTypeActivator> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -20,7 +20,7 @@ namespace Esquio
         {
             Log.DefaultToggleTypeActivatorResolveTypeBegin(_logger, toggleTypeName);
 
-            var type = Type.GetType(toggleTypeName);
+            var type = Type.GetType(toggleTypeName, throwOnError: true, ignoreCase: true);
             return (IToggle)_serviceProvider.GetService(type);
         }
     }

@@ -2,10 +2,10 @@
 @inject IViewLocalizer Localizer
 @model IEnumerable<WebApp.Models.Match>
 
-    <div class="container">
-        <div class="row justify-content-start">
-            @foreach (var match in Model)
-            {
+<div class="container">
+    <div class="row justify-content-start">
+        @foreach (var match in Model)
+        {
             <div class="col-12 col-sm-6 col-lg-4 pb-sm-2">
                 <div class="@(" card mb-3 card--" + match.State)">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -13,13 +13,13 @@
 
                         @if (match.State == MatchState.Finished)
                         {
-                        <feature names="@Flags.MatchScore">
-                            <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
-                        </feature>
+                            <feature names="@Flags.MatchScore">
+                                <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
+                            </feature>
                         }
                         else
                         {
-                        <span class="badge badge-primary badge-pill">@match.Time</span>
+                            <span class="badge badge-primary badge-pill">@match.Time</span>
 
                         }
                     </div>
@@ -49,6 +49,6 @@
                     </div>
                 </div>
             </div>
-            }
-        </div>
+        }
     </div>
+</div>

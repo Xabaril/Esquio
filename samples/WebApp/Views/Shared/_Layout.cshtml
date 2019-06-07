@@ -43,11 +43,6 @@
                         </feature>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <feature names="@Flags.Preview">
-                                <li class="nav-item">
-                                    <a class="nav-link js-panel-trigger" href="#">@Localizer["Menu_Preview"]</a>
-                                </li>
-                            </feature>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Menu_Logout"] (@User.Identity.Name)</a>
                             </li>
@@ -68,7 +63,6 @@
         <main role="main" class="pt-3">
             @RenderBody()
         </main>
-        <partial name="_PreviewPanel" />
     </div>
     <environment include="Development">
         <script src="~/lib/jquery/jquery.js"></script>
