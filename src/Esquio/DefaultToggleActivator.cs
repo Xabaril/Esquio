@@ -1,7 +1,10 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Diagnostics;
+using Esquio.Toggles;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Esquio
 {
@@ -20,8 +23,38 @@ namespace Esquio
         {
             Log.DefaultToggleTypeActivatorResolveTypeBegin(_logger, toggleTypeName);
 
-            var type = Type.GetType(toggleTypeName, throwOnError: true, ignoreCase: true);
-            return (IToggle)_serviceProvider.GetService(type);
+            if (_typesCache.TryGetValue(toggleTypeName, out Type type))
+            {
+                Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
+                return (IToggle)_serviceProvider.GetService(type);
+            }
+            else
+            {
+                var toggleType = Type.GetType(toggleTypeName, throwOnError: false, ignoreCase: true);
+
+                if (toggleType != null)
+                {
+                    Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
+
+                    _typesCache.AddOrUpdate(toggleTypeName, toggleType, (_, __) => toggleType);
+
+                    return (IToggle)_serviceProvider.GetService(toggleType);
+                }
+            }
+
+            Log.DefaultToggleTypeActivatorTypeCantResolved(_logger, toggleTypeName);
+            return null;
         }
+
+        private ConcurrentDictionary<string, Type> _typesCache = new ConcurrentDictionary<string, Type>(new List<KeyValuePair<string, Type>>()
+        {
+            new KeyValuePair<string, Type>(typeof(OnToggle).FullName,typeof(OnToggle)),
+            new KeyValuePair<string, Type>(typeof(OffToggle).FullName,typeof(OffToggle)),
+            new KeyValuePair<string, Type>(typeof(FromToToggle).FullName,typeof(FromToToggle)),
+            new KeyValuePair<string, Type>(typeof(EnvironmentToggle).FullName,typeof(EnvironmentToggle)),
+            new KeyValuePair<string, Type>(typeof(RoleNameToggle).FullName,typeof(RoleNameToggle)),
+            new KeyValuePair<string, Type>(typeof(UserNameToggle).FullName,typeof(UserNameToggle)),
+            new KeyValuePair<string, Type>(typeof(RolloutUserNameToggle).FullName,typeof(RolloutUserNameToggle))
+        });
     }
 }

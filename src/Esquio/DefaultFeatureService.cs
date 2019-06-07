@@ -41,20 +41,32 @@ namespace Esquio
                     return false;
                 }
 
+
+                var active = true;
                 var toggles = feature.GetToggles();
 
                 foreach (var toggle in toggles)
                 {
                     var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
 
-                    if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
+                    if (toggleInstance != null)
                     {
-                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
-                        return false;
+                        if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
+                        {
+                            Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
+                            active = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName,toggle.Type);
+                        active = false;
+                        break;
                     }
                 }
 
-                return true;
+                return active;
             }
             catch (Exception exception)
             {

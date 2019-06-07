@@ -25,9 +25,21 @@ namespace Esquio.Diagnostics
         {
             _featureServiceThrow(logger, featureName, productName ?? "(default product)", exception);
         }
+        public static void FeatureServiceToggleTypeIsNull(ILogger logger, string featureName, string productName, string toggleType)
+        {
+            _featureServiceToggleTypeIsNull(logger, featureName, productName ?? "(default product)", toggleType, null);
+        }
         public static void DefaultToggleTypeActivatorResolveTypeBegin(ILogger logger, string toggleType)
         {
             _defaultToggleTypeActivatorResolveTypeBegin(logger, toggleType, null);
+        }
+        public static void DefaultToggleTypeActivatorTypeIsResolved(ILogger logger, string toggleType)
+        {
+            _defaultToggleTypeActivatorCantResolve(logger, toggleType, null);
+        }
+        public static void DefaultToggleTypeActivatorTypeCantResolved(ILogger logger, string toggleType)
+        {
+            _defaultToggleTypeActivatorTypeIsResolved(logger, toggleType, null);
         }
 
         private static readonly Action<ILogger, string, string, Exception> _featureServiceBegin = LoggerMessage.Define<string, string>(
@@ -50,9 +62,21 @@ namespace Esquio.Diagnostics
             LogLevel.Error,
             EventIds.DefaultFeatureServiceThrows,
             "DefaultFeatureService threw an unhandled exception checking {featureName} for product {productName}.");
+        private static readonly Action<ILogger, string, string, string, Exception> _featureServiceToggleTypeIsNull = LoggerMessage.Define<string, string, string>(
+            LogLevel.Warning,
+            EventIds.ToggleTypeIsNull,
+            "The toggle with type {toggleType} configured for {featureName} on product {productName} can't be activated successfully.");
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorResolveTypeBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DefaultToggleTypeActivatorResolveTypeBegin,
             "DefaultToggleTypeActivator is trying to resolve the toggle type {toggleType}.");
+        private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorCantResolve = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            EventIds.DefaultToggleTypeActivatorCantResolve,
+            "DefaultToggleTypeActivator can't resolve the toggle type {toggleType}.");
+        private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorTypeIsResolved = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            EventIds.DefaultToggleTypeActivatorTypeIsResolved,
+            "DefaultToggleTypeActivator resolve successfully the toggle type {toggleType}.");
     }
 }
