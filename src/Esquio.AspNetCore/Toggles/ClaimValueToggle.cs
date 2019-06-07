@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
@@ -13,18 +14,21 @@ namespace Esquio.AspNetCore.Toggles
     public class ClaimValueToggle
         : IToggle
     {
-        const string ClaimType = nameof(ClaimType);
-        const string ClaimValues = nameof(ClaimValues);
+        internal const string ClaimType = nameof(ClaimType);
+        internal const string ClaimValues = nameof(ClaimValues);
+
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRuntimeFeatureStore _featureStore;
+
         public ClaimValueToggle(IHttpContextAccessor httpContextAccessor, IRuntimeFeatureStore store)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);

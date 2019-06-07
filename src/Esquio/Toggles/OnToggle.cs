@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -7,7 +8,7 @@ namespace Esquio.Toggles
     public class OnToggle
         : IToggle
     {
-        public Task<bool> IsActiveAsync(string featureName, string productName = null)
+        public Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<bool>(true);
         }

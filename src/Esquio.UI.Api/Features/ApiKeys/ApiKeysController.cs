@@ -58,7 +58,7 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [Route("api/v1/apikeys/{apiKeyId:int:min(1)}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteApiKeyRequest request, CancellationToken cancellationToken = default)
         {
-            var id = await _mediator.Send(request, cancellationToken);
+            await _mediator.Send(request, cancellationToken);
 
             return NoContent();
         }

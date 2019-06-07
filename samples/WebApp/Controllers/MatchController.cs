@@ -3,7 +3,6 @@ using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -23,10 +22,6 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            //Ejemplo para ver las features UserPreview y en presentacion preguintar si alguien la tiene habilitada
-            //var features = this.store.FindUserPreviewFeatures(null).Result;
-            //features.FirstOrDefault()?.IsUserEnabled("beta");
-
             return View(this.matchService.GetNextMatches(50));
         }
 

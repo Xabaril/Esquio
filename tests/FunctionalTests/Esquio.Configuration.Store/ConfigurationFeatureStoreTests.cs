@@ -1,8 +1,6 @@
-﻿using Esquio;
-using Esquio.Abstractions;
-using Esquio.Model;
+﻿using Esquio.Abstractions;
 using FluentAssertions;
-using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,7 +42,7 @@ namespace FunctionalTests.Esquio.Configuration.Store
 
     class FakeToggle : IToggle
     {
-        public Task<bool> IsActiveAsync(string productName, string featureName)
+        public Task<bool> IsActiveAsync(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(false);
         }

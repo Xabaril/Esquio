@@ -1,12 +1,20 @@
 ﻿using Esquio.AspNetCore.Endpoint;
-using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
+    /// <summary>
+    /// Provides Esquio extensions methods for <see cref="IEndpointRouteBuilder"/>
+    /// </summary>
     public static class EsquioEndpointRouteBuilderExtensions
     {
+        /// <summary>
+        /// Map a new endpoint that can  be used to get the activation state of any configured feature.
+        /// </summary>
+        /// <param name="endpoints"><see cref="IEndpointRouteBuilder"/></param>
+        /// <param name="pattern">The uri pattern for this endpoint.</param>
+        /// <returns>A <see cref="IEndpointRouteBuilder"/> to continue configuring this new endpoint.</returns>
         public static IEndpointConventionBuilder MapEsquio(this IEndpointRouteBuilder endpoints, string pattern = "esquio")
         {
             if (endpoints == null)
@@ -19,21 +27,6 @@ namespace Microsoft.AspNetCore.Builder
                 .Build();
 
             return endpoints.MapGet(pattern, pipeline);
-        }
-
-        public static void MapControllerRouteWithFeatureCondition(
-            this IEndpointRouteBuilder endpoints,
-            string name,
-            string pattern,
-            string featureName,
-            string productName = null,
-            object defaults = null)
-        {
-            endpoints.MapControllerRoute(
-                name,
-                pattern,
-                defaults: defaults,
-                constraints: new { name = new FeatureFilterRouteConstraint(endpoints.ServiceProvider, featureName, productName) });
         }
     }
 }

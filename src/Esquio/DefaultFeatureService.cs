@@ -47,7 +47,7 @@ namespace Esquio
                 {
                     var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
 
-                    if (!await toggleInstance.IsActiveAsync(featureName, productName))
+                    if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
                     {
                         Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
                         return false;

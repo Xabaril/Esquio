@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Endpoint
 {
-    public class EsquioMiddleware
+    internal class EsquioMiddleware
     {
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
         const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";

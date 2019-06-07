@@ -1,6 +1,7 @@
 using Esquio.Abstractions;
 using System;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -12,15 +13,17 @@ namespace Esquio.Toggles
         : IToggle
     {
         internal const string FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
-        const string From = nameof(From);
-        const string To = nameof(To);
+        internal const string From = nameof(From);
+        internal const string To = nameof(To);
+
         private readonly IRuntimeFeatureStore _featureStore;
 
         public FromToToggle(IRuntimeFeatureStore featureStore)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);
@@ -34,7 +37,6 @@ namespace Esquio.Toggles
             {
                 return true;
             }
-
             return false;
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
@@ -13,9 +14,10 @@ namespace Esquio.AspNetCore.Toggles
     public class RolloutHeaderValueToggle
         : IToggle
     {
-        const string HeaderName = nameof(HeaderName);
-        const string Percentage = nameof(Percentage);
-        const int Partitions = 10;
+        internal const string HeaderName = nameof(HeaderName);
+        internal const string Percentage = nameof(Percentage);
+        internal const int Partitions = 10;
+
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -24,7 +26,8 @@ namespace Esquio.AspNetCore.Toggles
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);

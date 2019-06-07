@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
 {
+    /// <summary>
+    /// TODO: Pending Preview 6 to apply this enpoint selector policy
+    /// </summary>
     public class FeatureMatcherPolicy
         : MatcherPolicy, IEndpointSelectorPolicy
     {
@@ -21,10 +24,7 @@ namespace Esquio.AspNetCore.Mvc
         /// <inheritdoc />
         public bool AppliesToEndpoints(IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints)
         {
-            for (int i = 0; i < endpoints.Count; i++)
-            {
-                var metadata = endpoints[i].Metadata;
-            }
+            
 
             return false;
         }

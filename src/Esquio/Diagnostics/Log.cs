@@ -34,7 +34,6 @@ namespace Esquio.Diagnostics
             LogLevel.Debug,
             EventIds.DefaultFeatureServiceBegin,
             "Running DefaultFeatureService to check {featureName} for product {productName}.");
-
         private static readonly Action<ILogger, string, string, Exception> _featureServiceNotFound = LoggerMessage.Define<string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotFound,
@@ -43,17 +42,14 @@ namespace Esquio.Diagnostics
             LogLevel.Warning,
             EventIds.FeatureDisabled,
             "The feature {feature} is disabled in the store for application {productName}.");
-
         private static readonly Action<ILogger, string, string, Exception> _featureServiceNotActive = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureNotActive,
            "The feature {feature} is not active on product {productName}.");
-
         private static readonly Action<ILogger, string, string, Exception> _featureServiceThrow = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.DefaultFeatureServiceThrows,
             "DefaultFeatureService threw an unhandled exception checking {featureName} for product {productName}.");
-
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorResolveTypeBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DefaultToggleTypeActivatorResolveTypeBegin,

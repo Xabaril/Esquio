@@ -3,6 +3,7 @@ using Esquio.Abstractions.Providers;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -16,12 +17,14 @@ namespace Esquio.Toggles
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
+
         public EnvironmentToggle(IEnvironmentNameProviderService environmentNameProviderService, IRuntimeFeatureStore featureStore)
         {
             _environmentNameProviderService = environmentNameProviderService ?? throw new ArgumentNullException(nameof(environmentNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);

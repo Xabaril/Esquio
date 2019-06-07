@@ -1,10 +1,9 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.Model;
+﻿using Esquio.Model;
 using System.Linq;
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    public static class EntityExtensions
+    internal static class EntityExtensions
     {
         public static Feature To(this FeatureEntity featureEntity)
         {

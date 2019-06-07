@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -9,9 +10,10 @@ namespace Esquio.Toggles
     public class RolloutUserNameToggle
         : IToggle
     {
-        const string Percentage = nameof(Percentage);
-        const string AnonymoysUser = nameof(AnonymoysUser);
-        const int Partitions = 10;
+        internal const string Percentage = nameof(Percentage);
+        internal const string AnonymoysUser = nameof(AnonymoysUser);
+        internal const int Partitions = 10;
+
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
 
@@ -20,7 +22,8 @@ namespace Esquio.Toggles
             _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName);
             var toggle = feature.GetToggle(this.GetType().FullName);

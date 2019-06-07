@@ -14,7 +14,6 @@ namespace Esquio.UI.Api.Diagnostics
         {
             _apiKeyNotExist(logger, apiKeyId, null);
         }
-
         public static void FeatureNameAlreadyExist(ILogger logger, string featureName)
         {
             _featureNameAlreadyExist(logger, featureName, null);
@@ -58,47 +57,38 @@ namespace Esquio.UI.Api.Diagnostics
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
             "The ApiKey with name {apiKeyName} already exist in the store and can't be created.");
-
         private static readonly Action<ILogger, string, Exception> _productAlreadyExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.ProductAlreadyExist,
            "The product with name {productName} already exist in the store and can't be created.");
-
         private static readonly Action<ILogger, string, Exception> _featureNameAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.FeatureAlreadyExist,
             "A feature with name {featureName} already exist in the store and can't be created.");
-
         private static readonly Action<ILogger, string, Exception> _apiKeyNotExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyNotExist,
             "The ApiKey with identifier {apiKeyId} does not exist in database and can't be deleted.");
-
         private static readonly Action<ILogger, string, Exception> _productNotExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ProductNotExist,
             "The product with identifier {productId} does not exist in database.");
-
         private static readonly Action<ILogger, string, Exception> _featureNotExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.FeatureNotExist,
            "The feature with identifier {featureId} does not exist in database.");
-
         private static readonly Action<ILogger, string, Exception> _toggleNotExist = LoggerMessage.Define<string>(
           LogLevel.Warning,
           EventIds.ToggleNotExist,
           "The toggle with identifier {toggleId} does not exist in database.");
-
         private static readonly Action<ILogger, string, string, Exception> _toggleAlreadyExist = LoggerMessage.Define<string, string>(
            LogLevel.Warning,
            EventIds.ToggleAlreadyExist,
            "A toggle with type {toggleType} already exist on feature {featureName} and can't be added.");
-
         private static readonly Action<ILogger, string, Exception> _executingCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.ExecutingCommand,
             "Executing command with name {commandName}.");
-
         private static readonly Action<ILogger, string, Exception> _executedCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.ExecutedCommand,

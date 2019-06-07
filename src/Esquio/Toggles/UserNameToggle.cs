@@ -3,6 +3,7 @@ using Esquio.Abstractions.Providers;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -12,7 +13,7 @@ namespace Esquio.Toggles
     public class UserNameToggle
         : IToggle
     {
-        const string Users = nameof(Users);
+        internal  const string Users = nameof(Users);
 
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
@@ -22,7 +23,8 @@ namespace Esquio.Toggles
             _userNameProviderService = userNameProviderService ?? throw new ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync();

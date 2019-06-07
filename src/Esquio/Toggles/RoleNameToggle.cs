@@ -3,6 +3,7 @@ using Esquio.Abstractions.Providers;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
@@ -12,7 +13,8 @@ namespace Esquio.Toggles
     public class RoleNameToggle
        : IToggle
     {
-        const string Roles = nameof(Roles);
+        internal const string Roles = nameof(Roles);
+
         private readonly IRoleNameProviderService _roleNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
 
@@ -21,7 +23,8 @@ namespace Esquio.Toggles
             _roleNameProviderService = roleNameProviderService ?? throw new ArgumentNullException(nameof(roleNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var currentRole = await _roleNameProviderService
                 .GetCurrentRoleNameAsync();
