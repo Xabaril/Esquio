@@ -4,7 +4,7 @@
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Feature Toogles Library for ASP.NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Feature Toggles;AB Testing;AspNetCore</PackageTags>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(XabarilMvc)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
@@ -15,7 +15,6 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <!--<PackageReference Include="Microsoft.CSharp" Version="$(microsoftcsharp)" />-->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(microsoftaspnetcoremvcnewtonsoftjson)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
       <PrivateAssets>all</PrivateAssets>

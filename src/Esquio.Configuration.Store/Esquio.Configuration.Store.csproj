@@ -5,7 +5,7 @@
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Configuration store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Feature Toggles;AB Testing;Configuration</PackageTags>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration</PackageTags>
     <Version>$(XabarilMvc)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>

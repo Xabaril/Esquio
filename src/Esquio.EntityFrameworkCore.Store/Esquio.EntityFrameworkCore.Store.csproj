@@ -5,7 +5,7 @@
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>EntityFrameworkCode store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Feature Toggles;AB Testing;EFCore</PackageTags>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration;EF;Entity Framework;EFCore;Entity Framework Core</PackageTags>
     <Version>$(XabarilMvc)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
