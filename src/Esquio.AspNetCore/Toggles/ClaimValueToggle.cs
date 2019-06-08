@@ -22,15 +22,15 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRuntimeFeatureStore _featureStore;
 
-        public ClaimValueToggle(IHttpContextAccessor httpContextAccessor, IRuntimeFeatureStore store)
+        public ClaimValueToggle(IRuntimeFeatureStore store, IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName);
+            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 

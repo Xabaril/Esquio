@@ -5,10 +5,10 @@ using Xunit;
 
 namespace UnitTests.Esquio.AspNetCore.Extensions
 {
-    public class ServiceCollectionExtensionsTests
+    public class addsquio_should
     {
         [Fact]
-        public void AddEsquio_include_mandatory_services_in_container()
+        public void include_mandatory_services_in_container()
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddEsquio()

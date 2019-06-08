@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
-    [DesignType(Description = "Toggle that always is active.")]
+    [DesignType(Description = "Toggle that always is active, commonly used to rollout features.")]
     public class OnToggle
         : IToggle
     {

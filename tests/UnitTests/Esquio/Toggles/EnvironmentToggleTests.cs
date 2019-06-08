@@ -9,7 +9,7 @@ using Xunit;
 
 namespace UnitTests.Esquio.Toggles
 {
-    public class EnvironmentToggleShould
+    public class environment_toggle_should
     {
         private const string Development = "development";
         private const string Production = "production";
@@ -25,6 +25,7 @@ namespace UnitTests.Esquio.Toggles
                 await new EnvironmentToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task throw_if_store_provider_is_null()
         {
@@ -35,6 +36,7 @@ namespace UnitTests.Esquio.Toggles
                 await new EnvironmentToggle(provider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task be_not_active_if_current_environment_is_null()
         {
@@ -53,6 +55,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_parameter_value_is_null()
         {
@@ -71,6 +74,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_current_environment_is_not_configured()
         {
@@ -90,6 +94,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_active_if_current_environment_is_configured()
         {
@@ -108,6 +113,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_current_environment_is_configured_with_different_case()
         {
@@ -126,6 +132,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_current_environment_is_configured_in_a_list()
         {

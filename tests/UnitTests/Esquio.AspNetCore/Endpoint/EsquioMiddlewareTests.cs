@@ -47,6 +47,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .Should()
                 .BeEquivalentTo(featureName);
         }
+
         [Fact]
         public async Task response_feature_status_and_use_specified_product()
         {
@@ -189,7 +190,6 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .BeEquivalentTo(featureName);
         }
 
-
         [Fact]
         public async Task response_disabled_if_feature_is_not_exist()
         {
@@ -237,8 +237,6 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
             content.Count()
                 .Should().Be(0);
         }
-
-
 
         private class EsquioResponse
         {

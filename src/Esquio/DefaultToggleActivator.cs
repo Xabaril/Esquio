@@ -54,7 +54,7 @@ namespace Esquio
             new KeyValuePair<string, Type>(typeof(EnvironmentToggle).FullName,typeof(EnvironmentToggle)),
             new KeyValuePair<string, Type>(typeof(RoleNameToggle).FullName,typeof(RoleNameToggle)),
             new KeyValuePair<string, Type>(typeof(UserNameToggle).FullName,typeof(UserNameToggle)),
-            new KeyValuePair<string, Type>(typeof(RolloutUserNameToggle).FullName,typeof(RolloutUserNameToggle))
+            new KeyValuePair<string, Type>(typeof(GradualRolloutUserNameToggle).FullName,typeof(GradualRolloutUserNameToggle))
         });
     }
 }

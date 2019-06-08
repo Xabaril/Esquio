@@ -7,7 +7,7 @@ using UnitTests.Seedwork;
 using Xunit;
 namespace UnitTests.Esquio.Toggles
 {
-    public class FromToToggleShould
+    public class fromto_toggle_should
     {
         private const string From = nameof(From);
         private const string To = nameof(To);
@@ -20,6 +20,7 @@ namespace UnitTests.Esquio.Toggles
                 await new FromToToggle(null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task be_not_active_if_now_is_not_between_configured_dates()
         {
@@ -38,6 +39,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_active_if_now_is_between_configured_dates()
         {

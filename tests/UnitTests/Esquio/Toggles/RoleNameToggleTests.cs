@@ -7,7 +7,7 @@ using UnitTests.Seedwork;
 using Xunit;
 namespace UnitTests.Esquio.Toggles
 {
-    public class RoleNameToggleShould
+    public class rolename_toggle_should
     {
         private const string Roles = nameof(Roles);
 
@@ -21,6 +21,7 @@ namespace UnitTests.Esquio.Toggles
                 await new RoleNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task throw_if_store_is_null()
         {
@@ -31,6 +32,7 @@ namespace UnitTests.Esquio.Toggles
                 await new RoleNameToggle(roleNameProvider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task be_not_active_if_role_is_null()
         {
@@ -49,6 +51,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_parameter_is_not_configured()
         {
@@ -67,6 +70,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_role_is_not_contained_on_roles_parameters_value()
         {
@@ -85,6 +89,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_active_if_role_is_equal_to_roles_parameters_value()
         {
@@ -103,6 +108,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_role_is_equal_non_sensitive_to_roles_parameters_value()
         {
@@ -121,6 +127,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_role_is_contained_on_roles_parameters_value()
         {

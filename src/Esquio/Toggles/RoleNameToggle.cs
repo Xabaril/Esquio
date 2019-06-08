@@ -31,7 +31,7 @@ namespace Esquio.Toggles
 
             if (currentRole != null)
             {
-                var feature = await _featureStore.FindFeatureAsync(featureName, productName);
+                var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
                 var toggle = feature.GetToggle(this.GetType().FullName);
                 var data = toggle.GetData();
 
