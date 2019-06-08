@@ -44,10 +44,14 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 var appFeature = new FeatureEntity(product.Id, "app-feature", enabled: true);
 
                 var toggle = new ToggleEntity(appFeature.Id, "Esquio.Toggles.XToggle");
-                var parameter = new ParameterEntity(toggle.Id, "p1", "value1");
-                toggle.Parameters.Add(parameter);
-                appFeature.Toggles.Add(toggle);
 
+                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1");
+                toggle.Parameters.Add(stringparameter);
+
+                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1");
+                toggle.Parameters.Add(intparameter);
+
+                appFeature.Toggles.Add(toggle);
 
                 dbContext.Features.Add(appFeature);
 
@@ -99,13 +103,13 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             expected.GetToggles()
                 .First()
                 .GetParameters()
-                .Count().Should().Be(1);
+                .Count().Should().Be(2);
 
             expected.GetToggles()
                 .First()
                 .GetParameters()
                 .First()
-                .Name.Should().Be("p1");
+                .Name.Should().Be("strparam");
             expected.GetToggles()
                 .First()
                 .GetParameters()
@@ -130,13 +134,13 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             expected.GetToggles()
                 .First()
                 .GetParameters()
-                .Count().Should().Be(1);
+                .Count().Should().Be(2);
 
             expected.GetToggles()
                 .First()
                 .GetParameters()
                 .First()
-                .Name.Should().Be("p1");
+                .Name.Should().Be("strparam");
             expected.GetToggles()
                 .First()
                 .GetParameters()
@@ -144,13 +148,37 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 .Value.Should().Be("value1");
         }
 
+        //[Theory]
+        //[MemberData(nameof(Data))]
+        //public async Task get_back_feature_with_valid_dynamic_when_is_whell_configured(DbContextOptions<StoreDbContext> options)
+        //{
+        //    var store = new EntityFrameworkCoreStoreBuilder(options)
+        //        .Build();
+
+        //    var expected = await store.FindFeatureAsync("app-feature", "default");
+
+        //    expected.Should()
+        //        .NotBeNull();
+
+        //    expected.GetToggles()
+        //        .Count().Should().Be(1);
+
+        //    var toggle = expected.GetToggle("Esquio.Toggles.XToggle");
+
+        //    var dynamicContent = toggle.GetData();
+
+
+        //    string strparmameter = dynamicContent.strparam;
+        //    int intparmameter = (int)dynamicContent.intparam;
+        //}
+
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>
             new TheoryData<DbContextOptions<StoreDbContext>>
             {
-                DatabaseProviderBuilder.BuildPostgreSql<StoreDbContext>(nameof(entityframeworkcore_store_should)),
+                //DatabaseProviderBuilder.BuildPostgreSql<StoreDbContext>(nameof(entityframeworkcore_store_should)),
                 DatabaseProviderBuilder.BuildSqlServer<StoreDbContext>(nameof(entityframeworkcore_store_should)),
-                DatabaseProviderBuilder.BuildLocalDb<StoreDbContext>(nameof(entityframeworkcore_store_should)),
-                DatabaseProviderBuilder.BuildInMemory<StoreDbContext>(nameof(entityframeworkcore_store_should))
+                //DatabaseProviderBuilder.BuildLocalDb<StoreDbContext>(nameof(entityframeworkcore_store_should)),
+                //DatabaseProviderBuilder.BuildInMemory<StoreDbContext>(nameof(entityframeworkcore_store_should))
             };
     }
 

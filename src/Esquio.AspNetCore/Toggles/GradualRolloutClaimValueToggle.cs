@@ -16,7 +16,7 @@ namespace Esquio.AspNetCore.Toggles
 
         internal const string ClaimType = nameof(ClaimType);
         internal const string Percentage = nameof(Percentage);
-        internal const int Partitions = 10;
+        internal const int Partitions = 100;
 
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -36,7 +36,7 @@ namespace Esquio.AspNetCore.Toggles
             int percentage = data.Percentage;
             string claimType = data.ClaimType?.ToString();
 
-            if (claimType != null)
+            if (claimType != null && percentage > 0)
             {
                 var user = _httpContextAccessor
                     .HttpContext
@@ -47,9 +47,10 @@ namespace Esquio.AspNetCore.Toggles
                     var value = user.FindFirst(claimType)?.Value ?? NO_CLAIMTYPE_DEFAULT_VALUE;
 
                     var assignedPartition = Partitioner.ResolveToLogicalPartition(value, Partitions);
-                    return assignedPartition <= ((Partitions * percentage) / 100);
+                    return assignedPartition <= percentage;
                 }
             }
+
             return false;
         }
     }

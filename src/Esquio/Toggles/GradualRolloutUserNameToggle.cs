@@ -12,7 +12,7 @@ namespace Esquio.Toggles
     {
         internal const string Percentage = nameof(Percentage);
         internal const string AnonymoysUser = nameof(AnonymoysUser);
-        internal const int Partitions = 10;
+        internal const int Partitions = 100;
 
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
@@ -31,12 +31,17 @@ namespace Esquio.Toggles
 
             int percentage = data.Percentage;
 
-            var currentUserName = await _userNameProviderService
-                .GetCurrentUserNameAsync() ?? AnonymoysUser;
+            if (percentage > 0)
+            {
+                var currentUserName = await _userNameProviderService
+                    .GetCurrentUserNameAsync() ?? AnonymoysUser;
 
-            var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
+                var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
 
-            return assignedPartition <= (Partitions * percentage / 100);
+                return assignedPartition <= percentage;
+            }
+
+            return false;
         }
     }
 }

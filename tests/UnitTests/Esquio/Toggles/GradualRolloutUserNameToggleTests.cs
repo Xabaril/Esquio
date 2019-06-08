@@ -62,16 +62,19 @@ namespace UnitTests.Esquio.Toggles
         [InlineData("sample6", 30)]
         public async Task be_active_when_user_partition_is_on_percent_bucket(string username,int percentage)
         {
-            var partition = Partitioner.ResolveToLogicalPartition(username, 10);
-            var expected = partition <= ((10 * percentage) / 100);
+            var partition = Partitioner.ResolveToLogicalPartition(username, 100);
+            var expected = partition <= percentage;
+
             var toggle = Build
                    .Toggle<GradualRolloutUserNameToggle>()
                    .AddOneParameter(Percentage, percentage)
                    .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
+
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => username);
 

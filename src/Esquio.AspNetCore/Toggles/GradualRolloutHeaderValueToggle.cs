@@ -18,7 +18,7 @@ namespace Esquio.AspNetCore.Toggles
 
         internal const string HeaderName = nameof(HeaderName);
         internal const string Percentage = nameof(Percentage);
-        internal const int Partitions = 10;
+        internal const int Partitions = 100;
 
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -38,14 +38,19 @@ namespace Esquio.AspNetCore.Toggles
             string headerName = data.HeaderName;
             int percentage = data.Percentage;
 
-            var values = _httpContextAccessor.HttpContext
-                .Request
-                .Headers[headerName];
+            if (percentage > 0)
+            {
+                var values = _httpContextAccessor.HttpContext
+                    .Request
+                    .Headers[headerName];
 
-            var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
+                var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
 
-            var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
-            return assignedPartition <= ((Partitions * percentage) / 100);
+                var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
+                return assignedPartition <= percentage;
+            }
+
+            return false;
         }
     }
 }
