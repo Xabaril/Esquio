@@ -29,9 +29,12 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = new EsquioBuilder(serviceCollection);
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
+            builder.Services.AddSingleton<IFeatureServiceErrorBehavior>(new DefaultFeatureServiceErrorBehavior(options.FeatureErrorBehavior));
+
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
+
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);
 
             return builder;

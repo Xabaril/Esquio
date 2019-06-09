@@ -12,12 +12,18 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
+        private readonly IFeatureServiceErrorBehavior _errorBehavior;
         private readonly ILogger<DefaultFeatureService> _logger;
 
-        public DefaultFeatureService(IRuntimeFeatureStore store, IToggleTypeActivator toggleActivator, ILogger<DefaultFeatureService> logger)
+        public DefaultFeatureService(
+            IRuntimeFeatureStore store, 
+            IToggleTypeActivator toggleActivator,
+            IFeatureServiceErrorBehavior errorBehavior,
+            ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggleActivator ?? throw new ArgumentNullException(nameof(toggleActivator));
+            _errorBehavior = errorBehavior ?? throw new ArgumentNullException(nameof(errorBehavior));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
@@ -60,7 +66,7 @@ namespace Esquio
                     }
                     else
                     {
-                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName,toggle.Type);
+                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName, toggle.Type);
                         active = false;
                         break;
                     }
@@ -71,7 +77,8 @@ namespace Esquio
             catch (Exception exception)
             {
                 Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
-                return false;
+
+                return _errorBehavior.GetActivationStateOrThrow(featureName, productName, exception);
             }
         }
     }

@@ -11,10 +11,23 @@ namespace Esquio.DependencyInjection
     /// </summary>
     public class EsquioOptions
     {
-        internal List<Assembly> AssembliesToRegister { get; } = new List<Assembly>
+        internal List<Assembly> AssembliesToRegister { get; private set; } = new List<Assembly>
         {
             typeof(IToggle).Assembly
         };
+
+        internal FeatureErrorBehavior FeatureErrorBehavior { get; private set; } = FeatureErrorBehavior.SetAsNotActive;
+
+        /// <summary>
+        /// Configure default error behavior when feature evaluation throw. By default feature is configured as not active.
+        /// </summary>
+        /// <param name="errorBehavior">The default feature error behavior to configure as default.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public EsquioOptions DefaultErrorBehavior(FeatureErrorBehavior errorBehavior)
+        {
+            FeatureErrorBehavior = errorBehavior;
+            return this;
+        }
 
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <typeparamref name="T"/> is defined.

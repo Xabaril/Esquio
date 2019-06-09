@@ -35,7 +35,11 @@ namespace WebApp
                         opts => { opts.ResourcesPath = "Resources"; })
                     .AddNewtonsoftJson()
                 .Services
-                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+                .AddEsquio(setup =>
+                {
+                    setup.DefaultErrorBehavior(Esquio.Abstractions.FeatureErrorBehavior.SetAsNotActive);
+                    setup.RegisterTogglesFromAssemblyContaining<Startup>();
+                })
                     .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio")
                 .Services

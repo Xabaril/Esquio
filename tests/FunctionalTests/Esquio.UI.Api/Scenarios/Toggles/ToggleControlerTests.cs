@@ -421,7 +421,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 FeatureId = feature.Id,
                 ToggleType = typeof(EnvironmentToggle).FullName,
-                Parameters = new Dictionary<string, string>()
+                Parameters = new List<AddToggleRequestDetailParameter>()
             };
 
             var response = await _fixture.TestServer
@@ -456,9 +456,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 FeatureId = feature.Id,
                 ToggleType = typeof(EnvironmentToggle).FullName,
-                Parameters = new Dictionary<string, string>()
+                Parameters = new List<AddToggleRequestDetailParameter>()
                 {
-                    {"Environments","Development"}
+                    new AddToggleRequestDetailParameter()
+                    {
+                        Name = "Environments",
+                        Value = "Development",
+                        ClrType = typeof(String).FullName
+                    }
                 }
             };
 
@@ -635,7 +640,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = "Environments",
-                Value = "Production"
+                Value = "Production",
+                ClrType = typeof(String).FullName
             };
 
             var response = await _fixture.TestServer
@@ -675,7 +681,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = "Environments",
-                Value = "Development"
+                Value = "Development",
+                ClrType = typeof(String).FullName
             };
 
             var response = await _fixture.TestServer

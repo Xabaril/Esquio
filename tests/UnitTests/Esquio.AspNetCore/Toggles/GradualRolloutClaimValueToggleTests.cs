@@ -14,9 +14,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class gradualrolloutclaimvalue_should
     {
         [Fact]
-        public async Task throw_if_store_service_is_null()
+        public void throw_if_store_service_is_null()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var accessor = new FakeHttpContextAccesor();
                 new GradualRolloutClaimValueToggle(null, accessor);
@@ -24,13 +24,13 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
-        public async Task throw_if_httpcontextaccessor_is_null()
+        public void throw_if_httpcontextaccessor_is_null()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
-                new GradualRolloutClaimValueToggle(store, null);
-            });
+            Assert.Throws<ArgumentNullException>(() =>
+           {
+               var store = new DelegatedValueFeatureStore((_, __) => null);
+               new GradualRolloutClaimValueToggle(store, null);
+           });
         }
 
         [Fact]

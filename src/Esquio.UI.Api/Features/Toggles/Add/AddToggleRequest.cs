@@ -9,6 +9,15 @@ namespace Esquio.UI.Api.Features.Toggles.Add
 
         public string ToggleType { get; set; }
 
-        public Dictionary<string,string> Parameters { get; set; }
+        public List<AddToggleRequestDetailParameter> Parameters { get; set; }
+    }
+
+    public class AddToggleRequestDetailParameter
+    {
+        public string Name { get; set; }
+
+        public string Value { get; set; }
+
+        public string ClrType { get; set; }
     }
 }

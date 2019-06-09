@@ -13,9 +13,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class claimvalue_toggle_tests
     {
         [Fact]
-        public async Task throw_if_store_service_is_null()
+        public void throw_if_store_service_is_null()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var accessor = new FakeHttpContextAccesor();
                 new ClaimValueToggle(null, accessor);
@@ -23,9 +23,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
-        public async Task throw_if_httpcontextaccessor_is_null()
+        public void throw_if_httpcontextaccessor_is_null()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var store = new DelegatedValueFeatureStore((_, __) => null);
                 new ClaimValueToggle(store, null);
