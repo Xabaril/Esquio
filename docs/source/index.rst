@@ -19,4 +19,5 @@ Welcome to Esquio
    :hidden:
    :caption: Getting Started Guide
 
+   started/netcore
    started/aspnetcore

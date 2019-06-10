@@ -35,11 +35,11 @@ namespace Esquio.Diagnostics
         }
         public static void DefaultToggleTypeActivatorTypeIsResolved(ILogger logger, string toggleType)
         {
-            _defaultToggleTypeActivatorCantResolve(logger, toggleType, null);
+            _defaultToggleTypeActivatorTypeIsResolved(logger, toggleType, null);
         }
         public static void DefaultToggleTypeActivatorTypeCantResolved(ILogger logger, string toggleType)
         {
-            _defaultToggleTypeActivatorTypeIsResolved(logger, toggleType, null);
+            _defaultToggleTypeActivatorCantResolve(logger, toggleType, null);
         }
 
         private static readonly Action<ILogger, string, string, Exception> _featureServiceBegin = LoggerMessage.Define<string, string>(
