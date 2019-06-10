@@ -369,7 +369,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
               .Where(t => t.Type == (typeof(OnToggle).FullName))
               .Select(t => t.Description)
               .Single()
-              .Should().BeEquivalentTo("Toggle that always is active.");
+              .Should().BeEquivalentTo("Toggle that always is active, commonly used to rollout features.");
         }
 
         [Fact]

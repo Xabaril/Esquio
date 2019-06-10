@@ -26,7 +26,7 @@ namespace Esquio.Toggles
 
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName);
+            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 

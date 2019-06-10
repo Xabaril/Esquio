@@ -1,9 +1,6 @@
-﻿using Esquio;
-using Esquio.Model;
-using Esquio.Toggles;
+﻿using Esquio.Model;
 using FluentAssertions;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace UnitTests.Esquio

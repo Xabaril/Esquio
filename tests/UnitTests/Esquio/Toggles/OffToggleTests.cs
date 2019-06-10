@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace UnitTests.Esquio.Toggles
 {
-    public class OffToggleShould
+    public class off_toggle_should
     {
         public async Task be_always_no_active()
         {

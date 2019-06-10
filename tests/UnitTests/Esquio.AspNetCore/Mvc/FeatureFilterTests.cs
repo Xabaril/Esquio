@@ -8,13 +8,14 @@ using Xunit;
 namespace UnitTests.Esquio.AspNetCore.Mvc
 {
     [Collection(nameof(AspNetCoreServer))]
-    public class FeatureFilterShould
+    public class feature_filter_should
     {
         private readonly ServerFixture _fixture;
-        public FeatureFilterShould(ServerFixture fixture)
+        public feature_filter_should(ServerFixture fixture)
         {
             _fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
         }
+
         [Fact]
         public async Task excute_action_if_feature_is_active()
         {
@@ -25,6 +26,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
             response.StatusCode
                 .Should().Be(StatusCodes.Status200OK);
         }
+
         [Fact]
         public async Task excute_action_if_all_features_are_active()
         {
@@ -35,6 +37,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
             response.StatusCode
                 .Should().Be(StatusCodes.Status200OK);
         }
+
         [Fact]
         public async Task redirect_to_not_found_if_one_feature_is_not_active_when_use_multiple_features()
         {
@@ -45,6 +48,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
             response.StatusCode
                 .Should().Be(StatusCodes.Status302Found);
         }
+
         [Fact]
         public async Task redirect_to_not_found_if_feature_is_not_active_and_no_fallback_action_is_configured()
         {
@@ -55,6 +59,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
             response.StatusCode
                 .Should().Be(StatusCodes.Status404NotFound);
         }
+
         [Fact]
         public async Task redirect_to_configured_fallback_if_feature_is_not_active()
         {

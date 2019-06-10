@@ -13,7 +13,7 @@ namespace Esquio.Toggles
     public class UserNameToggle
         : IToggle
     {
-        internal  const string Users = nameof(Users);
+        internal const string Users = nameof(Users);
 
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
@@ -31,7 +31,7 @@ namespace Esquio.Toggles
 
             if (currentUserName != null)
             {
-                var feature = await _featureStore.FindFeatureAsync(featureName, productName);
+                var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
                 var toggle = feature.GetToggle(this.GetType().FullName);
                 var data = toggle.GetData();
 

@@ -32,6 +32,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .Should()
                 .BeTrue();
         }
+
         [Fact]
         public async Task clean_content_when_feature_is_active_and_is_on_exclude_attribute()
         {
@@ -52,6 +53,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .Should()
                 .BeTrue();
         }
+
         [Fact]
         public async Task preserve_content_when_feature_is_not_active_and_is_on_exclude_attribute()
         {
@@ -133,6 +135,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
             output.Content.GetContent().Should().Contain("some content");
         }
+
         [Fact]
         public async Task preserve_content_when_feature_is_active_for_specified_product()
         {
