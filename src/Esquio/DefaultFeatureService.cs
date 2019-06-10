@@ -1,6 +1,8 @@
 ﻿using Esquio.Abstractions;
+using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,18 +14,18 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
-        private readonly IFeatureServiceErrorBehavior _errorBehavior;
+        private readonly EsquioOptions _options;
         private readonly ILogger<DefaultFeatureService> _logger;
 
         public DefaultFeatureService(
-            IRuntimeFeatureStore store, 
+            IRuntimeFeatureStore store,
             IToggleTypeActivator toggleActivator,
-            IFeatureServiceErrorBehavior errorBehavior,
+            IOptions<EsquioOptions> options,
             ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggleActivator ?? throw new ArgumentNullException(nameof(toggleActivator));
-            _errorBehavior = errorBehavior ?? throw new ArgumentNullException(nameof(errorBehavior));
+            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
@@ -78,7 +80,12 @@ namespace Esquio
             {
                 Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
 
-                return _errorBehavior.GetActivationStateOrThrow(featureName, productName, exception);
+                if (_options.ExceptionBehavior == ExceptionBehavior.Throw)
+                {
+                    throw;
+                }
+
+                return _options.ExceptionBehavior == ExceptionBehavior.SetAsActive;
             }
         }
     }

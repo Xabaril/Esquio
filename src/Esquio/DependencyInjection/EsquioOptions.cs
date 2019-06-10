@@ -16,16 +16,16 @@ namespace Esquio.DependencyInjection
             typeof(IToggle).Assembly
         };
 
-        internal FeatureErrorBehavior FeatureErrorBehavior { get; private set; } = FeatureErrorBehavior.SetAsNotActive;
+        internal ExceptionBehavior ExceptionBehavior { get; set; } = ExceptionBehavior.SetAsNotActive;
 
         /// <summary>
-        /// Configure default error behavior when feature evaluation throw. By default feature is configured as not active.
+        /// Configure default exception behavior when feature evaluation throw. By default feature is configured as not active.
         /// </summary>
         /// <param name="errorBehavior">The default feature error behavior to configure as default.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public EsquioOptions DefaultErrorBehavior(FeatureErrorBehavior errorBehavior)
+        public EsquioOptions ConfigureDefaultExceptionBehavior(ExceptionBehavior errorBehavior)
         {
-            FeatureErrorBehavior = errorBehavior;
+            ExceptionBehavior = errorBehavior;
             return this;
         }
 

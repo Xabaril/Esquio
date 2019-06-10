@@ -1,6 +1,6 @@
 ﻿namespace Esquio.Abstractions
 {
-    public enum FeatureErrorBehavior : short
+    public enum ExceptionBehavior : short
     {
         Throw = 0,
         SetAsNotActive = 1,

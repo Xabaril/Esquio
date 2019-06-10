@@ -1,3 +1,4 @@
+using Esquio.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +27,7 @@ namespace WebApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            
             services
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
@@ -37,7 +38,7 @@ namespace WebApp
                 .Services
                 .AddEsquio(setup =>
                 {
-                    setup.DefaultErrorBehavior(Esquio.Abstractions.FeatureErrorBehavior.SetAsNotActive);
+                    setup.ConfigureDefaultExceptionBehavior(ExceptionBehavior.SetAsNotActive);
                     setup.RegisterTogglesFromAssemblyContaining<Startup>();
                 })
                     .AddAspNetCoreDefaultServices()
