@@ -21,3 +21,10 @@ Welcome to Esquio
 
    started/netcore
    started/aspnetcore
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+   :caption: Toggles
+
+   toggles/introduction

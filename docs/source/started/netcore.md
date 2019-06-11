@@ -136,7 +136,7 @@ dotnet run
 
 ![Console App](../images/consoleapp.png)
 
-To disable the feature, change the appsettings file:
+To disable the feature, change the **appsettings.json**:
 
 ```json
 "Enabled": false,
