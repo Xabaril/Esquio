@@ -27,7 +27,11 @@ namespace Microsoft.Extensions.DependencyInjection
             setup?.Invoke(options);
 
             var builder = new EsquioBuilder(serviceCollection);
-            builder.Services.Configure<EsquioOptions>(opt => opt.ExceptionBehavior = options.ExceptionBehavior);
+            builder.Services.Configure<EsquioOptions>(opt =>
+            {
+                opt.OnErrorBehavior = options.OnErrorBehavior;
+                opt.NotFoundBehavior = options.NotFoundBehavior;
+            });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
 

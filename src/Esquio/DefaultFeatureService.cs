@@ -40,7 +40,7 @@ namespace Esquio
                 if (feature == null)
                 {
                     Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
-                    return false;
+                    return _options.NotFoundBehavior == NotFoundBehavior.SetAsActive;
                 }
 
                 if (!feature.IsEnabled)
@@ -48,7 +48,6 @@ namespace Esquio
                     Log.FeatureServiceDisabledFeature(_logger, featureName, productName);
                     return false;
                 }
-
 
                 var active = true;
                 var toggles = feature.GetToggles();
@@ -80,12 +79,12 @@ namespace Esquio
             {
                 Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
 
-                if (_options.ExceptionBehavior == ExceptionBehavior.Throw)
+                if (_options.OnErrorBehavior == OnErrorBehavior.Throw)
                 {
                     throw;
                 }
 
-                return _options.ExceptionBehavior == ExceptionBehavior.SetAsActive;
+                return _options.OnErrorBehavior == OnErrorBehavior.SetAsActive;
             }
         }
     }

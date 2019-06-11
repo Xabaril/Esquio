@@ -16,16 +16,29 @@ namespace Esquio.DependencyInjection
             typeof(IToggle).Assembly
         };
 
-        internal ExceptionBehavior ExceptionBehavior { get; set; } = ExceptionBehavior.SetAsNotActive;
+        internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetAsNotActive;
 
         /// <summary>
-        /// Configure default exception behavior when feature evaluation throw. By default feature is configured as not active.
+        /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetAsNotActive.
         /// </summary>
-        /// <param name="errorBehavior">The default feature error behavior to configure as default.</param>
+        /// <param name="onErrorBehavior">The <see cref="OnErrorBehavior"/> to configure as default.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public EsquioOptions ConfigureDefaultExceptionBehavior(ExceptionBehavior errorBehavior)
+        public EsquioOptions ConfigureOnErrorBehavior(OnErrorBehavior onErrorBehavior)
         {
-            ExceptionBehavior = errorBehavior;
+            OnErrorBehavior = onErrorBehavior;
+            return this;
+        }
+
+        internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetAsNotActive;
+
+        /// <summary>
+        /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetAsNotActive.
+        /// </summary>
+        /// <param name="notFoundBehavior">The <see cref="NotFoundBehavior"/> to configure as default.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public EsquioOptions ConfigureNotFoundBehavior(NotFoundBehavior notFoundBehavior)
+        {
+            NotFoundBehavior = NotFoundBehavior;
             return this;
         }
 

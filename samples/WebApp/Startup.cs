@@ -27,7 +27,7 @@ namespace WebApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
+
             services
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
@@ -36,11 +36,7 @@ namespace WebApp
                         opts => { opts.ResourcesPath = "Resources"; })
                     .AddNewtonsoftJson()
                 .Services
-                .AddEsquio(setup =>
-                {
-                    setup.ConfigureDefaultExceptionBehavior(ExceptionBehavior.SetAsNotActive);
-                    setup.RegisterTogglesFromAssemblyContaining<Startup>();
-                })
+                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                     .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio")
                 .Services
