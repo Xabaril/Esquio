@@ -41,8 +41,7 @@ namespace Esquio.DependencyInjection
             NotFoundBehavior = NotFoundBehavior;
             return this;
         }
-
->>>>>>> ClrTypeErrorBehavior
+        
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <typeparamref name="T"/> is defined.
         /// </summary>
