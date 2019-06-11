@@ -69,7 +69,7 @@ namespace Esquio.EntityFrameworkCore.Store
 
                 toggle.AddParameters(toggleConfiguration
                     .Parameters
-                    .Select(p => new Parameter(p.Name, GetConvertedValueFromParameter(p.ClrType, p.Value))));
+                    .Select(p => new Parameter(p.Name, GetCLRValueFromParameter(p.ClrType, p.Value))));
 
                 feature.AddToggle(toggle);
             }
@@ -77,7 +77,7 @@ namespace Esquio.EntityFrameworkCore.Store
             return feature;
         }
 
-        private object GetConvertedValueFromParameter(string clrType, string configuredValue)
+        private object GetCLRValueFromParameter(string clrType, string configuredValue)
         {
             try
             {
