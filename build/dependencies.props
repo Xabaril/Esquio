@@ -25,6 +25,7 @@
     <microsoftextensionsconfigurationjson>3.0.0-preview5.19227.9</microsoftextensionsconfigurationjson>
     <microsoftextensionshosting>3.0.0-preview5.19227.9</microsoftextensionshosting>
     <microsoftextensionsprimitives>3.0.0-preview5.19227.9</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
 
     <microsoftcsharp>4.5.0</microsoftcsharp>
 

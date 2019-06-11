@@ -48,19 +48,6 @@ namespace Esquio.Model
                 _toggles.AddRange(toggles);
             }
         }
-        public void RemoveToggle(Toggle toggle)
-        {
-            if (toggle == null)
-            {
-                throw new ArgumentNullException(nameof(toggle));
-            }
-
-            _toggles.Remove(toggle);
-        }
-        public void RemoveToggles()
-        {
-            _toggles.Clear();
-        }
         public void Enabled()
         {
             IsEnabled = true;

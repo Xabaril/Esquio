@@ -17,13 +17,21 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
         public void Configure(EntityTypeBuilder<ParameterEntity> builder)
         {
             builder.ToTable(storeOptions.Parameters);
+
             builder.HasKey(x => x.Id);
+
             builder.Property(p => p.Name)
                .IsRequired()
                .HasMaxLength(200);
+
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);
+
+            builder.Property(p => p.ClrType)
+                .IsRequired()
+                .HasMaxLength(200);
+
             builder.HasIndex(p => p.Name)
                 .IsUnique();
         }

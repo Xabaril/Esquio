@@ -29,18 +29,6 @@ namespace Esquio.Model
             return data;
         }
 
-        public TValue GetToggleParameterValue<TValue>(string name)
-        {
-            var parameter = _parameters.SingleOrDefault(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-
-            if (parameter != null)
-            {
-                return (TValue)parameter.Value;
-            }
-
-            return default;
-        }
-       
         public void AddParameters(IEnumerable<Parameter> parameters)
         {
             _parameters.AddRange(parameters);

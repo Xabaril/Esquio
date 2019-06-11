@@ -43,7 +43,7 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
                 else
                 {
                     toggle.Parameters.Add(
-                        new ParameterEntity(toggle.Id, request.Name, request.Value));
+                        new ParameterEntity(toggle.Id, request.Name, request.Value,request.ClrType));
                 }
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
