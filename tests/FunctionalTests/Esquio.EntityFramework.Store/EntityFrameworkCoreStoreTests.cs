@@ -45,10 +45,10 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
                 var toggle = new ToggleEntity(appFeature.Id, "Esquio.Toggles.XToggle");
 
-                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1");
+                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1", typeof(string).FullName);
                 toggle.Parameters.Add(stringparameter);
 
-                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1");
+                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1", typeof(int).FullName);
                 toggle.Parameters.Add(intparameter);
 
                 appFeature.Toggles.Add(toggle);
@@ -148,29 +148,29 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 .Value.Should().Be("value1");
         }
 
-        //[Theory]
-        //[MemberData(nameof(Data))]
-        //public async Task get_back_feature_with_valid_dynamic_when_is_whell_configured(DbContextOptions<StoreDbContext> options)
-        //{
-        //    var store = new EntityFrameworkCoreStoreBuilder(options)
-        //        .Build();
+        [Theory]
+        [MemberData(nameof(Data))]
+        public async Task get_back_feature_with_valid_dynamic_when_is_whell_configured(DbContextOptions<StoreDbContext> options)
+        {
+            var store = new EntityFrameworkCoreStoreBuilder(options)
+                .Build();
 
-        //    var expected = await store.FindFeatureAsync("app-feature", "default");
+            var expected = await store.FindFeatureAsync("app-feature", "default");
 
-        //    expected.Should()
-        //        .NotBeNull();
+            expected.Should()
+                .NotBeNull();
 
-        //    expected.GetToggles()
-        //        .Count().Should().Be(1);
+            expected.GetToggles()
+                .Count().Should().Be(1);
 
-        //    var toggle = expected.GetToggle("Esquio.Toggles.XToggle");
+            var toggle = expected.GetToggle("Esquio.Toggles.XToggle");
 
-        //    var dynamicContent = toggle.GetData();
+            var dynamicContent = toggle.GetData();
 
 
-        //    string strparmameter = dynamicContent.strparam;
-        //    int intparmameter = (int)dynamicContent.intparam;
-        //}
+            string strparmameter = dynamicContent.strparam;
+            int intparmameter = (int)dynamicContent.intparam;
+        }
 
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>
             new TheoryData<DbContextOptions<StoreDbContext>>

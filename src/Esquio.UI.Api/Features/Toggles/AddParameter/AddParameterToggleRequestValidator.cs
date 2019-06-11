@@ -12,6 +12,9 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
 
             this.RuleFor(rf => rf.Value)
                 .NotEmpty();
+
+            this.RuleFor(rf => rf.ClrType)
+               .NotEmpty();
         }
     }
 }

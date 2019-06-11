@@ -11,11 +11,38 @@ namespace Esquio.DependencyInjection
     /// </summary>
     public class EsquioOptions
     {
-        internal List<Assembly> AssembliesToRegister { get; } = new List<Assembly>
+        internal List<Assembly> AssembliesToRegister { get; private set; } = new List<Assembly>
         {
             typeof(IToggle).Assembly
         };
 
+        internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetAsNotActive;
+
+        /// <summary>
+        /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetAsNotActive.
+        /// </summary>
+        /// <param name="onErrorBehavior">The <see cref="OnErrorBehavior"/> to configure as default.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public EsquioOptions ConfigureOnErrorBehavior(OnErrorBehavior onErrorBehavior)
+        {
+            OnErrorBehavior = onErrorBehavior;
+            return this;
+        }
+
+        internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetAsNotActive;
+
+        /// <summary>
+        /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetAsNotActive.
+        /// </summary>
+        /// <param name="notFoundBehavior">The <see cref="NotFoundBehavior"/> to configure as default.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public EsquioOptions ConfigureNotFoundBehavior(NotFoundBehavior notFoundBehavior)
+        {
+            NotFoundBehavior = NotFoundBehavior;
+            return this;
+        }
+
+>>>>>>> ClrTypeErrorBehavior
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <typeparamref name="T"/> is defined.
         /// </summary>

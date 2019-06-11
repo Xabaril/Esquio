@@ -5,6 +5,7 @@ using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,11 +41,55 @@ namespace Esquio.EntityFrameworkCore.Store
 
             if (featureEntity != null)
             {
-                return featureEntity.To();
+                return ConvertToFeatureModel(featureEntity);
             }
             else
             {
                 Log.FeatureNotExist(_logger, featureName, productName);
+                return null;
+            }
+        }
+
+        private Feature ConvertToFeatureModel(FeatureEntity featureEntity)
+        {
+            var feature = new Feature(featureEntity.Name);
+
+            if (featureEntity.Enabled)
+            {
+                feature.Enabled();
+            }
+            else
+            {
+                feature.Disabled();
+            }
+
+            foreach (var toggleConfiguration in featureEntity.Toggles)
+            {
+                var toggle = new Toggle(toggleConfiguration.Type);
+
+                toggle.AddParameters(toggleConfiguration
+                    .Parameters
+                    .Select(p => new Parameter(p.Name, GetCLRValueFromParameter(p.ClrType, p.Value))));
+
+                feature.AddToggle(toggle);
+            }
+
+            return feature;
+        }
+
+        private object GetCLRValueFromParameter(string clrType, string configuredValue)
+        {
+            try
+            {
+                Log.StartingFeatureValueConversion(_logger, clrType, configuredValue);
+
+                return TypeDescriptor.GetConverter(Type.GetType(clrType))
+                    .ConvertFromInvariantString(configuredValue);
+            }
+            catch (Exception exception)
+            {
+                Log.FeatureValueConversionThrow(_logger, clrType, configuredValue, exception);
+
                 return null;
             }
         }
