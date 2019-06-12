@@ -11,7 +11,7 @@ namespace Esquio.Toggles
         : IToggle
     {
         internal const string Percentage = nameof(Percentage);
-        internal const string AnonymoysUser = nameof(AnonymoysUser);
+        internal const string AnonymousUser = nameof(AnonymousUser);
         internal const int Partitions = 100;
 
         private readonly IUserNameProviderService _userNameProviderService;
@@ -34,7 +34,7 @@ namespace Esquio.Toggles
             if (percentage > 0)
             {
                 var currentUserName = await _userNameProviderService
-                    .GetCurrentUserNameAsync() ?? AnonymoysUser;
+                    .GetCurrentUserNameAsync() ?? AnonymousUser;
 
                 var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
 
