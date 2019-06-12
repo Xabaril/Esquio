@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Builders;
@@ -36,34 +35,34 @@ namespace UnitTests.Esquio
         }
 
         [Fact]
-        public async Task be_disabled_if_feature_service_throw_and_exceptionbehavior_is_setasnotactive()
+        public async Task be_disabled_if_feature_service_throw_and_exceptionbehavior_is_setasdisabled()
         {
             var feature = Build.Feature("sample")
                 .Enabled()
                 .AddOne(new Toggle(typeof(ThrowInvalidOperationExceptionToggle).FullName))
                 .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetAsNotActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetDisabled);
 
-            var active = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("sample");
 
-            active.Should()
+            enabled.Should()
                 .BeFalse();
         }
 
         [Fact]
-        public async Task be_enabled_if_feature_service_throw_and_exceptionbehavior_is_setasactive()
+        public async Task be_enabled_if_feature_service_throw_and_exceptionbehavior_is_setasenabled()
         {
             var feature = Build.Feature("sample")
                 .Enabled()
                 .AddOne(new Toggle(typeof(ThrowInvalidOperationExceptionToggle).FullName))
                 .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetAsActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetEnabled);
 
-            var active = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("sample");
 
-            active.Should()
+            enabled.Should()
                 .BeTrue();
         }
 
@@ -75,11 +74,11 @@ namespace UnitTests.Esquio
                 .AddOne(new Toggle(typeof(OnToggle).FullName))
                 .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetAsActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetEnabled);
 
-            var active = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("sample");
 
-            active.Should()
+            enabled.Should()
                 .BeTrue();
         }
 
@@ -91,46 +90,46 @@ namespace UnitTests.Esquio
                .AddOne(new Toggle(typeof(OffToggle).FullName))
                .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetAsActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetEnabled);
 
-            var active = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("sample");
 
-            active.Should()
+            enabled.Should()
                 .BeFalse();
         }
         [Fact]
-        public async Task be_enabled_when_feature_not_exist_and_notfound_behavioris_setasactive()
+        public async Task be_enabled_when_feature_not_exist_and_notfound_behavioris_setenabled()
         {
             var feature = Build.Feature("sample")
                 .Enabled()
                 .AddOne(new Toggle(typeof(OnToggle).FullName))
                 .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetAsActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetEnabled);
 
-            var active = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("sample");
 
-            active.Should()
+            enabled.Should()
                 .BeTrue();
         }
 
         [Fact]
-        public async Task be_disabled_when_feature_not_exist_and_notfound_behavioris_setasnotactive()
+        public async Task be_disabled_when_feature_not_exist_and_notfound_behavioris_setasdisabled()
         {
             var feature = Build.Feature("sample")
                .Enabled()
                .AddOne(new Toggle(typeof(OffToggle).FullName))
                .Build();
 
-            var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetAsNotActive);
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetDisabled);
 
-            var active = await featureService.IsEnabledAsync("non-existing-feature");
+            var enabled = await featureService.IsEnabledAsync("non-existing-feature");
 
-            active.Should()
+            enabled.Should()
                 .BeFalse();
         }
 
-        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetAsNotActive, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetAsNotActive)
+        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();

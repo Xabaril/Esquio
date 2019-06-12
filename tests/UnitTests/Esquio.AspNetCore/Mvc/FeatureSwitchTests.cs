@@ -16,7 +16,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         }
 
         [Fact]
-        public async Task enable_action_when_flag_is_active()
+        public async Task enable_action_when_flag_is_enabled()
         {
             var response = await _fixture.TestServer
                 .CreateClient()
@@ -26,21 +26,21 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .Should().BeTrue();
 
             (await response.Content.ReadAsStringAsync())
-                .Should().BeEquivalentTo("Active");
+                .Should().BeEquivalentTo("Enabled");
         }
 
         [Fact]
-        public async Task use_default_action_when_flag_is_not_active()
+        public async Task use_default_action_when_flag_is_disabled()
         {
             var response = await _fixture.TestServer
                 .CreateClient()
-                .GetAsync("http://localhost/test/ActionWithFlagSwitchNoActive");
+                .GetAsync("http://localhost/test/ActionWithFlagSwitchDisabled");
 
             response.IsSuccessStatusCode
                 .Should().BeTrue();
 
             (await response.Content.ReadAsStringAsync())
-                .Should().BeEquivalentTo("NonActive");
+                .Should().BeEquivalentTo("Disabled");
         }
     }
 }

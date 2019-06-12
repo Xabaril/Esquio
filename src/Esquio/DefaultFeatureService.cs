@@ -40,7 +40,7 @@ namespace Esquio
                 if (feature == null)
                 {
                     Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
-                    return _options.NotFoundBehavior == NotFoundBehavior.SetAsActive;
+                    return _options.NotFoundBehavior == NotFoundBehavior.SetEnabled;
                 }
 
                 if (!feature.IsEnabled)
@@ -49,7 +49,7 @@ namespace Esquio
                     return false;
                 }
 
-                var active = true;
+                var enabled = true;
                 var toggles = feature.GetToggles();
 
                 foreach (var toggle in toggles)
@@ -61,19 +61,19 @@ namespace Esquio
                         if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
-                            active = false;
+                            enabled = false;
                             break;
                         }
                     }
                     else
                     {
                         Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName, toggle.Type);
-                        active = false;
+                        enabled = false;
                         break;
                     }
                 }
 
-                return active;
+                return enabled;
             }
             catch (Exception exception)
             {
@@ -84,7 +84,7 @@ namespace Esquio
                     throw;
                 }
 
-                return _options.OnErrorBehavior == OnErrorBehavior.SetAsActive;
+                return _options.OnErrorBehavior == OnErrorBehavior.SetEnabled;
             }
         }
     }

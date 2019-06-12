@@ -62,7 +62,7 @@ namespace UnitTests.Seedwork
                 {
                     var actionName = context.ActionDescriptor.RouteValues["action"];
 
-                    if (actionName != "ActionWithNoActiveFlag")
+                    if (actionName != "ActionWithDisabledFlag")
                     {
                         return new RedirectResult("/controller/action");
                     }
@@ -95,49 +95,49 @@ namespace UnitTests.Seedwork
         [FeatureSwitch(Product = "TestApp", Names = "Sample1")]
         public IActionResult Sample1()
         {
-            return Content("Active");
+            return Content("enabled");
         }
         [ActionName("ActionWithFlagSwitch")]
         public IActionResult Sample11()
         {
-            return Content("NonActive");
+            return Content("Disabled");
         }
-        [ActionName("ActionWithFlagSwitchNoActive")]
+        [ActionName("ActionWithFlagSwitchDisabled")]
         [FeatureSwitch(Product = "TestApp", Names = "Sample2")]
         public IActionResult Sample2()
         {
-            return Content("Active");
+            return Content("Enabled");
         }
-        [ActionName("ActionWithFlagSwitchNoActive")]
+        [ActionName("ActionWithFlagSwitchDisabled")]
         public IActionResult Sample22()
         {
-            return Content("NonActive");
+            return Content("Disabled");
         }
         [FeatureFilter(Names = "Sample1")]
-        public IActionResult ActionWithActiveFlag()
+        public IActionResult ActionWithEnabledFlag()
         {
             return Ok();
         }
 
         [FeatureFilter(Names = "Sample1,Sample1")]
-        public IActionResult ActionWithMultipleActiveFlag()
+        public IActionResult ActionWithMultipleEnabledFlag()
         {
             return Ok();
         }
         [FeatureFilter(Names = "Sample1,Sample2")]
-        public IActionResult ActionWithMultipleFlagAndNotActive()
+        public IActionResult ActionWithMultipleFlagAndDisabled()
         {
             return Ok();
         }
 
         [FeatureFilter(Names = "Sample2")]
-        public IActionResult ActionWithNoActiveFlag()
+        public IActionResult ActionWithDisabledFlag()
         {
             return Ok();
         }
 
         [FeatureFilter(Names = "Sample2")]
-        public IActionResult ActionWithNoActiveFlagAndFallbackAction()
+        public IActionResult ActionWithDisabledFlagAndFallbackAction()
         {
             return Ok();
         }

@@ -16,7 +16,7 @@ namespace Esquio.DependencyInjection
             typeof(IToggle).Assembly
         };
 
-        internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetAsNotActive;
+        internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
 
         /// <summary>
         /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetAsNotActive.
@@ -29,7 +29,7 @@ namespace Esquio.DependencyInjection
             return this;
         }
 
-        internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetAsNotActive;
+        internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetDisabled;
 
         /// <summary>
         /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetAsNotActive.

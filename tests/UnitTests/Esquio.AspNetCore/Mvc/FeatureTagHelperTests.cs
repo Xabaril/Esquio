@@ -10,10 +10,10 @@ using Xunit;
 
 namespace UnitTests.Esquio.AspNetCore.Mvc
 {
-    public class FeatureTagHelperShould
+    public class featuretaghelper_should
     {
         [Fact]
-        public async Task clean_content_when_feature_is_not_active()
+        public async Task clean_content_when_feature_disabled()
         {
             var featureService = new DelegatedFeatureService((_, __) => false);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -34,7 +34,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         }
 
         [Fact]
-        public async Task clean_content_when_feature_is_active_and_is_on_exclude_attribute()
+        public async Task clean_content_when_feature_is_enabled_and_is_on_exclude_attribute()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -55,7 +55,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         }
 
         [Fact]
-        public async Task preserve_content_when_feature_is_not_active_and_is_on_exclude_attribute()
+        public async Task preserve_content_when_feature_is_disabled_and_is_on_exclude_attribute()
         {
             var featureService = new DelegatedFeatureService((_, __) => false);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -77,7 +77,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
 
 
         [Fact]
-        public async Task preserve_content_when_feature_is_active_and_is_on_include_attribute()
+        public async Task preserve_content_when_feature_is_enabled_and_is_on_include_attribute()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -97,7 +97,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
                 .BeFalse();
         }
         [Fact]
-        public async Task clean_content_when_feature_is_not_active_and_is_on_include_attribute()
+        public async Task clean_content_when_feature_is_disabled_and_is_on_include_attribute()
         {
             var featureService = new DelegatedFeatureService((_, __) => false);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -118,7 +118,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         }
 
         [Fact]
-        public async Task preserve_content_when_feature_is_active()
+        public async Task preserve_content_when_feature_is_enabled()
         {
             var featureService = new DelegatedFeatureService((_, __) => true);
             var logger = new LoggerFactory().CreateLogger<FeatureTagHelper>();
@@ -137,7 +137,7 @@ namespace UnitTests.Esquio.AspNetCore.Mvc
         }
 
         [Fact]
-        public async Task preserve_content_when_feature_is_active_for_specified_product()
+        public async Task preserve_content_when_feature_is_enabled_for_specified_product()
         {
             var featureService = new DelegatedFeatureService((_, _product) =>
             {

@@ -34,10 +34,9 @@ namespace Esquio
 
                 if (toggleType != null)
                 {
+                    _typesCache.TryAdd(toggleTypeName, toggleType);
+
                     Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
-
-                    _typesCache.AddOrUpdate(toggleTypeName, toggleType, (_, __) => toggleType);
-
                     return (IToggle)_serviceProvider.GetService(toggleType);
                 }
             }
