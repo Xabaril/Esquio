@@ -82,6 +82,10 @@ namespace WebApp
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
 
+                var convention = routes.MapControllerRoute(
+                        name: "demo",
+                        pattern: "demo/isworking").RequireFeature("SomeFeature");
+
                 routes.MapRazorPages();
             });
         }
