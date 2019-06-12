@@ -58,11 +58,11 @@ namespace UnitTests.Seedwork
             services.AddMvc()
                 .Services
                 .AddEsquio()
-                .AddMvcFallbackAction((context)=>
+                .AddMvcFallbackAction((context) =>
                 {
                     var actionName = context.ActionDescriptor.RouteValues["action"];
 
-                    if (actionName != "ActionWithNoActiveFlag")
+                    if (actionName != "ActionWithDisabledFlag")
                     {
                         return new RedirectResult("/controller/action");
                     }
@@ -92,40 +92,52 @@ namespace UnitTests.Seedwork
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(ProductName = "TestApp",FeatureName ="Sample1")]
+        [FeatureSwitch(Product = "TestApp", Names = "Sample1")]
         public IActionResult Sample1()
         {
-            return Content("Active");
+            return Content("enabled");
         }
         [ActionName("ActionWithFlagSwitch")]
         public IActionResult Sample11()
         {
-            return Content("NonActive");
+            return Content("Disabled");
         }
-        [ActionName("ActionWithFlagSwitchNoActive")]
-        [FeatureSwitch(ProductName = "TestApp", FeatureName = "Sample2")]
+        [ActionName("ActionWithFlagSwitchDisabled")]
+        [FeatureSwitch(Product = "TestApp", Names = "Sample2")]
         public IActionResult Sample2()
         {
-            return Content("Active");
+            return Content("Enabled");
         }
-        [ActionName("ActionWithFlagSwitchNoActive")]
+        [ActionName("ActionWithFlagSwitchDisabled")]
         public IActionResult Sample22()
         {
-            return Content("NonActive");
+            return Content("Disabled");
         }
-        [FeatureFilter(FeatureName="Sample1")]
-        public IActionResult ActionWithActiveFlag()
-        {
-            return Ok();
-        }
-        [FeatureFilter(FeatureName = "Sample2")]
-        public IActionResult ActionWithNoActiveFlag()
+        [FeatureFilter(Names = "Sample1")]
+        public IActionResult ActionWithEnabledFlag()
         {
             return Ok();
         }
 
-        [FeatureFilter(FeatureName = "Sample2")]
-        public IActionResult ActionWithNoActiveFlagAndFallbackAction()
+        [FeatureFilter(Names = "Sample1,Sample1")]
+        public IActionResult ActionWithMultipleEnabledFlag()
+        {
+            return Ok();
+        }
+        [FeatureFilter(Names = "Sample1,Sample2")]
+        public IActionResult ActionWithMultipleFlagAndDisabled()
+        {
+            return Ok();
+        }
+
+        [FeatureFilter(Names = "Sample2")]
+        public IActionResult ActionWithDisabledFlag()
+        {
+            return Ok();
+        }
+
+        [FeatureFilter(Names = "Sample2")]
+        public IActionResult ActionWithDisabledFlagAndFallbackAction()
         {
             return Ok();
         }

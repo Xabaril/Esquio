@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -12,9 +13,9 @@ namespace UnitTests.Seedwork
         {
             _delegatedFunction = delegatedFunction ?? throw new ArgumentNullException(nameof(delegatedFunction));
         }
-        public Task<bool> IsEnabledAsync(string featureName, string applicationName = null)
+        public Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(_delegatedFunction(featureName, applicationName));
+            return Task.FromResult(_delegatedFunction(featureName, productName));
         }
     }
 }

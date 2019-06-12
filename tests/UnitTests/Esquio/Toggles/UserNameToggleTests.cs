@@ -8,7 +8,7 @@ using Xunit;
 
 namespace UnitTests.Esquio.Toggles
 {
-    public class UserNameToggleShould
+    public class username_toggle_should
     {
         private const string Users = nameof(Users);
 
@@ -30,6 +30,7 @@ namespace UnitTests.Esquio.Toggles
                 await new UserNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             });
         }
+
         [Fact]
         public async Task be_not_active_if_user_is_null()
         {
@@ -48,11 +49,13 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_parameter_is_not_configured()
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
+                .AddOneParameter("Users","SomeUser")
                 .Build();
             var feature = Build
                 .Feature(Constants.FeatureName)
@@ -65,6 +68,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_not_active_if_user_is_not_contained_on_users_parameters_value()
         {
@@ -83,6 +87,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeFalse();
         }
+
         [Fact]
         public async Task be_active_if_user_is_equal_to_users_parameters_value()
         {
@@ -100,6 +105,7 @@ namespace UnitTests.Esquio.Toggles
             var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_user_is_equal_non_sensitive_to_users_parameters_value()
         {
@@ -118,6 +124,7 @@ namespace UnitTests.Esquio.Toggles
 
             active.Should().BeTrue();
         }
+
         [Fact]
         public async Task be_active_if_user_is_contained_on_users_parameters_value()
         {

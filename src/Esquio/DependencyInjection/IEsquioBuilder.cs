@@ -9,8 +9,7 @@ namespace Esquio.DependencyInjection
     public interface IEsquioBuilder
     {
         /// <summary>
-        /// Gets the Microsoft.Extensions.DependencyInjection.IServiceCollection into which 
-        /// Esquio services should be registered.
+        /// Gets the Microsoft.Extensions.DependencyInjection.IServiceCollection into which Esquio services should be registered.
         /// </summary>
         IServiceCollection Services { get; }
     }

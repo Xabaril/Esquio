@@ -5,7 +5,7 @@
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Feature Toogles Library for .NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Feature Toggles;AB Testing</PackageTags>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(XabarilMvc)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
@@ -13,12 +13,15 @@
     <PackageId>Esquio</PackageId>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="$(microsoftcsharp)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(microsoftextensionsdependencyinjectionabstractions)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(microsoftextensionsprimitives)"/>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="$(microsoftextensionsoptions)" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(microsoftextensionsprimitives)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

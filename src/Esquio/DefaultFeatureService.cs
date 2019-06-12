@@ -1,7 +1,10 @@
 ﻿using Esquio.Abstractions;
+using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio
@@ -11,52 +14,77 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
+        private readonly EsquioOptions _options;
         private readonly ILogger<DefaultFeatureService> _logger;
-        public DefaultFeatureService(IRuntimeFeatureStore store, IToggleTypeActivator toggeActivator, ILogger<DefaultFeatureService> logger)
+
+        public DefaultFeatureService(
+            IRuntimeFeatureStore store,
+            IToggleTypeActivator toggleActivator,
+            IOptions<EsquioOptions> options,
+            ILogger<DefaultFeatureService> logger)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
-            _toggleActivator = toggeActivator ?? throw new ArgumentNullException(nameof(toggeActivator));
+            _toggleActivator = toggleActivator ?? throw new ArgumentNullException(nameof(toggleActivator));
+            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<bool> IsEnabledAsync(string featureName, string applicationName = null)
+        public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             try
             {
-                Log.FeatureServiceProcessingBegin(_logger, featureName, applicationName);
+                Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
-                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var feature = await _featureStore
+                    .FindFeatureAsync(featureName, productName, cancellationToken);
 
                 if (feature == null)
                 {
-                    Log.FeatureServiceNotFoundFeature(_logger, featureName, applicationName);
-                    return false;
+                    Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
+                    return _options.NotFoundBehavior == NotFoundBehavior.SetEnabled;
                 }
 
                 if (!feature.IsEnabled)
                 {
-                    Log.FeatureServiceDisabledFeature(_logger, featureName, applicationName);
+                    Log.FeatureServiceDisabledFeature(_logger, featureName, productName);
                     return false;
                 }
 
+                var enabled = true;
                 var toggles = feature.GetToggles();
 
                 foreach (var toggle in toggles)
                 {
                     var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
 
-                    if (!await toggleInstance.IsActiveAsync(featureName, applicationName))
+                    if (toggleInstance != null)
                     {
-                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, applicationName);
-                        return false;
+                        if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
+                        {
+                            Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
+                            enabled = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName, toggle.Type);
+                        enabled = false;
+                        break;
                     }
                 }
 
-                return true;
+                return enabled;
             }
             catch (Exception exception)
             {
-                Log.FeatureServiceProcessingFail(_logger, featureName, applicationName, exception);
-                return false;
+                Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
+
+                if (_options.OnErrorBehavior == OnErrorBehavior.Throw)
+                {
+                    throw;
+                }
+
+                return _options.OnErrorBehavior == OnErrorBehavior.SetEnabled;
             }
         }
     }

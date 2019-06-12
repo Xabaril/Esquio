@@ -25,6 +25,9 @@
     <microsoftextensionsconfigurationjson>3.0.0-preview5.19227.9</microsoftextensionsconfigurationjson>
     <microsoftextensionshosting>3.0.0-preview5.19227.9</microsoftextensionshosting>
     <microsoftextensionsprimitives>3.0.0-preview5.19227.9</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
+
+    <microsoftcsharp>4.5.0</microsoftcsharp>
 
     <microsoftentityframeworkcore>3.0.0-preview5.19227.1</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.0.0-preview5.19227.1</microsoftentityframeworkcorerelational>
@@ -38,11 +41,17 @@
     <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview5-19227-01</microsoftaspnetcoremvcnewtonsoftjson>
 
     <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+
+    <hellangmiddlewareproblemdetails>3.0.1</hellangmiddlewareproblemdetails>
+    <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
+    <fluentvalidationaspnetcore>8.5.0-preview1</fluentvalidationaspnetcore>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
     <fluentassertions>5.6.0</fluentassertions>
+    <achevetesthost>2.2.1</achevetesthost>
+    <respawn>3.2.0</respawn>
   </PropertyGroup>
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>

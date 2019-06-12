@@ -8,6 +8,8 @@ namespace Esquio.EntityFrameworkCore.Store
     {
         private readonly StoreOptions storeOptions;
 
+        public StoreDbContext(DbContextOptions<StoreDbContext> options) : this(options, new StoreOptions()) { }
+
         public StoreDbContext(DbContextOptions<StoreDbContext> options, StoreOptions storeOptions) : base(options)
         {
             this.storeOptions = storeOptions;
@@ -18,6 +20,8 @@ namespace Esquio.EntityFrameworkCore.Store
         public DbSet<ToggleEntity> Toggles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }
+        public DbSet<FeatureTagEntity> FeatureTagEntities { get; set; }
+        public DbSet<ApiKeyEntity> ApiKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -3,8 +3,7 @@
 namespace Esquio.Abstractions
 {
     /// <summary>
-    /// The attribute used to define design time parameters of author Toggles.
-    /// This is used by UI's to discover the parameters that Toggle need to work.
+    /// Allow add design time parameters information of <see cref="Esquio.Abstractions.IToggle"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class DesignTypeParameterAttribute

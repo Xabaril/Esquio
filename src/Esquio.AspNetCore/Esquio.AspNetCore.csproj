@@ -4,7 +4,7 @@
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Feature Toogles Library for ASP.NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Feature Toggles;AB Testing;AspNetCore</PackageTags>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(XabarilMvc)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>

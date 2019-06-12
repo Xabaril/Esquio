@@ -82,4 +82,3 @@ else {
 	exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
 	exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$suffix }
 }
-

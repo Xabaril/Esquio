@@ -2,14 +2,17 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Endpoint
 {
-    public class EsquioMiddleware
+    internal class EsquioMiddleware
     {
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
-        const string APPLICATIONNAME_QUERY_PARAMETER_NAME = "applicationName";
+        const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";
 
         private readonly RequestDelegate _next;
 
@@ -19,31 +22,46 @@ namespace Esquio.AspNetCore.Endpoint
         }
         public async Task Invoke(HttpContext context, IFeatureService featureService)
         {
-            var statusCode = StatusCodes.Status200OK;
+            var response = new List<EsquioResponse>();
 
-            var featureName = context.Request.Query[FEATURENAME_QUERY_PARAMETER_NAME];
-            var applicationName = context.Request.Query[APPLICATIONNAME_QUERY_PARAMETER_NAME];
-            var json = String.Empty;
+            var names = context.Request
+                .Query[FEATURENAME_QUERY_PARAMETER_NAME];
+
+            var productName = context.Request
+                .Query[PRODUCTNAME_QUERY_PARAMETER_NAME]
+                .LastOrDefault();
 
             try
             {
-                var isEnabled = await featureService.IsEnabledAsync(featureName,applicationName);
-                var data = new { isEnabled };
-                json = JsonConvert.SerializeObject(data);
-            }
-            catch (ArgumentException)
-            {
-                statusCode = StatusCodes.Status404NotFound;
-            }
+                foreach (var featureName in names)
+                {
+                    var isEnabled = await featureService
+                        .IsEnabledAsync(featureName, productName, context?.RequestAborted ?? CancellationToken.None);
 
-            await WriteResponseAsync(
-                context,
-                json,
-                "application/json",
-                statusCode);
+                    response.Add(new EsquioResponse()
+                    {
+                        Name = featureName,
+                        Enabled = isEnabled
+                    });
+                }
+
+                await WriteResponseAsync(
+                    context,
+                    JsonConvert.SerializeObject(response),
+                    "application/json",
+                    StatusCodes.Status200OK);
+            }
+            catch (Exception)
+            {
+                await WriteResponseAsync(
+                   context,
+                   string.Empty,
+                   "application/json",
+                   StatusCodes.Status500InternalServerError);
+            }
         }
 
-        private Task WriteResponseAsync(
+        private async Task WriteResponseAsync(
            HttpContext context,
            string content,
            string contentType,
@@ -55,7 +73,14 @@ namespace Esquio.AspNetCore.Endpoint
             context.Response.Headers["Expires"] = new[] { "0" };
             context.Response.StatusCode = statusCode;
 
-            return context.Response.WriteAsync(content);
+            await context.Response.WriteAsync(content);
+        }
+
+        private class EsquioResponse
+        {
+            public bool Enabled { get; set; }
+
+            public string Name { get; set; }
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public bool Enabled { get; set; }
 
-
         public ProductEntity ProductEntity { get; set; }
 
         public ICollection<FeatureTagEntity> FeatureTags { get; set; }

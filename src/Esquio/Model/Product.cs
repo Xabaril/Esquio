@@ -9,8 +9,7 @@ namespace Esquio.Model
 
         public Product(string name, string description)
         {
-            Ensure.Argument.NotNullOrEmpty(name, nameof(name));
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
         }
     }

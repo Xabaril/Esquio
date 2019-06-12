@@ -1,3 +1,4 @@
+using Esquio.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,9 +29,6 @@ namespace WebApp
             });
 
             services
-                .AddSingleton<IMatchService, MatchService>();
-
-            services
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
                     .AddViewLocalization(
@@ -39,9 +37,10 @@ namespace WebApp
                     .AddNewtonsoftJson()
                 .Services
                 .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
-                .AddAspNetCoreDefaultServices()
-                .AddConfigurationStore(Configuration, "Esquio")
+                    .AddAspNetCoreDefaultServices()
+                    .AddConfigurationStore(Configuration, "Esquio")
                 .Services
+                .AddSingleton<IMatchService, MatchService>()
                 .AddHttpClient()
                 .AddTransient<ILocationProviderService, IPApiLocationProviderService>()
                 .AddAuthentication(setup =>
@@ -78,9 +77,11 @@ namespace WebApp
             app.UseEndpoints(routes =>
             {
                 routes.MapEsquio(pattern: "esquio");
+
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
+
                 routes.MapRazorPages();
             });
         }

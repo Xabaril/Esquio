@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions.Providers;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
@@ -9,20 +10,29 @@ namespace Esquio.AspNetCore.Providers
         : IRoleNameProviderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public AspNetCoreRoleNameProviderService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
+
         public Task<string> GetCurrentRoleNameAsync()
         {
             var httpContext = _httpContextAccessor.HttpContext;
 
             if (httpContext != null)
             {
-                var userName = httpContext.User
-                    .Identity.Name;
+                var roleName = default(string);
 
-                return Task.FromResult<string>(userName);
+                var roleClaim = httpContext.User?
+                    .FindFirst(ClaimTypes.Role);
+
+                if (roleClaim != null)
+                {
+                    roleName = roleClaim.Value;
+                }
+
+                return Task.FromResult<string>(roleName);
             }
 
             throw new InvalidOperationException($"HttpContext is null and {nameof(AspNetCoreRoleNameProviderService)} can't recover the current Role name for this provider.");

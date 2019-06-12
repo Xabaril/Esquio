@@ -9,18 +9,22 @@ namespace Esquio.AspNetCore.Providers
         : IUserNameProviderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public AspNetCoreUserNameProviderService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
+
         public Task<string> GetCurrentUserNameAsync()
         {
             var httpContext = _httpContextAccessor.HttpContext;
 
             if (httpContext != null)
             {
-                var userName = httpContext.User
-                    .Identity.Name;
+                var userName = httpContext
+                    .User?
+                    .Identity?
+                    .Name;
 
                 return Task.FromResult<string>(userName);
             }

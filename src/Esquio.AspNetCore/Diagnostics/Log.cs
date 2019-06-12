@@ -13,9 +13,9 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _featureSwitchSuccess(logger, featureName, productName ?? "(default product)", null);
         }
-        public static void FeatureSwitchThrow(ILogger logger, string featureName, string productName, Exception exception)
+        public static void FeatureSwitchFail(ILogger logger, string featureName, string productName)
         {
-            _featureSwitchThrow(logger, featureName, productName ?? "(default product)", exception);
+            _featureSwitchFail(logger, featureName, productName ?? "(default product)", null);
         }
         public static void FeatureFilterBegin(ILogger logger, string featureName, string productName)
         {
@@ -49,22 +49,22 @@ namespace Esquio.AspNetCore.Diagnostics
             LogLevel.Debug,
             EventIds.FeatureSwitchSuccess,
             "FeatureSwitch constraint successfully check if  {featureName} for product {productName} is active.");
-        private static readonly Action<ILogger, string, string, Exception> _featureSwitchThrow = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _featureSwitchFail = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.FeatureSwitchThrow,
-            "FeatureSwitch throw an error trying to check the feature {featureName} for application {productName}.");
+            "FeatureSwitch is not active for {featureName} and  product {productName}.");
         private static readonly Action<ILogger, string, string, Exception> _featureFilterBegin = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterBeginProcess,
-           "FeatureFilter begin check if {featureName} for product {productName} is enabled.");
+           "FeatureFilter begin check if {featureName} features for product {productName} is enabled.");
         private static readonly Action<ILogger, string, string, Exception> _featureFilterActionExecuted = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterExecutingAction,
-           "FeatureFilter check feature {featureName} for product {productName} is active and execute action.");
+           "FeatureFilter check that {featureName} features for product {productName} are active and execute action.");
         private static readonly Action<ILogger, string, string, Exception> _featureFilterNonExecutedAction = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
            EventIds.FeatureFilterNonExcuteAction,
-           "FeatureFilter check feature {featureName} for product {productName} is not active, action is not executed.");
+           "FeatureFilter check that {featureName} feature for product {productName} is not active, action is not executed.");
         private static readonly Action<ILogger, Exception> _flagFallbackServiceIsNotConfigured = LoggerMessage.Define(
            LogLevel.Warning,
            EventIds.FallbackServiceIsNotConfigured,

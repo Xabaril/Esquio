@@ -3,7 +3,9 @@ using Esquio.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.Threading;
 
 namespace Esquio.AspNetCore.Mvc
 {
@@ -15,31 +17,44 @@ namespace Esquio.AspNetCore.Mvc
     public class FeatureSwitch
         : Attribute, IActionConstraintFactory
     {
-        public string FeatureName { get; set; }
+        /// <summary>
+        /// A coma separated list of features names to be evaluated.
+        /// </summary>
+        /// <remarks>
+        /// The feature name are compared case insensitively with the name on the store.
+        /// </remarks>
+        public string Names { get; set; }
 
-        public string ProductName { get; set; }
+        /// <summary>
+        /// The product name when the features are configured. If null a default product is used.
+        /// </summary>
+        public string Product { get; set; }
 
+        /// <inheritdoc />
         public bool IsReusable => false;
 
+        /// <inheritdoc />
         public IActionConstraint CreateInstance(IServiceProvider serviceProvider)
         {
             var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            return new FeatureSwitchConstraint(scopeFactory, FeatureName, ProductName);
+            return new FeatureSwitchConstraint(scopeFactory, Names, Product);
         }
     }
     internal class FeatureSwitchConstraint
         : IActionConstraint
     {
+        private static readonly char[] FeatureSeparator = new[] { ',' };
+
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly string _productName;
-        private readonly string _featureName;
+        private readonly string _featureNames;
 
-        public int Order =>-1000;
+        public int Order => -1000;
 
-        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureName, string productName)
+        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureNames, string productName)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _featureName = featureName;
+            _featureNames = featureNames;
             _productName = productName;
         }
         public bool Accept(ActionConstraintContext context)
@@ -47,23 +62,30 @@ namespace Esquio.AspNetCore.Mvc
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<FeatureSwitch>>();
-                var featureservice = scope.ServiceProvider.GetRequiredService<IFeatureService>();
+                var featureService = scope.ServiceProvider.GetRequiredService<IFeatureService>();
 
-                Log.FeatureSwitchBegin(logger, _featureName, _productName);
+                Log.FeatureSwitchBegin(logger, _featureNames, _productName);
 
-                var executingTask = featureservice.IsEnabledAsync(_featureName, _productName);
-                executingTask.Wait();
+                var tokenizer = new StringTokenizer(_featureNames, FeatureSeparator);
 
-                if (executingTask.IsCompletedSuccessfully)
+                foreach (var item in tokenizer)
                 {
-                    Log.FeatureSwitchSuccess(logger, _featureName, _productName);
-                    return executingTask.Result;
+                    var featureName = item.Trim();
+
+                    if (featureName.HasValue && featureName.Length > 0)
+                    {
+                        var cancellationToken = context.RouteContext.HttpContext?.RequestAborted ?? CancellationToken.None;
+
+                        if (!featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken).Result)
+                        {
+                            Log.FeatureSwitchFail(logger, _featureNames, _productName);
+                            return false;
+                        }
+                    }
                 }
-                else
-                {
-                    Log.FeatureSwitchThrow(logger, _featureName, _productName, executingTask.Exception);
-                    return false;
-                }
+
+                Log.FeatureSwitchSuccess(logger, _featureNames, _productName);
+                return true;
             }
         }
     }

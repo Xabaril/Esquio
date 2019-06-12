@@ -3,17 +3,18 @@ using Esquio.Abstractions.Providers;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    [DesignType(Description = "Toggle that is active depending on current user name.")]
     [DesignTypeParameter(ParameterName = Users, ParameterType = "System.String", ParameterDescription = "The collection of user(s) to activate this toggle separated by ';' character")]
     public class UserNameToggle
         : IToggle
     {
-        const string Users = nameof(Users);
+        internal const string Users = nameof(Users);
 
-        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IRuntimeFeatureStore _featureStore;
 
@@ -22,20 +23,23 @@ namespace Esquio.Toggles
             _userNameProviderService = userNameProviderService ?? throw new ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
-        public async Task<bool> IsActiveAsync(string featureName, string applicationName = null)
+
+        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var currentUserName = await _userNameProviderService
                 .GetCurrentUserNameAsync();
 
             if (currentUserName != null)
             {
-                var feature = await _featureStore.FindFeatureAsync(featureName, applicationName);
+                var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
                 var toggle = feature.GetToggle(this.GetType().FullName);
-                var activeUserNames = toggle.GetParameterValue<string>(Users);
+                var data = toggle.GetData();
+
+                string activeUserNames = data.Users?.ToString();
 
                 if (activeUserNames != null)
                 {
-                    var tokenizer = new StringTokenizer(activeUserNames, SPLIT_SEPARATOR);
+                    var tokenizer = new StringTokenizer(activeUserNames, Globals.DEFAULT_SPLIT_SEPARATOR);
 
                     return tokenizer.Contains(
                         currentUserName, StringSegmentComparer.OrdinalIgnoreCase);
