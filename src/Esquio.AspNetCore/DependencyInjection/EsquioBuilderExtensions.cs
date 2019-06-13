@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     return new DelegatedMvcFallbackService(_ => new NotFoundResult());
                 });
             builder.Services.AddHttpContextAccessor();
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
+            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
             return builder;
         }
 

@@ -1,4 +1,3 @@
-using Esquio.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,10 +80,6 @@ namespace WebApp
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
-
-                var convention = routes.MapControllerRoute(
-                        name: "demo",
-                        pattern: "demo/isworking").RequireFeature("SomeFeature");
 
                 routes.MapRazorPages();
             });

@@ -1,5 +1,7 @@
 ﻿using Esquio.AspNetCore.Endpoint;
+using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Primitives;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -9,6 +11,41 @@ namespace Microsoft.AspNetCore.Builder
     /// </summary>
     public static class EsquioEndpointRouteBuilderExtensions
     {
+        private static char[] split_characters = new char[] { ',' };
+
+        /// <summary>
+        /// Specify a feature check to the endpoint(s).
+        /// </summary>
+        /// <typeparam name="TBuilder"><see cref="IEndpointConventionBuilder"/></typeparam>
+        /// <param name="builder">The endopoint convention builder.</param>
+        /// <param name="featureName">A coma separated list of features names to be evaluated.</param>
+        /// <param name="productName">The product name to be checked with the <paramref name="featureName"/> parameter.</param>
+        /// <returns>The original convention builder to be chained.</returns>
+        public static TBuilder RequireFeature<TBuilder>(this TBuilder builder, string featureNames, string productName = null) where TBuilder : IEndpointConventionBuilder
+        {
+            builder.Add(endpointbuilder =>
+            {
+                var tokenizer = new StringTokenizer(featureNames, split_characters);
+
+                foreach (var token in tokenizer)
+                {
+                    var featureName = token.Trim();
+
+                    if (featureName.HasValue && featureName.Length > 0)
+                    {
+                        var metadata = new FeatureFilter()
+                        {
+                            Names = featureName.Value,
+                            Product = productName
+                        };
+                        endpointbuilder.Metadata.Add(metadata);
+                    }
+                }
+            });
+
+            return builder;
+        }
+
         /// <summary>
         /// Map a new endpoint that can  be used to get the activation state of any configured feature.
         /// </summary>
