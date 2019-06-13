@@ -1,5 +1,5 @@
-Introduction
-============
+Esquio toggles
+==============
 
 A **Toggle** is code which defines when a feature is enabled or not. Each feature can use one or multiple toggles at the same time, but never more than one toggle of the same type. In Esquio you have many different toggles out of the box, and of course you can write your custom toggles.
 
@@ -35,7 +35,51 @@ One of the most straightforward toggle, which basically means that the feature s
 
 UserNameToggle
 ^^^^^^^^^^^^^^
+This toggle allows you to enabled features to a specific set of logged in users.
 
+**Parameters**
+
+    * Users: *The collection of user(s) to activate it separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.UserNameToggle",
+                            "Parameters": 
+                            {
+                                "Users": "betauser;beta"
+                            }
+                        }
+                    ]
+                }
+
+RoleNameToggle
+^^^^^^^^^^^^^^
+This toggle allows you to enabled features to a specific set of logged in users that belongs to a specific role.
+
+**Parameters**
+
+    * Users: *The collection of rol(es) to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.RoleNameToggle",
+                            "Parameters": 
+                            {
+                                "Users": "betauser;beta"
+                            }
+                        }
+                    ]
+                }
 
 EnvironmentToggle
 ^^^^^^^^^^^^^^^^^
@@ -89,7 +133,7 @@ This toggles allows you to enabled features dependending on current UTC time.
 
 GradualRolloutUserNameToggle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This toggle allows you gradually enabled features to a percentage of logged in users. Stickiness is based on the user name. Esquio uses `Jenkins hash function<https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
+This toggle allows you gradually enabled features to a percentage of logged in users. Stickiness is based on the user name. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
 
 **Parameters**
 

@@ -27,4 +27,5 @@ Welcome to Esquio
    :hidden:
    :caption: Toggles
 
-   toggles/introduction
+   toggles/esquio
+   toggles/aspnetcore

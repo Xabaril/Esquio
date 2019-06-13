@@ -88,3 +88,12 @@ This approach should be usefull for JavaScript or Native clients.
 ASP.NET MVC
 ^^^^^^^^^^^
 
+With **ASP.NET MVC Core** we have different options to check if a feature is enabled. For example we can use the ``FeatureTagHelper`` inside our Razor views to show or hide Razor fragments depending on feature is enabled or not.
+
+```csharp
+<feature names="@Flags.MatchScore">
+    <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
+</feature>
+```
+
+In this example, if the feature **MatchScore** is enabled, you can show a nee design of the match score. Names property is coma separated list of features names to be evaluated if any feature is not active and then the tag helper will suppress the content.
