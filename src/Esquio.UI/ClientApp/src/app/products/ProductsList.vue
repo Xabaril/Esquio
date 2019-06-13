@@ -34,6 +34,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Floating } from '~/shared';
 import { Product } from './product.model';
+import { Inject } from 'inversify-props';
+import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
@@ -57,6 +59,8 @@ export default class extends Vue {
     }
   ];
 
+  @Inject() productsService: IProductsService;
+
   public items: Product[] = [
     { id: '1xk23', name: 'My first product', description: 'Lorem Ipsum'},
     { id: '1xk24', name: 'My second product', description: 'Lorem Ipsum'},
@@ -64,6 +68,10 @@ export default class extends Vue {
     { id: '1xk26', name: 'My fourth product', description: 'Lorem Ipsum'},
     { id: '1xk27', name: 'My fifth product', description: 'Lorem Ipsum'}
   ];
+
+  mounted() {
+    this.productsService.get();
+  }
 }
 </script>
 
