@@ -29,9 +29,7 @@ namespace Esquio.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            int percentage = data.Percentage;
-
-            if (percentage > 0)
+            if (int.TryParse(data.Percentage, out int percentage) && percentage > 0)
             {
                 var currentUserName = await _userNameProviderService
                     .GetCurrentUserNameAsync() ?? AnonymousUser;
