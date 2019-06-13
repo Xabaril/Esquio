@@ -16,29 +16,30 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions">
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview5.19227.9</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsloggingabstractions>3.0.0-preview5.19227.9</microsoftextensionsloggingabstractions>
-    <microsoftextensionslogging>3.0.0-preview5.19227.9</microsoftextensionslogging>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview5.19227.9</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationbinder>3.0.0-preview5.19227.9</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.0.0-preview5.19227.9</microsoftextensionsconfigurationjson>
-    <microsoftextensionshosting>3.0.0-preview5.19227.9</microsoftextensionshosting>
-    <microsoftextensionsprimitives>3.0.0-preview5.19227.9</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.0.0-preview5.19227.9</microsoftextensionsoptions>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview6.19304.6</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsloggingabstractions>3.0.0-preview6.19304.6</microsoftextensionsloggingabstractions>
+    <microsoftextensionslogging>3.0.0-preview6.19304.6</microsoftextensionslogging>
+    <microsoftextensionsloggingconsole>3.0.0-preview6.19304.6</microsoftextensionsloggingconsole>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview6.19304.6</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationbinder>3.0.0-preview6.19304.6</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0-preview6.19304.6</microsoftextensionsconfigurationjson>
+    <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
+    <microsoftextensionsprimitives>3.0.0-preview6.19304.6</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
 
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
-    <microsoftentityframeworkcore>3.0.0-preview5.19227.1</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.0.0-preview5.19227.1</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.0.0-preview5.19227.1</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoreinmemory>3.0.0-preview5.19227.1</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.0.0-preview5.19227.1</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcore>3.0.0-preview6.19304.10</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.0.0-preview6.19304.10</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
     <npgsqlentityframeworkcorepostgresql>3.0.0-preview5</npgsqlentityframeworkcorepostgresql>
 
-    <microsoftnetcoreapp>3.0.0-preview5-19227-01</microsoftnetcoreapp>
+    <microsoftnetcoreapp>3.0.0-preview6.19307.2</microsoftnetcoreapp>
     
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview5-19227-01</microsoftaspnetcoremvcnewtonsoftjson>
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
 
     <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
 

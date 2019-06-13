@@ -36,57 +36,58 @@ namespace Esquio.AspNetCore.Mvc
         /// <inheritdoc />
         public IActionConstraint CreateInstance(IServiceProvider serviceProvider)
         {
-            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            return new FeatureSwitchConstraint(scopeFactory, Names, Product);
+            return new FeatureSwitchConstraint(Names, Product);
         }
     }
     internal class FeatureSwitchConstraint
         : IActionConstraint
     {
-        private static readonly char[] FeatureSeparator = new[] { ',' };
+        private static readonly char[] char_separator = new[] { ',' };
 
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly string _productName;
         private readonly string _featureNames;
 
         public int Order => -1000;
 
-        public FeatureSwitchConstraint(IServiceScopeFactory serviceScopeFactory, string featureNames, string productName)
+        public FeatureSwitchConstraint(string names, string productName)
         {
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _featureNames = featureNames;
+            _featureNames = names;
             _productName = productName;
         }
         public bool Accept(ActionConstraintContext context)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            var logger = context.RouteContext
+                .HttpContext
+                .RequestServices
+                .GetRequiredService<ILogger<FeatureSwitch>>();
+
+            var featureService = context.RouteContext
+                .HttpContext
+                .RequestServices
+                .GetRequiredService<IFeatureService>();
+
+            Log.FeatureSwitchBegin(logger, _featureNames, _productName);
+
+            var tokenizer = new StringTokenizer(_featureNames, char_separator);
+
+            foreach (var item in tokenizer)
             {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<FeatureSwitch>>();
-                var featureService = scope.ServiceProvider.GetRequiredService<IFeatureService>();
+                var featureName = item.Trim();
 
-                Log.FeatureSwitchBegin(logger, _featureNames, _productName);
-
-                var tokenizer = new StringTokenizer(_featureNames, FeatureSeparator);
-
-                foreach (var item in tokenizer)
+                if (featureName.HasValue && featureName.Length > 0)
                 {
-                    var featureName = item.Trim();
+                    var cancellationToken = context.RouteContext.HttpContext?.RequestAborted ?? CancellationToken.None;
 
-                    if (featureName.HasValue && featureName.Length > 0)
+                    if (!featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken).Result)
                     {
-                        var cancellationToken = context.RouteContext.HttpContext?.RequestAborted ?? CancellationToken.None;
-
-                        if (!featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken).Result)
-                        {
-                            Log.FeatureSwitchFail(logger, _featureNames, _productName);
-                            return false;
-                        }
+                        Log.FeatureSwitchFail(logger, _featureNames, _productName);
+                        return false;
                     }
                 }
-
-                Log.FeatureSwitchSuccess(logger, _featureNames, _productName);
-                return true;
             }
+
+            Log.FeatureSwitchSuccess(logger, _featureNames, _productName);
+            return true;
         }
     }
 }
