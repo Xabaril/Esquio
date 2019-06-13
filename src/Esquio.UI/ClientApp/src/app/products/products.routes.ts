@@ -29,7 +29,7 @@ export default (): RouteConfig[] => {
                 {
                   path: 'add-feature',
                   name: 'features-add',
-                    component: () => import('./FeaturesForm.vue')
+                    // component: () => import('./FeaturesForm.vue')
                 },
             ]
         }

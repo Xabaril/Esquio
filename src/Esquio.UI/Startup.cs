@@ -52,11 +52,10 @@ namespace Esquio.UI
                     .UseSpaStaticFiles();
 
                 host
-                    .UseMvc(routes =>
+                    .UseRouting()
+                    .UseEndpoints(endpoints =>
                     {
-                        routes.MapRoute(
-                            name: "default",
-                            template: "{controller}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                     })
                     .UseSpa(spa =>
                     {
