@@ -148,36 +148,13 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 .Value.Should().Be("value1");
         }
 
-        [Theory]
-        [MemberData(nameof(Data))]
-        public async Task get_back_feature_with_valid_dynamic_when_is_whell_configured(DbContextOptions<StoreDbContext> options)
-        {
-            var store = new EntityFrameworkCoreStoreBuilder(options)
-                .Build();
-
-            var expected = await store.FindFeatureAsync("app-feature", "default");
-
-            expected.Should()
-                .NotBeNull();
-
-            expected.GetToggles()
-                .Count().Should().Be(1);
-
-            var toggle = expected.GetToggle("Esquio.Toggles.XToggle");
-
-            var dynamicContent = toggle.GetData();
-
-
-            string strparmameter = dynamicContent.strparam;
-            int intparmameter = (int)dynamicContent.intparam;
-        }
 
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>
             new TheoryData<DbContextOptions<StoreDbContext>>
             {
                 //DatabaseProviderBuilder.BuildPostgreSql<StoreDbContext>(nameof(entityframeworkcore_store_should)),
                 DatabaseProviderBuilder.BuildSqlServer<StoreDbContext>(nameof(entityframeworkcore_store_should)),
-                //DatabaseProviderBuilder.BuildLocalDb<StoreDbContext>(nameof(entityframeworkcore_store_should)),
+                DatabaseProviderBuilder.BuildLocalDb<StoreDbContext>(nameof(entityframeworkcore_store_should)),
                 //DatabaseProviderBuilder.BuildInMemory<StoreDbContext>(nameof(entityframeworkcore_store_should))
             };
     }

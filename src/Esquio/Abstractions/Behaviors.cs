@@ -1,4 +1,4 @@
-﻿namespace Esquio
+﻿namespace Esquio.Abstractions
 {
 
     /// <summary>
