@@ -1,7 +1,7 @@
 import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 
-import { Material } from '~/core/material';
+import { getSettings, Material } from '~/core';
 import { vendor } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
@@ -28,6 +28,8 @@ export class AppModule {
 
 
   private async bootstrap(): Promise<Vue> {
+    await getSettings();
+
     let options = {
       el: '#app',
       router: router(),
