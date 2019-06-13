@@ -4,8 +4,7 @@
   "license": "MIT",
   "version": "3.0.0",
   "scripts": {
-    "start": "run-p dotnet serve",
-    "serve": "vue-cli-service serve",
+    "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "vue-cli-service test:e2e",
