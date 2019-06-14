@@ -1,5 +1,8 @@
 ﻿using Esquio.Abstractions;
+using Esquio.AspNetCore.Diagnostics;
+using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,9 +23,9 @@ namespace Esquio.AspNetCore.Endpoints
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
-        public async Task Invoke(HttpContext context, IFeatureService featureService)
+        public async Task Invoke(HttpContext context, IFeatureService featureService, ILogger<EsquioMiddleware> logger)
         {
-            var response = new List<EsquioResponse>();
+            var response = new List<EsquioMiddlewareResponse>();
 
             var names = context.Request
                 .Query[FEATURENAME_QUERY_PARAMETER_NAME];
@@ -31,34 +34,44 @@ namespace Esquio.AspNetCore.Endpoints
                 .Query[PRODUCTNAME_QUERY_PARAMETER_NAME]
                 .LastOrDefault();
 
-            try
+            foreach (var featureName in names)
             {
-                foreach (var featureName in names)
+                try
                 {
+                    Log.EsquioMiddlewareEvaluatingFeature(logger, featureName, productName);
+
                     var isEnabled = await featureService
                         .IsEnabledAsync(featureName, productName, context?.RequestAborted ?? CancellationToken.None);
 
-                    response.Add(new EsquioResponse()
+                    response.Add(new EsquioMiddlewareResponse()
                     {
                         Name = featureName,
                         Enabled = isEnabled
                     });
                 }
+                catch (Exception exception)
+                {
+                    // only when OnError behavior is configured to Throw!!
 
-                await WriteResponseAsync(
-                    context,
-                    JsonConvert.SerializeObject(response),
-                    "application/json",
-                    StatusCodes.Status200OK);
+                    Log.EsquioMiddlewareThrow(logger, featureName, productName, exception);
+
+                    await WriteResponseAsync(
+                       context,
+                       JsonConvert.SerializeObject(EsquioMiddlewareError.Default(featureName, productName)),
+                       "application/json",
+                       StatusCodes.Status500InternalServerError);
+
+                    return;
+                }
             }
-            catch (Exception)
-            {
-                await WriteResponseAsync(
-                   context,
-                   string.Empty,
-                   "application/json",
-                   StatusCodes.Status500InternalServerError);
-            }
+
+            Log.EsquioMiddlewareSuccess(logger);
+
+            await WriteResponseAsync(
+                context,
+                JsonConvert.SerializeObject(response),
+                "application/json",
+                StatusCodes.Status200OK);
         }
 
         private async Task WriteResponseAsync(
@@ -76,11 +89,26 @@ namespace Esquio.AspNetCore.Endpoints
             await context.Response.WriteAsync(content);
         }
 
-        private class EsquioResponse
+        private class EsquioMiddlewareResponse
         {
             public bool Enabled { get; set; }
 
             public string Name { get; set; }
+        }
+        private class EsquioMiddlewareError
+        {
+            public string Message { get; set; }
+
+            private EsquioMiddlewareError() { }
+
+            public static EsquioMiddlewareError Default(string featureName, string productName)
+            {
+                return new EsquioMiddlewareError()
+                {
+                    Message = $"{nameof(OnErrorBehavior)} behavior for Esquio is configured to {nameof(OnErrorBehavior.Throw)} and middleware throw when check the state for {featureName} on product {productName ?? "default product"}."
+                    + $"You can modify this behavior using {nameof(EsquioOptions.ConfigureOnErrorBehavior)} method on AddEsquio options."
+                };
+            }
         }
     }
 }

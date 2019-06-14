@@ -41,6 +41,18 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _featureTagHelperClearContent(logger, featureName, productName ?? "(default product)", null);
         }
+        public static void EsquioMiddlewareThrow(ILogger logger, string featureName, string productName, Exception exception)
+        {
+            _esquioMiddlewareThrow(logger, featureName, productName ?? "(default product)", exception);
+        }
+        public static void EsquioMiddlewareEvaluatingFeature(ILogger logger, string featureName, string productName)
+        {
+            _esquioMiddlewareEvaluateFeature(logger, featureName, productName ?? "(default product)", null);
+        }
+        public static void EsquioMiddlewareSuccess(ILogger logger)
+        {
+            _esquioMiddlewareSuccess(logger, null);
+        }
         private static readonly Action<ILogger, string, string, Exception> _featureSwitchBegin = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureSwitchBeginProcess,
@@ -77,5 +89,19 @@ namespace Esquio.AspNetCore.Diagnostics
             LogLevel.Debug,
             EventIds.FeatureTagHelperClearContent,
             "FeatureTagHelper is clearing inner content because {featureName} for product {productName} is not active.");
+        private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string, string>(
+            LogLevel.Error,
+            EventIds.EsquioMiddlewareThrow,
+            "Esquio middleware throw exception when evaluating {featureName} for product {productName}.");
+        private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareEvaluateFeature = LoggerMessage.Define<string, string>(
+            LogLevel.Debug,
+            EventIds.EsquioMiddlewareEvaluateFeature,
+            "Evaluating {featureName} for product {productName} on Esquio middleware.");
+        private static readonly Action<ILogger, Exception> _esquioMiddlewareSuccess = LoggerMessage.Define(
+            LogLevel.Debug,
+            EventIds.EsquioMiddlewareSuccess,
+            "Esquio middleware perform feature evaluation succesfully.");
+
     }
 }
+
