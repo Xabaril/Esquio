@@ -1,5 +1,5 @@
 ﻿using Esquio.Abstractions.Providers;
-using Esquio.AspNetCore.Endpoint;
+using Esquio.AspNetCore.Endpoints;
 using Esquio.AspNetCore.Mvc;
 using Esquio.AspNetCore.Providers;
 using Esquio.DependencyInjection;
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 return new DelegatedMvcFallbackService(_ => new NotFoundResult());
             });
             builder.Services.AddHttpContextAccessor();
-            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMetadataMatcherPolicy>());
             return builder;
         }
 

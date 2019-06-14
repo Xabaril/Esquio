@@ -1,4 +1,4 @@
-﻿namespace Esquio.Abstractions
+﻿namespace Esquio.DependencyInjection
 {
 
     /// <summary>

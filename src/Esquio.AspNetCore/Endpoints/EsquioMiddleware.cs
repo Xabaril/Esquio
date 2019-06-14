@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.AspNetCore.Endpoint
+namespace Esquio.AspNetCore.Endpoints
 {
     internal class EsquioMiddleware
     {

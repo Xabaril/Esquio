@@ -34,12 +34,12 @@ namespace Esquio.AspNetCore.Mvc
         /// <summary>
         /// The product name when the features are configured. If null a default product is used.
         /// </summary>
-        public string Product { get; set; }
+        public string ProductName { get; set; }
 
         /// <inheritdoc />
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
-            return new FeatureResourceFilter(Names, Product);
+            return new FeatureResourceFilter(Names, ProductName);
         }
     }
     internal class FeatureResourceFilter
@@ -47,12 +47,12 @@ namespace Esquio.AspNetCore.Mvc
     {
         private static readonly char[] char_separator = new[] { ',' };
 
-        private readonly string _featureNames;
+        private readonly string _names;
         private readonly string _productName;
 
         public FeatureResourceFilter(string names, string productName)
         {
-            _featureNames = names ?? throw new ArgumentNullException(nameof(names));
+            _names = names ?? throw new ArgumentNullException(nameof(names));
             _productName = productName ?? string.Empty;
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
@@ -66,9 +66,9 @@ namespace Esquio.AspNetCore.Mvc
             var fallbackService = context.HttpContext.RequestServices
                 .GetService<IMvcFallbackService>();
 
-            Log.FeatureFilterBegin(logger, _featureNames, _productName);
+            Log.FeatureFilterBegin(logger, _names, _productName);
 
-            var tokenizer = new StringTokenizer(_featureNames, char_separator);
+            var tokenizer = new StringTokenizer(_names, char_separator);
 
             foreach (var item in tokenizer)
             {
@@ -88,7 +88,7 @@ namespace Esquio.AspNetCore.Mvc
                 }
             }
 
-            Log.FeatureFilterExecutingAction(logger, _featureNames, _productName);
+            Log.FeatureFilterExecutingAction(logger, _names, _productName);
             await next();
         }
     }

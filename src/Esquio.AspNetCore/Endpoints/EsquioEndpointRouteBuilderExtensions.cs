@@ -1,4 +1,5 @@
-﻿using Esquio.AspNetCore.Endpoint;
+﻿using Esquio.AspNetCore.Endpoints;
+using Esquio.AspNetCore.Endpoints.Metadata;
 using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
@@ -25,22 +26,10 @@ namespace Microsoft.AspNetCore.Builder
         {
             builder.Add(endpointbuilder =>
             {
-                var tokenizer = new StringTokenizer(featureNames, split_characters);
+                var metadata = new FeatureFilterMetadata(featureNames, productName);
 
-                foreach (var token in tokenizer)
-                {
-                    var featureName = token.Trim();
-
-                    if (featureName.HasValue && featureName.Length > 0)
-                    {
-                        var metadata = new FeatureFilter()
-                        {
-                            Names = featureName.Value,
-                            Product = productName
-                        };
-                        endpointbuilder.Metadata.Add(metadata);
-                    }
-                }
+                endpointbuilder.Metadata
+                    .Add(metadata);
             });
 
             return builder;
