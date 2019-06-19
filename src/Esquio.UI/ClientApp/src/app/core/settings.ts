@@ -5,13 +5,13 @@ interface ISettings {
 let settings: ISettings = null;
 
 async function getSettings() {
-  const response = await fetch('/api/config');
+  // const response = await fetch('/api/config');
 
-  if (!response.ok) {
-    throw new Error('Cannot fetch settings');
-  }
+  // if (!response.ok) {
+  //   throw new Error('Cannot fetch settings');
+  // }
 
-  settings = await response.json();
+  // settings = await response.json();
 }
 
 export {

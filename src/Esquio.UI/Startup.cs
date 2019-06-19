@@ -28,7 +28,7 @@ namespace Esquio.UI
             EsquioUIApiConfiguration.ConfigureServices(services)
                 .AddDbContext<StoreDbContext>(options =>
                 {
-                    options.UseSqlServer("");
+                    options.UseSqlServer(@"");
                 })
                 .AddSpaStaticFiles(configuration =>
                 {
@@ -42,31 +42,35 @@ namespace Esquio.UI
             EsquioUIApiConfiguration.Configure(app, host =>
             {
                 host
-                    .AddIfElse(
-                        env.IsDevelopment(),
-                        x => x.UseDeveloperExceptionPage(),
-                        x => x.UseExceptionHandler("/Error").UseHsts()
-                    )
-                    .UseHttpsRedirection()
-                    .UseStaticFiles()
-                    .UseSpaStaticFiles();
+                //        .AddIfElse(
+                //            env.IsDevelopment(),
+                //            x => x.UseDeveloperExceptionPage(),
+                //            x => x.UseExceptionHandler("/Error").UseHsts()
+                //        )
+                //        .UseHttpsRedirection()
+                        .UseStaticFiles()
+                        .UseSpaStaticFiles();
 
-                host
-                    .UseMvc(routes =>
-                    {
-                        routes.MapRoute(
-                                  name: "default",
-                                  template: "{controller}/{action=Index}/{id?}");
-                    })
-                    .UseSpa(spa =>
-                    {
-                        spa.Options.SourcePath = "ClientApp";
+                host.UseRouting();
+                //    .UseAuthorization()
+                //    .UseCors();
+                host.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
 
-                        if (env.IsDevelopment())
-                        {
-                            spa.UseReactDevelopmentServer(npmScript: "start");
-                        }
-                    });
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                    }
+                });
+                //host.UseEndpoints(routes =>
+                //{
+                //    routes.MapControllerRoute(
+                //            name: "default",
+                //            pattern: "{controller=Match}/{action=Index}/{id?}");
+
+                //    routes.MapRazorPages();
+                //});
 
                 return host;
             });
