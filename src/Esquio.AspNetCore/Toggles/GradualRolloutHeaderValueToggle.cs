@@ -36,18 +36,19 @@ namespace Esquio.AspNetCore.Toggles
             var data = toggle.GetData();
 
             string headerName = data.HeaderName;
-            int percentage = data.Percentage;
-
-            if (percentage > 0)
+            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
             {
-                var values = _httpContextAccessor.HttpContext
-                    .Request
-                    .Headers[headerName];
+                if (percentage > 0d)
+                {
+                    var values = _httpContextAccessor.HttpContext
+                        .Request
+                        .Headers[headerName];
 
-                var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
+                    var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
 
-                var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
-                return assignedPartition <= percentage;
+                    var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
+                    return assignedPartition <= percentage;
+                }
             }
 
             return false;

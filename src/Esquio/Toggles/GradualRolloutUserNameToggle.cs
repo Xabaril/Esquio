@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Abstractions.Providers;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,16 +30,17 @@ namespace Esquio.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            int percentage = data.Percentage;
-
-            if (percentage > 0)
+            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
             {
-                var currentUserName = await _userNameProviderService
-                    .GetCurrentUserNameAsync() ?? AnonymousUser;
+                if (percentage > 0)
+                {
+                    var currentUserName = await _userNameProviderService
+                        .GetCurrentUserNameAsync() ?? AnonymousUser;
 
-                var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
+                    var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
 
-                return assignedPartition <= percentage;
+                    return assignedPartition <= percentage;
+                }
             }
 
             return false;

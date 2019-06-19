@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -19,7 +20,7 @@ namespace Esquio.DependencyInjection
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
 
         /// <summary>
-        /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetAsNotActive.
+        /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetDisabled.
         /// </summary>
         /// <param name="onErrorBehavior">The <see cref="OnErrorBehavior"/> to configure as default.</param>
         /// <returns>The same configuration to be chained.</returns>
@@ -32,7 +33,7 @@ namespace Esquio.DependencyInjection
         internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetDisabled;
 
         /// <summary>
-        /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetAsNotActive.
+        /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetDisabled.
         /// </summary>
         /// <param name="notFoundBehavior">The <see cref="NotFoundBehavior"/> to configure as default.</param>
         /// <returns>The same configuration to be chained.</returns>

@@ -4,7 +4,7 @@ using System.Text;
 namespace Esquio.Abstractions
 {
     /// <summary>
-    /// Non crypto hash with Jenkins function
+    /// Non-crypto hash with Jenkins function
     /// https://en.wikipedia.org/wiki/Jenkins_hash_function
     /// </summary>
     public static class Partitioner

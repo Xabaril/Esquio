@@ -13,5 +13,8 @@ namespace Esquio.AspNetCore.Diagnostics
         public static readonly EventId FallbackServiceIsNotConfigured = new EventId(304, nameof(FallbackServiceIsNotConfigured));
         public static readonly EventId FeatureTagHelperBeginProcess = new EventId(305, nameof(FeatureTagHelperBeginProcess));
         public static readonly EventId FeatureTagHelperClearContent = new EventId(305, nameof(FeatureTagHelperClearContent));
+        public static readonly EventId EsquioMiddlewareThrow = new EventId(401, nameof(EsquioMiddlewareThrow));
+        public static readonly EventId EsquioMiddlewareEvaluateFeature = new EventId(402, nameof(EsquioMiddlewareEvaluateFeature));
+        public static readonly EventId EsquioMiddlewareSuccess = new EventId(403, nameof(EsquioMiddlewareSuccess));
     }
 }

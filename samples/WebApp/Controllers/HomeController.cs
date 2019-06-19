@@ -1,8 +1,6 @@
-using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApp.Models;
-using WebApp.Services;
 
 namespace WebApp.Controllers
 {

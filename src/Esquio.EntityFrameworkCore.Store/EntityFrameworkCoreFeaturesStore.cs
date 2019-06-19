@@ -5,7 +5,6 @@ using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,29 +68,12 @@ namespace Esquio.EntityFrameworkCore.Store
 
                 toggle.AddParameters(toggleConfiguration
                     .Parameters
-                    .Select(p => new Parameter(p.Name, GetCLRValueFromParameter(p.ClrType, p.Value))));
+                    .Select(p => new Parameter(p.Name, p.Value)));
 
                 feature.AddToggle(toggle);
             }
 
             return feature;
-        }
-
-        private object GetCLRValueFromParameter(string clrType, string configuredValue)
-        {
-            try
-            {
-                Log.StartingFeatureValueConversion(_logger, clrType, configuredValue);
-
-                return TypeDescriptor.GetConverter(Type.GetType(clrType))
-                    .ConvertFromInvariantString(configuredValue);
-            }
-            catch (Exception exception)
-            {
-                Log.FeatureValueConversionThrow(_logger, clrType, configuredValue, exception);
-
-                return null;
-            }
         }
     }
 }

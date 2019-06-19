@@ -33,21 +33,23 @@ namespace Esquio.AspNetCore.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            int percentage = data.Percentage;
-            string claimType = data.ClaimType?.ToString();
-
-            if (claimType != null && percentage > 0)
+            if ( Double.TryParse(data.Percentage.ToString(), out double percentage))
             {
-                var user = _httpContextAccessor
-                    .HttpContext
-                    .User;
+                string claimType = data.ClaimType?.ToString();
 
-                if (user != null && user.Identity.IsAuthenticated)
+                if (claimType != null && percentage > 0)
                 {
-                    var value = user.FindFirst(claimType)?.Value ?? NO_CLAIMTYPE_DEFAULT_VALUE;
+                    var user = _httpContextAccessor
+                        .HttpContext
+                        .User;
 
-                    var assignedPartition = Partitioner.ResolveToLogicalPartition(value, Partitions);
-                    return assignedPartition <= percentage;
+                    if (user != null && user.Identity.IsAuthenticated)
+                    {
+                        var value = user.FindFirst(claimType)?.Value ?? NO_CLAIMTYPE_DEFAULT_VALUE;
+
+                        var assignedPartition = Partitioner.ResolveToLogicalPartition(value, Partitions);
+                        return assignedPartition <= percentage;
+                    }
                 }
             }
 

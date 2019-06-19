@@ -34,69 +34,62 @@ namespace Esquio.AspNetCore.Mvc
         /// <summary>
         /// The product name when the features are configured. If null a default product is used.
         /// </summary>
-        public string Product { get; set; }
+        public string ProductName { get; set; }
 
         /// <inheritdoc />
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
-            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-
-            return new FeatureResourceFilter(scopeFactory, Names, Product);
+            return new FeatureResourceFilter(Names, ProductName);
         }
     }
     internal class FeatureResourceFilter
         : IAsyncResourceFilter
     {
-        private static readonly char[] FeatureSeparator = new[] { ',' };
+        private static readonly char[] char_separator = new[] { ',' };
 
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly string _featureNames;
+        private readonly string _names;
         private readonly string _productName;
 
-        public FeatureResourceFilter(IServiceScopeFactory serviceScopeFactory, string featureNames, string productName)
+        public FeatureResourceFilter(string names, string productName)
         {
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _featureNames = featureNames ?? throw new ArgumentNullException(nameof(featureNames));
+            _names = names ?? throw new ArgumentNullException(nameof(names));
             _productName = productName ?? string.Empty;
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILogger<FeatureFilter>>();
+
+            var featureService = context.HttpContext.RequestServices
+                .GetRequiredService<IFeatureService>();
+
+            var fallbackService = context.HttpContext.RequestServices
+                .GetService<IMvcFallbackService>();
+
+            Log.FeatureFilterBegin(logger, _names, _productName);
+
+            var tokenizer = new StringTokenizer(_names, char_separator);
+
+            foreach (var item in tokenizer)
             {
-                var logger = scope.ServiceProvider
-                    .GetRequiredService<ILogger<FeatureFilter>>();
+                var featureName = item.Trim();
 
-                var featureService = scope.ServiceProvider
-                    .GetRequiredService<IFeatureService>();
-
-                var fallbackService = scope.ServiceProvider
-                    .GetService<IMvcFallbackService>();
-
-                Log.FeatureFilterBegin(logger, _featureNames, _productName);
-
-                var tokenizer = new StringTokenizer(_featureNames, FeatureSeparator);
-
-                foreach (var item in tokenizer)
+                if (featureName.HasValue && featureName.Length > 0)
                 {
-                    var featureName = item.Trim();
+                    var cancellationToken = context.HttpContext?.RequestAborted ?? CancellationToken.None;
 
-                    if (featureName.HasValue && featureName.Length > 0)
+                    if (!await featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken))
                     {
-                        var cancellationToken = context.HttpContext?.RequestAborted ?? CancellationToken.None;
+                        Log.FeatureFilterNonExecuteAction(logger, item.Value, _productName);
+                        context.Result = fallbackService.GetFallbackActionResult(context);
 
-                        if (!await featureService.IsEnabledAsync(featureName.Value, _productName, cancellationToken))
-                        {
-                            Log.FeatureFilterNonExecuteAction(logger, item.Value, _productName);
-                            context.Result = fallbackService.GetFallbackActionResult(context);
-
-                            return;
-                        }
+                        return;
                     }
                 }
-
-                Log.FeatureFilterExecutingAction(logger, _featureNames, _productName);
-                await next();
             }
+
+            Log.FeatureFilterExecutingAction(logger, _names, _productName);
+            await next();
         }
     }
 }
