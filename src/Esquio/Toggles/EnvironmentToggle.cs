@@ -37,7 +37,7 @@ namespace Esquio.Toggles
 
             if (environments != null && currentEnvironment != null)
             {
-                var tokenizer = new StringTokenizer(environments, Globals.DEFAULT_SPLIT_SEPARATOR);
+                var tokenizer = new StringTokenizer(environments, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
                 return tokenizer.Contains(
                     currentEnvironment, StringSegmentComparer.OrdinalIgnoreCase);

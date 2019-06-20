@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Endpoints
 {
     internal class FeatureMetadataMatcherPolicy
-        : MatcherPolicy, IEndpointSelectorPolicy
+        : MatcherPolicy, IEndpointSelectorPolicy,IEndpointComparerPolicy
     {
         static char[] split_characters = new char[] { ',' };
 
         public override int Order => Int32.MaxValue;
+
+        public IComparer<Endpoint> Comparer => EndpointMetadataComparer<FeatureFilterMetadata>.Default;
 
         public bool AppliesToEndpoints(IReadOnlyList<Endpoint> endpoints)
         {
@@ -38,6 +40,7 @@ namespace Esquio.AspNetCore.Endpoints
 
         public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
         {
+            //Check HTTPMethodMatcherPolicy
             for (int index = 0; index < candidates.Count; index++)
             {
                 var endpoint = candidates[index].Endpoint;

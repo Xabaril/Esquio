@@ -92,7 +92,7 @@ namespace UnitTests.Seedwork
     public class TestController : Controller
     {
         [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(Product = "TestApp", Names = "Sample1")]
+        [FeatureSwitch(Product = "default", Names = "Sample1")]
         public IActionResult Sample1()
         {
             return Content("enabled");
@@ -103,7 +103,7 @@ namespace UnitTests.Seedwork
             return Content("Disabled");
         }
         [ActionName("ActionWithFlagSwitchDisabled")]
-        [FeatureSwitch(Product = "TestApp", Names = "Sample2")]
+        [FeatureSwitch(Product = "default", Names = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Enabled");

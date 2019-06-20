@@ -53,7 +53,7 @@ namespace Esquio.AspNetCore.Mvc
         public FeatureResourceFilter(string names, string productName)
         {
             _names = names ?? throw new ArgumentNullException(nameof(names));
-            _productName = productName ?? string.Empty;
+            _productName = productName;
         }
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {

@@ -78,9 +78,17 @@ namespace WebApp
             {
                 routes.MapEsquio(pattern: "esquio");
 
+                
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
+
+                routes.MapControllerRoute(
+                  name: "some",
+                  pattern: "showmethecode",
+                  defaults: new { controller = "Demo", Action = "SomeAction" }).RequireFeature("hiddengem");
+
+
 
                 routes.MapRazorPages();
             });
