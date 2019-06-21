@@ -45,10 +45,10 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
                 var toggle = new ToggleEntity(appFeature.Id, "Esquio.Toggles.XToggle");
 
-                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1", typeof(string).FullName);
+                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1");
                 toggle.Parameters.Add(stringparameter);
 
-                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1", typeof(int).FullName);
+                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1");
                 toggle.Parameters.Add(intparameter);
 
                 appFeature.Toggles.Add(toggle);

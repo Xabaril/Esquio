@@ -6,7 +6,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private string _name = "Esquio.Toggles.OnToggle";
         private string _value = string.Empty;
-        private string _clrType = string.Empty;
 
         private int _featureId = 1;
 
@@ -21,16 +20,10 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             _value = value;
             return this;
         }
-
-        public ParameterEntityBuilder WithClrType(string clrType)
-        {
-            _clrType = clrType;
-            return this;
-        }
-
+      
         public ParameterEntity Build()
         {
-            return new ParameterEntity(_featureId, _name, _value, _clrType);
+            return new ParameterEntity(_featureId, _name, _value);
         }
     }
 }

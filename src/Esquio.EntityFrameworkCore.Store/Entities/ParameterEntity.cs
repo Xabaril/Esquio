@@ -12,14 +12,12 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public string Value { get; set; }
 
-        public string ClrType { get; set; }
 
-        public ParameterEntity(int toggleEntityId, string name, string value, string clrType)
+        public ParameterEntity(int toggleEntityId, string name, string value)
         {
             ToggleEntityId = toggleEntityId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Value = value ?? throw new ArgumentNullException(nameof(value));
-            ClrType = clrType ?? throw new ArgumentNullException(nameof(clrType));
         }
     }
 }

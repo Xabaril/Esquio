@@ -43,7 +43,7 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                     foreach (var item in request.Parameters)
                     {
                         toggle.Parameters.Add(
-                            new ParameterEntity(toggle.Id, item.Name, item.Value, item.ClrType));
+                            new ParameterEntity(toggle.Id, item.Name, item.Value));
                     }
 
                     feature.Toggles.Add(toggle);

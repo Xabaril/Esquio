@@ -1,4 +1,3 @@
-using Esquio.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using WebApp.Services;
 using WebApp.Toggles;
 
@@ -77,18 +75,10 @@ namespace WebApp
             app.UseEndpoints(routes =>
             {
                 routes.MapEsquio(pattern: "esquio");
-
                 
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
-
-                routes.MapControllerRoute(
-                  name: "some",
-                  pattern: "showmethecode",
-                  defaults: new { controller = "Demo", Action = "SomeAction" }).RequireFeature("hiddengem");
-
-
 
                 routes.MapRazorPages();
             });

@@ -3,6 +3,7 @@ using Esquio.AspNetCore.Endpoints;
 using Esquio.AspNetCore.Mvc;
 using Esquio.AspNetCore.Providers;
 using Esquio.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -32,30 +33,40 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
-            builder.Services.TryAddSingleton<IMvcFallbackService>(sp =>
-            {
-                return new DelegatedMvcFallbackService(_ => new NotFoundResult());
-            });
+            //builder.Services.TryAddSingleton<IMvcFallbackService>(sp =>
+            //{
+            //    return new DelegatedMvcFallbackService(_ => new NotFoundResult());
+            //});
             builder.Services.AddHttpContextAccessor();
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMetadataMatcherPolicy>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
+
             return builder;
         }
 
-        /// <summary>
-        /// Register the <see cref="IActionResult"/> returned by <see cref="FeatureFilter"/> and endpoints selectors when any feature is not active.
-        /// </summary>
-        /// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
-        /// <param name="fallback">Action that create the <see cref="IActionResult"/> depending on the current <see cref="ResourceExecutingContext"/></param>
-        /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
-        public static IEsquioBuilder AddMvcFallbackAction(this IEsquioBuilder builder, Func<ResourceExecutingContext, IActionResult> fallback)
+        public static IEsquioBuilder AddEndpointFallback(this IEsquioBuilder builder, RequestDelegate requestDelegate)
         {
-            builder.Services
-                .AddSingleton<IMvcFallbackService>(sp =>
-                {
-                    return new DelegatedMvcFallbackService(fallback);
-                });
+            builder.Services.TryAddSingleton<EndpointFallbackService>(sp =>
+            {
+                return new EndpointFallbackService(requestDelegate);
+            });
 
             return builder;
         }
+        ///// <summary>
+        ///// Register the <see cref="IActionResult"/> returned by <see cref="FeatureFilter"/> and endpoints selectors when any feature is not active.
+        ///// </summary>
+        ///// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
+        ///// <param name="fallback">Action that create the <see cref="IActionResult"/> depending on the current <see cref="ResourceExecutingContext"/></param>
+        ///// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
+        //public static IEsquioBuilder AddMvcFallbackAction(this IEsquioBuilder builder, Func<ResourceExecutingContext, IActionResult> fallback)
+        //{
+        //    builder.Services
+        //        .AddSingleton<IMvcFallbackService>(sp =>
+        //        {
+        //            return new DelegatedMvcFallbackService(fallback);
+        //        });
+
+        //    return builder;
+        //}
     }
 }
