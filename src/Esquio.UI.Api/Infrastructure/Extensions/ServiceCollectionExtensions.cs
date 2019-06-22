@@ -32,6 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Type = $"https://httpstatuses.com/400",
                             Detail = ApiConstants.Messages.ModelStateValidation
                         };
+
                         return new BadRequestObjectResult(problemDetails)
                         {
                             ContentTypes =

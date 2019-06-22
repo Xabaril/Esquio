@@ -28,6 +28,9 @@
     <microsoftextensionsprimitives>3.0.0-preview6.19304.6</microsoftextensionsprimitives>
     <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
 
+    <microsoftaspnetcorespaservicesextensions>3.0.0-preview6.19307.2</microsoftaspnetcorespaservicesextensions>
+    
+
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
     <microsoftentityframeworkcore>3.0.0-preview6.19304.10</microsoftentityframeworkcore>
@@ -46,6 +49,9 @@
     <hellangmiddlewareproblemdetails>3.0.1</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.5.0-preview1</fluentvalidationaspnetcore>
+
+    <serilogextensionslogging>2.0.4</serilogextensionslogging>
+    <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
