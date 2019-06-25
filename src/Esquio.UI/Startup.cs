@@ -1,5 +1,6 @@
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Esquio.UI.Infrastructure.Security.ApiKey;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esquio.UI
@@ -27,36 +29,33 @@ namespace Esquio.UI
                 .AddAuthorization()
                 .AddAuthentication(options =>
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = "secured";
+                    options.DefaultChallengeScheme = "secured";
+
                 })
-                //.AddApiKey()
+                .AddApiKey()
                 .AddJwtBearer(options =>
                 {
                     Configuration.Bind("Security:Jwt", options);
-                    var authority = options.Authority;
+                })
+                .AddPolicyScheme("secured","Authorization Bearer or ApiKey",options=>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
 
-                    options.Events = new JwtBearerEvents();
-                    options.Events.OnChallenge = context =>
-                    {
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnTokenValidated = context =>
-                    {
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnMessageReceived = context =>
-                    {
-                        return Task.CompletedTask;
-                    };
+                        if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+                        {
+                            return JwtBearerDefaults.AuthenticationScheme;
+                        }
 
-                    options.Events.OnAuthenticationFailed = context =>
-                    {
-                        return Task.CompletedTask;
+                        return ApiKeyAuthenticationDefaults.ApiKeyScheme;
                     };
                 });
+                    
 
             EsquioUIApiConfiguration.ConfigureServices(services)
+                .AddScoped<IApiKeyStore,DefaultApiKeyStore>()
                 .AddDbContext<StoreDbContext>(options =>
                 {
                     options.UseSqlServer(Configuration["Data:EsquioConnectionString"], setup =>
@@ -86,8 +85,8 @@ namespace Esquio.UI
                 postConfigure: host =>
                 {
                     return host
-                    .UseAuthorization()
-                    .UseAuthentication();
+                    .UseAuthentication()
+                    .UseAuthorization();
                 });
         }
     }

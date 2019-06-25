@@ -15,6 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
     public static class ApiKeyAuthenticationDefaults
     {
-        public const string ApiKeyScheme = "api-key-auth";
+        public const string ApiKeyScheme = "ApiKey";
     }
 }

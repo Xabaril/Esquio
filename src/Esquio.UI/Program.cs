@@ -11,10 +11,7 @@ namespace Esquio.UI
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build()
-                .MigrateDbContext<StoreDbContext>((context,sp)=>
-                {
-
-                })
+                .MigrateDbContext<StoreDbContext>((context,sp)=>{})
                 .Run();
         }
 
