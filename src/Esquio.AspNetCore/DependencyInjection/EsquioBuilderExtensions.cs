@@ -33,10 +33,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
-            //builder.Services.TryAddSingleton<IMvcFallbackService>(sp =>
-            //{
-            //    return new DelegatedMvcFallbackService(_ => new NotFoundResult());
-            //});
             builder.Services.AddHttpContextAccessor();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 

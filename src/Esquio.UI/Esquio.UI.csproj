@@ -10,10 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="$(serilogextensionslogging)" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(serilogsettingsconfiguration)" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="$(serilogsinkscoloredconsole)" />
   </ItemGroup>
   
    <ItemGroup>
@@ -21,3 +23,4 @@
   </ItemGroup>
 
 </Project>
+ 
