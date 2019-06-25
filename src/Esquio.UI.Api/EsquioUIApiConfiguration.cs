@@ -24,16 +24,20 @@ namespace Esquio.UI.Api
                 .Services;
         }
 
-        public static IApplicationBuilder Configure(IApplicationBuilder app, Func<IApplicationBuilder, IApplicationBuilder> configureHost)
+        public static IApplicationBuilder Configure(IApplicationBuilder app,
+            Func<IApplicationBuilder, IApplicationBuilder> preConfigure,
+            Func<IApplicationBuilder, IApplicationBuilder> postConfigure)
         {
-            return configureHost(app)
+            var applicationBuilder = preConfigure(app)
                 .UseProblemDetails()
+                .UseRouting();
+
+            return postConfigure(applicationBuilder)
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Home}/{action=Index}/{id?}");
-                    endpoints.MapRazorPages();
                 });
         }
     }

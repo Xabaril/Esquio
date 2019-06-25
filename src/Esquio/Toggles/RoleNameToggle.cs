@@ -39,7 +39,7 @@ namespace Esquio.Toggles
 
                 if (activeRoles != null)
                 {
-                    var tokenizer = new StringTokenizer(activeRoles, Globals.DEFAULT_SPLIT_SEPARATOR);
+                    var tokenizer = new StringTokenizer(activeRoles, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
                     return tokenizer.Contains(
                         currentRole, StringSegmentComparer.OrdinalIgnoreCase);

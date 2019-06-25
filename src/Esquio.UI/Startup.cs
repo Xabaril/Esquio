@@ -1,12 +1,14 @@
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace Esquio.UI
 {
@@ -19,61 +21,74 @@ namespace Esquio.UI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAuthentication()
-            //    .AddApiKey();
+            services
+                .AddAuthorization()
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                //.AddApiKey()
+                .AddJwtBearer(options =>
+                {
+                    Configuration.Bind("Security:Jwt", options);
+                    var authority = options.Authority;
+
+                    options.Events = new JwtBearerEvents();
+                    options.Events.OnChallenge = context =>
+                    {
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnTokenValidated = context =>
+                    {
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnMessageReceived = context =>
+                    {
+                        return Task.CompletedTask;
+                    };
+
+                    options.Events.OnAuthenticationFailed = context =>
+                    {
+                        return Task.CompletedTask;
+                    };
+                });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
                 .AddDbContext<StoreDbContext>(options =>
                 {
-                    options.UseSqlServer(@"");
-                })
-                .AddSpaStaticFiles(configuration =>
-                {
-                    configuration.RootPath = "ClientApp/dist";
+                    options.UseSqlServer(Configuration["Data:EsquioConnectionString"], setup =>
+                     {
+                         setup.MaxBatchSize(10);
+                         setup.EnableRetryOnFailure();
+
+                         setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                     });
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            EsquioUIApiConfiguration.Configure(app, host =>
-            {
-                host
-                //        .AddIfElse(
-                //            env.IsDevelopment(),
-                //            x => x.UseDeveloperExceptionPage(),
-                //            x => x.UseExceptionHandler("/Error").UseHsts()
-                //        )
-                //        .UseHttpsRedirection()
-                        .UseStaticFiles()
-                        .UseSpaStaticFiles();
-
-                host.UseRouting();
-                //    .UseAuthorization()
-                //    .UseCors();
-                host.UseSpa(spa =>
+            EsquioUIApiConfiguration.Configure(app,
+                preConfigure: host =>
                 {
-                    spa.Options.SourcePath = "ClientApp";
+                    var rewriteOptions = new RewriteOptions()
+                       .AddRewrite(@"^(?!.*(api\/|static\/|swagger*|ws/*)).*$", "index.html", skipRemainingRules: true);
 
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-                    }
+                    return host
+                        .UseHttpsRedirection()
+                        .UseRewriter(rewriteOptions)
+                        .UseDefaultFiles()
+                        .UseStaticFiles();
+                },
+                postConfigure: host =>
+                {
+                    return host
+                    .UseAuthorization()
+                    .UseAuthentication();
                 });
-                //host.UseEndpoints(routes =>
-                //{
-                //    routes.MapControllerRoute(
-                //            name: "default",
-                //            pattern: "{controller=Match}/{action=Index}/{id?}");
-
-                //    routes.MapRazorPages();
-                //});
-
-                return host;
-            });
         }
     }
 }

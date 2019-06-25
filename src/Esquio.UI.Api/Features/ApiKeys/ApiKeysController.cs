@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.ApiKeys
 {
-    [Authorize]
+    [Authorize()]
     [ApiController]
     public class ApiKeysController : ControllerBase
     {

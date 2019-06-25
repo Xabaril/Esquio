@@ -38,11 +38,11 @@ namespace Esquio.Configuration.Store
 
         private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string productName)
         {
-            Log.FindFeature(_logger, featureName, productName);
+            Log.FindFeature(_logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME);
 
             var product = _options?.Value
                 .Products
-                .FirstOrDefault(a => a.Name.Equals(productName, StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(productName));
+                .FirstOrDefault(a => a.Name.Equals(productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, StringComparison.InvariantCultureIgnoreCase));
 
             if (product != null)
             {

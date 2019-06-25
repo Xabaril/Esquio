@@ -54,7 +54,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
             var featureName = "Sample1";
 
             var response = await _fixture.TestServer
-                .CreateRequest($"esquio?featureName={featureName}&productName=TestApp")
+                .CreateRequest($"esquio?featureName={featureName}&productName=default")
                 .GetAsync();
 
             response.StatusCode
@@ -126,7 +126,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
             var featureName2 = "Sample2";
 
             var response = await _fixture.TestServer
-                .CreateRequest($"esquio?featureName={featureName1}&featureName={featureName2}&productName=TestApp")
+                .CreateRequest($"esquio?featureName={featureName1}&featureName={featureName2}&productName=default")
                 .GetAsync();
 
             response.StatusCode
@@ -166,7 +166,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
             var featureName = "Sample1";
 
             var response = await _fixture.TestServer
-                .CreateRequest($"esquio?featureName={featureName}&productName=TestAppInvalid&productName=TestApp")
+                .CreateRequest($"esquio?featureName={featureName}&productName=ProductA&productName=default")
                 .GetAsync();
 
             response.StatusCode

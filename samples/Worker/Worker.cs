@@ -28,11 +28,11 @@ namespace Worker
                         .GetRequiredService<IFeatureService>();
 
                     await featureService.Do("ComputeMatch",
-                        active: () =>
+                        enabled: () =>
                         {
-                            _logger.LogInformation("Worker running with ComputeMatch Feature Active at: {time}", DateTimeOffset.Now);
+                            _logger.LogInformation("Worker running with ComputeMatch Feature enabled at: {time}", DateTimeOffset.Now);
                         },
-                        notActive: () =>
+                        disabled: () =>
                         {
                             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                         });

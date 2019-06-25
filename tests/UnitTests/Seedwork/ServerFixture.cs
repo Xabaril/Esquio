@@ -1,4 +1,5 @@
-﻿using Esquio.AspNetCore.Mvc;
+﻿using Esquio.AspNetCore.Endpoints.Metadata;
+using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -58,19 +59,7 @@ namespace UnitTests.Seedwork
             services.AddMvc()
                 .Services
                 .AddEsquio()
-                .AddMvcFallbackAction((context) =>
-                {
-                    var actionName = context.ActionDescriptor.RouteValues["action"];
-
-                    if (actionName != "ActionWithDisabledFlag")
-                    {
-                        return new RedirectResult("/controller/action");
-                    }
-                    else
-                    {
-                        return new NotFoundResult();
-                    }
-                })
+                .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(_configuration, "Esquio");
         }
 
@@ -81,63 +70,64 @@ namespace UnitTests.Seedwork
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapEsquio("esquio");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
         }
     }
 
-    public class TestController : Controller
+    public class ScenariosController : Controller
     {
-        [ActionName("ActionWithFlagSwitch")]
-        [FeatureSwitch(Product = "TestApp", Names = "Sample1")]
+        [ActionName("MultipleEndpointsWithFeatureSample1")]
+        [FeatureFilter(ProductName = "default", Names = "Sample1")]
         public IActionResult Sample1()
         {
             return Content("enabled");
         }
-        [ActionName("ActionWithFlagSwitch")]
+
+        [ActionName("MultipleEndpointsWithFeatureSample1")]
         public IActionResult Sample11()
         {
             return Content("Disabled");
         }
-        [ActionName("ActionWithFlagSwitchDisabled")]
-        [FeatureSwitch(Product = "TestApp", Names = "Sample2")]
+
+        [ActionName("MultipleEndpointsWithFeatureSample2")]
+        [FeatureFilter(ProductName = "default", Names = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Enabled");
         }
-        [ActionName("ActionWithFlagSwitchDisabled")]
+        [ActionName("MultipleEndpointsWithFeatureSample2")]
         public IActionResult Sample22()
         {
             return Content("Disabled");
         }
+
+
         [FeatureFilter(Names = "Sample1")]
-        public IActionResult ActionWithEnabledFlag()
+        public IActionResult SingleEndPointWithFeatureActive()
         {
-            return Ok();
+            return Content("Enabled");
         }
 
         [FeatureFilter(Names = "Sample1,Sample1")]
-        public IActionResult ActionWithMultipleEnabledFlag()
+        public IActionResult SingleEndPointWithMultipleFeatureActive()
         {
-            return Ok();
+            return Content("Enabled");
         }
+
         [FeatureFilter(Names = "Sample1,Sample2")]
-        public IActionResult ActionWithMultipleFlagAndDisabled()
+        public IActionResult SingleEndPointWithOneFeatureDisabled()
         {
             return Ok();
         }
 
         [FeatureFilter(Names = "Sample2")]
-        public IActionResult ActionWithDisabledFlag()
-        {
-            return Ok();
-        }
-
-        [FeatureFilter(Names = "Sample2")]
-        public IActionResult ActionWithDisabledFlagAndFallbackAction()
+        public IActionResult SingleEndPointWithFeatureDisabled()
         {
             return Ok();
         }

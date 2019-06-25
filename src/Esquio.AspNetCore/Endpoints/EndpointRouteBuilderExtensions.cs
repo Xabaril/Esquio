@@ -1,8 +1,6 @@
 ﻿using Esquio.AspNetCore.Endpoints;
 using Esquio.AspNetCore.Endpoints.Metadata;
-using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Primitives;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -10,7 +8,7 @@ namespace Microsoft.AspNetCore.Builder
     /// <summary>
     /// Provides Esquio extensions methods for <see cref="IEndpointRouteBuilder"/>
     /// </summary>
-    public static class EsquioEndpointRouteBuilderExtensions
+    public static class EndpointRouteBuilderExtensions
     {
         private static char[] split_characters = new char[] { ',' };
 
@@ -26,7 +24,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             builder.Add(endpointbuilder =>
             {
-                var metadata = new FeatureFilterMetadata(names, productName);
+                var metadata = new FeatureFilter(names, productName);
 
                 endpointbuilder.Metadata
                     .Add(metadata);

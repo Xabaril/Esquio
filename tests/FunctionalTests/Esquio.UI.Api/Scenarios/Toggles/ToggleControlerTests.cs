@@ -641,7 +641,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 Name = "Environments",
                 Value = "Production",
-                ClrType = typeof(String).FullName
             };
 
             var response = await _fixture.TestServer
@@ -682,7 +681,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 Name = "Environments",
                 Value = "Development",
-                ClrType = typeof(String).FullName
             };
 
             var response = await _fixture.TestServer

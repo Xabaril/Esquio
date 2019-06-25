@@ -39,7 +39,7 @@ namespace Esquio.Toggles
 
                 if (activeUserNames != null)
                 {
-                    var tokenizer = new StringTokenizer(activeUserNames, Globals.DEFAULT_SPLIT_SEPARATOR);
+                    var tokenizer = new StringTokenizer(activeUserNames, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
                     return tokenizer.Contains(
                         currentUserName, StringSegmentComparer.OrdinalIgnoreCase);

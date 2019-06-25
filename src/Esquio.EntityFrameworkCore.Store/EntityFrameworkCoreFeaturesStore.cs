@@ -14,8 +14,6 @@ namespace Esquio.EntityFrameworkCore.Store
     internal class EntityFrameworkCoreFeaturesStore
         : IRuntimeFeatureStore
     {
-        const string DEFAULT_PRODUCT_NAME = "default";
-
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<EntityFrameworkCoreFeaturesStore> _logger;
 
@@ -29,7 +27,7 @@ namespace Esquio.EntityFrameworkCore.Store
         {
             Log.FindFeature(_logger, featureName, productName);
 
-            productName = productName ?? DEFAULT_PRODUCT_NAME;
+            productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
 
             var featureEntity = await _storeDbContext
                 .Features
