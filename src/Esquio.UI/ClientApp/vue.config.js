@@ -48,7 +48,7 @@ module.exports = env => {
       }
     },
     chainWebpack: config => {
-        config.optimization.minimizer([plugins.uglify]);
+        config.optimization.minimizer([plugins.terser]);
     }
   })
 }
