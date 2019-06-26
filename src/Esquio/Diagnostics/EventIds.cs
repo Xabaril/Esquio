@@ -10,8 +10,9 @@ namespace Esquio.Diagnostics
         public static readonly EventId FeatureNotActive = new EventId(103, nameof(FeatureNotActive));
         public static readonly EventId DefaultFeatureServiceThrows = new EventId(104, nameof(DefaultFeatureServiceThrows));
         public static readonly EventId ToggleTypeIsNull = new EventId(105, nameof(ToggleTypeIsNull));
-        public static readonly EventId DefaultToggleTypeActivatorResolveTypeBegin = new EventId(110, nameof(DefaultToggleTypeActivatorResolveTypeBegin));
-        public static readonly EventId DefaultToggleTypeActivatorCantResolve = new EventId(112, nameof(DefaultToggleTypeActivatorCantResolve));
-        public static readonly EventId DefaultToggleTypeActivatorTypeIsResolved = new EventId(113, nameof(DefaultToggleTypeActivatorTypeIsResolved));
+
+        public static readonly EventId DefaultToggleTypeActivatorResolveTypeBegin = new EventId(120, nameof(DefaultToggleTypeActivatorResolveTypeBegin));
+        public static readonly EventId DefaultToggleTypeActivatorCantResolve = new EventId(121, nameof(DefaultToggleTypeActivatorCantResolve));
+        public static readonly EventId DefaultToggleTypeActivatorTypeIsResolved = new EventId(122, nameof(DefaultToggleTypeActivatorTypeIsResolved));
     }
 }
