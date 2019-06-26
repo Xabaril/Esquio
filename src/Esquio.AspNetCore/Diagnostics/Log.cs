@@ -5,33 +5,25 @@ namespace Esquio.AspNetCore.Diagnostics
 {
     static class Log
     {
-        public static void FeatureSwitchBegin(ILogger logger, string featureName, string productName)
+        public static void FeatureMatcherPolicyCanBeAppliedToEndpoint(ILogger logger, string endpointDisplayName)
         {
-            _featureSwitchBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureMatcherPolicyEndpointCanBeApplied(logger, endpointDisplayName, null);
         }
-        public static void FeatureSwitchSuccess(ILogger logger, string featureName, string productName)
+        public static void FeatureMatcherPolicyEvaluatingFeatures(ILogger logger, string endpointDisplayName, string names, string productName)
         {
-            _featureSwitchSuccess(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
-        public static void FeatureSwitchFail(ILogger logger, string featureName, string productName)
+        public static void FeatureMatcherPolicyEndpointIsNotValid(ILogger logger, string endpointDisplayName)
         {
-            _featureSwitchFail(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureMatcherPolicyEndpointIsNotValid(logger, endpointDisplayName, null);
         }
-        public static void FeatureFilterBegin(ILogger logger, string featureName, string productName)
+        public static void FeatureMatcherPolicyEndpointIsValid(ILogger logger, string endpointDisplayName)
         {
-            _featureFilterBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureMatcherPolicyEndpointIsValid(logger, endpointDisplayName, null);
         }
-        public static void FeatureFilterExecutingAction(ILogger logger, string featureName, string productName)
+        public static void FeatureMatcherPolicyExecutingFallbackEndpoint(ILogger logger, string requestPath)
         {
-            _featureFilterActionExecuted(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
-        }
-        public static void FeatureFilterNonExecuteAction(ILogger logger, string featureName, string productName)
-        {
-            _featureFilterNonExecutedAction(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
-        }
-        public static void FlagFallbackServiceIsNotConfigured(ILogger logger)
-        {
-            _flagFallbackServiceIsNotConfigured(logger, null);
+            _featureMatcherPolicyExecutingFallbackEndpoint(logger, requestPath, null);
         }
         public static void FeatureTagHelperBegin(ILogger logger, string featureName, string productName)
         {
@@ -53,61 +45,42 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _esquioMiddlewareSuccess(logger, null);
         }
-        private static readonly Action<ILogger, string, string, Exception> _featureSwitchBegin = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointCanBeApplied = LoggerMessage.Define<string>(
             LogLevel.Debug,
-            EventIds.FeatureSwitchBeginProcess,
-            "FeatureSwitch constraint begin check if {featureName} for product {productName} is active.");
-
-        private static readonly Action<ILogger, string, string, Exception> _featureSwitchSuccess = LoggerMessage.Define<string, string>(
+            EventIds.FeatureEndpointMatcherCanBeAppliedToEndpoint,
+            "FeatureMatcherPolicy can be applied to endpoint {endpointDisplayName}.");
+        private static readonly Action<ILogger, string, string, string, Exception> _featureMathcherPolicyValidatingMetadata = LoggerMessage.Define<string, string, string>(
             LogLevel.Debug,
-            EventIds.FeatureSwitchSuccess,
-            "FeatureSwitch constraint successfully check if  {featureName} for product {productName} is active.");
-
-        private static readonly Action<ILogger, string, string, Exception> _featureSwitchFail = LoggerMessage.Define<string, string>(
-            LogLevel.Error,
-            EventIds.FeatureSwitchThrow,
-            "FeatureSwitch is not active for {featureName} and  product {productName}.");
-
-        private static readonly Action<ILogger, string, string, Exception> _featureFilterBegin = LoggerMessage.Define<string, string>(
+            EventIds.FeatureEndpointMatcherValidatingFeatures,
+            "FeatureMatcherPolicy is validating features for endpoint {endpointDisplayName} for features {names} on product {productName}.");
+        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointIsNotValid = LoggerMessage.Define<string>(
            LogLevel.Debug,
-           EventIds.FeatureFilterBeginProcess,
-           "FeatureFilter begin check if {featureName} features for product {productName} is enabled.");
-
-        private static readonly Action<ILogger, string, string, Exception> _featureFilterActionExecuted = LoggerMessage.Define<string, string>(
+           EventIds.FeatureEndpointMatcherEndPointNotValid,
+           "FeatureMatcherPolicy set validity FALSE to endpoint {endpointDisplayName}.");
+        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointIsValid = LoggerMessage.Define<string>(
            LogLevel.Debug,
-           EventIds.FeatureFilterExecutingAction,
-           "FeatureFilter check that {featureName} features for product {productName} are active and execute action.");
-
-        private static readonly Action<ILogger, string, string, Exception> _featureFilterNonExecutedAction = LoggerMessage.Define<string, string>(
-           LogLevel.Debug,
-           EventIds.FeatureFilterNonExcuteAction,
-           "FeatureFilter check that {featureName} feature for product {productName} is not active, action is not executed.");
-
-        private static readonly Action<ILogger, Exception> _flagFallbackServiceIsNotConfigured = LoggerMessage.Define(
-           LogLevel.Warning,
-           EventIds.FallbackServiceIsNotConfigured,
-           "MVCFallbackService is not configured, setting default action result as NotFoundResult.");
-
+           EventIds.FeatureEndpointMatcherEndPointValid,
+           "FeatureMatcherPolicy set validity TRUE to endpoint {endpointDisplayName}.");
+        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyExecutingFallbackEndpoint = LoggerMessage.Define<string>(
+          LogLevel.Debug,
+          EventIds.FeatureEndpointMatcherUsingFallbackEndPoint,
+          "FeatureMatcherPolicy use fallback enpoint configured service because the endpoint for request {requestPath} does not have valid candidates to use.");
         private static readonly Action<ILogger, string, string, Exception> _featureTagHelperBegin = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperBeginProcess,
             "FeatureTagHelper begin check if {featureName} for product {productName} is active.");
-
         private static readonly Action<ILogger, string, string, Exception> _featureTagHelperClearContent = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperClearContent,
             "FeatureTagHelper is clearing inner content because {featureName} for product {productName} is not active.");
-
         private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.EsquioMiddlewareThrow,
             "Esquio middleware throw exception when evaluating {featureName} for product {productName}.");
-
         private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareEvaluateFeature = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareEvaluateFeature,
             "Evaluating {featureName} for product {productName} on Esquio middleware.");
-
         private static readonly Action<ILogger, Exception> _esquioMiddlewareSuccess = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareSuccess,

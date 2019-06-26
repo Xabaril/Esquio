@@ -129,12 +129,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 
         public void Configure(IApplicationBuilder app)
         {
-            EsquioUIApiConfiguration.Configure(app, host =>
+            EsquioUIApiConfiguration.Configure(app, _ => _, host =>
             {
-                return host
-                .UseRouting()
-                .UseAuthentication()
-                .UseAuthorization();
+                return host.UseAuthentication().UseAuthorization();
             });
         }
     }

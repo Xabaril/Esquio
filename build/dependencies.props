@@ -16,36 +16,42 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <PropertyGroup Label="Package Versions">
+    <microsoftcsharp>4.5.0</microsoftcsharp>
+
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview6.19307.2</microsoftaspnetcoreauthenticationjwtbearer>
+    
     <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview6.19304.6</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsloggingabstractions>3.0.0-preview6.19304.6</microsoftextensionsloggingabstractions>
-    <microsoftextensionslogging>3.0.0-preview6.19304.6</microsoftextensionslogging>
-    <microsoftextensionsloggingconsole>3.0.0-preview6.19304.6</microsoftextensionsloggingconsole>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview6.19304.6</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationbinder>3.0.0-preview6.19304.6</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.0.0-preview6.19304.6</microsoftextensionsconfigurationjson>
-    <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
     <microsoftextensionsprimitives>3.0.0-preview6.19304.6</microsoftextensionsprimitives>
     <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
-
-    <microsoftcsharp>4.5.0</microsoftcsharp>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview6.19304.6</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationbinder>3.0.0-preview6.19304.6</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0-preview6.19304.6</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.0.0-preview6.19304.6</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.0.0-preview6.19304.6</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.0.0-preview6.19304.6</microsoftextensionsloggingconsole>
 
     <microsoftentityframeworkcore>3.0.0-preview6.19304.10</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.0.0-preview6.19304.10</microsoftentityframeworkcorerelational>
     <microsoftentityframeworkcoresqlserver>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
-    <npgsqlentityframeworkcorepostgresql>3.0.0-preview5</npgsqlentityframeworkcorepostgresql>
+    <microsoftentityframeworkcoredesign>3.0.0-preview6.19304.10</microsoftentityframeworkcoredesign>
 
-    <microsoftnetcoreapp>3.0.0-preview6.19307.2</microsoftnetcoreapp>
-    
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
-
-    <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+    <serilogextensionslogging>2.0.4</serilogextensionslogging>
+    <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
+    <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
 
     <hellangmiddlewareproblemdetails>3.0.1</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.5.0-preview1</fluentvalidationaspnetcore>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Testing Dependencies">
+    <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+    
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
+    <npgsqlentityframeworkcorepostgresql>3.0.0-preview5</npgsqlentityframeworkcorepostgresql>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
@@ -57,7 +63,5 @@
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>
-  </PropertyGroup>
-  <PropertyGroup Label="Esquio Package Versions">
   </PropertyGroup>
 </Project>

@@ -1,12 +1,16 @@
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Esquio.UI.Infrastructure.Security.ApiKey;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Esquio.UI
 {
@@ -19,57 +23,70 @@ namespace Esquio.UI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAuthentication()
-            //    .AddApiKey();
+            services
+                .AddAuthorization()
+                .AddAuthentication(options =>
+                {
+                    options.DefaultScheme = "secured";
+                    options.DefaultChallengeScheme = "secured";
+                })
+                .AddApiKey()
+                .AddJwtBearer(options =>
+                {
+                    Configuration.Bind("Security:Jwt", options);
+                })
+                .AddPolicyScheme("secured","Authorization Bearer or ApiKey",options=>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
+
+                        if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+                        {
+                            return JwtBearerDefaults.AuthenticationScheme;
+                        }
+
+                        return ApiKeyAuthenticationDefaults.ApiKeyScheme;
+                    };
+                });
+                    
 
             EsquioUIApiConfiguration.ConfigureServices(services)
+                .AddScoped<IApiKeyStore,DefaultApiKeyStore>()
                 .AddDbContext<StoreDbContext>(options =>
                 {
-                    options.UseSqlServer("");
-                })
-                .AddSpaStaticFiles(configuration =>
-                {
-                    configuration.RootPath = "ClientApp/build";
+                    options.UseSqlServer(Configuration["Data:EsquioConnectionString"], setup =>
+                     {
+                         setup.MaxBatchSize(10);
+                         setup.EnableRetryOnFailure();
+
+                         setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                     });
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            EsquioUIApiConfiguration.Configure(app, host =>
-            {
-                host
-                    .AddIfElse(
-                        env.IsDevelopment(),
-                        x => x.UseDeveloperExceptionPage(),
-                        x => x.UseExceptionHandler("/Error").UseHsts()
-                    )
-                    .UseHttpsRedirection()
-                    .UseStaticFiles()
-                    .UseSpaStaticFiles();
+            EsquioUIApiConfiguration.Configure(app,
+                preConfigure: host =>
+                {
+                    var rewriteOptions = new RewriteOptions()
+                       .AddRewrite(@"^(?!.*(api\/|static\/|swagger*|ws/*)).*$", "index.html", skipRemainingRules: true);
 
-                host
-                    .UseMvc(routes =>
-                    {
-                        routes.MapRoute(
-                            name: "default",
-                            template: "{controller}/{action=Index}/{id?}");
-                    })
-                    .UseSpa(spa =>
-                    {
-                        spa.Options.SourcePath = "ClientApp";
-
-                        if (env.IsDevelopment())
-                        {
-                            spa.UseReactDevelopmentServer(npmScript: "start");
-                        }
-                    });
-
-                return host;
-            });
+                    return host
+                        .UseHttpsRedirection()
+                        .UseRewriter(rewriteOptions)
+                        .UseDefaultFiles()
+                        .UseStaticFiles();
+                },
+                postConfigure: host =>
+                {
+                    return host
+                    .UseAuthentication()
+                    .UseAuthorization();
+                });
         }
     }
 }

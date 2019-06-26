@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Esquio.UI.Api.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -13,6 +14,7 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
         : AuthenticationHandler<ApiKeyOptions>
     {
         const string APIKEY_QUERY_NAME = "apikey";
+
         private readonly IApiKeyStore _apiKeyStore;
 
         public ApiKeyAuthenticationHandler(IApiKeyStore apikeyStore, IOptionsMonitor<ApiKeyOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock)
@@ -21,29 +23,50 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
             _apiKeyStore = apikeyStore ?? throw new ArgumentNullException(nameof(apikeyStore));
         }
 
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            Log.ApiKeyAuthenticationBegin(Logger);
+
             var apiKeyValues = this.Context.Request.Query[APIKEY_QUERY_NAME];
 
             if (apiKeyValues.Any())
             {
+                var selectedApiKey = apiKeyValues.Last();
+
                 try
                 {
-                    var identity = _apiKeyStore.ValidateApiKey(apiKeyValues.Last(), Scheme.Name);
+                    var identity = await _apiKeyStore
+                        .ValidateApiKey(selectedApiKey, Scheme.Name);
 
-                    var ticket = new AuthenticationTicket(
-                        new ClaimsPrincipal(identity),
-                        authenticationScheme: Scheme.Name);
+                    if (identity != default)
+                    {
+                        var ticket = new AuthenticationTicket(
+                            new ClaimsPrincipal(identity),
+                            authenticationScheme: Scheme.Name);
 
-                    return Task.FromResult<AuthenticateResult>(AuthenticateResult.Success(ticket));
+                        Log.ApiKeyAuthenticationSuccess(Logger);
+
+                        return AuthenticateResult.Success(ticket);
+                    }
+                    else
+                    {
+                        Log.ApiKeyAuthenticationNotFound(Logger, selectedApiKey);
+
+                        return AuthenticateResult.Fail("The api key does not exist in the store.");
+                    }
+
                 }
                 catch (Exception exception)
                 {
-                    return Task.FromResult<AuthenticateResult>(AuthenticateResult.Fail(exception));
+                    Log.ApiKeyAuthenticationFail(Logger, exception);
+
+                    return AuthenticateResult.Fail(exception);
                 }
-                
             }
-            return Task.FromResult<AuthenticateResult>(AuthenticateResult.NoResult());
+
+            Log.ApiKeyAuthenticationDoesNotExist(Logger);
+
+            return AuthenticateResult.NoResult();
         }
     }
 }

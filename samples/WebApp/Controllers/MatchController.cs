@@ -1,4 +1,5 @@
 using Esquio.Abstractions;
+using Esquio.AspNetCore.Endpoints.Metadata;
 using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace WebApp.Controllers
         private readonly IMatchService matchService;
         private readonly IRuntimeFeatureStore store;
 
-        public MatchController(IMatchService matchService,IRuntimeFeatureStore store)
+        public MatchController(IMatchService matchService, IRuntimeFeatureStore store)
         {
             this.matchService = matchService;
             this.store = store;
@@ -25,19 +26,7 @@ namespace WebApp.Controllers
             return View(this.matchService.GetNextMatches(50));
         }
 
-        [FeatureSwitch(Names = Flags.MinutesRealTime)]
-        [ActionName("Detail")]
-        public IActionResult DetailWhenFlagsIsActive(int id)
-        {
-            var match = this.matchService.Get(id);
-
-            if (!User.Identity.IsAuthenticated || match.State != Models.MatchState.Started)
-            {
-                return RedirectToAction("Error", "Home");
-            }
-
-            return View("DetailLive", match);
-        }
+        
 
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsNotActive(int id)
@@ -51,5 +40,21 @@ namespace WebApp.Controllers
 
             return View(match);
         }
+
+        [FeatureFilter(Names = Flags.MinutesRealTime)]
+        [ActionName("Detail")]
+        public IActionResult DetailWhenFlagsIsActive(int id)
+        {
+            var match = this.matchService.Get(id);
+
+            if (!User.Identity.IsAuthenticated || match.State != Models.MatchState.Started)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View("DetailLive", match);
+        }
+
+
     }
 }
