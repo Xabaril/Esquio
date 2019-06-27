@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPost]
         [Route("api/v1/flags")]
-        public async Task<IActionResult> Rollout(AddFlagRequest addFlagRequest, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Add(AddFlagRequest addFlagRequest, CancellationToken cancellationToken = default)
         {
             var flagId = await _mediator.Send(addFlagRequest, cancellationToken);
 

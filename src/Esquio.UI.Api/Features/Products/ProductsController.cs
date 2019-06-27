@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpGet]
         [Route("api/v1/products")]
-        public async Task<IActionResult> List(int productId, [FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
