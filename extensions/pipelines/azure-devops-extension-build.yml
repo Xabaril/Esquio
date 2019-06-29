@@ -1,4 +1,4 @@
-pool: $(poolName)
+pool: Hosted Windows 2019 with VS2019
 
 trigger:
   batch: true 
