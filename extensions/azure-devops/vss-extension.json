@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "esquio-extensions",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "name": "Esquio extensions",
     "description": "Esquio extensions for Azure DevOps",
     "publisher": "luisfraile",
@@ -63,12 +63,12 @@
                         "resultSelector": "jsonpath:$.result[*]"                     
                     },
                     {
-                        "name": "Esquio Products",
+                        "name": "EsquioProducts",
                         "endpointUrl": "{{endpoint.url}}/api/v1/products?apikey={{endpoint.apiKey}}",
                         "resultSelector": "jsonpath:$.result[*]"
                     },
                     {
-                        "name": "Esquio Flags",
+                        "name": "EsquioFlags",
                         "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags?apikey={{endpoint.apiKey}}",
                         "resultSelector": "jsonpath:$.result[*]"
                     }
