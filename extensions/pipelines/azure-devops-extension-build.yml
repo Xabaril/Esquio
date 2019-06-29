@@ -1,0 +1,7 @@
+pool: $(poolName)
+
+trigger:
+  batch: true 
+  paths:
+    include: 
+    - /extensions/azure-devops

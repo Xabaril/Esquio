@@ -1,0 +1,71 @@
+{
+    "manifestVersion": 1,
+    "id": "esquio-extensions",
+    "version": "0.0.1",
+    "name": "TODO",
+    "description": "TODO",
+    "publisher": "luisfraile",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "categories":[
+        "Azure Pipelines"
+    ],
+    "contributions": [
+        {
+            "id": "service-endpoint",
+            "description": "Service endpoint type for Esquio connections",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "esquio",
+                "displayName": "Esquio API connection",
+                "url": {
+                    "displayName": "Esquio API Url",
+                    "helpText": "Url for the Esqui API to connect to."
+                },
+                "apiKey": {
+                    "displayName": "Temporary API key",
+                    "helpText": "DELETE ME"
+                },
+                "dataSources": [
+                    {
+                        "name": "Esquio Features",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products/1/flags?apikey={{endpoint.apiKey}}",
+                        "resultSelector": "jsonpath:$.result[*].name"
+                    }
+                ],
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                        "headers": [
+                            {
+                                "name": "Authorization",
+                                "value": "{{endpoint.apitoken}}"
+                            }
+                        ]
+                    }
+                ],
+                "helpMarkDown": "<a href=\"TODO\" target=\"_blank\"><b>Learn More</b></a>"
+            }
+        },
+        {
+            "id": "test-endpoint-task",
+            "description": "Esquio test task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [ "ms.vss-distributed-task.tasks" ],
+            "properties": {
+              "name": "test-endpoint-task"
+            }
+          }
+    ],
+    "files": [
+        {
+            "path": "test-endpoint-task"
+        }
+    ]
+}
