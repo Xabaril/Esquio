@@ -1,9 +1,9 @@
 {
     "manifestVersion": 1,
     "id": "esquio-extensions",
-    "version": "0.0.1",
-    "name": "TODO",
-    "description": "TODO",
+    "version": "0.0.2",
+    "name": "Esquio extensions",
+    "description": "Esquio extensions for Azure DevOps",
     "publisher": "luisfraile",
     "targets": [
         {
@@ -13,6 +13,16 @@
     "categories":[
         "Azure Pipelines"
     ],
+	"icons": {
+		"default": "icons/xabaril.png"
+	},
+	"branding": {
+		"color": "#3B3E43",
+		"theme": "dark"
+	},
+	"screenshots": [{
+		"path": "images/XabarilSample.png"
+	}],
     "contributions": [
         {
             "id": "service-endpoint",
@@ -23,23 +33,50 @@
             ],
             "properties": {
                 "name": "esquio",
+                "icons": {
+                    "default": "icons/xabaril-endpoint-icon.png",
+                    "wide": "icons/xabaril.png"
+                },
                 "displayName": "Esquio API connection",
                 "url": {
                     "displayName": "Esquio API Url",
-                    "helpText": "Url for the Esqui API to connect to."
+                    "helpText": "Url for the Esquio API to connect to."
                 },
-                "apiKey": {
-                    "displayName": "Temporary API key",
-                    "helpText": "DELETE ME"
-                },
+                "inputDescriptors":[
+                    {
+                        "id": "apiKey",
+                        "name": "Esquio API Key",
+                        "description": "Esquio API key",
+                        "inputMode": "textbox",
+                        "isConfidential": false,
+                        "validation": {
+                            "isRequired": true,
+                            "dataType": "string",
+                            "maxLength": 150
+                        }
+                    }
+                ],
                 "dataSources": [
                     {
-                        "name": "Esquio Features",
-                        "endpointUrl": "{{endpoint.url}}/api/v1/products/1/flags?apikey={{endpoint.apiKey}}",
-                        "resultSelector": "jsonpath:$.result[*].name"
+                        "name": "TestConnection",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products?apikey={{endpoint.apiKey}}",
+                        "resultSelector": "jsonpath:$.result[*]"                     
+                    },
+                    {
+                        "name": "Esquio Products",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products?apikey={{endpoint.apiKey}}",
+                        "resultSelector": "jsonpath:$.result[*]"
+                    },
+                    {
+                        "name": "Esquio Flags",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags?apikey={{endpoint.apiKey}}",
+                        "resultSelector": "jsonpath:$.result[*]"
                     }
                 ],
                 "authenticationSchemes": [
+                    {
+                        "type":"ms.vss-endpoint.endpoint-auth-scheme-none"
+                    },
                     {
                         "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
                         "headers": [
@@ -54,18 +91,18 @@
             }
         },
         {
-            "id": "test-endpoint-task",
-            "description": "Esquio test task",
+            "id": "rollout-feature",
+            "description": "Esquio rollout feature",
             "type": "ms.vss-distributed-task.task",
             "targets": [ "ms.vss-distributed-task.tasks" ],
             "properties": {
-              "name": "test-endpoint-task"
+              "name": "rollout-feature"
             }
           }
     ],
     "files": [
         {
-            "path": "test-endpoint-task"
+            "path": "rollout-feature"
         }
     ]
 }

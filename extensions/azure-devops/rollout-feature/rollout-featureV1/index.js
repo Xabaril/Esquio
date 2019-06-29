@@ -35,16 +35,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var tl = require("./node_modules/azure-pipelines-task-lib/tasks-task-lib/task");
+var tl = require("./node_modules/azure-pipelines-task-lib/task");
+var url = require("url");
+var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
+        var connection, flagId, esquioUrl, apikey, err_1;
         return __generator(this, function (_a) {
-            try {
-                console.log('Hello Esquio');
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    connection = tl.getInput('EsquioService', true);
+                    flagId = Number.parseInt(tl.getInput('flagId', true));
+                    esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
+                    apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
+                    return [4 /*yield*/, rolloutFeature(esquioUrl, apikey, flagId)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    tl.setResult(tl.TaskResult.Failed, err_1.message);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
-            catch (err) {
-                tl.setResult(tl.TaskResult.Failed, err.message);
-            }
+        });
+    });
+}
+function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var options, req;
+        return __generator(this, function (_a) {
+            options = {
+                hostname: esquioUrl.host,
+                path: "/api/v1/flags/" + flagId + "/Rollout?apikey=" + esquioApiKey,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            req = https.request(options, function (res) {
+                console.log("statusCode: " + res.statusCode);
+            });
+            req.on('error', function (error) {
+                console.error(error);
+            });
+            req.end();
             return [2 /*return*/];
         });
     });
