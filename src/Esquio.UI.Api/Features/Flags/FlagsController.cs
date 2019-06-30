@@ -2,6 +2,7 @@
 using Esquio.UI.Api.Features.Flags.Delete;
 using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
+using Esquio.UI.Api.Features.Flags.Rolldown;
 using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,15 @@ namespace Esquio.UI.Api.Features.Flags
         public async Task<IActionResult> Rollout([FromRoute]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rolloutFlagRequest, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("api/v1/flags/{featureId:int:min(1)}/rolldown")]
+        public async Task<IActionResult> Rolldown([FromRoute]RolldownFlagRequest rolldownFlagRequest, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(rolldownFlagRequest, cancellationToken);
 
             return Ok();
         }
