@@ -6,7 +6,7 @@
         v-model="form.name"
         id="product_name"
         :label="$t('products.fields.name')"
-        validators="required"
+        validators="required|length:5"
         :help-label="$t('products.placeholders.nameHelp')"
       />
 
@@ -15,7 +15,7 @@
         v-model="form.description"
         id="product_description"
         :label="$t('products.fields.description')"
-        validators="required"
+        validators="required|length:5"
         :help-label="$t('products.placeholders.descriptionHelp')"
       />
     </form>
@@ -113,7 +113,7 @@ export default class extends Vue {
       this.form.description = description;
       this.form.id = id;
     } catch (e) {
-      this.$toasted.global.apierror({
+      this.$toasted.global.error({
         message: this.$t('products.errors.detail')
       });
     } finally {
@@ -124,8 +124,16 @@ export default class extends Vue {
   public async addProduct(): Promise<void> {
     try {
       await this.productsService.add(this.form);
+
+      this.$router.push({
+        name: 'products-list'
+      });
+
+      this.$toasted.global.success({
+        message: this.$t('products.success.add')
+      });
     } catch (e) {
-      this.$toasted.global.apierror({
+      this.$toasted.global.error({
         message: this.$t('products.errors.add')
       });
     }
@@ -134,8 +142,16 @@ export default class extends Vue {
   public async updateProduct(): Promise<void> {
     try {
       await this.productsService.update(this.form);
+
+      this.$router.push({
+        name: 'products-list'
+      });
+
+      this.$toasted.global.success({
+        message: this.$t('products.success.update')
+      });
     } catch (e) {
-      this.$toasted.global.apierror({
+      this.$toasted.global.error({
         message: this.$t('products.errors.update')
       });
     }

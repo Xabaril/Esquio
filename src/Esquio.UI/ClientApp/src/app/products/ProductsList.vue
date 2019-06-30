@@ -94,7 +94,7 @@ export default class extends Vue {
       const response = await this.productsService.get();
       this.products = response.result;
     } catch (e) {
-      this.$toasted.global.apierror({
+      this.$toasted.global.error({
         message: this.$t('products.errors.get')
       });
     } finally {

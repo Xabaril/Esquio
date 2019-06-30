@@ -31,6 +31,10 @@
           "add": "Cannot create this product",
           "detail": "Cannot fetch this product",
           "update": "Cannot update the product"
+        },
+        "success": {
+          "add": "The new product was created",
+          "update": "The product was updated"
         }
     },
     "home": {

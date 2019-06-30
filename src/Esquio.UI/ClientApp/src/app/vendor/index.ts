@@ -12,10 +12,23 @@ export const vendor = [
 ];
 
 export function configurePlugins() {
-  Vue.toasted.register('apierror', (x) => x.message, {
+  Vue.toasted.register('error', (x) => x.message, {
     type: 'error',
     position: 'top-right',
-    icon: 'error_outline',
+    duration: 3000,
+    action: {
+      icon: 'close',
+      class: 'toaster-close',
+      onClick: (e, toastObject) => {
+        toastObject.goAway(0);
+      }
+    },
+  } as any);
+
+  Vue.toasted.register('success', (x) => x.message, {
+    type: 'success',
+    position: 'top-right',
+    duration: 2000,
     action: {
       icon: 'close',
       class: 'toaster-close',
