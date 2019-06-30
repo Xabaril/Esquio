@@ -6,7 +6,7 @@
         v-model="form.name"
         id="product_name"
         :label="$t('products.fields.name')"
-        validators="required|length:5"
+        validators="required|min:5"
         :help-label="$t('products.placeholders.nameHelp')"
       />
 
@@ -15,7 +15,7 @@
         v-model="form.description"
         id="product_description"
         :label="$t('products.fields.description')"
-        validators="required|length:5"
+        validators="required|min:5"
         :help-label="$t('products.placeholders.descriptionHelp')"
       />
     </form>

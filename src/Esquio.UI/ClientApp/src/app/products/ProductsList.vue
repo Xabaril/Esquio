@@ -39,7 +39,9 @@
         slot-scope="data"
       >
         <div class="text-center">
-          <router-link :to="{name: 'products-edit', params: {id: data.item.id}}">{{$t('products.actions.see_detail')}}</router-link>
+          <router-link :to="{name: 'products-edit', params: {id: data.item.id}}">
+            <button type="button" class="btn btn-sm btn-raised btn-primary">{{$t('products.actions.see_detail')}}</button>
+          </router-link>
         </div>
       </template>
     </b-table>
@@ -79,7 +81,7 @@ export default class extends Vue {
     },
     {
       key: 'id',
-      label: () => this.$t('products.fields.id')
+      label: ''
     }
   ];
 
