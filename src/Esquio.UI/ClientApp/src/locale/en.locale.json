@@ -4,14 +4,18 @@
         "menu": {
             "home": "Home",
             "products": "Products"
-        }
+        },
+        "empty": "There are no results to show",
+        "empty_filtered": "There are no filtered records to show",
+        "loading": "Loading..."
     },
     "products": {
         "actions": {
           "add": "Add product",
-          "addFeature": "Add feature",
+          "add_feature": "Add feature",
           "save": "Save product",
-          "see_detail": "Open"
+          "see_detail": "Open",
+          "add_first": "Add your first product"
         },
         "fields": {
           "id": "Identifier",
@@ -19,10 +23,8 @@
           "description": "Description"
         },
         "placeholders": {
-          "name": "My first Esquio product",
-          "nameHelp": "Lorem ipsum",
-          "description": "Lorem ipsum",
-          "descriptionHelp": "Lorem ipsum"
+          "nameHelp": "The name for your product",
+          "descriptionHelp": "A short description of the product"
         }
     },
     "home": {

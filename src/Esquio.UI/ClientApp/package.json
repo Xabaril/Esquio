@@ -14,7 +14,7 @@
     "dev": "vue-cli-service build --watch --dest \"../wwwroot\"",
     "dotnet": "dotnet run -p ..",
     "infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
-    "start": "run-p lint infrastructure dev dotnet"
+    "start": "run-p infrastructure dev dotnet"
   },
   "husky": {
     "hooks": {
@@ -31,6 +31,7 @@
     "localforage": "^1.7.3",
     "normalize-scss": "^7.0.1",
     "popper.js": "^1.15.0",
+    "vee-validate": "^2.2.11",
     "vue": "^2.6.6",
     "vue-i18n": "^8.10.0",
     "vue-property-decorator": "^8.1.0",

@@ -1,5 +1,7 @@
+import { ApiResponse } from '~/core';
 import { Product } from './product.model';
 
 export interface IProductsService {
-  get(): Product[];
+  get(): Promise<ApiResponse<Product[]>>;
+  add(product: Product): Promise<void>;
 }

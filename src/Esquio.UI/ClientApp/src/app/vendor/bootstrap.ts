@@ -33,6 +33,7 @@ export {
     // PaginationNav,
     // Popover,
     // Progress,
+    Spinner,
     Table,
     // Tabs,
     // Tooltip

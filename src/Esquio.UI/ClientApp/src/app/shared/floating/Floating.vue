@@ -1,18 +1,22 @@
 <template>
-  <div class="floating" :class="{'floating--top': isTop}">
+  <div
+    class="floating"
+    :class="{'floating--top': isTop, 'is-disabled': disabled}"
+    @click="onClick"
+  >
     <router-link :to="to">
       <button
-      type="button"
-      class="floating-button btn bmd-btn-fab"
-      :class="`btn-${modifier}`"
-      title="Example text"
-    >
-      <div class="floating-content">
-        <i class="floating-icon material-icons">{{icon}}</i>
-        <span class="floating-text is-hidden@s">{{text}}</span>
-      </div>
-    </button>
-  </router-link>
+        type="button"
+        class="floating-button btn bmd-btn-fab"
+        :class="`btn-${modifier}`"
+        title="Example text"
+      >
+        <div class="floating-content">
+          <i class="floating-icon material-icons">{{icon}}</i>
+          <span class="floating-text is-hidden@s">{{text}}</span>
+        </div>
+      </button>
+    </router-link>
   </div>
 </template>
 
@@ -28,14 +32,19 @@ export default class extends Vue {
   public modifier: FloatingModifier = FloatingModifier.Primary;
 
   @Prop({ required: true }) text: string;
-  @Prop({ default: () => ({})}) to: RouteConfig;
+  @Prop({ default: () => ({}) }) to: RouteConfig;
   @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
   @Prop({ default: false }) isTop: boolean;
+  @Prop({ default: false }) disabled: boolean;
 
   public created() {
     if (this.isTop) {
       this.modifier = FloatingModifier.Secondary;
     }
+  }
+
+  public onClick(): void {
+    this.$emit('click');
   }
 }
 </script>
@@ -111,6 +120,11 @@ export default class extends Vue {
     @media screen and (min-width: get-media(xs)) {
       display: inline-flex !important;
     }
+  }
+
+  &.is-disabled {
+    opacity: .75;
+    pointer-events: none;
   }
 }
 </style>
