@@ -49,7 +49,7 @@ function run() {
                     flagId = Number.parseInt(tl.getInput('flagId', true));
                     esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
                     apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
-                    return [4 /*yield*/, rolloutFeature(esquioUrl, apikey, flagId)];
+                    return [4 /*yield*/, rolldownFeature(esquioUrl, apikey, flagId)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
@@ -62,13 +62,13 @@ function run() {
         });
     });
 }
-function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
+function rolldownFeature(esquioUrl, esquioApiKey, flagId) {
     return __awaiter(this, void 0, void 0, function () {
         var options, req;
         return __generator(this, function (_a) {
             options = {
                 hostname: esquioUrl.host,
-                path: "/api/v1/flags/" + flagId + "/Rollout?apikey=" + esquioApiKey,
+                path: "/api/v1/flags/" + flagId + "/rolldown?apikey=" + esquioApiKey,
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,11 +76,11 @@ function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
             };
             req = https.request(options, function (res) {
                 if (res.statusCode === 200) {
-                    console.log('Feature rolled out successfully');
+                    console.log('Feature rolled down successfully');
                 }
             });
             req.on('error', function (error) {
-                console.error('There has been an error rolling out feature');
+                console.error('There has been an error rolling down feature');
             });
             req.end();
             return [2 /*return*/];

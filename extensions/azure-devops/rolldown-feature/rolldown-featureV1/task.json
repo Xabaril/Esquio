@@ -1,17 +1,17 @@
 {
-    "id": "17176487-5208-4C17-8995-C5A107DD9478",
-    "name": "esquio-rollout-feature",
-    "friendlyName": "Rollout feature with Esquio",
-    "description": "Use this task to rollout features with Esquio",
+    "id": "D94984E6-9CE6-473E-80AC-6274DC9B66C7",
+    "name": "esquio-rolldown-feature",
+    "friendlyName": "Rolldown feature with Esquio",
+    "description": "Use this task to rolldown features with Esquio",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "luisfraile",
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 4
+        "Patch": 0
     },
-    "instanceNameFormat": "Esquio Rollout feature",
+    "instanceNameFormat": "Esquio rolldown feature",
     "inputs": [
         {
             "name": "EsquioService",
@@ -36,7 +36,7 @@
             "type": "pickList",
             "label": "Esquio feature",
             "required": true,
-            "helpMarkDown": "Select the name of the feature to rollout.",
+            "helpMarkDown": "Select the name of the feature to rolldown.",
             "properties": {
               "EditableOptions": "True"
             }

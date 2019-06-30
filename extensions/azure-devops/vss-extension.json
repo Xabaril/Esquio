@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "esquio-extensions",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "name": "Esquio extensions",
     "description": "Esquio extensions for Azure DevOps",
     "publisher": "luisfraile",
@@ -98,11 +98,23 @@
             "properties": {
               "name": "rollout-feature"
             }
+          },
+          {
+            "id": "rolldown-feature",
+            "description": "Esquio rolldown feature",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [ "ms.vss-distributed-task.tasks" ],
+            "properties": {
+              "name": "rolldown-feature"
+            }
           }
     ],
     "files": [
         {
             "path": "rollout-feature"
+        },
+        {
+            "path": "rolldown-feature"
         }
     ]
 }
