@@ -102,7 +102,7 @@ export default class extends Vue {
     try {
       await this.productsService.add(this.form);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 }

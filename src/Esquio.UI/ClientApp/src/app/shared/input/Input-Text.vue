@@ -48,7 +48,7 @@ export default class extends Vue {
 
   public created(): void {
     this.inputValue = this.value;
-    console.log(this.validators)
+    console.log(this.validators);
   }
 
   @Watch('inputValue') onChangeInput() {
