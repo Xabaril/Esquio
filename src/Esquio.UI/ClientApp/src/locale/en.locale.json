@@ -25,6 +25,12 @@
         "placeholders": {
           "nameHelp": "The name for your product",
           "descriptionHelp": "A short description of the product"
+        },
+        "errors": {
+          "get": "Cannot fetch products",
+          "add": "Cannot create this product",
+          "detail": "Cannot fetch this product",
+          "update": "Cannot update the product"
         }
     },
     "home": {

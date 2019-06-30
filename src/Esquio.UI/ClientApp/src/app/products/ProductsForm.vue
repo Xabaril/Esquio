@@ -104,22 +104,30 @@ export default class extends Vue {
   }
 
   public async getProduct(): Promise<void> {
-    const { name, description, id } = await this.productsService.detail(
-      Number(this.id)
-    );
-    this.form.name = name;
-    this.form.description = description;
-    this.form.id = id;
-    // TODO: toaster
-    this.isLoading = false;
+    try {
+      const { name, description, id } = await this.productsService.detail(
+        Number(this.id)
+      );
+
+      this.form.name = name;
+      this.form.description = description;
+      this.form.id = id;
+    } catch (e) {
+      this.$toasted.global.apierror({
+        message: this.$t("products.errors.detail")
+      });
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   public async addProduct(): Promise<void> {
     try {
       await this.productsService.add(this.form);
     } catch (e) {
-      // TODO: toaster
-      console.log(e);
+      this.$toasted.global.apierror({
+        message: this.$t("products.errors.add")
+      });
     }
   }
 
@@ -127,8 +135,9 @@ export default class extends Vue {
     try {
       await this.productsService.update(this.form);
     } catch (e) {
-      // TODO: toaster
-      console.log(e);
+      this.$toasted.global.apierror({
+        message: this.$t("products.errors.update")
+      });
     }
   }
 

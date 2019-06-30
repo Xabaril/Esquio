@@ -3,7 +3,7 @@ import { Inject } from 'inversify-props';
 import VeeValidate from 'vee-validate';
 
 import { getSettings, registerInterceptor } from '~/core';
-import { vendor } from './app/vendor';
+import { vendor, configurePlugins } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
 import { Filters } from './app/app.filters';
@@ -23,6 +23,7 @@ export class AppModule {
     Vue.use(new Filters());
     Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
     vendor.forEach(library => Vue.use(library));
+    configurePlugins();
 
     this.bootstrap();
   }
