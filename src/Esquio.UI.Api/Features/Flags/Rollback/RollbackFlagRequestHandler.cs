@@ -9,20 +9,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Rolldown
+namespace Esquio.UI.Api.Features.Flags.Rollback
 {
-    internal class RolldownFlagRequestHandler
-        : IRequestHandler<RolldownFlagRequest>
+    internal class RollbackFlagRequestHandler
+        : IRequestHandler<RollbackFlagRequest>
     {
         private readonly StoreDbContext _storeDbContext;
-        private readonly ILogger<RolldownFlagRequestHandler> _logger;
+        private readonly ILogger<RollbackFlagRequestHandler> _logger;
 
-        public RolldownFlagRequestHandler(StoreDbContext storeDbContext, ILogger<RolldownFlagRequestHandler> logger)
+        public RollbackFlagRequestHandler(StoreDbContext storeDbContext, ILogger<RollbackFlagRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<Unit> Handle(RolldownFlagRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RollbackFlagRequest request, CancellationToken cancellationToken)
         {
             var feature = await _storeDbContext
                 .Features
