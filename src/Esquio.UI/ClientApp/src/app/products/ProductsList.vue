@@ -53,11 +53,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Inject } from "inversify-props";
-import { Floating } from "~/shared";
-import { Product } from "./product.model";
-import { IProductsService } from "./iproducts.service";
+import { Component, Vue } from 'vue-property-decorator';
+import { Inject } from 'inversify-props';
+import { Floating } from '~/shared';
+import { Product } from './product.model';
+import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
@@ -65,21 +65,21 @@ import { IProductsService } from "./iproducts.service";
   }
 })
 export default class extends Vue {
-  public name = "ProductsList";
+  public name = 'ProductsList';
   public products: Product[] = null;
   public isLoading = true;
   public columns = [
     {
-      key: "name",
-      label: () => this.$t("products.fields.name")
+      key: 'name',
+      label: () => this.$t('products.fields.name')
     },
     {
-      key: "description",
-      label: () => this.$t("products.fields.description")
+      key: 'description',
+      label: () => this.$t('products.fields.description')
     },
     {
-      key: "id",
-      label: () => this.$t("products.fields.id")
+      key: 'id',
+      label: () => this.$t('products.fields.id')
     }
   ];
 
@@ -95,7 +95,7 @@ export default class extends Vue {
       this.products = response.result;
     } catch (e) {
       this.$toasted.global.apierror({
-        message: this.$t("products.errors.get")
+        message: this.$t('products.errors.get')
       });
     } finally {
       this.isLoading = false;

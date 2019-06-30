@@ -54,12 +54,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { Inject } from "inversify-props";
-import { Floating, FloatingIcon, InputText } from "~/shared";
-import { Product } from "./product.model";
-import { Feature } from "./features";
-import { IProductsService } from "./iproducts.service";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Inject } from 'inversify-props';
+import { Floating, FloatingIcon, InputText } from '~/shared';
+import { Product } from './product.model';
+import { Feature } from './features';
+import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
@@ -68,7 +68,7 @@ import { IProductsService } from "./iproducts.service";
   }
 })
 export default class extends Vue {
-  public name = "ProductsForm";
+  public name = 'ProductsForm';
   public product: Product;
   public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
@@ -114,7 +114,7 @@ export default class extends Vue {
       this.form.id = id;
     } catch (e) {
       this.$toasted.global.apierror({
-        message: this.$t("products.errors.detail")
+        message: this.$t('products.errors.detail')
       });
     } finally {
       this.isLoading = false;
@@ -126,7 +126,7 @@ export default class extends Vue {
       await this.productsService.add(this.form);
     } catch (e) {
       this.$toasted.global.apierror({
-        message: this.$t("products.errors.add")
+        message: this.$t('products.errors.add')
       });
     }
   }
@@ -136,7 +136,7 @@ export default class extends Vue {
       await this.productsService.update(this.form);
     } catch (e) {
       this.$toasted.global.apierror({
-        message: this.$t("products.errors.update")
+        message: this.$t('products.errors.update')
       });
     }
   }
