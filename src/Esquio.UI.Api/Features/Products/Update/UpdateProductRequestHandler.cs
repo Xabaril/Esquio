@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Features.Products.Update
             if (existing != null)
             {
                 existing.Name = request.Name;
-                existing.Description = request.Name;
+                existing.Description = request.Description;
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 

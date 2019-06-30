@@ -1,5 +1,5 @@
 <template>
-  <div class="input_text">
+  <div class="input_text" :class="{'is-filled': !!value}">
     <label
       :for="id"
       class="bmd-label-floating"
@@ -48,11 +48,14 @@ export default class extends Vue {
 
   public created(): void {
     this.inputValue = this.value;
-    console.log(this.validators);
   }
 
-  @Watch('inputValue') onChangeInput() {
+  @Watch('inputValue') onChangeInput(): void {
     this.$emit('input', this.inputValue);
+  }
+
+  @Watch('value') onChangeDefaultValue(): void {
+    this.inputValue = this.value;
   }
 }
 </script>

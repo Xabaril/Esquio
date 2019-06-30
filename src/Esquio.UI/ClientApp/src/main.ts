@@ -1,7 +1,8 @@
 import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
+import VeeValidate from 'vee-validate';
 
-import { getSettings, Material } from '~/core';
+import { getSettings, registerInterceptor } from '~/core';
 import { vendor } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
@@ -17,9 +18,10 @@ export class AppModule {
 
   constructor() {
     containerBuilder();
+    registerInterceptor();
 
     Vue.use(new Filters());
-    Vue.use(Material);
+    Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
     vendor.forEach(library => Vue.use(library));
 
     this.bootstrap();

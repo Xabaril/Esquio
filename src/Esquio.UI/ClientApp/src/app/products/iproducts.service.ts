@@ -1,7 +1,9 @@
-import { ApiResponse } from '~/core';
+import { PaginatedResponse } from '~/core';
 import { Product } from './product.model';
 
 export interface IProductsService {
-  get(): Promise<ApiResponse<Product[]>>;
+  get(): Promise<PaginatedResponse<Product[]>>;
+  detail(id: number): Promise<Product>;
   add(product: Product): Promise<void>;
+  update(product: Product): Promise<void>;
 }

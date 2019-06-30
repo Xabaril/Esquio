@@ -6,8 +6,9 @@ import * as bootstrap from './bootstrap';
 import 'jquery'; // For bootstrap material
 import 'bootstrap-material-design';
 import VeeValidate from 'vee-validate';
+import { Material } from '~/core';
 
 export const vendor = [
     ...(<any>Object).values(bootstrap),
-    VeeValidate
+    Material
 ];

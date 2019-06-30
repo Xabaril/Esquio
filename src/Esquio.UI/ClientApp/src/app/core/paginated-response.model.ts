@@ -1,4 +1,4 @@
-export interface ApiResponse<T> {
+export interface PaginatedResponse<T> {
   count: number;
   pageIndex: number;
   result: T;

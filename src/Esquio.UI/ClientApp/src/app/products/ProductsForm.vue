@@ -1,13 +1,23 @@
 <template>
   <section class="products_form container u-container-medium">
     <form class="row">
-      <div class="products_form-group form-group col-md-5">
-        <input-text v-model="form.name" id="product_name" :label="$t('products.fields.name')" validators="required" :help-label="$t('products.placeholders.nameHelp')" />
-      </div>
+      <input-text
+        class="products_form-group form-group col-md-5"
+        v-model="form.name"
+        id="product_name"
+        :label="$t('products.fields.name')"
+        validators="required"
+        :help-label="$t('products.placeholders.nameHelp')"
+      />
 
-      <div class="products_form-group form-group col-md-7">
-        <input-text v-model="form.description" id="product_description" :label="$t('products.fields.description')" validators="required" :help-label="$t('products.placeholders.descriptionHelp')" />
-      </div>
+      <input-text
+        class="products_form-group form-group col-md-5"
+        v-model="form.description"
+        id="product_description"
+        :label="$t('products.fields.description')"
+        validators="required"
+        :help-label="$t('products.placeholders.descriptionHelp')"
+      />
     </form>
 
     <!-- <div class="row" v-if="hasFeatures">
@@ -44,12 +54,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText } from '~/shared';
-import { Product } from './product.model';
-import { Feature } from './features';
-import { IProductsService } from './iproducts.service';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { Inject } from "inversify-props";
+import { Floating, FloatingIcon, InputText } from "~/shared";
+import { Product } from "./product.model";
+import { Feature } from "./features";
+import { IProductsService } from "./iproducts.service";
 
 @Component({
   components: {
@@ -58,9 +68,10 @@ import { IProductsService } from './iproducts.service';
   }
 })
 export default class extends Vue {
-  public name = 'ProductsForm';
+  public name = "ProductsForm";
   public product: Product;
   public floatingIcon = FloatingIcon.Save;
+  public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
   @Inject() productsService: IProductsService;
@@ -84,9 +95,40 @@ export default class extends Vue {
   }
 
   public async created(): Promise<void> {
-    if (this.isEditing) {
-      // get from server
+    if (!this.isEditing) {
       return;
+    }
+
+    this.isLoading = true;
+    this.getProduct();
+  }
+
+  public async getProduct(): Promise<void> {
+    const { name, description, id } = await this.productsService.detail(
+      Number(this.id)
+    );
+    this.form.name = name;
+    this.form.description = description;
+    this.form.id = id;
+    // TODO: toaster
+    this.isLoading = false;
+  }
+
+  public async addProduct(): Promise<void> {
+    try {
+      await this.productsService.add(this.form);
+    } catch (e) {
+      // TODO: toaster
+      console.log(e);
+    }
+  }
+
+  public async updateProduct(): Promise<void> {
+    try {
+      await this.productsService.update(this.form);
+    } catch (e) {
+      // TODO: toaster
+      console.log(e);
     }
   }
 
@@ -96,14 +138,11 @@ export default class extends Vue {
     }
 
     if (this.isEditing) {
+      this.updateProduct();
       return;
     }
 
-    try {
-      await this.productsService.add(this.form);
-    } catch (e) {
-      console.log(e);
-    }
+    this.addProduct();
   }
 }
 </script>

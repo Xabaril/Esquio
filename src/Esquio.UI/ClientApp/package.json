@@ -26,17 +26,20 @@
     "bootstrap-material-design": "^4.1.2",
     "bootstrap-vue": "^2.0.0-rc.16",
     "core-js": "^2.6.5",
+    "fetch-intercept": "^2.3.1",
     "inversify-props": "^1.0.2",
     "jquery": "^3.4.1",
     "localforage": "^1.7.3",
     "normalize-scss": "^7.0.1",
+    "nprogress": "^0.2.0",
     "popper.js": "^1.15.0",
     "vee-validate": "^2.2.11",
     "vue": "^2.6.6",
     "vue-i18n": "^8.10.0",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.4",

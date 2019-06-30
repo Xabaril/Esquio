@@ -1,4 +1,5 @@
 export * from './ifilter';
 export * from './material';
 export * from './settings';
-export * from './api-response.model';
+export * from './paginated-response.model';
+export * from './interceptor';

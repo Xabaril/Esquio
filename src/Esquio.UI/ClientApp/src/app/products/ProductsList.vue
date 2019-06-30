@@ -4,7 +4,7 @@
       striped
       hover
       :items="products"
-      :fields="fields"
+      :fields="columns"
       :busy="isLoading"
       :empty-text="$t('common.empty')"
       :empty-filtered-text="$t('common.empty_filtered')"
@@ -68,7 +68,7 @@ export default class extends Vue {
   public name = 'ProductsList';
   public products: Product[] = null;
   public isLoading = true;
-  public fields = [
+  public columns = [
     {
       key: 'name',
       label: () => this.$t('products.fields.name')
