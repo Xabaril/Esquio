@@ -2,7 +2,7 @@
 using Esquio.UI.Api.Features.Flags.Delete;
 using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
-using Esquio.UI.Api.Features.Flags.Rolldown;
+using Esquio.UI.Api.Features.Flags.Rollback;
 using Esquio.UI.Api.Features.Flags.Rollout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,10 +42,10 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Route("api/v1/flags/{featureId:int:min(1)}/rolldown")]
-        public async Task<IActionResult> Rolldown([FromRoute]RolldownFlagRequest rolldownFlagRequest, CancellationToken cancellationToken = default)
+        [Route("api/v1/flags/{featureId:int:min(1)}/rollback")]
+        public async Task<IActionResult> Rollback([FromRoute]RollbackFlagRequest rollbackFlagRequest, CancellationToken cancellationToken = default)
         {
-            await _mediator.Send(rolldownFlagRequest, cancellationToken);
+            await _mediator.Send(rollbackFlagRequest, cancellationToken);
 
             return Ok();
         }
