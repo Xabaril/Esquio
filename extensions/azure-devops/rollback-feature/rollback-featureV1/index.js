@@ -49,7 +49,7 @@ function run() {
                     flagId = Number.parseInt(tl.getInput('flagId', true));
                     esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
                     apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
-                    return [4 /*yield*/, rolldownFeature(esquioUrl, apikey, flagId)];
+                    return [4 /*yield*/, rollbackFeature(esquioUrl, apikey, flagId)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
@@ -62,13 +62,13 @@ function run() {
         });
     });
 }
-function rolldownFeature(esquioUrl, esquioApiKey, flagId) {
+function rollbackFeature(esquioUrl, esquioApiKey, flagId) {
     return __awaiter(this, void 0, void 0, function () {
         var options, req;
         return __generator(this, function (_a) {
             options = {
                 hostname: esquioUrl.host,
-                path: "/api/v1/flags/" + flagId + "/rolldown?apikey=" + esquioApiKey,
+                path: "/api/v1/flags/" + flagId + "/rollback?apikey=" + esquioApiKey,
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,11 +76,11 @@ function rolldownFeature(esquioUrl, esquioApiKey, flagId) {
             };
             req = https.request(options, function (res) {
                 if (res.statusCode === 200) {
-                    console.log('Feature rolled down successfully');
+                    console.log('Feature rollback successful');
                 }
             });
             req.on('error', function (error) {
-                console.error('There has been an error rolling down feature');
+                console.error('There has been an error in feature rollback');
             });
             req.end();
             return [2 /*return*/];
