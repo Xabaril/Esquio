@@ -19,6 +19,22 @@ steps:
   inputs:
     version: 'v0.6.x'
 
+- task: CmdLine@2
+  displayName: TSC rollback feature
+  inputs:
+    script: 'echo Build (tsc) rollback feature
+      tsc'
+    workingDirectory: 'extensions/azure-devops/rollback-feature'
+    failOnStderr: true
+
+- task: CmdLine@2
+  displayName: TSC rollout feature
+  inputs:
+    script: 'echo Build (tsc) rollout feature
+      tsc'
+    workingDirectory: 'extensions/azure-devops/rollout-feature'
+    failOnStderr: true
+
 - task: ExtensionVersion@1
   inputs:
     connectTo: 'VsTeam'

@@ -14,3 +14,12 @@ steps:
 - task: TfxInstaller@1
   inputs:
     version: 'v0.6.x'
+
+- task: ShareExtension@1
+  inputs:
+    connectedServiceName: '$(marketplaceConnection)'
+    connectTo: 'VsTeam'
+    method: 'id'
+    publisherId: '$(publisher)'
+    extensionId: '$(extensionid)'
+    accounts: '$(Organization)'
