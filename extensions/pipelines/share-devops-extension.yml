@@ -17,6 +17,7 @@ steps:
 
 - task: ShareExtension@1
   inputs:
+    connectedServiceName: '$(marketplaceConnection)'
     connectTo: 'VsTeam'
     method: 'id'
     publisherId: '$(publisher)'
