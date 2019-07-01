@@ -44,6 +44,10 @@
                 {
                     return $"api/v1/flags/{featureId}/rollout";
                 }
+                public static string Rollback(int featureId)
+                {
+                    return $"api/v1/flags/{featureId}/rollback";
+                }
                 public static string Delete(int featureId)
                 {
                     return $"api/v1/flags/{featureId}";
