@@ -5,7 +5,7 @@ const https = require('https');
 async function run() {
     try {
         const connection = tl.getInput('EsquioService', true);
-        const flagId = Number.parseInt(tl.getInput('flagId', true));
+        const flagId:string = tl.getInput('flagId', true);
         const esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
         const apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
 
@@ -16,7 +16,7 @@ async function run() {
     }
 }
 
-async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, flagId: number) {
+async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, flagId: string) {
     const options = {
         hostname: esquioUrl.host,
         path: `/api/v1/flags/${flagId}/rollback?apikey=${esquioApiKey}`,

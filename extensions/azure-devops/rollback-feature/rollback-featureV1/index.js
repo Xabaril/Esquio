@@ -46,7 +46,7 @@ function run() {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     connection = tl.getInput('EsquioService', true);
-                    flagId = Number.parseInt(tl.getInput('flagId', true));
+                    flagId = tl.getInput('flagId', true);
                     esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
                     apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
                     return [4 /*yield*/, rollbackFeature(esquioUrl, apikey, flagId)];
