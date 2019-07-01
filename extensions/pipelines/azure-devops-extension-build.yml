@@ -1,7 +1,51 @@
 pool: Hosted Windows 2019 with VS2019
 
+variables:
+  marketplaceConnection: 'Marketplace luisfraile publisher'
+  publisher: luisfraile
+  extensionid: esquio-extensions
+  packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
+
+
 trigger:
   batch: true 
   paths:
     include: 
     - /extensions/azure-devops
+
+
+steps:
+- task: TfxInstaller@1
+  inputs:
+    version: 'v0.6.x'
+
+- task: ExtensionVersion@1
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    publisherId: '$(publisher)'
+    extensionId: '$(extensionid)'
+    versionAction: 'Minor'
+
+- task: PackageVSTSExtension@1
+  inputs:
+    rootFolder: 'extensions/azure-devops'
+    outputPath: '$(packagefile)'
+    extensionVersion: '$(Extension.Version)'
+    updateTasksVersion: false
+
+- task: PublishExtension@1
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    fileType: 'vsix'
+    vsixFile: '$(packagefile)'
+    updateTasksVersion: false
+
+- task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    method: 'id'
+    publisherId: '$(publisher)'
+    extensionId: '$(extensionid)'
