@@ -19,33 +19,47 @@ steps:
   inputs:
     version: 'v0.6.x'
 
-- task: ExtensionVersion@1
+- task: CmdLine@2
   inputs:
-    connectTo: 'VsTeam'
-    connectedServiceName: '$(marketplaceConnection)'
-    publisherId: '$(publisher)'
-    extensionId: '$(extensionid)'
-    versionAction: 'Patch'
+    script: 'echo Build (tsc) rollback feature
+      tsc'
+    workingDirectory: 'extensions/azure-devops/rollback-feature'
+    failOnStderr: true
 
-- task: PackageVSTSExtension@1
+- task: CmdLine@2
   inputs:
-    rootFolder: 'extensions/azure-devops'
-    outputPath: '$(packagefile)'
-    extensionVersion: '$(Extension.Version)'
-    updateTasksVersion: false
+    script: 'echo Build (tsc) rollback feature
+      tsc'
+    workingDirectory: 'extensions/azure-devops/rollout-feature'
+    failOnStderr: true
 
-- task: PublishExtension@1
-  inputs:
-    connectTo: 'VsTeam'
-    connectedServiceName: '$(marketplaceConnection)'
-    fileType: 'vsix'
-    vsixFile: '$(packagefile)'
-    updateTasksVersion: false
+# - task: ExtensionVersion@1
+#   inputs:
+#     connectTo: 'VsTeam'
+#     connectedServiceName: '$(marketplaceConnection)'
+#     publisherId: '$(publisher)'
+#     extensionId: '$(extensionid)'
+#     versionAction: 'Patch'
 
-- task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
-  inputs:
-    connectTo: 'VsTeam'
-    connectedServiceName: '$(marketplaceConnection)'
-    method: 'id'
-    publisherId: '$(publisher)'
-    extensionId: '$(extensionid)'
+# - task: PackageVSTSExtension@1
+#   inputs:
+#     rootFolder: 'extensions/azure-devops'
+#     outputPath: '$(packagefile)'
+#     extensionVersion: '$(Extension.Version)'
+#     updateTasksVersion: false
+
+# - task: PublishExtension@1
+#   inputs:
+#     connectTo: 'VsTeam'
+#     connectedServiceName: '$(marketplaceConnection)'
+#     fileType: 'vsix'
+#     vsixFile: '$(packagefile)'
+#     updateTasksVersion: false
+
+# - task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
+#   inputs:
+#     connectTo: 'VsTeam'
+#     connectedServiceName: '$(marketplaceConnection)'
+#     method: 'id'
+#     publisherId: '$(publisher)'
+#     extensionId: '$(extensionid)'
