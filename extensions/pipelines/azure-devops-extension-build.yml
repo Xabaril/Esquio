@@ -25,7 +25,7 @@ steps:
     connectedServiceName: '$(marketplaceConnection)'
     publisherId: '$(publisher)'
     extensionId: '$(extensionid)'
-    versionAction: 'Minor'
+    versionAction: 'Patch'
 
 - task: PackageVSTSExtension@1
   inputs:
