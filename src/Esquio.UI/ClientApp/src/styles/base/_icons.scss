@@ -1,0 +1,15 @@
+//
+// Create a map for all the icons of the app,
+// will generate automatically all the icon classes.
+//
+// How to use:
+// <div class="icon icon-home">
+//
+
+@import 'mixins/icomoon';
+
+$icons: (
+  ck-play: e900
+);
+
+@include icomoon-generate($icons);

@@ -1,0 +1,28 @@
+@import '../base/variables';
+
+.table {
+  th,
+  thead th,
+  td {
+    border: 0;
+  }
+}
+
+.table-striped {
+  tbody tr {
+    $color: darken(get-color(basic, brightest), 2%);
+
+    background-color: $color;
+    box-shadow: transparent 0 0 0 1px;
+
+    &:hover {
+      background-color: $color;
+      box-shadow: rgba(get-color(secondary, brighter), .25) 0 0 0 1px;
+    }
+  }
+
+  tbody tr:nth-of-type(odd),
+  tbody tr:nth-of-type(odd):hover {
+    background-color: get-color(basic, brightest);
+  }
+}

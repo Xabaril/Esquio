@@ -1,0 +1,11 @@
+//
+// Font-face generator for all the fonts of the project,
+// will be useful to add different files for each font.
+//
+
+@import 'variables';
+@import 'mixins/fonts';
+
+@include font-include(OpenSans, Light, get-font-weight(light), normal);
+@include font-include(OpenSans, Regular, get-font-weight(normal), normal);
+@include font-include(OpenSans, Bold, get-font-weight(bold), normal);

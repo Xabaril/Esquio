@@ -1,0 +1,26 @@
+//
+// Define global styles for the application,
+// usually html and body content.
+//
+
+html,
+body {
+  $font-size: 16px;
+
+  background: get-color(basic, brightest);
+  color: get-color(basic, darkest);
+  font-family: 'OpenSans';
+  font-size: $font-size * .65;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  @media screen and (min-width: get-media(s)) {
+    font-size: $font-size * .8;
+  }
+
+  @media screen and (max-width: get-media(m)) {
+    font-size: $font-size;
+  }
+}
