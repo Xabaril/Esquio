@@ -73,7 +73,7 @@ namespace Esquio.UI
                 preConfigure: host =>
                 {
                     var rewriteOptions = new RewriteOptions()
-                       .AddRewrite(@"^(?!.*(api\/|.*\.(js|ico)|fonts\/|img\/|static\/|swagger*|ws\/*)).*$", "index.html", skipRemainingRules: true);
+                       .AddRewrite(@"^(?!.*(api\/|.*\.(js|css|ico)|fonts\/|img\/|static\/|swagger*|ws\/*)).*$", "index.html", skipRemainingRules: true);
 
                     return host
                         .UseHttpsRedirection()
