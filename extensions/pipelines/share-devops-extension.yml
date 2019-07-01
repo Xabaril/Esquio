@@ -1,0 +1,16 @@
+pool: Hosted Windows 2019 with VS2019
+
+variables:
+  marketplaceConnection: 'Marketplace luisfraile'
+  publisher: luisfraile
+  extensionid: esquio-extensions
+  packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
+
+
+trigger: none
+
+
+steps:
+- task: TfxInstaller@1
+  inputs:
+    version: 'v0.6.x'
