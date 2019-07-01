@@ -434,6 +434,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Be(StatusCodes.Status400BadRequest);
         }
 
+
         [Fact]
         [ResetDatabase]
         public async Task post_response_created_when_add_new_toggle()

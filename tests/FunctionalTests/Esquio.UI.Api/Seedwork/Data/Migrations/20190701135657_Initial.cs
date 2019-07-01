@@ -8,6 +8,21 @@ namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ApiKeys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    Description = table.Column<string>(maxLength: 2000, nullable: true),
+                    Key = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiKeys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -92,6 +107,7 @@ namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Toggles", x => x.Id);
+                    table.UniqueConstraint("IX_ToggeFeature", x => new { x.Type, x.FeatureEntityId });
                     table.ForeignKey(
                         name: "FK_Toggles_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
@@ -122,8 +138,14 @@ namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Features_Name",
-                table: "Features",
+                name: "IX_ApiKeys_Key",
+                table: "ApiKeys",
+                column: "Key",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApiKeys_Name",
+                table: "ApiKeys",
                 column: "Name",
                 unique: true);
 
@@ -164,16 +186,13 @@ namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
                 name: "IX_Toggles_FeatureEntityId",
                 table: "Toggles",
                 column: "FeatureEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Toggles_Type",
-                table: "Toggles",
-                column: "Type",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApiKeys");
+
             migrationBuilder.DropTable(
                 name: "FeatureTags");
 

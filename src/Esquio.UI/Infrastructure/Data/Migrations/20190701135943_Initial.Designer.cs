@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esquio.UI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20190622201932_Initial")]
+    [Migration("20190701135943_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,10 +166,10 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeatureEntityId");
+                    b.HasAlternateKey("Type", "FeatureEntityId")
+                        .HasName("IX_ToggeFeature");
 
-                    b.HasIndex("Type")
-                        .IsUnique();
+                    b.HasIndex("FeatureEntityId");
 
                     b.ToTable("Toggles");
                 });

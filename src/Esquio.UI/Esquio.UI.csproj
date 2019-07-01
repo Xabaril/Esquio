@@ -22,6 +22,10 @@
    <ItemGroup>
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
   </ItemGroup>
+  
+   <ItemGroup>
+     <Folder Include="Infrastructure\Data\" />
+   </ItemGroup>
 
 </Project>
  

@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20190606104620_RemoveUniqueFeatureNameIndex")]
-    partial class RemoveUniqueFeatureNameIndex
+    [Migration("20190701135657_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview5.19227.1")
+                .HasAnnotation("ProductVersion", "3.0.0-preview6.19304.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -166,10 +166,10 @@ namespace FunctionalTests.Esquio.UI.API.Seedwork.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeatureEntityId");
+                    b.HasAlternateKey("Type", "FeatureEntityId")
+                        .HasName("IX_ToggeFeature");
 
-                    b.HasIndex("Type")
-                        .IsUnique();
+                    b.HasIndex("FeatureEntityId");
 
                     b.ToTable("Toggles");
                 });

@@ -107,6 +107,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Toggles", x => x.Id);
+                    table.UniqueConstraint("IX_ToggeFeature", x => new { x.Type, x.FeatureEntityId });
                     table.ForeignKey(
                         name: "FK_Toggles_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
@@ -185,12 +186,6 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 name: "IX_Toggles_FeatureEntityId",
                 table: "Toggles",
                 column: "FeatureEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Toggles_Type",
-                table: "Toggles",
-                column: "Type",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
