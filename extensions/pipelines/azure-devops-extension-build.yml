@@ -29,8 +29,7 @@ steps:
 - task: CmdLine@2
   displayName: TSC rollback feature
   inputs:
-    script: 'echo Build (tsc) rollback feature
-      tsc'
+    script: 'tsc'
     workingDirectory: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
     failOnStderr: true
 
@@ -42,8 +41,7 @@ steps:
 - task: CmdLine@2
   displayName: TSC rollout feature
   inputs:
-    script: 'echo Build (tsc) rollout feature
-      tsc'
+    script: 'tsc'
     workingDirectory: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
     failOnStderr: true
 
