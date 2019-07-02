@@ -45,17 +45,17 @@
                 "dataSources": [
                     {
                         "name": "TestConnection",
-                        "endpointUrl": "{{endpoint.url}}/api/v1/products?apikey={{endpoint.apiKey}}",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products",
                         "resultSelector": "jsonpath:$.result[*]"                     
                     },
                     {
                         "name": "EsquioProducts",
-                        "endpointUrl": "{{endpoint.url}}/api/v1/products?apikey={{endpoint.apiKey}}",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products",
                         "resultSelector": "jsonpath:$.result[*]"
                     },
                     {
                         "name": "EsquioFlags",
-                        "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags?apikey={{endpoint.apiKey}}",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags",
                         "resultSelector": "jsonpath:$.result[*]"
                     }
                 ],
