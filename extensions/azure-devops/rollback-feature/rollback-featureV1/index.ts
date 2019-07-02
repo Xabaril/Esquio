@@ -11,7 +11,7 @@ async function run() {
         const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
         const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
 
-        await rollbackFeature(esquioUrl, esquioApiKey, flagId)
+        await rollbackFeature(esquioUrl, esquioApiKey, flagId);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
@@ -24,7 +24,8 @@ async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: 
         path: `/api/v1/flags/${flagId}/rollback?apikey=${esquioApiKey}`,
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-api-key': esquioApiKey
         }
     }
     const req = https.request(options, (res: any) => {
