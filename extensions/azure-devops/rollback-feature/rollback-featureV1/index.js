@@ -72,13 +72,20 @@ function rollbackFeature(esquioUrl, esquioApiKey, flagId) {
                 path: "/api/v1/flags/" + flagId + "/rollback?apikey=" + esquioApiKey,
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-api-key': esquioApiKey
                 }
             };
             req = https.request(options, function (res) {
                 if (res.statusCode === 200) {
-                    console.log('Feature rollback successful');
+                    console.log('Feature rollback succesful');
                 }
+                res.on('data', function (data) {
+                    if (res.statusCode != 200) {
+                        var responseData = JSON.parse(data);
+                        console.error("Error in feature rollback " + responseData.detail + " HttpCode: " + res.statusCode);
+                    }
+                });
             });
             req.on('error', function (error) {
                 console.error('There has been an error in feature rollback');

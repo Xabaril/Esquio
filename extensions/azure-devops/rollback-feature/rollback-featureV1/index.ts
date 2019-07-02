@@ -29,14 +29,21 @@ async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: 
         }
     }
     const req = https.request(options, (res: any) => {
-        if(res.statusCode === 200){
-            console.log('Feature rollback successful');
+        if (res.statusCode === 200) {
+            console.log('Feature rollback succesful');
         }
+
+        res.on('data', (data:any) => {
+            if (res.statusCode != 200) {
+                const responseData = JSON.parse(data);
+                console.error(`Error in feature rollback ${responseData.detail} HttpCode: ${res.statusCode}`);
+            }
+        });
     });
     req.on('error', (error: any) => {
         console.error('There has been an error in feature rollback');
     });
-    
+
     req.end();
 }
 

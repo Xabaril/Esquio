@@ -30,11 +30,18 @@ async function rolloutFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: s
     }
     const req = https.request(options, (res: any) => {
         if (res.statusCode === 200) {
-            console.log('Feature rolled out successfully');
+            console.log('Feature rollout succesful');
         }
+
+        res.on('data', (data:any) => {
+            if (res.statusCode != 200) {
+                const responseData = JSON.parse(data);
+                console.error(`Error in feature rollout ${responseData.detail} HttpCode: ${res.statusCode}`);
+            }
+        });
     });
     req.on('error', (error: any) => {
-        console.error('There has been an error rolling out feature');
+        console.error('There has been an error in feature rollout');
     });
 
     req.end();

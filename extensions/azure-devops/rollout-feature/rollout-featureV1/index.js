@@ -40,22 +40,26 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, authInfo;
+        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
         return __generator(this, function (_a) {
-            try {
-                esquioConnection = tl.getInput('EsquioService', true);
-                flagId = tl.getInput('flagId', true);
-                esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
-                serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
-                esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                authInfo = JSON.stringify(serverEndpointAuth);
-                console.log("url: " + url + " apikey: " + esquioApiKey + " authinfo: " + authInfo);
-                // await rolloutFeature(esquioUrl, apikey, flagId)
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    esquioConnection = tl.getInput('EsquioService', true);
+                    flagId = tl.getInput('flagId', true);
+                    esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
+                    serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
+                    esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
+                    return [4 /*yield*/, rolloutFeature(esquioUrl, esquioApiKey, flagId)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    tl.setResult(tl.TaskResult.Failed, err_1.message);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
-            catch (err) {
-                tl.setResult(tl.TaskResult.Failed, err.message);
-            }
-            return [2 /*return*/];
         });
     });
 }
@@ -74,11 +78,17 @@ function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
             };
             req = https.request(options, function (res) {
                 if (res.statusCode === 200) {
-                    console.log('Feature rolled out successfully');
+                    console.log('Feature rollout succesful');
                 }
+                res.on('data', function (data) {
+                    if (res.statusCode != 200) {
+                        var responseData = JSON.parse(data);
+                        console.error("Error in feature rollout " + responseData.detail + " HttpCode: " + res.statusCode);
+                    }
+                });
             });
             req.on('error', function (error) {
-                console.error('There has been an error rolling out feature');
+                console.error('There has been an error in feature rollout');
             });
             req.end();
             return [2 /*return*/];

@@ -42,20 +42,6 @@
                     "displayName": "Esquio API Url",
                     "helpText": "Url for the Esquio API to connect to."
                 },
-                "inputDescriptors":[
-                    {
-                        "id": "apiKey",
-                        "name": "Esquio API Key",
-                        "description": "Esquio API key",
-                        "inputMode": "textbox",
-                        "isConfidential": false,
-                        "validation": {
-                            "isRequired": true,
-                            "dataType": "string",
-                            "maxLength": 150
-                        }
-                    }
-                ],
                 "dataSources": [
                     {
                         "name": "TestConnection",
