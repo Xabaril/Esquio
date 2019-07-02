@@ -24,27 +24,27 @@ steps:
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: 'extensions/azure-devops/rollback-feature'
+    workingDir: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
 
 - task: CmdLine@2
   displayName: TSC rollback feature
   inputs:
     script: 'echo Build (tsc) rollback feature
       tsc'
-    workingDirectory: ''
+    workingDirectory: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
     failOnStderr: true
 
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: 'extensions/azure-devops/rollout-feature'
+    workingDir: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
 
 - task: CmdLine@2
   displayName: TSC rollout feature
   inputs:
     script: 'echo Build (tsc) rollout feature
       tsc'
-    workingDirectory: 'extensions/azure-devops/rollout-feature'
+    workingDirectory: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
     failOnStderr: true
 
 - task: ExtensionVersion@1
