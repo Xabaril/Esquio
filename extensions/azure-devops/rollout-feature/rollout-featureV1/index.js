@@ -40,7 +40,7 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey;
+        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, authInfo;
         return __generator(this, function (_a) {
             try {
                 esquioConnection = tl.getInput('EsquioService', true);
@@ -48,7 +48,8 @@ function run() {
                 esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
                 serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
                 esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                console.log("url: " + url + " apikey: " + esquioApiKey);
+                authInfo = JSON.stringify(serverEndpointAuth);
+                console.log("url: " + url + " apikey: " + esquioApiKey + " authinfo: " + authInfo);
                 // await rolloutFeature(esquioUrl, apikey, flagId)
             }
             catch (err) {

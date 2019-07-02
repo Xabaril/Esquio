@@ -14,7 +14,7 @@ async function run() {
         const authInfo = JSON.stringify(serverEndpointAuth);
         console.log(`url: ${url} apikey: ${esquioApiKey} authinfo: ${authInfo}`)
 
-        // await rolloutFeature(esquioUrl, apikey, flagId)
+        await rolloutFeature(esquioUrl, esquioApiKey, flagId)
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
