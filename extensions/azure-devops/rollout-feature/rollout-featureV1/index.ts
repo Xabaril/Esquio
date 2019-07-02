@@ -4,12 +4,16 @@ const https = require('https');
 
 async function run() {
     try {
-        const connection = tl.getInput('EsquioService', true);
-        const flagId:string = tl.getInput('flagId', true);
-        const esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
-        const apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
+        const esquioConnection = tl.getInput('EsquioService', true);
+        const flagId: string = tl.getInput('flagId', true);
+        const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
 
-        await rolloutFeature(esquioUrl, apikey, flagId)
+        const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
+        const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
+
+        console.log(`url: ${url} apikey: ${esquioApiKey}`)
+
+        // await rolloutFeature(esquioUrl, apikey, flagId)
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
@@ -22,18 +26,19 @@ async function rolloutFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: s
         path: `/api/v1/flags/${flagId}/Rollout?apikey=${esquioApiKey}`,
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-api-key': esquioApiKey
         }
     }
     const req = https.request(options, (res: any) => {
-        if(res.statusCode === 200){
+        if (res.statusCode === 200) {
             console.log('Feature rolled out successfully');
         }
     });
     req.on('error', (error: any) => {
         console.error('There has been an error rolling out feature');
     });
-    
+
     req.end();
 }
 

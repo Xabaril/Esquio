@@ -40,16 +40,17 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var connection, flagId, esquioUrl, apikey, err_1;
+        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    connection = tl.getInput('EsquioService', true);
+                    esquioConnection = tl.getInput('EsquioService', true);
                     flagId = tl.getInput('flagId', true);
-                    esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
-                    apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
-                    return [4 /*yield*/, rollbackFeature(esquioUrl, apikey, flagId)];
+                    esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
+                    serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
+                    esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
+                    return [4 /*yield*/, rollbackFeature(esquioUrl, esquioApiKey, flagId)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];

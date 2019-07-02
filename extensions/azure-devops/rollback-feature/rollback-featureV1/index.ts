@@ -4,12 +4,14 @@ const https = require('https');
 
 async function run() {
     try {
-        const connection = tl.getInput('EsquioService', true);
-        const flagId:string = tl.getInput('flagId', true);
-        const esquioUrl = url.parse(tl.getEndpointUrl(connection, false));
-        const apikey = tl.getEndpointDataParameter(connection, 'apiKey', true);
+        const esquioConnection = tl.getInput('EsquioService', true);
+        const flagId: string = tl.getInput('flagId', true);
+        const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
 
-        await rollbackFeature(esquioUrl, apikey, flagId)
+        const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
+        const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
+
+        await rollbackFeature(esquioUrl, esquioApiKey, flagId)
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);

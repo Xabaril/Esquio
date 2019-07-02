@@ -73,15 +73,12 @@
                         "resultSelector": "jsonpath:$.result[*]"
                     }
                 ],
-                "authenticationSchemes": [
-                    {
-                        "type":"ms.vss-endpoint.endpoint-auth-scheme-none"
-                    },
+                "authenticationSchemes": [                  
                     {
                         "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
                         "headers": [
                             {
-                                "name": "Authorization",
+                                "name": "x-api-key",
                                 "value": "{{endpoint.apitoken}}"
                             }
                         ]
