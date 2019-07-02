@@ -11,7 +11,8 @@ async function run() {
         const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
         const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
 
-        console.log(`url: ${url} apikey: ${esquioApiKey}`)
+        const authInfo = JSON.stringify(serverEndpointAuth);
+        console.log(`url: ${url} apikey: ${esquioApiKey} authinfo: ${authInfo}`)
 
         // await rolloutFeature(esquioUrl, apikey, flagId)
     }
