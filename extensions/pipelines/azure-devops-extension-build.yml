@@ -50,7 +50,8 @@ steps:
     rootFolder: 'extensions/azure-devops'
     outputPath: '$(packagefile)'
     extensionVersion: '$(Extension.Version)'
-    updateTasksVersion: false
+    updateTasksVersion: true
+    updateTasksVersionType: 'patch'
 
 - task: PublishExtension@1
   inputs:
