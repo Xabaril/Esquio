@@ -33,15 +33,15 @@ async function rolloutFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: s
             console.log('Feature rollout succesful');
         }
 
-        res.on('data', (data:any) => {
+        res.on('data', (data: any) => {
             if (res.statusCode != 200) {
                 const responseData = JSON.parse(data);
-                console.error(`Error in feature rollout ${responseData.detail} HttpCode: ${res.statusCode}`);
+                tl.setResult(tl.TaskResult.Failed, `Error in feature rollout ${responseData.detail} HttpCode: ${res.statusCode}`);
             }
         });
     });
     req.on('error', (error: any) => {
-        console.error('There has been an error in feature rollout');
+        tl.setResult(tl.TaskResult.Failed, error);
     });
 
     req.end();
