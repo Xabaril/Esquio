@@ -1,0 +1,25 @@
+//
+// Wrappers for project variables, to create a new variable
+// please use `variables-definitions.scss` file.
+//
+// If you want to use a variable, import `variables.scss` file,
+// and add the corresponding map-get wrapper here.
+//
+
+/* stylelint-disable */
+@import './variables-definitions';
+@import './mixins/generic-get';
+
+// Special map for colors
+@function get-color($namespace, $variance: normal) {
+  $color-map: get($color, $namespace);
+
+  @return get($color-map, $variance);
+}
+
+// Generic maps
+@function get-time($key: normal) { @return get($time, $key); }
+@function get-font-weight($key: m) { @return get($font-weight, $key); }
+@function get-font-size($key: m) { @return get($font-size, $key); }
+@function get-media($key: m) { @return get($media, $key); }
+@function get-z($key: m) { @return get($z, $key); }

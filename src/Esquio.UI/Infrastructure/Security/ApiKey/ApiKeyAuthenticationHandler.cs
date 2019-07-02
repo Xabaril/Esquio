@@ -13,7 +13,7 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
     internal class ApiKeyAuthenticationHandler
         : AuthenticationHandler<ApiKeyOptions>
     {
-        const string APIKEY_QUERY_NAME = "apikey";
+        const string APIKEY_QUERY_NAME = "x-api-key";
 
         private readonly IApiKeyStore _apiKeyStore;
 
@@ -27,7 +27,8 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
         {
             Log.ApiKeyAuthenticationBegin(Logger);
 
-            var apiKeyValues = this.Context.Request.Query[APIKEY_QUERY_NAME];
+            var apiKeyValues = this.Context.Request
+                .Headers[APIKEY_QUERY_NAME];
 
             if (apiKeyValues.Any())
             {

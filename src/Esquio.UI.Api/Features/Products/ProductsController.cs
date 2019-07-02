@@ -58,7 +58,7 @@ namespace Esquio.UI.Api.Features.Products
         [Route("api/v1/products")]
         public async Task<IActionResult> Update(UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
-             await _mediator.Send(request, cancellationToken);
+            await _mediator.Send(request, cancellationToken);
 
             return NoContent();
         }
