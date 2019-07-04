@@ -8,10 +8,11 @@ trigger:
     batch: true
     branches:
         include:
-        - PBI66152.Persistence-to-EF-Core
+        - master
     paths:
         include:
-        - PlainConcepts.SIDRA/src/PlainConcepts.SIDRA.Persistence/*
+        - src/*
+        - tests/*
 
 pool:
   name: Hosted Ubuntu 1604
@@ -21,7 +22,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
+#steps:
 # - task: Bash@3
 #   displayName: 'Bash Script'
 #   inputs:
