@@ -1,0 +1,63 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+name: $(rev:r)
+trigger:
+    batch: true
+    branches:
+        include:
+        - PBI66152.Persistence-to-EF-Core
+    paths:
+        include:
+        - PlainConcepts.SIDRA/src/PlainConcepts.SIDRA.Persistence/*
+
+pool:
+  name: Hosted Ubuntu 1604
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: Bash@3
+  displayName: 'Bash Script'
+  inputs:
+    targetType: filePath
+    filePath: './PlainConcepts.SIDRA/build-persistence-agent.sh'
+    workingDirectory: 'PlainConcepts.SIDRA'
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results **/*.trx'
+  inputs:
+    testResultsFormat: VSTest
+    testResultsFiles: '**/*.trx'
+- task: UseDotNet@2
+  displayName: 'DotNet install SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '2.2.300'
+- task: DotNetCoreCLI@2
+  displayName: 'DotNet build'
+  inputs:
+    command: 'build'
+    projects: './PlainConcepts.SIDRA/PlainConcepts.SIDRA.Persistence.sln'
+    feedsToUse: 'select'
+    versioningScheme: 'off'
+- task: DotNetCoreCLI@2
+  displayName: 'DotNet pack'
+  inputs:
+    command: 'pack'
+    feedsToUse: 'select'
+    packagesToPack: './PlainConcepts.SIDRA/src/PlainConcepts.SIDRA.Persistence/PlainConcepts.SIDRA.Persistence.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
+    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'packages'
+    publishLocation: 'Container'
+
