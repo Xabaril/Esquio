@@ -22,42 +22,42 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: Bash@3
-  displayName: 'Bash Script'
-  inputs:
-    targetType: filePath
-    filePath: './PlainConcepts.SIDRA/build-persistence-agent.sh'
-    workingDirectory: 'PlainConcepts.SIDRA'
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results **/*.trx'
-  inputs:
-    testResultsFormat: VSTest
-    testResultsFiles: '**/*.trx'
-- task: UseDotNet@2
-  displayName: 'DotNet install SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.300'
-- task: DotNetCoreCLI@2
-  displayName: 'DotNet build'
-  inputs:
-    command: 'build'
-    projects: './PlainConcepts.SIDRA/PlainConcepts.SIDRA.Persistence.sln'
-    feedsToUse: 'select'
-    versioningScheme: 'off'
-- task: DotNetCoreCLI@2
-  displayName: 'DotNet pack'
-  inputs:
-    command: 'pack'
-    feedsToUse: 'select'
-    packagesToPack: './PlainConcepts.SIDRA/src/PlainConcepts.SIDRA.Persistence/PlainConcepts.SIDRA.Persistence.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
-    versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'packages'
-    publishLocation: 'Container'
+# - task: Bash@3
+#   displayName: 'Bash Script'
+#   inputs:
+#     targetType: filePath
+#     filePath: './PlainConcepts.SIDRA/build-persistence-agent.sh'
+#     workingDirectory: 'PlainConcepts.SIDRA'
+# - task: PublishTestResults@2
+#   displayName: 'Publish Test Results **/*.trx'
+#   inputs:
+#     testResultsFormat: VSTest
+#     testResultsFiles: '**/*.trx'
+# - task: UseDotNet@2
+#   displayName: 'DotNet install SDK'
+#   inputs:
+#     packageType: 'sdk'
+#     version: '2.2.300'
+# - task: DotNetCoreCLI@2
+#   displayName: 'DotNet build'
+#   inputs:
+#     command: 'build'
+#     projects: './PlainConcepts.SIDRA/PlainConcepts.SIDRA.Persistence.sln'
+#     feedsToUse: 'select'
+#     versioningScheme: 'off'
+# - task: DotNetCoreCLI@2
+#   displayName: 'DotNet pack'
+#   inputs:
+#     command: 'pack'
+#     feedsToUse: 'select'
+#     packagesToPack: './PlainConcepts.SIDRA/src/PlainConcepts.SIDRA.Persistence/PlainConcepts.SIDRA.Persistence.csproj'
+#     packDirectory: '$(Build.ArtifactStagingDirectory)'
+#     versioningScheme: 'off'
+#     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Artifacts'
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'packages'
+#     publishLocation: 'Container'
 
