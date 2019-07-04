@@ -55,6 +55,7 @@ steps:
     command: test
     projects: '**/Esquio.sln'
 - task: PublishTestResults@2
+  displayName: 'publish tests results'
   inputs:
     testResultsFormat: 'XUnit'
     testResultsFiles: '/home/vsts/work/_temp/*.trx'
