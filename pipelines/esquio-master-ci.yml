@@ -53,12 +53,12 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: restore
-    arguments: '--no-build'
+    arguments: '--no-build --logger trx'
     projects: '**/Esquio.sln'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'XUnit'
-    testResultsFiles: '**/TEST-*.xml'
+    testResultsFiles: '**/TEST-*.trx'
   
   
 
