@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion>netstandard2.0</NetStandardTargetVersion>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
-    <NetTestSdk>16.0.1</NetTestSdk>
+    <NetTestSdk>16.2.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -56,7 +56,7 @@
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
-    <fluentassertions>5.6.0</fluentassertions>
+    <fluentassertions>5.7.0</fluentassertions>
     <achevetesthost>2.2.1</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
