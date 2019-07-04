@@ -46,7 +46,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
-    command: restore
+    command: build
     arguments: '--configuration $(buildConfiguration) --no-restore'
     projects: '**/Esquio.sln'
 - task: DotNetCoreCLI@2
