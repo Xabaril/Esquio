@@ -9,10 +9,9 @@ trigger:
     branches:
         include:
         - master
-    paths:
+    tags:
         include:
-        - src/*
-        - tests/*
+        - release-*
 
 pool:
   name: Hosted Ubuntu 1604
@@ -67,7 +66,6 @@ steps:
     packagesToPack: './src/Esquio/Esquio.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Esquio AspNetCore'
   inputs:
@@ -76,7 +74,6 @@ steps:
     packagesToPack: './src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Configuration Store'
   inputs:
@@ -85,7 +82,6 @@ steps:
     packagesToPack: './src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack EF Core  Store'
   inputs:
@@ -94,7 +90,6 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
   inputs:
