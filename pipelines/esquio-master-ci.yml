@@ -52,7 +52,6 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: test
-    arguments: '--no-build'
     projects: '**/Esquio.sln'
 - task: PublishTestResults@2
   inputs:
