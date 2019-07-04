@@ -11,8 +11,8 @@ trigger:
         - master
     paths:
         include:
-        - src/*
-        - tests/*
+        - ./src/*
+        - ./tests/*
 
 pool:
   name: Hosted Ubuntu 1604
@@ -53,7 +53,7 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: restore
-    arguments: '--no-build --logger trx'
+    arguments: '--no-build --logger trx --results-directory ./out '
     projects: '**/Esquio.sln'
 - task: PublishTestResults@2
   inputs:
