@@ -55,6 +55,10 @@ steps:
     command: restore
     arguments: '--no-build'
     projects: '**/Esquio.sln'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'XUnit'
+    testResultsFiles: '**/TEST-*.xml'
   
   
 
