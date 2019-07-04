@@ -31,7 +31,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-
 steps:
 - task: UseDotNet@2
   inputs:
@@ -58,4 +57,4 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'XUnit'
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '/home/vsts/work/_temp/*.trx'
