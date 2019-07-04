@@ -31,7 +31,6 @@ namespace Esquio.UI
                 {
                     options.DefaultScheme = "secured";
                     options.DefaultChallengeScheme = "secured";
-
                 })
                 .AddApiKey()
                 .AddJwtBearer(options =>
@@ -74,7 +73,7 @@ namespace Esquio.UI
                 preConfigure: host =>
                 {
                     var rewriteOptions = new RewriteOptions()
-                       .AddRewrite(@"^(?!.*(api\/|static\/|swagger*|ws/*)).*$", "index.html", skipRemainingRules: true);
+                       .AddRewrite(@"^(?!.*(api\/|.*\.(js|css|ico)|fonts\/|img\/|static\/|swagger*|ws\/*)).*$", "index.html", skipRemainingRules: true);
 
                     return host
                         .UseHttpsRedirection()

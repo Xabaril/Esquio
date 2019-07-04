@@ -11,7 +11,7 @@ namespace Esquio.AspNetCore.Diagnostics
         }
         public static void FeatureMatcherPolicyEvaluatingFeatures(ILogger logger, string endpointDisplayName, string names, string productName)
         {
-            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName ?? "(default product)", null);
+            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
         public static void FeatureMatcherPolicyEndpointIsNotValid(ILogger logger, string endpointDisplayName)
         {
@@ -27,19 +27,19 @@ namespace Esquio.AspNetCore.Diagnostics
         }
         public static void FeatureTagHelperBegin(ILogger logger, string featureName, string productName)
         {
-            _featureTagHelperBegin(logger, featureName, productName ?? "(default product)", null);
+            _featureTagHelperBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
         public static void FeatureTagHelperClearContent(ILogger logger, string featureName, string productName)
         {
-            _featureTagHelperClearContent(logger, featureName, productName ?? "(default product)", null);
+            _featureTagHelperClearContent(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
         public static void EsquioMiddlewareThrow(ILogger logger, string featureName, string productName, Exception exception)
         {
-            _esquioMiddlewareThrow(logger, featureName, productName ?? "(default product)", exception);
+            _esquioMiddlewareThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
         }
         public static void EsquioMiddlewareEvaluatingFeature(ILogger logger, string featureName, string productName)
         {
-            _esquioMiddlewareEvaluateFeature(logger, featureName, productName ?? "(default product)", null);
+            _esquioMiddlewareEvaluateFeature(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
         public static void EsquioMiddlewareSuccess(ILogger logger)
         {
@@ -61,7 +61,7 @@ namespace Esquio.AspNetCore.Diagnostics
            LogLevel.Debug,
            EventIds.FeatureEndpointMatcherEndPointValid,
            "FeatureMatcherPolicy set validity TRUE to endpoint {endpointDisplayName}.");
-        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyExecutingFallbackEndpoint= LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyExecutingFallbackEndpoint = LoggerMessage.Define<string>(
           LogLevel.Debug,
           EventIds.FeatureEndpointMatcherUsingFallbackEndPoint,
           "FeatureMatcherPolicy use fallback enpoint configured service because the endpoint for request {requestPath} does not have valid candidates to use.");

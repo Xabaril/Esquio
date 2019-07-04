@@ -1,0 +1,40 @@
+//
+// Mixin to generate utility classes for any map variable
+//
+// Example:
+// .u {
+//   @include map-utilities(color, get-color, secondary, dark);
+//   @include map-utilities(color, get-color, secondary);
+//   @include map-utilities(border-color, get-color, primary, bright);
+// }
+//
+// Generates the following css
+// .u-color-secondary-dark {
+//   color: #D1B425; }
+
+// .u-color-secondary {
+//   color: #FFDD2E; }
+
+// .u-border-color-primary-bright {
+//   border-color: #48DDDD; }
+//
+// And can be used like
+// <div class="u-color-secondary-dark">
+//
+
+@import '../variables';
+
+// map-utilities(get-color, secondary, dark);
+@mixin map-utilities($prop, $map, $key, $key2: null) {
+  $result: call($map, $key);
+  $extra: '';
+
+  @if ($key2) {
+    $result: call($map, $key, $key2);
+    $extra: '-#{$key2}';
+  }
+
+  &-#{$prop}-#{$key}#{$extra} {
+    #{$prop}: $result;
+  }
+}

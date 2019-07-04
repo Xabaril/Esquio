@@ -12,22 +12,22 @@ namespace Esquio.Configuration.Store.Diagnostics
 
         public static void FeatureNotExist(ILogger logger, string featureName, string productName)
         {
-            _featureNotExist(logger, featureName, productName ?? "(default product)", null);
+            _featureNotExist(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
 
         public static void ParameterNotExist(ILogger logger, string featureName, string productName, string parameterName)
         {
-            _parameterNotExist(logger, featureName, productName ?? "(default product)", parameterName, null);
+            _parameterNotExist(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, parameterName, null);
         }
 
         public static void FindFeature(ILogger logger, string featureName, string productName)
         {
-            _findFeature(logger, featureName, productName ?? "(default product)", null);
+            _findFeature(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
 
         public static void FindAllPreviewFeatures(ILogger logger, string productName)
         {
-            _findAllPreviewFeatures(logger, productName ?? "(default product)", null);
+            _findAllPreviewFeatures(logger, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
 
 

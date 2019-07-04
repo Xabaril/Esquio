@@ -164,10 +164,10 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FeatureEntityId");
+                    b.HasAlternateKey("Type", "FeatureEntityId")
+                        .HasName("IX_ToggeFeature");
 
-                    b.HasIndex("Type")
-                        .IsUnique();
+                    b.HasIndex("FeatureEntityId");
 
                     b.ToTable("Toggles");
                 });

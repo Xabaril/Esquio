@@ -21,8 +21,8 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.Property(t => t.Type)
                .IsRequired()
                .HasMaxLength(200);
-            builder.HasIndex(t => t.Type)
-                .IsUnique();
+            builder.HasAlternateKey(t => new { t.Type, t.FeatureEntityId })
+                .HasName("IX_ToggeFeature");
             builder.HasMany(t => t.Parameters)
                 .WithOne()
                 .HasForeignKey(nameof(ParameterEntity.ToggleEntityId))

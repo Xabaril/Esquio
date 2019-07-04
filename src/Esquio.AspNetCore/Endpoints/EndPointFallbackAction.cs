@@ -6,7 +6,7 @@ namespace Esquio.AspNetCore.Endpoints
     /// <summary>
     /// Define common fallback actions to be used when selected endpoint does not have candidates.
     /// </summary>
-    public static class EndPointFallbackAction
+    public static class EndpointFallbackAction
     {
 
         /// <summary>
