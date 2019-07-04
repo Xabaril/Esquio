@@ -17,12 +17,41 @@ trigger:
 pool:
   name: Hosted Ubuntu 1604
 
+resources:
+  containers:
+  - container: sqlserver
+    image: microsoft/mssql-server-linux
+    options: -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Password12!"
+    ports:
+      - 1833:1433
+services:
+  sqlserver: sqlserver
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-#steps:
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.0.100-preview6-012264'
+    includePreviewVersions: true
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: '**/Esquio.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: restore
+    arguments: '--configuration $(buildConfiguration) --no-restore'
+    projects: '**/Esquio.sln'
+  
+  
+
 # - task: Bash@3
 #   displayName: 'Bash Script'
 #   inputs:
