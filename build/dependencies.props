@@ -47,7 +47,7 @@
 
   <PropertyGroup Label="Testing Dependencies">
     <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+    <microsoftaspnetcoretesthost>3.0.0-preview6.19307.2</microsoftaspnetcoretesthost>
     
     <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
     <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
