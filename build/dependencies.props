@@ -15,7 +15,15 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions">
+
+  <PropertyGroup Label="Esquio Versions">
+    <esquio>1.0.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>1.0.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioconfigurationstore>1.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquioentityframeworkstore>1.0.0$(VersionSuffix)</esquioentityframeworkstore>
+  </PropertyGroup>
+  
+  <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
     <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
@@ -60,6 +68,7 @@
     <achevetesthost>2.2.1</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
+  
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>
