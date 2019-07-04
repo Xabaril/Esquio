@@ -33,6 +33,7 @@ variables:
   buildConfiguration: 'Release'
 steps:
 - task: UseDotNet@2
+  displayName: 'install dotnet sdk'
   inputs:
     packageType: 'sdk'
     version: '3.0.100-preview6-012264'
@@ -62,7 +63,7 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '/src/Esquio/Esquio.csproj'
+    packagesToPack: './src/Esquio/Esquio.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
@@ -71,7 +72,7 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '/src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
+    packagesToPack: './src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
@@ -80,7 +81,7 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '/src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj'
+    packagesToPack: './src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
@@ -89,7 +90,7 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '/src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
+    packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
