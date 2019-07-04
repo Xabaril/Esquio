@@ -328,7 +328,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_not_found_if_product_does_not_exist()
+        public async Task get_response_not_found_if_product_does_not_exist()
         {
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Product.Get(1))
@@ -342,7 +342,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_ok_if_product_exist()
+        public async Task get_response_ok_if_product_exist()
         {
             var product = Builders.Product()
              .WithName("product#1")

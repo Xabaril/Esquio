@@ -89,7 +89,42 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task rollout_is_idempotent()
+        {
+            var product = Builders.Product()
+                .WithName("product#2")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature")
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
