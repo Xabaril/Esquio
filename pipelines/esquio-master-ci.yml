@@ -11,8 +11,8 @@ trigger:
         - master
     paths:
         include:
-        - /src/*
-        - /tests/*
+        - src/*
+        - tests/*
 
 pool:
   name: Hosted Ubuntu 1604
