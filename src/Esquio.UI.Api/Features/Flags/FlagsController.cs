@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Flags
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     public class FlagsController : ControllerBase
     {

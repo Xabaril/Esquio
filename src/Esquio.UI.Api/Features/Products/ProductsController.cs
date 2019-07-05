@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Products
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     public class ProductsController : ControllerBase
     {
