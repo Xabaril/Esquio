@@ -38,10 +38,23 @@
         slot="id"
         slot-scope="data"
       >
-        <div class="text-center">
+        <div class="text-right">
           <router-link :to="{name: 'products-edit', params: {id: data.item.id}}">
-            <button type="button" class="btn btn-sm btn-raised btn-primary">{{$t('products.actions.see_detail')}}</button>
+            <button
+              type="button"
+              class="btn btn-sm btn-raised btn-primary"
+            >
+              {{$t('products.actions.see_detail')}}
+            </button>
           </router-link>
+
+          <button
+            type="button"
+            class="btn btn-sm btn-raised btn-danger ml-2"
+            @click="onClickDelete(data.item)"
+          >
+            {{$t('products.actions.delete')}}
+          </button>
         </div>
       </template>
     </b-table>
@@ -98,6 +111,27 @@ export default class extends Vue {
     } catch (e) {
       this.$toasted.global.error({
         message: this.$t('products.errors.get')
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  public async onClickDelete(product: Product): Promise<void> {
+    await this.deleteProduct(product);
+  }
+
+  private async deleteProduct(product: Product): Promise<void> {
+    if (!await this.$bvModal.msgBoxConfirm(this.$t('products.confirm_delete.title', product.name) as string)) {
+      return;
+    }
+
+    try {
+      const response = await this.productsService.remove(product);
+      this.products = this.products.filter(x => x.id !== product.id);
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('products.errors.delete')
       });
     } finally {
       this.isLoading = false;

@@ -15,7 +15,8 @@
           "add_feature": "Add feature",
           "save": "Save product",
           "see_detail": "Open",
-          "add_first": "Add your first product"
+          "add_first": "Add your first product",
+          "delete": "Delete"
         },
         "fields": {
           "id": "Identifier",
@@ -30,11 +31,15 @@
           "get": "Cannot fetch products",
           "add": "Cannot create this product",
           "detail": "Cannot fetch this product",
-          "update": "Cannot update the product"
+          "update": "Cannot update the product",
+          "delete": "Cannot delete the product"
         },
         "success": {
           "add": "The new product was created",
           "update": "The product was updated"
+        },
+        "confirm_delete": {
+          "title": "Are you sure to delete '{0}' product?"
         }
     },
     "home": {

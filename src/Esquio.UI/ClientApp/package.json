@@ -24,7 +24,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "bootstrap-material-design": "^4.1.2",
-    "bootstrap-vue": "^2.0.0-rc.16",
+    "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
     "fetch-intercept": "^2.3.1",
     "inversify-props": "^1.0.2",

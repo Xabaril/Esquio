@@ -6,4 +6,5 @@ export interface IProductsService {
   detail(id: number): Promise<Product>;
   add(product: Product): Promise<void>;
   update(product: Product): Promise<void>;
+  remove(product: Product): Promise<void>;
 }
