@@ -1,4 +1,4 @@
-#Getting started with Esquio in ASP.NET Core
+Getting started with Esquio in ASP.NET Core
 ============================================
 
 In this article, we are going to see how easy it is to use Esquio in your ASP.NET Core application using the NuGet packages provided by Xabaril.
@@ -90,7 +90,7 @@ ASP.NET MVC
 
 With **ASP.NET MVC Core** we have different options to check if a feature is enabled. For example we can use the ``FeatureTagHelper`` inside our Razor views to show or hide Razor fragments depending on feature is enabled or not.
 
-```csharp
+``` csharp
 <feature names="@Flags.MatchScore">
     <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
 </feature>
