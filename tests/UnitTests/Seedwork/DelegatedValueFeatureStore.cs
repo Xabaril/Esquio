@@ -24,15 +24,5 @@ namespace UnitTests.Seedwork
         {
             return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName));
         }
-
-        public Task<IEnumerable<Feature>> FindUserPreviewFeatures(string productName = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> EnableUserPreviewFeature(string featureName, string userName, string productName = null)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

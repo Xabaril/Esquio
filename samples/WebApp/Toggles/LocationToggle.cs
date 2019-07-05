@@ -36,7 +36,7 @@ namespace WebApp.Toggles
 
             string allowedCountries = data.Countries;
             var currentCountry = await _locationProviderService
-                .GetCountryName(GetRemoteIpAddress());
+                .GetCountryName(GetRemoteIpAddress(), cancellationToken);
 
             if (allowedCountries != null
                 &&
