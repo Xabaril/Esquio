@@ -9,6 +9,7 @@ namespace WebApp.Services
     {
         private readonly IEnumerable<Match> fakeMatches = FakeMatch.Matches;
         private readonly IEnumerable<MatchMinute> fakeMatchMinutes = FakeMatch.Minutes;
+
         public IEnumerable<Match> GetNextMatches(int max)
         {
             return this.fakeMatches.Take(max);

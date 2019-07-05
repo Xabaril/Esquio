@@ -33,15 +33,13 @@ namespace WebApp
                     .AddViewLocalization(
                         LanguageViewLocationExpanderFormat.Suffix,
                         opts => { opts.ResourcesPath = "Resources"; })
-                    .AddNewtonsoftJson()
+                    //.AddNewtonsoftJson()
                 .Services
                 .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                     .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio")
                 .Services
                 .AddSingleton<IMatchService, MatchService>()
-                .AddHttpClient()
-                .AddTransient<ILocationProviderService, IPApiLocationProviderService>()
                 .AddAuthentication(setup =>
                 {
                     setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

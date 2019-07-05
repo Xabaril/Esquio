@@ -3,29 +3,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebApp.Toggles
 {
-    [DesignType(Description = "Toggle that is active depending request ip location.")]
-    [DesignTypeParameter(ParameterName = Countries, ParameterType = "System.String", ParameterDescription = "Collection of countries delimited by ';' character.")]
     public class LocationToggle
         : IToggle
     {
-        const string Countries = nameof(Countries);
+        const string BASE_ADDRESS = "http://ip-api.com/json/";
+
+        static JsonSerializerOptions _serializerOptions = new JsonSerializerOptions()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+            AllowTrailingCommas = true
+        };
 
         static char[] split_characters = new char[] { ';' };
 
         private readonly IRuntimeFeatureStore _featureStore;
-        private readonly ILocationProviderService _locationProviderService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LocationToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor, ILocationProviderService locationProviderService)
+        public LocationToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException();
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            _locationProviderService = locationProviderService ?? throw new ArgumentNullException(nameof(locationProviderService));
         }
 
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
@@ -34,9 +39,9 @@ namespace WebApp.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            string allowedCountries = data.Countries;
-            var currentCountry = await _locationProviderService
-                .GetCountryName(GetRemoteIpAddress(), cancellationToken);
+            var allowedCountries = (string)data.Countries;
+            var location = await GetLocationFromIp(GetRemoteIpAddress(), cancellationToken);
+            var currentCountry = location?.Country;
 
             if (allowedCountries != null
                 &&
@@ -70,6 +75,50 @@ namespace WebApp.Toggles
             }
 
             return remoteIpAddress;
+        }
+
+        async Task<IPApiData> GetLocationFromIp(string ipAddress, CancellationToken cancellationToken = default)
+        {
+#if DEBUG
+            if (ipAddress == "0.0.0.1")
+            {
+                ipAddress = "213.97.0.42";
+            }
+#endif
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync($"{BASE_ADDRESS}{ipAddress}", cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return await JsonSerializer.ReadAsync<IPApiData>(
+                        utf8Json: stream,
+                        options:_serializerOptions,
+                        cancellationToken: cancellationToken);
+                }
+            }
+
+
+            return default;
+        }
+
+        private class IPApiData
+        {
+            public string Query { get; set; }
+            public string Status { get; set; }
+            public string Country { get; set; }
+            public string CountryCode { get; set; }
+            public string Region { get; set; }
+            public string RegionName { get; set; }
+            public string City { get; set; }
+            public string Zip { get; set; }
+            public float Lat { get; set; }
+            public float Lon { get; set; }
+            public string Timezone { get; set; }
+            public string Isp { get; set; }
+            public string Org { get; set; }
+            public string _as { get; set; }
         }
     }
 }

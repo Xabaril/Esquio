@@ -6,28 +6,8 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Resources\Views\Shared\_Layout - Copy.Designer.cs" />
-    <Compile Remove="Resources\Views\Shared\_Layout.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\assets\.DS_Store" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Resources\Index.resx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Views\Match\Index.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(microsoftaspnetcoremvcnewtonsoftjson)" />
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
   </ItemGroup>
@@ -56,12 +36,6 @@
     </Compile>
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
 
   <ItemGroup>
