@@ -1,8 +1,8 @@
-import { Feature } from './features';
+import { Flag } from './flags';
 
 export interface Product {
   id: string;
   name: string;
   description: string;
-  features?: Feature[];
+  flags?: Flag[];
 }

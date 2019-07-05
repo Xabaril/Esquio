@@ -27,9 +27,18 @@ export default (): RouteConfig[] => {
                     props: true
                 },
                 {
-                  path: 'add-feature',
-                  name: 'features-add',
-                    // component: () => import('./FeaturesForm.vue')
+                  path: ':productId/add-flag',
+                  name: 'flags-add',
+                    component: () => import('./flags/FlagsForm.vue')
+                },
+                {
+                  path: ':productId/edit-flag',
+                  redirect: ':productId/add-flag'
+                },
+                {
+                  path: ':productId/edit-flag/:id',
+                  name: 'flags-edit',
+                    component: () => import('./flags/FlagsForm.vue')
                 },
             ]
         }

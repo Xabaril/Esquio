@@ -20,10 +20,6 @@
       />
     </form>
 
-    <div class="row" v-if="hasFlags">
-      {{ this.flags }}
-    </div>
-
     <Floating
       :text="$t('products.actions.save')"
       :icon="floatingIcon"
@@ -35,7 +31,7 @@
       v-if="isEditing"
       :isTop="true"
       :text="$t('products.actions.add_flag')"
-      :to="{name: 'flags-add', productId: form.id}"
+      :to="{name: 'flags-add'}"
     />
   </section>
 </template>
@@ -44,9 +40,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { Floating, FloatingIcon, InputText } from '~/shared';
-import { Product } from './product.model';
-import { Flag, IFlagsService } from './flags';
-import { IProductsService } from './iproducts.service';
+import { Flag } from './flag.model';
+import { IFlagsService } from './iflags.service';
 
 @Component({
   components: {
@@ -55,23 +50,18 @@ import { IProductsService } from './iproducts.service';
   }
 })
 export default class extends Vue {
-  public name = 'ProductsForm';
-  public flags: Flag[] = null;
+  public name = 'FlagsForm';
   public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
-  public form: Product = { id: null, name: null, description: null };
+  public form: Flag = { productId: null, id: null, name: null, description: null, enabled: false };
 
-  @Inject() productsService: IProductsService;
   @Inject() flagsService: IFlagsService;
 
   @Prop() id: string;
+  @Prop() productId: string;
 
   get isEditing(): boolean {
     return !!this.id;
-  }
-
-  get hasFlags(): boolean {
-    return this.isEditing && !!this.flags;
   }
 
   get isSaveActionDisabled(): boolean {
@@ -89,12 +79,11 @@ export default class extends Vue {
 
     this.isLoading = true;
     await this.getProduct();
-    await this.getFlags();
   }
 
   public async getProduct(): Promise<void> {
     try {
-      const { name, description, id } = await this.productsService.detail(
+      const { name, description, id } = await this.flagsService.detail(
         Number(this.id)
       );
 
@@ -110,22 +99,9 @@ export default class extends Vue {
     }
   }
 
-  public async getFlags(): Promise<void> {
-    try {
-      const response = await this.flagsService.get(this.form.id);
-      this.flags = response.result;
-    } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.get')
-      });
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
   public async addProduct(): Promise<void> {
     try {
-      await this.productsService.add(this.form);
+      await this.flagsService.add(this.form);
 
       this.$router.push({
         name: 'products-list'
@@ -143,7 +119,7 @@ export default class extends Vue {
 
   public async updateProduct(): Promise<void> {
     try {
-      await this.productsService.update(this.form);
+      await this.flagsService.update(this.form);
 
       this.$router.push({
         name: 'products-list'

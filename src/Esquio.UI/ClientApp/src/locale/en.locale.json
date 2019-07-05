@@ -12,7 +12,7 @@
     "products": {
         "actions": {
           "add": "Add product",
-          "add_feature": "Add feature",
+          "add_flag": "Add flag",
           "save": "Save product",
           "see_detail": "Open",
           "add_first": "Add your first product",
@@ -41,6 +41,13 @@
         "confirm_delete": {
           "title": "Are you sure to delete '{0}' product?"
         }
+    },
+    "flags": {
+      "get": "Cannot fetch flags",
+      "add": "Cannot create this flag",
+      "detail": "Cannot fetch this flag",
+      "update": "Cannot update the flag",
+      "delete": "Cannot delete the flag"
     },
     "home": {
         "title": "Home page"
