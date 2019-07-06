@@ -63,6 +63,7 @@ When working with Esquio you can attach feature metadata to an endpoint. We do t
         });
 
 You can specify many features separated by comma, so you can restrict access to the endpoints if a feature or a group features are enabled or not.
+
 If you want more fine grain control over your controllers, Esquio provides a ``FeatureFilter`` attribute that forces you to supply a comma separated list of features names. You can specifies that access to a controller or action method is restricted to users if theses features are enabled or not::
 
         [FeatureFilter(Names = Flags.MinutesRealTime)]
