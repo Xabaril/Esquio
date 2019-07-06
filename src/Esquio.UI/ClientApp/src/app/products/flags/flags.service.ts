@@ -55,6 +55,34 @@ export class FlagsService implements IFlagsService {
     }
   }
 
+  public async rollout(flag: Flag): Promise<void> {
+    const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}/rollout`, {
+      method: 'PUT',
+      body: JSON.stringify({ featureId: flag.id }),
+      headers: {
+        'Content-Type': 'application/json', // TODO: interceptor
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Cannot update flag ${flag.id}`);
+    }
+  }
+
+  public async rollback(flag: Flag): Promise<void> {
+    const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}/rollback`, {
+      method: 'PUT',
+      body: JSON.stringify({ featureId: flag.id }),
+      headers: {
+        'Content-Type': 'application/json', // TODO: interceptor
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Cannot update flag ${flag.id}`);
+    }
+  }
+
   public async remove(flag: Flag): Promise<void> {
     const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}`, {
       method: 'DELETE'

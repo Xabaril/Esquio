@@ -1,5 +1,6 @@
 <template>
   <section class="products_list container u-container-medium">
+    <h1>{{$t('products.title')}}</h1>
     <b-table
       striped
       hover
@@ -129,6 +130,9 @@ export default class extends Vue {
     try {
       const response = await this.productsService.remove(product);
       this.products = this.products.filter(x => x.id !== product.id);
+      this.$toasted.global.success({
+        message: this.$t('products.success.delete')
+      });
     } catch (e) {
       this.$toasted.global.error({
         message: this.$t('products.errors.delete')

@@ -6,5 +6,6 @@ export {
   ModalPlugin,
   PaginationPlugin,
   SpinnerPlugin,
-  TablePlugin
+  TablePlugin,
+  FormCheckboxPlugin
 } from 'bootstrap-vue';

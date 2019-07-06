@@ -1,5 +1,8 @@
 <template>
-  <section class="products_form container u-container-medium">
+  <section class="products_form container u-container-medium pl-0 pr-0">
+    <div class="row">
+      <h1>{{$t('products.detail')}}</h1>
+    </div>
     <form class="row">
       <input-text
         class="products_form-group form-group col-md-5"
@@ -21,7 +24,8 @@
     </form>
 
     <div class="row" v-if="hasFlags">
-      {{ this.flags }}
+      <h2>{{$t('flags.title')}}</h2>
+      <FlagsList :productId="id"/>
     </div>
 
     <Floating
@@ -35,7 +39,7 @@
       v-if="isEditing"
       :isTop="true"
       :text="$t('products.actions.add_flag')"
-      :to="{name: 'flags-add', productId: form.id}"
+      :to="{name: 'flags-add', params: { productId: form.id } }"
     />
   </section>
 </template>
@@ -45,13 +49,14 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { Floating, FloatingIcon, InputText } from '~/shared';
 import { Product } from './product.model';
-import { Flag, IFlagsService } from './flags';
+import { Flag, IFlagsService, FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
     Floating,
-    InputText
+    InputText,
+    FlagsList
   }
 })
 export default class extends Vue {
@@ -112,7 +117,7 @@ export default class extends Vue {
 
   public async getFlags(): Promise<void> {
     try {
-      const response = await this.flagsService.get(this.form.id);
+      const response = await this.flagsService.get(Number(this.form.id));
       this.flags = response.result;
     } catch (e) {
       this.$toasted.global.error({

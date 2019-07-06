@@ -98,10 +98,3 @@ $link-hover-decoration: none;
 @import '../../../node_modules/bootstrap-material-design/scss/themes';
 @import '../../../node_modules/bootstrap-material-design/scss/ripples';
 @import '../../../node_modules/bootstrap-material-design/scss/extensions';
-
-
-.b-table {
-  [role=columnheader] {
-    text-align: left;
-  }
-}

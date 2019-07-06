@@ -52,7 +52,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .floating {
   $margin: 5vh;
-  $top-height: 2rem;
+  $top-height: 2.15rem;
 
   position: fixed;
   bottom: $margin;

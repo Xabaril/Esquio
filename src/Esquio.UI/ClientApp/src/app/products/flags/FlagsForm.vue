@@ -1,38 +1,41 @@
 <template>
-  <section class="products_form container u-container-medium">
+  <section class="flags_form container u-container-medium">
+    <div class="row">
+      <h1>{{$t('flags.detail')}}</h1>
+    </div>
     <form class="row">
       <input-text
-        class="products_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-5"
         v-model="form.name"
-        id="product_name"
-        :label="$t('products.fields.name')"
+        id="flag_name"
+        :label="$t('flags.fields.name')"
         validators="required|min:5"
-        :help-label="$t('products.placeholders.nameHelp')"
+        :help-label="$t('flags.placeholders.nameHelp')"
       />
 
       <input-text
-        class="products_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-5"
         v-model="form.description"
-        id="product_description"
-        :label="$t('products.fields.description')"
+        id="flag_description"
+        :label="$t('flags.fields.description')"
         validators="required|min:5"
-        :help-label="$t('products.placeholders.descriptionHelp')"
+        :help-label="$t('flags.placeholders.descriptionHelp')"
       />
     </form>
 
     <Floating
-      :text="$t('products.actions.save')"
+      :text="$t('flags.actions.save')"
       :icon="floatingIcon"
       :disabled="isSaveActionDisabled"
       @click="onClickSave"
     />
 
-    <Floating
+    <!-- <Floating
       v-if="isEditing"
       :isTop="true"
-      :text="$t('products.actions.add_flag')"
+      :text="$t('flags.actions.add_flag')"
       :to="{name: 'flags-add'}"
-    />
+    /> -->
   </section>
 </template>
 
@@ -58,7 +61,7 @@ export default class extends Vue {
   @Inject() flagsService: IFlagsService;
 
   @Prop() id: string;
-  @Prop() productId: string;
+  @Prop({ required: true }) productId: string;
 
   get isEditing(): boolean {
     return !!this.id;
@@ -78,10 +81,10 @@ export default class extends Vue {
     }
 
     this.isLoading = true;
-    await this.getProduct();
+    await this.getFlag();
   }
 
-  public async getProduct(): Promise<void> {
+  public async getFlag(): Promise<void> {
     try {
       const { name, description, id } = await this.flagsService.detail(
         Number(this.id)
@@ -92,45 +95,54 @@ export default class extends Vue {
       this.form.id = id;
     } catch (e) {
       this.$toasted.global.error({
-        message: this.$t('products.errors.detail')
+        message: this.$t('flags.errors.detail')
       });
     } finally {
       this.isLoading = false;
     }
   }
 
-  public async addProduct(): Promise<void> {
+  public async addFlag(): Promise<void> {
     try {
-      await this.flagsService.add(this.form);
+      await this.flagsService.add({
+        ...this.form,
+        productId: Number(this.productId)
+      });
 
       this.$router.push({
-        name: 'products-list'
+        name: 'products-edit',
+        params: {
+          id: this.productId
+        }
       });
 
       this.$toasted.global.success({
-        message: this.$t('products.success.add')
+        message: this.$t('flags.success.add')
       });
     } catch (e) {
       this.$toasted.global.error({
-        message: this.$t('products.errors.add')
+        message: this.$t('flags.errors.add')
       });
     }
   }
 
-  public async updateProduct(): Promise<void> {
+  public async updateFlag(): Promise<void> {
     try {
       await this.flagsService.update(this.form);
 
       this.$router.push({
-        name: 'products-list'
+        name: 'products-edit',
+        params: {
+          id: this.productId
+        }
       });
 
       this.$toasted.global.success({
-        message: this.$t('products.success.update')
+        message: this.$t('flags.success.update')
       });
     } catch (e) {
       this.$toasted.global.error({
-        message: this.$t('products.errors.update')
+        message: this.$t('flags.errors.update')
       });
     }
   }
@@ -141,17 +153,17 @@ export default class extends Vue {
     }
 
     if (this.isEditing) {
-      this.updateProduct();
+      this.updateFlag();
       return;
     }
 
-    this.addProduct();
+    this.addFlag();
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.products_form {
+.flags_form {
   &-group {
     padding-left: 0;
   }
