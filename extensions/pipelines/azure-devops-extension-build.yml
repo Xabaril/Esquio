@@ -1,8 +1,8 @@
 pool: Hosted Windows 2019 with VS2019
 
 variables:
-  marketplaceConnection: 'Marketplace luisfraile'
-  publisher: luisfraile
+  marketplaceConnection: 'Xabaril Marketplace'
+  publisher: xabaril
   extensionid: esquio-extensions
   packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
 
