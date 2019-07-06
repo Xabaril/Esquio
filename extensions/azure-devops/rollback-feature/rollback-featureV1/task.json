@@ -5,7 +5,7 @@
     "description": "Use this task to rollback features with Esquio",
     "helpMarkDown": "",
     "category": "Utility",
-    "author": "luisfraile",
+    "author": "xabaril",
     "version": {
         "Major": 0,
         "Minor": 2,
