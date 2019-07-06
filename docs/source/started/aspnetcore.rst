@@ -72,7 +72,7 @@ If you want more fine grain control over your controllers, Esquio provides a ``F
             return View();
         }
 
-Also, you can use ``FeatureFilter`` to act as action constraint. You can create two actions with the same ``ActionName`` and decorate one with ```FeatureFilter`` attribute to match the action only when the predefined feature name values are enabled or not.::
+Also, you can use ``FeatureFilter`` to act as action constraint. You can create two actions with the same ``ActionName`` and decorate one with ``FeatureFilter`` attribute to match the action only when the predefined feature name values are enabled or not.::
 
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsNotActive()
