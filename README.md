@@ -1,5 +1,4 @@
-
-![Esquio Build Status](https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-ci?branchName=master)
+[![Build Status](https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-release?branchName=master)](https://dev.azure.com/xabaril/Esquio/_build/latest?definitionId=4&branchName=master)
 
 ## About Esquio 
 
