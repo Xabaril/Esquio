@@ -5,7 +5,7 @@
     </div>
     <form class="row">
       <input-text
-        class="flags_form-group form-group col-md-5"
+        class="is-disabled flags_form-group form-group col-md-5"
         v-model="form.name"
         id="flag_name"
         :label="$t('flags.fields.name')"
@@ -14,7 +14,7 @@
       />
 
       <input-text
-        class="flags_form-group form-group col-md-5"
+        class="is-disabled flags_form-group form-group col-md-5"
         v-model="form.description"
         id="flag_description"
         :label="$t('flags.fields.description')"
@@ -23,18 +23,11 @@
       />
     </form>
 
-    <Floating
+    <!-- <Floating
       :text="$t('flags.actions.save')"
       :icon="floatingIcon"
       :disabled="isSaveActionDisabled"
       @click="onClickSave"
-    />
-
-    <!-- <Floating
-      v-if="isEditing"
-      :isTop="true"
-      :text="$t('flags.actions.add_flag')"
-      :to="{name: 'flags-add'}"
     /> -->
   </section>
 </template>
@@ -166,6 +159,10 @@ export default class extends Vue {
 .flags_form {
   &-group {
     padding-left: 0;
+
+    &.is-disabled {
+      pointer-events: none;
+    }
   }
 }
 </style>

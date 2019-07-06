@@ -48,6 +48,15 @@
         slot-scope="data"
       >
         <div class="text-right">
+          <router-link :to="{ name: 'flags-edit', params: { id: data.item.id, productId }}">
+            <button
+              type="button"
+              class="btn btn-sm btn-raised btn-primary"
+            >
+              {{$t('flags.actions.see_detail')}}
+            </button>
+          </router-link>
+
           <button
             type="button"
             class="btn btn-sm btn-raised btn-danger ml-2"
