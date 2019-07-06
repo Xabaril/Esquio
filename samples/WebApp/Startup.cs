@@ -33,7 +33,6 @@ namespace WebApp
                     .AddViewLocalization(
                         LanguageViewLocationExpanderFormat.Suffix,
                         opts => { opts.ResourcesPath = "Resources"; })
-                    //.AddNewtonsoftJson()
                 .Services
                 .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                     .AddAspNetCoreDefaultServices()
