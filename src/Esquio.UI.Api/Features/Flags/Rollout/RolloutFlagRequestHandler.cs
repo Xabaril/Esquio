@@ -32,13 +32,15 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
 
             if (feature != null)
             {
+                feature.Enabled = true;
+
                 if ( !IsRolledout(feature))
                 {
                     feature.Toggles.Clear();
                     feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
-
-                    await _storeDbContext.SaveChangesAsync(cancellationToken);
                 }
+
+                await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
             }
