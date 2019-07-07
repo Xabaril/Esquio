@@ -1,0 +1,135 @@
+{
+    "manifestVersion": 1,
+    "id": "esquio-extensions",
+    "version": "0.0.8",
+    "name": "Esquio extensions",
+    "description": "Esquio extensions for Azure DevOps",
+    "publisher": "xabaril",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "categories":[
+        "Azure Pipelines"
+    ],
+	"icons": {
+		"default": "icons/xabaril.png"
+	},
+	"branding": {
+		"color": "#3B3E43",
+		"theme": "dark"
+	},
+	"screenshots": [{
+		"path": "images/EsquioSample.png"
+    }],	
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    },
+	"links": {
+		"license": {
+			"uri": "https://github.com/Xabaril/Xabaril/blob/master/LICENSE"
+        },
+        "learn":{
+            "uri":"https://esquio.readthedocs.io/"
+        },
+        "repository": {
+            "uri": "https://github.com/Xabaril/Esquio"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/Xabaril/Esquio"
+    },
+    "badges": [
+        {
+            "href": "https://github.com/Xabaril/Esquio",
+            "uri": "https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-release?branchName=master",
+            "description": "Esquio Azure DevOps build for the project"
+        },
+        {
+            "href": "https://github.com/Xabaril/Esquio",
+            "uri": "https://dev.azure.com/xabaril/Esquio/_apis/build/status/DevOpsExtensions-master-CI?branchName=master",
+            "description": "Esquio Extension build"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "service-endpoint",
+            "description": "Service endpoint type for Esquio connections",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "esquio",
+                "icons": {
+                    "default": "icons/xabaril-endpoint-icon.png",
+                    "wide": "icons/xabaril.png"
+                },
+                "displayName": "Esquio API connection",
+                "url": {
+                    "displayName": "Esquio API Url",
+                    "helpText": "Url for the Esquio API to connect to."
+                },
+                "dataSources": [
+                    {
+                        "name": "TestConnection",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products",
+                        "resultSelector": "jsonpath:$.result[*]"                     
+                    },
+                    {
+                        "name": "EsquioProducts",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products",
+                        "resultSelector": "jsonpath:$.result[*]"
+                    },
+                    {
+                        "name": "EsquioFlags",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags",
+                        "resultSelector": "jsonpath:$.result[*]"
+                    }
+                ],
+                "authenticationSchemes": [                  
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                        "headers": [
+                            {
+                                "name": "x-api-key",
+                                "value": "{{endpoint.apitoken}}"
+                            }
+                        ]
+                    }
+                ],
+                "helpMarkDown": "<a href=\"https://esquio.readthedocs.io\" target=\"_blank\"><b>Learn More about Esquio</b></a>"
+            }
+        },
+        {
+            "id": "rollout-feature",
+            "description": "Esquio rollout feature",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [ "ms.vss-distributed-task.tasks" ],
+            "properties": {
+              "name": "rollout-feature"
+            }
+          },
+          {
+            "id": "rollback-feature",
+            "description": "Esquio rollback feature",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [ "ms.vss-distributed-task.tasks" ],
+            "properties": {
+              "name": "rollback-feature"
+            }
+          }
+    ],
+    "files": [
+        {
+            "path": "rollout-feature"
+        },
+        {
+            "path": "rollback-feature"
+        }
+    ]
+}
