@@ -22,7 +22,12 @@
 	},
 	"screenshots": [{
 		"path": "images/XabarilSample.png"
-	}],
+    }],	
+	"links": {
+		"license": {
+			"uri": "https://github.com/Xabaril/Xabaril/blob/master/LICENSE"
+		}
+	},
     "contributions": [
         {
             "id": "service-endpoint",
