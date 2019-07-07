@@ -23,6 +23,11 @@
 	"screenshots": [{
 		"path": "images/XabarilSample.png"
     }],	
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    },
 	"links": {
 		"license": {
 			"uri": "https://github.com/Xabaril/Xabaril/blob/master/LICENSE"
