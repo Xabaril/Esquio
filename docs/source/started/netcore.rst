@@ -124,3 +124,5 @@ To disable the feature, change the ``appsettings.json``::
 Test again the app:
 
 .. image:: ../images/consoleapp2.png
+
+

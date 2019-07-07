@@ -17,7 +17,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<RolloutFlagRequestHandler> _logger;
 
-        public RolloutFlagRequestHandler(StoreDbContext storeDbContext,ILogger<RolloutFlagRequestHandler> logger)
+        public RolloutFlagRequestHandler(StoreDbContext storeDbContext, ILogger<RolloutFlagRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -32,8 +32,13 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
 
             if (feature != null)
             {
-                feature.Toggles.Clear();
-                feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
+                feature.Enabled = true;
+
+                if ( !IsRolledout(feature))
+                {
+                    feature.Toggles.Clear();
+                    feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
+                }
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
@@ -42,6 +47,12 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
 
             Log.FeatureNotExist(_logger, request.FeatureId.ToString());
             throw new InvalidOperationException("Feature does not exist in the store.");
+        }
+
+        bool IsRolledout(FeatureEntity feature)
+        {
+            return feature.Toggles.Count == 1
+                && feature.Toggles.Single().Type.Equals(nameof(Esquio.Toggles.OnToggle), StringComparison.InvariantCulture);
         }
     }
 }

@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion>netstandard2.0</NetStandardTargetVersion>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
-    <NetTestSdk>16.0.1</NetTestSdk>
+    <NetTestSdk>16.2.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -15,7 +15,15 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  <PropertyGroup Label="Package Versions">
+
+  <PropertyGroup Label="Esquio Versions">
+    <esquio>1.0.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>1.0.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioconfigurationstore>1.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquioentityframeworkstore>1.0.0$(VersionSuffix)</esquioentityframeworkstore>
+  </PropertyGroup>
+  
+  <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
     <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
@@ -47,7 +55,7 @@
 
   <PropertyGroup Label="Testing Dependencies">
     <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.0.0-preview6-19256-06</microsoftaspnetcoretesthost>
+    <microsoftaspnetcoretesthost>3.0.0-preview6.19307.2</microsoftaspnetcoretesthost>
     
     <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
     <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
@@ -56,10 +64,11 @@
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
-    <fluentassertions>5.6.0</fluentassertions>
+    <fluentassertions>5.7.0</fluentassertions>
     <achevetesthost>2.2.1</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
+  
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>

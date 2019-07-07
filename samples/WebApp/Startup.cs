@@ -33,15 +33,12 @@ namespace WebApp
                     .AddViewLocalization(
                         LanguageViewLocationExpanderFormat.Suffix,
                         opts => { opts.ResourcesPath = "Resources"; })
-                    .AddNewtonsoftJson()
                 .Services
                 .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                     .AddAspNetCoreDefaultServices()
                     .AddConfigurationStore(Configuration, "Esquio")
                 .Services
                 .AddSingleton<IMatchService, MatchService>()
-                .AddHttpClient()
-                .AddTransient<ILocationProviderService, IPApiLocationProviderService>()
                 .AddAuthentication(setup =>
                 {
                     setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -79,7 +76,7 @@ namespace WebApp
                 
                 routes.MapControllerRoute(
                         name: "default",
-                        pattern: "{controller=Match}/{action=Index}/{id?}");
+                        pattern: "{controller=Match}/{action=Index}/{id?}").RequireFeature("HiddenGem");
 
                 routes.MapRazorPages();
             });

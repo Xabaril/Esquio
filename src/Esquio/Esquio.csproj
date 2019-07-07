@@ -6,11 +6,12 @@
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Feature Toogles Library for .NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
-    <Version>$(XabarilMvc)</Version>
+    <Version>$(esquio)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>
     <PackageId>Esquio</PackageId>
+    <PackageVersion>$(esquio)</PackageVersion>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <LangVersion>latest</LangVersion>

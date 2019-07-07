@@ -6,11 +6,12 @@
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Configuration store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration</PackageTags>
-    <Version>$(XabarilMvc)</Version>
+    <Version>$(esquioconfigurationstore)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>
     <PackageId>Esquio.Configuration.Store</PackageId>
+    <PackageVersion>$(esquioconfigurationstore)</PackageVersion>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>

@@ -3,10 +3,10 @@ using Esquio.AspNetCore.Diagnostics;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +14,13 @@ namespace Esquio.AspNetCore.Endpoints
 {
     internal class EsquioMiddleware
     {
+        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = false
+        };
+
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
         const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";
 
@@ -57,7 +64,7 @@ namespace Esquio.AspNetCore.Endpoints
 
                     await WriteResponseAsync(
                        context,
-                       JsonConvert.SerializeObject(EsquioMiddlewareError.Default(featureName, productName)),
+                       JsonSerializer.ToString(EsquioMiddlewareError.Default(featureName, productName), options: _serializerOptions),
                        "application/json",
                        StatusCodes.Status500InternalServerError);
 
@@ -69,7 +76,7 @@ namespace Esquio.AspNetCore.Endpoints
 
             await WriteResponseAsync(
                 context,
-                JsonConvert.SerializeObject(response),
+                JsonSerializer.ToString(response, options: _serializerOptions),
                 "application/json",
                 StatusCodes.Status200OK);
         }
