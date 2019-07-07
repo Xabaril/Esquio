@@ -21,7 +21,7 @@
 		"theme": "dark"
 	},
 	"screenshots": [{
-		"path": "images/XabarilSample.png"
+		"path": "images/EsquioSample.png"
     }],	
     "content": {
         "details": {
@@ -80,7 +80,7 @@
                         ]
                     }
                 ],
-                "helpMarkDown": "<a href=\"TODO\" target=\"_blank\"><b>Learn More</b></a>"
+                "helpMarkDown": "<a href=\"https://esquio.readthedocs.io\" target=\"_blank\"><b>Learn More about Esquio</b></a>"
             }
         },
         {
