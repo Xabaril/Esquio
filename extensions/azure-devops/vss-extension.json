@@ -31,8 +31,30 @@
 	"links": {
 		"license": {
 			"uri": "https://github.com/Xabaril/Xabaril/blob/master/LICENSE"
-		}
-	},
+        },
+        "learn":{
+            "uri":"https://esquio.readthedocs.io/"
+        },
+        "repository": {
+            "uri": "https://github.com/Xabaril/Esquio"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/Xabaril/Esquio"
+    },
+    "badges": [
+        {
+            "href": "https://github.com/Xabaril/Esquio",
+            "uri": "https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-release?branchName=master",
+            "description": "Esquio Azure DevOps build for the project"
+        },
+        {
+            "href": "https://github.com/Xabaril/Esquio",
+            "uri": "https://dev.azure.com/xabaril/Esquio/_apis/build/status/DevOpsExtensions-master-CI?branchName=master",
+            "description": "Esquio Extension build"
+        }
+    ],
     "contributions": [
         {
             "id": "service-endpoint",
