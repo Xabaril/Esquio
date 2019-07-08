@@ -6,6 +6,7 @@
     <form class="row">
       <input-text
         class="flags_form-group form-group col-md-5"
+        :class="{'is-disabled': isEditing}"
         v-model="form.name"
         id="flag_name"
         :label="$t('flags.fields.name')"
@@ -15,6 +16,7 @@
 
       <input-text
         class="flags_form-group form-group col-md-5"
+        :class="{'is-disabled': isEditing}"
         v-model="form.description"
         id="flag_description"
         :label="$t('flags.fields.description')"
@@ -23,12 +25,13 @@
       />
     </form>
 
-    <!-- <Floating
+    <Floating
+      v-if="!this.isEditing"
       :text="$t('flags.actions.save')"
       :icon="floatingIcon"
       :disabled="isSaveActionDisabled"
       @click="onClickSave"
-    /> -->
+    />
   </section>
 </template>
 
