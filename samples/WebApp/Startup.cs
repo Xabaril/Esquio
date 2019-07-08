@@ -72,7 +72,7 @@ namespace WebApp
 
             app.UseEndpoints(routes =>
             {
-                routes.MapEsquio(pattern: "esquio");
+                routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
                 
                 routes.MapControllerRoute(
                         name: "default",

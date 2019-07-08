@@ -1,5 +1,4 @@
-
-![Esquio Build Status](https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-ci?branchName=master)
+[![Build Status](https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-release?branchName=master)](https://dev.azure.com/xabaril/Esquio/_build/latest?definitionId=4&branchName=master)
 
 ## About Esquio 
 
@@ -25,5 +24,9 @@ Esquio is built using the following great open source projects and free services
 * [ASP.NET Core](https://github.com/aspnet)
 * [XUnit](https://xunit.github.io/)
 * [Fluent Assertions](http://www.fluentassertions.com/)
+* [Fluent Validations](https://github.com/JeremySkinner/FluentValidation)
+* [Mediator](https://github.com/jbogard/MediatR)
+* [Problem Details](https://www.nuget.org/packages/Hellang.Middleware.ProblemDetails)
+* [Serilog](https://github.com/serilog/serilog)
 
 ..and last but not least a big thanks to all our [contributors](https://github.com/Xabaril/Esquio/graphs/contributors)!

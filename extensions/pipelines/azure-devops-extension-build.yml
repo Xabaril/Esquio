@@ -1,0 +1,78 @@
+pool: Hosted Windows 2019 with VS2019
+
+variables:
+  marketplaceConnection: 'Xabaril Marketplace'
+  publisher: xabaril
+  extensionid: esquio-extensions
+  packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
+
+
+trigger:
+  branches:
+    include:
+    - feature/azure-devops-extension
+  paths:
+    include: 
+    - extensions/*
+
+
+steps:
+- task: TfxInstaller@1
+  inputs:
+    version: 'v0.6.x'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
+
+- task: CmdLine@2
+  displayName: TSC rollback feature
+  inputs:
+    script: 'tsc'
+    workingDirectory: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
+    failOnStderr: true
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
+
+- task: CmdLine@2
+  displayName: TSC rollout feature
+  inputs:
+    script: 'tsc'
+    workingDirectory: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
+    failOnStderr: true
+
+- task: ExtensionVersion@1
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    publisherId: '$(publisher)'
+    extensionId: '$(extensionid)'
+    versionAction: 'Patch'
+
+- task: PackageVSTSExtension@1
+  inputs:
+    rootFolder: 'extensions/azure-devops'
+    outputPath: '$(packagefile)'
+    extensionVersion: '$(Extension.Version)'
+    updateTasksVersion: true
+    updateTasksVersionType: 'patch'
+
+- task: PublishExtension@1
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    fileType: 'vsix'
+    vsixFile: '$(packagefile)'
+    updateTasksVersion: false
+
+- task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
+  inputs:
+    connectTo: 'VsTeam'
+    connectedServiceName: '$(marketplaceConnection)'
+    method: 'id'
+    publisherId: '$(publisher)'
+    extensionId: '$(extensionid)'
