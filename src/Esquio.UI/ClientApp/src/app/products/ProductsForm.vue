@@ -1,5 +1,8 @@
 <template>
-  <section class="products_form container u-container-medium">
+  <section class="products_form container u-container-medium pl-0 pr-0">
+    <div class="row">
+      <h1>{{$t('products.detail')}}</h1>
+    </div>
     <form class="row">
       <input-text
         class="products_form-group form-group col-md-5"
@@ -20,22 +23,10 @@
       />
     </form>
 
-    <!-- <div class="row" v-if="hasFeatures">
-      <b-table
-        striped
-        hover
-        :items="items"
-        :fields="fields"
-      >
-        <div
-          slot="table-busy"
-          class="text-center text-danger my-2"
-        >
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </b-table>
-    </div> -->
+    <div class="row" v-if="hasFlags">
+      <h2>{{$t('flags.title')}}</h2>
+      <FlagsList :productId="id"/>
+    </div>
 
     <Floating
       :text="$t('products.actions.save')"
@@ -47,8 +38,8 @@
     <Floating
       v-if="isEditing"
       :isTop="true"
-      :text="$t('products.actions.add_feature')"
-      :to="{name: 'features-add'}"
+      :text="$t('products.actions.add_flag')"
+      :to="{name: 'flags-add', params: { productId: form.id } }"
     />
   </section>
 </template>
@@ -58,23 +49,25 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { Floating, FloatingIcon, InputText } from '~/shared';
 import { Product } from './product.model';
-import { Feature } from './features';
+import { Flag, IFlagsService, FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
     Floating,
-    InputText
+    InputText,
+    FlagsList
   }
 })
 export default class extends Vue {
   public name = 'ProductsForm';
-  public product: Product;
+  public flags: Flag[] = null;
   public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
   @Inject() productsService: IProductsService;
+  @Inject() flagsService: IFlagsService;
 
   @Prop() id: string;
 
@@ -82,8 +75,8 @@ export default class extends Vue {
     return !!this.id;
   }
 
-  get hasFeatures(): boolean {
-    return this.isEditing && this.product && !!this.product.features;
+  get hasFlags(): boolean {
+    return this.isEditing && !!this.flags;
   }
 
   get isSaveActionDisabled(): boolean {
@@ -100,7 +93,8 @@ export default class extends Vue {
     }
 
     this.isLoading = true;
-    this.getProduct();
+    await this.getProduct();
+    await this.getFlags();
   }
 
   public async getProduct(): Promise<void> {
@@ -115,6 +109,19 @@ export default class extends Vue {
     } catch (e) {
       this.$toasted.global.error({
         message: this.$t('products.errors.detail')
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  public async getFlags(): Promise<void> {
+    try {
+      const response = await this.flagsService.get(Number(this.form.id));
+      this.flags = response.result;
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('flags.errors.get')
       });
     } finally {
       this.isLoading = false;

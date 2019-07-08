@@ -1,0 +1,173 @@
+<template>
+  <section class="flags_form container u-container-medium">
+    <div class="row">
+      <h1>{{$t('flags.detail')}}</h1>
+      <custom-switch v-model="form.enabled"/>
+    </div>
+    <form class="row">
+      <input-text
+        class="flags_form-group form-group col-md-5"
+        :class="{'is-disabled': isEditing}"
+        v-model="form.name"
+        id="flag_name"
+        :label="$t('flags.fields.name')"
+        validators="required|min:5"
+        :help-label="$t('flags.placeholders.nameHelp')"
+      />
+
+      <input-text
+        class="flags_form-group form-group col-md-5"
+        :class="{'is-disabled': isEditing}"
+        v-model="form.description"
+        id="flag_description"
+        :label="$t('flags.fields.description')"
+        validators="required|min:5"
+        :help-label="$t('flags.placeholders.descriptionHelp')"
+      />
+    </form>
+
+    <Floating
+      v-if="!this.isEditing"
+      :text="$t('flags.actions.save')"
+      :icon="floatingIcon"
+      :disabled="isSaveActionDisabled"
+      @click="onClickSave"
+    />
+  </section>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Inject } from 'inversify-props';
+import { Floating, FloatingIcon, InputText, CustomSwitch } from '~/shared';
+import { Flag } from './flag.model';
+import { IFlagsService } from './iflags.service';
+
+@Component({
+  components: {
+    Floating,
+    InputText,
+    CustomSwitch
+  }
+})
+export default class extends Vue {
+  public name = 'FlagsForm';
+  public floatingIcon = FloatingIcon.Save;
+  public isLoading = false;
+  public form: Flag = { productId: null, id: null, name: null, description: null, enabled: false };
+
+  @Inject() flagsService: IFlagsService;
+
+  @Prop() id: string;
+  @Prop({ required: true }) productId: string;
+
+  get isEditing(): boolean {
+    return !!this.id;
+  }
+
+  get isSaveActionDisabled(): boolean {
+    return (
+      !this.form.name ||
+      !this.form.description ||
+      this.$validator.errors.count() > 0
+    );
+  }
+
+  public async created(): Promise<void> {
+    if (!this.isEditing) {
+      return;
+    }
+
+    this.isLoading = true;
+    await this.getFlag();
+  }
+
+  public async getFlag(): Promise<void> {
+    try {
+      const { name, description, id } = await this.flagsService.detail(
+        Number(this.id)
+      );
+
+      this.form.name = name;
+      this.form.description = description;
+      this.form.id = id;
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('flags.errors.detail')
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  public async addFlag(): Promise<void> {
+    try {
+      await this.flagsService.add({
+        ...this.form,
+        productId: Number(this.productId)
+      });
+
+      this.$router.push({
+        name: 'products-edit',
+        params: {
+          id: this.productId
+        }
+      });
+
+      this.$toasted.global.success({
+        message: this.$t('flags.success.add')
+      });
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('flags.errors.add')
+      });
+    }
+  }
+
+  public async updateFlag(): Promise<void> {
+    try {
+      await this.flagsService.update(this.form);
+
+      this.$router.push({
+        name: 'products-edit',
+        params: {
+          id: this.productId
+        }
+      });
+
+      this.$toasted.global.success({
+        message: this.$t('flags.success.update')
+      });
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('flags.errors.update')
+      });
+    }
+  }
+
+  public async onClickSave(): Promise<void> {
+    if (this.$validator.errors.count() > 1) {
+      return;
+    }
+
+    if (this.isEditing) {
+      this.updateFlag();
+      return;
+    }
+
+    this.addFlag();
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.flags_form {
+  &-group {
+    padding-left: 0;
+
+    &.is-disabled {
+      pointer-events: none;
+    }
+  }
+}
+</style>

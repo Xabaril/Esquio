@@ -1,3 +1,4 @@
 - Config testing
-- Config store
-- Change code example
+- Use interceptors
+- Auth
+- Pagination

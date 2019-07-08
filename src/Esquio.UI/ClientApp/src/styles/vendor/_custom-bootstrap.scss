@@ -8,6 +8,13 @@
   }
 }
 
+.b-table {
+  [role='columnheader'] {
+    text-align: left;
+  }
+}
+
+
 .table-striped {
   tbody tr {
     $color: darken(get-color(basic, brightest), 2%);

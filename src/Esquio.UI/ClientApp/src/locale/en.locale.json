@@ -1,43 +1,90 @@
 {
-    "common": {
-        "title": "Esquio UI",
-        "menu": {
-            "home": "Home",
-            "products": "Products"
-        },
-        "empty": "There are no results to show",
-        "empty_filtered": "There are no filtered records to show",
-        "loading": "Loading..."
+  "common": {
+    "title": "Esquio UI",
+    "menu": {
+      "home": "Home",
+      "products": "Products"
     },
-    "products": {
-        "actions": {
-          "add": "Add product",
-          "add_feature": "Add feature",
-          "save": "Save product",
-          "see_detail": "Open",
-          "add_first": "Add your first product"
-        },
-        "fields": {
-          "id": "Identifier",
-          "name": "Product",
-          "description": "Description"
-        },
-        "placeholders": {
-          "nameHelp": "The name for your product",
-          "descriptionHelp": "A short description of the product"
-        },
-        "errors": {
-          "get": "Cannot fetch products",
-          "add": "Cannot create this product",
-          "detail": "Cannot fetch this product",
-          "update": "Cannot update the product"
-        },
-        "success": {
-          "add": "The new product was created",
-          "update": "The product was updated"
-        }
+    "empty": "There are no results to show",
+    "empty_filtered": "There are no filtered records to show",
+    "loading": "Loading..."
+  },
+  "products": {
+    "title": "Products",
+    "detail": "Product detail",
+    "actions": {
+      "add": "Add product",
+      "add_flag": "Add flag",
+      "save": "Save product",
+      "see_detail": "Open",
+      "add_first": "Add your first product",
+      "delete": "Delete"
     },
-    "home": {
-        "title": "Home page"
+    "fields": {
+      "id": "Identifier",
+      "name": "Product",
+      "description": "Description"
+    },
+    "placeholders": {
+      "nameHelp": "The name for your product",
+      "descriptionHelp": "A short description of the product"
+    },
+    "errors": {
+      "get": "Cannot fetch products",
+      "add": "Cannot create this product",
+      "detail": "Cannot fetch this product",
+      "update": "Cannot update the product",
+      "delete": "Cannot delete the product"
+    },
+    "success": {
+      "add": "The new product was created",
+      "update": "The product was updated",
+      "delete": "The product was deleted"
+    },
+    "confirm_delete": {
+      "title": "Are you sure to delete '{0}' product?"
     }
+  },
+  "flags": {
+    "title": "Flags",
+    "detail": "Flag detail",
+    "actions": {
+      "add": "Add flag",
+      "save": "Save flag",
+      "see_detail": "Open",
+      "add_first": "Add your first flag",
+      "delete": "Delete"
+    },
+    "fields": {
+      "id": "Identifier",
+      "name": "Flag",
+      "description": "Description",
+      "enabled": "Enabled"
+    },
+    "placeholders": {
+      "nameHelp": "The name for the flag",
+      "descriptionHelp": "A short description about the flag"
+    },
+    "errors": {
+      "get": "Cannot fetch flags",
+      "add": "Cannot create this flag",
+      "detail": "Cannot fetch this flag",
+      "update": "Cannot update the flag",
+      "delete": "Cannot delete the flag",
+      "change": "Cannot change the flag"
+    },
+    "success": {
+      "add": "The new flag was created",
+      "update": "The flag was updated",
+      "delete": "The flag was deleted",
+      "off": "Flag switched off",
+      "on": "Flag switched on"
+    },
+    "confirm_delete": {
+      "title": "Are you sure to delete '{0}' flag?"
+    }
+  },
+  "home": {
+    "title": "Home page"
+  }
 }
