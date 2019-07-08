@@ -5,7 +5,7 @@
     </div>
     <form class="row">
       <input-text
-        class="is-disabled flags_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-5"
         v-model="form.name"
         id="flag_name"
         :label="$t('flags.fields.name')"
@@ -14,7 +14,7 @@
       />
 
       <input-text
-        class="is-disabled flags_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-5"
         v-model="form.description"
         id="flag_description"
         :label="$t('flags.fields.description')"
