@@ -2,6 +2,7 @@
   <section class="flags_form container u-container-medium">
     <div class="row">
       <h1>{{$t('flags.detail')}}</h1>
+      <custom-switch v-model="form.enabled"/>
     </div>
     <form class="row">
       <input-text
@@ -38,14 +39,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText } from '~/shared';
+import { Floating, FloatingIcon, InputText, CustomSwitch } from '~/shared';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
 
 @Component({
   components: {
     Floating,
-    InputText
+    InputText,
+    CustomSwitch
   }
 })
 export default class extends Vue {

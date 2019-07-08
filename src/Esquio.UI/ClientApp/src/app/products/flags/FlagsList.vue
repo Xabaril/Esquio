@@ -39,7 +39,7 @@
         slot-scope="data"
       >
         <div class="text-center">
-          <b-form-checkbox v-model="data.item.enabled" name="check-button" switch @change="onClickFlagSwitch(data.item)"/>
+          <custom-switch v-model="data.item.enabled" @change="onClickFlagSwitch(data.item)"/>
         </div>
       </template>
 
@@ -73,10 +73,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
+import { CustomSwitch } from '~/shared';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
 
-@Component
+@Component({
+  components: {
+    CustomSwitch
+  }
+})
 export default class extends Vue {
   public name = 'FlagsList';
   public flags: Flag[] = null;
@@ -150,8 +155,6 @@ export default class extends Vue {
   }
 
   private async updateFlagSwitch(flag: Flag): Promise<void> {
-    flag.enabled = !flag.enabled;
-
     try {
       let response;
       if (flag.enabled) {

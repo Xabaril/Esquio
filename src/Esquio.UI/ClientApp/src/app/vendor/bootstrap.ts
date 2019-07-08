@@ -7,5 +7,6 @@ export {
   PaginationPlugin,
   SpinnerPlugin,
   TablePlugin,
-  FormCheckboxPlugin
+  FormCheckboxPlugin,
+  FormPlugin
 } from 'bootstrap-vue';
