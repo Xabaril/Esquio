@@ -8,16 +8,3 @@ services:
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Password12!
-    postgres:
-        image: postgres
-        environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=Password12!
-        ports:
-            - 5432:5432
-    mysql:
-        image: mysql
-        environment:
-            - MYSQL_ROOT_PASSWORD=Password12!
-        ports:
-            - 3306:3306
