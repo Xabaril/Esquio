@@ -76,7 +76,7 @@ namespace WebApp
                 
                 routes.MapControllerRoute(
                         name: "default",
-                        pattern: "{controller=Match}/{action=Index}/{id?}").RequireFeature("HiddenGem");
+                        pattern: "{controller=Match}/{action=Index}/{id?}");
 
                 routes.MapRazorPages();
             });

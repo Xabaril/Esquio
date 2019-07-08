@@ -1,6 +1,5 @@
 using Esquio.Abstractions;
 using Esquio.AspNetCore.Endpoints.Metadata;
-using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +53,5 @@ namespace WebApp.Controllers
 
             return View("DetailLive", match);
         }
-
-
     }
 }

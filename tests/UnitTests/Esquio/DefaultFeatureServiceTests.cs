@@ -98,7 +98,7 @@ namespace UnitTests.Esquio
                 .BeFalse();
         }
         [Fact]
-        public async Task be_enabled_when_feature_not_exist_and_notfound_behavioris_setenabled()
+        public async Task be_enabled_when_feature_not_exist_and_notfound_behavior_is_setenabled()
         {
             var feature = Build.Feature("sample")
                 .Enabled()
@@ -107,7 +107,7 @@ namespace UnitTests.Esquio
 
             var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetEnabled);
 
-            var enabled = await featureService.IsEnabledAsync("sample");
+            var enabled = await featureService.IsEnabledAsync("non_existing-feature");
 
             enabled.Should()
                 .BeTrue();
