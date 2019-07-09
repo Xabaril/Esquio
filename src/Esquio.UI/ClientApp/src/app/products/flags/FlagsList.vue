@@ -156,12 +156,7 @@ export default class extends Vue {
 
   private async updateFlagSwitch(flag: Flag): Promise<void> {
     try {
-      let response;
-      if (flag.enabled) {
-        response = await this.flagsService.rollout(flag);
-      } else {
-        response = await this.flagsService.rollback(flag);
-      }
+      await this.flagsService.update(flag);
 
       this.$toasted.global.success({
         message: !flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on')
