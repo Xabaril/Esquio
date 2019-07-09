@@ -23,7 +23,7 @@
       />
     </form>
 
-    <div class="row" v-if="hasFlags">
+    <div class="row" v-if="isEditing">
       <h2>{{$t('flags.title')}}</h2>
       <FlagsList :productId="id"/>
     </div>
@@ -49,7 +49,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { Floating, FloatingIcon, InputText } from '~/shared';
 import { Product } from './product.model';
-import { Flag, IFlagsService, FlagsList } from './flags';
+import { FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
 
 @Component({
@@ -61,22 +61,16 @@ import { IProductsService } from './iproducts.service';
 })
 export default class extends Vue {
   public name = 'ProductsForm';
-  public flags: Flag[] = null;
   public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
   @Inject() productsService: IProductsService;
-  @Inject() flagsService: IFlagsService;
 
   @Prop() id: string;
 
   get isEditing(): boolean {
     return !!this.id;
-  }
-
-  get hasFlags(): boolean {
-    return this.isEditing && !!this.flags;
   }
 
   get isSaveActionDisabled(): boolean {
@@ -94,7 +88,6 @@ export default class extends Vue {
 
     this.isLoading = true;
     await this.getProduct();
-    await this.getFlags();
   }
 
   public async getProduct(): Promise<void> {
@@ -109,19 +102,6 @@ export default class extends Vue {
     } catch (e) {
       this.$toasted.global.error({
         message: this.$t('products.errors.detail')
-      });
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  public async getFlags(): Promise<void> {
-    try {
-      const response = await this.flagsService.get(Number(this.form.id));
-      this.flags = response.result;
-    } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.get')
       });
     } finally {
       this.isLoading = false;

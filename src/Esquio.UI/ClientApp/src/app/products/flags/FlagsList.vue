@@ -107,7 +107,7 @@ export default class extends Vue {
 
   @Inject() flagsService: IFlagsService;
 
-  @Prop({ required: true, type: String }) productId: string;
+  @Prop({ required: true, type: [String, Number] }) productId: string;
 
   public created(): void {
     this.getFlags();
