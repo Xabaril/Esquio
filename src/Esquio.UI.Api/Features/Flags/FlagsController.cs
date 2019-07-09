@@ -4,6 +4,7 @@ using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollback;
 using Esquio.UI.Api.Features.Flags.Rollout;
+using Esquio.UI.Api.Features.Flags.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,16 @@ namespace Esquio.UI.Api.Features.Flags
 
             return Created($"api/v1/flags/{flagId}", null);
         }
+
+        [HttpPut]
+        [Route("api/v1/flags")]
+        public async Task<IActionResult> Update(UpdateFlagRequest updateFlagRequest, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(updateFlagRequest, cancellationToken);
+
+            return Ok();
+        }
+
 
         [HttpPut]
         [Route("api/v1/flags/{featureId:int:min(1)}/rollout")]

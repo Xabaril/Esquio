@@ -105,12 +105,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task allow_to_tag_features()
         {
             var tag = "tag";
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
+
             var feature = Builders.Feature()
                 .WithName("feature#1")
                 .Build();
+
             var toggle1 = Builders.Toggle()
               .WithType("toggle#1")
               .Build();
@@ -124,6 +127,49 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
             var response = await _fixture.TestServer
               .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PostAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task allow_to_tag_features_with_existing_tags()
+        {
+            var product = Builders.Product()
+                .WithName("product#1")
+                .Build();
+
+            var feature1 = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var feature2 = Builders.Feature()
+               .WithName("feature#2")
+               .Build();
+
+            var tag = Builders.Tag()
+               .WithName("performance")
+               .Build();
+
+            var featureTag = Builders.FeatureTag()
+                .WithFeature(feature1)
+                .WithTag(tag)
+                .Build();
+
+            feature1.FeatureTags.Add(featureTag);
+            product.Features.Add(feature1);
+            product.Features.Add(feature2);
+
+            await _fixture.Given.AddProduct(product);
+
+            var request = new AddTagRequest("performance");
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature2.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -173,6 +219,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             feature.FeatureTags.Add(featureTag);
             product.Features.Add(feature);
             await _fixture.Given.AddProduct(product);
+
+
             var request = new AddTagRequest(tag.Name);
 
             var response = await _fixture.TestServer
@@ -198,15 +246,29 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var toggle1 = Builders.Toggle()
               .WithType("toggle#1")
               .Build();
-            var tag = Builders.Tag()
+
+            var tagPerformance = Builders.Tag()
+                .WithName("performance")
                 .Build();
-            var featureTag = Builders.FeatureTag()
+
+            var tagUsability = Builders.Tag()
+                .WithName("usability")
+                .Build();
+
+            var featureTagPerformance = Builders.FeatureTag()
                 .WithFeature(feature)
-                .WithTag(tag)
+                .WithTag(tagPerformance)
+                .Build();
+
+            var featureTagUsability = Builders.FeatureTag()
+                .WithFeature(feature)
+                .WithTag(tagUsability)
                 .Build();
 
             feature.Toggles.Add(toggle1);
-            feature.FeatureTags.Add(featureTag);
+            feature.FeatureTags.Add(featureTagPerformance);
+            feature.FeatureTags.Add(featureTagUsability);
+
             product.Features.Add(feature);
             await _fixture.Given.AddProduct(product);
 
@@ -220,9 +282,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<List<ListTagResponse>>();
+                .ReadAs<List<TagResponseDetail>>();
 
-            content.Should().HaveCount(1);
+            content.Should().HaveCount(2);
         }
     }
 }
