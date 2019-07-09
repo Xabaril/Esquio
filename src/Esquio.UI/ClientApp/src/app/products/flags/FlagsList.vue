@@ -27,7 +27,7 @@
           <router-link
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
-            :to="{name: 'flags-add'}"
+            :to="{name: 'flags-add', params: { productId }}"
           >
             {{$t('flags.actions.add_first')}}
           </router-link>

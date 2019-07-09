@@ -25,13 +25,12 @@
       >
         <div class="text-center">
           <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
-          <router-link
+          <button
             class="btn btn-raised btn-primary d-inline-block"
-            tag="button"
-            :to="{name: 'products-add'}"
+            @click="onClickAddFirst"
           >
             {{$t('products.actions.add_first')}}
-          </router-link>
+          </button>
         </div>
       </template>
 
@@ -122,8 +121,17 @@ export default class extends Vue {
     await this.deleteProduct(product);
   }
 
+  public async onClickAddFirst(): Promise<void> {
+    await this.addDefaultProduct();
+  }
+
   private async deleteProduct(product: Product): Promise<void> {
-    if (!await this.$bvModal.msgBoxConfirm(this.$t('products.confirm_delete.title', product.name) as string)) {
+    if (
+      !(await this.$bvModal.msgBoxConfirm(this.$t(
+        'products.confirm_delete.title',
+        product.name
+      ) as string))
+    ) {
       return;
     }
 
@@ -139,6 +147,26 @@ export default class extends Vue {
       });
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  private async addDefaultProduct(): Promise<void> {
+    const defaultProduct: Product = {
+      name: 'Default',
+      description: 'Default Product'
+    };
+
+    try {
+      await this.productsService.add(defaultProduct);
+
+      this.$toasted.global.success({
+        message: this.$t('products.success.add')
+      });
+      await this.getProducts();
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('products.errors.add')
+      });
     }
   }
 }
