@@ -1,8 +1,10 @@
 <template>
   <section class="flags_form container u-container-medium">
     <div class="row">
-      <h1>{{$t('flags.detail')}}</h1>
-      <custom-switch v-model="form.enabled"/>
+      <h1 class="col col-auto pl-0">{{$t('flags.detail')}}</h1>
+      <div class="flags_form-switch col col-auto pl-0">
+        <custom-switch v-model="form.enabled"/>
+      </div>
     </div>
     <form class="row">
       <input-text
@@ -84,13 +86,14 @@ export default class extends Vue {
 
   public async getFlag(): Promise<void> {
     try {
-      const { name, description, id } = await this.flagsService.detail(
+      const { name, description, id, enabled } = await this.flagsService.detail(
         Number(this.id)
       );
 
       this.form.name = name;
       this.form.description = description;
       this.form.id = id;
+      this.form.enabled = enabled;
     } catch (e) {
       this.$toasted.global.error({
         message: this.$t('flags.errors.detail')
@@ -168,6 +171,10 @@ export default class extends Vue {
     &.is-disabled {
       pointer-events: none;
     }
+  }
+
+  &-switch {
+    transform: translateY(.5rem);
   }
 }
 </style>
