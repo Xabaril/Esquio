@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Features.Flags.Add;
 using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
+using Esquio.UI.Api.Features.Flags.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -794,11 +795,120 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
 
         [Fact]
+        public async Task update_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Update())
+                  .PostAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+        [Fact]
+        public async Task update_response_badrequest_if_name_is_greater_than_200()
+        {
+            var updateFlagRequest = new UpdateFlagRequest()
+            {
+                Name = new string('c', 201),
+                Description = "description",
+                Enabled = true,
+                FlagId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(updateFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task update_response_badrequest_if_description_is_greater_than_2000()
+        {
+            var updateFlagRequest = new UpdateFlagRequest()
+            {
+                Name = "name",
+                Description = new string('c', 2001),
+                Enabled = true,
+                FlagId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(updateFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task update_response_badrequest_if_flag_does_not_exist()
+        {
+            var updateFlagRequest = new UpdateFlagRequest()
+            {
+                Name = new string('c', 201),
+                Description = "description",
+                Enabled = true,
+                FlagId = 1
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(updateFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task update_response_ok_when_create_the_feature()
+        {
+            var product = Builders.Product()
+              .WithName("product#1")
+              .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature1")
+                .WithEnabled(false)
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var updateFlagRequest = new UpdateFlagRequest()
+            {
+                Name = "feature#1",
+                Description = "description",
+                Enabled = true,
+                FlagId = feature.Id
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Update())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PutAsJsonAsync(updateFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+        }
+
+
+        [Fact]
         public async Task add_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Flags.Add())
-
                   .PostAsync();
 
             response.StatusCode
@@ -908,7 +1018,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_ok_if_feature_with_the_same_name_already_exist_on_different_product()
+        public async Task add_response_created_if_feature_with_the_same_name_already_exist_on_different_product()
         {
             var product1 = Builders.Product()
                 .WithName("product#1")

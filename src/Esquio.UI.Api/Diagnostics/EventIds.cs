@@ -12,6 +12,8 @@ namespace Esquio.UI.Api.Diagnostics
         public static readonly EventId FeatureAlreadyExist = new EventId(105, nameof(FeatureAlreadyExist));
         public static readonly EventId ToggleAlreadyExist = new EventId(106, nameof(ToggleAlreadyExist));
         public static readonly EventId ToggleNotExist = new EventId(107, nameof(ToggleNotExist));
+        public static readonly EventId FeatureTagAlreadyExist = new EventId(108, nameof(FeatureTagAlreadyExist));
+        public static readonly EventId FeatureTagNotExist = new EventId(109, nameof(FeatureTagNotExist));
 
         public static readonly EventId ExecutingCommand = new EventId(201, nameof(ExecutingCommand));
         public static readonly EventId ExecutedCommand = new EventId(202, nameof(ExecutedCommand));

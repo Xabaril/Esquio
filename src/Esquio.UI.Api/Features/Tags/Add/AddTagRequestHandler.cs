@@ -1,8 +1,11 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
 using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,45 +14,59 @@ namespace Esquio.UI.Api.Features.Tags.Add
     public class AddTagRequestHandler : IRequestHandler<AddTagRequest>
     {
         private readonly StoreDbContext _dbContext;
+        private readonly ILogger<AddTagRequestHandler> _logger;
 
-        public AddTagRequestHandler(StoreDbContext dbContext)
+        public AddTagRequestHandler(StoreDbContext dbContext, ILogger<AddTagRequestHandler> logger)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Unit> Handle(AddTagRequest request, CancellationToken cancellationToken)
         {
-            var feature = await _dbContext.GetFeatureOrThrow(request.FeatureId, cancellationToken);
+            var feature = await _dbContext
+                .Features
+                .Where(f => f.Id == request.FeatureId)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            var tag = await _dbContext
-                .Tags
-                .SingleOrDefaultAsync(t => t.Name == request.Tag);
-
-            if (tag == null)
+            if (feature != null)
             {
-                tag = new TagEntity(request.Tag);
-                await _dbContext.Tags.AddAsync(tag);
+                var tag = await _dbContext
+                    .Tags
+                    .SingleOrDefaultAsync(t => t.Name == request.Tag);
+
+                if (tag == null)
+                {
+                    tag = new TagEntity(request.Tag);
+                }
+
+                var featureTag = new FeatureTagEntity()
+                {
+                    FeatureEntityId = feature.Id,
+                    TagEntity = tag
+                };
+
+                var alreadyExist = await _dbContext.FeatureTagEntities
+                    .AnyAsync(ft => ft.FeatureEntityId == feature.Id && ft.TagEntityId == tag.Id, cancellationToken);
+
+                if ( !alreadyExist )
+                {
+                    await _dbContext.FeatureTagEntities
+                    .AddAsync(featureTag);
+
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+
+                    return Unit.Value;
+                }
+                else
+                {
+                    Log.FeatureTagAlreadyExist(_logger, request.FeatureId.ToString(), request.Tag);
+                    throw new InvalidOperationException($"Tag already exist for this feature");
+                }
             }
 
-            var featureTag = await _dbContext.GetFeatureTagBy(
-                request.FeatureId,
-                request.Tag,
-                cancellationToken);
-
-            if (featureTag != null)
-            {
-                throw new InvalidOperationException($"Feature has been tagged with the tag {request.Tag}");
-            }
-
-            featureTag = new FeatureTagEntity
-            {
-                FeatureEntityId = feature.Id,
-                TagEntityId = tag.Id
-            };
-
-            await _dbContext.FeatureTagEntities.AddAsync(featureTag);
-
-            return Unit.Value;
+            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
+            throw new InvalidOperationException($"The feature with id {request.FeatureId} does not exist in the store.");
         }
     }
 }

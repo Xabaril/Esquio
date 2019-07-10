@@ -40,6 +40,10 @@
                 {
                     return $"api/v1/flags";
                 }
+                public static string Update()
+                {
+                    return $"api/v1/flags";
+                }
                 public static string Rollout(int featureId)
                 {
                     return $"api/v1/flags/{featureId}/rollout";
