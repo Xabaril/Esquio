@@ -22,3 +22,7 @@ $secondary: get-color(secondary);
 .ti-input {
   border: 0 !important;
 }
+
+.ti-invalid {
+  color: get-color(states, error);
+}

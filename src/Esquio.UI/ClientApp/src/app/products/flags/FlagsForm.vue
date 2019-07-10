@@ -44,6 +44,7 @@
         v-model="formTag"
         :tags="formTags"
         :placeholder="$t('flags.placeholders.tag')"
+        :validation="tagsValidator"
         @before-adding-tag="onAddFormTag"
         @before-deleting-tag="onRemoveFormTag"
         @tags-changed="onChangeFormTags"
@@ -84,6 +85,7 @@ export default class extends Vue {
   public tags: Tag[] = null;
   public formTags: FormTag[] = [];
   public formTag = '';
+  public isInvalid = false;
   public form: Flag = {
     productId: null,
     id: null,
@@ -91,6 +93,14 @@ export default class extends Vue {
     description: null,
     enabled: false
   };
+
+  public tagsValidator = [
+    {
+     classes: 'no-symbol',
+     rule: /^[\w]+$/,
+     disableAdd: true
+    }
+  ];
 
   @Inject() flagsService: IFlagsService;
   @Inject() tagsService: ITagsService;
@@ -122,6 +132,10 @@ export default class extends Vue {
   }
 
   public async onAddFormTag({ tag, addTag }): Promise<void> {
+    if (!this.isTagAllowed(tag)) {
+      return;
+    }
+
     this.isLoading = true;
     await this.addFormTag(tag);
     addTag();
@@ -231,10 +245,6 @@ export default class extends Vue {
   }
 
   private async addFormTag(tag: FormTag): Promise<void> {
-    if (this.formTags && this.formTags.find(x => x.text === tag.text)) {
-      return;
-    }
-
     const [newTag] = this.tagsService.toTags([tag]);
     await this.tagsService.add(Number(this.id), newTag);
   }
@@ -242,6 +252,18 @@ export default class extends Vue {
   private async removeFormTag(tag: FormTag): Promise<void> {
     const [removedTag] = this.tagsService.toTags([tag]);
     await this.tagsService.remove(Number(this.id), removedTag);
+  }
+
+  private isTagAllowed(tag: FormTag): boolean {
+    if (this.formTags && this.formTags.find(x => x.text === tag.text)) {
+      return false;
+    }
+
+    if (tag.tiClasses.includes('no-symbol')) {
+      return false;
+    }
+
+    return true;
   }
 }
 </script>
