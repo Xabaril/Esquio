@@ -121,10 +121,5 @@ export default class extends Vue {
       display: inline-flex !important;
     }
   }
-
-  &.is-disabled {
-    opacity: .75;
-    pointer-events: none;
-  }
 }
 </style>
