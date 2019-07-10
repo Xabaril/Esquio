@@ -27,7 +27,7 @@
           <router-link
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
-            :to="{name: 'flags-add'}"
+            :to="{name: 'flags-add', params: { productId }}"
           >
             {{$t('flags.actions.add_first')}}
           </router-link>
@@ -107,7 +107,7 @@ export default class extends Vue {
 
   @Inject() flagsService: IFlagsService;
 
-  @Prop({ required: true, type: String }) productId: string;
+  @Prop({ required: true, type: [String, Number] }) productId: string;
 
   public created(): void {
     this.getFlags();
@@ -156,12 +156,7 @@ export default class extends Vue {
 
   private async updateFlagSwitch(flag: Flag): Promise<void> {
     try {
-      let response;
-      if (flag.enabled) {
-        response = await this.flagsService.rollout(flag);
-      } else {
-        response = await this.flagsService.rollback(flag);
-      }
+      await this.flagsService.update(flag);
 
       this.$toasted.global.success({
         message: !flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on')

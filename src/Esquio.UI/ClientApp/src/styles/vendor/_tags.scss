@@ -1,0 +1,28 @@
+// @import '../../../node_modules/@johmun/vue-tags-input/vue-tags-input/vue-tags-input.scss';
+@import '../base/variables';
+
+$secondary: get-color(secondary);
+
+.ti-tags {
+  font-size: 1.15rem;
+
+  .bmd-form-group {
+    padding: 0;
+  }
+}
+
+.ti-tag {
+  background-color: $secondary !important;
+}
+
+.ti-selected-item {
+  background-color: $secondary !important;
+}
+
+.ti-input {
+  border: 0 !important;
+}
+
+.ti-invalid {
+  color: get-color(states, error);
+}

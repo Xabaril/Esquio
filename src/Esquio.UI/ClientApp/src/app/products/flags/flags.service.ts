@@ -43,7 +43,10 @@ export class FlagsService implements IFlagsService {
   public async update(flag: Flag): Promise<void> {
     const response = await fetch(`${settings.apiUrl}/v1/flags`, {
       method: 'PUT',
-      body: JSON.stringify(flag),
+      body: JSON.stringify({
+        ...flag,
+        flagId: flag.id
+      }),
       headers: {
         // 'Authorization': `bearer ${token}`,
         'Content-Type': 'application/json', // TODO: interceptor
