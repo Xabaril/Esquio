@@ -39,6 +39,7 @@ namespace Esquio.UI.Api.Features.Flags.List
                 {
                     Id = f.Id,
                     Enabled = f.Enabled,
+                    Description = f.Description,
                     Name = f.Name
                 }).ToList()
             };

@@ -714,9 +714,23 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                .WithName("product#1")
                .Build();
 
+            var feature1 = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var feature2 = Builders.Feature()
+                .WithName("feature#2")
+                .Build();
+
+            product.Features
+                .Add(feature1);
+
+            product.Features
+               .Add(feature2);
 
             await _fixture.Given
                 .AddProduct(product);
+
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id))
@@ -731,17 +745,29 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .ReadAs<ListFlagResponse>();
 
             content.Total
-                .Should().Be(0);
+                .Should().Be(2);
 
             content.Count
-                .Should().Be(0);
+                .Should().Be(2);
 
             content.PageIndex
                 .Should().Be(0);
 
             content.Result
                 .Count
-                .Should().Be(0);
+                .Should().Be(2);
+
+            content.Result
+                .First()
+                .Name.Should().BeEquivalentTo(feature1.Name);
+
+            content.Result
+               .First()
+               .Description.Should().BeEquivalentTo(feature1.Description);
+
+            content.Result
+               .First()
+               .Enabled.Should().Be(feature1.Enabled);
         }
         [Fact]
         [ResetDatabase]
