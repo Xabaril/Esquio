@@ -21,7 +21,7 @@ export class TagsService implements ITagsService {
       method: 'POST',
       body: JSON.stringify({
         tag: tag.name,
-        featureId: tag,
+        featureId: featureId,
       }),
       headers: {
         // 'Authorization': `bearer ${token}`,

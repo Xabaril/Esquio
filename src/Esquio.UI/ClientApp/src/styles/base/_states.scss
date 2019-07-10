@@ -16,4 +16,9 @@
       display: none !important;
     }
   }
+
+  &-disabled {
+    opacity: .75;
+    pointer-events: none;
+  }
 }

@@ -28,11 +28,18 @@
       />
     </form>
 
-    <div class="row">
+    <div
+      v-if="isEditing"
+      class="row"
+    >
       <h2>{{$t('tags.title')}}</h2>
     </div>
 
-    <div class="row">
+    <div
+      v-if="isEditing"
+      class="row"
+      :class="{'is-disabled': isLoading}"
+    >
       <vue-tags-input
         v-model="formTag"
         :tags="formTags"
@@ -111,16 +118,21 @@ export default class extends Vue {
     this.isLoading = true;
     await this.getFlag();
     await this.getTags();
+    this.isLoading = false;
   }
 
-  public onAddFormTag({ tag, addTag }): void {
-    this.addFormTag(tag);
+  public async onAddFormTag({ tag, addTag }): Promise<void> {
+    this.isLoading = true;
+    await this.addFormTag(tag);
     addTag();
+    this.isLoading = false;
   }
 
-  public onRemoveFormTag({ tag, deleteTag }): void {
-    this.removeFormTag(tag);
+  public async onRemoveFormTag({ tag, deleteTag }): Promise<void> {
+    this.isLoading = true;
+    await this.removeFormTag(tag);
     deleteTag();
+    this.isLoading = false;
   }
 
   public onChangeFormTags(formTags: FormTag[]): void {
@@ -155,8 +167,6 @@ export default class extends Vue {
       this.$toasted.global.error({
         message: this.$t('flags.errors.detail')
       });
-    } finally {
-      this.isLoading = false;
     }
   }
 
@@ -172,8 +182,6 @@ export default class extends Vue {
       this.$toasted.global.error({
         message: this.$t('tags.errors.get')
       });
-    } finally {
-      this.isLoading = false;
     }
   }
 
@@ -223,6 +231,10 @@ export default class extends Vue {
   }
 
   private async addFormTag(tag: FormTag): Promise<void> {
+    if (this.formTags && this.formTags.find(x => x.text === tag.text)) {
+      return;
+    }
+
     const [newTag] = this.tagsService.toTags([tag]);
     await this.tagsService.add(Number(this.id), newTag);
   }
@@ -238,14 +250,10 @@ export default class extends Vue {
 .flags_form {
   &-group {
     padding-left: 0;
-
-    &.is-disabled {
-      pointer-events: none;
-    }
   }
 
   &-switch {
-    transform: translateY(.5rem);
+    transform: translateY(0.5rem);
   }
 }
 </style>
