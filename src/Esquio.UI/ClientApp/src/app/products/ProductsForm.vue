@@ -5,7 +5,7 @@
     </div>
     <form class="row">
       <input-text
-        class="products_form-group form-group col-md-5"
+        class="products_form-group form-group col-md-6"
         v-model="form.name"
         id="product_name"
         :label="$t('products.fields.name')"
@@ -14,7 +14,7 @@
       />
 
       <input-text
-        class="products_form-group form-group col-md-5"
+        class="products_form-group form-group col-md-6"
         v-model="form.description"
         id="product_description"
         :label="$t('products.fields.description')"

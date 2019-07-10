@@ -63,7 +63,8 @@
     },
     "placeholders": {
       "nameHelp": "The name for the flag",
-      "descriptionHelp": "A short description about the flag"
+      "descriptionHelp": "A short description about the flag",
+      "tag": "Add new tag"
     },
     "errors": {
       "get": "Cannot fetch flags",
@@ -83,6 +84,9 @@
     "confirm_delete": {
       "title": "Are you sure to delete '{0}' flag?"
     }
+  },
+  "tags": {
+    "title": "Tags"
   },
   "home": {
     "title": "Home page"

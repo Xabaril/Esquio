@@ -8,7 +8,7 @@
     </div>
     <form class="row">
       <input-text
-        class="flags_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-6"
         :class="{'is-disabled': isEditing}"
         v-model="form.name"
         id="flag_name"
@@ -18,7 +18,7 @@
       />
 
       <input-text
-        class="flags_form-group form-group col-md-5"
+        class="flags_form-group form-group col-md-6"
         :class="{'is-disabled': isEditing}"
         v-model="form.description"
         id="flag_description"
@@ -28,15 +28,19 @@
       />
     </form>
 
-    <div>
+    <div class="row">
+      <h2>{{$t('tags.title')}}</h2>
+    </div>
+
+    <div class="row">
       <vue-tags-input
         v-model="formTag"
         :tags="formTags"
+        :placeholder="$t('flags.placeholders.tag')"
         @before-adding-tag="onAddFormTag"
         @before-deleting-tag="onRemoveFormTag"
         @tags-changed="onChangeFormTags"
       />
-      {{this.tags}}
     </div>
 
     <Floating
