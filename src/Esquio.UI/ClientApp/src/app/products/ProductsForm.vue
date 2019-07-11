@@ -119,9 +119,7 @@ export default class extends Vue {
       await this.updateProduct();
     }
 
-    this.$router.push({
-      name: 'products-list'
-    });
+    this.goBack();
   }
 
   public async onClickDelete(): Promise<void> {
@@ -129,9 +127,7 @@ export default class extends Vue {
       return;
     }
 
-    this.$router.push({
-      name: 'products-list'
-    });
+    this.goBack();
   }
 
   private async getProduct(): Promise<void> {
@@ -189,6 +185,12 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private goBack(): void {
+    this.$router.push({
+      name: 'products-list'
+    });
   }
 }
 </script>

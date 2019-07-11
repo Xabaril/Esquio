@@ -69,18 +69,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import VueTagsInput from "@johmun/vue-tags-input";
-import { Inject } from "inversify-props";
-import { AlertType } from "~/core";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import VueTagsInput from '@johmun/vue-tags-input';
+import { Inject } from 'inversify-props';
+import { AlertType } from '~/core';
 import {
   Floating,
   FloatingDelete,
   FloatingContainer,
   InputText,
   CustomSwitch
-} from "~/shared";
-import { ITagsService, Tag, FormTag } from "~/products/shared/tags";
+} from '~/shared';
+import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
 
@@ -187,12 +187,7 @@ export default class extends Vue {
       return;
     }
 
-    this.$router.push({
-      name: 'products-edit',
-      params: {
-        id: this.productId
-      }
-    });
+    this.goBack();
   }
 
   private async getFlag(): Promise<void> {
@@ -230,12 +225,7 @@ export default class extends Vue {
         productId: Number(this.productId)
       });
 
-      this.$router.push({
-        name: 'products-edit',
-        params: {
-          id: this.productId
-        }
-      });
+      this.goBack();
 
       this.$alert(this.$t('flags.success.add'));
     } catch (e) {
@@ -247,12 +237,7 @@ export default class extends Vue {
     try {
       await this.flagsService.update(this.form);
 
-      this.$router.push({
-        name: 'products-edit',
-        params: {
-          id: this.productId
-        }
-      });
+      this.goBack();
 
       this.$alert(this.$t('flags.success.update'));
     } catch (e) {
@@ -301,6 +286,15 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private goBack(): void {
+    this.$router.push({
+      name: 'products-edit',
+      params: {
+        id: this.productId
+      }
+    });
   }
 }
 </script>
