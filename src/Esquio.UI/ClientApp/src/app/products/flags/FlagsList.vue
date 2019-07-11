@@ -114,6 +114,14 @@ export default class extends Vue {
     this.getFlags();
   }
 
+  public async onClickDelete(flag: Flag): Promise<void> {
+    await this.deleteFlag(flag);
+  }
+
+  public async onClickFlagSwitch(flag: Flag): Promise<void> {
+    await this.updateFlagSwitch(flag);
+  }
+
   private async getFlags(): Promise<void> {
     try {
       const response = await this.flagsService.get(Number(this.productId));
@@ -123,14 +131,6 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
-  }
-
-  public async onClickDelete(flag: Flag): Promise<void> {
-    await this.deleteFlag(flag);
-  }
-
-  public async onClickFlagSwitch(flag: Flag): Promise<void> {
-    await this.updateFlagSwitch(flag);
   }
 
   private async deleteFlag(flag: Flag): Promise<void> {

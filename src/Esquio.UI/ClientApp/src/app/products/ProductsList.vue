@@ -105,6 +105,14 @@ export default class extends Vue {
     this.getProducts();
   }
 
+  public async onClickDelete(product: Product): Promise<void> {
+    await this.deleteProduct(product);
+  }
+
+  public async onClickAddFirst(): Promise<void> {
+    await this.addDefaultProduct();
+  }
+
   private async getProducts(): Promise<void> {
     try {
       const response = await this.productsService.get();
@@ -114,14 +122,6 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
-  }
-
-  public async onClickDelete(product: Product): Promise<void> {
-    await this.deleteProduct(product);
-  }
-
-  public async onClickAddFirst(): Promise<void> {
-    await this.addDefaultProduct();
   }
 
   private async deleteProduct(product: Product): Promise<void> {
