@@ -51,13 +51,20 @@
       />
     </div>
 
-    <Floating
-      v-if="!this.isEditing"
-      :text="$t('flags.actions.save')"
-      :icon="floatingIcon"
-      :disabled="isSaveActionDisabled"
-      @click="onClickSave"
-    />
+    <FloatingContainer>
+      <FloatingDelete
+        :text="$t('flags.actions.delete')"
+        :disabled="areActionsDisabled"
+        @click="onClickDelete"
+      />
+
+      <Floating
+        v-if="!this.isEditing"
+        :text="$t('flags.actions.save')"
+        :disabled="isSaveActionDisabled"
+        @click="onClickSave"
+      />
+    </FloatingContainer>
   </section>
 </template>
 
@@ -65,7 +72,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueTagsInput from '@johmun/vue-tags-input';
 import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText, CustomSwitch } from '~/shared';
+import { AlertType } from '~/core';
+import {
+  Floating,
+  FloatingDelete,
+  FloatingContainer,
+  InputText,
+  CustomSwitch
+} from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
@@ -73,6 +87,8 @@ import { IFlagsService } from './iflags.service';
 @Component({
   components: {
     Floating,
+    FloatingContainer,
+    FloatingDelete,
     InputText,
     CustomSwitch,
     VueTagsInput
@@ -80,7 +96,6 @@ import { IFlagsService } from './iflags.service';
 })
 export default class extends Vue {
   public name = 'FlagsForm';
-  public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
   public tags: Tag[] = null;
   public formTags: FormTag[] = [];
@@ -96,9 +111,9 @@ export default class extends Vue {
 
   public tagsValidator = [
     {
-     classes: 'no-symbol',
-     rule: /^[\w]+$/,
-     disableAdd: true
+      classes: 'no-symbol',
+      rule: /^[\w]+$/,
+      disableAdd: true
     }
   ];
 
@@ -167,6 +182,14 @@ export default class extends Vue {
     this.addFlag();
   }
 
+  public async onClickDelete(): Promise<void> {
+    if (!(await this.deleteFlag())) {
+      return;
+    }
+
+    this.goBack();
+  }
+
   private async getFlag(): Promise<void> {
     try {
       const { name, description, id, enabled } = await this.flagsService.detail(
@@ -178,9 +201,7 @@ export default class extends Vue {
       this.form.id = id;
       this.form.enabled = enabled;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.detail')
-      });
+      this.$alert(this.$t('flags.errors.detail'), AlertType.Error);
     }
   }
 
@@ -193,9 +214,7 @@ export default class extends Vue {
       this.tags = await this.tagsService.get(this.form.id);
       this.formTags = await this.tagsService.toFormTags(this.tags);
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('tags.errors.get')
-      });
+      this.$alert(this.$t('tags.errors.get'), AlertType.Error);
     }
   }
 
@@ -206,20 +225,11 @@ export default class extends Vue {
         productId: Number(this.productId)
       });
 
-      this.$router.push({
-        name: 'products-edit',
-        params: {
-          id: this.productId
-        }
-      });
+      this.goBack();
 
-      this.$toasted.global.success({
-        message: this.$t('flags.success.add')
-      });
+      this.$alert(this.$t('flags.success.add'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.add')
-      });
+      this.$alert(this.$t('flags.errors.add'), AlertType.Error);
     }
   }
 
@@ -227,20 +237,11 @@ export default class extends Vue {
     try {
       await this.flagsService.update(this.form);
 
-      this.$router.push({
-        name: 'products-edit',
-        params: {
-          id: this.productId
-        }
-      });
+      this.goBack();
 
-      this.$toasted.global.success({
-        message: this.$t('flags.success.update')
-      });
+      this.$alert(this.$t('flags.success.update'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.update')
-      });
+      this.$alert(this.$t('flags.errors.update'), AlertType.Error);
     }
   }
 
@@ -264,6 +265,36 @@ export default class extends Vue {
     }
 
     return true;
+  }
+
+  private async deleteFlag(): Promise<boolean> {
+    if (
+      !(await this.$confirm(
+        this.$t('flags.confirm.title', [this.form.name])
+      ))
+    ) {
+      return false;
+    }
+
+    try {
+      const response = await this.flagsService.remove(this.form);
+      this.$alert(this.$t('flags.success.delete'));
+
+      return true;
+    } catch (e) {
+      this.$alert(this.$t('flags.errors.delete'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private goBack(): void {
+    this.$router.push({
+      name: 'products-edit',
+      params: {
+        id: this.productId
+      }
+    });
   }
 }
 </script>

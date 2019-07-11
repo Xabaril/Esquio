@@ -23,23 +23,32 @@
       />
     </form>
 
-    <div class="row" v-if="isEditing">
+    <div
+      class="row"
+      v-if="isEditing"
+    >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productId="id"/>
+      <FlagsList :productId="id" />
     </div>
 
-    <Floating
-      :text="$t('products.actions.save')"
-      :icon="floatingIcon"
-      :disabled="isSaveActionDisabled"
-      @click="onClickSave"
-    />
+    <FloatingContainer>
+      <FloatingDelete
+        :text="$t('products.actions.delete')"
+        :disabled="areActionsDisabled"
+        @click="onClickDelete"
+      />
 
-    <Floating
+      <Floating
+        :text="$t('products.actions.save')"
+        :disabled="areActionsDisabled"
+        @click="onClickSave"
+      />
+    </FloatingContainer>
+
+    <FloatingTop
       v-if="isEditing"
-      :isTop="true"
       :text="$t('products.actions.add_flag')"
-      :to="{name: 'flags-add', params: { productId: form.id } }"
+      :to="{name: 'flags-add', params: { productId: form.id }}"
     />
   </section>
 </template>
@@ -47,7 +56,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText } from '~/shared';
+import {
+  Floating,
+  FloatingTop,
+  FloatingDelete,
+  InputText,
+  FloatingModifier,
+  FloatingContainer
+} from '~/shared';
+import { AlertType } from '~/core';
 import { Product } from './product.model';
 import { FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
@@ -55,13 +72,15 @@ import { IProductsService } from './iproducts.service';
 @Component({
   components: {
     Floating,
+    FloatingTop,
+    FloatingDelete,
+    FloatingContainer,
     InputText,
     FlagsList
   }
 })
 export default class extends Vue {
   public name = 'ProductsForm';
-  public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
@@ -73,7 +92,7 @@ export default class extends Vue {
     return !!this.id;
   }
 
-  get isSaveActionDisabled(): boolean {
+  get areActionsDisabled(): boolean {
     return (
       !this.form.name ||
       !this.form.description ||
@@ -86,11 +105,33 @@ export default class extends Vue {
       return;
     }
 
-    this.isLoading = true;
     await this.getProduct();
   }
 
-  public async getProduct(): Promise<void> {
+  public async onClickSave(): Promise<void> {
+    if (this.$validator.errors.count() > 1) {
+      return;
+    }
+
+    if (!this.isEditing) {
+      await this.addProduct();
+    } else {
+      await this.updateProduct();
+    }
+
+    this.goBack();
+  }
+
+  public async onClickDelete(): Promise<void> {
+    if (!(await this.deleteProduct())) {
+      return;
+    }
+
+    this.goBack();
+  }
+
+  private async getProduct(): Promise<void> {
+    this.isLoading = true;
     try {
       const { name, description, id } = await this.productsService.detail(
         Number(this.id)
@@ -100,61 +141,56 @@ export default class extends Vue {
       this.form.description = description;
       this.form.id = id;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.detail')
-      });
+      this.$alert(this.$t('products.errors.detail'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
   }
 
-  public async addProduct(): Promise<void> {
+  private async addProduct(): Promise<void> {
     try {
       await this.productsService.add(this.form);
 
-      this.$router.push({
-        name: 'products-list'
-      });
-
-      this.$toasted.global.success({
-        message: this.$t('products.success.add')
-      });
+      this.$alert(this.$t('products.success.add'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.add')
-      });
+      this.$alert(this.$t('products.errors.add'), AlertType.Error);
     }
   }
 
-  public async updateProduct(): Promise<void> {
+  private async updateProduct(): Promise<void> {
     try {
       await this.productsService.update(this.form);
 
-      this.$router.push({
-        name: 'products-list'
-      });
-
-      this.$toasted.global.success({
-        message: this.$t('products.success.update')
-      });
+      this.$alert(this.$t('products.success.update'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.update')
-      });
+      this.$alert(this.$t('products.errors.update'), AlertType.Error);
     }
   }
 
-  public async onClickSave(): Promise<void> {
-    if (this.$validator.errors.count() > 1) {
-      return;
+  private async deleteProduct(): Promise<boolean> {
+    if (
+      !(await this.$confirm(
+        this.$t('products.confirm.title', [this.form.name])
+      ))
+    ) {
+      return false;
     }
 
-    if (this.isEditing) {
-      this.updateProduct();
-      return;
+    try {
+      await this.productsService.remove(this.form);
+      this.$alert(this.$t('products.success.delete'));
+      return true;
+    } catch (e) {
+      this.$alert(this.$t('products.errors.delete'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
     }
+  }
 
-    this.addProduct();
+  private goBack(): void {
+    this.$router.push({
+      name: 'products-list'
+    });
   }
 }
 </script>

@@ -59,8 +59,7 @@
       </template>
     </b-table>
 
-    <Floating
-      :isTop="true"
+    <FloatingTop
       :text="$t('products.actions.add')"
       :to="{name: 'products-add'}"
     />
@@ -70,13 +69,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating } from '~/shared';
+import { AlertType } from '~/core';
+import { FloatingTop } from '~/shared';
 import { Product } from './product.model';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
-    Floating
+    FloatingTop
   }
 })
 export default class extends Vue {
@@ -104,19 +104,6 @@ export default class extends Vue {
     this.getProducts();
   }
 
-  private async getProducts(): Promise<void> {
-    try {
-      const response = await this.productsService.get();
-      this.products = response.result;
-    } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.get')
-      });
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
   public async onClickDelete(product: Product): Promise<void> {
     await this.deleteProduct(product);
   }
@@ -125,26 +112,30 @@ export default class extends Vue {
     await this.addDefaultProduct();
   }
 
+  private async getProducts(): Promise<void> {
+    try {
+      const response = await this.productsService.get();
+      this.products = response.result;
+    } catch (e) {
+      this.$alert(this.$t('products.errors.get'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
   private async deleteProduct(product: Product): Promise<void> {
-    if (
-      !(await this.$bvModal.msgBoxConfirm(this.$t(
-        'products.confirm_delete.title',
-        product.name
-      ) as string))
-    ) {
+    if (!await this.$confirm(this.$t('products.confirm.title', [product.name]))) {
       return;
     }
 
     try {
       const response = await this.productsService.remove(product);
       this.products = this.products.filter(x => x.id !== product.id);
-      this.$toasted.global.success({
-        message: this.$t('products.success.delete')
-      });
+      this.$alert(this.$t('products.success.delete'));
+
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.delete')
-      });
+      this.$alert(this.$t('products.errors.delete'), AlertType.Error);
+
     } finally {
       this.isLoading = false;
     }
@@ -159,14 +150,10 @@ export default class extends Vue {
     try {
       await this.productsService.add(defaultProduct);
 
-      this.$toasted.global.success({
-        message: this.$t('products.success.add')
-      });
+      this.$alert(this.$t('products.success.add'));
       await this.getProducts();
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.add')
-      });
+      this.$alert(this.$t('products.errors.add'), AlertType.Error);
     }
   }
 }
