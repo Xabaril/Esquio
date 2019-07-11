@@ -1,8 +1,5 @@
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { RouteConfig } from 'vue-router';
-import { FloatingIcon } from './floating-icon';
-import { FloatingModifier } from './floating-modifier';
+import { Component } from 'vue-property-decorator';
 import { Floating } from '.';
 
 @Component

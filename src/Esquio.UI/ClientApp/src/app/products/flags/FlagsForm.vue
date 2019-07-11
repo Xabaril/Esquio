@@ -52,10 +52,15 @@
     </div>
 
     <FloatingContainer>
+      <FloatingDelete
+        :text="$t('flags.actions.delete')"
+        :disabled="areActionsDisabled"
+        @click="onClickDelete"
+      />
+
       <Floating
         v-if="!this.isEditing"
         :text="$t('flags.actions.save')"
-        :icon="floatingIcon"
         :disabled="isSaveActionDisabled"
         @click="onClickSave"
       />
@@ -68,7 +73,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueTagsInput from '@johmun/vue-tags-input';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { Floating, FloatingContainer, FloatingIcon, InputText, CustomSwitch } from '~/shared';
+import { Floating, FloatingDelete, FloatingContainer, InputText, CustomSwitch } from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
@@ -77,6 +82,7 @@ import { IFlagsService } from './iflags.service';
   components: {
     Floating,
     FloatingContainer,
+    FloatingDelete,
     InputText,
     CustomSwitch,
     VueTagsInput
@@ -84,7 +90,6 @@ import { IFlagsService } from './iflags.service';
 })
 export default class extends Vue {
   public name = 'FlagsForm';
-  public floatingIcon = FloatingIcon.Save;
   public isLoading = false;
   public tags: Tag[] = null;
   public formTags: FormTag[] = [];

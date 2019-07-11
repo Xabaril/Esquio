@@ -31,12 +31,12 @@ export default class extends Vue {
   public name = 'Floating';
   public cssModifier: FloatingModifier;
   public isTop = false;
+  public icon: FloatingIcon = FloatingIcon.Add;
+  public modifier: FloatingModifier = FloatingModifier.Primary;
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({}) }) to: RouteConfig;
-  @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
   @Prop({ default: false }) disabled: boolean;
-  @Prop({ default: FloatingModifier.Primary }) modifier: FloatingModifier;
 
   public created() {
     this.cssModifier = this.modifier;

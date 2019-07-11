@@ -32,17 +32,14 @@
     </div>
 
     <FloatingContainer>
-      <Floating
+      <FloatingDelete
         :text="$t('products.actions.delete')"
-        :icon="deleteIcon"
-        :modifier="deleteModifier"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <Floating
         :text="$t('products.actions.save')"
-        :icon="floatingIcon"
         :disabled="areActionsDisabled"
         @click="onClickSave"
       />
@@ -61,8 +58,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import {
   Floating,
-  FloatingIcon,
   FloatingTop,
+  FloatingDelete,
   InputText,
   FloatingModifier,
   FloatingContainer
@@ -76,6 +73,7 @@ import { IProductsService } from './iproducts.service';
   components: {
     Floating,
     FloatingTop,
+    FloatingDelete,
     FloatingContainer,
     InputText,
     FlagsList
@@ -83,9 +81,6 @@ import { IProductsService } from './iproducts.service';
 })
 export default class extends Vue {
   public name = 'ProductsForm';
-  public floatingIcon = FloatingIcon.Save;
-  public deleteIcon = FloatingIcon.Delete;
-  public deleteModifier = FloatingModifier.Warning;
   public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
