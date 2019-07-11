@@ -9,7 +9,7 @@ export enum AlertType {
 export const AlertPlugin = {
   install (Vue) {
     Vue.prototype.$alert = function (text: string | TranslateResult, type: AlertType = AlertType.Success): void {
-      this.$toasted.global[type]({ message: text as string });
+      this.$toasted.global[type]({ message: text.toString() });
     };
   }
 };

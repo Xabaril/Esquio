@@ -41,7 +41,7 @@
       "update": "The product was updated",
       "delete": "The product was deleted"
     },
-    "confirm_delete": {
+    "confirm": {
       "title": "Are you sure to delete '{0}' product?"
     }
   },
@@ -81,7 +81,7 @@
       "off": "Flag switched off",
       "on": "Flag switched on"
     },
-    "confirm_delete": {
+    "confirm": {
       "title": "Are you sure to delete '{0}' flag?"
     }
   },

@@ -170,7 +170,7 @@ export default class extends Vue {
   private async deleteProduct(): Promise<boolean> {
     if (
       !(await this.$confirm(
-        this.$t('products.confirm_delete.title', this.form.name)
+        this.$t('products.confirm.title', [this.form.name])
       ))
     ) {
       return false;

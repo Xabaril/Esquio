@@ -134,7 +134,7 @@ export default class extends Vue {
   }
 
   private async deleteFlag(flag: Flag): Promise<void> {
-    if (!await this.$confirm(this.$t('flags.confirm_delete.title', flag.name))) {
+    if (!await this.$confirm(this.$t('flags.confirm.title', [flag.name]))) {
       return;
     }
 
