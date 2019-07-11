@@ -126,12 +126,7 @@ export default class extends Vue {
   }
 
   private async deleteProduct(product: Product): Promise<void> {
-    if (
-      !(await this.$bvModal.msgBoxConfirm(this.$t(
-        'products.confirm_delete.title',
-        product.name
-      ) as string))
-    ) {
+    if (!await this.$confirm(this.$t('products.confirm_delete.title', product.name))) {
       return;
     }
 

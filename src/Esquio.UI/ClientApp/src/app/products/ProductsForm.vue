@@ -23,9 +23,12 @@
       />
     </form>
 
-    <div class="row" v-if="isEditing">
+    <div
+      class="row"
+      v-if="isEditing"
+    >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productId="id"/>
+      <FlagsList :productId="id" />
     </div>
 
     <Floating
@@ -96,15 +99,35 @@ export default class extends Vue {
       return;
     }
 
-    this.isLoading = true;
     await this.getProduct();
+  }
+
+  public async onClickSave(): Promise<void> {
+    if (this.$validator.errors.count() > 1) {
+      return;
+    }
+
+    if (!this.isEditing) {
+      await this.addProduct();
+    } else {
+      await this.updateProduct();
+    }
+
+    this.$router.push({
+      name: 'products-list'
+    });
   }
 
   public async onClickDelete(): Promise<void> {
     await this.deleteProduct();
+
+    this.$router.push({
+      name: 'products-list'
+    });
   }
 
-  public async getProduct(): Promise<void> {
+  private async getProduct(): Promise<void> {
+    this.isLoading = true;
     try {
       const { name, description, id } = await this.productsService.detail(
         Number(this.id)
@@ -122,13 +145,9 @@ export default class extends Vue {
     }
   }
 
-  public async addProduct(): Promise<void> {
+  private async addProduct(): Promise<void> {
     try {
       await this.productsService.add(this.form);
-
-      this.$router.push({
-        name: 'products-list'
-      });
 
       this.$toasted.global.success({
         message: this.$t('products.success.add')
@@ -140,13 +159,9 @@ export default class extends Vue {
     }
   }
 
-  public async updateProduct(): Promise<void> {
+  private async updateProduct(): Promise<void> {
     try {
       await this.productsService.update(this.form);
-
-      this.$router.push({
-        name: 'products-list'
-      });
 
       this.$toasted.global.success({
         message: this.$t('products.success.update')
@@ -159,12 +174,7 @@ export default class extends Vue {
   }
 
   private async deleteProduct(): Promise<void> {
-    if (
-      !(await this.$bvModal.msgBoxConfirm(this.$t(
-        'products.confirm_delete.title',
-        this.form.name
-      ) as string))
-    ) {
+    if (!await this.$confirm(this.$t('products.confirm_delete.title', this.form.name))) {
       return;
     }
 
@@ -180,19 +190,6 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
-  }
-
-  public async onClickSave(): Promise<void> {
-    if (this.$validator.errors.count() > 1) {
-      return;
-    }
-
-    if (this.isEditing) {
-      this.updateProduct();
-      return;
-    }
-
-    this.addProduct();
   }
 }
 </script>

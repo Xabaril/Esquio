@@ -3,12 +3,13 @@ import * as bootstrap from './bootstrap';
 import 'jquery'; // For bootstrap material
 import 'bootstrap-material-design';
 import Toasted from 'vue-toasted';
-import { Material } from '~/core';
+import { Material, ConfirmPlugin } from '~/core';
 
 export const vendor = [
   ...(<any>Object).values(bootstrap),
   Material,
-  Toasted
+  Toasted,
+  ConfirmPlugin
 ];
 
 export function configurePlugins() {

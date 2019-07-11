@@ -135,7 +135,7 @@ export default class extends Vue {
   }
 
   private async deleteFlag(flag: Flag): Promise<void> {
-    if (!(await this.$bvModal.msgBoxConfirm(this.$t('flags.confirm_delete.title', flag.name) as string))) {
+    if (!await this.$confirm(this.$t('flags.confirm_delete.title', flag.name))) {
       return;
     }
 
