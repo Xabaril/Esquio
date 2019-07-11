@@ -306,7 +306,7 @@ export default class extends Vue {
   }
 
   &-switch {
-    transform: translateY(0.5rem);
+    transform: translateY(.5rem);
   }
 }
 </style>
