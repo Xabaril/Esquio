@@ -8,7 +8,7 @@
       <button
         type="button"
         class="floating-button btn bmd-btn-fab"
-        :class="`btn-${modifier}`"
+        :class="`btn-${cssModifier}`"
         title="Example text"
       >
         <div class="floating-content">
@@ -29,17 +29,20 @@ import { FloatingModifier } from './floating-modifier';
 @Component
 export default class extends Vue {
   public name = 'Floating';
-  public modifier: FloatingModifier = FloatingModifier.Primary;
+  public cssModifier: FloatingModifier;
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({}) }) to: RouteConfig;
   @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
   @Prop({ default: false }) isTop: boolean;
   @Prop({ default: false }) disabled: boolean;
+  @Prop({ default: FloatingModifier.Primary }) modifier: FloatingModifier;
 
   public created() {
+    this.cssModifier = this.modifier;
+
     if (this.isTop) {
-      this.modifier = FloatingModifier.Secondary;
+      this.cssModifier = FloatingModifier.Secondary;
     }
   }
 

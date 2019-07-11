@@ -1,4 +1,5 @@
 export enum FloatingIcon {
   Add = 'add',
-  Save = 'save'
+  Save = 'save',
+  Delete = 'delete'
 }

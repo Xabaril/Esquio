@@ -31,8 +31,16 @@
     <Floating
       :text="$t('products.actions.save')"
       :icon="floatingIcon"
-      :disabled="isSaveActionDisabled"
+      :disabled="areActionsDisabled"
       @click="onClickSave"
+    />
+
+    <Floating
+      :text="$t('products.actions.delete')"
+      :icon="deleteIcon"
+      :modifier="deleteModifier"
+      :disabled="areActionsDisabled"
+      @click="onClickDelete"
     />
 
     <Floating
@@ -47,7 +55,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText } from '~/shared';
+import { Floating, FloatingIcon, InputText, FloatingModifier } from '~/shared';
 import { Product } from './product.model';
 import { FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
@@ -62,6 +70,8 @@ import { IProductsService } from './iproducts.service';
 export default class extends Vue {
   public name = 'ProductsForm';
   public floatingIcon = FloatingIcon.Save;
+  public deleteIcon = FloatingIcon.Delete;
+  public deleteModifier = FloatingModifier.Warning;
   public isLoading = false;
   public form: Product = { id: null, name: null, description: null };
 
@@ -73,7 +83,7 @@ export default class extends Vue {
     return !!this.id;
   }
 
-  get isSaveActionDisabled(): boolean {
+  get areActionsDisabled(): boolean {
     return (
       !this.form.name ||
       !this.form.description ||
@@ -88,6 +98,10 @@ export default class extends Vue {
 
     this.isLoading = true;
     await this.getProduct();
+  }
+
+  public async onClickDelete(): Promise<void> {
+    await this.deleteProduct();
   }
 
   public async getProduct(): Promise<void> {
@@ -141,6 +155,30 @@ export default class extends Vue {
       this.$toasted.global.error({
         message: this.$t('products.errors.update')
       });
+    }
+  }
+
+  private async deleteProduct(): Promise<void> {
+    if (
+      !(await this.$bvModal.msgBoxConfirm(this.$t(
+        'products.confirm_delete.title',
+        this.form.name
+      ) as string))
+    ) {
+      return;
+    }
+
+    try {
+      const response = await this.productsService.remove(this.form);
+      this.$toasted.global.success({
+        message: this.$t('products.success.delete')
+      });
+    } catch (e) {
+      this.$toasted.global.error({
+        message: this.$t('products.errors.delete')
+      });
+    } finally {
+      this.isLoading = false;
     }
   }
 
