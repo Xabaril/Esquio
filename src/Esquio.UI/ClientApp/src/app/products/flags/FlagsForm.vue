@@ -69,12 +69,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import VueTagsInput from '@johmun/vue-tags-input';
-import { Inject } from 'inversify-props';
-import { AlertType } from '~/core';
-import { Floating, FloatingDelete, FloatingContainer, InputText, CustomSwitch } from '~/shared';
-import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import VueTagsInput from "@johmun/vue-tags-input";
+import { Inject } from "inversify-props";
+import { AlertType } from "~/core";
+import {
+  Floating,
+  FloatingDelete,
+  FloatingContainer,
+  InputText,
+  CustomSwitch
+} from "~/shared";
+import { ITagsService, Tag, FormTag } from "~/products/shared/tags";
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
 
@@ -105,9 +111,9 @@ export default class extends Vue {
 
   public tagsValidator = [
     {
-     classes: 'no-symbol',
-     rule: /^[\w]+$/,
-     disableAdd: true
+      classes: 'no-symbol',
+      rule: /^[\w]+$/,
+      disableAdd: true
     }
   ];
 
@@ -174,6 +180,19 @@ export default class extends Vue {
     }
 
     this.addFlag();
+  }
+
+  public async onClickDelete(): Promise<void> {
+    if (!(await this.deleteFlag())) {
+      return;
+    }
+
+    this.$router.push({
+      name: 'products-edit',
+      params: {
+        id: this.productId
+      }
+    });
   }
 
   private async getFlag(): Promise<void> {
@@ -262,6 +281,27 @@ export default class extends Vue {
 
     return true;
   }
+
+  private async deleteFlag(): Promise<boolean> {
+    if (
+      !(await this.$confirm(
+        this.$t('flags.confirm_delete.title', this.form.name)
+      ))
+    ) {
+      return false;
+    }
+
+    try {
+      const response = await this.flagsService.remove(this.form);
+      this.$alert(this.$t('flags.success.delete'));
+
+      return true;
+    } catch (e) {
+      this.$alert(this.$t('flags.errors.delete'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 }
 </script>
 
@@ -272,7 +312,7 @@ export default class extends Vue {
   }
 
   &-switch {
-    transform: translateY(.5rem);
+    transform: translateY(0.5rem);
   }
 }
 </style>

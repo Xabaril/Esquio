@@ -139,7 +139,7 @@ export default class extends Vue {
     }
 
     try {
-      const response = await this.flagsService.remove(flag);
+      await this.flagsService.remove(flag);
       this.flags = this.flags.filter(x => x.id !== flag.id);
       this.$alert(this.$t('flags.success.delete'));
     } catch (e) {
