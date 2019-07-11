@@ -31,26 +31,27 @@
       <FlagsList :productId="id" />
     </div>
 
-    <Floating
-      :text="$t('products.actions.save')"
-      :icon="floatingIcon"
-      :disabled="areActionsDisabled"
-      @click="onClickSave"
-    />
+    <FloatingContainer>
+      <Floating
+        :text="$t('products.actions.delete')"
+        :icon="deleteIcon"
+        :modifier="deleteModifier"
+        :disabled="areActionsDisabled"
+        @click="onClickDelete"
+      />
 
-    <Floating
-      :text="$t('products.actions.delete')"
-      :icon="deleteIcon"
-      :modifier="deleteModifier"
-      :disabled="areActionsDisabled"
-      @click="onClickDelete"
-    />
+      <Floating
+        :text="$t('products.actions.save')"
+        :icon="floatingIcon"
+        :disabled="areActionsDisabled"
+        @click="onClickSave"
+      />
+    </FloatingContainer>
 
-    <Floating
+    <FloatingTop
       v-if="isEditing"
-      :isTop="true"
       :text="$t('products.actions.add_flag')"
-      :to="{name: 'flags-add', params: { productId: form.id } }"
+      :to="{name: 'flags-add', params: { productId: form.id }}"
     />
   </section>
 </template>
@@ -58,7 +59,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating, FloatingIcon, InputText, FloatingModifier } from '~/shared';
+import {
+  Floating,
+  FloatingIcon,
+  FloatingTop,
+  InputText,
+  FloatingModifier,
+  FloatingContainer
+} from '~/shared';
 import { AlertType } from '~/core';
 import { Product } from './product.model';
 import { FlagsList } from './flags';
@@ -67,6 +75,8 @@ import { IProductsService } from './iproducts.service';
 @Component({
   components: {
     Floating,
+    FloatingTop,
+    FloatingContainer,
     InputText,
     FlagsList
   }
@@ -120,7 +130,7 @@ export default class extends Vue {
   }
 
   public async onClickDelete(): Promise<void> {
-    if (!await this.deleteProduct()) {
+    if (!(await this.deleteProduct())) {
       return;
     }
 
@@ -167,7 +177,11 @@ export default class extends Vue {
   }
 
   private async deleteProduct(): Promise<boolean> {
-    if (!await this.$confirm(this.$t('products.confirm_delete.title', this.form.name))) {
+    if (
+      !(await this.$confirm(
+        this.$t('products.confirm_delete.title', this.form.name)
+      ))
+    ) {
       return false;
     }
 

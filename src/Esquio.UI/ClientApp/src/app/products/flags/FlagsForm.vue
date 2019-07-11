@@ -51,13 +51,15 @@
       />
     </div>
 
-    <Floating
-      v-if="!this.isEditing"
-      :text="$t('flags.actions.save')"
-      :icon="floatingIcon"
-      :disabled="isSaveActionDisabled"
-      @click="onClickSave"
-    />
+    <FloatingContainer>
+      <Floating
+        v-if="!this.isEditing"
+        :text="$t('flags.actions.save')"
+        :icon="floatingIcon"
+        :disabled="isSaveActionDisabled"
+        @click="onClickSave"
+      />
+    </FloatingContainer>
   </section>
 </template>
 
@@ -66,7 +68,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueTagsInput from '@johmun/vue-tags-input';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { Floating, FloatingIcon, InputText, CustomSwitch } from '~/shared';
+import { Floating, FloatingContainer, FloatingIcon, InputText, CustomSwitch } from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
@@ -74,6 +76,7 @@ import { IFlagsService } from './iflags.service';
 @Component({
   components: {
     Floating,
+    FloatingContainer,
     InputText,
     CustomSwitch,
     VueTagsInput

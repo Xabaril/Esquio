@@ -59,8 +59,7 @@
       </template>
     </b-table>
 
-    <Floating
-      :isTop="true"
+    <FloatingTop
       :text="$t('products.actions.add')"
       :to="{name: 'products-add'}"
     />
@@ -71,13 +70,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { Floating } from '~/shared';
+import { FloatingTop } from '~/shared';
 import { Product } from './product.model';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
-    Floating
+    FloatingTop
   }
 })
 export default class extends Vue {

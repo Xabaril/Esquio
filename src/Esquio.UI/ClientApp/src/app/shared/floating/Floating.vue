@@ -30,11 +30,11 @@ import { FloatingModifier } from './floating-modifier';
 export default class extends Vue {
   public name = 'Floating';
   public cssModifier: FloatingModifier;
+  public isTop = false;
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({}) }) to: RouteConfig;
   @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
-  @Prop({ default: false }) isTop: boolean;
   @Prop({ default: false }) disabled: boolean;
   @Prop({ default: FloatingModifier.Primary }) modifier: FloatingModifier;
 
@@ -54,12 +54,7 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .floating {
-  $margin: 5vh;
   $top-height: 2.15rem;
-
-  position: fixed;
-  bottom: $margin;
-  right: $margin;
 
   &-button {
     @media screen and (min-width: get-media(s)) {
