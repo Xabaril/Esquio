@@ -74,6 +74,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { CustomSwitch } from '~/shared';
+import { AlertType } from '~/core';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
 
@@ -118,9 +119,7 @@ export default class extends Vue {
       const response = await this.flagsService.get(Number(this.productId));
       this.flags = response.result;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.get')
-      });
+      this.$alert(this.$t('flags.errors.get'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
@@ -142,13 +141,9 @@ export default class extends Vue {
     try {
       const response = await this.flagsService.remove(flag);
       this.flags = this.flags.filter(x => x.id !== flag.id);
-      this.$toasted.global.success({
-        message: this.$t('flags.success.delete')
-      });
+      this.$alert(this.$t('flags.success.delete'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.delete')
-      });
+      this.$alert(this.$t('flags.errors.delete'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
@@ -158,13 +153,9 @@ export default class extends Vue {
     try {
       await this.flagsService.update(flag);
 
-      this.$toasted.global.success({
-        message: !flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on')
-      });
+      this.$alert(!flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.change')
-      });
+      this.$alert(this.$t('flags.errors.change'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }

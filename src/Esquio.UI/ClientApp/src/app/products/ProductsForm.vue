@@ -59,6 +59,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { Floating, FloatingIcon, InputText, FloatingModifier } from '~/shared';
+import { AlertType } from '~/core';
 import { Product } from './product.model';
 import { FlagsList } from './flags';
 import { IProductsService } from './iproducts.service';
@@ -119,7 +120,9 @@ export default class extends Vue {
   }
 
   public async onClickDelete(): Promise<void> {
-    await this.deleteProduct();
+    if (!await this.deleteProduct()) {
+      return;
+    }
 
     this.$router.push({
       name: 'products-list'
@@ -137,9 +140,7 @@ export default class extends Vue {
       this.form.description = description;
       this.form.id = id;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.detail')
-      });
+      this.$alert(this.$t('products.errors.detail'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
@@ -149,13 +150,9 @@ export default class extends Vue {
     try {
       await this.productsService.add(this.form);
 
-      this.$toasted.global.success({
-        message: this.$t('products.success.add')
-      });
+      this.$alert(this.$t('products.success.add'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.add')
-      });
+      this.$alert(this.$t('products.errors.add'), AlertType.Error);
     }
   }
 
@@ -163,30 +160,23 @@ export default class extends Vue {
     try {
       await this.productsService.update(this.form);
 
-      this.$toasted.global.success({
-        message: this.$t('products.success.update')
-      });
+      this.$alert(this.$t('products.success.update'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.update')
-      });
+      this.$alert(this.$t('products.errors.update'), AlertType.Error);
     }
   }
 
-  private async deleteProduct(): Promise<void> {
+  private async deleteProduct(): Promise<boolean> {
     if (!await this.$confirm(this.$t('products.confirm_delete.title', this.form.name))) {
-      return;
+      return false;
     }
 
     try {
-      const response = await this.productsService.remove(this.form);
-      this.$toasted.global.success({
-        message: this.$t('products.success.delete')
-      });
+      await this.productsService.remove(this.form);
+      this.$alert(this.$t('products.success.delete'));
+      return true;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.delete')
-      });
+      this.$alert(this.$t('products.errors.delete'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }

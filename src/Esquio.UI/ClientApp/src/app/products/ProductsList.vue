@@ -70,6 +70,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
+import { AlertType } from '~/core';
 import { Floating } from '~/shared';
 import { Product } from './product.model';
 import { IProductsService } from './iproducts.service';
@@ -109,9 +110,7 @@ export default class extends Vue {
       const response = await this.productsService.get();
       this.products = response.result;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.get')
-      });
+      this.$alert(this.$t('products.errors.get'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
@@ -133,13 +132,11 @@ export default class extends Vue {
     try {
       const response = await this.productsService.remove(product);
       this.products = this.products.filter(x => x.id !== product.id);
-      this.$toasted.global.success({
-        message: this.$t('products.success.delete')
-      });
+      this.$alert(this.$t('products.success.delete'));
+
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.delete')
-      });
+      this.$alert(this.$t('products.errors.delete'), AlertType.Error);
+
     } finally {
       this.isLoading = false;
     }
@@ -154,14 +151,10 @@ export default class extends Vue {
     try {
       await this.productsService.add(defaultProduct);
 
-      this.$toasted.global.success({
-        message: this.$t('products.success.add')
-      });
+      this.$alert(this.$t('products.success.add'));
       await this.getProducts();
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.add')
-      });
+      this.$alert(this.$t('products.errors.add'), AlertType.Error);
     }
   }
 }

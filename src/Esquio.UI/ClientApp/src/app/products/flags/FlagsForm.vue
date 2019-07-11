@@ -65,6 +65,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueTagsInput from '@johmun/vue-tags-input';
 import { Inject } from 'inversify-props';
+import { AlertType } from '~/core';
 import { Floating, FloatingIcon, InputText, CustomSwitch } from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
@@ -178,9 +179,7 @@ export default class extends Vue {
       this.form.id = id;
       this.form.enabled = enabled;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.detail')
-      });
+      this.$alert(this.$t('flags.errors.detail'), AlertType.Error);
     }
   }
 
@@ -193,9 +192,7 @@ export default class extends Vue {
       this.tags = await this.tagsService.get(this.form.id);
       this.formTags = await this.tagsService.toFormTags(this.tags);
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('tags.errors.get')
-      });
+      this.$alert(this.$t('tags.errors.get'), AlertType.Error);
     }
   }
 
@@ -213,13 +210,9 @@ export default class extends Vue {
         }
       });
 
-      this.$toasted.global.success({
-        message: this.$t('flags.success.add')
-      });
+      this.$alert(this.$t('flags.success.add'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.add')
-      });
+      this.$alert(this.$t('flags.errors.add'), AlertType.Error);
     }
   }
 
@@ -234,13 +227,9 @@ export default class extends Vue {
         }
       });
 
-      this.$toasted.global.success({
-        message: this.$t('flags.success.update')
-      });
+      this.$alert(this.$t('flags.success.update'));
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('flags.errors.update')
-      });
+      this.$alert(this.$t('flags.errors.update'), AlertType.Error);
     }
   }
 
