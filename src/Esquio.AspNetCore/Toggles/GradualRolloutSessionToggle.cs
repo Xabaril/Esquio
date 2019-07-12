@@ -48,7 +48,7 @@ namespace Esquio.AspNetCore.Toggles
                     }
                     catch (InvalidOperationException)
                     {
-                        _logger.LogError($"The toggle {nameof(GradualRolloutSessionToggle)} can't perform rollout on Session because  Session has not been configured for this application or request..");
+                        _logger.LogError($"The toggle {nameof(GradualRolloutSessionToggle)} can't perform rollout on Session because  Session has not been configured for this application or request.");
                     }
                 }
             }
