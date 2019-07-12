@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Endpoints
@@ -69,31 +70,34 @@ namespace Esquio.AspNetCore.Endpoints
             {
                 var endpoint = candidates[index].Endpoint;
 
-                var metadata = endpoint?.Metadata
-                   .GetMetadata<IFeatureFilterMetadata>();
+                var allMetadata = endpoint?.Metadata
+                   .GetOrderedMetadata<IFeatureFilterMetadata>();
 
-                if (metadata != null)
+                if (allMetadata != null && allMetadata.Any())
                 {
-                    Log.FeatureMatcherPolicyEvaluatingFeatures(_logger, endpoint.DisplayName, metadata.Names, metadata.ProductName);
-
-                    var featureService = httpContext
-                        .RequestServices
-                        .GetService<IFeatureService>();
-
-                    var tokenizer = new StringTokenizer(metadata.Names, split_characters);
-
-                    foreach (var token in tokenizer)
+                    foreach (var metadata in allMetadata)
                     {
-                        var featureName = token.Trim();
+                        Log.FeatureMatcherPolicyEvaluatingFeatures(_logger, endpoint.DisplayName, metadata.Names, metadata.ProductName);
 
-                        if (featureName.HasValue && featureName.Length > 0)
+                        var featureService = httpContext
+                            .RequestServices
+                            .GetService<IFeatureService>();
+
+                        var tokenizer = new StringTokenizer(metadata.Names, split_characters);
+
+                        foreach (var token in tokenizer)
                         {
-                            if (!await featureService.IsEnabledAsync(featureName.Value, metadata.ProductName))
-                            {
-                                Log.FeatureMatcherPolicyEndpointIsNotValid(_logger, endpoint.DisplayName);
+                            var featureName = token.Trim();
 
-                                valid = false;
-                                break;
+                            if (featureName.HasValue && featureName.Length > 0)
+                            {
+                                if (!await featureService.IsEnabledAsync(featureName.Value, metadata.ProductName))
+                                {
+                                    Log.FeatureMatcherPolicyEndpointIsNotValid(_logger, endpoint.DisplayName);
+
+                                    valid = false & valid;
+                                    break;
+                                }
                             }
                         }
                     }

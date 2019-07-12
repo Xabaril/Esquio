@@ -1,5 +1,6 @@
 export enum FloatingModifier {
   Primary = 'primary',
   Secondary = 'secondary',
-  Success = 'success'
+  Success = 'success',
+  Warning = 'warning'
 }

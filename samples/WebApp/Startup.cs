@@ -72,11 +72,11 @@ namespace WebApp
 
             app.UseEndpoints(routes =>
             {
-                routes.MapEsquio(pattern: "esquio");
+                routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
                 
                 routes.MapControllerRoute(
                         name: "default",
-                        pattern: "{controller=Match}/{action=Index}/{id?}").RequireFeature("HiddenGem");
+                        pattern: "{controller=Match}/{action=Index}/{id?}");
 
                 routes.MapRazorPages();
             });

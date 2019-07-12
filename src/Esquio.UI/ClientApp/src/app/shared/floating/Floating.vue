@@ -8,7 +8,7 @@
       <button
         type="button"
         class="floating-button btn bmd-btn-fab"
-        :class="`btn-${modifier}`"
+        :class="`btn-${cssModifier}`"
         title="Example text"
       >
         <div class="floating-content">
@@ -29,17 +29,20 @@ import { FloatingModifier } from './floating-modifier';
 @Component
 export default class extends Vue {
   public name = 'Floating';
+  public cssModifier: FloatingModifier;
+  public isTop = false;
+  public icon: FloatingIcon = FloatingIcon.Add;
   public modifier: FloatingModifier = FloatingModifier.Primary;
 
   @Prop({ required: true }) text: string;
   @Prop({ default: () => ({}) }) to: RouteConfig;
-  @Prop({ default: FloatingIcon.Add }) icon: FloatingIcon;
-  @Prop({ default: false }) isTop: boolean;
   @Prop({ default: false }) disabled: boolean;
 
   public created() {
+    this.cssModifier = this.modifier;
+
     if (this.isTop) {
-      this.modifier = FloatingModifier.Secondary;
+      this.cssModifier = FloatingModifier.Secondary;
     }
   }
 
@@ -51,12 +54,7 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .floating {
-  $margin: 5vh;
-  $top-height: 2rem;
-
-  position: fixed;
-  bottom: $margin;
-  right: $margin;
+  $top-height: 2.15rem;
 
   &-button {
     @media screen and (min-width: get-media(s)) {
@@ -120,11 +118,6 @@ export default class extends Vue {
     @media screen and (min-width: get-media(xs)) {
       display: inline-flex !important;
     }
-  }
-
-  &.is-disabled {
-    opacity: .75;
-    pointer-events: none;
   }
 }
 </style>

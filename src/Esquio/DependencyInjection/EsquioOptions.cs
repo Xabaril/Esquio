@@ -38,7 +38,7 @@ namespace Esquio.DependencyInjection
         /// <returns>The same configuration to be chained.</returns>
         public EsquioOptions ConfigureNotFoundBehavior(NotFoundBehavior notFoundBehavior)
         {
-            NotFoundBehavior = NotFoundBehavior;
+            NotFoundBehavior = notFoundBehavior;
             return this;
         }
         

@@ -36,11 +36,17 @@ $color-basic: (
   darkest: #131313
 );
 
+$color-states: (
+  normal: null,
+  error: #A70A0A,
+);
+
 // Add all colors to this map
 $color: (
   primary: $color-primary,
   secondary: $color-secondary,
   basic: $color-basic,
+  states: $color-states
 );
 
 // Times

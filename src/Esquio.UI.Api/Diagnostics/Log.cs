@@ -39,6 +39,15 @@ namespace Esquio.UI.Api.Diagnostics
             _toggleNotExist(logger, toggleId, null);
         }
 
+        public static void FeatureTagAlreadyExist(ILogger logger, string featureId, string tag)
+        {
+            _featureTagAlreadyExist(logger, featureId, tag, null);
+        }
+        public static void FeatureTagNotExist(ILogger logger, string featureId, string tag)
+        {
+            _featureTagNotExist(logger, featureId, tag, null);
+        }
+
         public static void ToggleTypeAlreadyExist(ILogger logger, string toggleType, string featureName)
         {
             _toggleAlreadyExist(logger, toggleType, featureName, null);
@@ -85,6 +94,14 @@ namespace Esquio.UI.Api.Diagnostics
            LogLevel.Warning,
            EventIds.ToggleAlreadyExist,
            "A toggle with type {toggleType} already exist on feature {featureName} and can't be added.");
+        private static readonly Action<ILogger, string, string, Exception> _featureTagNotExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.FeatureTagNotExist,
+          "The feature association between feature {featureId} and tag {tag} does not exist.");
+        private static readonly Action<ILogger, string, string, Exception> _featureTagAlreadyExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.FeatureAlreadyExist,
+          "The feature with id {featureId} already have association with tag {tag}.");
         private static readonly Action<ILogger, string, Exception> _executingCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.ExecutingCommand,

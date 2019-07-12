@@ -1,5 +1,6 @@
 <template>
   <section class="products_list container u-container-medium">
+    <h1>{{$t('products.title')}}</h1>
     <b-table
       striped
       hover
@@ -24,13 +25,12 @@
       >
         <div class="text-center">
           <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
-          <router-link
+          <button
             class="btn btn-raised btn-primary d-inline-block"
-            tag="button"
-            :to="{name: 'products-add'}"
+            @click="onClickAddFirst"
           >
             {{$t('products.actions.add_first')}}
-          </router-link>
+          </button>
         </div>
       </template>
 
@@ -38,16 +38,28 @@
         slot="id"
         slot-scope="data"
       >
-        <div class="text-center">
+        <div class="text-right">
           <router-link :to="{name: 'products-edit', params: {id: data.item.id}}">
-            <button type="button" class="btn btn-sm btn-raised btn-primary">{{$t('products.actions.see_detail')}}</button>
+            <button
+              type="button"
+              class="btn btn-sm btn-raised btn-primary"
+            >
+              {{$t('products.actions.see_detail')}}
+            </button>
           </router-link>
+
+          <button
+            type="button"
+            class="btn btn-sm btn-raised btn-danger ml-2"
+            @click="onClickDelete(data.item)"
+          >
+            {{$t('products.actions.delete')}}
+          </button>
         </div>
       </template>
     </b-table>
 
-    <Floating
-      :isTop="true"
+    <FloatingTop
       :text="$t('products.actions.add')"
       :to="{name: 'products-add'}"
     />
@@ -57,13 +69,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { Floating } from '~/shared';
+import { AlertType } from '~/core';
+import { FloatingTop } from '~/shared';
 import { Product } from './product.model';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
-    Floating
+    FloatingTop
   }
 })
 export default class extends Vue {
@@ -91,16 +104,56 @@ export default class extends Vue {
     this.getProducts();
   }
 
+  public async onClickDelete(product: Product): Promise<void> {
+    await this.deleteProduct(product);
+  }
+
+  public async onClickAddFirst(): Promise<void> {
+    await this.addDefaultProduct();
+  }
+
   private async getProducts(): Promise<void> {
     try {
       const response = await this.productsService.get();
       this.products = response.result;
     } catch (e) {
-      this.$toasted.global.error({
-        message: this.$t('products.errors.get')
-      });
+      this.$alert(this.$t('products.errors.get'), AlertType.Error);
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  private async deleteProduct(product: Product): Promise<void> {
+    if (!await this.$confirm(this.$t('products.confirm.title', [product.name]))) {
+      return;
+    }
+
+    try {
+      const response = await this.productsService.remove(product);
+      this.products = this.products.filter(x => x.id !== product.id);
+      this.$alert(this.$t('products.success.delete'));
+
+    } catch (e) {
+      this.$alert(this.$t('products.errors.delete'), AlertType.Error);
+
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private async addDefaultProduct(): Promise<void> {
+    const defaultProduct: Product = {
+      name: 'Default',
+      description: 'Default Product'
+    };
+
+    try {
+      await this.productsService.add(defaultProduct);
+
+      this.$alert(this.$t('products.success.add'));
+      await this.getProducts();
+    } catch (e) {
+      this.$alert(this.$t('products.errors.add'), AlertType.Error);
     }
   }
 }

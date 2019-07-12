@@ -58,5 +58,15 @@ export class ProductsService implements IProductsService {
       throw new Error(`Cannot update product ${product.id}`);
     }
   }
+
+  public async remove(product: Product): Promise<void> {
+    const response = await fetch(`${settings.apiUrl}/v1/products/${product.id}`, {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) {
+      throw new Error(`Cannot delete product ${product.id}`);
+    }
+  }
 }
 

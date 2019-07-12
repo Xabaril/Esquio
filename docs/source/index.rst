@@ -29,3 +29,4 @@ Welcome to Esquio
 
    toggles/esquio
    toggles/aspnetcore
+   toggles/extensibility

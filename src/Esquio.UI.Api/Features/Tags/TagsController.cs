@@ -1,8 +1,4 @@
-﻿using Esquio.UI.Api.Features.Flags.Delete;
-using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.List;
-using Esquio.UI.Api.Features.Flags.Rollout;
-using Esquio.UI.Api.Features.Tags.Add;
+﻿using Esquio.UI.Api.Features.Tags.Add;
 using Esquio.UI.Api.Features.Tags.Delete;
 using Esquio.UI.Api.Features.Tags.List;
 using MediatR;
@@ -12,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags
+namespace Esquio.UI.Api.Features.Tags
 {
     [Authorize]
     [ApiController]

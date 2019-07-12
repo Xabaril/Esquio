@@ -1,8 +1,8 @@
 ﻿namespace Esquio.UI.Api.Features.Tags.List
 {
-    public class ListTagResponse
+    public class TagResponseDetail
     {
-        public ListTagResponse(string name)
+        public TagResponseDetail(string name)
         {
             Name = name;
         }
