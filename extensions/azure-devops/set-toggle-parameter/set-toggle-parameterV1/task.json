@@ -101,7 +101,7 @@
           "parameters": {
             "toggleId": "$(toggleId)"
           },
-          "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{name}}}\"}"
+          "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{name}}}\"}"
         }
       ],
     "execution": {

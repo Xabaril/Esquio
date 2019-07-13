@@ -6,8 +6,8 @@ async function run() {
     try {
         const esquioConnection = tl.getInput('EsquioService', true);
         const flagId: string = tl.getInput('flagId', true);
-        const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
 
+        const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
         const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
         const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
 
