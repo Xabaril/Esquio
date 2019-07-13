@@ -69,7 +69,7 @@
           "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{name}}}\"}"
         },
         {
-          "target": "featureToggle",
+          "target": "toggleId",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagDetailed",
           "parameters": {
