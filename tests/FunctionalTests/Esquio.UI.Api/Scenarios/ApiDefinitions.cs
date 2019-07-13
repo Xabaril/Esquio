@@ -104,6 +104,10 @@
                 {
                     return $"api/v1/toggles/{toggleId}";
                 }
+                public static string GetExtended(int toggleId)
+                {
+                    return $"api/v1/toggles-extended/{toggleId}";
+                }
                 public static string Delete(int toggleId)
                 {
                     return $"api/v1/toggles/{toggleId}";
