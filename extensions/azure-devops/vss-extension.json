@@ -90,6 +90,11 @@
                         "endpointUrl": "{{endpoint.url}}/api/v1/products/$(productId)/flags",
                         "resultSelector": "jsonpath:$.result[*]"
                     }
+                    {
+                        "name": "EsquioFlagDetailed",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/flags-extended/$(flagId)",
+                        "resultSelector": "jsonpath:$.toggles[*]"
+                    }
                 ],
                 "authenticationSchemes": [                  
                     {
@@ -122,6 +127,15 @@
             "properties": {
               "name": "rollback-feature"
             }
+          },
+          {
+            "id": "set-toggle-parameter",
+            "description": "Esquio set a parameter for a toggle",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [ "ms.vss-distributed-task.tasks" ],
+            "properties": {
+              "name": "set-toggle-parameter"
+            }
           }
     ],
     "files": [
@@ -130,6 +144,9 @@
         },
         {
             "path": "rollback-feature"
+        },
+        {
+            "path": "set-toggle-parameter"
         }
     ]
 }

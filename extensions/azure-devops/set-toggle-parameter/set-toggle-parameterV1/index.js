@@ -40,59 +40,49 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
+        var esquioConnection, flagId, toggleId, esquioUrl;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    esquioConnection = tl.getInput('EsquioService', true);
-                    flagId = tl.getInput('flagId', true);
-                    esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
-                    serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
-                    esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                    return [4 /*yield*/, rolloutFeature(esquioUrl, esquioApiKey, flagId)];
-                case 1:
-                    _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_1 = _a.sent();
-                    tl.setResult(tl.TaskResult.Failed, err_1.message);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+            try {
+                esquioConnection = tl.getInput('EsquioService', true);
+                flagId = tl.getInput('flagId', true);
+                toggleId = tl.getInput('toggleId', true);
+                esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
+                console.log("set toggle id " + toggleId);
+                // const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
+                // const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
+                // await rolloutFeature(esquioUrl, esquioApiKey, flagId);
             }
-        });
-    });
-}
-function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
-    return __awaiter(this, void 0, void 0, function () {
-        var options, req;
-        return __generator(this, function (_a) {
-            options = {
-                hostname: esquioUrl.host,
-                path: "/api/v1/flags/" + flagId + "/Rollout?apikey=" + esquioApiKey,
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': esquioApiKey
-                }
-            };
-            req = https.request(options, function (res) {
-                if (res.statusCode === 200) {
-                    console.log('Feature rollout succesful');
-                }
-                res.on('data', function (data) {
-                    if (res.statusCode != 200) {
-                        var responseData = JSON.parse(data);
-                        console.error("Error in feature rollout " + responseData.detail + " HttpCode: " + res.statusCode);
-                    }
-                });
-            });
-            req.on('error', function (error) {
-                console.error('There has been an error in feature rollout');
-            });
-            req.end();
+            catch (err) {
+                tl.setResult(tl.TaskResult.Failed, err.message);
+            }
             return [2 /*return*/];
         });
     });
 }
+// async function rolloutFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, flagId: string) {
+//     const options = {
+//         hostname: esquioUrl.host,
+//         path: `/api/v1/flags/${flagId}/Rollout?apikey=${esquioApiKey}`,
+//         method: 'PUT',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'x-api-key': esquioApiKey
+//         }
+//     }
+//     const req = https.request(options, (res: any) => {
+//         if (res.statusCode === 200) {
+//             console.log('Feature rollout succesful');
+//         }
+//         res.on('data', (data: any) => {
+//             if (res.statusCode != 200) {
+//                 const responseData = JSON.parse(data);
+//                 tl.setResult(tl.TaskResult.Failed, `Error in feature rollout ${responseData.detail} HttpCode: ${res.statusCode}`);
+//             }
+//         });
+//     });
+//     req.on('error', (error: any) => {
+//         tl.setResult(tl.TaskResult.Failed, error);
+//     });
+//     req.end();
+// }
 run();

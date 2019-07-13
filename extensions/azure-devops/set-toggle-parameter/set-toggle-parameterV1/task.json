@@ -40,6 +40,16 @@
             "properties": {
               "EditableOptions": "True"
             }
+          },
+          {
+            "name": "toggleId",
+            "type": "pickList",
+            "label": "Esquio Toggle",
+            "required": true,
+            "helpMarkDown": "Select the name of the toggle to change parameter.",
+            "properties": {
+              "EditableOptions": "True"
+            }
           }
     ], 
         "dataSourceBindings": [
@@ -57,6 +67,15 @@
             "productId": "$(productId)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{name}}}\"}"
+        },
+        {
+          "target": "featureToggle",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioFlagDetailed",
+          "parameters": {
+            "productId": "$(flagId)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{type}}}\"}"
         }
       ],
     "execution": {
