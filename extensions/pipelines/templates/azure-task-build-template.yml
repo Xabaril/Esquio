@@ -2,6 +2,7 @@ parameters:
   pathToExtension: ''
   taskName: ''
 
+setps:
 - task: Npm@1
   displayName: 'npm for task ${{ taskName }}'
   inputs:
