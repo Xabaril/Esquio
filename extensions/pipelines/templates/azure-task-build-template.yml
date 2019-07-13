@@ -4,14 +4,14 @@ parameters:
 
 steps:
 - task: Npm@1
-  displayName: 'npm for task ${{ taskName }}'
+  displayName: 'npm for task ${{ parameters.taskName }}'
   inputs:
     command: 'install'
-    workingDir: '${{ pathToExtension }}'
+    workingDir: '${{ parameters.pathToExtension }}'
 
 - task: CmdLine@2
-  displayName: TSC ${{ taskName }}
+  displayName: TSC ${{ parameters.taskName }}
   inputs:
     script: 'tsc'
-    workingDirectory: '${{ pathToExtension }}'
+    workingDirectory: '${{ parameters.pathToExtension }}'
     failOnStderr: true
