@@ -596,7 +596,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
             content.ProductName
                 .Should()
-                .BeEquivalentTo(product.Name);
+                .Be(product.Name);
 
             content.Toggles
                 .Should()

@@ -211,12 +211,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             content.Parameters
                 .First()
                 .Name
-                .Should().BeEquivalentTo("param#1");
+                .Should().Be("param#1");
 
             content.Parameters
                 .First()
                 .Value
-                .Should().BeEquivalentTo("value#1");
+                .Should().Be("value#1");
         }
         [Fact]
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
