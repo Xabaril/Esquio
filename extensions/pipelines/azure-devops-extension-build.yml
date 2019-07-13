@@ -10,7 +10,8 @@ variables:
 trigger:
   branches:
     include:
-    - *
+    - master
+    - feature/*
   paths:
     include: 
     - extensions/*
