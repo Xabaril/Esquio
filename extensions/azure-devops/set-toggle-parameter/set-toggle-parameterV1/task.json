@@ -99,7 +99,7 @@
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioToggleDetailed",
           "parameters": {
-            "flagId": "$(toggleId)"
+            "toggleId": "$(toggleId)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{name}}}\"}"
         }
