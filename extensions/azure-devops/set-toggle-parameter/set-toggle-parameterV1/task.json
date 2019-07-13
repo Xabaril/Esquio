@@ -73,7 +73,7 @@
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagDetailed",
           "parameters": {
-            "productId": "$(flagId)"
+            "flagId": "$(flagId)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{type}}}\"}"
         }
