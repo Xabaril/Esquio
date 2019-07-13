@@ -22,29 +22,23 @@ steps:
   inputs:
     version: 'v0.6.x'
 
-- task: Npm@1
-  inputs:
-    command: 'install'
-    workingDir: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
+- template: templates/azure-task-build-template.yml
+  displayName: 'Build rollback feature task'
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
+    taskName: rollback
 
-- task: CmdLine@2
-  displayName: TSC rollback feature
-  inputs:
-    script: 'tsc'
-    workingDirectory: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
-    failOnStderr: true
+- template: templates/azure-task-build-template.yml
+  displayName: 'Build rollout feature task'
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
+    taskName: rollout
 
-- task: Npm@1
-  inputs:
-    command: 'install'
-    workingDir: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
-
-- task: CmdLine@2
-  displayName: TSC rollout feature
-  inputs:
-    script: 'tsc'
-    workingDirectory: 'extensions/azure-devops/rollout-feature/rollout-featureV1'
-    failOnStderr: true
+- template: templates/azure-task-build-template.yml
+  displayName: 'Build set toggle parameter task'
+  parameters:
+    pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV1'
+    taskName: 'set toggle parameter'
 
 - task: ExtensionVersion@1
   inputs:

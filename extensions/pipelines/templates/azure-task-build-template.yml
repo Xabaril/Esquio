@@ -1,0 +1,16 @@
+parameters:
+  pathToExtension: ''
+  taskName: ''
+
+- task: Npm@1
+  displayName: 'npm for task ${{ taskName }}'
+  inputs:
+    command: 'install'
+    workingDir: '${{ pathToExtension }}'
+
+- task: CmdLine@2
+  displayName: TSC ${{ taskName }}
+  inputs:
+    script: 'tsc'
+    workingDirectory: '${{ pathToExtension }}'
+    failOnStderr: true
