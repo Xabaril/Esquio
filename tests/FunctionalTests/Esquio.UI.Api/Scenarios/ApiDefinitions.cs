@@ -60,6 +60,10 @@
                 {
                     return $"api/v1/flags/{featureId}";
                 }
+                public static string GetExtended(int featureId)
+                {
+                    return $"api/v1/flags-extended/{featureId}";
+                }
                 public static string List(int productId)
                 {
                     return $"api/v1/products/{productId}/flags";
