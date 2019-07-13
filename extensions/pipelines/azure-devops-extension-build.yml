@@ -10,7 +10,7 @@ variables:
 trigger:
   branches:
     include:
-    - feature/azure-devops-extension
+    - *
   paths:
     include: 
     - extensions/*
