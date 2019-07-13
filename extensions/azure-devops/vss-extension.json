@@ -94,6 +94,11 @@
                         "name": "EsquioFlagDetailed",
                         "endpointUrl": "{{endpoint.url}}/api/v1/flags-extended/$(flagId)",
                         "resultSelector": "jsonpath:$.toggles[*]"
+                    },
+                    {
+                        "name": "EsquioToggleDetailed",
+                        "endpointUrl": "{{endpoint.url}}/api/v1/toggles-extended/$(toggleId)",
+                        "resultSelector": "jsonpath:$.parameters[*]"
                     }
                 ],
                 "authenticationSchemes": [                  

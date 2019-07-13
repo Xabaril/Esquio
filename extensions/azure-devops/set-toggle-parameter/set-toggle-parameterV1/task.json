@@ -50,6 +50,23 @@
             "properties": {
               "EditableOptions": "True"
             }
+          },
+          {
+            "name": "parameterId",
+            "type": "pickList",
+            "label": "Esquio parameter",
+            "required": true,
+            "helpMarkDown": "Select the name of the toggle parameter to change parameter.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "parameterValue",
+            "type": "string",
+            "label": "Esquio parameter value",
+            "required": true,
+            "helpMarkDown": "Enter the value toggle parameter to change parameter."
           }
     ], 
         "dataSourceBindings": [
@@ -76,6 +93,15 @@
             "flagId": "$(flagId)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{type}}}\"}"
+        },
+        {
+          "target": "parameterId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioToggleDetailed",
+          "parameters": {
+            "flagId": "$(toggleId)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\":\"{{{name}}}\"}"
         }
       ],
     "execution": {
