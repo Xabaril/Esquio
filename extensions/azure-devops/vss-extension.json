@@ -29,6 +29,12 @@
         },
         {
             "path": "images/rollout.png"
+        },
+        {
+            "path": "images/rollback.png"
+        },
+        {
+            "path": "images/set-parameter.png"
         }
     ],
     "content": {
@@ -166,6 +172,22 @@
         },
         {
             "path": "set-toggle-parameter"
+        },
+        {
+            "path": "images/service-connection.png",
+            "addressable": true
+        },
+        {
+            "path": "images/rollout.png",
+            "addressable": true
+        },
+        {
+            "path": "images/rollback.png",
+            "addressable": true
+        },
+        {
+            "path": "images/set-parameter.png",
+            "addressable": true
         }
     ]
 }
