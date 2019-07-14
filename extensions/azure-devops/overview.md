@@ -14,7 +14,7 @@ The tasks included in this version are:
 
 Before being able to use any of this tasks you need to create an Esquio [Service Connection](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) (enabled after installing the extension) and configure an API key in Esquio to use it with the service connection.
 
-![Service connection](./images/service-connection.png)
+![Service connection](images/service-connection.png)
 
 The parameters needed are:
 
@@ -26,7 +26,7 @@ Once you enter all the values you can click on *Verify connection* to check if t
 
 ## Rollout feature with Esquio task
 
-![Rollout feature with Esquio](./images/rollout.png)
+![Rollout feature with Esquio](images/rollout.png)
 
 Parameters for this task are:
 
@@ -36,7 +36,7 @@ Parameters for this task are:
 
 ## Rollback feature with Esquio task
 
-![Rollback feature with Esquio](./images/rollback.png)
+![Rollback feature with Esquio](images/rollback.png)
 
 Parameters for this task are:
 
@@ -46,7 +46,7 @@ Parameters for this task are:
 
 ## Set toggle parameter with Esquio
 
-![Set toggle parameter with Esquio](./images/set-parameter.png)
+![Set toggle parameter with Esquio](images/set-parameter.png)
 
 Parameters for this task are:
 
