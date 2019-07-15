@@ -19,12 +19,13 @@ module.exports = env => {
       }
     },
     configureWebpack: {
+      externals: ['window'],
       plugins: [
         // For Bootstrap material
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          Popper: ['popper.js', 'default']
+          Popper: ['popper.js', 'default'],
         })
       ],
       optimization: {

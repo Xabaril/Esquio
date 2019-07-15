@@ -19,7 +19,9 @@ namespace Esquio.UI.Controllers
     public IActionResult Get()
     {
       var settings = _configuration.GetSection("Settings").GetChildren();
-      var result = settings.ToDictionary(x => x.Key, x => x.Value);
+      var security = _configuration.GetSection("Security").GetSection("Jwt").GetChildren();
+      var result = settings.Concat(security).ToDictionary(x => x.Key, x => x.Value);
+
       return Ok(result);
     }
   }

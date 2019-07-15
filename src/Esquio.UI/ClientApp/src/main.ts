@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import VeeValidate from 'vee-validate';
@@ -10,8 +11,8 @@ import { Filters } from './app/app.filters';
 import store from './app/app.store';
 import App from './app/App.vue';
 
-import './styles/app.scss';
 import { ITranslateService } from '~/shared';
+import './styles/app.scss';
 
 export class AppModule {
   @Inject() translateService: ITranslateService;
