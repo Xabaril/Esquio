@@ -44,7 +44,6 @@ export class AuthService implements IAuthService {
       accessTokenExpiringNotificationTime: 3600 - (3600 / 0.15)
     };
 
-    debugger;
     this.manager = new Oidc.UserManager(this.config);
   }
 

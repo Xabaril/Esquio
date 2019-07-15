@@ -35,8 +35,16 @@ export function router() {
         beforeEnter: checkCallback
       },
       {
+        path: 'login',
+        component: () => import('./shared/auth/Login.vue'),
+      },
+      {
+        path: 'not-found',
+        component: () => import('./shared/NotFound.vue'),
+      },
+      {
         path: '*',
-        redirect: '/'
+        redirect: '/not-found',
       }
     ]
   });

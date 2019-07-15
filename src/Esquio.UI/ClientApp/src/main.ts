@@ -11,15 +11,15 @@ import { Filters } from './app/app.filters';
 import store from './app/app.store';
 import App from './app/App.vue';
 
-import { ITranslateService } from '~/shared';
+import { ITranslateService, IAuthService } from '~/shared';
 import './styles/app.scss';
 
 export class AppModule {
   @Inject() translateService: ITranslateService;
+  @Inject() authService: IAuthService;
 
   constructor() {
     containerBuilder();
-    registerInterceptor();
 
     Vue.use(new Filters());
     Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
@@ -33,6 +33,8 @@ export class AppModule {
 
   private async bootstrap(): Promise<Vue> {
     await getSettings();
+    this.authService.init();
+    registerInterceptor();
 
     let options = {
       el: '#app',
