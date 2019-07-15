@@ -1,7 +1,6 @@
 ﻿using Esquio.UI.Api.Features.Flags.Add;
 using Esquio.UI.Api.Features.Flags.Delete;
 using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.DetailsExtended;
 using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollback;
 using Esquio.UI.Api.Features.Flags.Rollout;
@@ -74,20 +73,6 @@ namespace Esquio.UI.Api.Features.Flags
         [HttpGet]
         [Route("api/v1/flags/{featureId:int:min(1)}")]
         public async Task<IActionResult> Get([FromRoute]DetailsFlagRequest request, CancellationToken cancellationToken = default)
-        {
-            var feature = await _mediator.Send(request, cancellationToken);
-
-            if (feature != null)
-            {
-                return Ok(feature);
-            }
-
-            return NotFound();
-        }
-
-        [HttpGet]
-        [Route("api/v1/flags-extended/{featureId:int:min(1)}")]
-        public async Task<IActionResult> GetExtended([FromRoute]DetailsExtendedFlagRequest request, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(request, cancellationToken);
 

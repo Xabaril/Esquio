@@ -60,10 +60,6 @@
                 {
                     return $"api/v1/flags/{featureId}";
                 }
-                public static string GetExtended(int featureId)
-                {
-                    return $"api/v1/flags-extended/{featureId}";
-                }
                 public static string List(int productId)
                 {
                     return $"api/v1/products/{productId}/flags";
@@ -103,10 +99,6 @@
                 public static string Get(int toggleId)
                 {
                     return $"api/v1/toggles/{toggleId}";
-                }
-                public static string GetExtended(int toggleId)
-                {
-                    return $"api/v1/toggles-extended/{toggleId}";
                 }
                 public static string Delete(int toggleId)
                 {

@@ -1,6 +1,5 @@
 ﻿using Esquio.UI.Api.Features.Flags.Add;
 using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.DetailsExtended;
 using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Update;
 using FluentAssertions;
@@ -526,17 +525,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .BeEquivalentTo(product.Name);
 
             content.Toggles
+                .Any(t=>t.Type == "toggle-type-1")
                 .Should()
-                .ContainEquivalentOf("toggle-type-1");
+                .BeTrue();
 
             content.Toggles
+                .Any(t => t.Type == "toggle-type-2")
                 .Should()
-                .ContainEquivalentOf("toggle-type-2");
+                .BeTrue();
         }
 
         [Fact]
         [ResetDatabase]
-        public async Task get_response_extended_response_if_feature_exist()
+        public async Task get_response_toggle_details_response_if_feature_exist_and_is_configured()
         {
             var product = Builders.Product()
                .WithName("product#1")
@@ -567,7 +568,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.GetExtended(feature.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(feature.Id))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -576,7 +577,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<DetailsExtendedFlagResponse>();
+                .ReadAs<DetailsFlagResponse>();
 
             content.Id
                 .Should()

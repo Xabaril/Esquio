@@ -30,7 +30,12 @@ namespace Esquio.UI.Api.Features.Toggles.Details
                 return new DetailsToggleResponse()
                 {
                     TypeName = toggle.Type,
-                    Parameters = toggle.Parameters.ToDictionary(p => p.Name, p => p.Value)
+                    Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
+                    {
+                        Id = parameter.Id,
+                        Name = parameter.Name,
+                        Value = parameter.Value
+                    }).ToList()
                 };
             }
 

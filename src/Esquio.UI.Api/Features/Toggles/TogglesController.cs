@@ -2,7 +2,6 @@
 using Esquio.UI.Api.Features.Toggles.AddParameter;
 using Esquio.UI.Api.Features.Toggles.Delete;
 using Esquio.UI.Api.Features.Toggles.Details;
-using Esquio.UI.Api.Features.Toggles.DetailsExtended;
 using Esquio.UI.Api.Features.Toggles.KnownTypes;
 using Esquio.UI.Api.Features.Toggles.Reveal;
 using MediatR;
@@ -30,20 +29,6 @@ namespace Esquio.UI.Api.Features.Toggles
         public async Task<IActionResult> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
             var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
-
-            if (toggle != null)
-            {
-                return Ok(toggle);
-            }
-
-            return NotFound();
-        }
-
-        [HttpGet]
-        [Route("api/v1/toggles-extended/{toggleId:int:min(1)}")]
-        public async Task<IActionResult> DetailsExtended([FromRoute]DetailsExtendedToggleRequest detailsExtendedToggleRequest, CancellationToken cancellationToken = default)
-        {
-            var toggle = await _mediator.Send(detailsExtendedToggleRequest, cancellationToken);
 
             if (toggle != null)
             {

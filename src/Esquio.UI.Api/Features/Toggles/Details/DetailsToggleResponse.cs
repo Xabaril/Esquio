@@ -6,6 +6,13 @@ namespace Esquio.UI.Api.Features.Toggles.Details
     {
         public string TypeName { get; set; }
 
-        public Dictionary<string,string> Parameters { get; set; }
+        public List<ParameterDetail> Parameters { get; set; }
+    }
+
+    public class ParameterDetail
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

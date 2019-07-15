@@ -2,7 +2,6 @@
 using Esquio.UI.Api.Features.Toggles.Add;
 using Esquio.UI.Api.Features.Toggles.AddParameter;
 using Esquio.UI.Api.Features.Toggles.Details;
-using Esquio.UI.Api.Features.Toggles.DetailsExtended;
 using Esquio.UI.Api.Features.Toggles.KnownTypes;
 using Esquio.UI.Api.Features.Toggles.Reveal;
 using FluentAssertions;
@@ -86,9 +85,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status404NotFound);
         }
+       
         [Fact]
         [ResetDatabase]
-        public async Task get_response_ok_if_toggle_exist()
+        public async Task get_response_ok_and_contain_details()
         {
             var product = Builders.Product()
                .WithName("product#1")
@@ -130,70 +130,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             var content = await response.Content
                 .ReadAs<DetailsToggleResponse>();
-
-            content.TypeName
-                .Should()
-                .BeEquivalentTo("toggle-type-1");
-
-            content.Parameters
-                .Count
-                .Should().Be(1);
-
-            content.Parameters
-                .First()
-                .Key
-                .Should().BeEquivalentTo("param#1");
-
-            content.Parameters
-                .First()
-                .Value
-                .Should().BeEquivalentTo("value#1");
-        }
-
-        [Fact]
-        [ResetDatabase]
-        public async Task get_extended_response_ok_if_toggle_exist()
-        {
-            var product = Builders.Product()
-               .WithName("product#1")
-               .Build();
-
-            var feature = Builders.Feature()
-                .WithName("feature#1")
-                .Build();
-
-            var toggle = Builders.Toggle()
-              .WithType("toggle-type-1")
-              .Build();
-
-            var parameter = Builders.Parameter()
-                .WithName("param#1")
-                .WithValue("value#1")
-                .Build();
-
-            toggle.Parameters
-                .Add(parameter);
-
-            feature.Toggles
-                .Add(toggle);
-
-            product.Features
-                .Add(feature);
-
-            await _fixture.Given
-                .AddProduct(product);
-
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.GetExtended(toggleId: toggle.Id))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .GetAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status200OK);
-
-            var content = await response.Content
-                .ReadAs<DetailsExtendedToggleResponse>();
 
             content.TypeName
                 .Should()
