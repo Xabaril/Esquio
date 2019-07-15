@@ -40,17 +40,19 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
+        var esquioConnection, toggleId, parameterName, parameterValue, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     esquioConnection = tl.getInput('EsquioService', true);
-                    flagId = tl.getInput('flagId', true);
+                    toggleId = tl.getInput('toggleId', true);
+                    parameterName = tl.getInput('parameterId', true);
+                    parameterValue = tl.getInput('parameterValue', true);
                     esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
                     serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
                     esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                    return [4 /*yield*/, rolloutFeature(esquioUrl, esquioApiKey, flagId)];
+                    return [4 /*yield*/, setToggleParameter(esquioUrl, esquioApiKey, toggleId, parameterName, parameterValue)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
@@ -63,33 +65,39 @@ function run() {
         });
     });
 }
-function rolloutFeature(esquioUrl, esquioApiKey, flagId) {
+function setToggleParameter(esquioUrl, esquioApiKey, toggleId, parameterName, parameterValue) {
     return __awaiter(this, void 0, void 0, function () {
-        var options, req;
+        var options, postData, req;
         return __generator(this, function (_a) {
             options = {
                 hostname: esquioUrl.host,
-                path: "/api/v1/flags/" + flagId + "/Rollout?apikey=" + esquioApiKey,
-                method: 'PUT',
+                path: "/api/v1/toggles/" + toggleId + "/parameters",
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': esquioApiKey
                 }
             };
+            postData = JSON.stringify({
+                "ToggleId": toggleId,
+                "Name": parameterName,
+                "Value": parameterValue
+            });
             req = https.request(options, function (res) {
                 if (res.statusCode === 200) {
-                    console.log('Feature rollout succesful');
+                    console.log('Set toggle parameter succesful');
                 }
                 res.on('data', function (data) {
                     if (res.statusCode != 200) {
                         var responseData = JSON.parse(data);
-                        console.error("Error in feature rollout " + responseData.detail + " HttpCode: " + res.statusCode);
+                        tl.setResult(tl.TaskResult.Failed, "Error set toggle parameter " + responseData.detail + " HttpCode: " + res.statusCode);
                     }
                 });
             });
             req.on('error', function (error) {
-                console.error('There has been an error in feature rollout');
+                tl.setResult(tl.TaskResult.Failed, error);
             });
+            req.write(postData);
             req.end();
             return [2 /*return*/];
         });

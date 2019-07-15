@@ -14,6 +14,13 @@ namespace Esquio.UI.Api.Features.Flags.Details
 
         public string ProductName { get; set; }
 
-        public List<string> Toggles { get; set; }
+        public List<ToggleDetail> Toggles { get; set; }
+    }
+
+    public class ToggleDetail
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; }
     }
 }

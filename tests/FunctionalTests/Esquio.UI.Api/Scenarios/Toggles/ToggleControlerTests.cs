@@ -85,9 +85,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status404NotFound);
         }
+       
         [Fact]
         [ResetDatabase]
-        public async Task get_response_ok_if_toggle_exist()
+        public async Task get_response_ok_and_contain_details()
         {
             var product = Builders.Product()
                .WithName("product#1")
@@ -140,15 +141,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Parameters
                 .First()
-                .Key
-                .Should().BeEquivalentTo("param#1");
+                .Id
+                .Should().Be(parameter.Id);
+
+            content.Parameters
+                .First()
+                .Name
+                .Should().Be("param#1");
 
             content.Parameters
                 .First()
                 .Value
-                .Should().BeEquivalentTo("value#1");
+                .Should().Be("value#1");
         }
-
         [Fact]
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {

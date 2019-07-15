@@ -34,7 +34,11 @@ namespace Esquio.UI.Api.Features.Flags.Details
                     Description = feature.Description,
                     Enabled = feature.Enabled,
                     ProductName = feature.ProductEntity.Name,
-                    Toggles = feature.Toggles.Select(t => t.Type).ToList()
+                    Toggles = feature.Toggles.Select(toggle => new ToggleDetail
+                    {
+                        Id = toggle.Id,
+                        Type = toggle.Type
+                    }).ToList()
                 };
             }
 
