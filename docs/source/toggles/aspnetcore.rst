@@ -80,3 +80,27 @@ This toggle allows you gradually enabled features to a percentage of logged in u
                         }
                     ]
                 }
+
+GradualRolloutSessionToggle
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This toggle allows you gradually enabled features to a percentage of user sessions (authenticated or not). Stickiness is based on the ASP.NET Core SessionId value. 
+
+**Parameters**
+
+    * Percentage: *The percentage (0-100) you want to enable the feature toggle for.*
+
+::
+
+                {
+                    "Name": "DarkMode",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.GradualRolloutSessionToggle",
+                            "Parameters": 
+                            {
+                                "Percentage": 50
+                            }
+                        }
+                    ]
+                }
