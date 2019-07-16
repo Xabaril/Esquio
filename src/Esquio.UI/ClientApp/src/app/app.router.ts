@@ -7,10 +7,7 @@ import authRoutes from './shared/auth/auth.routes';
 Vue.use(VueRouter);
 
 export function router() {
-
   const requireAuth = authRoutes.requireAuth;
-
-  const checkCallback = authRoutes.checkCallback;
 
   return new VueRouter({
     mode: 'history',

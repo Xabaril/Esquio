@@ -3,6 +3,12 @@ import { container, cid } from 'inversify-props';
 import { registerInterceptor } from '~/core';
 import { IAuthService } from '.';
 
+const checkCallback: NavigationGuard = async (to, from, next) => {
+  const authService = container.get<IAuthService>(cid.IAuthService);
+  await authService.callback();
+  next('/');
+};
+
 const routes = (): RouteConfig[] => {
   return [
     {
@@ -24,12 +30,6 @@ const routes = (): RouteConfig[] => {
   ];
 };
 
-const checkCallback: NavigationGuard = async (to, from, next) => {
-  const authService = container.get<IAuthService>(cid.IAuthService);
-  await authService.callback();
-  next('/');
-};
-
 const requireAuth: NavigationGuard = async (to, from, next) => {
   const authService = container.get<IAuthService>(cid.IAuthService);
   const user = await authService.getUser();
@@ -45,6 +45,5 @@ const requireAuth: NavigationGuard = async (to, from, next) => {
 
 export default {
   routes,
-  checkCallback,
   requireAuth
 };
