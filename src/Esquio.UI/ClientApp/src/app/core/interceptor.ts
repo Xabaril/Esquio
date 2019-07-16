@@ -17,7 +17,7 @@ export function registerInterceptor() {
 
       config.headers = {
         ...headers,
-        Authorization: `Beared ${authService.user.id_token}`
+        Authorization: `Bearer ${authService.user.access_token}`
       };
       return [url, config];
     },
