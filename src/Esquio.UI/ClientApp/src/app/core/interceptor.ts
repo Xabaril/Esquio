@@ -1,13 +1,24 @@
 import fetchIntercept from 'fetch-intercept';
 import nprogress from 'nprogress/nprogress.js';
+import { container, cid } from 'inversify-props';
+import { IAuthService } from '@/shared';
 
 
 export function registerInterceptor() {
   nprogress.configure({ showSpinner: false });
+  const authService = container.get<IAuthService>(cid.IAuthService);
 
   fetchIntercept.register({
     request: function (url, config) {
       nprogress.start();
+
+      config = config || {};
+      const headers = config.headers || {};
+
+      config.headers = {
+        ...headers,
+        Authorization: `Beared ${authService.user.id_token}`
+      };
       return [url, config];
     },
 

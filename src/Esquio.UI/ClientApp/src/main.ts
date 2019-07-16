@@ -3,7 +3,7 @@ import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import VeeValidate from 'vee-validate';
 
-import { getSettings, registerInterceptor } from '~/core';
+import { getSettings } from '~/core';
 import { vendor, configurePlugins } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
@@ -34,7 +34,6 @@ export class AppModule {
   private async bootstrap(): Promise<Vue> {
     await getSettings();
     this.authService.init();
-    registerInterceptor();
 
     let options = {
       el: '#app',

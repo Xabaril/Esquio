@@ -1,5 +1,5 @@
 <template>
-<div class="login">Login</div>
+<div class="login">Logout</div>
 </template>
 
 <script lang="ts">
@@ -9,13 +9,13 @@ import { IAuthService } from './iauth.service';
 
 @Component
 export default class extends Vue {
-  public name = 'Login';
+  public name = 'Logout';
 
   @Inject() authService: IAuthService;
 
   public async created(): Promise<void> {
-    if (!this.authService.user) {
-      await this.authService.login();
+    if (this.authService.user) {
+      await this.authService.logout();
       return;
     }
 

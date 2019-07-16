@@ -4,6 +4,7 @@ import { productsModule } from './products';
 import { homeModule } from './home';
 import { container, cid } from 'inversify-props';
 import { IAuthService } from './shared';
+import { registerInterceptor } from './core';
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,8 @@ export function router() {
       next({ path: '/login' });
       return;
     }
+
+    registerInterceptor();
 
     next();
   };
@@ -35,11 +38,15 @@ export function router() {
         beforeEnter: checkCallback
       },
       {
-        path: 'login',
+        path: '/login',
         component: () => import('./shared/auth/Login.vue'),
       },
       {
-        path: 'not-found',
+        path: '/logout',
+        component: () => import('./shared/auth/Logout.vue'),
+      },
+      {
+        path: '/not-found',
         component: () => import('./shared/NotFound.vue'),
       },
       {

@@ -10,20 +10,20 @@ Oidc.Log.level = Oidc.Log.ERROR;
 
 @injectable()
 export class AuthService implements IAuthService {
-  private manager: Oidc.UserManager;
   public user: User;
+  private manager: Oidc.UserManager;
   private config: Oidc.UserManagerSettings = null;
 
   public init(): void {
     this.config = {
       authority: settings.Authority,
-      client_id: 'web',
+      client_id: 'spa',
       redirect_uri: window.location.protocol + '//' + window.location.host + '/callback',
       post_logout_redirect_uri: window.location.protocol + '//' + window.location.host,
 
       // these two will be done dynamically from the buttons clicked, but are
       // needed if you want to use the silent_renew
-      response_type: 'id_token token',
+      response_type: 'code',
       scope: 'openid profile ' + settings.Audience,
 
       // this will toggle if profile endpoint is used
@@ -67,12 +67,14 @@ export class AuthService implements IAuthService {
     });
   }
 
+  // Only for implicit
   public silentCallback(): Promise<void | Oidc.User> {
     return this.manager.signinSilentCallback().catch(error => {
       console.log('silent.callback error: ', error);
     });
   }
 
+  // Only for implicit
   public silent(): Promise<void | Oidc.User> {
     return this.manager.signinSilent()
       .catch(error => {
@@ -82,7 +84,9 @@ export class AuthService implements IAuthService {
   }
 
   public getUser(): Promise<void | Oidc.User> {
-    return this.manager.getUser().catch(error => {
+    return this.manager.getUser()
+    .then(user => this.user = user)
+    .catch(error => {
       console.log('authService.getUser error: ', error);
     });
   }
@@ -90,12 +94,12 @@ export class AuthService implements IAuthService {
   public handleEvents(): void {
     this.manager.events.addUserLoaded(user => {
       console.log('#response', { message: 'User loaded' });
-      this.getUser();
+      return this.getUser();
     });
 
     this.manager.events.addUserUnloaded(() => {
       console.log('#response', { message: 'User logged out locally' });
-      this.getUser();
+      return this.getUser();
     });
 
     this.manager.events.addAccessTokenExpiring(() => {

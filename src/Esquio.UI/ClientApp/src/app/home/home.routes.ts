@@ -6,7 +6,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
             path: '/',
             name: 'home',
             component: () => import('./Home.vue'),
-            // beforeEnter: requireAuth
+            beforeEnter: requireAuth
         }
     ];
 };
