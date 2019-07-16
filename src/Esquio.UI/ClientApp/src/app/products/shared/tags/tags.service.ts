@@ -22,11 +22,7 @@ export class TagsService implements ITagsService {
       body: JSON.stringify({
         tag: tag.name,
         featureId: featureId,
-      }),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      })
     });
 
     if (!response.ok) {

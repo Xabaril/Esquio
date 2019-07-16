@@ -38,7 +38,7 @@ const requireAuth: NavigationGuard = async (to, from, next) => {
     return;
   }
 
-  registerInterceptor();
+  registerInterceptor(next);
 
   next();
 };

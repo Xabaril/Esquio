@@ -33,6 +33,7 @@
 
     <FloatingContainer>
       <FloatingDelete
+        v-if="this.isEditing"
         :text="$t('products.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
@@ -86,7 +87,7 @@ export default class extends Vue {
 
   @Inject() productsService: IProductsService;
 
-  @Prop() id: string;
+  @Prop({ type: [String, Number]}) id: string;
 
   get isEditing(): boolean {
     return !!this.id;

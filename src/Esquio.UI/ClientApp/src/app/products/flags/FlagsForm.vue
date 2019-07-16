@@ -53,15 +53,15 @@
 
     <FloatingContainer>
       <FloatingDelete
+        v-if="this.isEditing"
         :text="$t('flags.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <Floating
-        v-if="!this.isEditing"
         :text="$t('flags.actions.save')"
-        :disabled="isSaveActionDisabled"
+        :disabled="areActionsDisabled"
         @click="onClickSave"
       />
     </FloatingContainer>
@@ -120,14 +120,14 @@ export default class extends Vue {
   @Inject() flagsService: IFlagsService;
   @Inject() tagsService: ITagsService;
 
-  @Prop() id: string;
-  @Prop({ required: true }) productId: string;
+  @Prop({ type: [String, Number] }) id: string;
+  @Prop({ type: [String, Number], required: true }) productId: string;
 
   get isEditing(): boolean {
     return !!this.id;
   }
 
-  get isSaveActionDisabled(): boolean {
+  get areActionsDisabled(): boolean {
     return (
       !this.form.name ||
       !this.form.description ||

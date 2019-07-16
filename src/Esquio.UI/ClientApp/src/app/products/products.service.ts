@@ -28,11 +28,7 @@ export class ProductsService implements IProductsService {
   public async add(product: Product): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/products`, {
       method: 'POST',
-      body: JSON.stringify(product),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(product)
     });
 
     if (!response.ok) {
@@ -47,11 +43,7 @@ export class ProductsService implements IProductsService {
 
     const response = await fetch(`${settings.ApiUrl}/v1/products`, {
       method: 'PUT',
-      body: JSON.stringify(_product),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(_product)
     });
 
     if (!response.ok) {

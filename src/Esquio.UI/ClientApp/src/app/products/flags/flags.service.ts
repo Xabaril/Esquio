@@ -28,11 +28,7 @@ export class FlagsService implements IFlagsService {
   public async add(flag: Flag): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/flags`, {
       method: 'POST',
-      body: JSON.stringify(flag),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(flag)
     });
 
     if (!response.ok) {
@@ -46,11 +42,7 @@ export class FlagsService implements IFlagsService {
       body: JSON.stringify({
         ...flag,
         flagId: flag.id
-      }),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      })
     });
 
     if (!response.ok) {
@@ -61,10 +53,7 @@ export class FlagsService implements IFlagsService {
   public async rollout(flag: Flag): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/flags/${flag.id}/rollout`, {
       method: 'PUT',
-      body: JSON.stringify({ featureId: flag.id }),
-      headers: {
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify({ featureId: flag.id })
     });
 
     if (!response.ok) {
@@ -75,10 +64,7 @@ export class FlagsService implements IFlagsService {
   public async rollback(flag: Flag): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/flags/${flag.id}/rollback`, {
       method: 'PUT',
-      body: JSON.stringify({ featureId: flag.id }),
-      headers: {
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify({ featureId: flag.id })
     });
 
     if (!response.ok) {
