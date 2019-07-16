@@ -67,14 +67,12 @@ export class AuthService implements IAuthService {
     });
   }
 
-  // Only for implicit
   public silentCallback(): Promise<void | Oidc.User> {
     return this.manager.signinSilentCallback().catch(error => {
       console.log('silent.callback error: ', error);
     });
   }
 
-  // Only for implicit
   public silent(): Promise<void | Oidc.User> {
     return this.manager.signinSilent()
       .catch(error => {

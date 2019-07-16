@@ -1,5 +1,5 @@
 <template>
-<div class="login">Login</div>
+<div class="login">{{$t('common.loading')}}</div>
 </template>
 
 <script lang="ts">

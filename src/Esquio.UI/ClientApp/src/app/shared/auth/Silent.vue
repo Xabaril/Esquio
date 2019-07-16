@@ -1,5 +1,5 @@
 <template>
-<div class="login">{{$t('common.loading')}}</div>
+<div class="silent">{{$t('common.loading')}}</div>
 </template>
 
 <script lang="ts">
@@ -9,17 +9,17 @@ import { IAuthService } from './iauth.service';
 
 @Component
 export default class extends Vue {
-  public name = 'Logout';
+  public name = 'Silent';
 
   @Inject() authService: IAuthService;
 
   public async created(): Promise<void> {
     if (this.authService.user) {
-      await this.authService.logout();
+      await this.authService.silentCallback();
       return;
     }
 
-    this.$router.push('/');
+    this.$router.push('/login');
   }
 }
 </script>
