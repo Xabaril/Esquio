@@ -6,7 +6,7 @@ import { Product } from './product.model';
 @injectable()
 export class ProductsService implements IProductsService {
   public async get(): Promise<PaginatedResponse<Product[]>> {
-    const response = await fetch(`${settings.apiUrl}/v1/products`);
+    const response = await fetch(`${settings.ApiUrl}/v1/products`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch products');
@@ -16,7 +16,7 @@ export class ProductsService implements IProductsService {
   }
 
   public async detail(id: number): Promise<Product> {
-    const response = await fetch(`${settings.apiUrl}/v1/products/${id}`);
+    const response = await fetch(`${settings.ApiUrl}/v1/products/${id}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch product ${id}`);
@@ -26,13 +26,9 @@ export class ProductsService implements IProductsService {
   }
 
   public async add(product: Product): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/products`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/products`, {
       method: 'POST',
-      body: JSON.stringify(product),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(product)
     });
 
     if (!response.ok) {
@@ -45,13 +41,9 @@ export class ProductsService implements IProductsService {
     const _product = product as any;
     _product.productId = product.id;
 
-    const response = await fetch(`${settings.apiUrl}/v1/products`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/products`, {
       method: 'PUT',
-      body: JSON.stringify(_product),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(_product)
     });
 
     if (!response.ok) {
@@ -60,7 +52,7 @@ export class ProductsService implements IProductsService {
   }
 
   public async remove(product: Product): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/products/${product.id}`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/products/${product.id}`, {
       method: 'DELETE'
     });
 

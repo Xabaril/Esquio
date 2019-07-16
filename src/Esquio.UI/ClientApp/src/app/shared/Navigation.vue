@@ -8,16 +8,28 @@
       <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link>
       <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
     </div>
+    <div v-if="user" class="navigation-profile">
+      <router-link class="navigation-link navigation-link--home" to="/logout">{{user.profile.name}}</router-link>
+    </div>
   </div>
 </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { IAuthService, User } from './auth';
+import { Inject } from 'inversify-props';
 
 @Component
 export default class extends Vue {
   public name = 'Navigation';
+  public user: User = null;
+
+  @Inject() authService: IAuthService;
+
+  @Watch('$route') onChangeRoute() {
+    this.user = this.user || this.authService.user;
+  }
 }
 </script>
 

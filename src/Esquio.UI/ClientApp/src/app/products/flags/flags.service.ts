@@ -6,7 +6,7 @@ import { Flag } from './flag.model';
 @injectable()
 export class FlagsService implements IFlagsService {
   public async get(productId: number): Promise<PaginatedResponse<Flag[]>> {
-    const response = await fetch(`${settings.apiUrl}/v1/products/${productId}/flags`);
+    const response = await fetch(`${settings.ApiUrl}/v1/products/${productId}/flags`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch flags');
@@ -16,7 +16,7 @@ export class FlagsService implements IFlagsService {
   }
 
   public async detail(id: number): Promise<Flag> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags/${id}`);
+    const response = await fetch(`${settings.ApiUrl}/v1/flags/${id}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch flag ${id}`);
@@ -26,13 +26,9 @@ export class FlagsService implements IFlagsService {
   }
 
   public async add(flag: Flag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/flags`, {
       method: 'POST',
-      body: JSON.stringify(flag),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify(flag)
     });
 
     if (!response.ok) {
@@ -41,16 +37,12 @@ export class FlagsService implements IFlagsService {
   }
 
   public async update(flag: Flag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/flags`, {
       method: 'PUT',
       body: JSON.stringify({
         ...flag,
         flagId: flag.id
-      }),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      })
     });
 
     if (!response.ok) {
@@ -59,12 +51,9 @@ export class FlagsService implements IFlagsService {
   }
 
   public async rollout(flag: Flag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}/rollout`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/flags/${flag.id}/rollout`, {
       method: 'PUT',
-      body: JSON.stringify({ featureId: flag.id }),
-      headers: {
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify({ featureId: flag.id })
     });
 
     if (!response.ok) {
@@ -73,12 +62,9 @@ export class FlagsService implements IFlagsService {
   }
 
   public async rollback(flag: Flag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}/rollback`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/flags/${flag.id}/rollback`, {
       method: 'PUT',
-      body: JSON.stringify({ featureId: flag.id }),
-      headers: {
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      body: JSON.stringify({ featureId: flag.id })
     });
 
     if (!response.ok) {
@@ -87,7 +73,7 @@ export class FlagsService implements IFlagsService {
   }
 
   public async remove(flag: Flag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/flags/${flag.id}`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/flags/${flag.id}`, {
       method: 'DELETE'
     });
 

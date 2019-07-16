@@ -1,8 +1,9 @@
+import 'reflect-metadata';
 import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import VeeValidate from 'vee-validate';
 
-import { getSettings, registerInterceptor } from '~/core';
+import { getSettings } from '~/core';
 import { vendor, configurePlugins } from './app/vendor';
 import { router } from './app/app.router';
 import { containerBuilder } from './app/app.container';
@@ -10,15 +11,15 @@ import { Filters } from './app/app.filters';
 import store from './app/app.store';
 import App from './app/App.vue';
 
+import { ITranslateService, IAuthService } from '~/shared';
 import './styles/app.scss';
-import { ITranslateService } from '~/shared';
 
 export class AppModule {
   @Inject() translateService: ITranslateService;
+  @Inject() authService: IAuthService;
 
   constructor() {
     containerBuilder();
-    registerInterceptor();
 
     Vue.use(new Filters());
     Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
@@ -32,6 +33,7 @@ export class AppModule {
 
   private async bootstrap(): Promise<Vue> {
     await getSettings();
+    this.authService.init();
 
     let options = {
       el: '#app',

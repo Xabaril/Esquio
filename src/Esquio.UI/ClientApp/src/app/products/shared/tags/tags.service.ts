@@ -7,7 +7,7 @@ import { FormTag } from './form-tag.model';
 @injectable()
 export class TagsService implements ITagsService {
   public async get(featureId: number): Promise<Tag[]> {
-    const response = await fetch(`${settings.apiUrl}/v1/tags/${featureId}`);
+    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch tags');
@@ -17,16 +17,12 @@ export class TagsService implements ITagsService {
   }
 
   public async add(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/tags/${featureId}`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}`, {
       method: 'POST',
       body: JSON.stringify({
         tag: tag.name,
         featureId: featureId,
-      }),
-      headers: {
-        // 'Authorization': `bearer ${token}`,
-        'Content-Type': 'application/json', // TODO: interceptor
-      }
+      })
     });
 
     if (!response.ok) {
@@ -35,7 +31,7 @@ export class TagsService implements ITagsService {
   }
 
   public async remove(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.apiUrl}/v1/tags/${featureId}/${tag.name}`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}/${tag.name}`, {
       method: 'DELETE'
     });
 

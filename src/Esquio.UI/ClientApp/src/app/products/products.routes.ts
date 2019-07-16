@@ -1,10 +1,11 @@
-import { RouteConfig } from 'vue-router';
+import { RouteConfig, NavigationGuard } from 'vue-router';
 
-export default (): RouteConfig[] => {
+export default (requireAuth: NavigationGuard): RouteConfig[] => {
   return [
     {
       path: '/products',
       component: () => import('./Products.vue'),
+      beforeEnter: requireAuth,
       children: [
         {
           path: '',

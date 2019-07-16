@@ -40,7 +40,7 @@ export default class extends Vue {
   @Prop({ required: true }) label: string;
   @Prop({ required: true }) helpLabel: string;
   @Prop({ default: '' }) validators: string;
-  @Prop() value: any; // v-model
+  @Prop({ type: [String]}) value: any; // v-model
 
   public get helper(): string {
     return this.id + '_helper';

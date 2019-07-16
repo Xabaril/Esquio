@@ -1,5 +1,3 @@
 - Config testing
-- Use interceptors
-- Auth
 - Pagination
 - if an entity does not exist, redirect

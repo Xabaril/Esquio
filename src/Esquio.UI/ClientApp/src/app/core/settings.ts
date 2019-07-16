@@ -1,5 +1,7 @@
 interface ISettings {
-  apiUrl: string;
+  Audience: string;
+  Authority: string;
+  ApiUrl: string;
 }
 
 let settings: ISettings = null;
