@@ -4,6 +4,7 @@ using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +33,8 @@ namespace Esquio
         {
             try
             {
+                var totalTime = ValueStopwatch.StartNew();
+
                 Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
                 var feature = await _featureStore
@@ -58,7 +61,17 @@ namespace Esquio
 
                     if (toggleInstance != null)
                     {
-                        if (!await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken))
+                        var evaluationTime = ValueStopwatch.StartNew();
+
+                        var isActive = await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken);
+
+                        Counters.Instance
+                            .ToggleEvaluationTime(
+                                featureName: featureName,
+                                toggleName: toggle.Type,
+                                elapsedMilliseconds: evaluationTime.GetElapsedTime().TotalMilliseconds);
+
+                        if (!isActive)
                         {
                             Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
                             enabled = false;
@@ -72,6 +85,11 @@ namespace Esquio
                         break;
                     }
                 }
+
+                Counters.Instance
+                    .FeatureEvaluationTime(
+                        featureName: featureName,
+                        elapsedMilliseconds: totalTime.GetElapsedTime().TotalMilliseconds);
 
                 return enabled;
             }

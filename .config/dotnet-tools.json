@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-ef"
       ]
+    },
+    "dotnet-counters":{
+      "version":"1.0.4-preview6.19311.1",
+      "commands":[
+        "dotnet-counters"
+      ]
     }
   }
 }
