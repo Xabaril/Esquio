@@ -3,6 +3,9 @@ trigger: none
 pool:
   name: Hosted Ubuntu 1604
 
+variables:
+  imageName: esquiodemo
+
 steps:
 - task: Docker@0
   displayName: 'Build an image'
@@ -12,7 +15,7 @@ steps:
     dockerFile: build/Dockerfile
     defaultContext: false
     context: '$(Build.SourcesDirectory)'
-    imageName: 'esquiodemolf:$(Build.BuildId)'
+    imageName: '$(imageName):$(Build.BuildId)'
     workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: Docker@0
@@ -21,7 +24,7 @@ steps:
     azureSubscription: 'Azure'
     azureContainerRegistry: esquio.azurecr.io
     action: 'Push an image'
-    imageName: 'esquiodemo:$(Build.BuildId)'
+    imageName: '$(imageName):$(Build.BuildId)'
 
 
 # - task: AzureRmWebAppDeployment@3
