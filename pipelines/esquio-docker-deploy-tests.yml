@@ -18,7 +18,7 @@ steps:
 - task: Docker@0
   displayName: 'Push an image'
   inputs:
-    azureSubscription: 'lfraile (3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6)'
+    azureSubscription: 'Azure'
     azureContainerRegistry: esquio.azurecr.io
     action: 'Push an image'
     imageName: 'esquiodemo:$(Build.BuildId)'
