@@ -1,1 +1,41 @@
 trigger: none
+
+pool:
+  name: Hosted Ubuntu 1604
+
+steps:
+- task: Docker@0
+  displayName: 'Build an image'
+  inputs:
+    azureSubscriptionEndpoint: Azure
+    azureContainerRegistry: esquio.azurecr.io
+    dockerFile: build/Dockerfile
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: 'esquiodemolf:$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: Docker@0
+  displayName: 'Push an image'
+  inputs:
+    azureSubscription: 'lfraile (3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6)'
+    azureContainerRegistry: esquio.azurecr.io
+    action: 'Push an image'
+    imageName: 'esquiodemo:$(Build.BuildId)'
+
+
+# - task: AzureRmWebAppDeployment@3
+#   displayName: 'Azure App Service Deploy: demoesquiolf'
+#   inputs:
+#     azureSubscription: 'lfraile (3ec68e6f-178a-4e3d-8a62-38fc6d03a7e6)'
+#     appType: applinux
+#     WebAppName: demoesquiolf
+#     DockerNamespace: esquiodemo.azurecr.io
+#     DockerRepository: esquiodemolf
+#     DockerImageTag: '$(Build.BuildId)'
+#     AppSettings: '-Data__EsquioConnectionString "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "esquiodemo" -DOCKER_REGISTRY_SERVER_URL "https://esquiodemo.azurecr.io" -DOCKER_REGISTRY_SERVER_PASSWORD "NUuA7yi9pZybwbdjkd+UjcOBNQGreYQE"'
+#     TakeAppOfflineFlag: true
+
+
+
+
