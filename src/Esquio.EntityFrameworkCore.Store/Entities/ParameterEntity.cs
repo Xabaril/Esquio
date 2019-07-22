@@ -2,7 +2,7 @@
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    public sealed class ParameterEntity
+    public sealed class ParameterEntity : IAuditable
     {
         public int Id { get; set; }
 

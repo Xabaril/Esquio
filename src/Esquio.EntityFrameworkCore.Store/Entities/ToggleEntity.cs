@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Esquio.EntityFrameworkCore.Store.Entities
 {
-    public sealed class ToggleEntity
+    public sealed class ToggleEntity : IAuditable
     {
         public int Id { get; set; }
         public int FeatureEntityId { get; set; }
