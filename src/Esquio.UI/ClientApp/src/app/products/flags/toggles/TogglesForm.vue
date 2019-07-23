@@ -15,6 +15,8 @@
       />
     </form>
 
+    {{types}}
+
     <FloatingContainer>
       <FloatingDelete
         v-if="this.isEditing"
@@ -60,6 +62,7 @@ import { ITogglesService } from './itoggles.service';
 export default class extends Vue {
   public name = 'TogglesForm';
   public isLoading = false;
+  public types = null;
   public form: Toggle = { id: null, typeName: null, parameters: null };
 
   @Inject() togglesService: ITogglesService;
@@ -80,6 +83,7 @@ export default class extends Vue {
   }
 
   public async created(): Promise<void> {
+    await this.getTypes();
     if (!this.isEditing) {
       return;
     }
@@ -107,6 +111,10 @@ export default class extends Vue {
     }
 
     this.goBack();
+  }
+
+  private async getTypes(): Promise<void> {
+    this.types = await this.togglesService.types();
   }
 
   private async getToggle(): Promise<void> {

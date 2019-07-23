@@ -27,7 +27,7 @@
           <router-link
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
-            :to="{name: 'toggles-add', params: { flagId }}"
+            :to="{name: 'toggles-add', params: { id: flagId }}"
           >
             {{$t('toggles.actions.add_first')}}
           </router-link>
@@ -39,7 +39,7 @@
         slot-scope="data"
       >
         <div class="text-right">
-          <router-link :to="{ name: 'toggles-edit', params: { id: data.item.id, flagId }}">
+          <router-link :to="{ name: 'toggles-edit', params: { toggleId: data.item.id, id: flagId }}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -79,10 +79,6 @@ export default class extends Vue {
   public isLoading = false;
   public columns = [
     {
-      key: 'name',
-      label: () => this.$t('toggles.fields.name')
-    },
-    {
       key: 'type',
       label: () => this.$t('toggles.fields.type')
     },
@@ -94,7 +90,7 @@ export default class extends Vue {
 
   @Inject() togglesService: ITogglesService;
 
-  @Prop({ required: true, type: [Number, String] }) flagId: Toggle[];
+  @Prop({ required: true, type: [Number, String] }) flagId: number;
   @Prop({ type: Array }) toggles: Toggle[];
 
   public async onClickDelete(toggle: Toggle): Promise<void> {

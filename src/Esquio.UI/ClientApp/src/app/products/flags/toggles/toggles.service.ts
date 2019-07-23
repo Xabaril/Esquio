@@ -16,10 +16,20 @@ export class TogglesService implements ITogglesService {
     return response.json();
   }
 
+  public async types(): Promise<any> {
+    const response = await fetch(`${settings.ApiUrl}/v1/toggles/types`);
+
+    if (!response.ok) {
+      throw new Error(`Cannot fetch known toggle types`);
+    }
+
+    return response.json();
+  }
+
   public async add(featureId: number, toggle: Toggle): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/toggles`, {
       method: 'POST',
-      body: JSON.stringify({featureId, ...toggle})
+      body: JSON.stringify({featureId, toggleType: toggle.typeName, parameters: toggle.parameters || []})
     });
 
     if (!response.ok) {
