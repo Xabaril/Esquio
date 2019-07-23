@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -92,7 +92,7 @@ namespace WebApp.Toggles
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return await JsonSerializer.ReadAsync<IPApiData>(
+                    return await JsonSerializer.DeserializeAsync<IPApiData>(
                         utf8Json: stream,
                         options:_serializerOptions,
                         cancellationToken: cancellationToken);
