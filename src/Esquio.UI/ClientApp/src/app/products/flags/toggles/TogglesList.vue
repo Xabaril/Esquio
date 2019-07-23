@@ -67,7 +67,7 @@ import { Inject } from 'inversify-props';
 import { CustomSwitch } from '~/shared';
 import { AlertType } from '~/core';
 import { Toggle } from './toggle.model';
-// import { ITogglesService } from './itoggles.service';
+import { ITogglesService } from './itoggles.service';
 
 @Component({
   components: {
@@ -92,7 +92,7 @@ export default class extends Vue {
     }
   ];
 
-  // @Inject() togglesService: ITogglesService;
+  @Inject() togglesService: ITogglesService;
 
   @Prop({ required: true, type: [Number, String] }) flagId: Toggle[];
   @Prop({ type: Array }) toggles: Toggle[];
@@ -107,9 +107,9 @@ export default class extends Vue {
     }
 
     try {
-      // await this.togglesService.remove(toggle);
-      // this.toggles = this.toggles.filter(x => x.id !== toggle.id);
-      // this.$alert(this.$t('toggles.success.delete'));
+      await this.togglesService.remove(toggle);
+      this.toggles = this.toggles.filter(x => x.id !== toggle.id);
+      this.$alert(this.$t('toggles.success.delete'));
     } catch (e) {
       this.$alert(this.$t('toggles.errors.delete'), AlertType.Error);
     } finally {

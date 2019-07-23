@@ -6,6 +6,7 @@
     <form class="row">
       <input-text
         class="toggles_form-group form-group col-md-6"
+        :class="{'is-disabled': this.isEditing}"
         v-model="form.typeName"
         id="toggle_name"
         :label="$t('toggles.fields.typeName')"
@@ -23,17 +24,12 @@
       />
 
       <Floating
+        v-if="!this.isEditing"
         :text="$t('toggles.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
       />
     </FloatingContainer>
-
-    <FloatingTop
-      v-if="isEditing"
-      :text="$t('toggles.actions.add_flag')"
-      :to="{name: 'flags-add', params: { toggleId: form.id }}"
-    />
   </section>
 </template>
 
@@ -50,7 +46,7 @@ import {
 } from '~/shared';
 import { AlertType } from '~/core';
 import { Toggle } from './toggle.model';
-// import { ITogglesService } from './itoggles.service';
+import { ITogglesService } from './itoggles.service';
 
 @Component({
   components: {
@@ -66,9 +62,11 @@ export default class extends Vue {
   public isLoading = false;
   public form: Toggle = { id: null, typeName: null, parameters: null };
 
-  // @Inject() togglesService: ITogglesService;
+  @Inject() togglesService: ITogglesService;
 
+  @Prop({ type: [String, Number]}) productId: string;
   @Prop({ type: [String, Number]}) toggleId: string;
+  @Prop({ type: [String, Number]}) id: string; // FeatureId
 
   get isEditing(): boolean {
     return !!this.toggleId;
@@ -94,11 +92,11 @@ export default class extends Vue {
       return;
     }
 
-    if (!this.isEditing) {
-      await this.addToggle();
-    } else {
-      await this.updateToggle();
+    if (this.isEditing) {
+      return;
     }
+
+    await this.addToggle();
 
     this.goBack();
   }
@@ -112,40 +110,30 @@ export default class extends Vue {
   }
 
   private async getToggle(): Promise<void> {
-    // this.isLoading = true;
-    // try {
-    //   const { typeName, id, parameters } = await this.togglesService.detail(
-    //     Number(this.toggleId)
-    //   );
+    this.isLoading = true;
+    try {
+      const { typeName, id, parameters } = await this.togglesService.detail(
+        Number(this.toggleId)
+      );
 
-    //   this.form.typeName = typeName;
-    //   this.form.id = id;
-    //   this.form.parameters = parameters;
-    // } catch (e) {
-    //   this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
-    // } finally {
-    //   this.isLoading = false;
-    // }
+      this.form.typeName = typeName;
+      this.form.id = id;
+      this.form.parameters = parameters;
+    } catch (e) {
+      this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   private async addToggle(): Promise<void> {
-    // try {
-    //   await this.togglesService.add(this.form);
+    try {
+      await this.togglesService.add(Number(this.id), this.form);
 
-    //   this.$alert(this.$t('toggles.success.add'));
-    // } catch (e) {
-    //   this.$alert(this.$t('toggles.errors.add'), AlertType.Error);
-    // }
-  }
-
-  private async updateToggle(): Promise<void> {
-    // try {
-    //   await this.togglesService.update(this.form);
-
-    //   this.$alert(this.$t('toggles.success.update'));
-    // } catch (e) {
-    //   this.$alert(this.$t('toggles.errors.update'), AlertType.Error);
-    // }
+      this.$alert(this.$t('toggles.success.add'));
+    } catch (e) {
+      this.$alert(this.$t('toggles.errors.add'), AlertType.Error);
+    }
   }
 
   private async deleteToggle(): Promise<boolean> {
@@ -158,9 +146,9 @@ export default class extends Vue {
     }
 
     try {
-      // await this.togglesService.remove(this.form);
-      // this.$alert(this.$t('toggles.success.delete'));
-      // return true;
+      await this.togglesService.remove(this.form);
+      this.$alert(this.$t('toggles.success.delete'));
+      return true;
     } catch (e) {
       this.$alert(this.$t('toggles.errors.delete'), AlertType.Error);
     } finally {
@@ -170,7 +158,7 @@ export default class extends Vue {
 
   private goBack(): void {
     this.$router.push({
-      name: 'toggles-list'
+      name: 'flags-edit',
     });
   }
 }
