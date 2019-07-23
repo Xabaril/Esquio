@@ -88,6 +88,40 @@
   "tags": {
     "title": "Tags"
   },
+  "toggles": {
+    "title": "Toggles",
+    "detail": "Toggle detail",
+    "actions": {
+      "add": "Add toggle",
+      "save": "Save toggle",
+      "see_detail": "Open",
+      "add_first": "Add your first toggle",
+      "delete": "Delete"
+    },
+    "fields": {
+      "id": "Identifier",
+      "typeName": "Type"
+    },
+    "placeholders": {
+      "typeHelp": "The type of the toggle",
+      "tag": "Add new tag"
+    },
+    "errors": {
+      "add": "Cannot create this toggle",
+      "detail": "Cannot fetch this toggle",
+      "update": "Cannot update the toggle",
+      "delete": "Cannot delete the toggle",
+      "change": "Cannot change the toggle"
+    },
+    "success": {
+      "add": "The new toggle was created",
+      "update": "The toggle was updated",
+      "delete": "The toggle was deleted"
+    },
+    "confirm": {
+      "title": "Are you sure to delete '{0}' toggle?"
+    }
+  },
   "home": {
     "title": "Home page"
   }

@@ -51,6 +51,14 @@
       />
     </div>
 
+    <div
+      class="row mt-4"
+      v-if="isEditing"
+    >
+      <h2>{{$t('toggles.title')}}</h2>
+      <TogglesList :flagId="id" :toggles="form.toggles" />
+    </div>
+
     <FloatingContainer>
       <FloatingDelete
         v-if="this.isEditing"
@@ -78,11 +86,12 @@ import {
   FloatingDelete,
   FloatingContainer,
   InputText,
-  CustomSwitch
+  CustomSwitch,
 } from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
+import { TogglesList } from './toggles';
 
 @Component({
   components: {
@@ -91,7 +100,8 @@ import { IFlagsService } from './iflags.service';
     FloatingDelete,
     InputText,
     CustomSwitch,
-    VueTagsInput
+    VueTagsInput,
+    TogglesList
   }
 })
 export default class extends Vue {
@@ -106,7 +116,8 @@ export default class extends Vue {
     id: null,
     name: null,
     description: null,
-    enabled: false
+    enabled: false,
+    toggles: null
   };
 
   public tagsValidator = [
@@ -192,7 +203,7 @@ export default class extends Vue {
 
   private async getFlag(): Promise<void> {
     try {
-      const { name, description, id, enabled } = await this.flagsService.detail(
+      const { name, description, id, enabled, toggles } = await this.flagsService.detail(
         Number(this.id)
       );
 
@@ -200,6 +211,7 @@ export default class extends Vue {
       this.form.description = description;
       this.form.id = id;
       this.form.enabled = enabled;
+      this.form.toggles = toggles;
     } catch (e) {
       this.$alert(this.$t('flags.errors.detail'), AlertType.Error);
     }
