@@ -469,7 +469,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                     {
                         Name = "Environments",
                         Value = "Development",
-                        ClrType = typeof(String).FullName
+                        Type = typeof(String).FullName
                     }
                 }
             };

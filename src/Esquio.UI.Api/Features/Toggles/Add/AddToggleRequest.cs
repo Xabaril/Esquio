@@ -18,6 +18,6 @@ namespace Esquio.UI.Api.Features.Toggles.Add
 
         public string Value { get; set; }
 
-        public string ClrType { get; set; }
+        public string Type { get; set; }
     }
 }
