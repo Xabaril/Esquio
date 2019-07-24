@@ -15,7 +15,7 @@ namespace Esquio.Diagnostics
         }
         public static void FeatureServiceDisabledFeature(ILogger logger, string featureName, string productName)
         {
-            _featureServiceNotFound(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceDisabled(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
         public static void FeatureServiceToggleIsNotActive(ILogger logger, string featureName, string productName)
         {
@@ -24,10 +24,6 @@ namespace Esquio.Diagnostics
         public static void FeatureServiceProcessingFail(ILogger logger, string featureName, string productName, Exception exception)
         {
             _featureServiceThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
-        }
-        public static void FeatureServiceToggleTypeIsNull(ILogger logger, string featureName, string productName, string toggleType)
-        {
-            _featureServiceToggleTypeIsNull(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, toggleType, null);
         }
         public static void DefaultToggleTypeActivatorResolveTypeBegin(ILogger logger, string toggleType)
         {
@@ -66,11 +62,6 @@ namespace Esquio.Diagnostics
             LogLevel.Error,
             EventIds.DefaultFeatureServiceThrows,
             "DefaultFeatureService threw an unhandled exception checking {featureName} for product {productName}.");
-
-        private static readonly Action<ILogger, string, string, string, Exception> _featureServiceToggleTypeIsNull = LoggerMessage.Define<string, string, string>(
-            LogLevel.Warning,
-            EventIds.ToggleTypeIsNull,
-            "The toggle with type {toggleType} configured for {featureName} on product {productName} can't be activated successfully.");
 
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorResolveTypeBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,

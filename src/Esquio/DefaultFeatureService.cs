@@ -56,30 +56,26 @@ namespace Esquio
 
                 foreach (var toggle in toggles)
                 {
-                    var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
+                    var active = false;
+                    var evaluationTime = ValueStopwatch.StartNew();
+
+                    var toggleInstance = _toggleActivator
+                        .CreateInstance(toggle.Type);
 
                     if (toggleInstance != null)
                     {
-                        var evaluationTime = ValueStopwatch.StartNew();
-
-                        var isActive = await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken);
-
-                        Counters.Instance
-                            .ToggleEvaluationTime(
-                                featureName: featureName,
-                                toggleName: toggle.Type,
-                                elapsedMilliseconds: evaluationTime.GetElapsedTime().TotalMilliseconds);
-
-                        if (!isActive)
-                        {
-                            Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
-                            enabled = false;
-                            break;
-                        }
+                        active = await toggleInstance?.IsActiveAsync(featureName, productName, cancellationToken);
                     }
-                    else
+                    
+                    Counters.Instance
+                        .ToggleEvaluationTime(
+                            featureName: featureName,
+                            toggleName: toggle.Type,
+                            elapsedMilliseconds: evaluationTime.GetElapsedTime().TotalMilliseconds);
+                                        
+                    if (!active)
                     {
-                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName, toggle.Type);
+                        Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
                         enabled = false;
                         break;
                     }
