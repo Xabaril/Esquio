@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+
+    <!--We need this for non vs16 preview, remove on release-->
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +19,8 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="$(hellangmiddlewareproblemdetails)" />
+    
+    
   </ItemGroup>
 
   <ItemGroup>

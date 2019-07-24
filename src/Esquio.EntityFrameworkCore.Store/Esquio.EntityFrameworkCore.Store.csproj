@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(NetStandardTargetVersion)</TargetFramework>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>EntityFrameworkCode store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(microsoftextensionsconfigurationbinder)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

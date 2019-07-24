@@ -4,7 +4,6 @@ using Esquio.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -64,7 +64,7 @@ namespace Esquio.AspNetCore.Endpoints
 
                     await WriteResponseAsync(
                        context,
-                       JsonSerializer.ToString(EsquioMiddlewareError.Default(featureName, productName), options: _serializerOptions),
+                       JsonSerializer.Serialize(EsquioMiddlewareError.Default(featureName, productName), options: _serializerOptions),
                        "application/json",
                        StatusCodes.Status500InternalServerError);
 
@@ -76,7 +76,7 @@ namespace Esquio.AspNetCore.Endpoints
 
             await WriteResponseAsync(
                 context,
-                JsonSerializer.ToString(response, options: _serializerOptions),
+                JsonSerializer.Serialize(response, options: _serializerOptions),
                 "application/json",
                 StatusCodes.Status200OK);
         }
