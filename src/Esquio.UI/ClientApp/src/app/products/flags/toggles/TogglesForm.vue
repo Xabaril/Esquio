@@ -42,14 +42,14 @@
         <div
           :id="`c${i}`"
           class="collapse"
-          :class="{'show' : i === 0}"
+          :class="{'show': showAccordionCollapsed(i)}"
           data-parent="#accordion"
         >
           <div class="card-body">
             <b-button-group vertical>
               <b-button
                 class="toggles_form-button"
-                :class="{'is-active': checkButtonActive(toggleType.type)}"
+                :class="{'is-active': checkButtonActive(toggleType.type), 'is-disabled': isEditing}"
                 v-for="(toggleType, tkey) in accordionItem"
                 :key="tkey"
                 :title="toggleType.description"
@@ -57,13 +57,20 @@
                 tag="label"
                 @click="onClickButtonType(toggleType.type)"
               >
-                <input type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
+                <inpu v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
               </b-button>
             </b-button-group>
           </div>
         </div>
       </div>
+    </div>
 
+    <div v-if="paramDetails">
+      <div v-for="(parameter, key) in paramDetails" :key="key">
+        {{parameter.clrType}} <br/>
+        {{parameter.name}} <br/>
+        {{parameter.description}}
+      </div>
     </div>
 
     <FloatingContainer>
@@ -85,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import {
   Floating,
@@ -98,6 +105,8 @@ import {
 import { AlertType } from '~/core';
 import { Toggle } from './toggle.model';
 import { ITogglesService } from './itoggles.service';
+import { ToggleParameter } from './toggle-parameter.model';
+import { ToggleParameterDetail } from './toggle-parameter-detail.model';
 
 @Component({
   components: {
@@ -114,6 +123,7 @@ export default class extends Vue {
   public types = null;
   public form: Toggle = { id: null, typeName: null, parameters: null };
   public accordion: { [key: string]: any } = null;
+  public paramDetails: ToggleParameterDetail[] = null;
 
   @Inject() togglesService: ITogglesService;
 
@@ -168,6 +178,10 @@ export default class extends Vue {
     return this.form.typeName === value;
   }
 
+  public showAccordionCollapsed(index): boolean {
+    return !this.isEditing && index === 0;
+  }
+
   private async getTypes(): Promise<void> {
     this.types = await this.togglesService.types();
     this.generateAccordion();
@@ -207,6 +221,18 @@ export default class extends Vue {
     }
   }
 
+  private async getToggleParamsInfo(): Promise<void> {
+    this.isLoading = true;
+
+    try {
+      this.paramDetails = await this.togglesService.params(this.form);
+    } catch (e) {
+      this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
   private async addToggle(): Promise<void> {
     try {
       await this.togglesService.add(Number(this.id), this.form);
@@ -239,6 +265,10 @@ export default class extends Vue {
     this.$router.push({
       name: 'flags-edit'
     });
+  }
+
+  @Watch('form.typeName') onChangeTypeName() {
+    this.getToggleParamsInfo();
   }
 }
 </script>
