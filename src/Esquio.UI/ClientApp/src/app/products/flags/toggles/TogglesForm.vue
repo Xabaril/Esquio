@@ -57,7 +57,7 @@
                 tag="label"
                 @click="onClickButtonType(toggleType.type)"
               >
-                <inpu v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
+                <input v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
               </b-button>
             </b-button-group>
           </div>
