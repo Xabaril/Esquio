@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Toggles
 {
     [DesignType(Description = "Toggle that is active depending on the bucket name created with the value of specified claim.")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = "System.Int32", ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
-    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = "System.String", ParameterDescription = "The claim type used to get value to rollout.")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type used to get value to rollout.")]
     public class GradualRolloutClaimValueToggle
         : IToggle
     {

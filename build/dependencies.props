@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion>netstandard2.0</NetStandardTargetVersion>
+    <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
     <NetTestSdk>16.2.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
@@ -26,23 +27,23 @@
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview6.19307.2</microsoftaspnetcoremvcnewtonsoftjson>
-    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview6.19307.2</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview7.19365.7</microsoftaspnetcoremvcnewtonsoftjson>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview7.19365.7</microsoftaspnetcoreauthenticationjwtbearer>
     
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview6.19304.6</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.0.0-preview6.19304.6</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.0.0-preview6.19304.6</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview6.19304.6</microsoftextensionsconfigurationabstractions> 
-    <microsoftextensionsconfigurationbinder>3.0.0-preview6.19304.6</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.0.0-preview6.19304.6</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.0.0-preview6.19304.6</microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.0.0-preview6.19304.6</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.0.0-preview6.19304.6</microsoftextensionsloggingconsole>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview7.19362.4</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.0.0-preview7.19362.4</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0-preview7.19362.4</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview7.19362.4</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationbinder>3.0.0-preview7.19362.4</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0-preview7.19362.4</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.0.0-preview7.19362.4</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.0.0-preview7.19362.4</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.0.0-preview7.19362.4</microsoftextensionsloggingconsole>
 
-    <microsoftentityframeworkcore>3.0.0-preview6.19304.10</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.0.0-preview6.19304.10</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.0.0-preview6.19304.10</microsoftentityframeworkcoredesign>
+    <microsoftentityframeworkcore>3.0.0-preview7.19362.6</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.0.0-preview7.19362.6</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0-preview7.19362.6</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.0.0-preview7.19362.6</microsoftentityframeworkcoredesign>
 
     <serilogextensionslogging>2.0.4</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
@@ -54,11 +55,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.0.0-preview6.19304.6</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.0.0-preview6.19307.2</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.0.0-preview7.19362.4</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.0.0-preview7.19365.7</microsoftaspnetcoretesthost>
     
-    <microsoftentityframeworkcoreinmemory>3.0.0-preview6.19304.10</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.0.0-preview6.19304.10</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview7.19362.6</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview7.19362.6</microsoftentityframeworkcoresqlite>
     <npgsqlentityframeworkcorepostgresql>3.0.0-preview5</npgsqlentityframeworkcorepostgresql>
     
     <xunit>2.4.1</xunit>
