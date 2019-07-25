@@ -1,5 +1,5 @@
-export * from './floating-icon';
-export * from './floating-modifier';
+export * from './floating-icon.enum';
+export * from './floating-modifier.enum';
 export { default as Floating } from './Floating.vue';
 export { default as FloatingTop } from './FloatingTop.vue';
 export { default as FloatingDelete } from './FloatingDelete.vue';
