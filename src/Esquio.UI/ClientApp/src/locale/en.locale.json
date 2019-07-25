@@ -53,6 +53,7 @@
       "save": "Save flag",
       "see_detail": "Open",
       "add_first": "Add your first flag",
+      "add_toggle": "Add new toggle",
       "delete": "Delete"
     },
     "fields": {
@@ -103,7 +104,7 @@
       "typeName": "Type"
     },
     "placeholders": {
-      "typeHelp": "The type of the toggle",
+      "typeHelp": "Choose your toggle from the buttons of the list",
       "tag": "Add new tag"
     },
     "errors": {

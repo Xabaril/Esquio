@@ -5,7 +5,7 @@
     </div>
     <form class="row">
       <input-text
-        class="toggles_form-group form-group col-md-6"
+        class="toggles_form-group form-group col-md-6 is-disabled"
         :class="{'is-disabled': this.isEditing}"
         v-model="form.typeName"
         id="toggle_name"
@@ -15,7 +15,56 @@
       />
     </form>
 
-    {{types}}
+    <div
+      v-if="accordion"
+      id="accordion"
+    >
+      <div
+        class="card"
+        v-for="(accordionItem, key, i) in accordion"
+        :key="key"
+      >
+        <div
+          class="card-header"
+        >
+          <h5 class="mb-0">
+            <button
+              class="btn btn-link"
+              data-toggle="collapse"
+              :data-target="`#c${i}`"
+              aria-expanded="true"
+            >
+              {{key}}
+            </button>
+          </h5>
+        </div>
+
+        <div
+          :id="`c${i}`"
+          class="collapse"
+          :class="{'show' : i === 0}"
+          data-parent="#accordion"
+        >
+          <div class="card-body">
+            <b-button-group vertical>
+              <b-button
+                class="toggles_form-button"
+                :class="{'is-active': checkButtonActive(toggleType.type)}"
+                v-for="(toggleType, tkey) in accordionItem"
+                :key="tkey"
+                :title="toggleType.description"
+                variant="outline-secondary"
+                tag="label"
+                @click="onClickButtonType(toggleType.type)"
+              >
+                <input type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
+              </b-button>
+            </b-button-group>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
     <FloatingContainer>
       <FloatingDelete
@@ -64,22 +113,20 @@ export default class extends Vue {
   public isLoading = false;
   public types = null;
   public form: Toggle = { id: null, typeName: null, parameters: null };
+  public accordion: { [key: string]: any } = null;
 
   @Inject() togglesService: ITogglesService;
 
-  @Prop({ type: [String, Number]}) productId: string;
-  @Prop({ type: [String, Number]}) toggleId: string;
-  @Prop({ type: [String, Number]}) id: string; // FeatureId
+  @Prop({ type: [String, Number] }) productId: string;
+  @Prop({ type: [String, Number] }) toggleId: string;
+  @Prop({ type: [String, Number] }) id: string; // FeatureId
 
   get isEditing(): boolean {
     return !!this.toggleId;
   }
 
   get areActionsDisabled(): boolean {
-    return (
-      !this.form.typeName ||
-      this.$validator.errors.count() > 0
-    );
+    return !this.form.typeName || this.$validator.errors.count() > 0;
   }
 
   public async created(): Promise<void> {
@@ -113,8 +160,34 @@ export default class extends Vue {
     this.goBack();
   }
 
+  public onClickButtonType(value: string): void {
+    this.form.typeName = value;
+  }
+
+  public checkButtonActive(value: string): boolean {
+    return this.form.typeName === value;
+  }
+
   private async getTypes(): Promise<void> {
     this.types = await this.togglesService.types();
+    this.generateAccordion();
+  }
+
+  private generateAccordion(): void {
+    if (!this.types || !this.types.toggles) {
+      return;
+    }
+
+    this.accordion = this.accordion || {};
+
+    this.types.toggles.forEach(({ assembly, type, description }) => {
+      this.accordion[assembly] = this.accordion[assembly] || [];
+
+      this.accordion[assembly].push({
+        type,
+        description
+      });
+    });
   }
 
   private async getToggle(): Promise<void> {
@@ -125,7 +198,7 @@ export default class extends Vue {
       );
 
       this.form.typeName = typeName;
-      this.form.id = id;
+      this.form.id = Number(this.toggleId);
       this.form.parameters = parameters;
     } catch (e) {
       this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
@@ -146,9 +219,7 @@ export default class extends Vue {
 
   private async deleteToggle(): Promise<boolean> {
     if (
-      !(await this.$confirm(
-        this.$t('toggles.confirm.title', [this.form.id])
-      ))
+      !(await this.$confirm(this.$t('toggles.confirm.title', [this.form.id])))
     ) {
       return false;
     }
@@ -166,7 +237,7 @@ export default class extends Vue {
 
   private goBack(): void {
     this.$router.push({
-      name: 'flags-edit',
+      name: 'flags-edit'
     });
   }
 }
@@ -176,6 +247,15 @@ export default class extends Vue {
 .toggles_form {
   &-group {
     padding-left: 0;
+  }
+
+  &-button {
+    text-align: left;
+
+    &.is-active {
+      color: get-color(basic, brightest);
+      background-color: get-color(secondary)
+    }
   }
 }
 </style>

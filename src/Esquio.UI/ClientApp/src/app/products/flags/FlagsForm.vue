@@ -3,7 +3,7 @@
     <div class="row">
       <h1 class="col col-auto pl-0">{{$t('flags.detail')}}</h1>
       <div class="flags_form-switch col col-auto pl-0">
-        <custom-switch v-model="form.enabled" />
+        <custom-switch v-if="false" v-model="form.enabled" />
       </div>
     </div>
     <form class="row">
@@ -73,6 +73,12 @@
         @click="onClickSave"
       />
     </FloatingContainer>
+
+    <FloatingTop
+      v-if="isEditing"
+      :text="$t('flags.actions.add_toggle')"
+      :to="{name: 'toggles-add', params: { productId: form.id, flagId: id }}"
+    />
   </section>
 </template>
 
@@ -84,6 +90,7 @@ import { AlertType } from '~/core';
 import {
   Floating,
   FloatingDelete,
+  FloatingTop,
   FloatingContainer,
   InputText,
   CustomSwitch,
@@ -97,6 +104,7 @@ import { TogglesList } from './toggles';
   components: {
     Floating,
     FloatingContainer,
+    FloatingTop,
     FloatingDelete,
     InputText,
     CustomSwitch,
