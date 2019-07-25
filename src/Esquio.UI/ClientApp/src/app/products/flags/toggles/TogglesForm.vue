@@ -284,7 +284,7 @@ export default class extends Vue {
 
     &.is-active {
       color: get-color(basic, brightest);
-      background-color: get-color(secondary)
+      background-color: get-color(secondary);
     }
   }
 }
