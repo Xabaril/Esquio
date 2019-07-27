@@ -42,7 +42,7 @@ steps:
     connectedServiceName: '$(marketplaceConnection)'
     publisherId: '$(publisher)'
     extensionId: '$(extensionid)'
-    versionAction: 'Patch'
+    versionAction: 'Major'
 
 - task: PackageVSTSExtension@1
   inputs:
