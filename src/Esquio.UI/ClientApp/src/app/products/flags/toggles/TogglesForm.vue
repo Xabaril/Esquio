@@ -70,6 +70,8 @@
         {{parameter.clrType}} <br/>
         {{parameter.name}} <br/>
         {{parameter.description}}
+        <parameter :type="parameter.clrType"/>
+
       </div>
     </div>
 
@@ -100,7 +102,8 @@ import {
   FloatingDelete,
   InputText,
   FloatingModifier,
-  FloatingContainer
+  FloatingContainer,
+  Parameter
 } from '~/shared';
 import { AlertType } from '~/core';
 import { Toggle } from './toggle.model';
@@ -114,7 +117,8 @@ import { ToggleParameterDetail } from './toggle-parameter-detail.model';
     FloatingTop,
     FloatingDelete,
     FloatingContainer,
-    InputText
+    InputText,
+    Parameter
   }
 })
 export default class extends Vue {

@@ -10,5 +10,6 @@ export {
   FormCheckboxPlugin,
   FormPlugin,
   CardPlugin,
-  CollapsePlugin
+  CollapsePlugin,
+  ProgressPlugin
 } from 'bootstrap-vue';
