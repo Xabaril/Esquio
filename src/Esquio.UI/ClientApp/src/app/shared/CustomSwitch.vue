@@ -58,7 +58,7 @@ export default class extends Vue {
     }
   }
 
-  &::before {
+  &:before {
     $padding: .1rem;
 
     content: '';
@@ -74,7 +74,7 @@ export default class extends Vue {
     z-index: 0;
   }
 
-  &.is-checked::before {
+  &.is-checked:before {
     transform: translateX(0);
   }
 }
