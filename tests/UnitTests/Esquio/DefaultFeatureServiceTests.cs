@@ -1,6 +1,7 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
 using Esquio.DependencyInjection;
+using Esquio.Diagnostics;
 using Esquio.Model;
 using Esquio.Toggles;
 using FluentAssertions;
@@ -155,9 +156,10 @@ namespace UnitTests.Esquio
 
             var options = Options.Create<EsquioOptions>(esquioOptions);
             var loggerFactory = new LoggerFactory();
-            var logger = loggerFactory.CreateLogger<DefaultFeatureService>();
+            var logger = loggerFactory.CreateLogger<global::Esquio.Diagnostics.Esquio>();
+            var esquioDiagnostics = new EsquioDiagnostics(logger);
 
-            return new DefaultFeatureService(store, activator, options, logger);
+            return new DefaultFeatureService(store, activator, options, esquioDiagnostics);
         }
         private class FakeRuntimeStore
             : IRuntimeFeatureStore

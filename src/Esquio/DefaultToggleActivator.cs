@@ -1,7 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Diagnostics;
 using Esquio.Toggles;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,20 +11,20 @@ namespace Esquio
         : IToggleTypeActivator
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<DefaultToggleTypeActivator> _logger;
+        private readonly EsquioDiagnostics _diagnostics;
 
-        public DefaultToggleTypeActivator(IServiceProvider serviceProvider, ILogger<DefaultToggleTypeActivator> logger)
+        public DefaultToggleTypeActivator(IServiceProvider serviceProvider,EsquioDiagnostics diagnostics)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
         public IToggle CreateInstance(string toggleTypeName)
         {
-            Log.DefaultToggleTypeActivatorResolveTypeBegin(_logger, toggleTypeName);
+            _diagnostics.BeginToggleActivation(toggleTypeName);
 
             if (_typesCache.TryGetValue(toggleTypeName, out Type type))
             {
-                Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
+                _diagnostics.ToggleActivationResolveTypeFromCache(toggleTypeName);
                 return (IToggle)_serviceProvider.GetService(type);
             }
             else
@@ -36,12 +35,12 @@ namespace Esquio
                 {
                     _typesCache.TryAdd(toggleTypeName, toggleType);
 
-                    Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
+                    _diagnostics.ToggleActivationResolveType(toggleTypeName);
                     return (IToggle)_serviceProvider.GetService(toggleType);
                 }
             }
 
-            Log.DefaultToggleTypeActivatorTypeCantResolved(_logger, toggleTypeName);
+            _diagnostics.ToggleActivationCantResolveType(toggleTypeName);
             return null;
         }
 
