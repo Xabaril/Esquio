@@ -21,6 +21,7 @@ Welcome to Esquio
 
    started/netcore
    started/aspnetcore
+   started/azuredevopstasks
 
 .. toctree::
    :maxdepth: 3
