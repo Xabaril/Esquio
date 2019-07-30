@@ -125,7 +125,7 @@ export default class extends Vue {
   public name = 'TogglesForm';
   public isLoading = false;
   public types = null;
-  public form: Toggle = { id: null, typeName: null, parameters: null };
+  public form: Toggle = { id: null, typeName: null, parameters: [] };
   public accordion: { [key: string]: any } = null;
   public paramDetails: ToggleParameterDetail[] = null;
 
@@ -183,7 +183,7 @@ export default class extends Vue {
   }
 
   public onChangeParameterValue(parameter: ToggleParameterDetail, value): void {
-    console.log(value, parameter);
+    this.updateParameterForm(parameter, value);
   }
 
   public showAccordionCollapsed(index): boolean {
@@ -221,7 +221,7 @@ export default class extends Vue {
 
       this.form.typeName = typeName;
       this.form.id = Number(this.toggleId);
-      this.form.parameters = parameters;
+      this.form.parameters = parameters || [];
     } catch (e) {
       this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
     } finally {
@@ -267,6 +267,22 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private updateParameterForm(parameter: ToggleParameterDetail, value: any) {
+    const formParamter = this.form.parameters.find(x => x.name === parameter.name);
+
+    if (!formParamter) {
+      this.form.parameters.push({
+        name: parameter.name,
+        value: value,
+        type: parameter.clrType
+      });
+
+      return;
+    }
+
+    formParamter.value = value;
   }
 
   private goBack(): void {

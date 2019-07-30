@@ -1,7 +1,7 @@
 import { ParameterDetailType } from '~/shared/parameters';
 
 export interface ToggleParameterDetail {
-  name: number;
+  name: string;
   clrType: ParameterDetailType;
   description: string;
 }
