@@ -24,7 +24,8 @@ export default class extends Vue {
 
   @Watch('value')
   onChangeValue(nextValue, prevValue) {
-    const value = nextValue ? nextValue.trim() : [];
+    // Temporal
+    const value = nextValue ? nextValue.trim().replace(/,/g, ';') : [];
 
     this.$emit('change', value);
   }

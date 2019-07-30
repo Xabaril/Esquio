@@ -339,3 +339,5 @@ docs/source/_build
 
 src/Esquio.UI/wwwroot/
 
+.vscode/launch.json
+.vscode/tasks.json

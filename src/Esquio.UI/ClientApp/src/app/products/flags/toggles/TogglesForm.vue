@@ -48,16 +48,16 @@
           <div class="card-body">
             <b-button-group vertical>
               <b-button
-                class="toggles_form-button"
-                :class="{'is-active': checkButtonActive(toggleType.type), 'is-disabled': isEditing}"
                 v-for="(toggleType, tkey) in accordionItem"
+                class="toggles_form-button"
+                :class="{'is-active': checkButtonActive(toggleType.type), 'is-disabled': isEditing || isToggleUsedInFlag(toggleType)}"
                 :key="tkey"
                 :title="toggleType.description"
                 variant="outline-secondary"
                 tag="label"
                 @click="onClickButtonType(toggleType.type)"
               >
-                <input v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" /> {{toggleType.type}}
+                <input v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" :class="{'is-invisible': isEditing || isToggleUsedInFlag(toggleType)}" /> {{toggleType.type}}
               </b-button>
             </b-button-group>
           </div>
@@ -65,12 +65,12 @@
       </div>
     </div>
 
-    <div v-if="paramDetails">
+    <div v-if="paramDetails" :class="{'is-disabled': isEditing && isLoading}">
       <div v-for="(parameter, key) in paramDetails" :key="key">
         {{parameter.clrType}} <br/>
         {{parameter.name}} <br/>
         {{parameter.description}}
-        <parameter :type="parameter.clrType" :options="{value: '888'}" @change="(value) => onChangeParameterValue(parameter, value)"/>
+        <parameter :type="parameter.clrType" :options="{value: getParameterValue(parameter)}" @change="(value) => onChangeParameterValue(parameter, value)"/>
 
       </div>
     </div>
@@ -110,6 +110,9 @@ import { Toggle } from './toggle.model';
 import { ITogglesService } from './itoggles.service';
 import { ToggleParameter } from './toggle-parameter.model';
 import { ToggleParameterDetail } from './toggle-parameter-detail.model';
+import { ToggleTypesInfo } from './toggle-types.model';
+import { IFlagsService } from '../iflags.service';
+import { Flag } from '../flag.model';
 
 @Component({
   components: {
@@ -128,12 +131,14 @@ export default class extends Vue {
   public form: Toggle = { id: null, typeName: null, parameters: [] };
   public accordion: { [key: string]: any } = null;
   public paramDetails: ToggleParameterDetail[] = null;
+  public flag: Flag = null;
 
   @Inject() togglesService: ITogglesService;
+  @Inject() flagsService: IFlagsService;
 
   @Prop({ type: [String, Number] }) productId: string;
   @Prop({ type: [String, Number] }) toggleId: string;
-  @Prop({ type: [String, Number] }) id: string; // FeatureId
+  @Prop({ type: [String, Number] }) id: string; // FlagId
 
   get isEditing(): boolean {
     return !!this.toggleId;
@@ -144,6 +149,7 @@ export default class extends Vue {
   }
 
   public async created(): Promise<void> {
+    await this.getFlag();
     await this.getTypes();
     if (!this.isEditing) {
       return;
@@ -183,7 +189,33 @@ export default class extends Vue {
   }
 
   public onChangeParameterValue(parameter: ToggleParameterDetail, value): void {
-    this.updateParameterForm(parameter, value);
+    if (this.isEditing) {
+      this.updateAndSaveParameter(parameter, value);
+    } else {
+      this.updateParameterForm(parameter, value);
+    }
+  }
+
+  public getParameterValue(parameter: ToggleParameterDetail): any {
+    if (!this.form.parameters || this.form.parameters.length < 1) {
+      return null;
+    }
+
+    const formParameter = this.form.parameters.find(x => x.name === parameter.name);
+
+    if (!formParameter) {
+      return null;
+    }
+
+    return formParameter.value;
+  }
+
+  public isToggleUsedInFlag(toggleType: ToggleTypesInfo): boolean {
+    if (!this.flag || !this.flag.toggles || this.flag.toggles.length < 1) {
+      return false;
+    }
+
+    return this.flag.toggles.some(toggle => toggle.type === toggleType.type);
   }
 
   public showAccordionCollapsed(index): boolean {
@@ -210,6 +242,10 @@ export default class extends Vue {
         description
       });
     });
+  }
+
+  private async getFlag(): Promise<void> {
+    this.flag = await this.flagsService.detail(Number(this.id));
   }
 
   private async getToggle(): Promise<void> {
@@ -269,10 +305,10 @@ export default class extends Vue {
     }
   }
 
-  private updateParameterForm(parameter: ToggleParameterDetail, value: any) {
-    const formParamter = this.form.parameters.find(x => x.name === parameter.name);
+  private updateParameterForm(parameter: ToggleParameterDetail, value: any): void {
+    const formParameter = this.form.parameters.find(x => x.name === parameter.name);
 
-    if (!formParamter) {
+    if (!formParameter) {
       this.form.parameters.push({
         name: parameter.name,
         value: value,
@@ -282,7 +318,17 @@ export default class extends Vue {
       return;
     }
 
-    formParamter.value = value;
+    formParameter.value = value;
+  }
+
+  private async updateAndSaveParameter(parameter: ToggleParameterDetail, value: any): Promise<void> {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
+    await this.togglesService.addParameter(this.form, parameter.name, value);
+    this.isLoading = false;
   }
 
   private goBack(): void {
