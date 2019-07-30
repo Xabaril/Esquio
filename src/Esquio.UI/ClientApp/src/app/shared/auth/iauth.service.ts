@@ -9,5 +9,4 @@ export interface IAuthService {
   silentCallback(): Promise<void | Oidc.User>;
   silent(): Promise<void | Oidc.User>;
   getUser(): Promise<void | Oidc.User>;
-  handleEvents(): void;
 }

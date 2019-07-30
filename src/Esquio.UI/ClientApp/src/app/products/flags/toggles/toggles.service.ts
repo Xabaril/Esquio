@@ -42,7 +42,7 @@ export class TogglesService implements ITogglesService {
   public async add(featureId: number, toggle: Toggle): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/toggles`, {
       method: 'POST',
-      body: JSON.stringify({featureId, toggleType: toggle.typeName, parameters: toggle.parameters || []})
+      body: JSON.stringify({featureId, toggleType: toggle.typeName, parameters: toggle.parameters})
     });
 
     if (!response.ok) {
@@ -50,10 +50,14 @@ export class TogglesService implements ITogglesService {
     }
   }
 
-  public async addParameter(toggle: Toggle, parameter: ToggleParameter): Promise<void> {
+  public async addParameter(toggle: Toggle, parameterName: string, value: any): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/toggles/${toggle.id}/parameters`, {
       method: 'POST',
-      body: JSON.stringify(parameter)
+      body: JSON.stringify({
+        toggleId: toggle.id,
+        name: parameterName,
+        value
+      })
     });
 
     if (!response.ok) {

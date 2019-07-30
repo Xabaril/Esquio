@@ -21,4 +21,9 @@
     opacity: .75;
     pointer-events: none;
   }
+
+  &-invisible {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
