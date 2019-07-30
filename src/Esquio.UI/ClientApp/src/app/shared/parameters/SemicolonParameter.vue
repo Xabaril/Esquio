@@ -1,5 +1,5 @@
 <template>
-  <div class="percentage_parameter">
+  <div class="semicolon_parameter">
     <input
       type="text"
       v-model="value"
@@ -19,24 +19,14 @@ export default class extends Vue {
   @Prop({ required: true }) options: any;
 
   public created(): void {
-    this.value = Number(this.options.value);
+    this.value = this.options.value;
   }
 
   @Watch('value')
   onChangeValue(nextValue, prevValue) {
-    const nextValueNumber = Number(nextValue);
-    const prevValueNumber = Number(prevValue);
+    const value = nextValue ? nextValue.trim().split(',') : [];
 
-    if (nextValueNumber > 100 || nextValueNumber < 0) {
-      this.value = prevValueNumber;
-      return;
-    }
-
-    if (nextValueNumber === prevValueNumber) {
-      return;
-    }
-
-    this.$emit('change', this.value);
+    this.$emit('change', value);
   }
 }
 </script>

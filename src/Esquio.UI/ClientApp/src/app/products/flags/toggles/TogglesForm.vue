@@ -70,7 +70,7 @@
         {{parameter.clrType}} <br/>
         {{parameter.name}} <br/>
         {{parameter.description}}
-        <parameter :type="parameter.clrType"/>
+        <parameter :type="parameter.clrType" :options="{value: '888'}" @change="(value) => onChangeParameterValue(parameter, value)"/>
 
       </div>
     </div>
@@ -180,6 +180,10 @@ export default class extends Vue {
 
   public checkButtonActive(value: string): boolean {
     return this.form.typeName === value;
+  }
+
+  public onChangeParameterValue(parameter: ToggleParameterDetail, value): void {
+    console.log(value, parameter);
   }
 
   public showAccordionCollapsed(index): boolean {
