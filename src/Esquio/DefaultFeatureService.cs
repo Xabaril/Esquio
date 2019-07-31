@@ -1,10 +1,8 @@
 ﻿using Esquio.Abstractions;
 using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,18 +14,18 @@ namespace Esquio
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
         private readonly EsquioOptions _options;
-        private readonly ILogger<DefaultFeatureService> _logger;
+        private readonly EsquioDiagnostics _diagnostics;
 
         public DefaultFeatureService(
             IRuntimeFeatureStore store,
             IToggleTypeActivator toggleActivator,
             IOptions<EsquioOptions> options,
-            ILogger<DefaultFeatureService> logger)
+            EsquioDiagnostics diagnostics)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggleActivator ?? throw new ArgumentNullException(nameof(toggleActivator));
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
         public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
@@ -35,20 +33,20 @@ namespace Esquio
             {
                 var totalTime = ValueStopwatch.StartNew();
 
-                Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
+                _diagnostics.BeginFeatureEvaluation(featureName, productName);
 
                 var feature = await _featureStore
                     .FindFeatureAsync(featureName, productName, cancellationToken);
 
                 if (feature == null)
                 {
-                    Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
+                    _diagnostics.FeatureEvaluationNotFound(featureName, productName);
                     return _options.NotFoundBehavior == NotFoundBehavior.SetEnabled;
                 }
 
                 if (!feature.IsEnabled)
                 {
-                    Log.FeatureServiceDisabledFeature(_logger, featureName, productName);
+                    _diagnostics.FeatureEvaluationDisabled(featureName, productName);
                     return false;
                 }
 
@@ -57,45 +55,39 @@ namespace Esquio
 
                 foreach (var toggle in toggles)
                 {
-                    var toggleInstance = _toggleActivator.CreateInstance(toggle.Type);
+                    _diagnostics.BeginTogglevaluation();
+
+                    var active = false;
+                    var evaluationTime = ValueStopwatch.StartNew();
+
+                    var toggleInstance = _toggleActivator
+                        .CreateInstance(toggle.Type);
 
                     if (toggleInstance != null)
                     {
-                        var evaluationTime = ValueStopwatch.StartNew();
-
-                        var isActive = await toggleInstance.IsActiveAsync(featureName, productName, cancellationToken);
-
-                        Counters.Instance
-                            .ToggleEvaluationTime(
-                                featureName: featureName,
-                                toggleName: toggle.Type,
-                                elapsedMilliseconds: evaluationTime.GetElapsedTime().TotalMilliseconds);
-
-                        if (!isActive)
-                        {
-                            Log.FeatureServiceToggleIsNotActive(_logger, featureName, productName);
-                            enabled = false;
-                            break;
-                        }
+                        active = await toggleInstance?.IsActiveAsync(featureName, productName, cancellationToken);
                     }
-                    else
+
+                    _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
+                    _diagnostics.EndTogglevaluation();
+
+                    if (!active)
                     {
-                        Log.FeatureServiceToggleTypeIsNull(_logger, featureName, productName, toggle.Type);
+                        _diagnostics.ToggleNotActive(featureName, toggle.Type);
+
                         enabled = false;
                         break;
                     }
                 }
 
-                Counters.Instance
-                    .FeatureEvaluationTime(
-                        featureName: featureName,
-                        elapsedMilliseconds: totalTime.GetElapsedTime().TotalMilliseconds);
+                _diagnostics.FeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds);
+                _diagnostics.EndFeatureEvaluation();
 
                 return enabled;
             }
             catch (Exception exception)
             {
-                Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
+                _diagnostics.FeatureEvaluationThrow(featureName, productName, exception);
 
                 if (_options.OnErrorBehavior == OnErrorBehavior.Throw)
                 {

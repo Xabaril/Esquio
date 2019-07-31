@@ -26,7 +26,7 @@ In the **ConfigureServices** method of Startup.cs, register the Esquio services:
           .AddAspNetCoreDefaultServices()
           .AddConfigurationStore(Configuration, "Esquio");
 
-``AddEsquio`` and ``AddAspNetCoreDefaultServices`` methods allows you to register the set of services that Esquio needs to works. The ``AddConfigurationStore`` method registers the configuration store to use, in this case, based on the default configuration system of [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.2)
+``AddEsquio`` and ``AddAspNetCoreDefaultServices`` methods allows you to register the set of services that Esquio needs to works. The ``AddConfigurationStore`` method registers the configuration store to use, in this case, based on the default configuration system of `ASP.NET Core <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.2>`_
 
 Add the content below to your ``appsettings.json`` file::
 
@@ -64,7 +64,7 @@ When working with Esquio you can attach feature metadata to an endpoint. We do t
 
 You can specify many features separated by comma, so you can restrict access to the endpoints if a feature or a group features are enabled or not.
 
-If you want more fine grain control over your controllers, Esquio provides a ``FeatureFilter`` attribute that forces you to supply a comma separated list of features names. You can specifies that access to a controller or action method is restricted to users if theses features are enabled or not::
+If you want more fine-grained control over your Controllers, Esquio provides a ``FeatureFilter`` attribute that forces you to supply a comma separated list of features names. You can specifies that access to a controller or action method is restricted to users if theses features are enabled or not::
 
         [FeatureFilter(Names = Flags.MinutesRealTime)]
         public IActionResult DetailLive()
@@ -72,7 +72,7 @@ If you want more fine grain control over your controllers, Esquio provides a ``F
             return View();
         }
 
-Also, you can use ``FeatureFilter`` to act as action constraint. You can create two actions with the same ``ActionName`` and decorate one with ``FeatureFilter`` attribute to match the action only when the predefined feature name values are enabled or not.::
+Also, you can use ``FeatureFilter`` to act as an Action constraint. You can create two Actions with the same ``ActionName`` and decorate one with ``FeatureFilter`` attribute to match the action only when the predefined feature name values are enabled or not.::
 
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsNotActive()
@@ -125,17 +125,17 @@ With **ASP.NET MVC Core** we can use the ``FeatureTagHelper`` inside our Razor v
         <span class="badge badge-secondary badge-pill">@match.ScoreLocal - @match.ScoreVisitor</span>
     </feature>
 
-In this example, if the feature **MatchScore** is enabled, you can show a new design of the match score. Names property is coma separated list of features names to be evaluated if any feature is not active and then the tag helper will suppress the content.
+In this example, if the feature **MatchScore** is enabled, you can show a new design of the match score. Names property is comma-separated list of feature names to be evaluated. If any feature is not active, the tag helper will suppress the content.
 
-The ``FeatureTagHelper`` supports ``Include`` and ``Èxclude`` attributes:
+The ``FeatureTagHelper`` supports ``Include`` and ``Exclude`` attributes:
 
-    * Include: *A coma separated list of features names to be evaluated. If any feature is not active this tag helper suppress  the content.*
-    * Exclude: *A coma separated list of features names to be evaluated. If any feature is active this tag helper suppress the content.*
+    * Include: *A comma-separated list of feature names to be evaluated. If any feature is not active, this tag helper suppresses  the content.*
+    * Exclude: *A comma-separated list of feature names to be evaluated. If any feature is active, this tag helper suppresses the content.*
 
 SPA and Native Apps
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Single-Page-Applications and native apps are becoming the new wave for modern applications. The challenge with feature flags in this kind of applications is handling the state transformations. In case of SPAs the changes in a webpage's DOM and the platform specific controls in native apps.
+Single-Page-Applications and native apps are becoming the new wave for modern applications. The challenge with feature flags in these kinds of applications is handling the state transformations. In case of SPAs the changes in a webpage's DOM and the platform specific controls in native apps.
 We will need an endpoint to query if a feature or a set of features are enabled or not in order make real time personalization in the UX for example.
 
 To enable this endpoint, in the ``Configure`` method, insert the middleware to expose the Esquio endpoint::

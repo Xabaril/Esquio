@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Toggles
 {
     [DesignType(Description = "Toggle that is active depending on the session identifier bucket and the percentage selected.")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = "System.Int32", ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType =EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
     public class GradualRolloutSessionToggle
         : IToggle
     {

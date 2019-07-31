@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Toggles
 {
     [DesignType(Description = "Toggle that is active depending on the current claims of authenticated users.")]
-    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = "System.String", ParameterDescription = "The claim type used to check value.")]
-    [DesignTypeParameter(ParameterName = ClaimValues, ParameterType = "System.String", ParameterDescription = "The claim value to check, multiple items separated by ';'.")]
+    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type used to check value.")]
+    [DesignTypeParameter(ParameterName = ClaimValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The claim value to check, multiple items separated by ';'.")]
     public class ClaimValueToggle
         : IToggle
     {

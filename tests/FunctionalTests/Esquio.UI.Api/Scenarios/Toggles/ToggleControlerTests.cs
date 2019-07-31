@@ -1,4 +1,5 @@
-﻿using Esquio.Toggles;
+﻿using Esquio;
+using Esquio.Toggles;
 using Esquio.UI.Api.Features.Toggles.Add;
 using Esquio.UI.Api.Features.Toggles.AddParameter;
 using Esquio.UI.Api.Features.Toggles.Details;
@@ -323,7 +324,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             content.Parameters
                 .First()
                 .ClrType
-                .Should().BeEquivalentTo(typeof(String).FullName);
+                .Should().BeEquivalentTo(EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE);
 
             content.Parameters
                 .First()
@@ -468,7 +469,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                     {
                         Name = "Environments",
                         Value = "Development",
-                        ClrType = typeof(String).FullName
+                        Type = typeof(String).FullName
                     }
                 }
             };

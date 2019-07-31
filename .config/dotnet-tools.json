@@ -3,13 +3,13 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "3.0.0-preview6.19304.10",
+      "version": "3.0.0-preview7.19362.6",
       "commands": [
         "dotnet-ef"
       ]
     },
     "dotnet-counters":{
-      "version":"1.0.4-preview6.19311.1",
+      "version":"3.0.0-preview7.19365.2",
       "commands":[
         "dotnet-counters"
       ]

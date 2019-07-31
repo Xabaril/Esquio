@@ -15,23 +15,23 @@ namespace Esquio.Diagnostics
         }
         public static void FeatureServiceDisabledFeature(ILogger logger, string featureName, string productName)
         {
-            _featureServiceNotFound(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceDisabled(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
-        public static void FeatureServiceToggleIsNotActive(ILogger logger, string featureName, string productName)
+        public static void FeatureServiceToggleIsNotActive(ILogger logger, string toggle, string featureName)
         {
-            _featureServiceNotActive(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _toggleIsNotActive(logger, toggle, featureName, null);
         }
         public static void FeatureServiceProcessingFail(ILogger logger, string featureName, string productName, Exception exception)
         {
             _featureServiceThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
         }
-        public static void FeatureServiceToggleTypeIsNull(ILogger logger, string featureName, string productName, string toggleType)
-        {
-            _featureServiceToggleTypeIsNull(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, toggleType, null);
-        }
         public static void DefaultToggleTypeActivatorResolveTypeBegin(ILogger logger, string toggleType)
         {
             _defaultToggleTypeActivatorResolveTypeBegin(logger, toggleType, null);
+        }
+        public static void DefaultToggleTypeActivatorTypeIsResolvedFromCache(ILogger logger, string toggleType)
+        {
+            _defaultToggleTypeActivatorTypeIsResolvedFromCache(logger, toggleType, null);
         }
         public static void DefaultToggleTypeActivatorTypeIsResolved(ILogger logger, string toggleType)
         {
@@ -57,20 +57,15 @@ namespace Esquio.Diagnostics
             EventIds.FeatureDisabled,
             "The feature {feature} is disabled in the store for application {productName}.");
 
-        private static readonly Action<ILogger, string, string, Exception> _featureServiceNotActive = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _toggleIsNotActive = LoggerMessage.Define<string, string>(
            LogLevel.Debug,
-           EventIds.FeatureNotActive,
-           "The feature {feature} is not active on product {productName}.");
+           EventIds.ToggleNotActive,
+           "The toggle {toggle} on feature {feature} is not active.");
 
         private static readonly Action<ILogger, string, string, Exception> _featureServiceThrow = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.DefaultFeatureServiceThrows,
             "DefaultFeatureService threw an unhandled exception checking {featureName} for product {productName}.");
-
-        private static readonly Action<ILogger, string, string, string, Exception> _featureServiceToggleTypeIsNull = LoggerMessage.Define<string, string, string>(
-            LogLevel.Warning,
-            EventIds.ToggleTypeIsNull,
-            "The toggle with type {toggleType} configured for {featureName} on product {productName} can't be activated successfully.");
 
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorResolveTypeBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,
@@ -82,9 +77,14 @@ namespace Esquio.Diagnostics
             EventIds.DefaultToggleTypeActivatorCantResolve,
             "DefaultToggleTypeActivator can't resolve the toggle type {toggleType}.");
 
+        private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorTypeIsResolvedFromCache = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            EventIds.DefaultToggleTypeActivatorTypeIsResolved,
+            "DefaultToggleTypeActivator resolve successfully the toggle type {toggleType} from default cache type.");
+
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorTypeIsResolved = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DefaultToggleTypeActivatorTypeIsResolved,
-            "DefaultToggleTypeActivator resolve successfully the toggle type {toggleType}.");
+            "DefaultToggleTypeActivator resolve successfully the toggle type {toggleType} creating a type instance.");
     }
 }

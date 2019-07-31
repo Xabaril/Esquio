@@ -1,3 +1,6 @@
 - Config testing
 - Pagination
 - if an entity does not exist, redirect
+- refactor services, move logic from components to services.
+- Use a timer on update parameters to dont update all the time
+- Add better ui to parameters

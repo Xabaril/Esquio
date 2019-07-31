@@ -23,8 +23,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RouteConfig } from 'vue-router';
-import { FloatingIcon } from './floating-icon';
-import { FloatingModifier } from './floating-modifier';
+import { FloatingIcon } from './floating-icon.enum';
+import { FloatingModifier } from './floating-modifier.enum';
 
 @Component
 export default class extends Vue {
