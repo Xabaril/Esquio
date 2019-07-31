@@ -1,12 +1,7 @@
-export enum ToggleParameterDetailType {
-  EsquioSemicolonList = 'Esquio.SemicolonList',
-  EsquioPercentage = 'Esquio.Percentage',
-  EsquioDate = 'Esquio.Date',
-  EsquioString = 'Esquio.String'
-}
+import { ParameterDetailType } from '~/shared/parameters';
 
 export interface ToggleParameterDetail {
-  name: number;
-  clrType: ToggleParameterDetailType;
+  name: string;
+  clrType: ParameterDetailType;
   description: string;
 }

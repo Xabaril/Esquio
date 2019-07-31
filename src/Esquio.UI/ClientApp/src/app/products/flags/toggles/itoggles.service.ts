@@ -7,6 +7,6 @@ export interface ITogglesService {
   params(toggle: Toggle): Promise<ToggleParameterDetail[]>;
   types(): Promise<any>;
   add(featureId: number, toggle: Toggle): Promise<void>;
-  addParameter(toggle: Toggle, parameter: ToggleParameter): Promise<void>;
+  addParameter(toggle: Toggle, parameterName: string, value: any): Promise<void>;
   remove(toggle: Toggle): Promise<void>;
 }
