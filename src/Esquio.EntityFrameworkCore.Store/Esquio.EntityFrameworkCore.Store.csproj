@@ -24,11 +24,11 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(microsoftextensionsconfigurationbinder)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
 
   </ItemGroup>
 

@@ -52,6 +52,7 @@
     <hellangmiddlewareproblemdetails>3.0.1</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.5.0-preview1</fluentvalidationaspnetcore>
+    <newtonsoftjson>12.0.2</newtonsoftjson>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
