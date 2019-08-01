@@ -29,6 +29,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FeatureId = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     KeyValues = table.Column<string>(nullable: true),
                     NewValues = table.Column<string>(nullable: true),
@@ -140,6 +141,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ToggleEntityId = table.Column<int>(nullable: false),
+                    ToggleEntityId1 = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Value = table.Column<string>(maxLength: 4000, nullable: false)
                 },
@@ -152,6 +154,12 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         principalTable: "Toggles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Parameters_Toggles_ToggleEntityId1",
+                        column: x => x.ToggleEntityId1,
+                        principalTable: "Toggles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -186,6 +194,11 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 name: "IX_Parameters_ToggleEntityId",
                 table: "Parameters",
                 column: "ToggleEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parameters_ToggleEntityId1",
+                table: "Parameters",
+                column: "ToggleEntityId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",

@@ -15,7 +15,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview6.19304.10")
+                .HasAnnotation("ProductVersion", "3.0.0-preview7.19362.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -94,6 +94,8 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<int>("FeatureId");
+
                     b.Property<string>("KeyValues");
 
                     b.Property<string>("NewValues");
@@ -117,6 +119,8 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
                     b.Property<int>("ToggleEntityId");
 
+                    b.Property<int?>("ToggleEntityId1");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(4000);
@@ -127,6 +131,8 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("ToggleEntityId");
+
+                    b.HasIndex("ToggleEntityId1");
 
                     b.ToTable("Parameters");
                 });
@@ -223,6 +229,10 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasForeignKey("ToggleEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
+                        .WithMany()
+                        .HasForeignKey("ToggleEntityId1");
                 });
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", b =>

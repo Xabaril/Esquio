@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -131,7 +132,7 @@ namespace Esquio.EntityFrameworkCore.Store
                     }
                 }
 
-                History.Add(historyEntry.To());
+                History.Add(historyEntry.To(ChangeTracker));
             }
         }
 
@@ -142,21 +143,44 @@ namespace Esquio.EntityFrameworkCore.Store
                 Entry = entry;
             }
 
+            public int MyProperty { get; set; }
             public EntityEntry Entry { get; set; }
             public List<PropertyEntry> TemporaryProperties { get; set; } = new List<PropertyEntry>();
             public Dictionary<string, object> KeyValues { get; set; } = new Dictionary<string, object>();
             public Dictionary<string, object> OldValues { get; set; } = new Dictionary<string, object>();
             public Dictionary<string, object> NewValues { get; set; } = new Dictionary<string, object>();
 
-            public HistoryEntity To()
+            public HistoryEntity To(ChangeTracker changeTracker)
             {
                 return new HistoryEntity
                 {
+                    FeatureId = GetFeatureId(changeTracker),
                     CreatedAt = DateTime.UtcNow,
                     KeyValues = KeyValues.Count > 0 ? JsonConvert.SerializeObject(KeyValues) : null,
                     NewValues = NewValues.Count > 0 ? JsonConvert.SerializeObject(NewValues) : null,
                     OldValues = NewValues.Count > 0 ? JsonConvert.SerializeObject(OldValues) : null
                 };
+            }
+
+            private int GetFeatureId(ChangeTracker changeTracker)
+            {
+                if (Entry.Entity is FeatureEntity feature)
+                {
+                    return feature.Id;
+                }
+                else if (Entry.Entity is ToggleEntity toggle)
+                {
+                    return toggle.FeatureEntityId;
+                }
+                else if (Entry.Entity is ParameterEntity parameter)
+                {
+                    return changeTracker.Entries<ToggleEntity>()
+                        .Single(t => t.Entity.Id == parameter.ToggleEntityId)
+                        .Entity
+                        .FeatureEntityId;
+                }
+
+                throw new Exception("Invalid entity type.");
             }
         }
     }
