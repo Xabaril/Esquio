@@ -134,6 +134,10 @@
     "semicolon": {
       "placeholder": "Add value",
       "results": "Preview of result"
+    },
+    "string": {
+      "typeName": "Value",
+      "typeHelp": "Write the value of your parameter"
     }
   }
 }

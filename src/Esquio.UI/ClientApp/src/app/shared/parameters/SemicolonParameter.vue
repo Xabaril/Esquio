@@ -10,7 +10,7 @@
         @tags-changed="onChangeFormParameters"
       />
 
-    <h3>{{$t('parameters.semicolon.results')}}</h3>
+    <h4>{{$t('parameters.semicolon.results')}}</h4>
     <div class="semicolon_parameter-preview">
       {{value}}
     </div>
