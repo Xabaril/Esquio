@@ -44,7 +44,6 @@
         v-model="formTag"
         :tags="formTags"
         :placeholder="$t('flags.placeholders.tag')"
-        :validation="tagsValidator"
         @before-adding-tag="onAddFormTag"
         @before-deleting-tag="onRemoveFormTag"
         @tags-changed="onChangeFormTags"

@@ -1,9 +1,13 @@
 <template>
   <div class="string_parameter">
-    <input
-      type="text"
+    <input-text
+      class="form-group col-md-6"
       v-model="value"
-    >
+      id="toggle_name"
+      :label="$t('parameters.string.typeName')"
+      validators="required|min:5"
+      :help-label="$t('parameters.string.typeHelp')"
+    />
 
   </div>
 </template>

@@ -67,9 +67,10 @@
 
     <div v-if="paramDetails" :class="{'is-disabled': isEditing && isLoading}">
       <div v-for="(parameter, key) in paramDetails" :key="key">
-        {{parameter.clrType}} <br/>
-        {{parameter.name}} <br/>
-        {{parameter.description}}
+
+        <h3>{{parameter.name}}: {{parameter.clrType}}</h3>
+        <p>{{parameter.description}}</p>
+
         <parameter :type="parameter.clrType" :options="{value: getParameterValue(parameter)}" @change="(value) => onChangeParameterValue(parameter, value)"/>
 
       </div>

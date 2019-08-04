@@ -23,6 +23,7 @@ export default class extends Vue {
   flex-direction: column;
   position: fixed;
   right: $margin;
+  z-index: 100;
 
   .floating:nth-child(2n) {
     margin-top: .5rem;
