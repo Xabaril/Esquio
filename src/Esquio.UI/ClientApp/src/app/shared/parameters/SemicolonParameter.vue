@@ -106,7 +106,7 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .semicolon_parameter {
-  &-preview{
+  &-preview {
     opacity: .5;
   }
 }
