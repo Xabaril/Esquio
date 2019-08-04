@@ -118,7 +118,7 @@ export default class extends Vue {
     font-size: get-font-size(m);
     height: $height;
     line-height: $height;
-    padding-left: 0.75rem !important;
+    padding-left: .75rem !important;
   }
 
   &-time /deep/ input {
