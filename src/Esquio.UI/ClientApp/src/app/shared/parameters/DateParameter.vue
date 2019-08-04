@@ -52,7 +52,7 @@ export default class extends Vue {
   @Prop({ required: true }) options: any;
 
   public created(): void {
-    this.stringToDateTime(this.options.value);
+    this.stringToDateTime(this.options.value || new Date());
     this.value = this.date.toString();
   }
 
