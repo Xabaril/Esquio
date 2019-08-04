@@ -129,5 +129,11 @@
   },
   "home": {
     "title": "Home page"
+  },
+  "parameters": {
+    "semicolon": {
+      "placeholder": "Add value",
+      "results": "Preview of result"
+    }
   }
 }
