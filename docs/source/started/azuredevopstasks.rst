@@ -55,8 +55,8 @@ To setup the rollout task, look for **Rollout feature with Esquio** task:
 We will configure three parameters:
 
     * **Esquio Service Endpoint:** Select the previously created *Esquio Service Connection*.
-    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup de *OnToggle*.
-    * **Esquio feature:** Select, from the list of features, select the one to setup the *OnToggle*.
+    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup the *OnToggle*.
+    * **Esquio feature:** Select, from the list of features, the one to setup the *OnToggle*.
 
 The final YAML should be (with different ids) like this::
 
@@ -65,5 +65,69 @@ The final YAML should be (with different ids) like this::
             EsquioService: 'Esquio'
             productId: '1'
             flagId: '1'
+
+If you are using the classic pipelines (the visual ones), the setup is exactly the same.
+
+Esquio rollback task
+^^^^^^^^^^^^^^^^^^^
+
+This task allow us to set a :doc:`OffToggle <../toggles/esquio>` for a feature, thus disabling it.
+
+If you are creating your Azure Pipelines with *YAML* it is better to use the *YAML assistant* as it will allow you to use the datasources for the picklists.
+
+.. image:: ../images/pipeline-assistant.png
+
+To setup the rollout task, look for **Rollback feature with Esquio** task:
+
+.. image:: ../images/rollback-blank.png
+
+We will configure three parameters:
+
+    * **Esquio Service Endpoint:** Select the previously created *Esquio Service Connection*.
+    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup the *OffToggle*.
+    * **Esquio feature:** Select, from the list of features, the one to setup the *OffToggle*.
+
+The final YAML should be (with different ids) like this::
+
+        - task: esquio-rollback-feature@1
+          inputs:
+            EsquioService: 'Esquio'
+            productId: '1'
+            flagId: '1'
+
+If you are using the classic pipelines (the visual ones), the setup is exactly the same.
+
+Esquio set toggle parameter task
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This task allow us to set a value for a particular parameter in a toggle, with this task you can setup any other type of :doc:`toggle <../toggles/esquio>` acepting parameters.
+
+If you are creating your Azure Pipelines with *YAML* it is better to use the *YAML assistant* as it will allow you to use the datasources for the picklists.
+
+.. image:: ../images/pipeline-assistant.png
+
+To setup the rollout task, look for **Set toggle parameter with Esquio** task and select, using the picklists, the parameter for the feature toggle you want to set, and then fill-in the value you want to set for the parameter:
+
+.. image:: ../images/setparameter-blank.png
+
+We will configure six parameters:
+
+    * **Esquio Service Endpoint:** Select the previously created *Esquio Service Connection*.
+    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup de *OnToggle*.
+    * **Esquio feature:** Select, from the list of features, the one with the parameter you want to set the value.
+    * **Esquio toggle:** Select, from the list of toggles, the one with the parameter you want to set the value.
+    * **Esquio parameter:** Select, from the list of parameters for the previously selected toggle, the one you want to set the value.
+    * **Esquio parameter value:** Introduce manually the value you want to setup for the parameter.
+
+The final YAML should be (with different ids) like this::
+
+        - task: set-toggle-parameter@1
+          inputs:
+            EsquioService: 'esquio'
+            productId: '1'
+            flagId: '2'
+            toggleId: '14'
+            parameterId: 'Percentage'
+            parameterValue: '59'
 
 If you are using the classic pipelines (the visual ones), the setup is exactly the same.
