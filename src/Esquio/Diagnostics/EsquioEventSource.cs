@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics.Tracing;
 using System.Threading;
 
@@ -12,40 +13,58 @@ namespace Esquio.Diagnostics
     {
         public static readonly EsquioEventSource Log = new EsquioEventSource();
 
-        //TODO: change (_featuresPerSecondCounter,_featureThrowPerSecondCounter,_togglePerSecondCounter,_toggleActvationThrowPerSecondCounter) and use IncrementingPollingCounter on preview8
+        long _perSecondFeatureEvaluations;
+        long _perSecondFeatureThrows;
+        long _perSecondFeatureNotFound;
+        long _perSecondToggleEvaluations;
+        long _perSecondActivationThrows;
 
-        long _totalFeatureEvaluations;
-        long _totalFeatureThrows;
-        long _totalToggleEvaluations;
-        long _totalActivationThrows;
+        IncrementingPollingCounter _featuresPerSecondCounter;
+        IncrementingPollingCounter _featureThrowPerSecondCounter;
+        IncrementingPollingCounter _featureNotFoundPerSecondCounter;
+        IncrementingPollingCounter _togglePerSecondCounter;
+        IncrementingPollingCounter _toggleActivationThrowPerSecondCounter;
 
-        EventCounter _featuresPerSecondCounter;
-        EventCounter _featureThrowPerSecondCounter;
-        EventCounter _togglePerSecondCounter;
-        EventCounter _toggleActvationThrowPerSecondCounter;
-
-        //TODO: change (_featuresNotFoundCounter ) and use IncrementEventCounter on preview8
-
-        long _totalFeatureNotFound;
-        EventCounter _featuresNotFoundCounter;
 
         //-dinamic counters
 
         private readonly ConcurrentDictionary<string, EventCounter> _featureDynamicCounters;
-        private readonly ConcurrentDictionary<string, EventCounter> _toggleDynamicCounters;
 
         public EsquioEventSource()
             : base("Esquio", EventSourceSettings.EtwSelfDescribingEventFormat)
         {
-            _featuresPerSecondCounter = new EventCounter(EsquioConstants.FEATURE_EVALUATION_PER_SECOND_COUNTER, this);
-            _featureThrowPerSecondCounter = new EventCounter(EsquioConstants.FEATURE_THROWS_PER_SECOND_COUNTER, this);
-            _togglePerSecondCounter = new EventCounter(EsquioConstants.TOGGLE_EVALUATION_PER_SECOND_COUNTER, this);
-            _toggleActvationThrowPerSecondCounter = new EventCounter(EsquioConstants.TOGGLE_ACTIVATION_THROWS_PER_SECOND_COUNTER, this);
+            _featuresPerSecondCounter = new IncrementingPollingCounter(EsquioConstants.FEATURE_EVALUATION_PER_SECOND_COUNTER, this, () => _perSecondFeatureEvaluations)
+            {
+                DisplayName = "Feature Evaluations",
+                DisplayRateTimeScale = new TimeSpan(0, 0, 1)
+            };
 
-            _featuresNotFoundCounter = new EventCounter(EsquioConstants.FEATURE_NOTFOUND_COUNTER, this);
+            _featureThrowPerSecondCounter = new IncrementingPollingCounter(EsquioConstants.FEATURE_THROWS_PER_SECOND_COUNTER, this, () => _perSecondFeatureThrows)
+            {
+                DisplayName = "Feature Evaluations Throws",
+                DisplayRateTimeScale = new TimeSpan(0, 0, 1)
+            };
 
+            _featureNotFoundPerSecondCounter = new IncrementingPollingCounter(EsquioConstants.FEATURE_NOTFOUND_COUNTER, this, () => _perSecondFeatureNotFound)
+            {
+                DisplayName = "Feature Evaluations NotFound",
+                DisplayRateTimeScale = new TimeSpan(0, 0, 1)
+            };
+
+            _togglePerSecondCounter = new IncrementingPollingCounter(EsquioConstants.TOGGLE_EVALUATION_PER_SECOND_COUNTER, this, () => _perSecondToggleEvaluations)
+            {
+                DisplayName = "Toggle Executions",
+                DisplayRateTimeScale = new TimeSpan(0, 0, 1)
+            };
+
+            _toggleActivationThrowPerSecondCounter = new IncrementingPollingCounter(EsquioConstants.TOGGLE_ACTIVATION_THROWS_PER_SECOND_COUNTER, this, () => _perSecondActivationThrows)
+            {
+                DisplayName = "Toggle Executions Throws",
+                DisplayRateTimeScale = new TimeSpan(0, 0, 1)
+            };
+
+         
             _featureDynamicCounters = new ConcurrentDictionary<string, EventCounter>();
-            _toggleDynamicCounters = new ConcurrentDictionary<string, EventCounter>();
         }
 
 
@@ -66,7 +85,7 @@ namespace Esquio.Diagnostics
         {
             productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
 
-            Interlocked.Increment(ref _totalFeatureThrows);
+            Interlocked.Increment(ref _perSecondFeatureThrows);
             WriteEvent(3, featureName, productName, error);
         }
 
@@ -75,7 +94,7 @@ namespace Esquio.Diagnostics
         {
             productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
 
-            Interlocked.Increment(ref _totalFeatureEvaluations);
+            Interlocked.Increment(ref _perSecondFeatureEvaluations);
 
             if (featureName != null)
             {
@@ -83,7 +102,10 @@ namespace Esquio.Diagnostics
 
                 if (!_featureDynamicCounters.TryGetValue(counterName, out EventCounter counter))
                 {
-                    counter = new EventCounter(counterName, this);
+                    counter = new EventCounter(counterName, this)
+                    {
+                        DisplayName = $"Feature [{featureName.Trim().ToLower()}] Evaluation Time / ms"
+                    };
 
                     _featureDynamicCounters.TryAdd(counterName, counter);
                 }
@@ -99,7 +121,7 @@ namespace Esquio.Diagnostics
         {
             productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
 
-            Interlocked.Increment(ref _totalFeatureNotFound);
+            Interlocked.Increment(ref _perSecondFeatureNotFound);
             WriteEvent(5, featureName, productName);
         }
 
@@ -119,22 +141,7 @@ namespace Esquio.Diagnostics
         [Event(12, Level = EventLevel.Informational)]
         public void ToggleEvaluated(string featureName, string productName, string toggle, long elapsedMilliseconds)
         {
-            Interlocked.Increment(ref _totalToggleEvaluations);
-
-            if (featureName != null && toggle != null)
-            {
-                var counterName = $"{featureName.Trim().ToLower()}-{toggle.Trim().ToLower()}-evaluation-time";
-
-                if (!_toggleDynamicCounters.TryGetValue(counterName, out EventCounter counter))
-                {
-                    counter = new EventCounter(counterName, this);
-
-                    _toggleDynamicCounters.TryAdd(counterName, counter);
-                }
-
-                counter?.WriteMetric(elapsedMilliseconds);
-            }
-
+            Interlocked.Increment(ref _perSecondToggleEvaluations);
             WriteEvent(12, featureName, productName, toggle, elapsedMilliseconds);
         }
 
@@ -153,7 +160,7 @@ namespace Esquio.Diagnostics
         [Event(22, Level = EventLevel.Error)]
         public void ToggleActivationCantCreateInstance(string toggleTypeName)
         {
-            Interlocked.Increment(ref _totalActivationThrows);
+            Interlocked.Increment(ref _perSecondActivationThrows);
             WriteEvent(22, toggleTypeName);
         }
     }
