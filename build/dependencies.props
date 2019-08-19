@@ -27,6 +27,8 @@
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.5.0</microsoftcsharp>
 
+    <systemdiagnosticsdiagnosticsource>4.6.0-preview8.19405.3</systemdiagnosticsdiagnosticsource>
+
     <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview8.19405.7</microsoftaspnetcoremvcnewtonsoftjson>
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview8.19405.7</microsoftaspnetcoreauthenticationjwtbearer>
     

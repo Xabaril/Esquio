@@ -25,6 +25,10 @@ namespace Esquio.Diagnostics
         {
             _featureServiceThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
         }
+        public static void FeatureServiceProcessingEnd(ILogger logger, string featureName, string productName, bool enabled, long elapsedMilliseconds)
+        {
+            _featureServiceEnd(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, enabled, elapsedMilliseconds, null);
+        }
         public static void DefaultToggleTypeActivatorResolveTypeBegin(ILogger logger, string toggleType)
         {
             _defaultToggleTypeActivatorResolveTypeBegin(logger, toggleType, null);
@@ -46,6 +50,11 @@ namespace Esquio.Diagnostics
             LogLevel.Debug,
             EventIds.DefaultFeatureServiceBegin,
             "Running DefaultFeatureService to check {featureName} for product {productName}.");
+
+        private static readonly Action<ILogger, string, string, bool, long, Exception> _featureServiceEnd = LoggerMessage.Define<string, string, bool, long>(
+            LogLevel.Debug,
+            EventIds.DefaultFeatureServiceEnd,
+            "DefaultFeatureService check {featureName} for product {productName} with result Enabled is {enabled} on {elapsedMilliseconds} ms.");
 
         private static readonly Action<ILogger, string, string, Exception> _featureServiceNotFound = LoggerMessage.Define<string, string>(
             LogLevel.Warning,

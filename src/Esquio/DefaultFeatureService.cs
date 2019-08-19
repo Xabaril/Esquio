@@ -80,8 +80,7 @@ namespace Esquio
                     }
                 }
 
-                _diagnostics.FeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds);
-                _diagnostics.EndFeatureEvaluation();
+                _diagnostics.EndFeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
 
                 return enabled;
             }

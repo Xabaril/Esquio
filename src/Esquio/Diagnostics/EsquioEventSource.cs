@@ -6,6 +6,10 @@ using System.Threading;
 namespace Esquio.Diagnostics
 {
     /// <summary>
+    /// Esquio EventSource class ETW and performance counters.
+    /// https://devblogs.microsoft.com/dotnet/introducing-diagnostics-improvements-in-net-core-3-0/ 
+    /// https://github.com/dotnet/diagnostics
+    /// https://github.com/dotnet/diagnostics/blob/master/documentation/dotnet-counters-instructions.md
     /// https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/
     /// </summary>
     internal sealed class EsquioEventSource
@@ -24,7 +28,6 @@ namespace Esquio.Diagnostics
         IncrementingPollingCounter _featureNotFoundPerSecondCounter;
         IncrementingPollingCounter _togglePerSecondCounter;
         IncrementingPollingCounter _toggleActivationThrowPerSecondCounter;
-
 
         //-dinamic counters
 

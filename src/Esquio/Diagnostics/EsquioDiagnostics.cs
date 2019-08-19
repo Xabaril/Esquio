@@ -1,24 +1,34 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 namespace Esquio.Diagnostics
 {
     internal class EsquioDiagnostics
     {
-        ILogger<Esquio> _logger;
+        private readonly ILogger<Esquio> _logger;
+        private readonly DiagnosticListener _listener;
 
-        public EsquioDiagnostics(ILogger<Esquio> logger)
+        public EsquioDiagnostics(DiagnosticListener listener, ILogger<Esquio> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _listener = listener ?? throw new ArgumentNullException(nameof(listener));
         }
 
         public void BeginFeatureEvaluation(string featureName, string productName)
         {
-            Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
-
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationStart();
+            }
+
+            Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
+
+            var payload = new { Feature = featureName, Product = productName };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME, payload);
             }
         }
 
@@ -53,19 +63,21 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void FeatureEvaluation(string featureName, string productName, long elapsedMilliseconds)
+        public void EndFeatureEvaluation(string featureName, string productName, long elapsedMilliseconds, bool enabled)
         {
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluated(featureName, productName, elapsedMilliseconds);
-            }
-        }
-
-        public void EndFeatureEvaluation()
-        {
-            if (EsquioEventSource.Log.IsEnabled())
-            {
                 EsquioEventSource.Log.FeatureEvaluationStop();
+            }
+
+            Log.FeatureServiceProcessingEnd(_logger, featureName, productName, enabled, elapsedMilliseconds);
+
+            var payload = new { Feature = featureName, Product = productName, Enabled = enabled, Elapsed = elapsedMilliseconds };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME, payload);
             }
         }
 

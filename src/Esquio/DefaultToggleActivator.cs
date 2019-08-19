@@ -13,7 +13,7 @@ namespace Esquio
         private readonly IServiceProvider _serviceProvider;
         private readonly EsquioDiagnostics _diagnostics;
 
-        public DefaultToggleTypeActivator(IServiceProvider serviceProvider,EsquioDiagnostics diagnostics)
+        public DefaultToggleTypeActivator(IServiceProvider serviceProvider, EsquioDiagnostics diagnostics)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));

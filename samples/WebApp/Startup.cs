@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using WebApp.Services;
 using WebApp.Toggles;
 
@@ -51,8 +54,11 @@ namespace WebApp
                     setup.LoginPath = "/account/login";
                 });
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {
+            //used to test Esquio DiagnosticSourceEvents
+            //listener.Subscribe(new EsquioObserver());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -73,13 +79,38 @@ namespace WebApp
             app.UseEndpoints(routes =>
             {
                 routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
-                
+
                 routes.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
 
                 routes.MapRazorPages();
             });
+        }
+
+        /// <summary>
+        /// Observer used to test Esquio DiagnosticSource events
+        /// </summary>
+        private class EsquioObserver
+        : IObserver<KeyValuePair<string, object>>
+        {
+            public void OnCompleted()
+            {
+            }
+
+            public void OnError(Exception error)
+            {
+            }
+
+            public void OnNext(KeyValuePair<string, object> item)
+            {
+                var isEndEvent = item.Key.Contains("Esquio.FeatureEvaluationEnd");
+
+                if (isEndEvent)
+                {
+                    var value = item.Value;
+                }
+            }
         }
     }
 }

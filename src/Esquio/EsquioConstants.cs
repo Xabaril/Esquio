@@ -16,6 +16,9 @@
         public const string TOGGLE_EVALUATION_PER_SECOND_COUNTER = "toggle-activation";
         public const string TOGGLE_ACTIVATION_THROWS_PER_SECOND_COUNTER = "toggle-activation-throws";
         public const string FEATURE_NOTFOUND_COUNTER = "feature-evaluation-notfound";
+
+        public const string ESQUIO_BEGINFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationBegin";
+        public const string ESQUIO_ENDFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationEnd";
     }
 }
 
