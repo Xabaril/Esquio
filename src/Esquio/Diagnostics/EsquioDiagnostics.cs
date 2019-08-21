@@ -17,12 +17,12 @@ namespace Esquio.Diagnostics
 
         public void BeginFeatureEvaluation(string featureName, string productName)
         {
+            Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
+
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationStart();
             }
-
-            Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
             var payload = new { Feature = featureName, Product = productName };
 
@@ -40,6 +40,13 @@ namespace Esquio.Diagnostics
             {
                 EsquioEventSource.Log.FeatureEvaluationNotFound(featureName, productName);
                 EsquioEventSource.Log.FeatureEvaluationStop();
+            }
+
+            var payload = new { Feature = featureName, Product = productName };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME, payload);
             }
         }
 
@@ -61,17 +68,24 @@ namespace Esquio.Diagnostics
             {
                 EsquioEventSource.Log.FeatureEvaluationThrow(featureName, productName, exception.ToString());
             }
+
+            var payload = new { Feature = featureName, Product = productName, Exception = exception };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME, payload);
+            }
         }
 
         public void EndFeatureEvaluation(string featureName, string productName, long elapsedMilliseconds, bool enabled)
         {
+            Log.FeatureServiceProcessingEnd(_logger, featureName, productName, enabled, elapsedMilliseconds);
+
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluated(featureName, productName, elapsedMilliseconds);
                 EsquioEventSource.Log.FeatureEvaluationStop();
             }
-
-            Log.FeatureServiceProcessingEnd(_logger, featureName, productName, enabled, elapsedMilliseconds);
 
             var payload = new { Feature = featureName, Product = productName, Enabled = enabled, Elapsed = elapsedMilliseconds };
 
@@ -81,11 +95,18 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void BeginTogglevaluation()
+        public void BeginTogglevaluation(string featureName, string productName, string toggle)
         {
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStart();
+            }
+
+            var payload = new { Feature = featureName, Product = productName, Toggle = toggle };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME, payload);
             }
         }
 
@@ -102,11 +123,18 @@ namespace Esquio.Diagnostics
             Log.FeatureServiceToggleIsNotActive(_logger, toggle, featureName);
         }
 
-        public void EndTogglevaluation()
+        public void EndTogglevaluation(string featureName, string productName, string toggle, bool active)
         {
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStop();
+            }
+
+            var payload = new { Feature = featureName, Product = productName, Toggle = toggle, Active = active };
+
+            if (_listener.IsEnabled(EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME, payload))
+            {
+                _listener.Write(EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME, payload);
             }
         }
 
@@ -123,6 +151,7 @@ namespace Esquio.Diagnostics
         public void ToggleActivationResolveTypeFromCache(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolvedFromCache(_logger, toggleTypeName);
+
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop();
@@ -132,6 +161,7 @@ namespace Esquio.Diagnostics
         public void ToggleActivationResolveType(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
+
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop();

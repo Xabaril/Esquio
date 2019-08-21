@@ -25,8 +25,6 @@ namespace WebApp.Controllers
             return View(this.matchService.GetNextMatches(50));
         }
 
-        
-
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsNotActive(int id)
         {

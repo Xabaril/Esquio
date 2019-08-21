@@ -65,7 +65,6 @@ namespace Esquio.Diagnostics
                 DisplayName = "Toggle Executions Throws",
                 DisplayRateTimeScale = new TimeSpan(0, 0, 1)
             };
-
          
             _featureDynamicCounters = new ConcurrentDictionary<string, EventCounter>();
         }

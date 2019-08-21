@@ -1,3 +1,4 @@
+using Esquio;
 using Esquio.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -92,7 +93,7 @@ namespace WebApp
         /// Observer used to test Esquio DiagnosticSource events
         /// </summary>
         private class EsquioObserver
-        : IObserver<KeyValuePair<string, object>>
+            : IObserver<KeyValuePair<string, object>>
         {
             public void OnCompleted()
             {
@@ -104,7 +105,7 @@ namespace WebApp
 
             public void OnNext(KeyValuePair<string, object> item)
             {
-                var isEndEvent = item.Key.Contains("Esquio.FeatureEvaluationEnd");
+                var isEndEvent = item.Key.Contains(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME);
 
                 if (isEndEvent)
                 {
