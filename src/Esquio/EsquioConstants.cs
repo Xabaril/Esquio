@@ -20,7 +20,7 @@
         public const string FEATURE_NOTFOUND_COUNTER = "feature-evaluation-notfound";
 
 
-        // - diagnostic listener activies
+        // - diagnostic listener activities
         public const string ESQUIO_BEGINFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationBegin";
         public const string ESQUIO_ENDFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationEnd";
         public const string ESQUIO_THROWFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationThrow";
