@@ -4,6 +4,7 @@ using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,27 +40,24 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 
         private void InitializeTestServer()
         {
-            var testServer = new TestServer();
-
-            _host = Host.CreateDefaultBuilder()
-                 .UseContentRoot(Directory.GetCurrentDirectory())
-                 .ConfigureAppConfiguration((_, cfg) =>
+            _host = new HostBuilder()
+                .ConfigureWebHost(builder =>
+                {
+                    builder
+                    .ConfigureServices(services => services.AddSingleton<IServer>(serviceProvider => new TestServer(serviceProvider)))
+                    .UseStartup<TestStartup>();
+                })
+                .ConfigureAppConfiguration((_, cfg) =>
                  {
                      cfg.AddJsonFile("appsettings.json", optional: false);
-                 })
-                 .ConfigureWebHostDefaults(webBuilder =>
-                 {
-                     webBuilder
-                     .UseServer(testServer)
-                     .UseStartup<TestStartup>();
                  }).Build();
 
             _host.StartAsync().Wait();
 
             _host.MigrateDbContext<StoreDbContext>((store, sp) =>
-            {
+                {
 
-            });
+                });
 
             TestServer = _host.GetTestServer();
             Given = new Given(this);

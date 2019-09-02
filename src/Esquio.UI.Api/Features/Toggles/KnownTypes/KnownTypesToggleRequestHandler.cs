@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Features.Toggles.KnownTypes
                     scaneedToggles.Add(new KnownTypesToggleDetailResponse()
                     {
                         Type = type.FullName,
-                        Assembly = assembly.FullName,
+                        Assembly = assembly.GetName(copiedName: false).Name,
                         Description = description
                     });
                 }

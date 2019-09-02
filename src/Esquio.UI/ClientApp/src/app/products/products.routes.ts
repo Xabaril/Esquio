@@ -35,6 +35,18 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           component: () => import('./flags/FlagsForm.vue'),
           props: true
         },
+        {
+          path: ':productId/:id/add',
+          name: 'toggles-add',
+          component: () => import('./flags/toggles/TogglesForm.vue'),
+          props: true
+        },
+        {
+          path: ':productId/:id/:toggleId',
+          name: 'toggles-edit',
+          component: () => import('./flags/toggles/TogglesForm.vue'),
+          props: true
+        }
       ]
     }
   ];

@@ -7,7 +7,11 @@
     },
     "empty": "There are no results to show",
     "empty_filtered": "There are no filtered records to show",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "switch": {
+      "on": "On",
+      "off": "Off"
+    }
   },
   "products": {
     "title": "Products",
@@ -53,6 +57,7 @@
       "save": "Save flag",
       "see_detail": "Open",
       "add_first": "Add your first flag",
+      "add_toggle": "Add new toggle",
       "delete": "Delete"
     },
     "fields": {
@@ -88,7 +93,51 @@
   "tags": {
     "title": "Tags"
   },
+  "toggles": {
+    "title": "Toggles",
+    "detail": "Toggle detail",
+    "actions": {
+      "add": "Add toggle",
+      "save": "Save toggle",
+      "see_detail": "Open",
+      "add_first": "Add your first toggle",
+      "delete": "Delete"
+    },
+    "fields": {
+      "id": "Identifier",
+      "typeName": "Type"
+    },
+    "placeholders": {
+      "typeHelp": "Choose your toggle from the buttons of the list",
+      "tag": "Add new tag"
+    },
+    "errors": {
+      "add": "Cannot create this toggle",
+      "detail": "Cannot fetch this toggle",
+      "update": "Cannot update the toggle",
+      "delete": "Cannot delete the toggle",
+      "change": "Cannot change the toggle"
+    },
+    "success": {
+      "add": "The new toggle was created",
+      "update": "The toggle was updated",
+      "delete": "The toggle was deleted"
+    },
+    "confirm": {
+      "title": "Are you sure to delete '{0}' toggle?"
+    }
+  },
   "home": {
     "title": "Home page"
+  },
+  "parameters": {
+    "semicolon": {
+      "placeholder": "Add value",
+      "results": "Preview of result"
+    },
+    "string": {
+      "typeName": "Value",
+      "typeHelp": "Write the value of your parameter"
+    }
   }
 }

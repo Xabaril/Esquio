@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <IsPackable>false</IsPackable>
+
+    <!--We need this for non vs16 preview, remove on release-->
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>

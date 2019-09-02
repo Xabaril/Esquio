@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -79,12 +79,11 @@ namespace WebApp.Toggles
 
         async Task<IPApiData> GetLocationFromIp(string ipAddress, CancellationToken cancellationToken = default)
         {
-#if DEBUG
             if (ipAddress == "0.0.0.1")
             {
                 ipAddress = "213.97.0.42";
             }
-#endif
+
             using (var httpClient = new HttpClient())
             {
                 var response = await httpClient.GetAsync($"{BASE_ADDRESS}{ipAddress}", cancellationToken);
@@ -92,9 +91,9 @@ namespace WebApp.Toggles
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return await JsonSerializer.ReadAsync<IPApiData>(
+                    return await JsonSerializer.DeserializeAsync<IPApiData>(
                         utf8Json: stream,
-                        options:_serializerOptions,
+                        options: _serializerOptions,
                         cancellationToken: cancellationToken);
                 }
             }

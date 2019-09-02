@@ -45,6 +45,7 @@ export class AuthService implements IAuthService {
     };
 
     this.manager = new Oidc.UserManager(this.config);
+    this.handleEvents();
   }
 
   public login(): Promise<void | Oidc.User> {
@@ -89,7 +90,7 @@ export class AuthService implements IAuthService {
     });
   }
 
-  public handleEvents(): void {
+  private handleEvents(): void {
     this.manager.events.addUserLoaded(user => {
       console.log('#response', { message: 'User loaded' });
       return this.getUser();

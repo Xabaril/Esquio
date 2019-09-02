@@ -8,5 +8,8 @@ export {
   SpinnerPlugin,
   TablePlugin,
   FormCheckboxPlugin,
-  FormPlugin
+  FormPlugin,
+  CardPlugin,
+  CollapsePlugin,
+  ProgressPlugin
 } from 'bootstrap-vue';

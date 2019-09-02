@@ -3,7 +3,7 @@
     <div class="row">
       <h1 class="col col-auto pl-0">{{$t('flags.detail')}}</h1>
       <div class="flags_form-switch col col-auto pl-0">
-        <custom-switch v-model="form.enabled" />
+        <custom-switch v-if="false" v-model="form.enabled" />
       </div>
     </div>
     <form class="row">
@@ -44,11 +44,18 @@
         v-model="formTag"
         :tags="formTags"
         :placeholder="$t('flags.placeholders.tag')"
-        :validation="tagsValidator"
         @before-adding-tag="onAddFormTag"
         @before-deleting-tag="onRemoveFormTag"
         @tags-changed="onChangeFormTags"
       />
+    </div>
+
+    <div
+      class="row mt-4"
+      v-if="isEditing"
+    >
+      <h2>{{$t('toggles.title')}}</h2>
+      <TogglesList :flagId="id" :toggles="form.toggles" />
     </div>
 
     <FloatingContainer>
@@ -65,6 +72,12 @@
         @click="onClickSave"
       />
     </FloatingContainer>
+
+    <FloatingTop
+      v-if="isEditing"
+      :text="$t('flags.actions.add_toggle')"
+      :to="{name: 'toggles-add', params: { productId: form.id, flagId: id }}"
+    />
   </section>
 </template>
 
@@ -76,22 +89,26 @@ import { AlertType } from '~/core';
 import {
   Floating,
   FloatingDelete,
+  FloatingTop,
   FloatingContainer,
   InputText,
-  CustomSwitch
+  CustomSwitch,
 } from '~/shared';
 import { ITagsService, Tag, FormTag } from '~/products/shared/tags';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
+import { TogglesList } from './toggles';
 
 @Component({
   components: {
     Floating,
     FloatingContainer,
+    FloatingTop,
     FloatingDelete,
     InputText,
     CustomSwitch,
-    VueTagsInput
+    VueTagsInput,
+    TogglesList
   }
 })
 export default class extends Vue {
@@ -106,7 +123,8 @@ export default class extends Vue {
     id: null,
     name: null,
     description: null,
-    enabled: false
+    enabled: false,
+    toggles: null
   };
 
   public tagsValidator = [
@@ -192,7 +210,7 @@ export default class extends Vue {
 
   private async getFlag(): Promise<void> {
     try {
-      const { name, description, id, enabled } = await this.flagsService.detail(
+      const { name, description, id, enabled, toggles } = await this.flagsService.detail(
         Number(this.id)
       );
 
@@ -200,6 +218,7 @@ export default class extends Vue {
       this.form.description = description;
       this.form.id = id;
       this.form.enabled = enabled;
+      this.form.toggles = toggles;
     } catch (e) {
       this.$alert(this.$t('flags.errors.detail'), AlertType.Error);
     }
