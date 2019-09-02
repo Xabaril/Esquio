@@ -364,7 +364,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .BeGreaterThan(0);
 
             content.Toggles
-                .Where(t => t.Assembly == (typeof(OnToggle).Assembly.FullName))
+                .Where(t => t.Assembly == (typeof(OnToggle).Assembly.GetName().Name))
                 .Any().Should().BeTrue();
 
             content.Toggles
