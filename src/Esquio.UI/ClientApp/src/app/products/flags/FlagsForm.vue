@@ -76,7 +76,7 @@
     <FloatingTop
       v-if="isEditing"
       :text="$t('flags.actions.add_toggle')"
-      :to="{name: 'toggles-add', params: { productId: form.id, flagId: id }}"
+      :to="{name: 'toggles-add', params: { productId: productId, flagId: id }}"
     />
   </section>
 </template>

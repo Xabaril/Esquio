@@ -4,7 +4,6 @@ import { TranslateResult } from 'vue-i18n';
 export const ConfirmPlugin = {
   install (Vue) {
     Vue.prototype.$confirm = function (text: string | TranslateResult): Promise<boolean> {
-      console.log(text);
       return this.$bvModal.msgBoxConfirm(text.toString());
     };
   }
