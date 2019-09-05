@@ -83,11 +83,6 @@ export default class extends Vue {
       border-color: rgba(get-color(primary, brightest), .5);
     }
 
-    // &.router-link-exact-active,
-    // &.active:not(.navigation-link--home) {
-    //   border-bottom-color: get-color(primary, brighter);
-    // }
-
     &--breadcrumb {
       margin-right: .5rem;
 
