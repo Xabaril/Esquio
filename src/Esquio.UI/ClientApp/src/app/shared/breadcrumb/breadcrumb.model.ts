@@ -1,4 +1,5 @@
 export interface BreadCrumbItem {
-  id?: number;
+  id?: string;
+  productId?: string;
   name: string;
 }

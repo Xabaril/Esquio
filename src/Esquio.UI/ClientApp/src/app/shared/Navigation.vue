@@ -8,7 +8,7 @@
       <!-- <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link> -->
       <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
 
-      <router-link v-for="page in breadcrumb" :key="page.name" class="navigation-link" :to="{ name: page.name, props: {id: page.id}}" active-class="active">{{page.name + page.id}}</router-link>
+      <router-link v-for="page in breadcrumb" :key="page.name" class="navigation-link" :to="{ name: page.name, params: {id: page.id, productId: page.productId}}" active-class="active">{{$t(`breadcrumb.${page.name}`, [page.id])}}</router-link>
     </div>
     <div v-if="user" class="navigation-profile">
       <router-link class="navigation-link navigation-link--home" to="/logout">{{user.profile.name}}</router-link>

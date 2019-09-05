@@ -28,15 +28,24 @@ export function generateBreadcrumb(route: Route): BreadCrumbItem[] {
   }
 
   const parts = route.path.split(SEPARATOR).filter(x => x);
+  const breadcrumb = [];
 
-  return parts.map((part, key) => {
+  parts.forEach((part, key) => {
     const sufix = part === ADD_ROUTE ? ADD_ROUTE : EDIT_ROUTE;
     const name = breadcrumbTemplate[key] + sufix;
-    const id = isNaN(Number(part)) ? null : Number(part);
+    const id = isNaN(Number(part)) ? '' : part;
+    let productId = '';
 
-    return {
+    if (id && key > 0) {
+      productId = breadcrumb[key - 1].productId || breadcrumb[key - 1].id;
+    }
+
+    breadcrumb.push({
       name,
-      id
-    };
-  }).slice(1);
+      id,
+      productId
+    });
+  });
+
+  return breadcrumb.slice(1);
 }
