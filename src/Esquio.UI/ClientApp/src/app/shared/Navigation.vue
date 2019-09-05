@@ -5,7 +5,7 @@
       {{$t('common.title')}}
     </div>
     <div class="navigation-items">
-      <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link>
+      <!-- <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link> -->
       <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
     </div>
     <div v-if="user" class="navigation-profile">
