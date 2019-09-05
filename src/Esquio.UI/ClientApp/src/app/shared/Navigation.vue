@@ -7,6 +7,8 @@
     <div class="navigation-items">
       <!-- <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link> -->
       <router-link class="navigation-link" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
+
+      <router-link v-for="page in breadcrumb" :key="page.name" class="navigation-link" :to="{ name: page.name, props: {id: page.id}}" active-class="active">{{page.name + page.id}}</router-link>
     </div>
     <div v-if="user" class="navigation-profile">
       <router-link class="navigation-link navigation-link--home" to="/logout">{{user.profile.name}}</router-link>
@@ -19,15 +21,20 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { IAuthService, User } from './auth';
 import { Inject } from 'inversify-props';
+import { BreadCrumbItem, generateBreadcrumb } from './breadcrumb';
+import { Route } from 'vue-router';
 
 @Component
 export default class extends Vue {
   public name = 'Navigation';
   public user: User = null;
+  public breadcrumb: BreadCrumbItem[] = [];
 
   @Inject() authService: IAuthService;
 
-  @Watch('$route') onChangeRoute() {
+  @Watch('$route') onChangeRoute(nextRoute: Route) {
+    this.breadcrumb = generateBreadcrumb(nextRoute);
+    console.log(this.breadcrumb);
     this.user = this.user || this.authService.user;
   }
 }
