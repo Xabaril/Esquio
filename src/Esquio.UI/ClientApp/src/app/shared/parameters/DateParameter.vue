@@ -88,14 +88,12 @@ export default class extends Vue {
   @Watch('date')
   onChangeValue() {
     this.value = this.dateTimeToString();
-    console.log(this.value);
     this.$emit('change', this.value);
   }
 
   @Watch('time')
   onChangeTime() {
     this.value = this.dateTimeToString();
-    console.log(this.value);
     this.$emit('change', this.value);
   }
 }
