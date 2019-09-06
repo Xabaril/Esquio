@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,12 +37,27 @@ namespace WebApp
                 .AddMvc()
                     .AddViewLocalization(
                         LanguageViewLocationExpanderFormat.Suffix,
-                        opts => { opts.ResourcesPath = "Resources"; })
-                .Services
+                        opts => { opts.ResourcesPath = "Resources"; });
+
+            //Use configuration store (no dependencies)
+            services
                 .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                     .AddAspNetCoreDefaultServices()
-                    .AddConfigurationStore(Configuration, "Esquio")
-                .Services
+                    .AddConfigurationStore(Configuration, "Esquio");
+
+            //Use EF store
+            //services
+            //    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+            //        .AddAspNetCoreDefaultServices()
+            //        .AddEntityFrameworkCoreStore(options=>
+            //        {
+            //            options.ConfigureDbContext = (builder) =>
+            //            {
+            //                builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
+            //            };
+            //        });
+
+            services
                 .AddSingleton<IMatchService, MatchService>()
                 .AddAuthentication(setup =>
                 {
