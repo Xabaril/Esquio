@@ -25,27 +25,27 @@
   </PropertyGroup>
   
   <PropertyGroup Label="Package Dependencies">
-    <microsoftcsharp>4.5.0</microsoftcsharp>
+    <microsoftcsharp>4.6.0-preview9.19421.4</microsoftcsharp>
 
-    <systemdiagnosticsdiagnosticsource>4.6.0-preview8.19405.3</systemdiagnosticsdiagnosticsource>
+    <systemdiagnosticsdiagnosticsource>4.6.0-preview9.19421.4</systemdiagnosticsdiagnosticsource>
 
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview8.19405.7</microsoftaspnetcoremvcnewtonsoftjson>
-    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview8.19405.7</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-preview9.19424.4</microsoftaspnetcoremvcnewtonsoftjson>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-preview9.19424.4</microsoftaspnetcoreauthenticationjwtbearer>
     
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview8.19405.4</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.0.0-preview8.19405.4</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.0.0-preview8.19405.4</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.0.0-preview8.19405.4</microsoftextensionsconfigurationabstractions> 
-    <microsoftextensionsconfigurationbinder>3.0.0-preview8.19405.4</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.0.0-preview8.19405.4</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.0.0-preview8.19405.4</microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.0.0-preview8.19405.4</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.0.0-preview8.19405.4</microsoftextensionsloggingconsole>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0-preview9.19423.4</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.0.0-preview9.19423.4</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0-preview9.19423.4</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationabstractions>3.0.0-preview9.19423.4</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationbinder>3.0.0-preview9.19423.4</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0-preview9.19423.4</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.0.0-preview9.19423.4</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.0.0-preview9.19423.4</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.0.0-preview9.19423.4</microsoftextensionsloggingconsole>
 
-    <microsoftentityframeworkcore>3.0.0-preview8.19405.11</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.0.0-preview8.19405.11</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.0.0-preview8.19405.11</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.0.0-preview8.19405.11</microsoftentityframeworkcoredesign>
+    <microsoftentityframeworkcore>3.0.0-preview9.19423.6</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.0.0-preview9.19423.6</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0-preview9.19423.6</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.0.0-preview9.19423.6</microsoftentityframeworkcoredesign>
 
     <serilogextensionslogging>2.0.4</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
@@ -53,21 +53,21 @@
 
     <hellangmiddlewareproblemdetails>3.1.0</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
-    <fluentvalidationaspnetcore>8.5.0-preview4</fluentvalidationaspnetcore>
+    <fluentvalidationaspnetcore>8.5.0-preview5</fluentvalidationaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.0.0-preview8.19405.4</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.0.0-preview8.19405.7</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.0.0-preview9.19423.4</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.0.0-preview9.19424.4</microsoftaspnetcoretesthost>
     
-    <microsoftentityframeworkcoreinmemory>3.0.0-preview8.19405.11</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.0.0-preview8.19405.11</microsoftentityframeworkcoresqlite>
-    <npgsqlentityframeworkcorepostgresql>3.0.0-preview8</npgsqlentityframeworkcorepostgresql>
+    <microsoftentityframeworkcoreinmemory>3.0.0-preview9.19423.6</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0-preview9.19423.6</microsoftentityframeworkcoresqlite>
+    <npgsqlentityframeworkcorepostgresql>3.0.0-preview9</npgsqlentityframeworkcorepostgresql>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <newtonsoftjson>12.0.2</newtonsoftjson>
-    <fluentassertions>5.7.0</fluentassertions>
+    <fluentassertions>5.9.0</fluentassertions>
     <achevetesthost>2.2.1</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
