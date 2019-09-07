@@ -54,5 +54,10 @@ namespace Esquio.EntityFrameworkCore.Store.Options
         /// Get or set default table configuration for ApiKeys.
         /// </summary>
         public TableConfiguration ApiKeys { get; set; } = new TableConfiguration("ApiKeys");
+
+        /// <summary>
+        /// Get or set default table configuration for History
+        /// </summary>
+        public TableConfiguration History { get; set; } = new TableConfiguration("History");
     }
 }
