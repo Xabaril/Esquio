@@ -1,4 +1,4 @@
-# Preview runtime issues
+# Preview runtime issues (use sdk build for runtime)
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview9-buster AS base
 WORKDIR /app
 EXPOSE 80
@@ -11,7 +11,7 @@ COPY ./samples ./samples
 WORKDIR /src/samples/WebApp
 RUN dotnet build -c Release -o /app
 FROM build AS publish
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish -c Release -o /app --no-build
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
