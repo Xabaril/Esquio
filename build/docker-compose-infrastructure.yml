@@ -4,7 +4,7 @@ services:
         image: microsoft/mssql-server-linux
         restart: always
         ports:
-            - 1833:1433
+            - 5433:1433
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Password12!
