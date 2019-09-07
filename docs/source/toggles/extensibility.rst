@@ -44,6 +44,75 @@ If you want to an application (`Esquio UI <https://github.com/Xabaril/Esquio/tre
 
 **Attributes**
 
-    * DesignType: *Allow to add a friendly description for the toggle.*
-    * DesignTypeParameter: *Allow to add a friendly description for the toggle's parameters.*
+    * **DesignType**: *Allow to add a friendly description for the toggle.*
+    * **DesignTypeParameter**: *Allow to add a friendly description for the toggle's parameters.*
 
+Once we have define our attributes, it's time to use the services that our toggle will need to check if is active or not. In the constructor we can specify these services::
+
+    public UserAgentBrowserToggle(
+        IRuntimeFeatureStore featureStore,
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<UserAgentBrowserToggle> logger)
+    {
+        _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
+        _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+**Services**
+
+    * **IRuntimeFeatureStore**: We use this service to retrieve the feature. Once we have the feature, we can retrieve the toggle and her data (The parameters and their values).
+    * **IHttpContextAccessor**: To access the HttpContext.
+    * **ILogger<T>**: To log whatever you want.
+
+It's time to finish our feature. We need to complete the ``IsActiveAsync`` method with the code below::
+
+    public async Task<bool> IsActiveAsync(
+        string featureName,
+        string productName = null,
+        CancellationToken cancellationToken = default)
+    {
+        var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
+        var toggle = feature.GetToggle(typeof(UserAgentBrowserToggle).FullName);
+        var data = toggle.GetData();
+
+        var allowedBrowsers = data.Browsers.ToString();
+        var currentBrowser = GetCurrentBrowser();
+
+        if (allowedBrowsers != null && !String.IsNullOrEmpty(currentBrowser))
+        {
+            _logger.LogDebug("{nameof(UserAgentBrowserToggle)} is trying to verify if {currentBrowser} is satisfying allowed browser configuration.");
+
+            var tokenizer = new StringTokenizer(allowedBrowsers, split_characters);
+
+            foreach (var segment in tokenizer)
+            {
+                if (segment.Value?.IndexOf(currentBrowser, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                {
+                    _logger.LogInformation("The browser {currentBrowser} is satisfied using {allowedBrowsers} configuration.");
+
+                    return true;
+                }
+            }
+        }
+
+        _logger.LogInformation("The browser {currentBrowser} is not allowed using current toggle configuration.");
+
+        return false;
+    }
+
+    private string GetCurrentBrowser()
+    {
+        return _contextAccessor.HttpContext
+            .Request
+            .Headers[UserAgent]
+            .FirstOrDefault() ?? string.Empty;
+    }
+
+Finally, we can register our custom toggle using the nmethod ``RegisterTogglesFromAssemblyContaining`` in our Startup class::
+
+    services.AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+
+As you can see, Esquio provides a flexible way to customize as you need.
+
+You can see this sample completed and much more in this `repository <https://github.com/Xabaril/Esquio.Contrib>`_ and of course, any PR is welcome.
