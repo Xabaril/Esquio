@@ -1,5 +1,4 @@
 using Esquio;
-using Esquio.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Services;
-using WebApp.Toggles;
 
 namespace WebApp
 {
@@ -39,23 +37,30 @@ namespace WebApp
                         LanguageViewLocationExpanderFormat.Suffix,
                         opts => { opts.ResourcesPath = "Resources"; });
 
-            //Use configuration store (no dependencies)
-            services
-                .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
-                    .AddAspNetCoreDefaultServices()
-                    .AddConfigurationStore(Configuration, "Esquio");
+            if (Configuration["EFStore"] != null)
+            {
+                //Use EF store
 
-            //Use EF store
-            //services
-            //    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
-            //        .AddAspNetCoreDefaultServices()
-            //        .AddEntityFrameworkCoreStore(options=>
-            //        {
-            //            options.ConfigureDbContext = (builder) =>
-            //            {
-            //                builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
-            //            };
-            //        });
+                services
+                    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+                        .AddAspNetCoreDefaultServices()
+                        .AddEntityFrameworkCoreStore(options =>
+                        {
+                            options.ConfigureDbContext = (builder) =>
+                            {
+                                builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
+                            };
+                        });
+            }
+            else
+            {
+                //Use configuration store (appsettings.json| env var etc.. )
+
+                services
+                    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
+                        .AddAspNetCoreDefaultServices()
+                        .AddConfigurationStore(Configuration, "Esquio");
+            }
 
             services
                 .AddSingleton<IMatchService, MatchService>()

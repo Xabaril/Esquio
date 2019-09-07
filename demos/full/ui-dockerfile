@@ -1,0 +1,31 @@
+# build client application code 
+
+FROM node:10 as node
+WORKDIR /src
+COPY ./src/Esquio.UI ./src/Esquio.UI
+WORKDIR /src/src/Esquio.UI/ClientApp
+RUN rm -rf node_modules
+RUN npm install
+RUN npm run build
+
+# build .net server
+# Preview runtime issues (use sdk build for runtime meanwhile no valid image exist)
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview9-buster AS base
+WORKDIR /app
+EXPOSE 80
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview9-buster AS build
+WORKDIR /src
+COPY ./Directory.Build.props ./Directory.Build.props
+COPY ./build ./build
+COPY ./src ./src
+COPY ./samples ./samples
+WORKDIR /src/src/Esquio.UI
+RUN dotnet build -c Release -o /app
+COPY --from=node /src/src/Esquio.UI/wwwroot /app/wwwroot
+FROM build AS publish
+RUN dotnet publish -c Release -o /app
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet","Esquio.UI.dll"]

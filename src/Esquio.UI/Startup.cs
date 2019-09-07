@@ -57,7 +57,7 @@ namespace Esquio.UI
                 .AddScoped<IApiKeyStore,DefaultApiKeyStore>()
                 .AddDbContext<StoreDbContext>(options =>
                 {
-                    options.UseSqlServer(Configuration["Data:EsquioConnectionString"], setup =>
+                    options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
                      {
                          setup.MaxBatchSize(10);
                          setup.EnableRetryOnFailure();
