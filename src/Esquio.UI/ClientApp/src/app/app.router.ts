@@ -12,9 +12,13 @@ export function router() {
   return new VueRouter({
     mode: 'history',
     routes: [
-      ...homeModule.routes(requireAuth),
+      // ...homeModule.routes(requireAuth),
       ...productsModule.routes(requireAuth),
       ...authRoutes.routes(),
+      {
+        path: '/',
+        redirect: '/products'
+      },
       {
         path: '/not-found',
         component: () => import('./shared/NotFound.vue'),

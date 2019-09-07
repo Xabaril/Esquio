@@ -55,7 +55,7 @@ namespace Esquio
 
                 foreach (var toggle in toggles)
                 {
-                    _diagnostics.BeginTogglevaluation();
+                    _diagnostics.BeginTogglevaluation(featureName, productName, toggle.Type);
 
                     var active = false;
                     var evaluationTime = ValueStopwatch.StartNew();
@@ -69,7 +69,7 @@ namespace Esquio
                     }
 
                     _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
-                    _diagnostics.EndTogglevaluation();
+                    _diagnostics.EndTogglevaluation(featureName, productName, toggle.Type, active);
 
                     if (!active)
                     {
@@ -80,8 +80,7 @@ namespace Esquio
                     }
                 }
 
-                _diagnostics.FeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds);
-                _diagnostics.EndFeatureEvaluation();
+                _diagnostics.EndFeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
 
                 return enabled;
             }

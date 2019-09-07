@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -157,7 +158,8 @@ namespace UnitTests.Esquio
             var options = Options.Create<EsquioOptions>(esquioOptions);
             var loggerFactory = new LoggerFactory();
             var logger = loggerFactory.CreateLogger<global::Esquio.Diagnostics.Esquio>();
-            var esquioDiagnostics = new EsquioDiagnostics(logger);
+            var listener = new DiagnosticListener("Esquio");
+            var esquioDiagnostics = new EsquioDiagnostics(listener, logger);
 
             return new DefaultFeatureService(store, activator, options, esquioDiagnostics);
         }

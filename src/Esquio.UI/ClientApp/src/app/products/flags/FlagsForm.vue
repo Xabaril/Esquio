@@ -44,7 +44,6 @@
         v-model="formTag"
         :tags="formTags"
         :placeholder="$t('flags.placeholders.tag')"
-        :validation="tagsValidator"
         @before-adding-tag="onAddFormTag"
         @before-deleting-tag="onRemoveFormTag"
         @tags-changed="onChangeFormTags"
@@ -77,7 +76,7 @@
     <FloatingTop
       v-if="isEditing"
       :text="$t('flags.actions.add_toggle')"
-      :to="{name: 'toggles-add', params: { productId: form.id, flagId: id }}"
+      :to="{name: 'toggles-add', params: { productId: productId, flagId: id }}"
     />
   </section>
 </template>

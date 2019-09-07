@@ -1,0 +1,18 @@
+# Preview runtime issues
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview9-buster AS base
+WORKDIR /app
+EXPOSE 80
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview9-buster AS build
+WORKDIR /src
+COPY ./Directory.Build.props ./Directory.Build.props
+COPY ./build ./build
+COPY ./src ./src
+COPY ./samples ./samples
+WORKDIR /src/samples/WebApp
+RUN dotnet build -c Release -o /app
+FROM build AS publish
+RUN dotnet publish -c Release -o /app
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet","WebApp.dll"]

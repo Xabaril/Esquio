@@ -8,7 +8,7 @@ namespace Esquio.EntityFrameworkCore.Store.Options
     /// </summary>
     public class StoreOptions
     {
-        internal Action<DbContextOptionsBuilder> ConfigureDbContext { get; set; }
+        public Action<DbContextOptionsBuilder> ConfigureDbContext { get; set; }
 
         /// <summary>
         /// Get or set a new action for add new configuration for <see cref="DbContextOptionsBuilder"/>

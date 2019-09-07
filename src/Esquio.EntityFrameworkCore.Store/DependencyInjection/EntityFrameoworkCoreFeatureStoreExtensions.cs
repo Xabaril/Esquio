@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var options = new StoreOptions();
             configurer?.Invoke(options);
 
-            builder.Services.AddDbContextPool<StoreDbContext>(optionsAction =>
+            builder.Services.AddDbContext<StoreDbContext>(optionsAction =>
             {
                 options.ConfigureDbContext?.Invoke(optionsAction);
             });

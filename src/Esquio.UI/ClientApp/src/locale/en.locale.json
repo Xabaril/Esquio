@@ -129,5 +129,23 @@
   },
   "home": {
     "title": "Home page"
+  },
+  "parameters": {
+    "semicolon": {
+      "placeholder": "Add value",
+      "results": "Preview of result"
+    },
+    "string": {
+      "typeName": "Value",
+      "typeHelp": "Write the value of your parameter"
+    }
+  },
+  "breadcrumb": {
+    "products-edit": "Product ({0})",
+    "flags-edit": "Flag ({0})",
+    "toggles-edit": "Toggle ({0})",
+    "products-add": "Add Product",
+    "flags-add": "Add Flag",
+    "toggles-add": "Add Toggle"
   }
 }

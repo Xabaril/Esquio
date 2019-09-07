@@ -13,7 +13,7 @@ namespace Esquio
         private readonly IServiceProvider _serviceProvider;
         private readonly EsquioDiagnostics _diagnostics;
 
-        public DefaultToggleTypeActivator(IServiceProvider serviceProvider,EsquioDiagnostics diagnostics)
+        public DefaultToggleTypeActivator(IServiceProvider serviceProvider, EsquioDiagnostics diagnostics)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
@@ -25,6 +25,8 @@ namespace Esquio
             if (_typesCache.TryGetValue(toggleTypeName, out Type type))
             {
                 _diagnostics.ToggleActivationResolveTypeFromCache(toggleTypeName);
+                _diagnostics.EndToggleActivation(toggleTypeName);
+
                 return (IToggle)_serviceProvider.GetService(type);
             }
             else
@@ -36,11 +38,15 @@ namespace Esquio
                     _typesCache.TryAdd(toggleTypeName, toggleType);
 
                     _diagnostics.ToggleActivationResolveType(toggleTypeName);
+                    _diagnostics.EndToggleActivation(toggleTypeName);
+
                     return (IToggle)_serviceProvider.GetService(toggleType);
                 }
             }
 
             _diagnostics.ToggleActivationCantResolveType(toggleTypeName);
+            _diagnostics.EndToggleActivation(toggleTypeName);
+
             return null;
         }
 

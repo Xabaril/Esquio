@@ -10,6 +10,7 @@ import { ParameterDetailType } from './parameter-detail-type.enum';
 import { default as StringParameter } from './StringParameter.vue';
 import { default as SemicolonParameter } from './SemicolonParameter.vue';
 import { default as PercentageParameter } from './PercentageParameter.vue';
+import { default as DateParameter } from './DateParameter.vue';
 
 @Component
 export default class extends Vue {
@@ -17,7 +18,8 @@ export default class extends Vue {
   private components = {
     EsquioString: StringParameter,
     EsquioPercentage: PercentageParameter,
-    EsquioSemicolonList: SemicolonParameter
+    EsquioSemicolonList: SemicolonParameter,
+    EsquioDate: DateParameter
   };
 
   @Prop({ required: true, type: String}) type: ParameterDetailType;
