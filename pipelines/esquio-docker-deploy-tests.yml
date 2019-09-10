@@ -18,7 +18,7 @@ steps:
     azureSubscription: 'Azure'
     azureContainerRegistry: '$(acrName)'
     action: 'Build an image'
-    dockerFile: 'demos\AppWithUI\app-dockerfile'
+    dockerFile: 'demos/AppWithUI/app-dockerfile'
     defaultContext: false
     context: '$(Build.SourcesDirectory)'
     imageName: '$(imageName):$(Build.BuildId)'
