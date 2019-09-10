@@ -37,6 +37,22 @@ steps:
     context: '$(Build.SourcesDirectory)'
     imageName: '$(uiImageName):$(Build.BuildId)'
     workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: Docker@0
+  displayName: 'Push app image'
+  inputs:
+    azureSubscription: 'Azure'
+    azureContainerRegistry: $(acrName)
+    action: 'Push an image'
+    imageName: '$(appImageName):$(Build.BuildId)'
+
+- task: Docker@0
+  displayName: 'Push ui image'
+  inputs:
+    azureSubscription: 'Azure'
+    azureContainerRegistry: $(acrName)
+    action: 'Push an image'
+    imageName: '$(uiImageName):$(Build.BuildId)'
     
 # - task: Docker@0
 #   displayName: 'Build an image'
