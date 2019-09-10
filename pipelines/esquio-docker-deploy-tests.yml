@@ -7,7 +7,8 @@ variables:
   appImageName: esquiodemoapp
   uiImageName: esquiodemoui
   acrName: esquio.azurecr.io
-  appName: esquioDemo
+  appWebAppName: esquiodemoapp
+  uiWebAppName: esquiodemoui
   dockerRepo: esquio
   
 
@@ -53,7 +54,31 @@ steps:
     azureContainerRegistry: $(acrName)
     action: 'Push an image'
     imageName: '$(uiImageName):$(Build.BuildId)'
-    
+
+- task: AzureRmWebAppDeployment@3
+  displayName: 'Azure App Service Deploy: $(appWebAppName)'
+  inputs:
+    azureSubscription: 'Azure'
+    appType: applinux
+    WebAppName: $(appWebAppName)
+    DockerNamespace: $(acrName)
+    DockerRepository: '$(imageName)'
+    DockerImageTag: '$(Build.BuildId)'
+    AppSettings: '-ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    TakeAppOfflineFlag: true
+
+- task: AzureRmWebAppDeployment@3
+  displayName: 'Azure App Service Deploy: $(uiImageName)'
+  inputs:
+    azureSubscription: 'Azure'
+    appType: applinux
+    WebAppName: $(uiImageName)
+    DockerNamespace: $(acrName)
+    DockerRepository: '$(imageName)'
+    DockerImageTag: '$(Build.BuildId)'
+    AppSettings: '-ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    TakeAppOfflineFlag: true
+
 # - task: Docker@0
 #   displayName: 'Build an image'
 #   inputs:
