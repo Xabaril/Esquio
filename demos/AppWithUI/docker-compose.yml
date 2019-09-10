@@ -10,7 +10,7 @@ services:
             - 8060:80
         build:
             context: ..\..
-            dockerfile: demos/full/app-dockerfile
+            dockerfile: demos/AppWithUI/app-dockerfile
         environment:
             - EFSTORE=Y
             - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
@@ -23,7 +23,7 @@ services:
             - 8090:80
         build:
             context: ..\..
-            dockerfile: demos/full/ui-dockerfile
+            dockerfile: demos/AppWithUI/ui-dockerfile
         environment:
             - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
     sqlserver:
