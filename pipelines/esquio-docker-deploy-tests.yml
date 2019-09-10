@@ -4,7 +4,8 @@ pool:
   name: Hosted Ubuntu 1604
 
 variables:
-  imageName: esquiodemoapp
+  appImageName: esquiodemoapp
+  uiImageName: esquiodemoui
   acrName: esquio.azurecr.io
   appName: esquioDemo
   dockerRepo: esquio
@@ -12,7 +13,7 @@ variables:
 
 steps:
 - task: Docker@0
-  displayName: 'Build an image'
+  displayName: 'Build app image'
   inputs:
     containerregistrytype: 'Azure Container Registry'
     azureSubscription: 'Azure'
@@ -21,9 +22,22 @@ steps:
     dockerFile: 'demos/AppWithUI/app-dockerfile'
     defaultContext: false
     context: '$(Build.SourcesDirectory)'
-    imageName: '$(imageName):$(Build.BuildId)'
+    imageName: '$(appImageName):$(Build.BuildId)'
     workingDirectory: '$(Build.SourcesDirectory)'
 
+- task: Docker@0
+  displayName: 'Build ui Image'
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Azure'
+    azureContainerRegistry: '$(acrName)'
+    action: 'Build an image'
+    dockerFile: 'demos/AppWithUI/ui-dockerfile'
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: '$(uiImageName):$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    
 # - task: Docker@0
 #   displayName: 'Build an image'
 #   inputs:
