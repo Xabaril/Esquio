@@ -59,6 +59,22 @@
 
           <button
             type="button"
+            class="btn btn-sm btn-raised btn-secondary ml-2"
+            @click="onClickRollout(data.item)"
+          >
+            {{$t('flags.actions.rollout')}}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-sm btn-raised btn-secondary ml-2"
+            @click="onClickRolloff(data.item)"
+          >
+            {{$t('flags.actions.rolloff')}}
+          </button>
+
+          <button
+            type="button"
             class="btn btn-sm btn-raised btn-danger ml-2"
             @click="onClickDelete(data.item)"
           >
@@ -122,6 +138,14 @@ export default class extends Vue {
     await this.updateFlagSwitch(flag);
   }
 
+  public async onClickRollout(flag: Flag): Promise<void> {
+    await this.rolloutFlag(flag);
+  }
+
+  public async onClickRolloff(flag: Flag): Promise<void> {
+    await this.rolloffFlag(flag);
+  }
+
   private async getFlags(): Promise<void> {
     try {
       const response = await this.flagsService.get(Number(this.productId));
@@ -156,6 +180,38 @@ export default class extends Vue {
       this.$alert(!flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on'));
     } catch (e) {
       this.$alert(this.$t('flags.errors.change'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private async rolloutFlag(flag: Flag): Promise<void> {
+    if (!await this.$confirm(this.$t('flags.confirm.rollout', [flag.name]))) {
+      return;
+    }
+
+    try {
+      await this.flagsService.rollout(flag);
+      this.$alert(this.$t('flags.success.rollout'));
+      this.getFlags();
+    } catch (e) {
+      this.$alert(this.$t('flags.errors.rollout'), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private async rolloffFlag(flag: Flag): Promise<void> {
+    if (!await this.$confirm(this.$t('flags.confirm.rolloff', [flag.name]))) {
+      return;
+    }
+
+    try {
+      await this.flagsService.rollback(flag);
+      this.$alert(this.$t('flags.success.rolloff'));
+      this.getFlags();
+    } catch (e) {
+      this.$alert(this.$t('flags.errors.rolloff'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
