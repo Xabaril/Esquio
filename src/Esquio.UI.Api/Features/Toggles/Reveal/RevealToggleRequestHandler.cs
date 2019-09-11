@@ -1,4 +1,5 @@
 ﻿using Esquio.Abstractions;
+using Esquio.UI.Api.Infrastructure.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,18 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 {
     public class RevealToggleRequestHandler : IRequestHandler<RevealToggleRequest, RevealToggleResponse>
     {
+        private readonly IDiscoverToggleTypesService discoverToggleTypesService;
+
+        public RevealToggleRequestHandler(IDiscoverToggleTypesService discoverToggleTypesService)
+        {
+            this.discoverToggleTypesService = discoverToggleTypesService ?? throw new ArgumentNullException(nameof(discoverToggleTypesService));
+        }
+
         public Task<RevealToggleResponse> Handle(RevealToggleRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                //TODO: wich assemblies?
-                var assembly = Assembly.GetAssembly(typeof(Esquio.Toggles.OnToggle));
-
-                var type = assembly.GetExportedTypes()
+                var type = discoverToggleTypesService.GetAll()
                     .Where(type => type.FullName.Equals(request.ToggleType, StringComparison.InvariantCultureIgnoreCase))
                     .SingleOrDefault();
 

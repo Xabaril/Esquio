@@ -2,6 +2,8 @@
 using Acheve.TestHost;
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -12,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Respawn;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -108,6 +109,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         public void ConfigureServices(IServiceCollection services)
         {
             EsquioUIApiConfiguration.ConfigureServices(services)
+                .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddAuthorization()
                 .AddAuthentication(setup =>
                 {

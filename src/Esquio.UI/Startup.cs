@@ -1,7 +1,8 @@
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Esquio.UI.Api.Infrastructure.Services;
 using Esquio.UI.Infrastructure.Security.ApiKey;
-using Hellang.Middleware.ProblemDetails;
+using Esquio.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Esquio.UI
 {
@@ -26,6 +26,7 @@ namespace Esquio.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddAuthorization()
                 .AddAuthentication(options =>
                 {

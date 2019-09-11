@@ -41,6 +41,7 @@
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.UI.Api\Esquio.UI.Api.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.UI\Esquio.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
