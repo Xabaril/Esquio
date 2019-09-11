@@ -32,6 +32,8 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
 
             if (feature != null)
             {
+                feature.Enabled = false;
+
                 if (!IsRolleback(feature))
                 {
                     feature.Toggles.Clear();
