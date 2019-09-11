@@ -34,11 +34,9 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
             {
                 feature.Enabled = false;
 
-                if (!IsRolleback(feature))
+                if (!IsRolledback(feature))
                 {
                     feature.Toggles.Clear();
-                    feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OffToggle)));
-
                     await _storeDbContext.SaveChangesAsync(cancellationToken);
                 }
                
@@ -49,10 +47,10 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
             throw new InvalidOperationException("Feature does not exist in the store.");
         }
 
-        bool IsRolleback(FeatureEntity feature)
+        bool IsRolledback(FeatureEntity feature)
         {
             return feature.Toggles.Count == 1
-                && feature.Toggles.Single().Type.Equals(nameof(Esquio.Toggles.OffToggle), StringComparison.InvariantCulture);
+                && feature.Toggles.Single().Type.Equals(typeof(Esquio.Toggles.OffToggle).FullName, StringComparison.InvariantCulture);
         }
     }
 }
