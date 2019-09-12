@@ -59,12 +59,12 @@ export default class extends Vue {
   }
 
   &:before {
-    $padding: .1rem;
+    $padding: .075rem;
 
     content: '';
     background-color: get-color(primary);
     border-radius: $size;
-    height: $size;
+    height: $size * 1.05;
     left: $padding;
     position: absolute;
     top: $padding * 1.5;

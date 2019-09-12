@@ -169,6 +169,44 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status200OK);
         }
+        [Fact]
+        [ResetDatabase]
+        public async Task rollback_set_feature_as_not_enabled()
+        {
+            var product = Builders.Product()
+                .WithName("product#2")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature")
+                .WithEnabled(true)
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollback(featureId: feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: feature.Id))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .GetAsync();
+
+            var details = await response.Content
+                .ReadAs<DetailsFlagResponse>();
+
+            details.Enabled
+                .Should().BeFalse();
+        }
 
         [Fact]
         public async Task rollout_response_unauthorized_when_user_request_is_not_authenticated()

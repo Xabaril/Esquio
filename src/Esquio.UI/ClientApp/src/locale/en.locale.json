@@ -58,7 +58,9 @@
       "see_detail": "Open",
       "add_first": "Add your first flag",
       "add_toggle": "Add new toggle",
-      "delete": "Delete"
+      "delete": "Delete",
+      "rollout": "Rollout",
+      "rolloff": "Rolloff"
     },
     "fields": {
       "id": "Identifier",
@@ -77,17 +79,23 @@
       "detail": "Cannot fetch this flag",
       "update": "Cannot update the flag",
       "delete": "Cannot delete the flag",
-      "change": "Cannot change the flag"
+      "change": "Cannot change the flag",
+      "rollout": "Cannot rollout the flag",
+      "rolloff": "Cannot rolloff the flag"
     },
     "success": {
       "add": "The new flag was created",
       "update": "The flag was updated",
       "delete": "The flag was deleted",
       "off": "Flag switched off",
-      "on": "Flag switched on"
+      "on": "Flag switched on",
+      "rollout": "Flag rolled out",
+      "rolloff": "Flag rolled off"
     },
     "confirm": {
-      "title": "Are you sure to delete '{0}' flag?"
+      "title": "Are you sure to delete '{0}' flag?",
+      "rollout": "Are you sure to rollout '{0}' flag?",
+      "rolloff": "Are you sure to rolloff '{0}' flag?"
     }
   },
   "tags": {
@@ -141,9 +149,9 @@
     }
   },
   "breadcrumb": {
-    "products-edit": "Product ({0})",
-    "flags-edit": "Flag ({0})",
-    "toggles-edit": "Toggle ({0})",
+    "products-edit": "Product",
+    "flags-edit": "Flag",
+    "toggles-edit": "Toggle",
     "products-add": "Add Product",
     "flags-add": "Add Flag",
     "toggles-add": "Add Toggle"

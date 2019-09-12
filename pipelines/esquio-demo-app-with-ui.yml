@@ -1,0 +1,49 @@
+trigger: none
+
+pool:
+  name: Hosted Ubuntu 1604
+
+variables:
+  imageName: esquiodemoapp
+  acrName: esquio.azurecr.io
+  appName: esquioDemo
+  dockerRepo: esquio
+  
+
+steps:
+- task: Docker@0
+  displayName: 'Build an image'
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Azure'
+    azureContainerRegistry: '$(acrName)'
+    action: 'Build an image'
+    dockerFile: 'demos\AppWithUI\app-dockerfile'
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: '$(imageName):$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+# - task: Docker@0
+#   displayName: 'Push an image'
+#   inputs:
+#     azureSubscription: 'Azure'
+#     azureContainerRegistry: $(acrName)
+#     action: 'Push an image'
+#     imageName: '$(imageName):$(Build.BuildId)'
+
+# - task: AzureRmWebAppDeployment@3
+#   displayName: 'Azure App Service Deploy: demoesquiolf'
+#   inputs:
+#     azureSubscription: 'Azure'
+#     appType: applinux
+#     WebAppName: $(appName)
+#     DockerNamespace: $(acrName)
+#     DockerRepository: '$(imageName)'
+#     DockerImageTag: '$(Build.BuildId)'
+#     AppSettings: '-Data__EsquioConnectionString "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+#     TakeAppOfflineFlag: true
+
+
+
+

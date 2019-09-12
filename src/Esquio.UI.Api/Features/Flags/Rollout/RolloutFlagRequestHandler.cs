@@ -37,7 +37,6 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
                 if ( !IsRolledout(feature))
                 {
                     feature.Toggles.Clear();
-                    feature.Toggles.Add(new ToggleEntity(feature.Id, nameof(Esquio.Toggles.OnToggle)));
                 }
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
@@ -52,7 +51,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
         bool IsRolledout(FeatureEntity feature)
         {
             return feature.Toggles.Count == 1
-                && feature.Toggles.Single().Type.Equals(nameof(Esquio.Toggles.OnToggle), StringComparison.InvariantCulture);
+                && feature.Toggles.Single().Type.Equals(typeof(Esquio.Toggles.OnToggle).FullName, StringComparison.InvariantCulture);
         }
     }
 }

@@ -23,7 +23,7 @@ resources:
     image: microsoft/mssql-server-linux
     options: -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Password12!"
     ports:
-      - 1833:1433
+      - 5433:1433
 services:
   sqlserver: sqlserver
 

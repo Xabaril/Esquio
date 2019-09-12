@@ -9,11 +9,11 @@ services:
         ports:
             - 8060:80
         build:
-            context: ../..
-            dockerfile: demos/full/app-dockerfile
+            context: ..\..
+            dockerfile: demos/AppWithUI/app-dockerfile
         environment:
             - EFSTORE=Y
-            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!            
     ui:
         image: ui
         container_name: ui
@@ -22,15 +22,15 @@ services:
         ports:
             - 8090:80
         build:
-            context: ../..
-            dockerfile: demos/full/ui-dockerfile
+            context: ..\..
+            dockerfile: demos/AppWithUI/ui-dockerfile
         environment:
-            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!            
     sqlserver:
         image: microsoft/mssql-server-linux
         restart: always
         ports:
-            - 1833:1433
+            - 5433:1433
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Password12!
