@@ -23,10 +23,12 @@
   </ItemGroup>
   
    <ItemGroup>
+    <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
   </ItemGroup>
   
    <ItemGroup>
+     <Folder Include="Abstractions\" />
      <Folder Include="Infrastructure\Data\" />
      <Folder Include="Infrastructure\Data\Migrations\" />
    </ItemGroup>
