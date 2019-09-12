@@ -1,4 +1,3 @@
-using Esquio.Abstractions;
 using Esquio.AspNetCore.Endpoints.Metadata;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -11,12 +10,10 @@ namespace WebApp.Controllers
     public class MatchController : Controller
     {
         private readonly IMatchService matchService;
-        private readonly IRuntimeFeatureStore store;
 
-        public MatchController(IMatchService matchService, IRuntimeFeatureStore store)
+        public MatchController(IMatchService matchService)
         {
             this.matchService = matchService;
-            this.store = store;
         }
 
         [AllowAnonymous]

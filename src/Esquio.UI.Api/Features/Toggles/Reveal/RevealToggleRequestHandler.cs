@@ -4,7 +4,6 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
         {
             try
             {
-                var type = discoverToggleTypesService.GetAll()
+                var type = discoverToggleTypesService.Scan()
                     .Where(type => type.FullName.Equals(request.ToggleType, StringComparison.InvariantCultureIgnoreCase))
                     .SingleOrDefault();
 
@@ -47,7 +46,6 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
 
                         return Task.FromResult(new RevealToggleResponse()
                         {
-
                             Type = request.ToggleType,
                             Parameters = parametersDescription
                         });
@@ -56,7 +54,6 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
                     {
                         return Task.FromResult(new RevealToggleResponse()
                         {
-
                             Type = request.ToggleType,
                             Parameters = new List<RevealToggleParameterResponse>()
                         });

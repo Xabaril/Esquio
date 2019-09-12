@@ -5,6 +5,6 @@ namespace Esquio.UI.Api.Infrastructure.Services
 {
     public interface IDiscoverToggleTypesService
     {
-        IEnumerable<Type> GetAll();
+        IEnumerable<Type> Scan();
     }
 }

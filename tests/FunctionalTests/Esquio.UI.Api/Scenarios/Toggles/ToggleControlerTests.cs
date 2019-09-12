@@ -1,4 +1,5 @@
 ﻿using Esquio;
+using Esquio.AspNetCore.Toggles;
 using Esquio.Toggles;
 using Esquio.UI.Api.Features.Toggles.Add;
 using Esquio.UI.Api.Features.Toggles.AddParameter;
@@ -361,7 +362,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.ScannedAssemblies
                 .Should()
-                .BeGreaterThan(0);
+                .Be(2);
 
             content.Toggles
                 .Where(t => t.Assembly == (typeof(OnToggle).Assembly.GetName().Name))
@@ -376,6 +377,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
               .Select(t => t.Description)
               .Single()
               .Should().BeEquivalentTo("Toggle that always is active, commonly used to rollout features.");
+
+            content.Toggles
+              .Where(t => t.Type == (typeof(ClaimValueToggle).FullName))
+              .Select(t => t.Description)
+              .Single()
+              .Should().BeEquivalentTo("Toggle that is active depending on the current claims of authenticated users.");
         }
 
         [Fact]

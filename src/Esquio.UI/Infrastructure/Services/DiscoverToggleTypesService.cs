@@ -6,9 +6,10 @@ using System.Linq;
 
 namespace Esquio.UI.Infrastructure.Services
 {
-    public class DiscoverToggleTypesService : IDiscoverToggleTypesService
+    public class DiscoverToggleTypesService 
+        : IDiscoverToggleTypesService
     {
-        public IEnumerable<Type> GetAll()
+        public IEnumerable<Type> Scan()
         {
             return AppDomain.CurrentDomain
                 .GetAssemblies()
