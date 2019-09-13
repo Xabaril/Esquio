@@ -10,12 +10,10 @@ fi
 dotnet restore
 
 commitHash=$(git rev-parse --short HEAD)
-revision="local"
-suffix="-ci-$revision"
+suffix="-ci-local"
 buildSuffix="$suffix-$commitHash"
 
-echo "build: Package version suffix is $suffix"
-echo "build: Build version suffix is $buildSuffix"
+echo "build: Version suffix is $buildSuffix"
 
 dotnet build -c Release --version-suffix "$buildSuffix"  -v q /nologo
 
