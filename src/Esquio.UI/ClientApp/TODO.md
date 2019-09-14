@@ -1,4 +1,3 @@
-- Add better ui to parameters
 - Pagination
 - Config testing
 - if an entity does not exist, redirect
