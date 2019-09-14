@@ -433,8 +433,8 @@ export default class extends Vue {
   }
 
   &-title {
-    margin-left: 0.5rem;
-    margin-top: 0.5rem;
+    margin-left: .5rem;
+    margin-top: .5rem;
   }
 
   &-body {
