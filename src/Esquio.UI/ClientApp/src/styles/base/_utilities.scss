@@ -33,5 +33,9 @@ p, span > .d > #s,
     }
   }
 
+  &-hidden {
+    display: none !important;
+  }
+
   @include map-utilities(color, get-color, secondary, dark);
 }

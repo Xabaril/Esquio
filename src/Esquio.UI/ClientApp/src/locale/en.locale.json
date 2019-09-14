@@ -144,8 +144,8 @@
       "results": "Preview of result"
     },
     "string": {
-      "typeName": "Value",
-      "typeHelp": "Write the value of your parameter"
+      "valueName": "Value",
+      "valueHelp": "Write the value of your parameter"
     }
   },
   "breadcrumb": {
