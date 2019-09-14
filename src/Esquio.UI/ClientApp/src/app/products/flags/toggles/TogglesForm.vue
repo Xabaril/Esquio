@@ -3,7 +3,7 @@
     <div class="row">
       <h1>{{$t('toggles.detail')}}</h1>
     </div>
-    <form class="row">
+    <form class="row u-hidden">
       <input-text
         class="toggles_form-group form-group col-md-6 is-disabled"
         :class="{'is-disabled': this.isEditing}"
@@ -16,18 +16,17 @@
     </form>
 
     <div
-      v-if="accordion"
+      v-if="accordion && !isEditing"
       id="accordion"
+      class="toggles_form-accordion row"
     >
       <div
-        class="card"
+        class="toggles_form-card card"
         v-for="(accordionItem, key, i) in accordion"
         :key="key"
       >
-        <div
-          class="card-header"
-        >
-          <h5 class="mb-0">
+        <div class="toggles_form-header card-header">
+          <h5 class="toggles_form-title mb-0">
             <button
               class="btn btn-link"
               data-toggle="collapse"
@@ -45,19 +44,23 @@
           :class="{'show': showAccordionCollapsed(i)}"
           data-parent="#accordion"
         >
-          <div class="card-body">
+          <div class="toggles_form-body card-body">
             <b-button-group vertical>
               <b-button
                 v-for="(toggleType, tkey) in accordionItem"
                 class="toggles_form-button"
-                :class="{'is-active': checkButtonActive(toggleType.type), 'is-disabled': isEditing || isToggleUsedInFlag(toggleType)}"
+                :class="{'is-active': checkButtonActive(toggleType.type), 'is-disabled': isToggleUsedInFlag(toggleType)}"
                 :key="tkey"
                 :title="toggleType.description"
                 variant="outline-secondary"
                 tag="label"
                 @click="onClickButtonType(toggleType.type)"
               >
-                <input v-if="!isEditing" type="radio" :checked="checkButtonActive(toggleType.type)" :class="{'is-invisible': isEditing || isToggleUsedInFlag(toggleType)}" /> {{toggleType.type}}
+                <input
+                  type="radio"
+                  :checked="checkButtonActive(toggleType.type)"
+                  :class="{'is-invisible': isToggleUsedInFlag(toggleType)}"
+                /> {{toggleType.type}}
               </b-button>
             </b-button-group>
           </div>
@@ -65,13 +68,49 @@
       </div>
     </div>
 
-    <div v-if="paramDetails" :class="{'is-disabled': isEditing && isLoading}">
-      <div v-for="(parameter, key) in paramDetails" :key="key">
+    <div
+      v-if="accordion && isEditing"
+      id="accordion"
+      class="toggles_form-accordion row"
+    >
+      <div class="toggles_form-card card">
+        <div
+          class="collapse show"
+          data-parent="#accordion"
+        >
+          <div class="toggles_form-body card-body">
+            <b-button-group vertical>
+              <b-button
+                class="toggles_form-button toggles_form-button--editing is-active"
+                :title="form.typeName"
+                variant="outline-secondary"
+                tag="label"
+              >
+                {{form.typeName}}
+              </b-button>
+            </b-button-group>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="paramDetails"
+      :class="{'is-disabled': isEditing && isLoading}"
+    >
+      <div
+        v-for="(parameter, key) in paramDetails"
+        :key="key"
+      >
 
         <h3>{{parameter.name}}: {{parameter.clrType}}</h3>
         <p>{{parameter.description}}</p>
 
-        <parameter :type="parameter.clrType" :options="{value: getParameterValue(parameter)}" @change="(value) => onChangeParameterValue(parameter, value)"/>
+        <parameter
+          :type="parameter.clrType"
+          :options="{value: getParameterValue(parameter)}"
+          @change="(value) => onChangeParameterValue(parameter, value)"
+        />
 
       </div>
     </div>
@@ -202,7 +241,9 @@ export default class extends Vue {
       return null;
     }
 
-    const formParameter = this.form.parameters.find(x => x.name === parameter.name);
+    const formParameter = this.form.parameters.find(
+      x => x.name === parameter.name
+    );
 
     if (!formParameter) {
       return null;
@@ -306,8 +347,13 @@ export default class extends Vue {
     }
   }
 
-  private updateParameterForm(parameter: ToggleParameterDetail, value: any): void {
-    const formParameter = this.form.parameters.find(x => x.name === parameter.name);
+  private updateParameterForm(
+    parameter: ToggleParameterDetail,
+    value: any
+  ): void {
+    const formParameter = this.form.parameters.find(
+      x => x.name === parameter.name
+    );
 
     if (!formParameter) {
       this.form.parameters.push({
@@ -322,7 +368,10 @@ export default class extends Vue {
     formParameter.value = value;
   }
 
-  private async updateAndSaveParameter(parameter: ToggleParameterDetail, value: any): Promise<void> {
+  private async updateAndSaveParameter(
+    parameter: ToggleParameterDetail,
+    value: any
+  ): Promise<void> {
     if (this.isLoading) {
       return;
     }
@@ -355,8 +404,41 @@ export default class extends Vue {
 
     &.is-active {
       color: get-color(basic, brightest);
-      background-color: get-color(secondary);
+      background-color: get-color(secondary, bright);
     }
+
+    &--editing {
+      pointer-events: none;
+    }
+  }
+
+  &-accordion {
+    border: 1px solid get-color(basic, normal);
+    flex-direction: column;
+  }
+
+  &-card {
+    box-shadow: none;
+  }
+
+  &-header {
+    padding: 0;
+
+    /deep/ button {
+      &:hover {
+        background-color: get-color(secondary, bright);
+        color: get-color(basic, brightest);
+      }
+    }
+  }
+
+  &-title {
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &-body {
+    padding: 0 1.25rem;
   }
 }
 </style>
