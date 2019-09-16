@@ -13,17 +13,20 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
+        private readonly IFeatureObserver _observer;
         private readonly EsquioOptions _options;
         private readonly EsquioDiagnostics _diagnostics;
 
         public DefaultFeatureService(
             IRuntimeFeatureStore store,
             IToggleTypeActivator toggleActivator,
+            IFeatureObserver observer,
             IOptions<EsquioOptions> options,
             EsquioDiagnostics diagnostics)
         {
             _featureStore = store ?? throw new ArgumentNullException(nameof(store));
             _toggleActivator = toggleActivator ?? throw new ArgumentNullException(nameof(toggleActivator));
+            _observer = observer ?? throw new ArgumentNullException(nameof(observer));
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
@@ -80,8 +83,10 @@ namespace Esquio
                     }
                 }
 
-                _diagnostics.EndFeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
+                await _observer.OnNext(featureName, productName, enabled, cancellationToken);
 
+                _diagnostics.EndFeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
+                
                 return enabled;
             }
             catch (Exception exception)
