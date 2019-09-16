@@ -13,14 +13,14 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
-        private readonly IFeatureObserver _observer;
+        private readonly IFeatureEvaluationObserver _observer;
         private readonly EsquioOptions _options;
         private readonly EsquioDiagnostics _diagnostics;
 
         public DefaultFeatureService(
             IRuntimeFeatureStore store,
             IToggleTypeActivator toggleActivator,
-            IFeatureObserver observer,
+            IFeatureEvaluationObserver observer,
             IOptions<EsquioOptions> options,
             EsquioDiagnostics diagnostics)
         {

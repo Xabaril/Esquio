@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IFeatureObserver, NoFeatureObserver>();
+            builder.Services.AddScoped<IFeatureEvaluationObserver, NoFeatureEvaluationObserver>();
 
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();

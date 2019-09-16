@@ -1,4 +1,6 @@
-﻿using Esquio.DependencyInjection;
+﻿using Esquio.Abstractions;
+using Esquio.AspNetCore.ApplicationInsightProcessor;
+using Esquio.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -10,6 +12,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IEsquioBuilder AddApplicationInsightProcessor(this IEsquioBuilder builder)
         {
             //TODO: add all mandatory dependencies here! (processor and observer)
+
+            builder.Services.AddScoped<IFeatureEvaluationObserver, HttpContextItemObserver>();
+
             return builder;
         }
     }

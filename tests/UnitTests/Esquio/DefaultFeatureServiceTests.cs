@@ -150,7 +150,7 @@ namespace UnitTests.Esquio
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();
-            var observer = new NoFeatureObserver();
+            var observer = new NoFeatureEvaluationObserver();
 
             var esquioOptions = new EsquioOptions();
             esquioOptions.ConfigureOnErrorBehavior(onErrorBehavior);

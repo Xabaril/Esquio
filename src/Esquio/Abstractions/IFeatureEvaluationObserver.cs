@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 namespace Esquio.Abstractions
 {
     /// <summary>
-    /// Represent the base contract for <see cref="Esquio.Abstractions.IFeatureObserver"/>.
+    /// Represent the base contract for <see cref="Esquio.Abstractions.IFeatureEvaluationObserver"/>.
     /// </summary>
-    public interface IFeatureObserver
+    public interface IFeatureEvaluationObserver
     {
         /// <summary>
-        /// Notify a feature execution.
+        /// Observe a feature evaluation result.
         /// </summary>
         /// <param name="featureName">The feature name.</param>
         /// <param name="productName">The product name where feature is defined.</param>
@@ -19,8 +19,8 @@ namespace Esquio.Abstractions
         Task OnNext(string featureName, string productName = default, bool enabled = default, CancellationToken cancellationToken = default);
     }
 
-    class NoFeatureObserver
-        : IFeatureObserver
+    internal class NoFeatureEvaluationObserver
+        : IFeatureEvaluationObserver
     {
         public Task OnNext(string featureName, string productName = null, bool enabled = false, CancellationToken cancellationToken = default)
         {
