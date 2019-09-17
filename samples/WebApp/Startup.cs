@@ -50,7 +50,8 @@ namespace WebApp
                             {
                                 builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
                             };
-                        });
+                        })
+                        .AddApplicationInsightProcessor();
             }
             else
             {
@@ -59,7 +60,8 @@ namespace WebApp
                 services
                     .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
                         .AddAspNetCoreDefaultServices()
-                        .AddConfigurationStore(Configuration, "Esquio");
+                        .AddConfigurationStore(Configuration, "Esquio")
+                        .AddApplicationInsightProcessor();
             }
 
             services
@@ -74,7 +76,7 @@ namespace WebApp
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
                 {
                     setup.LoginPath = "/account/login";
-                });
+                });            
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {

@@ -56,6 +56,8 @@
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.5.0-preview5</fluentvalidationaspnetcore>
     <newtonsoftjson>12.0.2</newtonsoftjson>
+    <microsoftapplicationinsights>2.10.0</microsoftapplicationinsights>
+    <microsoftapplicationinsightsaspnetcore>2.7.1</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">

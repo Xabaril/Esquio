@@ -12,6 +12,8 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor
     internal class HttpContextItemObserver
         : IFeatureEvaluationObserver
     {
+        internal const string EsquioItemKeyName = "Esquio";
+
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly ILogger<HttpContextItemObserver> _logger;
 
@@ -27,7 +29,7 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor
 
             if (currentContext != null)
             {
-                var key = $"Esquio:{productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{featureName}";
+                var key = $"{EsquioItemKeyName}:{productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{featureName}";
 
                 if (!currentContext.Items.TryAdd(key, enabled))
                 {

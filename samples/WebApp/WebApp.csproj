@@ -7,14 +7,19 @@
 
     <!--We need this for non vs16 preview, remove on release-->
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <ApplicationInsightsResourceId>/subscriptions/271c9327-0bb7-4efd-9b39-9c51ed44a729/resourcegroups/esquio-dev-rg/providers/microsoft.insights/components/WebApp</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/271c9327-0bb7-4efd-9b39-9c51ed44a729/resourcegroups/esquio-dev-rg/providers/microsoft.insights/components/WebApp</ApplicationInsightsAnnotationResourceId>
+    <UserSecretsId>c04b3d87-8463-4ad4-a4e5-176d01da450d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Esquio.AspNetCore.ApplicationInsightProcessor\Esquio.AspNetCore.ApplicationInsightProcessor.csproj" />
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
@@ -67,6 +72,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>_PreviewPanel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
