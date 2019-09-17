@@ -2,6 +2,9 @@
 using Esquio.AspNetCore.ApplicationInsightProcessor;
 using Esquio.AspNetCore.ApplicationInsightProcessor.Processor;
 using Esquio.DependencyInjection;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

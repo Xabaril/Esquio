@@ -9,9 +9,9 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics
         {
             _httpContextItemObserverCantAddItem(logger, entry, null);
         }
-
+       
         private static readonly Action<ILogger, string, Exception> _httpContextItemObserverCantAddItem = LoggerMessage.Define<string>(
-           LogLevel.Error,
+           LogLevel.Warning,
            EventIds.HttpContextItemObserverCantAdd,
            "HttpContextItemObserver can't add entry {item} into dictionary.");
     }

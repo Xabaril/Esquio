@@ -4,6 +4,6 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics
 {
     internal static class EventIds
     {
-        public static readonly EventId HttpContextItemObserverCantAdd = new EventId(700, nameof(HttpContextItemObserverCantAdd));
+        public static readonly EventId HttpContextItemObserverCantAdd = new EventId(701, nameof(HttpContextItemObserverCantAdd));
     }
 }
