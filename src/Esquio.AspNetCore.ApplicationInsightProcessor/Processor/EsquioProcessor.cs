@@ -1,39 +1,54 @@
-﻿using Microsoft.ApplicationInsights.Channel;
+﻿using Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
-using Microsoft.ApplicationInsights.DataContracts;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
-    public class EsquioProcessor : ITelemetryProcessor
+    internal class EsquioProcessor
+        : ITelemetryProcessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private ITelemetryProcessor Next { get; set; } // Link processors to each other in a chain.
+        private readonly ITelemetryProcessor _next;
 
         public EsquioProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
         {
-            Next = next;
-            _httpContextAccessor = httpContextAccessor;
+            _next = next;
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
+
         public void Process(ITelemetry item)
         {
             AddEsquioProperties(item);
-            this.Next.Process(item);
-        }
-        private void AddEsquioProperties(ITelemetry item)
-        {
-            var esquiocontextItems = _httpContextAccessor.HttpContext?.Items.Where(item => item.Key.ToString().StartsWith(HttpContextItemObserver.EsquioItemKeyName));
-            
-            ISupportProperties propTelemetry = (ISupportProperties)item;
 
-            if (esquiocontextItems is object)
+            //continue chain!
+
+            if (_next != null)
             {
-                foreach (var esquioContextItem in esquiocontextItems)
+                _next.Process(item);
+            }
+        }
+        private void AddEsquioProperties(ITelemetry telemetryItem)
+        {
+            var esquioContextItems = _httpContextAccessor.HttpContext?
+                .Items
+                .Where(item => item.Key.ToString().StartsWith(HttpContextItemObserver.EsquioItemKeyName));
+
+            ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+            if (telemetry != null
+                &&
+                esquioContextItems != null)
+            {
+                foreach (var (key, value) in esquioContextItems)
                 {
-                    if (!propTelemetry.Properties.ContainsKey(esquioContextItem.Key.ToString()))
+                    if (!telemetry.Properties.ContainsKey(key.ToString()))
                     {
-                        propTelemetry.Properties.Add(esquioContextItem.Key.ToString(), esquioContextItem.Value.ToString());
+                        telemetry.Properties.Add(key.ToString(), value.ToString());
                     }
                 }
             }

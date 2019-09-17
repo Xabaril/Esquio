@@ -31,9 +31,12 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor
             {
                 var key = $"{EsquioItemKeyName}:{productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{featureName}";
 
-                if (!currentContext.Items.TryAdd(key, enabled))
+                if (!currentContext.Items.ContainsKey(key))
                 {
-                    Log.HttpContextItemObserverCantAddItem(_logger, key);
+                    if (!currentContext.Items.TryAdd(key, enabled))
+                    {
+                        Log.HttpContextItemObserverCantAddItem(_logger, key);
+                    }
                 }
             }
 
