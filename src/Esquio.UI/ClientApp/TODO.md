@@ -1,3 +1,4 @@
 - Pagination
-- Config testing
 - if an entity does not exist, redirect
+- Config testing
+- use middlewares instead build to wwwroot (blocked net core 3 bug)
