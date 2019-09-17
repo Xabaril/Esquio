@@ -47,46 +47,49 @@ namespace Esquio
                     return _options.NotFoundBehavior == NotFoundBehavior.SetEnabled;
                 }
 
+                var enabled = true;
+
                 if (!feature.IsEnabled)
                 {
                     _diagnostics.FeatureEvaluationDisabled(featureName, productName);
-                    return false;
+                    enabled = false;
                 }
-
-                var enabled = true;
-                var toggles = feature.GetToggles();
-
-                foreach (var toggle in toggles)
+                else
                 {
-                    _diagnostics.BeginTogglevaluation(featureName, productName, toggle.Type);
+                    var toggles = feature.GetToggles();
 
-                    var active = false;
-                    var evaluationTime = ValueStopwatch.StartNew();
-
-                    var toggleInstance = _toggleActivator
-                        .CreateInstance(toggle.Type);
-
-                    if (toggleInstance != null)
+                    foreach (var toggle in toggles)
                     {
-                        active = await toggleInstance?.IsActiveAsync(featureName, productName, cancellationToken);
-                    }
+                        _diagnostics.BeginTogglevaluation(featureName, productName, toggle.Type);
 
-                    _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
-                    _diagnostics.EndTogglevaluation(featureName, productName, toggle.Type, active);
+                        var active = false;
+                        var evaluationTime = ValueStopwatch.StartNew();
 
-                    if (!active)
-                    {
-                        _diagnostics.ToggleNotActive(featureName, toggle.Type);
+                        var toggleInstance = _toggleActivator
+                            .CreateInstance(toggle.Type);
 
-                        enabled = false;
-                        break;
+                        if (toggleInstance != null)
+                        {
+                            active = await toggleInstance?.IsActiveAsync(featureName, productName, cancellationToken);
+                        }
+
+                        _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
+                        _diagnostics.EndTogglevaluation(featureName, productName, toggle.Type, active);
+
+                        if (!active)
+                        {
+                            _diagnostics.ToggleNotActive(featureName, toggle.Type);
+
+                            enabled = false;
+                            break;
+                        }
                     }
                 }
-
+                
                 await _observer.OnNext(featureName, productName, enabled, cancellationToken);
 
                 _diagnostics.EndFeatureEvaluation(featureName, productName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
-                
+
                 return enabled;
             }
             catch (Exception exception)
