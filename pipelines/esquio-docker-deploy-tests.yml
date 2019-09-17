@@ -64,7 +64,7 @@ steps:
     DockerNamespace: $(acrName)
     DockerRepository: '$(appImageName)'
     DockerImageTag: '$(Build.BuildId)'
-    AppSettings: '-EFStore "true" -ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    AppSettings: '-EFStore "true" -ApplicationInsights__InstrumentationKey "$(appInsightsInstrumentationKey)" -ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
     TakeAppOfflineFlag: true
 
 - task: AzureRmWebAppDeployment@3
