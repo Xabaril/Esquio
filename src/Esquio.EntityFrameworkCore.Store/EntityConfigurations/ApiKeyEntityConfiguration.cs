@@ -22,9 +22,8 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
                 .HasMaxLength(200);
             builder.HasIndex(p => p.Name)
                 .IsUnique();
-            builder.Property(p => p.Description)
-                .IsRequired(false)
-                .HasMaxLength(2000);
+            builder.Property(p => p.ValidTo)
+                .IsRequired();
             builder.Property(p => p.Key)
                 .IsRequired()
                 .HasMaxLength(50);

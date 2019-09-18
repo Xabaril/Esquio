@@ -15,7 +15,7 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
     }
 
     public class DefaultApiKeyStore
-        :IApiKeyStore
+        : IApiKeyStore
     {
         const string DEFAULT_APIKEY_USERNAME = "APIKEY-USER";
 
@@ -37,7 +37,7 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
                 .Where(ak => ak.Key == apiKey)
                 .SingleOrDefaultAsync();
 
-            if (configuredKey != null)
+            if (configuredKey != null && configuredKey.ValidTo >= DateTime.UtcNow)
             {
                 Log.ApiKeyStoreKeyExist(_logger);
 

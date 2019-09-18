@@ -49,9 +49,9 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [Route("api/v1/apikeys")]
         public async Task<IActionResult> Add(AddApiKeyRequest request, CancellationToken cancellationToken = default)
         {
-            var id = await _mediator.Send(request, cancellationToken);
+            var response = await _mediator.Send(request, cancellationToken);
 
-            return Created($"api/v1/apikeys/{id}", null);
+            return Created($"api/v1/apikeys/{response.ApiKeyId}", response);
         }
 
         [HttpDelete]

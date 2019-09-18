@@ -29,8 +29,7 @@ namespace Esquio.UI.Api.Features.ApiKeys.Details
                 {
                     Id = apiKey.Id,
                     Name = apiKey.Name,
-                    Description = apiKey.Description,
-                    Key = apiKey.Key
+                    ValidTo = apiKey.ValidTo,
                 };
             }
 

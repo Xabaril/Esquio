@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.ApiKeys.Add
 {
-    public class AddAddApiKeyRequestHandler : IRequestHandler<AddApiKeyRequest, int>
+    public class AddAddApiKeyRequestHandler : IRequestHandler<AddApiKeyRequest, AddApiKeyResponse>
     {
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<AddAddApiKeyRequestHandler> _logger;
@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<int> Handle(AddApiKeyRequest request, CancellationToken cancellationToken)
+        public async Task<AddApiKeyResponse> Handle(AddApiKeyRequest request, CancellationToken cancellationToken)
         {
             var existing = await _storeDbContext
                 .ApiKeys
@@ -35,13 +35,17 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
             {
                 var apiKey = new ApiKeyEntity(
                     request.Name,
-                    request.Description,
-                    ApiKeyGenerator.CreateApiKey());
+                    ApiKeyGenerator.CreateApiKey(),
+                    request.ValidTo ?? DateTime.UtcNow.AddYears(1));
 
                 _storeDbContext.Add(apiKey);
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
-                return apiKey.Id;
+                return new AddApiKeyResponse()
+                {
+                    ApiKeyId = apiKey.Id,
+                    ApiKey = apiKey.Key
+                };
             }
 
             Log.ApiKeyAlreadyExist(_logger, request.Name);

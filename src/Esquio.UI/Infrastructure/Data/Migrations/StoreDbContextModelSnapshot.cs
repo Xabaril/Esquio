@@ -15,7 +15,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview7.19362.6")
+                .HasAnnotation("ProductVersion", "3.0.0-rc1.19456.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -23,18 +23,21 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000);
 
                     b.Property<string>("Key")
                         .IsRequired()
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
+
+                    b.Property<DateTime>("ValidTo")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -51,20 +54,25 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
 
                     b.Property<bool>("Enabled")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("ProductEntityId");
+                    b.Property<int>("ProductEntityId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -75,9 +83,11 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.FeatureTagEntity", b =>
                 {
-                    b.Property<int>("FeatureEntityId");
+                    b.Property<int>("FeatureEntityId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("TagEntityId");
+                    b.Property<int>("TagEntityId")
+                        .HasColumnType("int");
 
                     b.HasKey("FeatureEntityId", "TagEntityId");
 
@@ -90,17 +100,23 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("FeatureId");
+                    b.Property<int>("FeatureId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("KeyValues");
+                    b.Property<string>("KeyValues")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NewValues");
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OldValues");
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -111,18 +127,20 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("ToggleEntityId");
-
-                    b.Property<int?>("ToggleEntityId1");
+                    b.Property<int>("ToggleEntityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .IsRequired()
+                        .HasColumnType("nvarchar(4000)")
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
@@ -132,8 +150,6 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
                     b.HasIndex("ToggleEntityId");
 
-                    b.HasIndex("ToggleEntityId1");
-
                     b.ToTable("Parameters");
                 });
 
@@ -141,13 +157,16 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -162,10 +181,12 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -180,12 +201,15 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("FeatureEntityId");
+                    b.Property<int>("FeatureEntityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -224,15 +248,11 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ParameterEntity", b =>
                 {
-                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", null)
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
                         .WithMany("Parameters")
                         .HasForeignKey("ToggleEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
-                        .WithMany()
-                        .HasForeignKey("ToggleEntityId1");
                 });
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", b =>

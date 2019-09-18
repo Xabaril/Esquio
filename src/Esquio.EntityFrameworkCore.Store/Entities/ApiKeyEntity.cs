@@ -8,15 +8,15 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public DateTime ValidTo { get; set; }
 
         public string Key { get; set; }
 
-        public ApiKeyEntity(string name, string description, string key)
+        public ApiKeyEntity(string name, string key, DateTime validTo)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Description = description ?? throw new ArgumentNullException(nameof(description));
             Key = key ?? throw new ArgumentNullException(nameof(key));
+            ValidTo = validTo;
         }
     }
 }

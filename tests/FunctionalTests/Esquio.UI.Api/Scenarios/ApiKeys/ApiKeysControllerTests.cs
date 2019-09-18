@@ -98,11 +98,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var apiKey1 = Builders.ApiKey()
                .WithName("apikey#1")
                .Withkey("key-1")
+               .WithValidTo(DateTime.UtcNow.AddYears(1))
                .Build();
 
             var apiKey2 = Builders.ApiKey()
               .WithName("apikey#2")
               .Withkey("key-2")
+              .WithValidTo(DateTime.UtcNow.AddYears(1))
               .Build();
 
             await _fixture.Given
@@ -145,11 +147,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var apiKey1 = Builders.ApiKey()
                .WithName("apikey#1")
                .Withkey("key-1")
+               .WithValidTo(DateTime.UtcNow.AddYears(1))
                .Build();
 
             var apiKey2 = Builders.ApiKey()
               .WithName("apikey#2")
               .Withkey("key-2")
+              .WithValidTo(DateTime.UtcNow.AddYears(1))
               .Build();
 
             await _fixture.Given
@@ -220,11 +224,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var apiKey1 = Builders.ApiKey()
                 .WithName("apikey#1")
                 .Withkey("key-1")
+                .WithValidTo(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             var apiKey2 = Builders.ApiKey()
               .WithName("apikey#2")
               .Withkey("key-2")
+              .WithValidTo(DateTime.UtcNow.AddYears(1))
               .Build();
 
             await _fixture.Given
@@ -273,8 +279,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         {
             var addApiKeyRequest = new AddApiKeyRequest()
             {
-                Name = new string('c', 201),
-                Description = "description"
+                Name = new string('c', 201)
             };
 
             var response = await _fixture.TestServer
@@ -288,12 +293,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         }
 
         [Fact]
-        public async Task add_response_badrequest_if_description_is_greater_than_2000()
+        [ResetDatabase]
+        public async Task add_response_ok_and_use_default_validTo_if_is_not_specified()
         {
             var addApiKeyRequest = new AddApiKeyRequest()
             {
-                Name = "name",
-                Description = new string('d', 2001)
+                Name = "name"
             };
 
             var response = await _fixture.TestServer
@@ -303,7 +308,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status400BadRequest);
+                .Be(StatusCodes.Status201Created);
+
+            var content = await response.Content
+                .ReadAs<AddApiKeyResponse>();
+
+            content.ApiKeyId
+                .Should()
+                .NotBe(default);
+
+            content.ApiKey
+                .Should()
+                .NotBe(default);
         }
 
         [Fact]
@@ -326,7 +342,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var addApiKeyRequest = new AddApiKeyRequest()
             {
                 Name = "apikey#1",
-                Description = "description",
             };
 
             var response = await _fixture.TestServer
@@ -346,7 +361,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var addApiKeyRequest = new AddApiKeyRequest()
             {
                 Name = "apikey#1",
-                Description = "description",
+                ValidTo = DateTime.UtcNow.AddYears(2),
             };
 
             var response = await _fixture.TestServer
@@ -357,6 +372,17 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status201Created);
+
+            var content = await response.Content
+               .ReadAs<AddApiKeyResponse>();
+
+            content.ApiKeyId
+                .Should()
+                .NotBe(default);
+
+            content.ApiKey
+                .Should()
+                .NotBe(default);
         }
 
         [Fact]

@@ -14,6 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Abstractions\**" />
+    <Content Remove="Abstractions\**" />
+    <EmbeddedResource Remove="Abstractions\**" />
+    <None Remove="Abstractions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
@@ -28,7 +35,6 @@
   </ItemGroup>
   
    <ItemGroup>
-     <Folder Include="Abstractions\" />
      <Folder Include="Infrastructure\Data\" />
      <Folder Include="Infrastructure\Data\Migrations\" />
    </ItemGroup>

@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using System;
 
 namespace Esquio.UI.Api.Features.ApiKeys.Add
 {
-    public class AddApiKeyRequest : IRequest<int>
+    public class AddApiKeyRequest : IRequest<AddApiKeyResponse>
     {
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public DateTime? ValidTo { get; set; }
     }
 }

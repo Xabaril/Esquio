@@ -1,4 +1,6 @@
-﻿namespace Esquio.UI.Api.Features.ApiKeys.Details
+﻿using System;
+
+namespace Esquio.UI.Api.Features.ApiKeys.Details
 {
     public class DetailsApiKeyResponse
     {
@@ -6,8 +8,6 @@
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
-
-        public string Key { get; set; }
+        public DateTime ValidTo { get; set; }
     }
 }

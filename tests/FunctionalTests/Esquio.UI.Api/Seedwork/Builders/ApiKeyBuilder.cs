@@ -1,14 +1,12 @@
 ﻿using Esquio.EntityFrameworkCore.Store.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
     public class ApiKeyBuilder
     {
         private string _name = "api-key-1";
-        private string _description = "default description";
+        private DateTime _validTo = default;
         private string _key = "default-key";
 
         public ApiKeyBuilder WithName(string name)
@@ -17,9 +15,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
-        public ApiKeyBuilder WithDescription(string description)
+        public ApiKeyBuilder WithValidTo(DateTime validTo)
         {
-            _description = description;
+            _validTo = validTo;
             return this;
         }
 
@@ -31,7 +29,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 
         public ApiKeyEntity Build()
         {
-            return new ApiKeyEntity(_name, _description, _key);
+            return new ApiKeyEntity(_name, _key, _validTo);
         }
     }
 }

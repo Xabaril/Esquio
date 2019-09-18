@@ -20,25 +20,26 @@ namespace Esquio.UI.Api.Features.ApiKeys.List
         {
             var total = await _storeDbContext
                 .ApiKeys
+                .Where(key => key.ValidTo >= DateTime.UtcNow)
                 .CountAsync(cancellationToken);
 
-            var features = await _storeDbContext
+            var apiKeys = await _storeDbContext
                 .ApiKeys
+                .Where(key => key.ValidTo >= DateTime.UtcNow)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
 
             return new ListApiKeyResponse()
             {
-                Count = features.Count,
+                Count = apiKeys.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = features.Select(ak => new ListApiKeyResponseDetail
+                Result = apiKeys.Select(ak => new ListApiKeyResponseDetail
                 {
                     Id = ak.Id,
                     Name = ak.Name,
-                    Description = ak.Description,
-                    Key = ak.Key
+                    ValidTo = ak.ValidTo,
                 }).ToList()
             };
         }
