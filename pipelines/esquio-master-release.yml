@@ -30,7 +30,7 @@ steps:
   displayName: 'install dotnet sdk'
   inputs:
     packageType: 'sdk'
-    version: '3.0.100-preview9-014004'
+    version: '3.0.100-rc1-014190'
     includePreviewVersions: true
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
