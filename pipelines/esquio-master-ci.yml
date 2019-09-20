@@ -13,6 +13,7 @@ trigger:
         include:
         - src/*
         - tests/*
+        - pipelines/esquio-master-ci.yml
 
 pool:
   name: Hosted Ubuntu 1604
@@ -95,12 +96,6 @@ steps:
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'packages'
-    publishLocation: 'Container'
 - task: NuGetCommand@2
   displayName: 'push package to MyGet Preview Feed'
   inputs:
