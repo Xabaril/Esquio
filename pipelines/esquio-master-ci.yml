@@ -91,9 +91,9 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
+    buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
 - task: NuGetCommand@2
-  displayName: 'push package to MyGet Preview Feed'
+  displayName: 'push package to Nuget Feed as pre-release'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
