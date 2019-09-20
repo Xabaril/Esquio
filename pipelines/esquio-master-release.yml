@@ -22,7 +22,7 @@ services:
   sqlserver: sqlserver
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/Esquio.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 steps:
@@ -36,18 +36,18 @@ steps:
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: '**/Esquio.sln'
+    projects: '$(solution)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     command: build
     arguments: '--configuration $(buildConfiguration) --no-restore'
-    projects: '**/Esquio.sln'
+    projects: '$(solution)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
   inputs:
     command: test
-    projects: '**/Esquio.sln'
+    projects: '$(solution)'
 - task: PublishTestResults@2
   displayName: 'publish tests results'
   inputs:
@@ -85,12 +85,7 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'packages'
-    publishLocation: 'Container'
+
 # - task: NuGetCommand@2
 #   displayName: 'push package to Release NuGet Feed'
 #   inputs:
