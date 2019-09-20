@@ -1,6 +1,7 @@
 export * from './translate';
 export * from './auth';
 export * from './floating';
+export * from './tokens';
 export * from './input';
 export * from './parameters';
 export { default as Loading } from './Loading.vue';

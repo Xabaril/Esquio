@@ -11,6 +11,7 @@ export function containerBuilder(): void {
     // Bind shared services
     container.addSingleton<s.ITranslateService>(s.TranslateService);
     container.addSingleton<s.IAuthService>(s.AuthService);
+    container.addSingleton<s.ITokensService>(s.TokensService);
 
     // Bind services for each module
     productsModule.container();

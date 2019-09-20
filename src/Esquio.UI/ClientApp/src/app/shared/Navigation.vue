@@ -13,7 +13,7 @@
     <div v-if="user" class="navigation-profile">
       <b-dropdown :text="user.profile.name" variant="outline-light">
       <router-link to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
-      <b-dropdown-item href="#">{{$t('submenu.token')}}</b-dropdown-item>
+      <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>
     </div>
   </div>
@@ -26,6 +26,9 @@ import { IAuthService, User } from './auth';
 import { Inject } from 'inversify-props';
 import { BreadCrumbItem, generateBreadcrumb } from './breadcrumb';
 import { Route } from 'vue-router';
+import { ITokensService } from './tokens';
+import { nextTick } from '~/core/helpers';
+import { AlertType } from '~/core';
 
 @Component
 export default class extends Vue {
@@ -34,6 +37,27 @@ export default class extends Vue {
   public breadcrumb: BreadCrumbItem[] = [];
 
   @Inject() authService: IAuthService;
+  @Inject() tokensService: ITokensService;
+
+  // In the future this will be it owns component
+  public async onClickGenerateToken(): Promise<void> {
+    try {
+      const response = await this.tokensService.generate();
+      // Super fast hack, because this is temporal :)
+      const $copy = document.createElement('textarea');
+      $copy.classList.add('is-invisible');
+      $copy.value = response.apiKey;
+      document.querySelector('body').appendChild($copy);
+      await nextTick(100);
+      $copy.select();
+      document.execCommand('copy');
+      $copy.remove();
+
+      this.$alert(this.$t('tokens.success'));
+    } catch (e) {
+      this.$alert(this.$t('tokens.error'), AlertType.Error);
+    }
+  }
 
   @Watch('$route') onChangeRoute(nextRoute: Route) {
     this.breadcrumb = generateBreadcrumb(nextRoute);
