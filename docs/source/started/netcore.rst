@@ -67,11 +67,7 @@ Add a ``appsettings.json`` file to the project and add the content below::
                   {
                     "Name": "Colored",
                     "Enabled": true,
-                    "Toggles": [
-                      {
-                        "Type": "Esquio.Toggles.OnToggle"
-                      }
-                    ]
+                    "Toggles": []
                   }
                 ]
               }

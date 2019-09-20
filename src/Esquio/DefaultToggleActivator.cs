@@ -52,8 +52,6 @@ namespace Esquio
 
         private ConcurrentDictionary<string, Type> _typesCache = new ConcurrentDictionary<string, Type>(new List<KeyValuePair<string, Type>>()
         {
-            new KeyValuePair<string, Type>(typeof(OnToggle).FullName,typeof(OnToggle)),
-            new KeyValuePair<string, Type>(typeof(OffToggle).FullName,typeof(OffToggle)),
             new KeyValuePair<string, Type>(typeof(FromToToggle).FullName,typeof(FromToToggle)),
             new KeyValuePair<string, Type>(typeof(EnvironmentToggle).FullName,typeof(EnvironmentToggle)),
             new KeyValuePair<string, Type>(typeof(RoleNameToggle).FullName,typeof(RoleNameToggle)),
