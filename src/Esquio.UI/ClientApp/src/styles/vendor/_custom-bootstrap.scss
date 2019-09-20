@@ -33,3 +33,15 @@
     background-color: get-color(basic, brightest);
   }
 }
+
+.dropdown-menu {
+  outline: 0;
+}
+
+.btn-outline-light.dropdown-toggle {
+  color: get-color(basic, brightest) !important;
+}
+
+.dropdown-menu li a {
+  color: get-color(basic, darkest) !important;
+}
