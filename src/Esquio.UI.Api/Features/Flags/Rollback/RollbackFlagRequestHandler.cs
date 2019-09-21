@@ -1,5 +1,4 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,23 +33,18 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
             {
                 feature.Enabled = false;
 
-                if (!IsRolledback(feature))
+                if (feature.Toggles.Any())
                 {
                     feature.Toggles.Clear();
-                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+
                 }
-               
+
+                await _storeDbContext.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
 
             Log.FeatureNotExist(_logger, request.FeatureId.ToString());
             throw new InvalidOperationException("Feature does not exist in the store.");
-        }
-
-        bool IsRolledback(FeatureEntity feature)
-        {
-            return feature.Toggles.Count == 1
-                && feature.Toggles.Single().Type.Equals(typeof(Esquio.Toggles.OffToggle).FullName, StringComparison.InvariantCulture);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +33,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
             {
                 feature.Enabled = true;
 
-                if ( !IsRolledout(feature))
+                if (feature.Toggles.Any())
                 {
                     feature.Toggles.Clear();
                 }
@@ -46,12 +45,6 @@ namespace Esquio.UI.Api.Features.Flags.Rollout
 
             Log.FeatureNotExist(_logger, request.FeatureId.ToString());
             throw new InvalidOperationException("Feature does not exist in the store.");
-        }
-
-        bool IsRolledout(FeatureEntity feature)
-        {
-            return feature.Toggles.Count == 1
-                && feature.Toggles.Single().Type.Equals(typeof(Esquio.Toggles.OnToggle).FullName, StringComparison.InvariantCulture);
         }
     }
 }

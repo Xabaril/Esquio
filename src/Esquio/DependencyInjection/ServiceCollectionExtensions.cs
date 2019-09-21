@@ -6,8 +6,10 @@ using Esquio.Diagnostics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -40,6 +42,11 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
+
+            var listener = new DiagnosticListener("Esquio");
+            
+            builder.Services.TryAddSingleton(listener);
+            builder.Services.TryAddSingleton<DiagnosticSource>(listener);
             builder.Services.TryAddTransient<EsquioDiagnostics>();
 
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);

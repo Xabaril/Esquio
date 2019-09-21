@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Builders;
+using UnitTests.Seedwork;
 using Xunit;
 
 namespace UnitTests.Esquio
@@ -73,7 +74,7 @@ namespace UnitTests.Esquio
         {
             var feature = Build.Feature("sample")
                 .Enabled()
-                .AddOne(new Toggle(typeof(OnToggle).FullName))
+                .AddOne(new Toggle(typeof(AllwaysOnToggle).FullName))
                 .Build();
 
             var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetEnabled);
@@ -89,7 +90,7 @@ namespace UnitTests.Esquio
         {
             var feature = Build.Feature("sample")
                .Enabled()
-               .AddOne(new Toggle(typeof(OffToggle).FullName))
+               .AddOne(new Toggle(typeof(AllwaysOffToggle).FullName))
                .Build();
 
             var featureService = CreateFeatureService(new List<Feature>() { feature }, onErrorBehavior: OnErrorBehavior.SetEnabled);
@@ -104,7 +105,7 @@ namespace UnitTests.Esquio
         {
             var feature = Build.Feature("sample")
                 .Enabled()
-                .AddOne(new Toggle(typeof(OnToggle).FullName))
+                .AddOne(new Toggle(typeof(AllwaysOnToggle).FullName))
                 .Build();
 
             var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetEnabled);
@@ -135,7 +136,7 @@ namespace UnitTests.Esquio
         {
             var feature = Build.Feature("sample")
                .Enabled()
-               .AddOne(new Toggle(typeof(OffToggle).FullName))
+               .AddOne(new Toggle(typeof(AllwaysOffToggle).FullName))
                .Build();
 
             var featureService = CreateFeatureService(new List<Feature>() { feature }, notFoundBehavior: NotFoundBehavior.SetDisabled);
@@ -203,8 +204,8 @@ namespace UnitTests.Esquio
 
             private Dictionary<string, Type> _toggleTypes = new Dictionary<string, Type>()
             {
-                {typeof(OnToggle).FullName,typeof(OnToggle) },
-                {typeof(OffToggle).FullName,typeof(OffToggle) },
+                {typeof(AllwaysOnToggle).FullName,typeof(AllwaysOnToggle) },
+                {typeof(AllwaysOffToggle).FullName,typeof(AllwaysOffToggle) },
                 {typeof(ThrowInvalidOperationExceptionToggle).FullName,typeof(ThrowInvalidOperationExceptionToggle) }
             };
         }

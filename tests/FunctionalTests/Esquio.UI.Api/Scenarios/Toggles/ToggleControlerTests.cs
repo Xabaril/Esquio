@@ -241,7 +241,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task reveal_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.OnToggle"))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.FromToToggle"))
                   .GetAsync();
 
             response.StatusCode
@@ -365,18 +365,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Be(2);
 
             content.Toggles
-                .Where(t => t.Assembly == (typeof(OnToggle).Assembly.GetName().Name))
+                .Where(t => t.Assembly == (typeof(FromToToggle).Assembly.GetName().Name))
                 .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(OnToggle).FullName))
+              .Where(t => t.Type == (typeof(FromToToggle).FullName))
               .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(OnToggle).FullName))
+              .Where(t => t.Type == (typeof(FromToToggle).FullName))
               .Select(t => t.Description)
               .Single()
-              .Should().BeEquivalentTo("Toggle that always is active, commonly used to rollout features.");
+              .Should().BeEquivalentTo("Toggle that is active depending on current UTC date.");
 
             content.Toggles
               .Where(t => t.Type == (typeof(ClaimValueToggle).FullName))

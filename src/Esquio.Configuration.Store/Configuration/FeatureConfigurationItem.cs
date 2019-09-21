@@ -7,7 +7,7 @@ namespace Esquio.Configuration.Store.Configuration
     {
         public string Name { get; set; }
         public bool Enabled { get; set; }
-        public ToggleConfiguration[] Toggles { get; set; }
+        public ToggleConfiguration[] Toggles { get; set; } = new ToggleConfiguration[] { };
         public Feature To()
         {
             var feature = new Feature(Name);

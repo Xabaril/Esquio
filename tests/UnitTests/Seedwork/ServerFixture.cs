@@ -56,7 +56,10 @@ namespace UnitTests.Seedwork
         {
             services.AddMvc()
                 .Services
-                .AddEsquio()
+                .AddEsquio(setup=>
+                {
+                    setup.RegisterTogglesFromAssembly(typeof(AllwaysOnToggle).Assembly);
+                })
                 .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(_configuration, "Esquio");
         }

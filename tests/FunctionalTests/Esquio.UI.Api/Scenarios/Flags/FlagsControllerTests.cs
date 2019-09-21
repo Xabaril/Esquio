@@ -143,7 +143,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Build();
 
             var toggle1 = Builders.Toggle()
-                .WithType("Esquio.Toggles.OnToggle")
+                .WithType("Esquio.Toggles.FromToToggle")
                 .Build();
 
             var toggle2 = Builders.Toggle()

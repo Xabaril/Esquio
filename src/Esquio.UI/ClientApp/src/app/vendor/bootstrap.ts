@@ -11,5 +11,6 @@ export {
   FormPlugin,
   CardPlugin,
   CollapsePlugin,
-  ProgressPlugin
+  ProgressPlugin,
+  DropdownPlugin
 } from 'bootstrap-vue';

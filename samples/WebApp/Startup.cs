@@ -128,7 +128,7 @@ namespace WebApp
 
             public void OnNext(KeyValuePair<string, object> item)
             {
-                var isEndEvent = item.Key.Contains(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME);
+                var isEndEvent = item.Key.Contains(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME);
 
                 if (isEndEvent)
                 {

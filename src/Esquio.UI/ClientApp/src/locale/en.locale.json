@@ -155,5 +155,13 @@
     "products-add": "Add Product",
     "flags-add": "Add Flag",
     "toggles-add": "Add Toggle"
+  },
+  "submenu": {
+    "logout": "Logout",
+    "token": "Get Private token"
+  },
+  "tokens": {
+    "error": "Cannot generate token",
+    "success": "The token was successfully copied to your clipboard"
   }
 }

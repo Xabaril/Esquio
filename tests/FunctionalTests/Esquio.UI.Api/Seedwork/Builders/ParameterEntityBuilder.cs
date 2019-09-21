@@ -4,7 +4,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
     public class ParameterEntityBuilder
     {
-        private string _name = "Esquio.Toggles.OnToggle";
+        private string _name = "Esquio.Toggles.FromToToggle";
         private string _value = string.Empty;
 
         private int _featureId = 1;

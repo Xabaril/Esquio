@@ -1,9 +1,5 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 name: $(rev:r)
+
 trigger:
     batch: true
     branches:
@@ -13,6 +9,7 @@ trigger:
         include:
         - src/*
         - tests/*
+        - pipelines/esquio-master-ci.yml
 
 pool:
   name: Hosted Ubuntu 1604
@@ -94,17 +91,11 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'packages'
-    publishLocation: 'Container'
+    buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
 - task: NuGetCommand@2
-  displayName: 'push package to MyGet Preview Feed'
+  displayName: 'push package to Nuget Feed as pre-release'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'external'
-    publishFeedCredentials: 'MyGet Preview Feed'
+    publishFeedCredentials: 'Nuget Release'

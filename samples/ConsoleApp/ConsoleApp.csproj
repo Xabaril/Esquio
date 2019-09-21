@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjectionabstractions)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(microsoftextensionsloggingconsole)" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" />
   </ItemGroup>
 
   <ItemGroup>
