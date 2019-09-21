@@ -20,6 +20,20 @@ Prerequisites
 ^^^^^^^^^^^^^
 To be able to use Esquio tasks, we will need to setup a Esquio `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_ and to configure it you need to create an Esquio API key, to use it with the Esquio Service Connection.
 
+Create Esquio API key
+^^^^^^^^^^^^^^^^^^^^^
+First of all you need to create an Esquio API key to create the `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_ it is easily created with the Esquio UI.
+
+Open your current deployment of Esquio UI url in a browser, and once logged-in, click on your user name in the upper right corner.
+
+.. image:: ../images/user-private-token-menu.png
+
+Click on *Get Private token* and you will receive a confirmation window, and your token will be copied to the clipboard, so note it to paste it when configuring the Esquio Service Connection
+
+.. image:: ../images/token-confirmation.png
+
+Now you can continue to configure the `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_.
+
 Setup Esquio Service Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_ are setup per project, so open your Azure DevOps settings page, and go to Service Connections, click on *New service Connection* and select *Esquio API Connection*
@@ -58,7 +72,9 @@ We will configure three parameters:
     * **Esquio Product:** From the list of products configured in Esquio.
     * **Esquio feature:** Select, from the list of features.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: esquio-rollout-feature@1
           inputs:
@@ -87,7 +103,9 @@ We will configure three parameters:
     * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup the *OffToggle*.
     * **Esquio feature:** Select, from the list of features, the one to setup the *OffToggle*.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: esquio-rollback-feature@1
           inputs:
@@ -119,7 +137,9 @@ We will configure six parameters:
     * **Esquio parameter:** Select, from the list of parameters for the previously selected toggle, the one you want to set the value.
     * **Esquio parameter value:** Introduce manually the value you want to setup for the parameter.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: set-toggle-parameter@1
           inputs:
