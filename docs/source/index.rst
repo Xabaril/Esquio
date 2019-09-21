@@ -26,6 +26,13 @@ Welcome to Esquio
 .. toctree::
    :maxdepth: 3
    :hidden:
+   :caption: Feature documentation
+
+   feature/behaviors
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
    :caption: Toggles
 
    toggles/esquio

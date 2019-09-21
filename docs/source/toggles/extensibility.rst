@@ -109,7 +109,7 @@ It's time to finish our feature. We need to complete the ``IsActiveAsync`` metho
             .FirstOrDefault() ?? string.Empty;
     }
 
-Finally, we can register our custom toggle using the nmethod ``RegisterTogglesFromAssemblyContaining`` in our Startup class::
+Finally, we can register our custom toggle using the method ``RegisterTogglesFromAssemblyContaining`` in our Startup class::
 
     services.AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
 
