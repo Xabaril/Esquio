@@ -1,8 +1,7 @@
-# Preview runtime issues (use sdk build for runtime)
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-rc1-buster AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS base
 WORKDIR /app
 EXPOSE 80
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-rc1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
 COPY ./Directory.Build.props ./Directory.Build.props
 COPY ./build ./build
