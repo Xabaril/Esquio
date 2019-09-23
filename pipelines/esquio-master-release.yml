@@ -83,10 +83,10 @@ steps:
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
 
-# - task: NuGetCommand@2
-#   displayName: 'push package to Release NuGet Feed'
-#   inputs:
-#     command: 'push'
-#     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-#     nuGetFeedType: 'external'
-#     publishFeedCredentials: 'Nuget Release'
+- task: NuGetCommand@2
+  displayName: 'push package to Release NuGet Feed'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget Release'
