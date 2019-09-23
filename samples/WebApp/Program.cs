@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+
 namespace WebApp
 {
     public class Program
@@ -14,7 +15,7 @@ namespace WebApp
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                                .UseApplicationInsights();
+                        .UseApplicationInsights();
                 });
     }
 }
