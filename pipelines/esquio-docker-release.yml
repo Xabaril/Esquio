@@ -26,10 +26,28 @@ steps:
     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
     workingDirectory: '$(Build.SourcesDirectory)'
 
+# - task: Docker@0
+#   displayName: 'Push ui image'
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerRegistryConnection: 'DockerHubXabaril'
+#     action: 'Push an image'
+#     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+
+- task: Docker@0
+  displayName: 'Build ui Image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
+    action: 'Tag images'
+    imageNamesPath: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+    additionalImageTags: 'xabarilcoding/$(uiImageName):latest'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
 - task: Docker@0
   displayName: 'Push ui image'
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryConnection: 'DockerHubXabaril'
     action: 'Push an image'
-    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+    imageName: 'xabarilcoding/$(uiImageName):latest'
