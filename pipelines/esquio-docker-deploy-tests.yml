@@ -23,7 +23,7 @@ steps:
     dockerFile: 'demos/AppWithUI/ui-dockerfile'
     defaultContext: false
     context: '$(Build.SourcesDirectory)'
-    imageName: '$(uiImageName):$(Build.BuildId)'
+    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
     workingDirectory: '$(Build.SourcesDirectory)'
 - task: Docker@0
   displayName: 'Push ui image'
