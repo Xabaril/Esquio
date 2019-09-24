@@ -5,11 +5,12 @@ pool:
 
 variables:
   appImageName: esquiodemoapp
-  uiImageName: esquiodemoui
+  uiImageName: esquio
   acrName: esquio.azurecr.io
   appWebAppName: esquiodemoapp
   uiWebAppName: esquiodemoui
   dockerRepo: esquio
+  
   
 
 steps:
@@ -29,9 +30,8 @@ steps:
 - task: Docker@0
   displayName: 'Build ui Image'
   inputs:
-    containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'Azure'
-    azureContainerRegistry: '$(acrName)'
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
     action: 'Build an image'
     dockerFile: 'demos/AppWithUI/ui-dockerfile'
     defaultContext: false
@@ -71,45 +71,12 @@ steps:
   displayName: 'Azure App Service Deploy: $(uiImageName)'
   inputs:
     azureSubscription: 'Azure'
-    appType: applinux
-    WebAppName: $(uiImageName)
-    DockerNamespace: $(acrName)
+    appType: 'applinux'
+    WebAppName: '$(uiImageName)'
+    DockerNamespace: 'xabarilcoding'
     DockerRepository: '$(uiImageName)'
     DockerImageTag: '$(Build.BuildId)'
-    AppSettings: '-ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    AppSettings: '-ConnectionStrings__Esquio "$(sqlConnection)"'
     TakeAppOfflineFlag: true
-
-# - task: Docker@0
-#   displayName: 'Build an image'
-#   inputs:
-#     azureSubscriptionEndpoint: Azure
-#     azureContainerRegistry: $(acrName)
-#     dockerFile: build/Dockerfile
-#     defaultContext: false
-#     context: '$(Build.SourcesDirectory)'
-#     imageName: '$(imageName):$(Build.BuildId)'
-#     workingDirectory: '$(Build.SourcesDirectory)'
-
-# - task: Docker@0
-#   displayName: 'Push an image'
-#   inputs:
-#     azureSubscription: 'Azure'
-#     azureContainerRegistry: $(acrName)
-#     action: 'Push an image'
-#     imageName: '$(imageName):$(Build.BuildId)'
-
-# - task: AzureRmWebAppDeployment@3
-#   displayName: 'Azure App Service Deploy: demoesquiolf'
-#   inputs:
-#     azureSubscription: 'Azure'
-#     appType: applinux
-#     WebAppName: $(appName)
-#     DockerNamespace: $(acrName)
-#     DockerRepository: '$(imageName)'
-#     DockerImageTag: '$(Build.BuildId)'
-#     AppSettings: '-Data__EsquioConnectionString "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
-#     TakeAppOfflineFlag: true
-
-
 
 
