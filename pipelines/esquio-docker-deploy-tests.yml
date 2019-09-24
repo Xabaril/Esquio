@@ -15,6 +15,25 @@ variables:
 
 steps:
 - task: Docker@0
+  displayName: 'Build ui Image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
+    action: 'Build an image'
+    dockerFile: 'demos/AppWithUI/ui-dockerfile'
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: '$(uiImageName):$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+- task: Docker@0
+  displayName: 'Push ui image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
+    action: 'Push an image'
+    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+
+- task: Docker@0
   displayName: 'Build app image'
   inputs:
     containerregistrytype: 'Azure Container Registry'
@@ -28,18 +47,6 @@ steps:
     workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: Docker@0
-  displayName: 'Build ui Image'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Build an image'
-    dockerFile: 'demos/AppWithUI/ui-dockerfile'
-    defaultContext: false
-    context: '$(Build.SourcesDirectory)'
-    imageName: '$(uiImageName):$(Build.BuildId)'
-    workingDirectory: '$(Build.SourcesDirectory)'
-
-- task: Docker@0
   displayName: 'Push app image'
   inputs:
     azureSubscription: 'Azure'
@@ -47,13 +54,7 @@ steps:
     action: 'Push an image'
     imageName: '$(appImageName):$(Build.BuildId)'
 
-- task: Docker@0
-  displayName: 'Push ui image'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Push an image'
-    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+
 
 - task: AzureRmWebAppDeployment@3
   displayName: 'Azure App Service Deploy: $(appWebAppName)'
