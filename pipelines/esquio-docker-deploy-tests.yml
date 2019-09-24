@@ -69,11 +69,11 @@ steps:
     TakeAppOfflineFlag: true
 
 - task: AzureRmWebAppDeployment@3
-  displayName: 'Azure App Service Deploy: $(uiImageName)'
+  displayName: 'Azure App Service Deploy: $(uiWebAppName)'
   inputs:
     azureSubscription: 'Azure'
     appType: 'applinux'
-    WebAppName: '$(uiImageName)'
+    WebAppName: '$(uiWebAppName)'
     DockerNamespace: 'xabarilcoding'
     DockerRepository: '$(uiImageName)'
     DockerImageTag: '$(Build.BuildId)'
