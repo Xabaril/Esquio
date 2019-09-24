@@ -59,7 +59,7 @@ steps:
     fileType: 'vsix'
     vsixFile: '$(packagefile)'
     updateTasksVersion: false
-    extensionVisibility: 'publicpreview'
+    extensionVisibility: 'public'
 
 # - task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
 #   inputs:
