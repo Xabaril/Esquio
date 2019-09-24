@@ -1,10 +1,10 @@
 name: $(rev:r)
 trigger:
-    batch: true  
+    batch: true 
     tags:
         include:
         - release-*
-
+pr: none 
 pool:
   name: Hosted Ubuntu 1604
 
