@@ -5,7 +5,7 @@ pool:
 
 variables:
   appImageName: esquiodemoapp
-  uiImageName: esquio
+  uiImageName: esquioui
   acrName: esquio.azurecr.io
   appWebAppName: esquiodemoapp
   uiWebAppName: esquiodemoui
