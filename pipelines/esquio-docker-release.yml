@@ -24,10 +24,11 @@ steps:
     defaultContext: false
     context: '$(Build.SourcesDirectory)'
     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+    includeLatestTag: true
     workingDirectory: '$(Build.SourcesDirectory)'
 
 # - task: Docker@0
-#   displayName: 'Push ui image'
+#   displayName: 'Push ui image with version $(Build.BuildId)'
 #   inputs:
 #     containerregistrytype: 'Container Registry'
 #     dockerRegistryConnection: 'DockerHubXabaril'
@@ -35,17 +36,7 @@ steps:
 #     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
 
 - task: Docker@0
-  displayName: 'Build ui Image'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Tag images'
-    imageNamesPath: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
-    additionalImageTags: 'xabarilcoding/$(uiImageName):latest'
-    workingDirectory: '$(Build.SourcesDirectory)'
-
-- task: Docker@0
-  displayName: 'Push ui image'
+  displayName: 'Push ui image latest'
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryConnection: 'DockerHubXabaril'
