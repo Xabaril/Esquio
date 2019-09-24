@@ -27,13 +27,13 @@ steps:
     includeLatestTag: true
     workingDirectory: '$(Build.SourcesDirectory)'
 
-# - task: Docker@0
-#   displayName: 'Push ui image with version $(Build.BuildId)'
-#   inputs:
-#     containerregistrytype: 'Container Registry'
-#     dockerRegistryConnection: 'DockerHubXabaril'
-#     action: 'Push an image'
-#     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+- task: Docker@0
+  displayName: 'Push ui image with version $(Build.BuildId)'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
+    action: 'Push an image'
+    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
 
 - task: Docker@0
   displayName: 'Push ui image latest'
