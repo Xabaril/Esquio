@@ -53,7 +53,7 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerRegistryConnection: 'DockerHubXabaril'
     action: 'Push an image'
-    imageName: '$(uiImageName):$(Build.BuildId)'
+    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
 
 - task: AzureRmWebAppDeployment@3
   displayName: 'Azure App Service Deploy: $(appWebAppName)'
