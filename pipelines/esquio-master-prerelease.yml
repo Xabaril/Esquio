@@ -1,16 +1,11 @@
 name: $(rev:r)
 
 trigger:
-    batch: true
-    branches:
+    batch: true 
+    tags:
         include:
-        - master
-    paths:
-        include:
-        - src/*
-        - tests/*
-        - pipelines/esquio-master-ci.yml
-
+        - prerelease-*
+pr: none 
 pool:
   name: Hosted Ubuntu 1604
 
@@ -84,7 +79,7 @@ steps:
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack EF Core Store'
+  displayName: 'dotnet pack EF Core  Store'
   inputs:
     command: 'pack'
     feedsToUse: 'select'
@@ -92,3 +87,10 @@ steps:
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
+- task: NuGetCommand@2
+  displayName: 'push package to Nuget Feed as pre-release'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget Release'
