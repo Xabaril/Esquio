@@ -50,8 +50,8 @@ steps:
 - task: Docker@0
   displayName: 'Push ui image'
   inputs:
-    azureSubscription: 'Azure'
-    azureContainerRegistry: $(acrName)
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'DockerHubXabaril'
     action: 'Push an image'
     imageName: '$(uiImageName):$(Build.BuildId)'
 
