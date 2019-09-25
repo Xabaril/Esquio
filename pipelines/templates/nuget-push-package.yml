@@ -8,4 +8,4 @@ steps:
   displayName: 'push package to Release NuGet Feed'
   inputs:
     command: 'custom'
-    arguments: 'push ${{ parameters.pkgPath }} -SkipDuplicate -src https://api.nuget.org/v3/index.json -ApiKey ${{ parameters.nugetApiKey }}'
+    arguments: 'push ${{ parameters.pkgPath }} -SkipDuplicate -src https://api.nuget.org/v3/index.json -ApiKey ${{ parameters.nugetApiKey }} -NoSymbols'

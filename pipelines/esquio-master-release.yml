@@ -69,6 +69,14 @@ steps:
     packagesToPack: './src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
+
+- template: /pipelines/templates/nuget-push-package.yml
+  displayName: 'Push Esquio.AspNetCore'
+  parameters:
+      nugetServiceConnection: 'Nuget Release'
+      pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.AspNetCore.*.nupkg'
+      nugetApiKey: '$(nugetApiKey)'
+      
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Configuration Store'
   inputs:
