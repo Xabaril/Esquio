@@ -96,5 +96,5 @@ steps:
 - template: /pipelines/templates/nuget-push-package.yml
   parameters:
       nugetServiceConnection: 'Nuget Release'
-      pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.EntityFrameworkCore.Store.1.0.0.nupkg'
+      pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.EntityFrameworkCore.Store.*.nupkg'
       nugetApiKey: '$(nugetApiKey)'
