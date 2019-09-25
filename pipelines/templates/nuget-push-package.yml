@@ -1,0 +1,14 @@
+parameters:
+    nugetServiceConnection: ''
+    pkgPath: ''
+steps:
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: '${{ parameters.nugetServiceConnection }}'
+    forceReinstallCredentialProvider: true
+
+- task: NuGetCommand@2
+  displayName: 'push package to Release NuGet Feed'
+  inputs:
+    command: 'custom'
+    arguments: 'push ${{ parameters.pkgPath }}} -SkipDuplicate'
