@@ -94,3 +94,4 @@ steps:
   parameters:
       nugetServiceConnection: 'Nuget Release'
       pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.EntityFrameworkCore.Store*.nupkg'
+      nugetApiKey: '$(nugetApiKey)'
