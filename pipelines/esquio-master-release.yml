@@ -69,13 +69,6 @@ steps:
     packagesToPack: './src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-
-- template: /pipelines/templates/nuget-push-package.yml  
-  parameters:
-      nugetServiceConnection: 'Nuget Release'
-      pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.AspNetCore.*.nupkg'
-      nugetApiKey: '$(nugetApiKey)'
-
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Configuration Store'
   inputs:
@@ -92,16 +85,9 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-
-# - task: NuGetCommand@2
-#   displayName: 'push package to Release NuGet Feed'
-#   inputs:
-#     command: 'push'
-#     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-#     nuGetFeedType: 'external'
-#     publishFeedCredentials: 'Nuget Release'
+    
 - template: /pipelines/templates/nuget-push-package.yml
   parameters:
       nugetServiceConnection: 'Nuget Release'
-      pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.EntityFrameworkCore.Store.*.nupkg'
+      pkgPath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
       nugetApiKey: '$(nugetApiKey)'
