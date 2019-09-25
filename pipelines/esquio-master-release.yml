@@ -90,7 +90,7 @@ steps:
 #     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
 #     nuGetFeedType: 'external'
 #     publishFeedCredentials: 'Nuget Release'
-- template: pipelines/templates/nuget-push-package.yml
+- template: /pipelines/templates/nuget-push-package.yml
   parameters:
       nugetServiceConnection: 'Nuget Release'
       pkgPath: '$(Build.ArtifactStagingDirectory)/Esquio.EntityFrameworkCore.Store*.nupkg'
