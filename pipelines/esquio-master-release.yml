@@ -23,6 +23,9 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '5.3.0'
 - task: UseDotNet@2
   displayName: 'install dotnet sdk'
   inputs:
@@ -82,11 +85,9 @@ steps:
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-
-- task: NuGetCommand@2
-  displayName: 'push package to Release NuGet Feed'
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Nuget Release'
+    
+- template: /pipelines/templates/nuget-push-package.yml
+  parameters:
+      nugetServiceConnection: 'Nuget Release'
+      pkgPath: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      nugetApiKey: '$(nugetApiKey)'
