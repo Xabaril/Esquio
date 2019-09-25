@@ -1,4 +1,5 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,7 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
 
                         if (!allowed)
                         {
+                            Log.AuthorizationRequiredPermissionFail(_logger, subjectId, requirement.Permission);
                             context.Fail();
                         }
 
@@ -52,15 +54,13 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
                     }
                     else
                     {
-                        _logger.LogError($"The user {subjectId} is not authorized on this application.");
-
+                        Log.AuthorizationFail(_logger, subjectId);
                         context.Fail();
                     }
                 }
                 else
                 {
-                    _logger.LogError($"The claim {requirement.ClaimType} is not present on the access token.");
-
+                    Log.AuthorizationFailClaimIsNotPressent(_logger, requirement.ClaimType);
                     context.Fail();
                 }
             }

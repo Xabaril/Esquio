@@ -62,6 +62,21 @@ namespace Esquio.UI.Api.Diagnostics
             _executedCommand(logger, commandName, null);
         }
 
+        public static void AuthorizationFail(ILogger logger, string subjectId)
+        {
+            _authorizationFail(logger, subjectId, null);
+        }
+
+        public static void AuthorizationRequiredPermissionFail(ILogger logger, string subjectId, string permission)
+        {
+            _authorizationPermissionFail(logger, subjectId, permission, null);
+        }
+
+        public static void AuthorizationFailClaimIsNotPressent(ILogger logger, string claimType)
+        {
+            _authorizationFailClaimIsNotPresent(logger, claimType, null);
+        }
+
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
@@ -110,5 +125,17 @@ namespace Esquio.UI.Api.Diagnostics
             LogLevel.Debug,
             EventIds.ExecutedCommand,
             "Executed  command with name {commandName}.");
+        private static readonly Action<ILogger, string, Exception> _authorizationFail = LoggerMessage.Define<string>(
+           LogLevel.Warning,
+           EventIds.AuthorizationFailed,
+           "Authorization failed for user {subjectId}.");
+        private static readonly Action<ILogger, string, string, Exception> _authorizationPermissionFail = LoggerMessage.Define<string, string>(
+           LogLevel.Warning,
+           EventIds.AuthorizationPermissionFailed,
+           "Authorization failed for user {subjectId} with required permission {permission}.");
+        private static readonly Action<ILogger, string, Exception> _authorizationFailClaimIsNotPresent = LoggerMessage.Define<string>(
+           LogLevel.Error,
+           EventIds.AuthorizationFailedClaimIsNotPresent,
+           "Authorization failed because the selected claim {claimType} is not present.");
     }
 }

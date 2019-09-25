@@ -35,7 +35,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpGet]
-        //[Authorize(Policies.Read)]
+        [Authorize(Policies.Read)]
         [Route("api/v1/products/{productId:int:min(1)}")]
         public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
         {
@@ -49,6 +49,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/products")]
         public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
         {
@@ -58,6 +59,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpPut]
+        [Authorize(Policies.Write)]
         [Route("api/v1/products")]
         public async Task<IActionResult> Update(UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
@@ -67,6 +69,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpDelete]
+        [Authorize(Policies.Write)]
         [Route("api/v1/products/{productId:int:min(1)}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request)
         {
