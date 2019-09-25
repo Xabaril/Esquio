@@ -42,6 +42,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         [ResetDatabase]
         public async Task list_response_ok_and_use_default_skip_take_values()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -80,6 +87,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         [ResetDatabase]
         public async Task list_response_ok_and_use_specific_skip_take_values()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product1 = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -116,10 +130,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Single().Name
                 .Should().BeEquivalentTo("product#2");
         }
+
         [Fact]
         [ResetDatabase]
         public async Task list_response_ok_when_no_data()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Product.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -145,10 +167,41 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Count
                 .Should().Be(0);
         }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task list_response_forbiden_when_user_is_authenticated_but_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Product.List())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+
         [Fact]
         [ResetDatabase]
         public async Task list_response_ok_when_no_page_data()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();

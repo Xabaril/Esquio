@@ -5,6 +5,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
     public class IdentityBuilder
     {
+        public const string DEFAULT_NAME = "default-user";
+        public const string DEFAULT_ROLE = "default-role";
+
         private List<Claim> _claims = new List<Claim>();
 
         public IdentityBuilder WithClaim(string type, string value)
@@ -15,8 +18,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 
         public IdentityBuilder WithDefaultClaims()
         {
-            _claims.Add(new Claim(ClaimTypes.Name, "default-user"));
-            _claims.Add(new Claim(ClaimTypes.Role, "default-role"));
+            _claims.Add(new Claim(ClaimTypes.Name, DEFAULT_NAME));
+            _claims.Add(new Claim(ClaimTypes.NameIdentifier, DEFAULT_NAME));
+            _claims.Add(new Claim(ClaimTypes.Role, DEFAULT_ROLE));
             return this;
         }
 
@@ -26,3 +30,4 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
         }
     }
 }
+

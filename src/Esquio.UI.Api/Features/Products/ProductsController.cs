@@ -3,6 +3,7 @@ using Esquio.UI.Api.Features.Products.Delete;
 using Esquio.UI.Api.Features.Products.Details;
 using Esquio.UI.Api.Features.Products.List;
 using Esquio.UI.Api.Features.Products.Update;
+using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpGet]
         [Route("api/v1/products")]
+        [Authorize(Policies.Read)]
         public async Task<IActionResult> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -33,6 +35,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpGet]
+        //[Authorize(Policies.Read)]
         [Route("api/v1/products/{productId:int:min(1)}")]
         public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
         {

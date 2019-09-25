@@ -59,5 +59,10 @@ namespace Esquio.EntityFrameworkCore.Store.Options
         /// Get or set default table configuration for History
         /// </summary>
         public TableConfiguration History { get; set; } = new TableConfiguration("History");
+
+        /// <summary>
+        /// Get or set default table configuration for Permissions
+        /// </summary>
+        public TableConfiguration Permissions { get; set; } = new TableConfiguration("Permissions");
     }
 }

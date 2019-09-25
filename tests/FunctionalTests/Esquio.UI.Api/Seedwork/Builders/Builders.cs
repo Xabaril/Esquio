@@ -7,6 +7,11 @@
             return new IdentityBuilder();
         }
 
+        public static PermissionsBuilder Permission()
+        {
+            return new PermissionsBuilder();
+        }
+
         public static ProductEntityBuilder Product()
         {
             return new ProductEntityBuilder();
@@ -30,7 +35,6 @@
         {
             return new TagBuilder();
         }
-
 
         public static FeatureTagBuilder FeatureTag()
         {

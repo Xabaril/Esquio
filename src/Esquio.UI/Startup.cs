@@ -27,7 +27,7 @@ namespace Esquio.UI
         {
             services
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
-                .AddAuthorization()
+                //.AddAuthorization()
                 .AddAuthentication(options =>
                 {
                     options.DefaultScheme = "secured";

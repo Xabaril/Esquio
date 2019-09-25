@@ -1,15 +1,14 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.EntityFrameworkCore.Store.Options;
+﻿using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
-    internal class ProductEntityConfiguration : IEntityTypeConfiguration<Entities.ProductEntity>
+    internal class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Entities.ProductEntity>
     {
         private readonly StoreOptions storeOption;
 
-        public ProductEntityConfiguration(StoreOptions storeOption)
+        public ProductEntityTypeConfiguration(StoreOptions storeOption)
         {
             this.storeOption = storeOption;
         }
