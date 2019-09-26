@@ -1,10 +1,9 @@
 using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
+using Esquio.UI.Infrastructure.Data.Seed;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using System.Linq;
 
 namespace Esquio.UI
 {
@@ -13,21 +12,7 @@ namespace Esquio.UI
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build()
-                .MigrateDbContext<StoreDbContext>((context,sp)=>
-                {
-                    if ( !context.Permissions.Any())
-                    {
-                        context.Permissions.Add(new PermissionEntity()
-                        {
-                            SubjectId = "1",
-                            ReadPermission = true,
-                            WritePermission = true,
-                            ManagementPermission = true,
-                        });
-
-                        context.SaveChanges();
-                    }
-                })
+                .MigrateDbContext<StoreDbContext>(StoreDbContextSeed.Seed())
                 .Run();
         }
 
