@@ -123,7 +123,7 @@
         @click="onClickDelete"
       />
 
-      <Floating
+      <FloatingSave
         v-if="!this.isEditing"
         :text="$t('toggles.actions.save')"
         :disabled="areActionsDisabled"
@@ -137,7 +137,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import {
-  Floating,
+  FloatingSave,
   FloatingTop,
   FloatingDelete,
   InputText,
@@ -156,7 +156,7 @@ import { Flag } from '../flag.model';
 
 @Component({
   components: {
-    Floating,
+    FloatingSave,
     FloatingTop,
     FloatingDelete,
     FloatingContainer,
@@ -377,8 +377,14 @@ export default class extends Vue {
     }
 
     this.isLoading = true;
-    await this.togglesService.addParameter(this.form, parameter.name, value);
-    this.isLoading = false;
+
+    try {
+      await this.togglesService.addParameter(this.form, parameter.name, value);
+      this.isLoading = false;
+      this.$alert(this.$t('toggles.success.update'));
+    } catch (e) {
+      this.$alert(this.$t('toggles.errors.update'), AlertType.Error);
+    }
   }
 
   private goBack(): void {

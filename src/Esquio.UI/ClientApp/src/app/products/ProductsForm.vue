@@ -39,7 +39,7 @@
         @click="onClickDelete"
       />
 
-      <Floating
+      <FloatingSave
         :text="$t('products.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
@@ -58,7 +58,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import {
-  Floating,
+  FloatingSave,
   FloatingTop,
   FloatingDelete,
   InputText,
@@ -72,7 +72,7 @@ import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
-    Floating,
+    FloatingSave,
     FloatingTop,
     FloatingDelete,
     FloatingContainer,
