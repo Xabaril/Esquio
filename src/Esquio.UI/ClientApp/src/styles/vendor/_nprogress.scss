@@ -6,6 +6,8 @@
 
   .bar {
     background-color: $color;
+    box-shadow: 0 1px 0px rgba(get-color(basic, darkest), .12);
+    height: 5px;
   }
 
   .peg {
