@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Infrastructure.Authorization
@@ -26,16 +27,14 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
             {
                 //TODO: this hack is not so clear.. the assumption name is a trick
 
-                if(context.User.Identity.AuthenticationType.Equals("ApiKey",StringComparison.InvariantCultureIgnoreCase))
+                if (!context.User.IsBearer())
                 {
                     context.Succeed(requirement);
 
                     return;
                 }
 
-                var subjectId = context.User
-                    .FindFirst(requirement.ClaimType)
-                    .Value;
+                var subjectId = context.User.GetSubjectId();
 
                 if (subjectId != null)
                 {

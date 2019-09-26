@@ -21,6 +21,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             _claims.Add(new Claim(ClaimTypes.Name, DEFAULT_NAME));
             _claims.Add(new Claim(ClaimTypes.NameIdentifier, DEFAULT_NAME));
             _claims.Add(new Claim(ClaimTypes.Role, DEFAULT_ROLE));
+            _claims.Add(new Claim("iss", "TestServer issuer"));
             return this;
         }
 
