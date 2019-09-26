@@ -13,6 +13,7 @@
       :id="id"
       :name="id"
       :aria-describedby="helper"
+      @blur="onBlur"
       v-model="inputValue"
     >
     <span
@@ -48,6 +49,10 @@ export default class extends Vue {
 
   public created(): void {
     this.inputValue = this.value;
+  }
+
+  public onBlur(): void {
+    this.$emit('blur', this.inputValue);
   }
 
   @Watch('inputValue') onChangeInput(): void {

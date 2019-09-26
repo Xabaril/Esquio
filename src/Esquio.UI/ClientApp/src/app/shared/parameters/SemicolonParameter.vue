@@ -1,6 +1,7 @@
 <template>
   <div class="semicolon_parameter">
     <vue-tags-input
+        ref="input"
         v-model="formParameter"
         :tags="formParameters"
         :placeholder="$t('parameters.semicolon.placeholder')"
@@ -54,6 +55,7 @@ export default class extends Vue {
 
     await this.addFormParameter(tag);
     addTag();
+    (this.$refs.input as Vue).$el.querySelector('input').blur();
   }
 
   public async onRemoveFormParameter({ tag, deleteTag }): Promise<void> {
@@ -91,6 +93,10 @@ export default class extends Vue {
   }
 
   private stringToParameters(parameters: string): FormTag[] {
+    if (!parameters) {
+      return;
+    }
+
     return parameters.split(';').map(x => ({
       text: x,
       tiClasses: ['']
@@ -98,7 +104,7 @@ export default class extends Vue {
   }
 
   @Watch('value')
-  onChangeValue(nextValue) {
+  onChangeValue(nextValue): void {
     this.$emit('change', nextValue);
   }
 }

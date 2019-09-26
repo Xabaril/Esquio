@@ -4,6 +4,7 @@
       class="form-group col-md-6"
       v-model="value"
       id="value_name"
+      @blur="onBlurInput"
       :label="$t('parameters.string.valueName')"
       validators="required|min:3"
       :help-label="$t('parameters.string.valueHelp')"
@@ -24,16 +25,26 @@ import { InputText } from '~/shared';
 export default class extends Vue {
   public name = 'StringParameter';
   public value = null;
+  private lastValue: string;
 
   @Prop({ required: true }) options: any;
 
   public created(): void {
     this.value = this.options.value;
+    this.lastValue = this.value;
   }
 
-  @Watch('value')
-  onChangeValue(nextValue, prevValue) {
-    this.$emit('change', this.value);
+  public onBlurInput(value: string): void {
+    this.emitChange(value);
+  }
+
+  private emitChange(value: string): void {
+    if (value === this.lastValue) {
+      return;
+    }
+
+    this.$emit('change', value);
+    this.lastValue = value;
   }
 }
 </script>
