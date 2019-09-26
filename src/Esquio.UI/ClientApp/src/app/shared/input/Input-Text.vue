@@ -7,6 +7,7 @@
       {{label}}
     </label>
     <input
+      ref="input"
       v-validate="validators"
       type="text"
       class="form-control"
@@ -14,6 +15,7 @@
       :name="id"
       :aria-describedby="helper"
       @blur="onBlur"
+      @keyup.enter="onPressEnter"
       v-model="inputValue"
     >
     <span
@@ -53,6 +55,14 @@ export default class extends Vue {
 
   public onBlur(): void {
     this.$emit('blur', this.inputValue);
+  }
+
+  public onPressEnter(): void {
+    this.blurInput();
+  }
+
+  private blurInput(): void {
+    (this.$refs.input as HTMLInputElement).blur();
   }
 
   @Watch('inputValue') onChangeInput(): void {
