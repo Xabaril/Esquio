@@ -1266,6 +1266,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
         }
+
         [Fact]
         [ResetDatabase]
         public async Task update_response_badrequest_if_name_is_greater_than_200()

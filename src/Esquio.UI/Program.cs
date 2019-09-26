@@ -19,7 +19,7 @@ namespace Esquio.UI
                     {
                         context.Permissions.Add(new PermissionEntity()
                         {
-                            SubjectId = "alice",
+                            SubjectId = "1",
                             ReadPermission = true,
                             WritePermission = true,
                             ManagementPermission = true,

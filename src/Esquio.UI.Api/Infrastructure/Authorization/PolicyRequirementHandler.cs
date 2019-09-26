@@ -24,6 +24,15 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
         {
             if (context.User != null && context.User.Identity.IsAuthenticated)
             {
+                //TODO: this hack is not so clear.. the assumption name is a trick
+
+                if(context.User.Identity.AuthenticationType.Equals("ApiKey",StringComparison.InvariantCultureIgnoreCase))
+                {
+                    context.Succeed(requirement);
+
+                    return;
+                }
+
                 var subjectId = context.User
                     .FindFirst(requirement.ClaimType)
                     .Value;
