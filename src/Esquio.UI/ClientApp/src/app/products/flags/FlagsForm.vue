@@ -66,7 +66,7 @@
         @click="onClickDelete"
       />
 
-      <Floating
+      <FloatingSave
         :text="$t('flags.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
@@ -87,7 +87,7 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
 import {
-  Floating,
+  FloatingSave,
   FloatingDelete,
   FloatingTop,
   FloatingContainer,
@@ -101,7 +101,7 @@ import { TogglesList } from './toggles';
 
 @Component({
   components: {
-    Floating,
+    FloatingSave,
     FloatingContainer,
     FloatingTop,
     FloatingDelete,
