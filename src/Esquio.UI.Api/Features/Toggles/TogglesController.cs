@@ -4,6 +4,7 @@ using Esquio.UI.Api.Features.Toggles.Delete;
 using Esquio.UI.Api.Features.Toggles.Details;
 using Esquio.UI.Api.Features.Toggles.KnownTypes;
 using Esquio.UI.Api.Features.Toggles.Reveal;
+using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/toggles/{toggleId:int:min(1)}")]
         public async Task<IActionResult> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
@@ -39,6 +41,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/toggles/{toggleId:int:min(1)}/parameters")]
         public async Task<IActionResult> AddParameter(int toggleId, AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
         {
@@ -49,6 +52,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpDelete]
+        [Authorize(Policies.Write)]
         [Route("api/v1/toggles/{toggleId:int:min(1)}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
@@ -58,6 +62,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/toggles/parameters/{toggleType}")]
         public async Task<IActionResult> Reveal([FromRoute]RevealToggleRequest revealToggleRequest, CancellationToken cancellationToken = default)
         {
@@ -67,6 +72,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/toggles/types")]
         public async Task<IActionResult> KnownTypes(CancellationToken cancellationToken = default)
         {
@@ -76,6 +82,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/toggles")]
         public async Task<IActionResult> Add(AddToggleRequest postToggleRequest, CancellationToken cancellationToken = default)
         {

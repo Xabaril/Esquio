@@ -20,6 +20,7 @@ namespace Esquio.UI.Api
                 {
                     setup.AddPolicy(Policies.Read, builder => builder.AddRequirements(new PolicyRequirement(Policies.Read)));
                     setup.AddPolicy(Policies.Write, builder => builder.AddRequirements(new PolicyRequirement(Policies.Write)));
+                    setup.AddPolicy(Policies.Management, builder => builder.AddRequirements(new PolicyRequirement(Policies.Management)));
                 })
                 .AddScoped<IAuthorizationHandler, PolicyRequirementHandler>()
                 .AddMediatR(typeof(EsquioUIApiConfiguration))

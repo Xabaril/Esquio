@@ -53,6 +53,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollback_response_bad_request_if_feature_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -73,6 +81,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollback_response_ok_when_product_and_feature_exist_and_feature_toggles_is_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -97,8 +113,50 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
         [Fact]
         [ResetDatabase]
+        public async Task rollback_response_forbidden_when_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("product#2")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature")
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollback(featureId: feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
         public async Task rollback_is_idempotent()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -134,6 +192,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollback_response_ok_when_product_and_feature_exist_and_feature_toggles_is_not_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -173,6 +238,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollback_set_feature_as_not_enabled()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -237,6 +310,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollout_response_bad_request_if_feature_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -257,6 +338,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollout_response_ok_when_product_and_feature_exist_and_feature_toggles_is_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -284,6 +373,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollout_is_idempotent()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -320,6 +417,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task rollout_set_feature_as_enabled()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -357,8 +461,52 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
         [Fact]
         [ResetDatabase]
+        public async Task rollout_response_forbidden_when_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("product#2")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature")
+                .WithEnabled(false)
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Rollout(featureId: feature.Id))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
         public async Task rollout_response_ok_when_product_and_feature_exist_and_feature_toggles_is_not_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#2")
                 .Build();
@@ -396,8 +544,36 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
         [Fact]
         [ResetDatabase]
+        public async Task delete_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete(1))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+        [Fact]
+        [ResetDatabase]
         public async Task delete_response_ok_when_product_and_feature_exist_and_feature_toggles_is_not_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -430,6 +606,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task delete_response_ok_when_product_and_feature_exist_and_feature_toggles_is_empty()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -483,6 +666,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task delete_response_not_found_if_specified_feature_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#2")
                .Build();
@@ -500,8 +690,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
         [Fact]
         [ResetDatabase]
-        public async Task get_response_response_if_feature_exist()
+        public async Task get_response_ok_if_feature_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -572,11 +770,41 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .BeTrue();
         }
+        [Fact]
+        [ResetDatabase]
+        public async Task get_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(1))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
 
         [Fact]
         [ResetDatabase]
         public async Task get_response_toggle_details_response_if_feature_exist_and_is_configured()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -658,6 +886,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task get_response_bad_request_if_feature_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -675,8 +910,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task get_response_not_found_if_feature_is_not_positive_int()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: -1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -726,6 +969,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task list_response_ok_and_use_default_skip_take_values()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -781,6 +1031,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task list_response_ok_and_use_specific_skip_take_values()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -831,6 +1088,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task list_response_ok_when_no_data()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -892,8 +1156,58 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
         [Fact]
         [ResetDatabase]
+        public async Task list_response_forbidden_when_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+               .WithName("product#1")
+               .Build();
+
+            var feature1 = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var feature2 = Builders.Feature()
+                .WithName("feature#2")
+                .Build();
+
+            product.Features
+                .Add(feature1);
+
+            product.Features
+               .Add(feature2);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+        [Fact]
+        [ResetDatabase]
         public async Task list_response_ok_when_no_page_data()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -953,8 +1267,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status401Unauthorized);
         }
         [Fact]
+        [ResetDatabase]
         public async Task update_response_badrequest_if_name_is_greater_than_200()
         {
+            var permission = Builders.Permission()
+               .WithAllPrivilegesForDefaultIdentity()
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var updateFlagRequest = new UpdateFlagRequest()
             {
                 Name = new string('c', 201),
@@ -997,6 +1319,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task update_response_badrequest_if_flag_does_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var updateFlagRequest = new UpdateFlagRequest()
             {
                 Name = new string('c', 201),
@@ -1018,6 +1347,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task update_response_ok_when_create_the_feature()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
               .WithName("product#1")
               .Build();
@@ -1064,8 +1400,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task add_response_badrequest_if_name_is_greater_than_200()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var addFlagRequest = new AddFlagRequest()
             {
                 Name = new string('c', 201),
@@ -1085,8 +1429,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task add_response_badrequest_if_description_is_greater_than_2000()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var addFlagRequest = new AddFlagRequest()
             {
                 Name = "name",
@@ -1109,6 +1461,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task add_response_badrequest_if_product_does_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var addFlagRequest = new AddFlagRequest()
             {
                 Name = new string('c', 201),
@@ -1131,6 +1490,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task add_response_badrequest_if_feature_with_the_same_name_already_exist_on_same_product()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -1167,6 +1533,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task add_response_created_if_feature_with_the_same_name_already_exist_on_different_product()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product1 = Builders.Product()
                 .WithName("product#1")
                 .Build();
@@ -1207,6 +1580,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         [ResetDatabase]
         public async Task add_response_ok_when_create_the_feature()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
               .WithName("product#1")
               .Build();
@@ -1230,6 +1610,43 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status201Created);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+              .WithName("product#1")
+              .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var addFlagRequest = new AddFlagRequest()
+            {
+                Name = "feature#1",
+                Description = "description",
+                Enabled = true,
+                ProductId = product.Id
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Flags.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addFlagRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
         }
     }
 }

@@ -5,6 +5,7 @@ using Esquio.UI.Api.Features.Flags.List;
 using Esquio.UI.Api.Features.Flags.Rollback;
 using Esquio.UI.Api.Features.Flags.Rollout;
 using Esquio.UI.Api.Features.Flags.Update;
+using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/flags")]
         public async Task<IActionResult> Add(AddFlagRequest addFlagRequest, CancellationToken cancellationToken = default)
         {
@@ -34,6 +36,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
+        [Authorize(Policies.Write)]
         [Route("api/v1/flags")]
         public async Task<IActionResult> Update(UpdateFlagRequest updateFlagRequest, CancellationToken cancellationToken = default)
         {
@@ -44,6 +47,7 @@ namespace Esquio.UI.Api.Features.Flags
 
 
         [HttpPut]
+        [Authorize(Policies.Write)]
         [Route("api/v1/flags/{featureId:int:min(1)}/rollout")]
         public async Task<IActionResult> Rollout([FromRoute]RolloutFlagRequest rolloutFlagRequest, CancellationToken cancellationToken = default)
         {
@@ -53,6 +57,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
+        [Authorize(Policies.Write)]
         [Route("api/v1/flags/{featureId:int:min(1)}/rollback")]
         public async Task<IActionResult> Rollback([FromRoute]RollbackFlagRequest rollbackFlagRequest, CancellationToken cancellationToken = default)
         {
@@ -62,6 +67,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpDelete]
+        [Authorize(Policies.Write)]
         [Route("api/v1/flags/{featureId:int:min(1)}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request, CancellationToken cancellationToken = default)
         {
@@ -71,6 +77,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/flags/{featureId:int:min(1)}")]
         public async Task<IActionResult> Get([FromRoute]DetailsFlagRequest request, CancellationToken cancellationToken = default)
         {
@@ -85,6 +92,7 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/products/{productId:int:min(1)}/flags")]
         public async Task<IActionResult> List(int productId, [FromQuery]ListFlagRequest request, CancellationToken cancellationToken = default)
         {
