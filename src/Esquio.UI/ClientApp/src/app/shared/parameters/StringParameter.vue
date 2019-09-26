@@ -25,26 +25,15 @@ import { InputText } from '~/shared';
 export default class extends Vue {
   public name = 'StringParameter';
   public value = null;
-  private lastValue: string;
 
   @Prop({ required: true }) options: any;
 
   public created(): void {
     this.value = this.options.value;
-    this.lastValue = this.value;
   }
 
   public onBlurInput(value: string): void {
-    this.emitChange(value);
-  }
-
-  private emitChange(value: string): void {
-    if (value === this.lastValue) {
-      return;
-    }
-
     this.$emit('change', value);
-    this.lastValue = value;
   }
 }
 </script>

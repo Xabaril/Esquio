@@ -15,6 +15,7 @@ import { default as DateParameter } from './DateParameter.vue';
 @Component
 export default class extends Vue {
   public name = 'Parameter';
+  private lastValue = null;
   private components = {
     EsquioString: StringParameter,
     EsquioPercentage: PercentageParameter,
@@ -24,6 +25,10 @@ export default class extends Vue {
 
   @Prop({ required: true, type: String}) type: ParameterDetailType;
   @Prop({ default: {}, type: Object}) options: any;
+
+  public created(): void {
+    this.lastValue = this.options ? this.options.value : null;
+  }
 
   public get selectedComponent(): Vue {
     const [type] = Object.entries(ParameterDetailType).find(([key, value]) => {
@@ -44,7 +49,16 @@ export default class extends Vue {
   }
 
   public onChangeParameterValue(value): void {
+    this.emitValue(value);
+  }
+
+  private emitValue(value): void {
+    if (value === this.lastValue) {
+      return;
+    }
+
     this.$emit('change', value);
+    this.lastValue = value;
   }
 }
 </script>
