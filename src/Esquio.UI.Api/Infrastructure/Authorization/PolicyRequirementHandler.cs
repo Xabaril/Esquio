@@ -25,8 +25,6 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
         {
             if (context.User != null && context.User.Identity.IsAuthenticated)
             {
-                //TODO: this hack is not so clear.. the assumption name is a trick
-
                 if (!context.User.IsBearer())
                 {
                     context.Succeed(requirement);
