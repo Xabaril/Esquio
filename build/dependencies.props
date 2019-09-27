@@ -17,11 +17,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>1.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>1.0.0$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>1.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>1.0.0$(VersionSuffix)</esquioconfigurationstore>
-    <esquioentityframeworkstore>1.0.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquio>1.1.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>1.1.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>1.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
   </PropertyGroup>
   
   <PropertyGroup Label="Package Dependencies">
