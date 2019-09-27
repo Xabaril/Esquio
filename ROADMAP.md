@@ -5,6 +5,8 @@
 
 - Fine grained fallback service that enable fallbacservice request delegate for all or specific endpoints.
 - Add entropy on GraduallRollout to prevent scenarios when the "partitioner value" is the same for different features with the same toggle.
+- Add new HeaderValueToggle
+- Make our partitioner plugable
 - Improve http api with new features.
 - Enable pagination on UI.
 - Enable tag filtering for flags on UI.
