@@ -4,6 +4,7 @@
       class="form-group col-md-6"
       v-model="value"
       id="value_name"
+      @blur="onBlurInput"
       :label="$t('parameters.string.valueName')"
       validators="required|min:3"
       :help-label="$t('parameters.string.valueHelp')"
@@ -31,9 +32,8 @@ export default class extends Vue {
     this.value = this.options.value;
   }
 
-  @Watch('value')
-  onChangeValue(nextValue, prevValue) {
-    this.$emit('change', this.value);
+  public onBlurInput(value: string): void {
+    this.$emit('change', value);
   }
 }
 </script>
