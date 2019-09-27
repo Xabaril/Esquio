@@ -8,19 +8,24 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Toggles
 {
     [DesignType(Description = "Toggle that is active depending on the session identifier bucket and the percentage selected.")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType =EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
     public class GradualRolloutSessionToggle
         : IToggle
     {
         internal const string Percentage = nameof(Percentage);
-        internal const int Partitions = 100;
 
+        private readonly IValuePartitioner _partitioner;
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<GradualRolloutSessionToggle> _logger;
 
-        public GradualRolloutSessionToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor, ILogger<GradualRolloutSessionToggle> logger)
+        public GradualRolloutSessionToggle(
+            IValuePartitioner partitioner,
+            IRuntimeFeatureStore featureStore,
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<GradualRolloutSessionToggle> logger)
         {
+            _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -43,7 +48,8 @@ namespace Esquio.AspNetCore.Toggles
                             .Session
                             .Id;
 
-                        var assignedPartition = Partitioner.ResolveToLogicalPartition(sessionId, Partitions);
+                        var assignedPartition = _partitioner.ResolvePartition(sessionId);
+
                         return assignedPartition <= percentage;
                     }
                     catch (InvalidOperationException)

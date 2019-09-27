@@ -16,10 +16,15 @@ namespace Esquio.Toggles
         internal const int Partitions = 100;
 
         private readonly IUserNameProviderService _userNameProviderService;
+        private readonly IValuePartitioner _partitioner;
         private readonly IRuntimeFeatureStore _featureStore;
 
-        public GradualRolloutUserNameToggle(IUserNameProviderService userNameProviderService, IRuntimeFeatureStore featureStore)
+        public GradualRolloutUserNameToggle(
+            IValuePartitioner partitioner,
+            IUserNameProviderService userNameProviderService,
+            IRuntimeFeatureStore featureStore)
         {
+            _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
             _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));
         }
@@ -37,7 +42,7 @@ namespace Esquio.Toggles
                     var currentUserName = await _userNameProviderService
                         .GetCurrentUserNameAsync() ?? AnonymousUser;
 
-                    var assignedPartition = Partitioner.ResolveToLogicalPartition(currentUserName, Partitions);
+                    var assignedPartition = _partitioner.ResolvePartition(currentUserName, partitions: 100);
 
                     return assignedPartition <= percentage;
                 }

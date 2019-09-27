@@ -16,13 +16,17 @@ namespace Esquio.AspNetCore.Toggles
 
         internal const string ClaimType = nameof(ClaimType);
         internal const string Percentage = nameof(Percentage);
-        internal const int Partitions = 100;
 
+        private readonly IValuePartitioner _partitioner;
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GradualRolloutClaimValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public GradualRolloutClaimValueToggle(
+            IValuePartitioner partitioner,
+            IRuntimeFeatureStore featureStore,
+            IHttpContextAccessor httpContextAccessor)
         {
+            _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
@@ -33,7 +37,7 @@ namespace Esquio.AspNetCore.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            if ( Double.TryParse(data.Percentage.ToString(), out double percentage))
+            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
             {
                 string claimType = data.ClaimType?.ToString();
 
@@ -47,7 +51,7 @@ namespace Esquio.AspNetCore.Toggles
                     {
                         var value = user.FindFirst(claimType)?.Value ?? NO_CLAIMTYPE_DEFAULT_VALUE;
 
-                        var assignedPartition = Partitioner.ResolveToLogicalPartition(value, Partitions);
+                        var assignedPartition = _partitioner.ResolvePartition(value);
                         return assignedPartition <= percentage;
                     }
                 }

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -42,6 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
+            builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
             var listener = new DiagnosticListener("Esquio");
             

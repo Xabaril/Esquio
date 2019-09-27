@@ -18,13 +18,16 @@ namespace Esquio.AspNetCore.Toggles
 
         internal const string HeaderName = nameof(HeaderName);
         internal const string Percentage = nameof(Percentage);
-        internal const int Partitions = 100;
 
+        private readonly IValuePartitioner _partitioner;
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GradualRolloutHeaderValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public GradualRolloutHeaderValueToggle(IValuePartitioner partitioner,
+            IRuntimeFeatureStore featureStore, 
+            IHttpContextAccessor httpContextAccessor)
         {
+            _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
@@ -46,7 +49,7 @@ namespace Esquio.AspNetCore.Toggles
 
                     var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
 
-                    var assignedPartition = Partitioner.ResolveToLogicalPartition(headerValue, Partitions);
+                    var assignedPartition = _partitioner.ResolvePartition(headerValue);
                     return assignedPartition <= percentage;
                 }
             }

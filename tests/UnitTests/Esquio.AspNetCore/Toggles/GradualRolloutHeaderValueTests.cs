@@ -1,4 +1,5 @@
-﻿using Esquio.AspNetCore.Toggles;
+﻿using Esquio.Abstractions;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -14,22 +15,40 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class gradualrolloutheadervalue_should
     {
         [Fact]
+        public void throw_if_partitioner_is_null()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var store = new DelegatedValueFeatureStore((_, __) => null);
+                var accessor = new FakeHttpContextAccesor();
+                var partitioner = new DefaultValuePartitioner();
+
+                new GradualRolloutHeaderValueToggle(null, store, accessor);
+            });
+        }
+
+
+        [Fact]
         public void throw_if_store_service_is_null()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var accessor = new FakeHttpContextAccesor();
-                new GradualRolloutHeaderValueToggle(null, accessor);
+                var partitioner = new DefaultValuePartitioner();
+
+                new GradualRolloutHeaderValueToggle(partitioner, null, accessor);
             });
         }
 
         [Fact]
         public void throw_if_httpcontextaccessor_is_null()
         {
-            Assert.Throws<ArgumentNullException>(()=>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var store = new DelegatedValueFeatureStore((_, __) => null);
-                new GradualRolloutHeaderValueToggle(store, null);
+                var partitioner = new DefaultValuePartitioner();
+
+                new GradualRolloutHeaderValueToggle(partitioner, store, null);
             });
         }
 
@@ -51,7 +70,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.Request.Headers.Add(new KeyValuePair<string, StringValues>("header-name", "header-value"));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(Constants.FeatureName);
 
@@ -76,7 +97,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             do
             {
                 header_value = Guid.NewGuid().ToString();
-                var partition = global::Esquio.Abstractions.Partitioner.ResolveToLogicalPartition(header_value, 100);
+                var partition = new DefaultValuePartitioner().ResolvePartition(header_value);
 
                 if (partition <= percentage)
                 {
@@ -100,7 +121,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.Request.Headers.Add(new KeyValuePair<string, StringValues>("header-name", header_value));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(Constants.FeatureName);
 
@@ -125,7 +148,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.Request.Headers.Add(new KeyValuePair<string, StringValues>("header-name", "header-value"));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(Constants.FeatureName);
 
