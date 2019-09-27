@@ -1,4 +1,5 @@
 using Esquio;
+using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,7 +82,7 @@ namespace WebApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {
             //used to test Esquio DiagnosticSourceEvents
-            //listener.Subscribe(new EsquioObserver());
+            listener.Subscribe(new EsquioObserver());
 
             if (env.IsDevelopment())
             {
@@ -126,11 +127,12 @@ namespace WebApp
 
             public void OnNext(KeyValuePair<string, object> item)
             {
-                var isEndEvent = item.Key.Contains(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME);
+                var begin = item.Key.Contains(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME);
 
-                if (isEndEvent)
+                if (begin)
                 {
-                    var value = item.Value;
+                    var value = item.Value as FeatureEvaluatingEventData;
+
                 }
             }
         }
