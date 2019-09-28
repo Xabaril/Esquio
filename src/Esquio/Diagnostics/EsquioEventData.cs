@@ -129,7 +129,7 @@ namespace Esquio.Diagnostics
         /// <summary>
         /// The product name.
         /// </summary>
-        public string Product { get;private set; }
+        public string Product { get; private set; }
 
         /// <summary>
         /// If feature evaluation result is enabled.
@@ -149,13 +149,102 @@ namespace Esquio.Diagnostics
         /// <param name="product">The product name.</param>
         /// <param name="enabled">Evaluation result.</param>
         /// <param name="elapsed">Evaluation elapsed time.</param>
-        public FeatureEvaluatedEventData(Guid correlationId,string feature, string product, bool enabled, long elapsed)
+        public FeatureEvaluatedEventData(Guid correlationId, string feature, string product, bool enabled, long elapsed)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = product;
             Enabled = enabled;
             Elapsed = elapsed;
+        }
+    }
+
+    /// <summary>
+    /// Event data class used on Esquio <see cref="System.Diagnostics.DiagnosticListener"/> listener.
+    /// </summary>
+    public sealed class ToggleEvaluatingEventData
+    {
+        /// <summary>
+        /// Toggle evaluation correlation id.
+        /// </summary>
+        public Guid CorrelationId { get; private set; }
+
+        /// <summary>
+        /// The feature name.
+        /// </summary>
+        public string Feature { get; private set; }
+
+        /// <summary>
+        /// The product name.
+        /// </summary>
+        public string Product { get; private set; }
+
+        /// <summary>
+        /// The toggle type executed.
+        /// </summary>
+        public string ToggleType { get; set; }
+
+        /// <summary>
+        /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
+        /// </summary>
+        /// <param name="correlationId">The feature evaluation correlation id.</param>
+        /// <param name="feature">The feature name.</param>
+        /// <param name="product">The product name.</param>
+        /// <param name="toggleType">The toggle type executed.</param>
+        public ToggleEvaluatingEventData(Guid correlationId, string feature, string productName, string toggleType)
+        {
+            CorrelationId = correlationId;
+            Feature = feature;
+            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            ToggleType = toggleType;
+        }
+    }
+
+    /// <summary>
+    /// Event data class used on Esquio <see cref="System.Diagnostics.DiagnosticListener"/> listener.
+    /// </summary>
+    public sealed class ToggleEvaluatedEventData
+    {
+        /// <summary>
+        /// Toggle evaluation correlation id.
+        /// </summary>
+        public Guid CorrelationId { get; private set; }
+
+        /// <summary>
+        /// The feature name.
+        /// </summary>
+        public string Feature { get; private set; }
+
+        /// <summary>
+        /// The product name.
+        /// </summary>
+        public string Product { get; private set; }
+
+        /// <summary>
+        /// The toggle type executed.
+        /// </summary>
+        public string ToggleType { get; set; }
+
+        /// <summary>
+        /// The toggle activation state.
+        /// </summary>
+        public bool Active { get; set; }
+
+        /// <summary>
+        /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
+        /// </summary>
+        /// <param name="correlationId">The feature evaluation correlation id.</param>
+        /// <param name="feature">The feature name.</param>
+        /// <param name="product">The product name.</param>
+        /// <param name="toggleType">The toggle type executed.</param>
+        /// <param name="active"`>The activation toggle state.</param>
+        public ToggleEvaluatedEventData(Guid correlationId, string feature, string productName, string toggleType, bool active)
+        {
+            CorrelationId = correlationId;
+            Feature = feature;
+            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            ToggleType = toggleType;
+            Active = active;
         }
     }
 }

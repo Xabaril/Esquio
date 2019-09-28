@@ -77,12 +77,12 @@ namespace WebApp
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
                 {
                     setup.LoginPath = "/account/login";
-                });            
+                });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {
             //used to test Esquio DiagnosticSourceEvents
-            listener.Subscribe(new EsquioObserver());
+            //-> listener.Subscribe(new EsquioObserver());
 
             if (env.IsDevelopment())
             {
@@ -127,13 +127,7 @@ namespace WebApp
 
             public void OnNext(KeyValuePair<string, object> item)
             {
-                var begin = item.Key.Contains(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME);
-
-                if (begin)
-                {
-                    var value = item.Value as FeatureEvaluatingEventData;
-
-                }
+                var (key, value) = item;
             }
         }
     }
