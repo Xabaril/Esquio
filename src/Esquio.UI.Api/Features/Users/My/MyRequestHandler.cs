@@ -1,6 +1,8 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,10 +14,12 @@ namespace Esquio.UI.Api.Features.Users.My
         : IRequestHandler<MyRequest, MyResponse>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<MyRequestHandler> _logger;
 
-        public MyRequestHandler(StoreDbContext storeDbContext)
+        public MyRequestHandler(StoreDbContext storeDbContext,ILogger<MyRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<MyResponse> Handle(MyRequest request, CancellationToken cancellationToken)
         {
@@ -31,6 +35,7 @@ namespace Esquio.UI.Api.Features.Users.My
                     managementPermission: permission.ManagementPermission);
             }
 
+            Log.MyIsNotAuthorized(_logger, request.SubjectId);
             return MyResponse.UnAuthorized();
         }
     }

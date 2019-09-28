@@ -77,6 +77,20 @@ namespace Esquio.UI.Api.Diagnostics
             _authorizationFailClaimIsNotPresent(logger, claimType, null);
         }
 
+        public static void SubjectIdAlreadyExist(ILogger logger, string subjectId)
+        {
+            _subjectIdAlreadyExist(logger, subjectId,null);
+        }
+
+        public static void MyIsNotAuthorized(ILogger logger, string subjectId)
+        {
+            _subjectIdAlreadyExist(logger, subjectId, null);
+        }
+        public static void SubjectIdDoesNotExist(ILogger logger, string subjectId)
+        {
+            _subjectIdDoesNotExist(logger, subjectId, null);
+        }
+
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
@@ -137,5 +151,17 @@ namespace Esquio.UI.Api.Diagnostics
            LogLevel.Error,
            EventIds.AuthorizationFailedClaimIsNotPresent,
            "Authorization failed because the selected claim {claimType} is not present.");
+        private static readonly Action<ILogger, string, Exception> _subjectIdAlreadyExist = LoggerMessage.Define<string>(
+           LogLevel.Warning,
+           EventIds.SubjectIdAlreadyExist,
+           "The subject id {subjectId} already exist on the store.");
+        private static readonly Action<ILogger, string, Exception> _myIsNotAuthorized = LoggerMessage.Define<string>(
+           LogLevel.Warning,
+           EventIds.SubjectIdAlreadyExist,
+           "The current user with subjectId {subjectId} is not authorized on the Esquio UI.");
+        private static readonly Action<ILogger, string, Exception> _subjectIdDoesNotExist = LoggerMessage.Define<string>(
+           LogLevel.Warning,
+           EventIds.SubjectIdDoesNotExist,
+           "The subject id {subjectId} does not exist on the store.");
     }
 }

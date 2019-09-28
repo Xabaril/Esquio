@@ -1,4 +1,7 @@
-﻿using Esquio.UI.Api.Features.Users.My;
+﻿using Esquio.UI.Api.Features.Users.Add;
+using Esquio.UI.Api.Features.Users.My;
+using Esquio.UI.Api.Features.Users.Update;
+using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +41,24 @@ namespace Esquio.UI.Api.Features.Users
             }
 
             return Forbid();
+        }
+
+        [HttpPost]
+        [Authorize(Policies.Management)]
+        [Route("api/v1/users/permission")]
+        public async Task<IActionResult> Add([FromBody]AddPermissionRequest request, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(request, cancellationToken);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Authorize(Policies.Management)]
+        [Route("api/v1/users/permission")]
+        public async Task<IActionResult> Update([FromBody]UpdatePermissionRequest request, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(request, cancellationToken);
+            return Ok();
         }
     }
 }
