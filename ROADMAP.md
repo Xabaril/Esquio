@@ -8,12 +8,13 @@
 - Add new HeaderValueToggle
 - Make our partitioner plugable
 - Improve http api with new features.
+- Added Typed EventData instead of anonymous type on DiagnosticSource events.
 - Enable pagination on UI.
 - Enable tag filtering for flags on UI.
 - Enable authorization on UI with 3 levels of privileges
     - Read permission ( can read data ).
     - Write permission ( can write on database ).
-    - Management permission ( can generate apikeys and add new user / permissions ).
+    - Management permission ( can generate apikeys and add new user permissions. ).
 
 ## Esquio 1.0 released on 2019, September 24
 
