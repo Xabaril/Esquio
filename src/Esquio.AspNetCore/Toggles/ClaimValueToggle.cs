@@ -39,7 +39,7 @@ namespace Esquio.AspNetCore.Toggles
 
             if (claimType != null
                 &&
-                ClaimValues != null)
+                allowedValues != null)
             {
                 var user = _httpContextAccessor.HttpContext.User;
                 if (user != null && user.Identity.IsAuthenticated)
