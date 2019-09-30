@@ -1,5 +1,3 @@
-using Esquio;
-using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Services;
 
@@ -81,9 +77,6 @@ namespace WebApp
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {
-            //used to test Esquio DiagnosticSourceEvents
-            //-> listener.Subscribe(new EsquioObserver());
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -109,26 +102,6 @@ namespace WebApp
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
             });
-        }
-
-        /// <summary>
-        /// Observer used to test Esquio DiagnosticSource events
-        /// </summary>
-        private class EsquioObserver
-            : IObserver<KeyValuePair<string, object>>
-        {
-            public void OnCompleted()
-            {
-            }
-
-            public void OnError(Exception error)
-            {
-            }
-
-            public void OnNext(KeyValuePair<string, object> item)
-            {
-                var (key, value) = item;
-            }
         }
     }
 }

@@ -44,10 +44,11 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
             var listener = new DiagnosticListener("Esquio");
-            
-            builder.Services.TryAddSingleton(listener);
-            builder.Services.TryAddSingleton<DiagnosticSource>(listener);
-            builder.Services.TryAddTransient<EsquioDiagnostics>();
+
+            //builder.Services.TryAddSingleton(listener);
+            builder.Services.AddSingleton<DiagnosticListener>(listener);
+            builder.Services.AddSingleton<DiagnosticSource>(listener);
+            builder.Services.AddSingleton<EsquioDiagnostics>();
 
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);
 
