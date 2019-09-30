@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+    <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
+    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
+    <Description>MiniProfiler profiling for Esquio.For more information see http://github.com/Xabaril/Esquio </Description>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;MiniProfiler;MiniProfier.Esquio</PackageTags>
+    <Version>$(esquiominiprofiler)</Version>
+    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+    <Company>$(Company)</Company>
+    <Authors>$(Authors)</Authors>
+    <PackageId>MiniProfiler.Esquio</PackageId>
+    <PackageVersion>$(esquiominiprofiler)</PackageVersion>
+    <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MiniProfiler.Shared" Version="$(miniprofilershared)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+</Project>
