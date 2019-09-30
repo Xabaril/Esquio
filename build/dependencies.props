@@ -61,6 +61,7 @@
 
   <PropertyGroup Label="Tools Dependencies">
     <miniprofilershared>4.1.0</miniprofilershared>
+    <miniprofiler>4.1.0</miniprofiler>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
