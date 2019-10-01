@@ -39,7 +39,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Api", "src\Esquio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "samples\ConsoleApp\ConsoleApp.csproj", "{EB193805-A859-4D3D-8E19-A4EFAD60761B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.AspNetCore.ApplicationInsightProcessor", "src\Esquio.AspNetCore.ApplicationInsightProcessor\Esquio.AspNetCore.ApplicationInsightProcessor.csproj", "{5493D18A-430B-4AA8-9C2C-3830931AADF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.AspNetCore.ApplicationInsightProcessor", "src\Esquio.AspNetCore.ApplicationInsightProcessor\Esquio.AspNetCore.ApplicationInsightProcessor.csproj", "{5493D18A-430B-4AA8-9C2C-3830931AADF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{89B085DE-0270-49E9-8AC7-1B1D7119E962}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniProfiler.Esquio", "tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj", "{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +99,10 @@ Global
 		{5493D18A-430B-4AA8-9C2C-3830931AADF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5493D18A-430B-4AA8-9C2C-3830931AADF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5493D18A-430B-4AA8-9C2C-3830931AADF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +120,7 @@ Global
 		{7DB17B78-C401-4CD5-AAE1-38D7BF8207F4} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 		{EB193805-A859-4D3D-8E19-A4EFAD60761B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{5493D18A-430B-4AA8-9C2C-3830931AADF5} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
+		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}
