@@ -3,9 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>dotnet-Worker-356F47A7-23C2-4B3D-B740-C1B5340C732C</UserSecretsId>
-
-    <!--We need this for non vs16 preview, remove on release-->
-    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>

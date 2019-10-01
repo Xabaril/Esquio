@@ -3,9 +3,6 @@
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <IsPackable>false</IsPackable>
-
-    <!--We need this for non vs16 preview, remove on release-->
-    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +31,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(microsoftentityframeworkcoresqlite)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(microsoftentityframeworkcoreinmemory)" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(npgsqlentityframeworkcorepostgresql)" />
   </ItemGroup>
 
   <ItemGroup>

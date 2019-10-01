@@ -3,36 +3,6 @@ Esquio toggles
 
 A **Toggle** is code which defines when a feature is enabled or not. Each feature can use one or multiple toggles at the same time, but never more than one toggle of the same type. In Esquio you have many different toggles out of the box, and of course you can write your custom toggles.
 
-OnToggle
-^^^^^^^^
-One of the most straightforward toggle, which basically means that the feature should be enabled to everyone::
-
-                {
-                    "Name": "AnimationsMatch",
-                    "Enabled": true,
-                    "Toggles": [
-                        {
-                            "Type": "Esquio.Toggles.OnToggle"
-                        }
-                    ]
-                }
-
-
-
-OffToggle
-^^^^^^^^^
-One of the most straightforward toggle, which basically means that the feature should be disabled to everyone::
-
-                {
-                    "Name": "AnimationsMatch",
-                    "Enabled": true,
-                    "Toggles": [
-                        {
-                            "Type": "Esquio.Toggles.OffToggle"
-                        }
-                    ]
-                }
-
 UserNameToggle
 ^^^^^^^^^^^^^^
 This toggle allows you to enabled features to a specific set of logged in users.

@@ -1,9 +1,8 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
-    <NetStandardTargetVersion>netstandard2.0</NetStandardTargetVersion>
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.0</NetCoreTargetVersion>
-    <NetTestSdk>16.2.0</NetTestSdk>
+    <NetTestSdk>16.3.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -26,28 +25,28 @@
   </PropertyGroup>
   
   <PropertyGroup Label="Package Dependencies">
-    <microsoftcsharp>4.6.0-rc1.19456.4 </microsoftcsharp>
-    <systemdiagnosticsdiagnosticsource>4.6.0-rc1.19456.4</systemdiagnosticsdiagnosticsource>
+    <microsoftcsharp>4.6.0 </microsoftcsharp>
+    <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
 
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0-rc1.19457.4</microsoftaspnetcoremvcnewtonsoftjson>
-    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0-rc1.19457.4</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0</microsoftaspnetcoremvcnewtonsoftjson>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
     
-    <microsoftextensionsdependencyinjectionabstractions>3.0.0-rc1.19456.10</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.0.0-rc1.19456.10</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.0.0-rc1.19456.10</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.0.0-rc1.19456.10</microsoftextensionsconfigurationabstractions> 
-    <microsoftextensionsconfigurationbinder>3.0.0-rc1.19456.10</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.0.0-rc1.19456.10</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.0.0-rc1.19456.10 </microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.0.0-rc1.19456.10</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.0.0-rc1.19456.10</microsoftextensionsloggingconsole>
+    <microsoftextensionsdependencyinjectionabstractions>3.0.0</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.0.0</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.0.0</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationabstractions>3.0.0</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationbinder>3.0.0</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.0.0</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.0.0</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.0.0</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.0.0</microsoftextensionsloggingconsole>
 
-    <microsoftentityframeworkcore>3.0.0-rc1.19456.14</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.0.0-rc1.19456.14</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.0.0-rc1.19456.14</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.0.0-rc1.19456.14</microsoftentityframeworkcoredesign>
+    <microsoftentityframeworkcore>3.0.0</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.0.0</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.0.0</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.0.0</microsoftentityframeworkcoredesign>
 
-    <serilogextensionslogging>2.0.4</serilogextensionslogging>
+    <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
 
@@ -60,12 +59,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.0.0-rc1.19456.10</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.0.0-rc1.19457.4</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.0.0</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.0.0</microsoftaspnetcoretesthost>
     
-    <microsoftentityframeworkcoreinmemory>3.0.0-rc1.19456.14</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.0.0-rc1.19456.14</microsoftentityframeworkcoresqlite>
-    <npgsqlentityframeworkcorepostgresql>3.0.0-preview9</npgsqlentityframeworkcorepostgresql>
+    <microsoftentityframeworkcoreinmemory>3.0.0</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.0.0</microsoftentityframeworkcoresqlite>
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>

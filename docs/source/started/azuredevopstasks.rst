@@ -1,5 +1,5 @@
 Getting started with Esquio Azure DevOps tasks
-============================================
+==============================================
 
 In this article, we are going to see how to configure Esquio Azure DevOps tasks for your pipelines. 
 
@@ -19,6 +19,20 @@ Once installed, you will have new elements in your Azure DevOps:
 Prerequisites
 ^^^^^^^^^^^^^
 To be able to use Esquio tasks, we will need to setup a Esquio `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_ and to configure it you need to create an Esquio API key, to use it with the Esquio Service Connection.
+
+Create Esquio API key
+^^^^^^^^^^^^^^^^^^^^^
+First of all you need to create an Esquio API key to create the `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_ it is easily created with the Esquio UI.
+
+Open your current deployment of Esquio UI url in a browser, and once logged-in, click on your user name in the upper right corner.
+
+.. image:: ../images/user-private-token-menu.png
+
+Click on *Get Private token* and you will receive a confirmation window, and your token will be copied to the clipboard, so note it to paste it when configuring the Esquio Service Connection
+
+.. image:: ../images/token-confirmation.png
+
+Now you can continue to configure the `Service Connection  <https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml>`_.
 
 Setup Esquio Service Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -42,7 +56,7 @@ Now you have setup the Esquio Connection we will need to use for the tasks.
 
 Esquio rollout task
 ^^^^^^^^^^^^^^^^^^^
-This task allow us to set a :doc:`OnToggle <../toggles/esquio>` for a feature.
+This task allow us to enable a feature to everyone cleaning all the toggles.
 
 If you are creating your Azure Pipelines with *YAML* it is better to use the *YAML assistant* as it will allow you to use the datasources for the picklists.
 
@@ -55,10 +69,12 @@ To setup the rollout task, look for **Rollout feature with Esquio** task:
 We will configure three parameters:
 
     * **Esquio Service Endpoint:** Select the previously created *Esquio Service Connection*.
-    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup the *OnToggle*.
-    * **Esquio feature:** Select, from the list of features, the one to setup the *OnToggle*.
+    * **Esquio Product:** From the list of products configured in Esquio.
+    * **Esquio feature:** Select, from the list of features.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: esquio-rollout-feature@1
           inputs:
@@ -69,7 +85,7 @@ The final YAML should be (with different ids) like this::
 If you are using the classic pipelines (the visual ones), the setup is exactly the same.
 
 Esquio rollback task
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 This task allow us to set a :doc:`OffToggle <../toggles/esquio>` for a feature, thus disabling it.
 
@@ -87,7 +103,9 @@ We will configure three parameters:
     * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup the *OffToggle*.
     * **Esquio feature:** Select, from the list of features, the one to setup the *OffToggle*.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: esquio-rollback-feature@1
           inputs:
@@ -113,13 +131,15 @@ To setup the rollout task, look for **Set toggle parameter with Esquio** task an
 We will configure six parameters:
 
     * **Esquio Service Endpoint:** Select the previously created *Esquio Service Connection*.
-    * **Esquio Product:** From the list of products configured in Esquio, select the one with the feature you want to setup de *OnToggle*.
+    * **Esquio Product:** From the list of products configured in Esquio.
     * **Esquio feature:** Select, from the list of features, the one with the parameter you want to set the value.
     * **Esquio toggle:** Select, from the list of toggles, the one with the parameter you want to set the value.
     * **Esquio parameter:** Select, from the list of parameters for the previously selected toggle, the one you want to set the value.
     * **Esquio parameter value:** Introduce manually the value you want to setup for the parameter.
 
-The final YAML should be (with different ids) like this::
+The final YAML should be (with different ids) like this:
+
+.. code-block:: yaml
 
         - task: set-toggle-parameter@1
           inputs:

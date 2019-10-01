@@ -13,9 +13,6 @@
     <PackageVersion>$(esquioaspnetcore)</PackageVersion>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
-
-    <!--We need this for non vs16 preview, remove on release-->
-    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
