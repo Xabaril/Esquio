@@ -12,7 +12,9 @@ namespace Esquio.Toggles
     public class FromToToggle
         : IToggle
     {
-        internal const string FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
+        internal const string DEFAULT_FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";
+        internal const string SINGLE_DIGIT_FORMAT_DATE = "yyyy-M-d H:m:s";
+
         internal const string From = nameof(From);
         internal const string To = nameof(To);
 
@@ -29,8 +31,11 @@ namespace Esquio.Toggles
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
-            var fromDate = DateTime.ParseExact(data.From.ToString(), FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            var toDate = DateTime.ParseExact(data.To.ToString(), FORMAT_DATE, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var parseExactFormats = new string[] { DEFAULT_FORMAT_DATE, SINGLE_DIGIT_FORMAT_DATE };
+
+            var fromDate = DateTime.ParseExact(data.From.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var toDate = DateTime.ParseExact(data.To.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+
             var now = DateTime.UtcNow;
 
             if (now > fromDate && now < toDate)

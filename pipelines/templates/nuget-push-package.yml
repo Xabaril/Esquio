@@ -1,0 +1,11 @@
+parameters:
+    nugetServiceConnection: ''
+    pkgPath: ''
+    nugetApiKey: ''
+steps:
+
+- task: NuGetCommand@2
+  displayName: 'push package to Release NuGet Feed'
+  inputs:
+    command: 'custom'
+    arguments: 'push ${{ parameters.pkgPath }} -SkipDuplicate -src https://api.nuget.org/v3/index.json -ApiKey ${{ parameters.nugetApiKey }} -NoSymbols'
