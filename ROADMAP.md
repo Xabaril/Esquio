@@ -16,6 +16,11 @@
     - Write permission ( can write on database ).
     - Management permission ( can generate apikeys and add new user permissions. ).
 
+## Esquio 1.0.1 released on 2019, October 2
+
+- Esquio 1.0.1
+    - Fixing bug on FromToToggle when use one digit on month, day or hour.
+
 ## Esquio 1.0 released on 2019, September 24
 
 - Esquio 1.0
@@ -23,4 +28,3 @@
 - Esquio.ConfigurationStore 1.0
 - Esquio.EntityFrameworkStore 1.0
 - MVP for Esquio.UI
-
