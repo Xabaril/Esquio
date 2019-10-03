@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace MiniProfiler.Esquio
 {
-    public class EsquioDiagnosticListener
+    internal class EsquioDiagnosticListener
         : IMiniProfilerDiagnosticListener
     {
 
