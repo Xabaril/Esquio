@@ -1,5 +1,5 @@
 <template>
-  <div class="percentage_parameter">
+  <div class="percentage_parameter" data-testid="percentage-parameter">
     <div class="percentage_parameter-container">
       <div class="percentage_parameter-slider">
         <vue-slider v-model="value" :min="0" :max="100" :tooltip-formatter="formatter"></vue-slider>

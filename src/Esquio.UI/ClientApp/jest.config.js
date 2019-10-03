@@ -12,11 +12,9 @@ module.exports = {
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest'
   },
-  transformIgnorePatterns: [
-    '/node_modules/'
-  ],
+  transformIgnorePatterns: ['node_modules/(?!vue*)'],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^~/(.*)$': '<rootDir>/src/app/$1'
   },
   snapshotSerializers: [
     'jest-serializer-vue'
@@ -24,6 +22,7 @@ module.exports = {
   testMatch: [
     '**/**/*.test.(js|jsx|ts|tsx)|**/tests/unit/specs/*.(js|jsx|ts|tsx)'
   ],
+  setupFiles: ['./tests/unit/vendor.ts'],
   testURL: 'http://localhost/',
   globals: {
     'ts-jest': {
