@@ -1,4 +1,5 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.EntityFrameworkCore.Store.Options;
 using FluentAssertions;
@@ -168,9 +169,10 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
         public EntityFrameworkCoreFeaturesStore Build()
         {
             var loggerFactory = new LoggerFactory();
-            var logger = loggerFactory.CreateLogger<EntityFrameworkCoreFeaturesStore>();
+            var diagnostics = new EsquioEntityFrameworkCoreStoreDiagnostics(loggerFactory);
+
             var dbContext = new StoreDbContext(_options, new StoreOptions());
-            var store = new EntityFrameworkCoreFeaturesStore(dbContext, logger);
+            var store = new EntityFrameworkCoreFeaturesStore(dbContext, diagnostics);
 
             return store;
         }

@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Diagnostics;
+using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -12,10 +13,10 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Mvc
 {
     /// <summary>
-    /// Razor TagHelper for enable or disable  content depending on a feature activation state.
+    /// Razor <see cref="ITagHelper"/> for enable or disable  content depending on a feature evaluation result.
     /// </summary>
     /// <code>
-    /// <![CDATA[<feature names="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
+    /// <![CDATA[<feature names="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></feature>]]>
     /// </code>
     public class FeatureTagHelper
         : TagHelper
@@ -28,7 +29,7 @@ namespace Esquio.AspNetCore.Mvc
         private static readonly char[] FeatureSeparator = new[] { ',' };
 
         private readonly IFeatureService _featuresService;
-        private readonly ILogger<FeatureTagHelper> _logger;
+        private readonly EsquioAspNetCoreDiagnostics _diagnostics;
 
         /// <summary>
         /// A coma separated list of features names to be evaluated.If any feature is not active 
@@ -70,15 +71,15 @@ namespace Esquio.AspNetCore.Mvc
         [ViewContext]
         public ViewContext ViewContext { get; set; }
 
-        public FeatureTagHelper(IFeatureService featuresService, ILogger<FeatureTagHelper> logger)
+        public FeatureTagHelper(IFeatureService featuresService, EsquioAspNetCoreDiagnostics diagnostics)
         {
             _featuresService = featuresService ?? throw new ArgumentNullException(nameof(featuresService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            Log.FeatureTagHelperBegin(_logger, Names, Product);
+            _diagnostics.FeatureTagHelperBegin(Names, Product);
 
             var cancellationToken = ViewContext?
                 .HttpContext?
@@ -111,7 +112,7 @@ namespace Esquio.AspNetCore.Mvc
 
                         if (featureActive)
                         {
-                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
 
                             output.SuppressOutput();
                             return;
@@ -135,7 +136,7 @@ namespace Esquio.AspNetCore.Mvc
 
                         if (!featureActive)
                         {
-                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
 
                             output.SuppressOutput();
                             return;
@@ -159,7 +160,7 @@ namespace Esquio.AspNetCore.Mvc
 
                         if (!featureActive)
                         {
-                            Log.FeatureTagHelperClearContent(_logger, Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
 
                             output.SuppressOutput();
                             return;

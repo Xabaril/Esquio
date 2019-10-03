@@ -25,8 +25,6 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
         {
             AddEsquioProperties(item);
 
-            //continue chain!
-
             if (_next != null)
             {
                 _next.Process(item);

@@ -6,16 +6,18 @@ namespace Esquio.Diagnostics
 {
     internal class EsquioDiagnostics
     {
-        private readonly ILogger<Esquio> _logger;
+        private readonly ILogger _logger;
         private readonly DiagnosticListener _listener;
 
-        public EsquioDiagnostics(DiagnosticListener listener, ILogger<Esquio> logger)
+        public EsquioDiagnostics(DiagnosticListener listener, ILoggerFactory loggerFactory)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
+            _logger = loggerFactory.CreateLogger("Esquio");
             _listener = listener ?? throw new ArgumentNullException(nameof(listener));
         }
 
-        public void BeginFeatureEvaluation(string featureName, string productName)
+        public void BeginFeatureEvaluation(Guid correlationId, string featureName, string productName)
         {
             Log.FeatureServiceProcessingBegin(_logger, featureName, productName);
 
@@ -24,7 +26,7 @@ namespace Esquio.Diagnostics
                 EsquioEventSource.Log.FeatureEvaluationStart();
             }
 
-            var payload = new { Feature = featureName, Product = productName };
+            var payload = new FeatureEvaluatingEventData(correlationId, featureName, productName);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME, payload))
             {
@@ -32,7 +34,7 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void FeatureEvaluationNotFound(string featureName, string productName)
+        public void FeatureEvaluationNotFound(Guid correlationId, string featureName, string productName)
         {
             Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);
 
@@ -42,7 +44,7 @@ namespace Esquio.Diagnostics
                 EsquioEventSource.Log.FeatureEvaluationStop();
             }
 
-            var payload = new { Feature = featureName, Product = productName };
+            var payload = new FeatureNotFoundEventData(correlationId, featureName, productName);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME, payload))
             {
@@ -60,7 +62,7 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void FeatureEvaluationThrow(string featureName, string productName, Exception exception)
+        public void FeatureEvaluationThrow(Guid correlationId, string featureName, string productName, Exception exception)
         {
             Log.FeatureServiceProcessingFail(_logger, featureName, productName, exception);
 
@@ -69,7 +71,7 @@ namespace Esquio.Diagnostics
                 EsquioEventSource.Log.FeatureEvaluationThrow(featureName, productName, exception.ToString());
             }
 
-            var payload = new { Feature = featureName, Product = productName, Exception = exception };
+            var payload = new FeatureThrowEventData(correlationId, featureName, productName, exception);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME, payload))
             {
@@ -77,7 +79,7 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void EndFeatureEvaluation(string featureName, string productName, long elapsedMilliseconds, bool enabled)
+        public void EndFeatureEvaluation(Guid correlationId, string featureName, string productName, long elapsedMilliseconds, bool enabled)
         {
             Log.FeatureServiceProcessingEnd(_logger, featureName, productName, enabled, elapsedMilliseconds);
 
@@ -87,7 +89,7 @@ namespace Esquio.Diagnostics
                 EsquioEventSource.Log.FeatureEvaluationStop();
             }
 
-            var payload = new { Feature = featureName, Product = productName, Enabled = enabled, Elapsed = elapsedMilliseconds };
+            var payload = new FeatureEvaluatedEventData(correlationId, featureName, productName, enabled, elapsedMilliseconds);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME, payload))
             {
@@ -95,14 +97,14 @@ namespace Esquio.Diagnostics
             }
         }
 
-        public void BeginTogglevaluation(string featureName, string productName, string toggle)
+        public void BeginTogglevaluation(Guid correlationId, string featureName, string productName, string toggleType)
         {
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStart();
             }
 
-            var payload = new { Feature = featureName, Product = productName, Toggle = toggle };
+            var payload = new ToggleEvaluatingEventData(correlationId, featureName, productName, toggleType);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME, payload))
             {
@@ -123,14 +125,14 @@ namespace Esquio.Diagnostics
             Log.FeatureServiceToggleIsNotActive(_logger, toggle, featureName);
         }
 
-        public void EndTogglevaluation(string featureName, string productName, string toggle, bool active)
+        public void EndTogglevaluation(Guid correlationId, string featureName, string productName, string toggleType, bool active)
         {
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStop();
             }
 
-            var payload = new { Feature = featureName, Product = productName, Toggle = toggle, Active = active };
+            var payload = new ToggleEvaluatedEventData(correlationId, featureName, productName, toggleType, active);
 
             if (_listener.IsEnabled(EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME, payload))
             {

@@ -17,11 +17,12 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>1.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>1.0.0$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>1.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>1.0.0$(VersionSuffix)</esquioconfigurationstore>
-    <esquioentityframeworkstore>1.0.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquio>1.1.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>1.1.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>1.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
   </PropertyGroup>
   
   <PropertyGroup Label="Package Dependencies">
@@ -56,6 +57,11 @@
     <newtonsoftjson>12.0.2</newtonsoftjson>
     <microsoftapplicationinsights>2.10.0</microsoftapplicationinsights>
     <microsoftapplicationinsightsaspnetcore>2.7.1</microsoftapplicationinsightsaspnetcore>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Tools Dependencies">
+    <miniprofilershared>4.1.0</miniprofilershared>
+    <miniprofiler>4.1.0</miniprofiler>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">

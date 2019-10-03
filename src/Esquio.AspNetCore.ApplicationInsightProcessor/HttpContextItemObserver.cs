@@ -1,7 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -15,12 +14,12 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor
         internal const string EsquioItemKeyName = "Esquio";
 
         private readonly IHttpContextAccessor _httpContextAccesor;
-        private readonly ILogger<HttpContextItemObserver> _logger;
+        private readonly EsquioAspNetCoreApplicationInsightDiagnostics _diagnostics;
 
-        public HttpContextItemObserver(IHttpContextAccessor httpContextAccesor, ILogger<HttpContextItemObserver> logger)
+        public HttpContextItemObserver(IHttpContextAccessor httpContextAccesor, EsquioAspNetCoreApplicationInsightDiagnostics diagnostics)
         {
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
         public Task OnNext(string featureName, string productName = null, bool enabled = false, CancellationToken cancellationToken = default)
@@ -35,7 +34,7 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor
                 {
                     if (!currentContext.Items.TryAdd(key, enabled))
                     {
-                        Log.HttpContextItemObserverCantAddItem(_logger, key);
+                        _diagnostics.FeatureMatcherPolicyCanBeAppliedToEndpoint(key);
                     }
                 }
             }

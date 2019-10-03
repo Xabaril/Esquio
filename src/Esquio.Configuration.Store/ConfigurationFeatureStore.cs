@@ -2,7 +2,6 @@
 using Esquio.Configuration.Store.Configuration;
 using Esquio.Configuration.Store.Diagnostics;
 using Esquio.Model;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -14,31 +13,33 @@ namespace Esquio.Configuration.Store
     internal class ConfigurationFeatureStore
         : IRuntimeFeatureStore
     {
-        private readonly ILogger<ConfigurationFeatureStore> _logger;
+        private readonly EsquioConfigurationStoreDiagnostics _diagnostics;
         private readonly IOptionsSnapshot<EsquioConfiguration> _options;
 
-        public ConfigurationFeatureStore(IOptionsSnapshot<EsquioConfiguration> options, ILogger<ConfigurationFeatureStore> logger)
+        public ConfigurationFeatureStore(IOptionsSnapshot<EsquioConfiguration> options, EsquioConfigurationStoreDiagnostics diagnostics)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
         public Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
         {
+            _diagnostics.BeginFindFeature(featureName, productName);
             var feature = GetFeatureFromConfiguration(featureName, productName);
 
             if (feature != null)
             {
+                _diagnostics.FeatureExist(featureName, productName);
                 return Task.FromResult(feature.To());
             }
 
-            Log.FeatureNotExist(_logger, featureName, productName);
+            _diagnostics.FeatureNotExist(featureName, productName);
             return Task.FromResult<Feature>(null);
         }
 
         private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string productName)
         {
-            Log.FindFeature(_logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME);
+          
 
             var product = _options?.Value
                 .Products
@@ -50,8 +51,8 @@ namespace Esquio.Configuration.Store
                     .Features
                     .SingleOrDefault(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase));
             }
+
             return null;
         }
-
     }
 }

@@ -7,14 +7,8 @@ namespace Esquio.Abstractions
     /// Non-crypto hash with Jenkins function
     /// https://en.wikipedia.org/wiki/Jenkins_hash_function
     /// </summary>
-    public static class Partitioner
+    static class JenkinsHashFunction
     {
-        /// <summary>
-        /// Assign the logical partition for <paramref name="value"/> on <paramref name="entityPartitionCount"/> buckets.
-        /// </summary>
-        /// <param name="value">The value to be assigned on partition.</param>
-        /// <param name="entityPartitionCount">The number of partitions to use.</param>
-        /// <returns></returns>
         public static short ResolveToLogicalPartition(string value, short entityPartitionCount)
         {
             if (value == null)
@@ -22,7 +16,7 @@ namespace Esquio.Abstractions
                 return 0;
             }
 
-            Partitioner.ComputeHash(Encoding.ASCII.GetBytes(value.ToUpper()), 0U, 0U, out uint hash1, out uint hash2);
+            JenkinsHashFunction.ComputeHash(Encoding.ASCII.GetBytes(value.ToUpper()), 0U, 0U, out uint hash1, out uint hash2);
 
             return (short)Math.Abs((long)(hash1 ^ hash2) % (long)entityPartitionCount);
         }

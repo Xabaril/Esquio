@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
 {
-    public sealed class AspNetCoreRoleNameProviderService
+    internal sealed class AspNetCoreRoleNameProviderService
         : IRoleNameProviderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -16,7 +17,7 @@ namespace Esquio.AspNetCore.Providers
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public Task<string> GetCurrentRoleNameAsync()
+        public Task<string> GetCurrentRoleNameAsync(CancellationToken cancellationToken = default)
         {
             var httpContext = _httpContextAccessor.HttpContext;
 

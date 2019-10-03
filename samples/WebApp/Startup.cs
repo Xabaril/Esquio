@@ -1,18 +1,13 @@
-using Esquio;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Services;
-
 namespace WebApp
 {
     public class Startup
@@ -24,18 +19,29 @@ namespace WebApp
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services
-                .AddLocalization(options => options.ResourcesPath = "Resources")
+            //add MVC 
+            services.AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
-                    .AddViewLocalization(
-                        LanguageViewLocationExpanderFormat.Suffix,
-                        opts => { opts.ResourcesPath = "Resources"; });
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; });
+
+            //add mini-profiler and esquio profiling
+            services
+                .AddMiniProfiler(options =>
+                {
+                    options.RouteBasePath = "/profiler";
+                    options.EnableServerTimingHeader = true;
+
+                    options.ResultsAuthorize = (_) => true;
+                    options.ShouldProfile = _ => true;
+
+                    options.IgnoredPaths.Add("/lib");
+                    options.IgnoredPaths.Add("/css");
+                    options.IgnoredPaths.Add("/js");
+                    options.IgnoredPaths.Add("/assets");
+
+                }).AddEsquio();
+
+            //add Esquio Store ( Configuration or EF ) 
 
             if (Configuration["EFStore"] != null)
             {
@@ -64,6 +70,7 @@ namespace WebApp
                         .AddApplicationInsightProcessor();
             }
 
+            //Add custom services and authentication
             services
                 .AddSingleton<IMatchService, MatchService>()
                 .AddAuthentication(setup =>
@@ -76,13 +83,10 @@ namespace WebApp
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
                 {
                     setup.LoginPath = "/account/login";
-                });            
+                });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
         {
-            //used to test Esquio DiagnosticSourceEvents
-            //listener.Subscribe(new EsquioObserver());
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -92,13 +96,13 @@ namespace WebApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCookiePolicy();
-            app.UseStaticFiles();
-            app.UseAuthentication();
-
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseCors();
+            app.UseMiniProfiler()
+                .UseCookiePolicy()
+                .UseStaticFiles()
+                .UseAuthentication()
+                .UseRouting()
+                .UseAuthorization()
+                .UseCors();
 
             app.UseEndpoints(routes =>
             {
@@ -108,31 +112,6 @@ namespace WebApp
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
             });
-        }
-
-        /// <summary>
-        /// Observer used to test Esquio DiagnosticSource events
-        /// </summary>
-        private class EsquioObserver
-            : IObserver<KeyValuePair<string, object>>
-        {
-            public void OnCompleted()
-            {
-            }
-
-            public void OnError(Exception error)
-            {
-            }
-
-            public void OnNext(KeyValuePair<string, object> item)
-            {
-                var isEndEvent = item.Key.Contains(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME);
-
-                if (isEndEvent)
-                {
-                    var value = item.Value;
-                }
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions.Providers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -12,7 +13,7 @@ namespace UnitTests.Seedwork
         {
             _getCurrentRoleFunc = getCurrentRoleFunc ?? throw new ArgumentNullException(nameof(getCurrentRoleFunc));
         }
-        public Task<string> GetCurrentRoleNameAsync()
+        public Task<string> GetCurrentRoleNameAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_getCurrentRoleFunc());
         }

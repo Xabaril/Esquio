@@ -45,6 +45,7 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _esquioMiddlewareSuccess(logger, null);
         }
+        
         private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointCanBeApplied = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureEndpointMatcherCanBeAppliedToEndpoint,
@@ -68,11 +69,11 @@ namespace Esquio.AspNetCore.Diagnostics
         private static readonly Action<ILogger, string, string, Exception> _featureTagHelperBegin = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperBeginProcess,
-            "FeatureTagHelper begin check if {featureName} for product {productName} is active.");
+            "FeatureTagHelper begin check if {featureName} for product {productName} is enabled.");
         private static readonly Action<ILogger, string, string, Exception> _featureTagHelperClearContent = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperClearContent,
-            "FeatureTagHelper is clearing inner content because {featureName} for product {productName} is not active.");
+            "FeatureTagHelper is clearing inner content because {featureName} for product {productName} is not enabled.");
         private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.EsquioMiddlewareThrow,
@@ -85,6 +86,7 @@ namespace Esquio.AspNetCore.Diagnostics
             LogLevel.Debug,
             EventIds.EsquioMiddlewareSuccess,
             "Esquio middleware perform feature evaluation succesfully.");
+       
 
     }
 }

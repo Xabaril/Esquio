@@ -1,4 +1,5 @@
-﻿using Esquio.AspNetCore.Toggles;
+﻿using Esquio.Abstractions;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -14,12 +15,26 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class gradualrolloutclaimvalue_should
     {
         [Fact]
+        public void throw_if_partitioner_service_is_null()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var store = new DelegatedValueFeatureStore((_, __) => null);
+                var accessor = new FakeHttpContextAccesor();
+
+                new GradualRolloutClaimValueToggle(null, store, accessor);
+            });
+        }
+
+        [Fact]
         public void throw_if_store_service_is_null()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var accessor = new FakeHttpContextAccesor();
-                new GradualRolloutClaimValueToggle(null, accessor);
+                var partitioner = new DefaultValuePartitioner();
+
+                new GradualRolloutClaimValueToggle(partitioner, null, accessor);
             });
         }
 
@@ -29,7 +44,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             Assert.Throws<ArgumentNullException>(() =>
            {
                var store = new DelegatedValueFeatureStore((_, __) => null);
-               new GradualRolloutClaimValueToggle(store, null);
+               var partitioner = new DefaultValuePartitioner();
+
+               new GradualRolloutClaimValueToggle(partitioner, store, null);
            });
         }
 
@@ -52,7 +69,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
 
@@ -76,7 +95,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             do
             {
                 claim_value = Guid.NewGuid().ToString();
-                var partition = global::Esquio.Abstractions.Partitioner.ResolveToLogicalPartition(claim_value, 100);
+                var partition = new DefaultValuePartitioner().ResolvePartition(claim_value);
 
                 if (partition <= percentage)
                 {
@@ -101,7 +120,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", claim_value) }, "cookies"));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
 
@@ -128,7 +149,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(store, new FakeHttpContextAccesor(context));
+            var partitioner = new DefaultValuePartitioner();
+
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
 

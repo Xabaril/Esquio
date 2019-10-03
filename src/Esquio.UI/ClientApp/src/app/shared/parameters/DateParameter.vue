@@ -82,7 +82,7 @@ export default class extends Vue {
   }
 
   private dateTimeToString(): string {
-    return `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()} ${this.time.HH}:${this.time.mm}:${this.time.ss}`;
+    return `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()} ${this.time.HH}:${this.time.mm}:${this.time.ss}`;
   }
 
   @Watch('date')

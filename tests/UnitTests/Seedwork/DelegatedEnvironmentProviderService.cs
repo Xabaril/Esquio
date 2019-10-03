@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions.Providers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UnitTests.Seedwork
@@ -12,7 +13,7 @@ namespace UnitTests.Seedwork
         {
             _getCurrentEnvironmentFunc = getCurrentEnvironmentFunc ?? throw new ArgumentNullException(nameof(getCurrentEnvironmentFunc));
         }
-        public Task<string> GetEnvironmentNameAsync()
+        public Task<string> GetEnvironmentNameAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_getCurrentEnvironmentFunc());
         }

@@ -1,11 +1,12 @@
 ﻿using Esquio.Abstractions.Providers;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
 {
-    public class AspNetEnvironmentNameProviderService
+    internal class AspNetEnvironmentNameProviderService
         : IEnvironmentNameProviderService
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
@@ -15,7 +16,7 @@ namespace Esquio.AspNetCore.Providers
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
         }
 
-        public Task<string> GetEnvironmentNameAsync()
+        public Task<string> GetEnvironmentNameAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(_hostingEnvironment.EnvironmentName);
         }
