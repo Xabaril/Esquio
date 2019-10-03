@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Toggles;
+using Esquio.Diagnostics;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -21,11 +22,10 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var loggerFactory = new LoggerFactory();
                 var store = new DelegatedValueFeatureStore((_, __) => null);
                 var accessor = new FakeHttpContextAccesor();
 
-                new GradualRolloutSessionToggle(null, store, accessor, loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
+                new GradualRolloutSessionToggle(null, store, accessor);
             });
         }
 
@@ -34,24 +34,10 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var loggerFactory = new LoggerFactory();
                 var store = new DelegatedValueFeatureStore((_, __) => null);
                 var partitioner = new DefaultValuePartitioner();
 
-                new GradualRolloutSessionToggle(partitioner, store, null, loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
-            });
-        }
-
-        [Fact]
-        public void throw_if_logger_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
-                var accessor = new FakeHttpContextAccesor();
-                var partitioner = new DefaultValuePartitioner();
-
-                new GradualRolloutSessionToggle(partitioner, store, accessor, null);
+                new GradualRolloutSessionToggle(partitioner, store, null);
             });
         }
 
@@ -68,15 +54,13 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var loggerFactory = new LoggerFactory();
-
             var context = new DefaultHttpContext();
             context.Session = new FakeSession();
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context), loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
 
@@ -121,15 +105,13 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var loggerFactory = new LoggerFactory();
-
             var context = new DefaultHttpContext();
             context.Session = new FakeSession(sessionId);
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context), loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
 
@@ -150,14 +132,13 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var loggerFactory = new LoggerFactory();
             var context = new DefaultHttpContext();
             context.Session = new FakeSession();
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context), loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
 
@@ -166,7 +147,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
-        public async Task be_non_active_when_session_is_not_active()
+        public async Task throw_when_session_is_not_active()
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
@@ -178,18 +159,17 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var loggerFactory = new LoggerFactory();
             var context = new DefaultHttpContext();
 
             var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context), loggerFactory.CreateLogger<GradualRolloutSessionToggle>());
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
 
-            var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
-
-            active.Should()
-                .BeFalse();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            {
+                await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
+            });
         }
 
         private class FakeHttpContextAccesor

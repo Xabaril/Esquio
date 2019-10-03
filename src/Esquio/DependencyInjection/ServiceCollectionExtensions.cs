@@ -45,7 +45,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var listener = new DiagnosticListener("Esquio");
 
-            //builder.Services.TryAddSingleton(listener);
             builder.Services.AddSingleton<DiagnosticListener>(listener);
             builder.Services.AddSingleton<DiagnosticSource>(listener);
             builder.Services.AddSingleton<EsquioDiagnostics>();

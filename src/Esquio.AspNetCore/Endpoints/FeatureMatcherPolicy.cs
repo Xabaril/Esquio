@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -19,11 +18,11 @@ namespace Esquio.AspNetCore.Endpoints
     {
         private static char[] split_characters = new char[] { ',' };
 
-        private readonly ILogger<FeatureMatcherPolicy> _logger;
+        private readonly EsquioAspNetCoreDiagnostics _diagnostics;
 
-        public FeatureMatcherPolicy(ILogger<FeatureMatcherPolicy> logger)
+        public FeatureMatcherPolicy(EsquioAspNetCoreDiagnostics diagnostics)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
         public override int Order => Int32.MaxValue;
@@ -41,7 +40,7 @@ namespace Esquio.AspNetCore.Endpoints
 
                 if (metadata != null)
                 {
-                    Log.FeatureMatcherPolicyCanBeAppliedToEndpoint(_logger, item.DisplayName);
+                    _diagnostics.FeatureMatcherPolicyCanBeAppliedToEndpoint(item.DisplayName);
 
                     apply = true;
                     break;
@@ -77,7 +76,7 @@ namespace Esquio.AspNetCore.Endpoints
                 {
                     foreach (var metadata in allMetadata)
                     {
-                        Log.FeatureMatcherPolicyEvaluatingFeatures(_logger, endpoint.DisplayName, metadata.Names, metadata.ProductName);
+                        _diagnostics.FeatureMatcherPolicyEvaluatingFeatures(endpoint.DisplayName, metadata.Names, metadata.ProductName);
 
                         var featureService = httpContext
                             .RequestServices
@@ -93,7 +92,7 @@ namespace Esquio.AspNetCore.Endpoints
                             {
                                 if (!await featureService.IsEnabledAsync(featureName.Value, metadata.ProductName))
                                 {
-                                    Log.FeatureMatcherPolicyEndpointIsNotValid(_logger, endpoint.DisplayName);
+                                    _diagnostics.FeatureMatcherPolicyEndpointIsNotValid(endpoint.DisplayName);
 
                                     valid = false & valid;
                                     break;
@@ -104,7 +103,7 @@ namespace Esquio.AspNetCore.Endpoints
                 }
                 else
                 {
-                    Log.FeatureMatcherPolicyEndpointIsValid(_logger, endpoint.DisplayName);
+                    _diagnostics.FeatureMatcherPolicyEndpointIsValid(endpoint.DisplayName);
 
                     valid = true;
                 }
@@ -121,7 +120,7 @@ namespace Esquio.AspNetCore.Endpoints
 
                 if (fallbackService != null)
                 {
-                    Log.FeatureMatcherPolicyExecutingFallbackEndpoint(_logger, httpContext.Request.Path);
+                    _diagnostics.FeatureMatcherPolicyExecutingFallbackEndpoint(httpContext.Request.Path);
 
                     httpContext.SetEndpoint(
                         CreateFallbackEndpoint(fallbackService.RequestDelegate, fallbackService.EndpointDisplayName));

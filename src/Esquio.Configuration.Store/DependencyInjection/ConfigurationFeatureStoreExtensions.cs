@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.Configuration.Store;
 using Esquio.Configuration.Store.Configuration;
+using Esquio.Configuration.Store.Diagnostics;
 using Esquio.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
@@ -25,7 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services
                 .AddOptions()
                 .Configure<EsquioConfiguration>(configuration.GetSection(key))
-                .AddScoped<IRuntimeFeatureStore, ConfigurationFeatureStore>();
+                .AddScoped<IRuntimeFeatureStore, ConfigurationFeatureStore>()
+                .AddSingleton<EsquioConfigurationStoreDiagnostics>();
 
             return builder;
         }

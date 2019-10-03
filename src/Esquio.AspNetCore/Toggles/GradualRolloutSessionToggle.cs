@@ -1,6 +1,6 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +22,6 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IValuePartitioner _partitioner;
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger<GradualRolloutSessionToggle> _logger;
 
         /// <summary>
         /// Create a new instance.
@@ -30,17 +29,14 @@ namespace Esquio.AspNetCore.Toggles
         /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
         /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
-        /// <param name="logger">The <see cref="ILogger{GradualRolloutSessionToggle}"/> service to be used.</param>
         public GradualRolloutSessionToggle(
             IValuePartitioner partitioner,
             IRuntimeFeatureStore featureStore,
-            IHttpContextAccessor httpContextAccessor,
-            ILogger<GradualRolloutSessionToggle> logger)
+            IHttpContextAccessor httpContextAccessor)
         {
             _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         ///<inheritdoc/>
@@ -54,21 +50,15 @@ namespace Esquio.AspNetCore.Toggles
             {
                 if (percentage > 0d)
                 {
-                    try
-                    {
-                        var sessionId = _httpContextAccessor
-                            .HttpContext
-                            .Session
-                            .Id;
 
-                        var assignedPartition = _partitioner.ResolvePartition(sessionId);
+                    var sessionId = _httpContextAccessor
+                        .HttpContext
+                        .Session
+                        .Id;
 
-                        return assignedPartition <= percentage;
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        _logger.LogError($"The toggle {nameof(GradualRolloutSessionToggle)} can't perform rollout on Session because Session has not been configured for this application or request.");
-                    }
+                    var assignedPartition = _partitioner.ResolvePartition(sessionId);
+
+                    return assignedPartition <= percentage;
                 }
             }
 

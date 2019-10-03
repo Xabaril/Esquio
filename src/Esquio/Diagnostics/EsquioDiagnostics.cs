@@ -6,12 +6,14 @@ namespace Esquio.Diagnostics
 {
     internal class EsquioDiagnostics
     {
-        private readonly ILogger<Esquio> _logger;
+        private readonly ILogger _logger;
         private readonly DiagnosticListener _listener;
 
-        public EsquioDiagnostics(DiagnosticListener listener, ILogger<Esquio> logger)
+        public EsquioDiagnostics(DiagnosticListener listener, ILoggerFactory loggerFactory)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
+            _logger = loggerFactory.CreateLogger("Esquio");
             _listener = listener ?? throw new ArgumentNullException(nameof(listener));
         }
 

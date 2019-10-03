@@ -64,7 +64,7 @@ namespace Esquio.Diagnostics
         private static readonly Action<ILogger, string, string, Exception> _featureServiceDisabled = LoggerMessage.Define<string, string>(
             LogLevel.Warning,
             EventIds.FeatureDisabled,
-            "The feature {feature} is disabled in the store for application {productName}.");
+            "The feature {feature} is disabled in the store for product {productName}.");
 
         private static readonly Action<ILogger, string, string, Exception> _toggleIsNotActive = LoggerMessage.Define<string, string>(
            LogLevel.Debug,

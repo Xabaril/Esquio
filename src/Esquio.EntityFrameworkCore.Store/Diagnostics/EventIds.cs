@@ -6,7 +6,6 @@ namespace Esquio.EntityFrameworkCore.Store.Diagnostics
     {
         public static readonly EventId FeatureNotExist = new EventId(400, nameof(FeatureNotExist));
         public static readonly EventId FindFeature = new EventId(401, nameof(FindFeature));
-        public static readonly EventId StartingValueConversionFromDatabase = new EventId(402, nameof(StartingValueConversionFromDatabase));
-        public static readonly EventId ValueConversionFromDatabaseThrow = new EventId(403, nameof(ValueConversionFromDatabaseThrow));
+        public static readonly EventId FeatureExist = new EventId(403, nameof(FeatureExist));
     }
 }

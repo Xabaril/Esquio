@@ -1,4 +1,5 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
+using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -39,7 +40,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
         public EntityFrameworkCoreFeaturesStore Build()
         {
             var loggerFactory = new LoggerFactory();
-            var logger = loggerFactory.CreateLogger<EntityFrameworkCoreFeaturesStore>();
+            var diagnostics = new EsquioEntityFrameworkCoreStoreDiagnostics(loggerFactory);
 
             var connectionString = _fixture.IsAppVeyorExecution ?
                $@"Server=(local)\SQL2016;Database=Test.Esquio.EntityFramework-3.0.0.Extensions;User ID=sa;Password=Password12!" :
@@ -48,7 +49,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var builder = new DbContextOptionsBuilder<StoreDbContext>();
             builder.UseSqlServer(connectionString);
 
-            return new EntityFrameworkCoreFeaturesStore(new StoreDbContext(builder.Options, new StoreOptions()), logger);
+            return new EntityFrameworkCoreFeaturesStore(new StoreDbContext(builder.Options, new StoreOptions()), diagnostics);
         }
     }
 }

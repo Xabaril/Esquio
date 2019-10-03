@@ -3,7 +3,6 @@ using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
@@ -15,17 +14,17 @@ namespace Esquio.EntityFrameworkCore.Store
         : IRuntimeFeatureStore
     {
         private readonly StoreDbContext _storeDbContext;
-        private readonly ILogger<EntityFrameworkCoreFeaturesStore> _logger;
+        private readonly EsquioEntityFrameworkCoreStoreDiagnostics _diagnostics;
 
-        public EntityFrameworkCoreFeaturesStore(StoreDbContext storeDbContext, ILogger<EntityFrameworkCoreFeaturesStore> logger)
+        public EntityFrameworkCoreFeaturesStore(StoreDbContext storeDbContext, EsquioEntityFrameworkCoreStoreDiagnostics diagnostics)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
         public async Task<Feature> FindFeatureAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            Log.FindFeature(_logger, featureName, productName);
+            _diagnostics.FindFeature(featureName, productName);
 
             productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
 
@@ -38,11 +37,12 @@ namespace Esquio.EntityFrameworkCore.Store
 
             if (featureEntity != null)
             {
+                _diagnostics.FeatureExist(featureName, productName);
                 return ConvertToFeatureModel(featureEntity);
             }
             else
             {
-                Log.FeatureNotExist(_logger, featureName, productName);
+                _diagnostics.FeatureNotExist(featureName, productName);
                 return null;
             }
         }

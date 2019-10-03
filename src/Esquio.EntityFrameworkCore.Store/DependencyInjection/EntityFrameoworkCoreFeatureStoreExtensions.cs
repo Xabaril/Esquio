@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.DependencyInjection;
 using Esquio.EntityFrameworkCore.Store;
+using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Options;
 using System;
 
@@ -28,6 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             builder.Services.AddScoped<IRuntimeFeatureStore, EntityFrameworkCoreFeaturesStore>();
+            builder.Services.AddSingleton<EsquioEntityFrameworkCoreStoreDiagnostics>();
 
             return builder;
         }

@@ -2,7 +2,6 @@
 using Esquio.AspNetCore.Diagnostics;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace Esquio.AspNetCore.Endpoints
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
-        public async Task Invoke(HttpContext context, IFeatureService featureService, ILogger<EsquioMiddleware> logger)
+        public async Task Invoke(HttpContext context, IFeatureService featureService, EsquioAspNetCoreDiagnostics diagnostics)
         {
             var response = new List<EsquioMiddlewareResponse>();
 
@@ -45,7 +44,7 @@ namespace Esquio.AspNetCore.Endpoints
             {
                 try
                 {
-                    Log.EsquioMiddlewareEvaluatingFeature(logger, featureName, productName);
+                    diagnostics.EsquioMiddlewareEvaluatingFeature(featureName, productName);
 
                     var isEnabled = await featureService
                         .IsEnabledAsync(featureName, productName, context?.RequestAborted ?? CancellationToken.None);
@@ -60,7 +59,7 @@ namespace Esquio.AspNetCore.Endpoints
                 {
                     // only when OnError behavior is configured to Throw!!
 
-                    Log.EsquioMiddlewareThrow(logger, featureName, productName, exception);
+                    diagnostics.EsquioMiddlewareThrow(featureName, productName, exception);
 
                     await WriteResponseAsync(
                        context,
@@ -72,7 +71,7 @@ namespace Esquio.AspNetCore.Endpoints
                 }
             }
 
-            Log.EsquioMiddlewareSuccess(logger);
+            diagnostics.EsquioMiddlewareSuccess();
 
             await WriteResponseAsync(
                 context,
