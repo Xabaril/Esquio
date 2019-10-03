@@ -1,9 +1,8 @@
 ﻿namespace Esquio.Abstractions
 {
     /// <summary>
-    /// Represent a value partitioner used to set value in
-    /// buckets. Typically this partitioner is used by gradual rollout
-    /// toggles for create determinist partitions.
+    /// Represent a value partitioner used to set value in buckets. Typically this partitioner is used by gradual rollout
+    /// toggles in order to create determinist partitions.
     /// </summary>
     public interface IValuePartitioner
     {

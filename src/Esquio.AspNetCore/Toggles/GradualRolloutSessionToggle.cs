@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
+    /// <summary>
+    /// A binary <see cref="IToggle"/> that is active depending on current session id  and how this value is assigned to a specific partition using the 
+    /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the session id into a specific
+    /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
+    /// </summary>
     [DesignType(Description = "Toggle that is active depending on the session identifier bucket and the percentage selected.")]
     [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
     public class GradualRolloutSessionToggle
@@ -19,6 +24,13 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<GradualRolloutSessionToggle> _logger;
 
+        /// <summary>
+        /// Create a new instance.
+        /// </summary>
+        /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
+        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
+        /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
+        /// <param name="logger">The <see cref="ILogger{GradualRolloutSessionToggle}"/> service to be used.</param>
         public GradualRolloutSessionToggle(
             IValuePartitioner partitioner,
             IRuntimeFeatureStore featureStore,
@@ -31,6 +43,7 @@ namespace Esquio.AspNetCore.Toggles
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        ///<inheritdoc/>
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
@@ -54,7 +67,7 @@ namespace Esquio.AspNetCore.Toggles
                     }
                     catch (InvalidOperationException)
                     {
-                        _logger.LogError($"The toggle {nameof(GradualRolloutSessionToggle)} can't perform rollout on Session because  Session has not been configured for this application or request.");
+                        _logger.LogError($"The toggle {nameof(GradualRolloutSessionToggle)} can't perform rollout on Session because Session has not been configured for this application or request.");
                     }
                 }
             }

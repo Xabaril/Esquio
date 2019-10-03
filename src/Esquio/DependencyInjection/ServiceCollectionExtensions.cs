@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="serviceCollection">The <see cref="IServiceCollection"/>.</param>
         /// <param name="setup">The action method to configure <see cref="EsquioOptions"/>. Optional, default is null.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IEsquioBuilder"/> used to configure Esquio.</returns>
         public static IEsquioBuilder AddEsquio(this IServiceCollection serviceCollection, Action<EsquioOptions> setup = null)
         {
             var options = new EsquioOptions();
@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The <see cref="IServiceCollection"/> used to register the toggles.</param>
         /// <param name="assemblies">The assemblies with custom toggles to be registered.</param>
         /// <param name="lifetime">The lifetime registration to be used.Optional, default is Transient.</param>
-        /// <returns></returns>
+        /// <returns>The collection of configured services.</returns>
         public static IServiceCollection AddTogglesFromAssemblies(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var assembly in assemblies)
@@ -76,7 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The <see cref="IServiceCollection"/> used to register the toggles.</param>
         /// <param name="assembly">The assembly with custom toggles to be registered.</param>
         /// <param name="lifetime">The lifetime registration to be used.Optional, default is Transient.</param>
-        /// <returns></returns>
+        /// <returns>The collection of configured services.</returns>
         public static IServiceCollection AddTogglesFromAssembly(this IServiceCollection services, Assembly assembly, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             foreach (var toggle in FindTogglesInAssembly(assembly))

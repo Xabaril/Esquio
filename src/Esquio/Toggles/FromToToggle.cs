@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Esquio.Toggles
 {
+    /// <summary>
+    /// A binary <see cref="IToggle"/> that is active depending on current UTC date time.
+    /// </summary>
     [DesignType(Description = "Toggle that is active depending on current UTC date.")]
     [DesignTypeParameter(ParameterName = From, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The from date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
     [DesignTypeParameter(ParameterName = To, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The to date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
@@ -20,14 +23,21 @@ namespace Esquio.Toggles
 
         private readonly IRuntimeFeatureStore _featureStore;
 
+        /// <summary>
+        /// Create a new instance of <see cref="FromToToggle"/>.
+        /// </summary>
+        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         public FromToToggle(IRuntimeFeatureStore featureStore)
         {
             _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
 
+        /// <inheritdoc/>
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
+            var feature = await _featureStore
+                .FindFeatureAsync(featureName, productName, cancellationToken);
+
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
@@ -42,6 +52,7 @@ namespace Esquio.Toggles
             {
                 return true;
             }
+
             return false;
         }
     }

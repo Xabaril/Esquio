@@ -1,11 +1,12 @@
 ﻿using Esquio.Abstractions.Providers;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
 {
-    public sealed class AspNetCoreUserNameProviderService
+    internal sealed class AspNetCoreUserNameProviderService
         : IUserNameProviderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -15,7 +16,7 @@ namespace Esquio.AspNetCore.Providers
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public Task<string> GetCurrentUserNameAsync()
+        public Task<string> GetCurrentUserNameAsync(CancellationToken cancellationToken = default)
         {
             var httpContext = _httpContextAccessor.HttpContext;
 

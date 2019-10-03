@@ -9,12 +9,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Provides Esquio extensions methods for <see cref="IEsquioBuilder"/>
+    /// Provides Esquio extensions methods for <see cref="IEsquioBuilder"/>.
     /// </summary>
     public static class EsquioBuilderExtensions
     {
         /// <summary>
-        /// Register default ASP.NET Core services for Esquio Abstractions. 
+        /// Register default ASP.NET Core services for Esquio. 
         /// </summary>
         /// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
         /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
@@ -26,18 +26,30 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </remarks>
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
-            builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
-            builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+            builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
+            builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
+            builder.Services.TryAddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+
             builder.Services.AddHttpContextAccessor();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 
             return builder;
         }
 
+        /// <summary>
+        /// Register a new <see cref="RequestDelegate"/>to be used
+        /// when a requested endpoint does not have candidates availables due a 
+        /// disabling evaluation result of any feature.
+        /// </summary>
+        /// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
+        /// <param name="requestDelegate">The request delegate to be used.</param>
+        /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
+        /// <remarks>
+        /// You can use <see cref="EndpointFallbackAction"/> to create easily new fallback actions.
+        /// </remarks>
         public static IEsquioBuilder AddEndpointFallback(this IEsquioBuilder builder, RequestDelegate requestDelegate)
         {
-            builder.Services.TryAddSingleton<EndpointFallbackService>(sp =>
+            builder.Services.TryAddSingleton(sp =>
             {
                 return new EndpointFallbackService(requestDelegate);
             });

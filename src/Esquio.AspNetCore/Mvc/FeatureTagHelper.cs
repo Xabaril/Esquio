@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 namespace Esquio.AspNetCore.Mvc
 {
     /// <summary>
-    /// Razor TagHelper for enable or disable  content depending on a feature activation state.
+    /// Razor <see cref="ITagHelper"/> for enable or disable  content depending on a feature evaluation result.
     /// </summary>
     /// <code>
-    /// <![CDATA[<feature names="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></flag>]]>
+    /// <![CDATA[<feature names="SomeFeature"><p>This content appair when feature 'SomeFeature' is active</p></feature>]]>
     /// </code>
     public class FeatureTagHelper
         : TagHelper

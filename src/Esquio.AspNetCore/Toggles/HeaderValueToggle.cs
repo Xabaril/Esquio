@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
+    /// <summary>
+    /// A binary <see cref="IToggle"/> that is active depending on the header value specified on HeaderName property.
+    /// </summary>
     [DesignType(Description = "Toggle that is active depending on some header value.")]
     [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name to introspect and  check value.")]
     [DesignTypeParameter(ParameterName = HeaderValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The header value to check, multiple items separated by ';'.")]
@@ -22,12 +25,18 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRuntimeFeatureStore _featureStore;
 
-        public HeaderValueToggle(IRuntimeFeatureStore store, IHttpContextAccessor httpContextAccessor)
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
+        /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
+        public HeaderValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
-            _featureStore = store ?? throw new ArgumentNullException(nameof(store));
+            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
+        ///<inheritdoc/>
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
             var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
@@ -49,7 +58,7 @@ namespace Esquio.AspNetCore.Toggles
                 {
                     var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
 
-                    if ( tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
+                    if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
                     {
                         return true;
                     }

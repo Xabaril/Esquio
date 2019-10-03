@@ -1,6 +1,5 @@
 ﻿namespace Esquio.DependencyInjection
 {
-
     /// <summary>
     /// Define on error behavior options.
     /// </summary>
@@ -21,7 +20,6 @@
         /// </summary>
         SetEnabled = 2
     }
-
     /// <summary>
     /// Define not found behavior options.
     /// </summary>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
+    /// <summary>
+    /// A binary <see cref="IToggle"/> that is active depending on the current value for the specified claim on ClaimType property.
+    /// </summary>
     [DesignType(Description = "Toggle that is active depending on the current claims of authenticated users.")]
     [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type used to check value.")]
     [DesignTypeParameter(ParameterName = ClaimValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The claim value to check, multiple items separated by ';'.")]
@@ -17,20 +20,25 @@ namespace Esquio.AspNetCore.Toggles
         internal const string ClaimType = nameof(ClaimType);
         internal const string ClaimValues = nameof(ClaimValues);
 
-        private static char[] SPLIT_SEPARATOR = new char[] { ';' };
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRuntimeFeatureStore _featureStore;
 
-        public ClaimValueToggle(IRuntimeFeatureStore store, IHttpContextAccessor httpContextAccessor)
+        /// <summary>
+        /// Create a new instance
+        /// </summary>
+        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
+        /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
+        public ClaimValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
         {
-            _featureStore = store ?? throw new ArgumentNullException(nameof(store));
+            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
-
+        ///<inheritdoc/>
         public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
+            var feature = await _featureStore
+                .FindFeatureAsync(featureName, productName, cancellationToken);
+
             var toggle = feature.GetToggle(this.GetType().FullName);
             var data = toggle.GetData();
 
@@ -49,13 +57,14 @@ namespace Esquio.AspNetCore.Toggles
 
                     if (value != null)
                     {
-                        var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
+                        var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
                         return tokenizer.Contains(
                             value, StringSegmentComparer.OrdinalIgnoreCase);
                     }
                 }
             }
+
             return false;
         }
     }
