@@ -2,8 +2,8 @@ import { BreadCrumbItem } from './breadcrumb.model';
 import { Route } from 'vue-router';
 
 const SEPARATOR = '/';
-const ADD_ROUTE = 'add';
-const EDIT_ROUTE = 'edit';
+export const ADD_ROUTE = 'add';
+export const EDIT_ROUTE = 'edit';
 
 /**
  * Example of url
