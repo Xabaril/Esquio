@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Esquio.AspNetCore.Endpoints
 
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
         const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";
+        const string DEFAULT_MIME_TYPE = MediaTypeNames.Application.Json;
 
         private readonly RequestDelegate _next;
 
@@ -31,7 +33,7 @@ namespace Esquio.AspNetCore.Endpoints
         }
         public async Task Invoke(HttpContext context, IFeatureService featureService, EsquioAspNetCoreDiagnostics diagnostics)
         {
-            var response = new List<EsquioMiddlewareResponse>();
+            var evaluationsResponse = new List<EvaluationResponse>();
 
             var names = context.Request
                 .Query[FEATURENAME_QUERY_PARAMETER_NAME];
@@ -49,7 +51,7 @@ namespace Esquio.AspNetCore.Endpoints
                     var isEnabled = await featureService
                         .IsEnabledAsync(featureName, productName, context?.RequestAborted ?? CancellationToken.None);
 
-                    response.Add(new EsquioMiddlewareResponse()
+                    evaluationsResponse.Add(new EvaluationResponse()
                     {
                         Name = featureName,
                         Enabled = isEnabled
@@ -57,15 +59,9 @@ namespace Esquio.AspNetCore.Endpoints
                 }
                 catch (Exception exception)
                 {
-                    // only when OnError behavior is configured to Throw!!
-
                     diagnostics.EsquioMiddlewareThrow(featureName, productName, exception);
 
-                    await WriteResponseAsync(
-                       context,
-                       JsonSerializer.Serialize(EsquioMiddlewareError.Default(featureName, productName), options: _serializerOptions),
-                       "application/json",
-                       StatusCodes.Status500InternalServerError);
+                    await WriteError(context, featureName, productName);
 
                     return;
                 }
@@ -73,14 +69,28 @@ namespace Esquio.AspNetCore.Endpoints
 
             diagnostics.EsquioMiddlewareSuccess();
 
-            await WriteResponseAsync(
-                context,
+            await WriteResponse(context,evaluationsResponse);
+        }
+
+        private async Task WriteResponse(HttpContext currentContext, IEnumerable<EvaluationResponse> response)
+        {
+            await WriteAsync(
+                currentContext,
                 JsonSerializer.Serialize(response, options: _serializerOptions),
-                "application/json",
+                DEFAULT_MIME_TYPE,
                 StatusCodes.Status200OK);
         }
 
-        private async Task WriteResponseAsync(
+        private async Task WriteError(HttpContext currentContext, string featureName, string productName)
+        {
+            await WriteAsync(
+                currentContext,
+                JsonSerializer.Serialize(EvaluationError.Default(featureName, productName), options: _serializerOptions),
+                DEFAULT_MIME_TYPE,
+                StatusCodes.Status500InternalServerError);
+        }
+
+        private async Task WriteAsync(
            HttpContext context,
            string content,
            string contentType,
@@ -95,21 +105,22 @@ namespace Esquio.AspNetCore.Endpoints
             await context.Response.WriteAsync(content);
         }
 
-        private class EsquioMiddlewareResponse
+        private class EvaluationResponse
         {
             public bool Enabled { get; set; }
 
             public string Name { get; set; }
         }
-        private class EsquioMiddlewareError
+
+        private class EvaluationError
         {
             public string Message { get; set; }
 
-            private EsquioMiddlewareError() { }
+            private EvaluationError() { }
 
-            public static EsquioMiddlewareError Default(string featureName, string productName)
+            public static EvaluationError Default(string featureName, string productName)
             {
-                return new EsquioMiddlewareError()
+                return new EvaluationError()
                 {
                     Message = $"{nameof(OnErrorBehavior)} behavior for Esquio is configured to {nameof(OnErrorBehavior.Throw)} and middleware throw when check the state for {featureName} on product {productName ?? "default product"}."
                     + $"You can modify this behavior using {nameof(EsquioOptions.ConfigureOnErrorBehavior)} method on AddEsquio options."

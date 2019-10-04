@@ -47,7 +47,7 @@ namespace MiniProfiler.Esquio
             }
             else if (key == EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME)
             {
-                var data = value as FeatureEvaluatedEventData;
+                var data = value as FeatureNotFoundEventData;
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
