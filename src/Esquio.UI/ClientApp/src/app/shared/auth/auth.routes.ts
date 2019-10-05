@@ -1,7 +1,7 @@
 import { RouteConfig, NavigationGuard } from 'vue-router';
 import { container, cid } from 'inversify-props';
 import { registerInterceptor } from '~/core';
-import { IAuthService } from '.';
+import { IAuthService } from '~/shared/auth';
 
 const checkCallback: NavigationGuard = async (to, from, next) => {
   const authService = container.get<IAuthService>(cid.IAuthService);
@@ -30,15 +30,21 @@ const routes = (): RouteConfig[] => {
   ];
 };
 
+let registered = false;
 const requireAuth: NavigationGuard = async (to, from, next) => {
   const authService = container.get<IAuthService>(cid.IAuthService);
   const user = await authService.getUser();
+
   if (!user) {
     next({ path: '/login' });
     return;
   }
 
-  registerInterceptor(next);
+  if (!registered) {
+    registerInterceptor(next);
+    await authService.getRolesAndDefinePermissions();
+    registered = true;
+  }
 
   next();
 };
