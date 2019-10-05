@@ -6,7 +6,7 @@
     <form class="row u-hidden">
       <input-text
         class="toggles_form-group form-group col-md-6 is-disabled"
-        :class="{'is-disabled': this.isEditing}"
+        :class="{'is-disabled': isEditing}"
         v-model="form.typeName"
         id="toggle_name"
         :label="$t('toggles.fields.typeName')"

@@ -46,6 +46,11 @@ const requireAuth: NavigationGuard = async (to, from, next) => {
     registered = true;
   }
 
+  if (to.meta.action && !authService.userAbility.can(to.meta.action, to.meta.subject)) {
+    next({ path: '/not-allowed' });
+    return;
+  }
+
   next();
 };
 
