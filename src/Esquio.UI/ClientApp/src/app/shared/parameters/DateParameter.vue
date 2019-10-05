@@ -1,5 +1,5 @@
 <template>
-  <div class="date_parameter">
+  <div class="date_parameter" data-testid="date-parameter">
     <div class="date_parameter-container">
       <div class="date_parameter-column">
         <date-picker

@@ -1,5 +1,5 @@
 <template>
-  <div class="semicolon_parameter">
+  <div class="semicolon_parameter" data-testid="semicolon-parameter">
     <vue-tags-input
         ref="input"
         v-model="formParameter"
