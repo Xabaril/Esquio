@@ -51,8 +51,8 @@
     </div>
 
     <div
+      v-if="isEditing && $can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
       class="row mt-4"
-      v-if="isEditing"
     >
       <h2>{{$t('toggles.title')}}</h2>
       <TogglesList :flagId="id" :toggles="form.toggles" />

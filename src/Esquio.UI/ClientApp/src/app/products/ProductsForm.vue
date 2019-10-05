@@ -24,11 +24,12 @@
     </form>
 
     <div
+      v-if="isEditing && $can($constants.AbilityAction.Read, $constants.AbilitySubject.Flag)"
       class="row"
-      v-if="isEditing"
     >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productId="id" />
+      <FlagsList :productId="id"
+      />
     </div>
 
     <FloatingContainer>
