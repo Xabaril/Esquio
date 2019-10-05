@@ -25,6 +25,7 @@
         <div class="text-center">
           <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
           <router-link
+            v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
             :to="{name: 'toggles-add', params: { id: flagId }}"

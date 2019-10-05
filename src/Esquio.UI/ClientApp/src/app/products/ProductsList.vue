@@ -26,6 +26,7 @@
         <div class="text-center">
           <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
           <button
+            v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Product)"
             class="btn btn-raised btn-primary d-inline-block"
             @click="onClickAddFirst"
           >
@@ -60,6 +61,7 @@
     </b-table>
 
     <FloatingTop
+      v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Product)"
       :text="$t('products.actions.add')"
       :to="{name: 'products-add'}"
     />

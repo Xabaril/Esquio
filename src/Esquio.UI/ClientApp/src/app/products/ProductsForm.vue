@@ -47,7 +47,7 @@
     </FloatingContainer>
 
     <FloatingTop
-      v-if="isEditing"
+      v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Flag)"
       :text="$t('products.actions.add_flag')"
       :to="{name: 'flags-add', params: { productId: form.id }}"
     />

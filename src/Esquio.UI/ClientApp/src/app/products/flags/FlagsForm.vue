@@ -74,7 +74,7 @@
     </FloatingContainer>
 
     <FloatingTop
-      v-if="isEditing"
+      v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
       :text="$t('flags.actions.add_toggle')"
       :to="{name: 'toggles-add', params: { productId: productId, flagId: id }}"
     />
