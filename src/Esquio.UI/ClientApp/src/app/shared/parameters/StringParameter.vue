@@ -1,5 +1,5 @@
 <template>
-  <div class="string_parameter">
+  <div class="string_parameter" data-testid="string-parameter">
     <input-text
       class="form-group col-md-6"
       v-model="value"

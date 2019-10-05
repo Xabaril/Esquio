@@ -24,7 +24,7 @@ export default class extends Vue {
   };
 
   @Prop({ required: true, type: String}) type: ParameterDetailType;
-  @Prop({ default: {}, type: Object}) options: any;
+  @Prop({ default: () => {}, type: Object}) options: any;
 
   public created(): void {
     this.lastValue = this.options ? this.options.value : null;
