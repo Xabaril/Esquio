@@ -117,14 +117,14 @@
 
     <FloatingContainer>
       <FloatingDelete
-        v-if="this.isEditing"
+        v-if="isEditing && $can($constants.AbilityAction.Delete, $constants.AbilitySubject.Toggle)"
         :text="$t('toggles.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <FloatingSave
-        v-if="!this.isEditing"
+        v-if="!isEditing"
         :text="$t('toggles.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"

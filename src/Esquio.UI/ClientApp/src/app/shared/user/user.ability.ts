@@ -2,27 +2,28 @@ import { AbilityBuilder, Ability } from '@casl/ability';
 import { UserPermissions } from './user-permissions.model';
 import { AbilityAction as Action, AbilitySubject as Subject } from './user-ability.enum';
 
-export function defineAbilitiesFor(userPermissions: UserPermissions) {
+export function defineAbilitiesFor(permissions: UserPermissions) {
   const { rules, can: allow, cannot: forbid } = AbilityBuilder.extract();
 
-  if (userPermissions.isAuthorized) {
+  if (permissions.isAuthorized) {
     allow(Action.Create, [Subject.Token]);
   }
 
-  if (userPermissions.readPermission) {
+  if (permissions.readPermission || permissions.writePermission || permissions.managementPermission) {
     allow(Action.Read, [Subject.Product, Subject.Flag, Subject.Toggle]);
   }
 
-  if (userPermissions.writePermission) {
+  if (permissions.writePermission || permissions.managementPermission) {
     allow(Action.Create, [Subject.Product, Subject.Flag, Subject.Toggle]);
     allow(Action.Update, [Subject.Product, Subject.Flag, Subject.Toggle]);
+    allow(Action.Delete, [Subject.Product, Subject.Flag, Subject.Toggle]);
   }
 
-  if (userPermissions.managementPermission) {
+  if (permissions.managementPermission) {
     allow([Action.Manage], [Subject.Permission]);
   }
 
-  if (!userPermissions.isAuthorized) {
+  if (!permissions.isAuthorized) {
     forbid(Action.Manage, [Subject.All]);
   }
 

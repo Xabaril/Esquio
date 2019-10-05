@@ -39,7 +39,9 @@
         slot="id"
         slot-scope="data"
       >
-        <div class="text-right">
+        <div
+          v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
+          class="text-right">
           <router-link :to="{ name: 'toggles-edit', params: { toggleId: data.item.id, id: flagId }}">
             <button
               type="button"
@@ -50,6 +52,7 @@
           </router-link>
 
           <button
+            v-if="$can($constants.AbilityAction.Delete, $constants.AbilitySubject.Toggle)"
             type="button"
             class="btn btn-sm btn-raised btn-danger ml-2"
             @click="onClickDelete(data.item)"

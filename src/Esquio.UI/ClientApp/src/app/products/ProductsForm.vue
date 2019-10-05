@@ -33,13 +33,14 @@
 
     <FloatingContainer>
       <FloatingDelete
-        v-if="this.isEditing"
+        v-if="isEditing && $can($constants.AbilityAction.Delete, $constants.AbilitySubject.Product)"
         :text="$t('products.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <FloatingSave
+        v-if="$can($constants.AbilityAction.Update, $constants.AbilitySubject.Product)"
         :text="$t('products.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
