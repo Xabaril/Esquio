@@ -8,4 +8,5 @@ export interface User {
   scope: string;
   token_type: string;
   profile: UserProfile;
+  roleName?: string;
 }

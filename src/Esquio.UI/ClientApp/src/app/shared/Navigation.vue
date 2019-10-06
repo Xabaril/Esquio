@@ -11,7 +11,7 @@
       <router-link v-for="page in breadcrumb" :key="page.name" class="navigation-link navigation-link--breadcrumb" :to="{ name: page.name, params: {id: page.id, productId: page.productId}}" active-class="active">{{$t(`breadcrumb.${page.name}`, [page.id])}}</router-link>
     </div>
     <div v-if="user" class="navigation-profile">
-      <b-dropdown :text="user.profile.name" variant="outline-light">
+      <b-dropdown :text="`${user.profile.name} ${$t(user.roleName)}`" variant="outline-light">
       <router-link to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
       <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>

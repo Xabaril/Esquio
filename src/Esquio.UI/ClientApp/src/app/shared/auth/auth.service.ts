@@ -126,5 +126,10 @@ export class AuthService implements IAuthService {
 
     this.userPermissions = await response.json();
     this.userAbility = defineAbilitiesFor(this.userPermissions);
+
+    // Super ugly and temporal way to do that.. we need roles soon
+    this.user.roleName = this.userPermissions.readPermission ? 'roles.reader' : this.user.roleName;
+    this.user.roleName = this.userPermissions.writePermission ? 'roles.writer' : this.user.roleName;
+    this.user.roleName = this.userPermissions.managementPermission ? 'roles.manager' : this.user.roleName;
   }
 }
