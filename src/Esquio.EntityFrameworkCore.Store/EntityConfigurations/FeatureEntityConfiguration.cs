@@ -1,5 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.EntityFrameworkCore.Store.Options;
+﻿using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

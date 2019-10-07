@@ -1,4 +1,5 @@
 using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Infrastructure.Data.Seed;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace Esquio.UI
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build()
-                .MigrateDbContext<StoreDbContext>((context,sp)=>{})
+                .MigrateDbContext<StoreDbContext>(StoreDbContextSeed.Seed())
                 .Run();
         }
 

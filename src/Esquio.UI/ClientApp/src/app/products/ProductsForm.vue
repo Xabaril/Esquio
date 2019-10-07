@@ -24,22 +24,24 @@
     </form>
 
     <div
+      v-if="isEditing && $can($constants.AbilityAction.Read, $constants.AbilitySubject.Flag)"
       class="row"
-      v-if="isEditing"
     >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productId="id" />
+      <FlagsList :productId="id"
+      />
     </div>
 
     <FloatingContainer>
       <FloatingDelete
-        v-if="this.isEditing"
+        v-if="isEditing && $can($constants.AbilityAction.Delete, $constants.AbilitySubject.Product)"
         :text="$t('products.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <FloatingSave
+        v-if="$can($constants.AbilityAction.Update, $constants.AbilitySubject.Product)"
         :text="$t('products.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
@@ -47,7 +49,7 @@
     </FloatingContainer>
 
     <FloatingTop
-      v-if="isEditing"
+      v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Flag)"
       :text="$t('products.actions.add_flag')"
       :to="{name: 'flags-add', params: { productId: form.id }}"
     />

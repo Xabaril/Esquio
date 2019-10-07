@@ -139,6 +139,19 @@
                     return $"api/v1/tags/{featureId}";
                 }
             }
+
+            public static class Users
+            {
+                public static string My()
+                {
+                    return $"api/v1/users/my";
+                }
+
+                public static string Add()
+                {
+                    return $"api/v1/users/permission";
+                }
+            }
         }
     }
 }

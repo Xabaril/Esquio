@@ -51,8 +51,8 @@
     </div>
 
     <div
+      v-if="isEditing && $can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
       class="row mt-4"
-      v-if="isEditing"
     >
       <h2>{{$t('toggles.title')}}</h2>
       <TogglesList :flagId="id" :toggles="form.toggles" />
@@ -60,13 +60,14 @@
 
     <FloatingContainer>
       <FloatingDelete
-        v-if="this.isEditing"
+        v-if="isEditing && $can($constants.AbilityAction.Delete, $constants.AbilitySubject.Toggle)"
         :text="$t('flags.actions.delete')"
         :disabled="areActionsDisabled"
         @click="onClickDelete"
       />
 
       <FloatingSave
+        v-if="$can($constants.AbilityAction.Update, $constants.AbilitySubject.Toggle)"
         :text="$t('flags.actions.save')"
         :disabled="areActionsDisabled"
         @click="onClickSave"
@@ -74,7 +75,7 @@
     </FloatingContainer>
 
     <FloatingTop
-      v-if="isEditing"
+      v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
       :text="$t('flags.actions.add_toggle')"
       :to="{name: 'toggles-add', params: { productId: productId, flagId: id }}"
     />

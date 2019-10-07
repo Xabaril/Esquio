@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Features.Tags.Add;
 using Esquio.UI.Api.Features.Tags.Delete;
 using Esquio.UI.Api.Features.Tags.List;
+using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpGet]
+        [Authorize(Policies.Read)]
         [Route("api/v1/tags/{featureId:int:min(1)}")]
         public async Task<IActionResult> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
         {
@@ -30,6 +32,7 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpDelete]
+        [Authorize(Policies.Write)]
         [Route("api/v1/tags/{featureId:int:min(1)}/{tag}")]
         public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
@@ -39,6 +42,7 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/tags/{featureId:int:min(1)}")]
         public async Task<IActionResult> Tag(int featureId, AddTagRequest request, CancellationToken cancellationToken = default)
         {

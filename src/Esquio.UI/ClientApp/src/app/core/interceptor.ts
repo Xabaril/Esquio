@@ -33,6 +33,11 @@ export function registerInterceptor(next = null) {
         return response;
       }
 
+      if (response.status === 403 && next) {
+        next({ path: '/not-allowed' });
+        return response;
+      }
+
       if (!response.ok) {
         throw new Error(response.status + ' ' + response.statusText);
       }

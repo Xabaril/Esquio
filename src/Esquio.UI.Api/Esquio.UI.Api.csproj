@@ -11,7 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\Policies.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="Infrastructure\Authorization\Policies.cs" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(microsoftaspnetcoremvcnewtonsoftjson)" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />

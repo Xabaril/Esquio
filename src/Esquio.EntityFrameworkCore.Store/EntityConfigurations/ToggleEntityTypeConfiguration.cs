@@ -1,15 +1,14 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.EntityFrameworkCore.Store.Options;
+﻿using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
 {
-    internal class ToggleEntityConfiguration : IEntityTypeConfiguration<Entities.ToggleEntity>
+    internal class ToggleEntityTypeConfiguration : IEntityTypeConfiguration<Entities.ToggleEntity>
     {
         private readonly StoreOptions storeOption;
 
-        public ToggleEntityConfiguration(StoreOptions storeOption)
+        public ToggleEntityTypeConfiguration(StoreOptions storeOption)
         {
             this.storeOption = storeOption;
         }

@@ -17,5 +17,13 @@ namespace Esquio.UI.Api.Diagnostics
 
         public static readonly EventId ExecutingCommand = new EventId(201, nameof(ExecutingCommand));
         public static readonly EventId ExecutedCommand = new EventId(202, nameof(ExecutedCommand));
+
+        public static readonly EventId AuthorizationFailed = new EventId(301, nameof(AuthorizationFailed));
+        public static readonly EventId AuthorizationPermissionFailed = new EventId(302, nameof(AuthorizationPermissionFailed));
+        public static readonly EventId AuthorizationFailedClaimIsNotPresent = new EventId(303, nameof(AuthorizationFailedClaimIsNotPresent));
+
+        public static readonly EventId SubjectIdAlreadyExist = new EventId(401, nameof(SubjectIdAlreadyExist));
+        public static readonly EventId SubjectIdDoesNotExist = new EventId(402, nameof(SubjectIdDoesNotExist));
+        public static readonly EventId MyIsNotAuthorized = new EventId(403, nameof(MyIsNotAuthorized));
     }
 }

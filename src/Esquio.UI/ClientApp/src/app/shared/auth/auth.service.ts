@@ -1,8 +1,9 @@
 import { injectable } from 'inversify';
 import Oidc from 'oidc-client';
-import { User } from './user.model';
+import { User, UserPermissions, defineAbilitiesFor } from '~/shared/user';
 import { settings } from '~/core';
 import { IAuthService } from './iauth.service';
+import { Ability } from '@casl/ability';
 
 // Configure logs
 Oidc.Log.logger = window.console;
@@ -11,6 +12,8 @@ Oidc.Log.level = Oidc.Log.ERROR;
 @injectable()
 export class AuthService implements IAuthService {
   public user: User;
+  public userPermissions: UserPermissions;
+  public userAbility: Ability;
   private manager: Oidc.UserManager;
   private config: Oidc.UserManagerSettings = null;
 
@@ -112,5 +115,21 @@ export class AuthService implements IAuthService {
     this.manager.events.addUserSignedOut(() => {
       console.log('#response', { message: 'User signed out of OP' });
     });
+  }
+
+  public async getRolesAndDefinePermissions(): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/v1/users/my`);
+
+    if (!response.ok) {
+      throw new Error('Cannot fetch permissions');
+    }
+
+    this.userPermissions = await response.json();
+    this.userAbility = defineAbilitiesFor(this.userPermissions);
+
+    // Super ugly and temporal way to do that.. we need roles soon
+    this.user.roleName = this.userPermissions.readPermission ? 'roles.reader' : this.user.roleName;
+    this.user.roleName = this.userPermissions.writePermission ? 'roles.writer' : this.user.roleName;
+    this.user.roleName = this.userPermissions.managementPermission ? 'roles.manager' : this.user.roleName;
   }
 }

@@ -163,5 +163,10 @@
   "tokens": {
     "error": "Cannot generate token",
     "success": "The token was successfully copied to your clipboard"
+  },
+  "roles": {
+    "reader": "(Reader)",
+    "writer": "(Writer)",
+    "manager": "(Manager)"
   }
 }

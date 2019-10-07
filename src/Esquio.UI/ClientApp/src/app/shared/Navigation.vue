@@ -11,7 +11,7 @@
       <router-link v-for="page in breadcrumb" :key="page.name" class="navigation-link navigation-link--breadcrumb" :to="{ name: page.name, params: {id: page.id, productId: page.productId}}" active-class="active">{{$t(`breadcrumb.${page.name}`, [page.id])}}</router-link>
     </div>
     <div v-if="user" class="navigation-profile">
-      <b-dropdown :text="user.profile.name" variant="outline-light">
+      <b-dropdown :text="`${user.profile.name} ${$t(user.roleName)}`" variant="outline-light">
       <router-link to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
       <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>
@@ -22,13 +22,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { IAuthService, User } from './auth';
+import { IAuthService } from './auth';
+import { User, AbilityAction, AbilitySubject } from './user';
 import { Inject } from 'inversify-props';
 import { BreadCrumbItem, generateBreadcrumb } from './breadcrumb';
 import { Route } from 'vue-router';
 import { ITokensService } from './tokens';
-import { nextTick } from '~/core/helpers';
 import { AlertType } from '~/core';
+import { nextTick } from '~/core/helpers';
 
 @Component
 export default class extends Vue {
@@ -59,9 +60,19 @@ export default class extends Vue {
     }
   }
 
+  private configureAbilities(): void {
+    if (this.$ability.rules.length > 0) {
+      return;
+    }
+
+    this.$ability.update(this.authService.userAbility.rules);
+  }
+
   @Watch('$route') onChangeRoute(nextRoute: Route) {
     this.breadcrumb = generateBreadcrumb(nextRoute);
     this.user = this.user || this.authService.user;
+
+    this.configureAbilities();
   }
 }
 </script>

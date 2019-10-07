@@ -12,7 +12,7 @@
     "dev": "vue-cli-service build --watch --dest \"../wwwroot\"",
     "dotnet": "dotnet run -p ..",
     "infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
-    "start": "run-p infrastructure dev dotnet"
+    "start": "run-p -r infrastructure dev dotnet"
   },
   "husky": {
     "hooks": {
@@ -20,6 +20,8 @@
     }
   },
   "dependencies": {
+    "@casl/ability": "^3.2.0",
+    "@casl/vue": "^0.5.1",
     "@johmun/vue-tags-input": "^2.1.0",
     "bootstrap": "^4.3.1",
     "bootstrap-material-design": "^4.1.2",

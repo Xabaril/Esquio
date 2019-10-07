@@ -41,9 +41,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
         }
+
         [Fact]
+        [ResetDatabase]
         public async Task get_response_not_found_if_toggle_is_not_positive_int()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: -1))
                   .GetAsync();
@@ -57,6 +66,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task get_response_not_found_if_toggle_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -92,6 +108,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task get_response_ok_and_contain_details()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -157,6 +180,28 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should().Be("value#1");
         }
         [Fact]
+        [ResetDatabase]
+        public async Task get_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: 1))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
@@ -166,6 +211,28 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Delete(toggleId: -1))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status404NotFound);
         }
 
         [Fact]
@@ -185,6 +252,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task delete_response_badrequest_if_toggle_not_exist()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Toggles.Delete(toggleId: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -199,6 +273,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task delete_response_no_content_if_toggle_exist()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -254,6 +335,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task reveal_response_badrequest_if_toggle_not_exist()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.NonExisting"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -268,6 +356,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task reveal_response_ok_if_toggle_exist_and_parameters_can_be_revealed()
         {
+            var permission = Builders.Permission()
+             .WithAllPrivilegesForDefaultIdentity()
+             .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
                .WithName("product#1")
                .Build();
@@ -332,6 +427,56 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Description
                 .Should().NotBeNull();
         }
+        [Fact]
+        [ResetDatabase]
+        public async Task reveal_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+             .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+               .WithName("product#1")
+               .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType("Esquio.Toggles.EnvironmentToggle")
+              .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle"))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
 
         [Fact]
         public async Task knowntypes_response_unauthorized_when_user_request_is_not_authenticated()
@@ -346,8 +491,38 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
+        public async Task knowntypes_response_forbidden_if_user_is_not_authorize()
+        {
+            var permission = Builders.Permission()
+               .WithAllPrivilegesForDefaultIdentity()
+               .WithReadPermission(false)
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
         public async Task knowntypes_response_ok()
         {
+            var permission = Builders.Permission()
+               .WithAllPrivilegesForDefaultIdentity()
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -401,6 +576,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task post_response_bad_request_if_try_to_duplicate_toggle()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
              .WithName("product#1")
              .Build();
@@ -452,6 +634,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task post_response_created_when_add_new_toggle()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
              .WithName("product#1")
              .Build();
@@ -542,8 +731,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task postparameter_response_bad_request_if_name_is_empty()
         {
+            var permission = Builders.Permission()
+             .WithAllPrivilegesForDefaultIdentity()
+             .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = string.Empty,
@@ -561,8 +758,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task postparameter_response_bad_request_if_value_is_null()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = "Environment",
@@ -580,8 +785,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task postparameter_response_bad_request_if_value_is_empty()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = "Environment",
@@ -603,6 +816,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task postparameter_response_badrequest_if_toggle_does_not_exist()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var parameterToggleRequest = new AddParameterToggleRequest()
             {
                 Name = "Environments",
@@ -622,6 +842,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task postparameter_response_ok_if_toggle_exist_but_is_new_parameter()
         {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
              .WithName("product#1")
              .Build();
@@ -670,6 +897,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task postparameter_response_ok_if_toggle_and_parameter_already_exit()
         {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var product = Builders.Product()
              .WithName("product#1")
              .Build();
@@ -705,6 +939,54 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status201Created);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task postparameter_response_forbidden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .WithWritePermission(false)
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+             .WithName("product#1")
+             .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType(typeof(EnvironmentToggle).FullName)
+              .Build();
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var parameterToggleRequest = new AddParameterToggleRequest()
+            {
+                Name = "Environments",
+                Value = "Development",
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter(toggleId: toggle.Id))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(parameterToggleRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
         }
 
     }

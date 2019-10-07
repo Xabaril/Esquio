@@ -25,6 +25,7 @@
         <div class="text-center">
           <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
           <router-link
+            v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Flag)"
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
             :to="{name: 'flags-add', params: { productId }}"
@@ -47,7 +48,9 @@
         slot="id"
         slot-scope="data"
       >
-        <div class="text-right">
+        <div
+          v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Flag)"
+          class="text-right">
           <router-link :to="{ name: 'flags-edit', params: { id: data.item.id, productId }}">
             <button
               type="button"
@@ -74,6 +77,7 @@
           </button>
 
           <button
+            v-if="$can($constants.AbilityAction.Delete, $constants.AbilitySubject.Flag)"
             type="button"
             class="btn btn-sm btn-raised btn-danger ml-2"
             @click="onClickDelete(data.item)"

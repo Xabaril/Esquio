@@ -31,5 +31,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 await db.SaveChangesAsync();
             });
         }
+
+        public async Task AddPermission(params PermissionEntity[] permissions)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                db.AddRange(permissions);
+
+                await db.SaveChangesAsync();
+            });
+        }
     }
 }
