@@ -43,10 +43,12 @@ namespace Esquio.Model
         }
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
-            if (toggles == null && toggles.Any())
+            if (toggles == null || toggles.Any(toggle => toggle == null))
             {
-                _toggles.AddRange(toggles);
+                throw new ArgumentNullException(nameof(toggles));
             }
+
+            _toggles.AddRange(toggles);
         }
         public void Enabled()
         {
