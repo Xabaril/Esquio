@@ -67,3 +67,4 @@ exec { & dotnet pack .\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj -c Release
 exec { & dotnet pack .\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$buildSuffix }
 exec { & dotnet pack .\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$buildSuffix }
 exec { & dotnet pack .\src\Esquio.AspNetCore.ApplicationInsightProcessor\Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$buildSuffix }
+exec { & dotnet pack .\tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj -c Release -o .\artifacts --include-symbols --no-build --version-suffix=$buildSuffix }
