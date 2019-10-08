@@ -28,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.Services.AddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.AddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+            builder.Services.AddSingleton<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 
