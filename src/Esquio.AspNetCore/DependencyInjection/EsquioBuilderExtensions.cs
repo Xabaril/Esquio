@@ -28,11 +28,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </remarks>
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
-            builder.Services.TryAddTransient<IUserNameProviderService, AspNetCoreUserNameProviderService>();
-            builder.Services.TryAddTransient<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.TryAddTransient<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
-
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IUserNameProviderService, AspNetCoreUserNameProviderService>();
+            builder.Services.AddScoped<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
+            builder.Services.AddSingleton<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 
             builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();

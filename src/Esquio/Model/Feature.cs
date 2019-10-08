@@ -76,10 +76,12 @@ namespace Esquio.Model
         /// <param name="toggles">The collection of <see cref="Toggle"/> to be added.</param>
         public void AddToggles(IEnumerable<Toggle> toggles)
         {
-            if (toggles == null && toggles.Any())
+            if (toggles == null || toggles.Any(toggle => toggle == null))
             {
-                _toggles.AddRange(toggles);
+                throw new ArgumentNullException(nameof(toggles));
             }
+
+            _toggles.AddRange(toggles);
         }
         /// <summary>
         /// Set this feature as enabled.
