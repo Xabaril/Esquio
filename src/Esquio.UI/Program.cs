@@ -12,7 +12,7 @@ namespace Esquio.UI
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build()
-                .MigrateDbContext<StoreDbContext>(StoreDbContextSeed.Seed())
+                .MigrateDbContext(StoreDbContextSeed.Seed())
                 .Run();
         }
 

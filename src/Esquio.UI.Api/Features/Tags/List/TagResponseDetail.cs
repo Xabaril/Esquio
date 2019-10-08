@@ -2,6 +2,8 @@
 {
     public class TagResponseDetail
     {
+        protected TagResponseDetail() { }
+
         public TagResponseDetail(string name)
         {
             Name = name;

@@ -5,6 +5,8 @@ namespace Esquio.UI.Api.Features.Tags.Add
 {
     public class AddTagRequest : IRequest
     {
+        protected AddTagRequest() { }
+
         public AddTagRequest(string tag)
         {
             Tag = tag;

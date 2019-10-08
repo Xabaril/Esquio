@@ -15,10 +15,10 @@ namespace Esquio.UI.Infrastructure.Data.Seed
 
             return (context, sp) =>
             {
-                var configuration = sp.GetRequiredService<IConfiguration>();
-
                 if (!context.Permissions.Any())
                 {
+                    var configuration = sp.GetRequiredService<IConfiguration>();
+
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
                         SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "1",

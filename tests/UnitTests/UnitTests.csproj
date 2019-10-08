@@ -20,7 +20,6 @@
     <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunitrunner)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -29,7 +29,6 @@ namespace Esquio.UI.Api
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
                     .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
-                    .AddNewtonsoftJson()
                 .Services;
         }
 

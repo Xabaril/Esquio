@@ -29,7 +29,6 @@
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
 
-    <microsoftaspnetcoremvcnewtonsoftjson>3.0.0</microsoftaspnetcoremvcnewtonsoftjson>
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
     
     <microsoftextensionsdependencyinjectionabstractions>3.0.0</microsoftextensionsdependencyinjectionabstractions>
@@ -53,8 +52,7 @@
 
     <hellangmiddlewareproblemdetails>3.1.0</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
-    <fluentvalidationaspnetcore>8.5.0-preview5</fluentvalidationaspnetcore>
-    <newtonsoftjson>12.0.2</newtonsoftjson>
+    <fluentvalidationaspnetcore>8.5.0</fluentvalidationaspnetcore>
     <microsoftapplicationinsights>2.10.0</microsoftapplicationinsights>
     <microsoftapplicationinsightsaspnetcore>2.7.1</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
@@ -73,7 +71,6 @@
     
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
-    <newtonsoftjson>12.0.2</newtonsoftjson>
     <fluentassertions>5.9.0</fluentassertions>
     <achevetesthost>2.2.1</achevetesthost>
     <respawn>3.2.0</respawn>
