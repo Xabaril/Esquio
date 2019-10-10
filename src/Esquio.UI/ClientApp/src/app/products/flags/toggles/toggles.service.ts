@@ -18,10 +18,10 @@ export class TogglesService implements ITogglesService {
   }
 
   public async params(toggle: Toggle): Promise<ToggleParameterDetail[]> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/parameters/${toggle.typeName}`);
+    const response = await fetch(`${settings.ApiUrl}/v1/toggles/parameters/${toggle.type}`);
 
     if (!response.ok) {
-      throw new Error(`Cannot fetch toggle ${toggle.typeName}`);
+      throw new Error(`Cannot fetch toggle ${toggle.type}`);
     }
 
     const results = await response.json();
@@ -42,7 +42,7 @@ export class TogglesService implements ITogglesService {
   public async add(featureId: number, toggle: Toggle): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/toggles`, {
       method: 'POST',
-      body: JSON.stringify({featureId, toggleType: toggle.typeName, parameters: toggle.parameters})
+      body: JSON.stringify({featureId, type: toggle.type, parameters: toggle.parameters})
     });
 
     if (!response.ok) {
