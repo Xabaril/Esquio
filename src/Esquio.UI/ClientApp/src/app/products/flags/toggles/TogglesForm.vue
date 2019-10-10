@@ -60,7 +60,8 @@
                   type="radio"
                   :checked="checkButtonActive(toggleType.type)"
                   :class="{'is-invisible': isToggleUsedInFlag(toggleType)}"
-                /> {{toggleType.friendlyName}}
+                />
+                <span class="toggles_form-friendlyname">{{toggleType.friendlyName || toggleType.type}}</span>
               </b-button>
             </b-button-group>
           </div>
@@ -276,12 +277,13 @@ export default class extends Vue {
 
     this.accordion = this.accordion || {};
 
-    this.types.toggles.forEach(({ assembly, type, description }) => {
+    this.types.toggles.forEach(({ assembly, type, description, friendlyName }) => {
       this.accordion[assembly] = this.accordion[assembly] || [];
 
       this.accordion[assembly].push({
         type,
-        description
+        description,
+        friendlyName
       });
     });
   }
@@ -445,6 +447,11 @@ export default class extends Vue {
 
   &-body {
     padding: 0 1.25rem;
+  }
+
+  &-friendlyname {
+    display: inline-block;
+    transform: translateY(-.2rem);
   }
 }
 </style>
