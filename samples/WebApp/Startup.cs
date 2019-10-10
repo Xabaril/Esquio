@@ -1,3 +1,4 @@
+using LocationToggles;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
+using UserAgentToggles;
 using WebApp.Services;
 namespace WebApp
 {
@@ -48,16 +50,22 @@ namespace WebApp
                 //Use EF store
 
                 services
-                    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
-                        .AddAspNetCoreDefaultServices()
-                        .AddEntityFrameworkCoreStore(options =>
+                    .AddEsquio(setup =>
+                    {
+                        setup.RegisterTogglesFromAssemblyContaining<Startup>();
+                        //contrib toggles
+                        setup.RegisterTogglesFromAssemblyContaining<HostNameToggle>();
+                        setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                    })
+                    .AddAspNetCoreDefaultServices()
+                    .AddEntityFrameworkCoreStore(options =>
+                    {
+                        options.ConfigureDbContext = (builder) =>
                         {
-                            options.ConfigureDbContext = (builder) =>
-                            {
-                                builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
-                            };
-                        })
-                        .AddApplicationInsightProcessor();
+                            builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
+                        };
+                    })
+                    .AddApplicationInsightProcessor();
             }
             else
             {

@@ -28,8 +28,12 @@ namespace Esquio.UI.Infrastructure.Services
 
         private static IEnumerable<Assembly> IntrospectionAssemblies = new Assembly[]
         {
+            //out-of-box
             typeof(Esquio.Toggles.FromToToggle).Assembly,
-            typeof(Esquio.AspNetCore.Toggles.ClaimValueToggle).Assembly
+            typeof(Esquio.AspNetCore.Toggles.ClaimValueToggle).Assembly,
+            //esquip-contrib
+            typeof(LocationToggles.ClientIpAddressToggle).Assembly,
+            typeof(UserAgentToggles.UserAgentBrowserToggle).Assembly
             //<--- add your custom toggle assemblies here!
         };
     }
