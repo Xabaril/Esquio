@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esquio.LocationToggles" Version="1.1.0-preview.1" />
-    <PackageReference Include="Esquio.UserAgentToggles" Version="1.1.0-preview.1" />
+    <PackageReference Include="Esquio.LocationToggles" Version="$(EsquioLocationToggles)" />
+    <PackageReference Include="Esquio.UserAgentToggles" Version="$(EsquioUserAgentToggles)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />

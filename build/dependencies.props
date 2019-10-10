@@ -24,7 +24,11 @@
     <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
   </PropertyGroup>
-  
+
+  <PropertyGroup Label="Esquio Contrib Dependencies">
+    <EsquioLocationToggles>1.1.0-preview.11</EsquioLocationToggles>
+    <EsquioUserAgentToggles>1.1.0-preview.11</EsquioUserAgentToggles>
+</PropertyGroup> 
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
@@ -60,6 +64,7 @@
   <PropertyGroup Label="Tools Dependencies">
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
+    <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">

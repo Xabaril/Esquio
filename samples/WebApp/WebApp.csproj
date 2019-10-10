@@ -11,10 +11,11 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+    
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="$(miniprofileraspnetcoremvc)" />
 
-    <PackageReference Include="Esquio.LocationToggles" Version="1.1.0-preview.1" />
-    <PackageReference Include="Esquio.UserAgentToggles" Version="1.1.0-preview.1" />
+    <PackageReference Include="Esquio.LocationToggles" Version="$(EsquioLocationToggles)" />
+    <PackageReference Include="Esquio.UserAgentToggles" Version="$(EsquioUserAgentToggles)" />
   </ItemGroup>
 
   <ItemGroup>
