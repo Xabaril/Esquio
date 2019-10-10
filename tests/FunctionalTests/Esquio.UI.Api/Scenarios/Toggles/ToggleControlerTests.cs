@@ -124,7 +124,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.FromToToggle, Esquio")
+              .WithType("Esquio.Toggles.FromToToggle, Esquio, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null")
               .Build();
 
             var parameter = Builders.Parameter()
@@ -158,7 +158,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio");
+                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null");
 
             content.Assembly
                 .Should()
@@ -600,13 +600,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
               .Should().BeEquivalentTo("Toggle that is active depending on current UTC date.");
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).FullName))
+              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
               .Select(t => t.FriendlyName)
               .Single()
               .Should().BeEquivalentTo("FromTo");
 
             content.Toggles
-              .Where(t => t.Type == (typeof(ClaimValueToggle).FullName))
+              .Where(t => t.Type == (typeof(ClaimValueToggle).AssemblyQualifiedName))
               .Select(t => t.Description)
               .Single()
               .Should().BeEquivalentTo("Toggle that is active depending on the current claims of authenticated users.");
