@@ -7,7 +7,7 @@ namespace Esquio.UI.Api.Features.Toggles.Add
     {
         public int FeatureId { get; set; }
 
-        public string ToggleType { get; set; }
+        public string Type { get; set; }
 
         public List<AddToggleRequestDetailParameter> Parameters { get; set; } = new List<AddToggleRequestDetailParameter>();
     }

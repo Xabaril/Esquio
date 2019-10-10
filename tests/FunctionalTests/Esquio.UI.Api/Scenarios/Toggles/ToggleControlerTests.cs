@@ -667,7 +667,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var body = new AddToggleRequest()
             {
                 FeatureId = feature.Id,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                Type = typeof(EnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
             };
 
@@ -710,7 +710,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var body = new AddToggleRequest()
             {
                 FeatureId = feature.Id,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                Type = typeof(EnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
                     new AddToggleRequestDetailParameter()
