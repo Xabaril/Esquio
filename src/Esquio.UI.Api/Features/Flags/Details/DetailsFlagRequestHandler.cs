@@ -1,8 +1,10 @@
-﻿using Esquio.EntityFrameworkCore.Store;
+﻿using Esquio.Abstractions;
+using Esquio.EntityFrameworkCore.Store;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,10 +36,18 @@ namespace Esquio.UI.Api.Features.Flags.Details
                     Description = feature.Description,
                     Enabled = feature.Enabled,
                     ProductName = feature.ProductEntity.Name,
-                    Toggles = feature.Toggles.Select(toggle => new ToggleDetail
+                    Toggles = feature.Toggles.Select(toggle =>
                     {
-                        Id = toggle.Id,
-                        Type = toggle.Type
+                        var type = Type.GetType(toggle.Type);
+                        var designTypeAttribute = type?.GetCustomAttribute<DesignTypeAttribute>();
+
+                        return new ToggleDetail()
+                        {
+                            Id = toggle.Id,
+                            Type = toggle.Type,
+                            FriendlyName = designTypeAttribute?.FriendlyName ?? toggle.Type
+                        };
+
                     }).ToList()
                 };
             }

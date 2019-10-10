@@ -22,5 +22,7 @@ namespace Esquio.UI.Api.Features.Flags.Details
         public int Id { get; set; }
 
         public string Type { get; set; }
+
+        public string FriendlyName { get; set; }
     }
 }

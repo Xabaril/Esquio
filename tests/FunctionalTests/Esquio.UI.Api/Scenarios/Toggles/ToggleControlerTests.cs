@@ -103,7 +103,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status404NotFound);
         }
-       
+
         [Fact]
         [ResetDatabase]
         public async Task get_response_ok_and_contain_details()
@@ -124,7 +124,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.FromToToggle, Esquio, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null")
+              .WithType("Esquio.Toggles.FromToToggle, Esquio")
               .Build();
 
             var parameter = Builders.Parameter()
@@ -158,7 +158,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null");
+                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio");
 
             content.Assembly
                 .Should()
@@ -418,7 +418,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.EnvironmentToggle")
+              .WithType("Esquio.Toggles.EnvironmentToggle, Esquio")
               .Build();
 
             var parameter = Builders.Parameter()
@@ -439,7 +439,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle"))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle, Esquio"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -452,7 +452,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.EnvironmentToggle");
+                .BeEquivalentTo("Esquio.Toggles.EnvironmentToggle, Esquio");
 
             content.Parameters
                 .Count
@@ -581,32 +581,28 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var content = await response.Content
                 .ReadAs<KnownTypesToggleResponse>();
 
-            content.ScannedAssemblies
-                .Should()
-                .Be(4);
-
             content.Toggles
                 .Where(t => t.Assembly == (typeof(FromToToggle).Assembly.GetName().Name))
                 .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
+              .Where(t => t.Type == (typeof(FromToToggle).ShorthandAssemblyQualifiedName()))
               .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
+              .Where(t => t.Type == (typeof(FromToToggle).ShorthandAssemblyQualifiedName()))
               .Select(t => t.Description)
               .Single()
               .Should().BeEquivalentTo("Toggle that is active depending on current UTC date.");
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
+              .Where(t => t.Type == (typeof(FromToToggle).ShorthandAssemblyQualifiedName()))
               .Select(t => t.FriendlyName)
               .Single()
-              .Should().BeEquivalentTo("FromTo");
+              .Should().BeEquivalentTo("Between dates");
 
             content.Toggles
-              .Where(t => t.Type == (typeof(ClaimValueToggle).AssemblyQualifiedName))
+              .Where(t => t.Type == (typeof(ClaimValueToggle).ShorthandAssemblyQualifiedName()))
               .Select(t => t.Description)
               .Single()
               .Should().BeEquivalentTo("Toggle that is active depending on the current claims of authenticated users.");

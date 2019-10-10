@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Services;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -28,7 +29,7 @@ namespace Esquio.UI.Api.Features.Toggles.KnownTypes
 
                 scaneedToggles.Add(new KnownTypesToggleDetailResponse()
                 {
-                    Type = type.AssemblyQualifiedName,
+                    Type = type.ShorthandAssemblyQualifiedName(),
                     Assembly = type.Assembly.GetName(copiedName: false).Name,
                     FriendlyName = attribute != null ? attribute.FriendlyName : type.Name,
                     Description = attribute != null ? attribute.Description : "No description"

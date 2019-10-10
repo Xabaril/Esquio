@@ -32,9 +32,9 @@ namespace Esquio.UI.Infrastructure.Services
             typeof(Esquio.Toggles.FromToToggle).Assembly,
             typeof(Esquio.AspNetCore.Toggles.ClaimValueToggle).Assembly,
             //esquip-contrib
-            typeof(LocationToggles.ClientIpAddressToggle).Assembly,
-            typeof(UserAgentToggles.UserAgentBrowserToggle).Assembly
-            //<--- add your custom toggle assemblies here!
+            //typeof(LocationToggles.ClientIpAddressToggle).Assembly,
+            //typeof(UserAgentToggles.UserAgentBrowserToggle).Assembly
+            ////<--- add your custom toggle assemblies here!
         };
     }
 }

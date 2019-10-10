@@ -11,7 +11,7 @@ namespace Esquio.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on current Environment value.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on execution environment value.", FriendlyName = "Environment")]
+    [DesignType(Description = "Toggle that is active depending on execution environment value.", FriendlyName = "On Environment")]
     [DesignTypeParameter(ParameterName = Environments, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
     public class EnvironmentToggle
         : IToggle

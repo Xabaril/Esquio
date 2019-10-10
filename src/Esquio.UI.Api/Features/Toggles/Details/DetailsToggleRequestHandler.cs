@@ -37,7 +37,7 @@ namespace Esquio.UI.Api.Features.Toggles.Details
 
                     return new DetailsToggleResponse()
                     {
-                        Type = type.AssemblyQualifiedName,
+                        Type = type.ShorthandAssemblyQualifiedName(),
                         Assembly = type.Assembly.GetName(copiedName: false).Name,
                         FriendlyName = attribute != null ? attribute.FriendlyName : type.Name,
                         Description = attribute != null ? attribute.Description : "No description",

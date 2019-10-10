@@ -814,11 +814,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Build();
 
             var toggle1 = Builders.Toggle()
-              .WithType("toggle-type-1")
+              .WithType("Esquio.Toggles.FromToToggle,Esquio")
               .Build();
 
             var toggle2 = Builders.Toggle()
-                .WithType("toggle-type-2")
+                .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
                 .Build();
 
             feature.Toggles
@@ -870,6 +870,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .ContainEquivalentOf(new ToggleDetail
                 {
                     Id = toggle1.Id,
+                    FriendlyName = "Between dates",
                     Type = toggle1.Type
                 });
 
@@ -878,6 +879,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                .ContainEquivalentOf(new ToggleDetail
                {
                    Id = toggle2.Id,
+                   FriendlyName = "On Environment",
                    Type = toggle2.Type
                });
         }

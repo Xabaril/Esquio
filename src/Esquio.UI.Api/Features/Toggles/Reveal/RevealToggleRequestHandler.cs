@@ -23,7 +23,7 @@ namespace Esquio.UI.Api.Features.Toggles.Reveal
             try
             {
                 var type = discoverToggleTypesService.Scan()
-                    .Where(type => type.AssemblyQualifiedName.Equals(request.ToggleType, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(type => type.ShorthandAssemblyQualifiedName().Equals(request.ToggleType, StringComparison.InvariantCultureIgnoreCase))
                     .SingleOrDefault();
 
                 if (type != null)
