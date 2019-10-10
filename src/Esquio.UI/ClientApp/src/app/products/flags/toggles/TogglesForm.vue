@@ -295,13 +295,14 @@ export default class extends Vue {
   private async getToggle(): Promise<void> {
     this.isLoading = true;
     try {
-      const { type, id, parameters } = await this.togglesService.detail(
+      const { type, id, parameters, friendlyName } = await this.togglesService.detail(
         Number(this.toggleId)
       );
 
       this.form.type = type;
       this.form.id = Number(this.toggleId);
       this.form.parameters = parameters || [];
+      this.form.friendlyName = friendlyName;
     } catch (e) {
       this.$alert(this.$t('toggles.errors.detail'), AlertType.Error);
     } finally {
