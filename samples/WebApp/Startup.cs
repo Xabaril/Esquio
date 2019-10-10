@@ -1,4 +1,3 @@
-using LocationToggles;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,39 +42,15 @@ namespace WebApp
 
                 }).AddEsquio();
 
-            //add Esquio Store ( Configuration or EF ) 
-
             if (Configuration["EFStore"] != null)
             {
                 //Use EF store
-
-                services
-                    .AddEsquio(setup =>
-                    {
-                        setup.RegisterTogglesFromAssemblyContaining<Startup>();
-                        //contrib toggles
-                        setup.RegisterTogglesFromAssemblyContaining<HostNameToggle>();
-                        setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
-                    })
-                    .AddAspNetCoreDefaultServices()
-                    .AddEntityFrameworkCoreStore(options =>
-                    {
-                        options.ConfigureDbContext = (builder) =>
-                        {
-                            builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
-                        };
-                    })
-                    .AddApplicationInsightProcessor();
+                AddEsquioWithEntityFrameworkCoreStore(services);
             }
             else
             {
                 //Use configuration store (appsettings.json| env var etc.. )
-
-                services
-                    .AddEsquio(setup => setup.RegisterTogglesFromAssemblyContaining<Startup>())
-                        .AddAspNetCoreDefaultServices()
-                        .AddConfigurationStore(Configuration, "Esquio")
-                        .AddApplicationInsightProcessor();
+                AddEsquioWithConfigurationStore(services);
             }
 
             //Add custom services and authentication
@@ -120,6 +95,40 @@ namespace WebApp
                         name: "default",
                         pattern: "{controller=Match}/{action=Index}/{id?}");
             });
+        }
+
+        private IServiceCollection AddEsquioWithEntityFrameworkCoreStore(IServiceCollection services)
+        {
+            return services
+                .AddEsquio(setup =>
+                {
+                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
+                    setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                })
+                .AddAspNetCoreDefaultServices()
+                .AddEntityFrameworkCoreStore(options =>
+                {
+                    options.ConfigureDbContext = (builder) =>
+                    {
+                        builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
+                    };
+                })
+                .AddApplicationInsightProcessor()
+                .Services;
+        }
+
+        private IServiceCollection AddEsquioWithConfigurationStore(IServiceCollection services)
+        {
+            return services
+                .AddEsquio(setup =>
+                {
+                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
+                    setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                })
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(Configuration, "Esquio")
+                .AddApplicationInsightProcessor()
+                .Services;
         }
     }
 }
