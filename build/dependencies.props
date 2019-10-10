@@ -32,6 +32,7 @@
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
+    <systemtextjson>4.6.0</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
     

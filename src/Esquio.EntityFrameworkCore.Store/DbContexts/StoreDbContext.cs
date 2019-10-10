@@ -2,10 +2,10 @@
 using Esquio.EntityFrameworkCore.Store.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,21 +41,31 @@ namespace Esquio.EntityFrameworkCore.Store
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            var entries = OnBeforeSaveChanges();
+            //get history entries and save current changes
+            var entries = GetHistoriEntriesBeforeSave();
+            var changes = base.SaveChanges(acceptAllChangesOnSuccess);
+
+            //set new values for history entries and save it
+            AddHistorieEntriesAfterSave(entries);
             base.SaveChanges(acceptAllChangesOnSuccess);
-            OnAfterSaveChanges(entries);
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+
+            return changes;
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            var entries = OnBeforeSaveChanges();
-            await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            OnAfterSaveChanges(entries);
-            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            //get history entries and save current changes
+            var entries = GetHistoriEntriesBeforeSave();
+            var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+            //set new values for history entries and save it
+            AddHistorieEntriesAfterSave(entries);
+            await base.SaveChangesAsync(acceptAllChangesOnSuccess,cancellationToken);
+
+            return changes;
         }
 
-        private List<HistoryEntry> OnBeforeSaveChanges()
+        private List<HistoryEntry> GetHistoriEntriesBeforeSave()
         {
             ChangeTracker.DetectChanges();
 
@@ -117,7 +127,7 @@ namespace Esquio.EntityFrameworkCore.Store
             return historyEntries;
         }
 
-        private void OnAfterSaveChanges(List<HistoryEntry> historyEntries)
+        private void AddHistorieEntriesAfterSave(List<HistoryEntry> historyEntries)
         {
             foreach (var historyEntry in historyEntries)
             {
@@ -157,9 +167,9 @@ namespace Esquio.EntityFrameworkCore.Store
                 {
                     FeatureId = GetFeatureId(changeTracker),
                     CreatedAt = DateTime.UtcNow,
-                    KeyValues = KeyValues.Count > 0 ? JsonConvert.SerializeObject(KeyValues) : null,
-                    NewValues = NewValues.Count > 0 ? JsonConvert.SerializeObject(NewValues) : null,
-                    OldValues = NewValues.Count > 0 ? JsonConvert.SerializeObject(OldValues) : null
+                    KeyValues = KeyValues.Count > 0 ? JsonSerializer.Serialize(KeyValues) : null,
+                    NewValues = NewValues.Count > 0 ? JsonSerializer.Serialize(NewValues) : null,
+                    OldValues = NewValues.Count > 0 ? JsonSerializer.Serialize(OldValues) : null
                 };
             }
 
