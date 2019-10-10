@@ -25,19 +25,19 @@ namespace Esquio.UI.Api.Features.Toggles.KnownTypes
             foreach (var type in _discoverToggleTypesService.Scan())
             {
                 var attribute = type.GetCustomAttribute<DesignTypeAttribute>();
-                var description = attribute != null ? attribute.Description : "No description";
 
                 scaneedToggles.Add(new KnownTypesToggleDetailResponse()
                 {
-                    Type = type.FullName,
+                    Type = type.AssemblyQualifiedName,
                     Assembly = type.Assembly.GetName(copiedName: false).Name,
-                    Description = description
+                    FriendlyName = attribute != null ? attribute.FriendlyName : type.Name,
+                    Description = attribute != null ? attribute.Description : "No description"
                 });
             }
 
             return Task.FromResult(new KnownTypesToggleResponse()
             {
-                ScannedAssemblies = scaneedToggles.GroupBy(r=>r.Assembly).Count(),
+                ScannedAssemblies = scaneedToggles.GroupBy(r => r.Assembly).Count(),
                 Toggles = scaneedToggles
             });
         }

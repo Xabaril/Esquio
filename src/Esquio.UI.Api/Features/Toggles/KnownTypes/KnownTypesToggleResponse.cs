@@ -15,6 +15,8 @@ namespace Esquio.UI.Api.Features.Toggles.KnownTypes
 
         public string Type { get; set; }
 
+        public string FriendlyName { get; set; }
+
         public string Description { get; set; }
     }
 }

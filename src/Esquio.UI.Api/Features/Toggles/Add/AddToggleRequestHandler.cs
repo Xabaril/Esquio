@@ -30,7 +30,6 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                 .Where(t => t.Id == request.FeatureId)
                 .SingleOrDefaultAsync(cancellationToken);
 
-
             if (feature != null)
             {
                 var alreadyExistToggleType = feature.Toggles

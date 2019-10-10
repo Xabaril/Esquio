@@ -4,7 +4,13 @@ namespace Esquio.UI.Api.Features.Toggles.Details
 {
     public class DetailsToggleResponse
     {
-        public string TypeName { get; set; }
+        public string Type { get; set; }
+
+        public string Assembly { get; set; }
+
+        public string FriendlyName { get; set; }
+
+        public string Description { get; set; }
 
         public List<ParameterDetail> Parameters { get; set; }
     }

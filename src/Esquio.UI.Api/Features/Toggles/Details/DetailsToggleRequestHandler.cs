@@ -1,8 +1,10 @@
-﻿using Esquio.EntityFrameworkCore.Store;
+﻿using Esquio.Abstractions;
+using Esquio.EntityFrameworkCore.Store;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,16 +29,30 @@ namespace Esquio.UI.Api.Features.Toggles.Details
 
             if (toggle != null)
             {
-                return new DetailsToggleResponse()
+                var type = Type.GetType(toggle.Type, throwOnError:false,ignoreCase:true);
+
+                if ( type != null )
                 {
-                    TypeName = toggle.Type,
-                    Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
+                    var attribute = type.GetCustomAttribute<DesignTypeAttribute>();
+
+                    return new DetailsToggleResponse()
                     {
-                        Id = parameter.Id,
-                        Name = parameter.Name,
-                        Value = parameter.Value
-                    }).ToList()
-                };
+                        Type = type.AssemblyQualifiedName,
+                        Assembly = type.Assembly.GetName(copiedName: false).Name,
+                        FriendlyName = attribute != null ? attribute.FriendlyName : type.Name,
+                        Description = attribute != null ? attribute.Description : "No description",
+                        Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
+                        {
+                            Id = parameter.Id,
+                            Name = parameter.Name,
+                            Value = parameter.Value
+                        }).ToList()
+                    };
+                }
+                else
+                {
+                    throw new InvalidOperationException("The toggle configuration is not valid because selected Type is non known type");
+                }
             }
 
             return null;

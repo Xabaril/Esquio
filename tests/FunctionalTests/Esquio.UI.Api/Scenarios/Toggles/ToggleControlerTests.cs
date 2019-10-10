@@ -124,12 +124,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("toggle-type-1")
+              .WithType("Esquio.Toggles.FromToToggle, Esquio")
               .Build();
 
             var parameter = Builders.Parameter()
-                .WithName("param#1")
-                .WithValue("value#1")
+                .WithName("From")
+                .WithValue("01/91/2991")
                 .Build();
 
             toggle.Parameters
@@ -156,9 +156,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var content = await response.Content
                 .ReadAs<DetailsToggleResponse>();
 
-            content.TypeName
+            content.Type
                 .Should()
-                .BeEquivalentTo("toggle-type-1");
+                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio");
+
+            content.Assembly
+                .Should()
+                .BeEquivalentTo("Esquio");
 
             content.Parameters
                 .Count
@@ -172,12 +176,54 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             content.Parameters
                 .First()
                 .Name
-                .Should().Be("param#1");
+                .Should().Be("From");
 
             content.Parameters
                 .First()
                 .Value
-                .Should().Be("value#1");
+                .Should().Be("01/91/2991");
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_response_badrequest_if_configured_type_is_not_valid()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+               .WithName("product#1")
+               .Build();
+
+            var feature = Builders.Feature()
+                .WithName("feature#1")
+                .Build();
+
+            var toggle = Builders.Toggle()
+              .WithType("NonExistingTYpe")
+              .Build();
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: toggle.Id))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
         }
         [Fact]
         [ResetDatabase]
@@ -537,21 +583,27 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.ScannedAssemblies
                 .Should()
-                .Be(2);
+                .Be(4);
 
             content.Toggles
                 .Where(t => t.Assembly == (typeof(FromToToggle).Assembly.GetName().Name))
                 .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).FullName))
+              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
               .Any().Should().BeTrue();
 
             content.Toggles
-              .Where(t => t.Type == (typeof(FromToToggle).FullName))
+              .Where(t => t.Type == (typeof(FromToToggle).AssemblyQualifiedName))
               .Select(t => t.Description)
               .Single()
               .Should().BeEquivalentTo("Toggle that is active depending on current UTC date.");
+
+            content.Toggles
+              .Where(t => t.Type == (typeof(FromToToggle).FullName))
+              .Select(t => t.FriendlyName)
+              .Single()
+              .Should().BeEquivalentTo("FromTo");
 
             content.Toggles
               .Where(t => t.Type == (typeof(ClaimValueToggle).FullName))

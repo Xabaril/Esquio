@@ -11,7 +11,7 @@ namespace Esquio.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on the current User name and if this is contained in configured Users property.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on current user name.")]
+    [DesignType(Description = "Toggle that is active depending on current user name.", FriendlyName = "Identity Username")]
     [DesignTypeParameter(ParameterName = Users, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The collection of user(s) to activate this toggle separated by ';' character")]
     public class UserNameToggle
         : IToggle
