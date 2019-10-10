@@ -2,7 +2,7 @@ import { ToggleParameter } from './toggle-parameter.model';
 
 export interface Toggle {
   id: number;
-  type?: string;
-  typeName?: string;
+  type: string;
+  friendlyName: string;
   parameters: ToggleParameter[];
 }

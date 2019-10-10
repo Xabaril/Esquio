@@ -7,9 +7,9 @@
       <input-text
         class="toggles_form-group form-group col-md-6 is-disabled"
         :class="{'is-disabled': isEditing}"
-        v-model="form.typeName"
+        v-model="form.type"
         id="toggle_name"
-        :label="$t('toggles.fields.typeName')"
+        :label="$t('toggles.fields.type')"
         validators="required|min:5"
         :help-label="$t('toggles.placeholders.typeHelp')"
       />
@@ -60,7 +60,7 @@
                   type="radio"
                   :checked="checkButtonActive(toggleType.type)"
                   :class="{'is-invisible': isToggleUsedInFlag(toggleType)}"
-                /> {{toggleType.type}}
+                /> {{toggleType.friendlyName}}
               </b-button>
             </b-button-group>
           </div>
@@ -82,11 +82,11 @@
             <b-button-group vertical>
               <b-button
                 class="toggles_form-button toggles_form-button--editing is-active"
-                :title="form.typeName"
+                :title="form.type"
                 variant="outline-secondary"
                 tag="label"
               >
-                {{form.typeName}}
+                {{form.type}}
               </b-button>
             </b-button-group>
           </div>
@@ -168,7 +168,7 @@ export default class extends Vue {
   public name = 'TogglesForm';
   public isLoading = false;
   public types = null;
-  public form: Toggle = { id: null, typeName: null, parameters: [] };
+  public form: Toggle = { id: null, type: null, friendlyName: null, parameters: [] };
   public accordion: { [key: string]: any } = null;
   public paramDetails: ToggleParameterDetail[] = null;
   public flag: Flag = null;
@@ -185,7 +185,7 @@ export default class extends Vue {
   }
 
   get areActionsDisabled(): boolean {
-    return !this.form.typeName || this.$validator.errors.count() > 0;
+    return !this.form.type || this.$validator.errors.count() > 0;
   }
 
   public async created(): Promise<void> {
@@ -221,11 +221,11 @@ export default class extends Vue {
   }
 
   public onClickButtonType(value: string): void {
-    this.form.typeName = value;
+    this.form.type = value;
   }
 
   public checkButtonActive(value: string): boolean {
-    return this.form.typeName === value;
+    return this.form.type === value;
   }
 
   public onChangeParameterValue(parameter: ToggleParameterDetail, value): void {
@@ -293,11 +293,11 @@ export default class extends Vue {
   private async getToggle(): Promise<void> {
     this.isLoading = true;
     try {
-      const { typeName, id, parameters } = await this.togglesService.detail(
+      const { type, id, parameters } = await this.togglesService.detail(
         Number(this.toggleId)
       );
 
-      this.form.typeName = typeName;
+      this.form.type = type;
       this.form.id = Number(this.toggleId);
       this.form.parameters = parameters || [];
     } catch (e) {
@@ -393,7 +393,7 @@ export default class extends Vue {
     });
   }
 
-  @Watch('form.typeName') onChangeTypeName() {
+  @Watch('form.type') onChangeType() {
     this.getToggleParamsInfo();
   }
 }
