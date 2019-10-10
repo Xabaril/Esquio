@@ -9,10 +9,10 @@
     "lint": "npm run lint:scripts && npm run lint:styles",
     "lint:scripts": "vue-cli-service lint",
     "lint:styles": "stylelint \"./src/**/*.(scss|vue)\"",
-    "dev": "vue-cli-service build --watch --dest \"../wwwroot\"",
-    "dotnet": "dotnet run -p ..",
-    "infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
-    "start": "run-p -r infrastructure dev dotnet"
+    "dev:client": "vue-cli-service build --watch --dest \"../wwwroot\"",
+    "dev:dotnet": "dotnet run -p ..",
+    "dev:infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
+    "start": "run-p -r dev:**"
   },
   "husky": {
     "hooks": {

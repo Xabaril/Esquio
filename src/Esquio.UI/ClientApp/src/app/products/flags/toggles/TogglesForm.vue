@@ -87,7 +87,7 @@
                 variant="outline-secondary"
                 tag="label"
               >
-                {{form.type}}
+                {{form.friendlyName || form.type}}
               </b-button>
             </b-button-group>
           </div>
@@ -104,7 +104,7 @@
         :key="key"
       >
 
-        <h3>{{parameter.name}}: {{parameter.clrType}}</h3>
+        <h3>{{parameter.name}}</h3>
         <p>{{parameter.description}}</p>
 
         <parameter

@@ -83,7 +83,7 @@ export default class extends Vue {
   public isLoading = false;
   public columns = [
     {
-      key: 'type',
+      key: 'friendlyName',
       label: () => this.$t('toggles.fields.type')
     },
     {
