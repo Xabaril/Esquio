@@ -61,7 +61,7 @@
                   :checked="checkButtonActive(toggleType.type)"
                   :class="{'is-invisible': isToggleUsedInFlag(toggleType)}"
                 />
-                <span class="toggles_form-friendlyname">{{toggleType.friendlyName || toggleType.type}}</span>
+                <span class="toggles_form-friendlyname">{{toggleType.friendlyName}}</span>
               </b-button>
             </b-button-group>
           </div>
