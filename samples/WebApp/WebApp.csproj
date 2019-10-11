@@ -14,7 +14,8 @@
     
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="$(miniprofileraspnetcoremvc)" />
 
-    <PackageReference Include="Esquio.UserAgentToggles" Version="$(EsquioUserAgentToggles)" />
+    <PackageReference Include="Esquio.Toggles.Http" Version="$(esquiotoggleshttp)" />
+    <PackageReference Include="Esquio.Toggles.GeoLocation" Version="$(esquiotogglesgeolocation)" />
   </ItemGroup>
 
   <ItemGroup>

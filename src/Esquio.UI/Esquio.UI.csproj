@@ -18,10 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esquio.UserAgentToggles" Version="$(EsquioUserAgentToggles)" />
+    <PackageReference Include="Esquio.Toggles.Http" Version="$(esquiotoggleshttp)" />
+    <PackageReference Include="Esquio.Toggles.GeoLocation" Version="$(esquiotogglesgeolocation)" />
+    
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
+    
     <PackageReference Include="Serilog.Extensions.Logging" Version="$(serilogextensionslogging)" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(serilogsettingsconfiguration)" />
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="$(serilogsinkscoloredconsole)" />

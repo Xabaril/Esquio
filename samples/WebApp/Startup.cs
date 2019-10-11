@@ -1,3 +1,5 @@
+using Esquio.Toggles.GeoLocation;
+using Esquio.Toggles.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
-using UserAgentToggles;
 using WebApp.Services;
 namespace WebApp
 {
@@ -21,7 +22,8 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             //add MVC 
-            services.AddLocalization(options => options.ResourcesPath = "Resources")
+            services
+                .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; });
 
@@ -42,6 +44,8 @@ namespace WebApp
 
                 }).AddEsquio();
 
+
+            //add esquio wiht ef or configuration store
             if (Configuration["EFStore"] != null)
             {
                 //Use EF store
@@ -124,6 +128,7 @@ namespace WebApp
                 {
                     //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
                     setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                    setup.RegisterTogglesFromAssemblyContaining<IpApiContryNameToggle>();
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(Configuration, "Esquio")

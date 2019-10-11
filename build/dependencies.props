@@ -26,8 +26,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
-    <EsquioLocationToggles>1.1.1-preview.6</EsquioLocationToggles>
-    <EsquioUserAgentToggles>1.1.1-preview.6</EsquioUserAgentToggles>
+    <esquiotoggleshttp>1.1.0-preview.*</esquiotoggleshttp>
+    <esquiotogglesgeolocation>1.1.0-preview.*</esquiotogglesgeolocation>
 </PropertyGroup> 
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.6.0 </microsoftcsharp>
