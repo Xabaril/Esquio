@@ -168,5 +168,9 @@
     "reader": "(Reader)",
     "writer": "(Writer)",
     "manager": "(Manager)"
+  },
+  "not_allowed": {
+    "title": "You're not allowed to open this page, please switch your account.",
+    "switch": "Switch account"
   }
 }

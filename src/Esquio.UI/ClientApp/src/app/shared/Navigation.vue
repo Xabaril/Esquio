@@ -61,14 +61,15 @@ export default class extends Vue {
   }
 
   private configureAbilities(): void {
-    if (this.$ability.rules.length > 0) {
+    if (!this.$ability || !this.authService.userAbility || this.$ability.rules.length > 0) {
       return;
     }
 
     this.$ability.update(this.authService.userAbility.rules);
   }
 
-  @Watch('$route') onChangeRoute(nextRoute: Route) {
+  @Watch('$route') async onChangeRoute(nextRoute: Route) {
+    await this.authService.getUser();
     this.breadcrumb = generateBreadcrumb(nextRoute);
     this.user = this.user || this.authService.user;
 
