@@ -171,6 +171,10 @@
   },
   "not_allowed": {
     "title": "You're not allowed to open this page, please switch your account.",
-    "switch": "Switch account"
+    "action": "Switch account"
+  },
+  "not_found": {
+    "title": "404 the content cannot be found.",
+    "action": "Go home"
   }
 }

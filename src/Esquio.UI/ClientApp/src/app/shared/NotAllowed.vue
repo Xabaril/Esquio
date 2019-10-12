@@ -22,7 +22,7 @@
           type="button"
           class="btn btn-lg btn-raised btn-primary"
         >
-          {{$t('not_allowed.switch')}}
+          {{$t('not_allowed.action')}}
         </button>
       </router-link>
     </div>
@@ -34,7 +34,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class extends Vue {
-  public name = 'NotFound';
+  public name = 'NotAllowed';
 }
 </script>
 
@@ -42,6 +42,7 @@ export default class extends Vue {
 .not_allowed {
   &-title {
     margin-top: 2rem;
+    text-align: center;
   }
 
   &-actions {
