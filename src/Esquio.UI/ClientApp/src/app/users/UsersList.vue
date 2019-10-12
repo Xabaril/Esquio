@@ -44,7 +44,10 @@
       </template>
     </b-table>
 
-    <UserPermissionsInput/>
+    <FloatingTop
+      :text="$t('users.actions.add')"
+      :to="{name: 'users-add'}"
+    />
   </section>
 </template>
 
@@ -53,12 +56,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
 import { FloatingTop, UserPermissions } from '~/shared';
-import { IUsersPermissionsService, UserPermissionsInput } from './shared';
+import { IUsersPermissionsService } from './shared';
 
 @Component({
   components: {
-    FloatingTop,
-    UserPermissionsInput
+    FloatingTop
   }
 })
 export default class extends Vue {

@@ -182,7 +182,8 @@
     "title": "Users Management",
     "actions": {
       "add": "Add user",
-      "delete": "Delete"
+      "delete": "Delete",
+      "save": "Save user"
     },
     "fields": {
       "id": "Identifier",
