@@ -158,7 +158,8 @@
   },
   "submenu": {
     "logout": "Logout",
-    "token": "Get Private token"
+    "token": "Get Private token",
+    "users": "Manage Users"
   },
   "tokens": {
     "error": "Cannot generate token",

@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router';
 import { Vue } from 'vue-property-decorator';
 import { productsModule } from './products';
+import { usersModule } from './users';
 // import { homeModule } from './home';
 import authRoutes from './shared/auth/auth.routes';
 
@@ -14,6 +15,7 @@ export function router() {
     routes: [
       // ...homeModule.routes(requireAuth),
       ...productsModule.routes(requireAuth),
+      ...usersModule.routes(requireAuth),
       ...authRoutes.routes(),
       {
         path: '/',

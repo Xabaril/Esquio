@@ -12,7 +12,9 @@
     </div>
     <div v-if="user" class="navigation-profile">
       <b-dropdown :text="`${user.profile.name} ${$t(user.roleName)}`" variant="outline-light">
-      <router-link to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
+      <router-link  to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
+      <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/users" tag="b-dropdown-item">{{$t('submenu.users')}}</router-link>
+
       <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>
     </div>
