@@ -1,9 +1,9 @@
 <template>
 <div class="navigation">
   <div class="container navigation-container">
-    <div class="navigation-title">
+    <router-link to="/" class="navigation-title">
       {{$t('common.title')}}
-    </div>
+    </router-link>
     <div class="navigation-items">
       <!-- <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link> -->
       <router-link v-if="breadcrumb.length > 0" class="navigation-link navigation-link--breadcrumb" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
