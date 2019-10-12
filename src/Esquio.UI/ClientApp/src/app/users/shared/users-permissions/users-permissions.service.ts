@@ -6,13 +6,20 @@ import { UserPermissions } from '~/shared';
 @injectable()
 export class UsersPermissionsService implements IUsersPermissionsService {
   public async get(): Promise<PaginatedResponse<UserPermissions[]>> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/permissions`);
+    // const response = await fetch(`${settings.ApiUrl}/v1/users/permissions`);
 
-    if (!response.ok) {
-      throw new Error('Cannot fetch users permissions');
-    }
+    // if (!response.ok) {
+    //   throw new Error('Cannot fetch users permissions');
+    // }
 
-    return response.json();
+    // return response.json();
+
+    return Promise.resolve({
+      count: 1,
+      pageIndex: 1,
+      total: 1,
+      result: [{id: 'fake', subjectId: 'fake', isAuthorized: true, managementPermission: false, readPermission: true, writePermission: false}]
+    });
   }
 
   public async add(userPermissions: UserPermissions): Promise<void> {

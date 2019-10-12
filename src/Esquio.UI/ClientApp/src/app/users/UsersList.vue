@@ -64,12 +64,8 @@ export default class extends Vue {
   public isLoading = true;
   public columns = [
     {
-      key: 'name',
-      label: () => this.$t('users.fields.name')
-    },
-    {
-      key: 'description',
-      label: () => this.$t('users.fields.description')
+      key: 'subjectId',
+      label: () => this.$t('users.fields.subject')
     },
     {
       key: 'id',
