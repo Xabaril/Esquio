@@ -46,7 +46,7 @@
 
     <FloatingTop
       :text="$t('users.actions.add')"
-      :to="{name: 'products-add'}"
+      :to="{name: 'users-add'}"
     />
   </section>
 </template>
@@ -55,8 +55,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop } from '~/shared';
-import { UserPermissions, IUsersPermissionsService } from './shared';
+import { FloatingTop, UserPermissions } from '~/shared';
+import { IUsersPermissionsService } from './shared';
 
 @Component({
   components: {
@@ -70,11 +70,11 @@ export default class extends Vue {
   public columns = [
     {
       key: 'name',
-      label: () => this.$t('products.fields.name')
+      label: () => this.$t('users.fields.name')
     },
     {
       key: 'description',
-      label: () => this.$t('products.fields.description')
+      label: () => this.$t('users.fields.description')
     },
     {
       key: 'id',

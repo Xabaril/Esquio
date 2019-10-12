@@ -1,5 +1,5 @@
 import { PaginatedResponse } from '~/core';
-import { UserPermissions } from './user-permissions.model';
+import { UserPermissions } from '~/shared';
 
 export interface IUsersPermissionsService {
   get(): Promise<PaginatedResponse<UserPermissions[]>>;

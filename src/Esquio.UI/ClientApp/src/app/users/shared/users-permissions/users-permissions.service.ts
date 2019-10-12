@@ -1,7 +1,7 @@
 import { injectable } from 'inversify-props';
 import { settings, PaginatedResponse } from '~/core';
 import { IUsersPermissionsService } from './iusers-permissions.service';
-import { UserPermissions } from './user-permissions.model';
+import { UserPermissions } from '~/shared';
 
 @injectable()
 export class UsersPermissionsService implements IUsersPermissionsService {
