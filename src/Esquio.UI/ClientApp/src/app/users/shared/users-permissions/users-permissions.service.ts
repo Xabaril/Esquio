@@ -25,7 +25,12 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   public async add(userPermissions: UserPermissions): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/users/permissions`, {
       method: 'POST',
-      body: JSON.stringify(userPermissions)
+      body: JSON.stringify({
+        subjectId: userPermissions.subjectId,
+        read: userPermissions.readPermission,
+        write: userPermissions.writePermission,
+        manage: userPermissions.managementPermission
+      })
     });
 
     if (!response.ok) {
@@ -36,7 +41,12 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   public async update(userPermissions: UserPermissions): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/v1/users/permissions`, {
       method: 'PUT',
-      body: JSON.stringify(userPermissions)
+      body: JSON.stringify({
+        subjectId: userPermissions.subjectId,
+        read: userPermissions.readPermission,
+        write: userPermissions.writePermission,
+        manage: userPermissions.managementPermission
+      })
     });
 
     if (!response.ok) {
