@@ -15,7 +15,7 @@ export function containerBuilder(): void {
     container.addSingleton<s.ITokensService>(s.TokensService);
 
     // Bind services for each module
-    productsModule.container();
     usersModule.container();
+    productsModule.container();
     homeModule.container();
 }

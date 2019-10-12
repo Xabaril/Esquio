@@ -35,8 +35,8 @@ export default class extends Vue {
   public value = null;
   public parametersValidator = [
     {
-      classes: 'no-symbol',
-      rule: /^[\w]+$/,
+      classes: 'no-semicolon',
+      rule: /[^;]+$/,
       disableAdd: true
     }
   ];
@@ -73,7 +73,7 @@ export default class extends Vue {
       return false;
     }
 
-    if (parameter.tiClasses.includes('no-symbol')) {
+    if (parameter.tiClasses.includes('no-semicolon')) {
       return false;
     }
 
