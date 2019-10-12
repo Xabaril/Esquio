@@ -43,6 +43,8 @@
         </div>
       </template>
     </b-table>
+
+    <UserPermissionsInput/>
   </section>
 </template>
 
@@ -51,11 +53,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
 import { FloatingTop, UserPermissions } from '~/shared';
-import { IUsersPermissionsService } from './shared';
+import { IUsersPermissionsService, UserPermissionsInput } from './shared';
 
 @Component({
   components: {
-    FloatingTop
+    FloatingTop,
+    UserPermissionsInput
   }
 })
 export default class extends Vue {
