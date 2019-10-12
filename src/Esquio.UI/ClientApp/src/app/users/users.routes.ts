@@ -16,27 +16,6 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
             action: AbilityAction.Manage,
             subject: AbilitySubject.Permission
           }
-        },
-        {
-          path: 'add',
-          name: 'users-add',
-          component: () => import('./UsersForm.vue'),
-          beforeEnter: requireAuth,
-          meta: {
-            action: AbilityAction.Manage,
-            subject: AbilitySubject.Permission
-          }
-        },
-        {
-          path: ':id',
-          name: 'users-edit',
-          component: () => import('./UsersForm.vue'),
-          props: true,
-          beforeEnter: requireAuth,
-          meta: {
-            action: AbilityAction.Manage,
-            subject: AbilitySubject.Permission
-          }
         }
       ]
     }

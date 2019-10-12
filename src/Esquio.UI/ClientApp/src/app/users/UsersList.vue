@@ -43,11 +43,6 @@
         </div>
       </template>
     </b-table>
-
-    <FloatingTop
-      :text="$t('users.actions.add')"
-      :to="{name: 'users-add'}"
-    />
   </section>
 </template>
 
@@ -64,7 +59,7 @@ import { IUsersPermissionsService } from './shared';
   }
 })
 export default class extends Vue {
-  public name = 'ProductsList';
+  public name = 'UsersList';
   public usersPermissions: UserPermissions[] = null;
   public isLoading = true;
   public columns = [
