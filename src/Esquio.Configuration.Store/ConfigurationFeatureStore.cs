@@ -39,8 +39,6 @@ namespace Esquio.Configuration.Store
 
         private FeatureConfiguration GetFeatureFromConfiguration(string featureName, string productName)
         {
-          
-
             var product = _options?.Value
                 .Products
                 .FirstOrDefault(a => a.Name.Equals(productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, StringComparison.InvariantCultureIgnoreCase));

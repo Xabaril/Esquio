@@ -11,10 +11,10 @@ namespace MiniProfiler.Esquio
     internal class EsquioDiagnosticListener
         : IMiniProfilerDiagnosticListener
     {
-        Dictionary<Guid, CustomTiming> _featureEvaluations
+        private readonly Dictionary<Guid, CustomTiming> _featureEvaluations
             = new Dictionary<Guid, CustomTiming>();
 
-        Dictionary<Guid, CustomTiming> _toggleExecutions
+        private readonly Dictionary<Guid, CustomTiming> _toggleExecutions
             = new Dictionary<Guid, CustomTiming>();
 
         public string ListenerName => EsquioConstants.ESQUIO_LISTENER_NAME;

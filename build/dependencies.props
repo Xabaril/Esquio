@@ -78,7 +78,7 @@
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <fluentassertions>5.9.0</fluentassertions>
-    <achevetesthost>2.2.1</achevetesthost>
+    <achevetesthost>3.0.0</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
   

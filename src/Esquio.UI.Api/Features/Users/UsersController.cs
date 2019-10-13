@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Features.Users.Add;
+using Esquio.UI.Api.Features.Users.List;
 using Esquio.UI.Api.Features.Users.My;
 using Esquio.UI.Api.Features.Users.Update;
 using Esquio.UI.Api.Infrastructure.Authorization;
@@ -41,6 +42,16 @@ namespace Esquio.UI.Api.Features.Users
             }
 
             return Forbid();
+        }
+
+        [HttpGet]
+        [Authorize(Policies.Management)]
+        [Route("api/v1/users")]
+        public async Task<IActionResult> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
+        {
+            var response = await _mediator.Send(request, cancellationToken);
+
+            return Ok(response);
         }
 
         [HttpPost]
