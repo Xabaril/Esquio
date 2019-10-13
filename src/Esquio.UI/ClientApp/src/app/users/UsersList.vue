@@ -20,11 +20,11 @@
       </div>
 
       <template
-        slot="id"
+        slot="subjectId"
         slot-scope="data"
       >
         <div class="text-right">
-          <router-link :to="{name: 'users-edit', params: {id: data.item.id}}">
+          <router-link :to="{name: 'users-edit', params: {subjectId: data.item.subjectId}}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -73,7 +73,7 @@ export default class extends Vue {
       label: () => this.$t('users.fields.subject')
     },
     {
-      key: 'id',
+      key: 'managementPermission',
       label: ''
     }
   ];
@@ -81,7 +81,6 @@ export default class extends Vue {
   @Inject() usersPermissionsService: IUsersPermissionsService;
 
   public created(): void {
-    console.log(this.usersPermissionsService);
     this.getUsersPermissions();
   }
 
@@ -101,13 +100,13 @@ export default class extends Vue {
   }
 
   private async deleteUserPermissions(userPermissions: UserPermissions): Promise<void> {
-    if (!await this.$confirm(this.$t('users.confirm.title', [userPermissions.id]))) {
+    if (!await this.$confirm(this.$t('users.confirm.title', [userPermissions.subjectId]))) {
       return;
     }
 
     try {
       const response = await this.usersPermissionsService.remove(userPermissions);
-      this.usersPermissions = this.usersPermissions.filter(x => x.id !== userPermissions.id);
+      this.usersPermissions = this.usersPermissions.filter(x => x.subjectId !== userPermissions.subjectId);
       this.$alert(this.$t('users.success.delete'));
 
     } catch (e) {

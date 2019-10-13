@@ -28,7 +28,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':id',
+          path: ':subjectId',
           name: 'users-edit',
           component: () => import('./UsersForm.vue'),
           props: true,

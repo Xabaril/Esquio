@@ -1,11 +1,12 @@
 <template>
-  <section class="products_form container u-container-medium pl-0 pr-0">
+  <section class="users_form container u-container-medium pl-0 pr-0">
     <div class="row">
       <h1>{{$t('users.detail')}}</h1>
     </div>
     <form class="row">
       <input-text
         class="products_form-group form-group col-md-6"
+        :class="{'is-disabled': isEditing}"
         v-model="form.subjectId"
         id="user_name"
         :label="$t('users.fields.subject')"
@@ -13,7 +14,21 @@
         :help-label="$t('users.placeholders.subjectHelp')"
       />
 
-      // Checkboxes
+      <label
+        :for="role"
+        class="bmd-label-floating"
+      >
+        hola
+      </label>
+      <select class="custom-select">
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <span
+        :id="helper"
+        class="form-text text-muted"
+      >hola</span>
     </form>
 
     <FloatingContainer>
@@ -34,8 +49,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Inject } from 'inversify-props';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { Inject } from "inversify-props";
 import {
   FloatingSave,
   FloatingTop,
@@ -44,9 +59,9 @@ import {
   FloatingModifier,
   FloatingContainer,
   UserPermissions
-} from '~/shared';
-import { AlertType } from '~/core';
-import { IUsersPermissionsService } from './shared';
+} from "~/shared";
+import { AlertType } from "~/core";
+import { IUsersPermissionsService } from "./shared";
 
 @Component({
   components: {
@@ -58,23 +73,25 @@ import { IUsersPermissionsService } from './shared';
   }
 })
 export default class extends Vue {
-  public name = 'UsersForm';
+  public name = "UsersForm";
   public isLoading = false;
-  public form: UserPermissions = { id: null, subjectId: null, isAuthorized: false, managementPermission: false, readPermission: false, writePermission: false };
+  public form: UserPermissions = {
+    subjectId: null,
+    managementPermission: false,
+    readPermission: false,
+    writePermission: false
+  };
 
   @Inject() usersPermissionsService: IUsersPermissionsService;
 
-  @Prop({ type: [String, Number]}) id: string;
+  @Prop({ type: [String, Number] }) subjectId: string;
 
   get isEditing(): boolean {
-    return !!this.id;
+    return !!this.subjectId;
   }
 
   get areActionsDisabled(): boolean {
-    return (
-      !this.form.subjectId ||
-      this.$validator.errors.count() > 0
-    );
+    return !this.form.subjectId || this.$validator.errors.count() > 0;
   }
 
   public async created(): Promise<void> {
@@ -82,7 +99,7 @@ export default class extends Vue {
       return;
     }
 
-    // await this.getUserPermissions();
+    await this.getUserPermissions();
   }
 
   public async onClickSave(): Promise<void> {
@@ -105,6 +122,27 @@ export default class extends Vue {
     }
 
     this.goBack();
+  }
+
+  private async getUserPermissions(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const {
+        subjectId,
+        managementPermission,
+        writePermission,
+        readPermission
+      } = await this.usersPermissionsService.detail(this.subjectId);
+
+      this.form.subjectId = subjectId;
+      this.form.managementPermission = managementPermission;
+      this.form.writePermission = writePermission;
+      this.form.readPermission = readPermission;
+    } catch (e) {
+      this.$alert(this.$t("products.errors.detail"), AlertType.Error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   private async addUserPermissions(): Promise<void> {
@@ -156,7 +194,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.products_form {
+.users_form {
   &-group {
     padding-left: 0;
   }
