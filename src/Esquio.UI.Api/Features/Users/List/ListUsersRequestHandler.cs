@@ -18,20 +18,28 @@ namespace Esquio.UI.Api.Features.Users.List
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
 
-        public async Task<ListUsersResponse> Handle(ListUsersRequest request, CancellationToken cancellationToken)
+        public async Task<ListUsersResponse> Handle(ListUsersRequest request, CancellationToken cancellationToken = default)
         {
+            var total = await _storeDbContext.Permissions
+                .CountAsync(cancellationToken);
+
             var userPermissions = await _storeDbContext
                 .Permissions
+                .Skip(request.PageIndex * request.PageCount)
+                .Take(request.PageCount)
                 .Select(u => new ListUsersResponseDetail()
                 {
                     SubjectId = u.SubjectId,
                     ManagementPermission = u.ManagementPermission,
                     ReadPermission = u.ReadPermission,
                     WritePermission = u.WritePermission
-                }).ToListAsync();
+                }).ToListAsync(cancellationToken);
 
             return new ListUsersResponse()
             {
+                Total = total,
+                PageIndex = request.PageIndex,
+                Count = request.PageCount,
                 UserPermissions = userPermissions
             };
         }

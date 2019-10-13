@@ -154,7 +154,17 @@
 
                 public static string Add()
                 {
-                    return $"api/v1/users/permission";
+                    return $"api/v1/users";
+                }
+
+                public static string Delete(string subjectId)
+                {
+                    return $"api/v1/users/{subjectId}";
+                }
+
+                public static string Details(string subjectId)
+                {
+                    return $"api/v1/users/{subjectId}";
                 }
             }
         }

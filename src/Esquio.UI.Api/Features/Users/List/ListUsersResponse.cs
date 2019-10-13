@@ -4,6 +4,12 @@ namespace Esquio.UI.Api.Features.Users.List
 {
     public class ListUsersResponse
     {
+        public int Total { get; set; }
+
+        public int PageIndex { get; set; }
+
+        public int Count { get; set; }
+
         public List<ListUsersResponseDetail> UserPermissions { get; set; }
     }
 

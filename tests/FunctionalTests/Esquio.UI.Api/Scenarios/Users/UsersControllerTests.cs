@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Features.Users.Add;
+using Esquio.UI.Api.Features.Users.Details;
 using Esquio.UI.Api.Features.Users.List;
 using Esquio.UI.Api.Features.Users.My;
 using Esquio.UI.Api.Features.Users.Update;
@@ -98,13 +99,230 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         }
 
         [Fact]
+        public async Task details_response_unauthorized_if_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Details("some-subject-id"))
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task details_response_forbidden_if_user_is_authenticated_but_not_authorized()
+        {
+            var permission = Builders.Permission()
+               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission(false)
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Details("some-subject-id"))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task details_response_bad_request_if_subject_id_is_greater_than_200()
+        {
+            var subjectId = new String('s', 201);
+
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Details(subjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task details_response_bad_request_if_subjectId_does_not_exist()
+        {
+            var subjectId = new String('s', 50);
+
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Details(subjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task details_response_ok_when_success()
+        {
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Details(permission.SubjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var content = await response.Content
+                .ReadAs<DetailsUsersResponse>();
+
+            content.SubjectId
+                .Should().BeEquivalentTo(permission.SubjectId);
+
+            content.ReadPermission
+                .Should().Be(permission.ReadPermission);
+
+            content.WritePermission
+                .Should().Be(permission.WritePermission);
+
+            content.ManagementPermission
+                .Should().Be(permission.ManagementPermission);
+        }
+
+        [Fact]
+        public async Task delete_response_unauthorized_if_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Delete("some-subjectid"))
+                 .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_forbidden_if_user_is_authenticated_but_not_authorized()
+        {
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(false)
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Delete("some-subjectid"))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_bad_request_if_subject_id_is_greater_than_200()
+        {
+            var subjectId = new String('s', 201);
+
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Delete(subjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_bad_request_if_subjectId_does_not_exist()
+        {
+            var subjectId = new String('s', 50);
+
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Delete(subjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_ok_when_success()
+        {
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.Delete(permission.SubjectId))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
         [ResetDatabase]
         public async Task list_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithManagementPermission(false)
-             .Build();
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(false)
+                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -123,15 +341,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task list_response_badrequest_if_page_count_is_not_positive_number()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithManagementPermission(true)
-             .Build();
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(true)
+                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V1.Users.List(pageCount:-1))
+                 .CreateRequest(ApiDefinitions.V1.Users.List(pageCount: -1))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -145,9 +363,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task list_response_badrequest_if_page_count_is_zero()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithManagementPermission(true)
-             .Build();
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(true)
+                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -167,9 +385,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task list_response_badrequest_if_page_index_is_not_positive_number()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithManagementPermission(true)
-             .Build();
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(true)
+                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -186,12 +404,59 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
 
         [Fact]
         [ResetDatabase]
-        public async Task list_response_ok()
+        public async Task list_response_ok_whe_success_with_paginated_content()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithManagementPermission(true)
-             .Build();
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(true)
+                 .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                 .CreateRequest(ApiDefinitions.V1.Users.List(pageIndex: 0, pageCount: 10))
+                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                 .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var content = await response.Content
+                .ReadAs<ListUsersResponse>();
+
+            content.Should()
+                .NotBeNull();
+
+            content.UserPermissions
+                .Count.Should().Be(1);
+
+            content.UserPermissions
+                .First()
+                .SubjectId.Should().Be(IdentityBuilder.DEFAULT_NAME);
+
+            content.UserPermissions
+               .First()
+               .WritePermission.Should().BeTrue();
+
+            content.UserPermissions
+               .First()
+               .ReadPermission.Should().BeTrue();
+
+            content.UserPermissions
+               .First()
+               .ManagementPermission.Should().BeTrue();
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task list_response_ok_when_success()
+        {
+            var permission = Builders.Permission()
+                 .WithAllPrivilegesForDefaultIdentity()
+                 .WithManagementPermission(true)
+                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -205,7 +470,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .Should()
                 .Be(StatusCodes.Status200OK);
 
-            var  content = await response.Content
+            var content = await response.Content
                 .ReadAs<ListUsersResponse>();
 
             content.Should()
@@ -248,9 +513,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task add_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithManagementPermission(false)
-              .Build();
+                  .WithAllPrivilegesForDefaultIdentity()
+                  .WithManagementPermission(false)
+                  .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -270,8 +535,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task add_response_ok_when_success()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -297,8 +562,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task add_response_badrequest_if_read_is_false_but_write_is_true()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -324,8 +589,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task add_response_badrequest_if_write_is_false_but_management_is_true()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -351,9 +616,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task update_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithManagementPermission(false)
-              .Build();
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission(false)
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
