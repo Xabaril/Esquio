@@ -8,14 +8,14 @@ namespace Esquio.AspNetCore.Blazor
 {
     public class Feature : ComponentBase
     {
-        private bool isEnabled;
+        private bool _isEnabled;
         private static readonly char[] FeatureSeparator = new[] { ',' };
 
         /// <summary>
         /// The product name that determines whether the content can be displayed. If you do not specicify a product name,
         /// default will be used.
         /// </summary>
-        [Parameter] public string Product { get; set; } = "default";
+        [Parameter] public string Product { get; set; } = EsquioConstants.DEFAULT_PRODUCT_NAME;
 
         /// <summary>
         /// A comma delimited list of feature names that are allowed to display the content.
@@ -37,7 +37,7 @@ namespace Esquio.AspNetCore.Blazor
         /// <inheritdoc />
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            if (isEnabled)
+            if (_isEnabled)
             {
                 builder.AddContent(0, Enabled);
             }
@@ -58,9 +58,9 @@ namespace Esquio.AspNetCore.Blazor
 
                 if (featureName.HasValue && featureName.Length > 0)
                 {
-                    isEnabled = await FeatureService.IsEnabledAsync(featureName.Value, Product);
+                    _isEnabled = await FeatureService.IsEnabledAsync(featureName.Value, Product);
 
-                    if (!isEnabled)
+                    if (!_isEnabled)
                     {
                         return;
                     }
