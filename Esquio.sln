@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.AspNetCore.Applicati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{89B085DE-0270-49E9-8AC7-1B1D7119E962}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniProfiler.Esquio", "tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj", "{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniProfiler.Esquio", "tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj", "{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
