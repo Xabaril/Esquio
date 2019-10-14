@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Blazor
 {
-    public class Feature : ComponentBase
+    public class FeatureComponent : ComponentBase
     {
         private bool _isEnabled;
+
         private static readonly char[] FeatureSeparator = new[] { ',' };
 
         /// <summary>
