@@ -39,8 +39,8 @@ namespace Esquio.UI.Api.Features.Users.List
             {
                 Total = total,
                 PageIndex = request.PageIndex,
-                Count = request.PageCount,
-                UserPermissions = userPermissions
+                Count = userPermissions.Count,
+                Result = userPermissions
             };
         }
     }

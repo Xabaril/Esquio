@@ -10,7 +10,7 @@ namespace Esquio.UI.Api.Features.Users.List
 
         public int Count { get; set; }
 
-        public List<ListUsersResponseDetail> UserPermissions { get; set; }
+        public List<ListUsersResponseDetail> Result { get; set; }
     }
 
     public class ListUsersResponseDetail
