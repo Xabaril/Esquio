@@ -5,7 +5,7 @@
     </div>
     <form class="row">
       <input-text
-        class="products_form-group form-group col-md-6"
+        class="users_form-group form-group col-md-6"
         :class="{'is-disabled': isEditing}"
         v-model="form.subjectId"
         id="user_name"
@@ -14,21 +14,20 @@
         :help-label="$t('users.placeholders.subjectHelp')"
       />
 
-      <label
-        :for="role"
-        class="bmd-label-floating"
-      >
-        hola
-      </label>
-      <select class="custom-select">
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-      <span
-        :id="helper"
-        class="form-text text-muted"
-      >hola</span>
+      <div class="users_form-group form-group col-md-6">
+        <label for="role" class="bmd-label-floating">
+          {{$t('users.placeholders.role')}}
+        </label>
+        <select
+          class="users_form-select custom-select"
+          id="role"
+          v-model="role"
+        >
+          <option :value="roles.Reader">{{$t(`users.roles.${roles.Reader}`)}}</option>
+          <option :value="roles.Contributor">{{$t(`users.roles.${roles.Contributor}`)}}</option>
+          <option :value="roles.Manager">{{$t(`users.roles.${roles.Manager}`)}}</option>
+        </select>
+      </div>
     </form>
 
     <FloatingContainer>
@@ -49,8 +48,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { Inject } from "inversify-props";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Inject } from 'inversify-props';
 import {
   FloatingSave,
   FloatingTop,
@@ -59,9 +58,15 @@ import {
   FloatingModifier,
   FloatingContainer,
   UserPermissions
-} from "~/shared";
-import { AlertType } from "~/core";
-import { IUsersPermissionsService } from "./shared";
+} from '~/shared';
+import { AlertType } from '~/core';
+import { IUsersPermissionsService } from './shared';
+
+enum Role {
+  Manager,
+  Contributor,
+  Reader
+}
 
 @Component({
   components: {
@@ -73,7 +78,7 @@ import { IUsersPermissionsService } from "./shared";
   }
 })
 export default class extends Vue {
-  public name = "UsersForm";
+  public name = 'UsersForm';
   public isLoading = false;
   public form: UserPermissions = {
     subjectId: null,
@@ -81,6 +86,9 @@ export default class extends Vue {
     readPermission: false,
     writePermission: false
   };
+
+  public roles = Role;
+  public role: Role = null;
 
   @Inject() usersPermissionsService: IUsersPermissionsService;
 
@@ -138,8 +146,9 @@ export default class extends Vue {
       this.form.managementPermission = managementPermission;
       this.form.writePermission = writePermission;
       this.form.readPermission = readPermission;
+      this.processRolesAfterGet();
     } catch (e) {
-      this.$alert(this.$t("products.errors.detail"), AlertType.Error);
+      this.$alert(this.$t('products.errors.detail'), AlertType.Error);
     } finally {
       this.isLoading = false;
     }
@@ -147,6 +156,7 @@ export default class extends Vue {
 
   private async addUserPermissions(): Promise<void> {
     try {
+      this.processRolesBeforePush();
       await this.usersPermissionsService.add(this.form);
 
       this.$alert(this.$t('users.success.add'));
@@ -157,6 +167,7 @@ export default class extends Vue {
 
   private async updateUserPermissions(): Promise<void> {
     try {
+      this.processRolesBeforePush();
       await this.usersPermissionsService.update(this.form);
 
       this.$alert(this.$t('users.success.update'));
@@ -185,6 +196,38 @@ export default class extends Vue {
     }
   }
 
+  private processRolesAfterGet(): void {
+    if (this.form.readPermission) {
+      this.role = Role.Reader;
+    }
+
+    if (this.form.writePermission) {
+      this.role = Role.Contributor;
+    }
+
+    if (this.form.managementPermission) {
+      this.role = Role.Manager;
+    }
+  }
+
+  private processRolesBeforePush(): void {
+    this.form.readPermission = false;
+    this.form.writePermission = false;
+    this.form.managementPermission = false;
+
+    if (this.role === Role.Reader || this.role === Role.Contributor || this.role === Role.Manager) {
+      this.form.readPermission = true;
+    }
+
+    if (this.role === Role.Contributor || this.role === Role.Manager) {
+      this.form.writePermission = true;
+    }
+
+    if (this.role === Role.Manager) {
+      this.form.managementPermission = true;
+    }
+  }
+
   private goBack(): void {
     this.$router.push({
       name: 'users-list'
@@ -197,6 +240,10 @@ export default class extends Vue {
 .users_form {
   &-group {
     padding-left: 0;
+  }
+
+  &-select {
+    padding: .5rem;
   }
 }
 </style>

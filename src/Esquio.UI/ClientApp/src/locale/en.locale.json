@@ -180,6 +180,7 @@
   },
   "users": {
     "title": "Users Management",
+    "detail": "Users detail",
     "actions": {
       "add": "Add user",
       "delete": "Delete",
@@ -191,7 +192,13 @@
       "subject": "Subject"
     },
     "placeholders": {
-      "subjectHelp": "The user to add to Esquio"
+      "subjectHelp": "The user to add to Esquio",
+      "role": "Choose a role for this user"
+    },
+    "roles": {
+      "0": "Manager",
+      "1": "Contributor",
+      "2": "Reader"
     },
     "errors": {
       "add": "Cannot create this user",
