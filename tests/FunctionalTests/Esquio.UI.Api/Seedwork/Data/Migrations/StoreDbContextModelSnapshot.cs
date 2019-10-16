@@ -145,9 +145,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.HasIndex("ToggleEntityId");
 
                     b.ToTable("Parameters");

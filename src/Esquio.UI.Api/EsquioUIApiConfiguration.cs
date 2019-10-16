@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Features.Products.Add;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Infrastructure.Behaviors;
+using Esquio.UI.Api.Infrastructure.Serialization;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;
@@ -29,6 +30,10 @@ namespace Esquio.UI.Api
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
                     .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
+                    .AddJsonOptions(options=>
+                    {
+                        options.JsonSerializerOptions.Converters.Add(new NumberToStringConverter());
+                    })
                 .Services;
         }
 

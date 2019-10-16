@@ -27,9 +27,6 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);
-
-            builder.HasIndex(p => p.Name)
-                .IsUnique();
         }
     }
 }

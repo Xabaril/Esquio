@@ -429,22 +429,22 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
             content.Should()
                 .NotBeNull();
 
-            content.UserPermissions
+            content.Result
                 .Count.Should().Be(1);
 
-            content.UserPermissions
+            content.Result
                 .First()
                 .SubjectId.Should().Be(IdentityBuilder.DEFAULT_NAME);
 
-            content.UserPermissions
+            content.Result
                .First()
                .WritePermission.Should().BeTrue();
 
-            content.UserPermissions
+            content.Result
                .First()
                .ReadPermission.Should().BeTrue();
 
-            content.UserPermissions
+            content.Result
                .First()
                .ManagementPermission.Should().BeTrue();
         }
@@ -476,22 +476,22 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
             content.Should()
                 .NotBeNull();
 
-            content.UserPermissions
+            content.Result
                 .Count.Should().Be(1);
 
-            content.UserPermissions
+            content.Result
                 .First()
                 .SubjectId.Should().Be(IdentityBuilder.DEFAULT_NAME);
 
-            content.UserPermissions
+            content.Result
                .First()
                .WritePermission.Should().BeTrue();
 
-            content.UserPermissions
+            content.Result
                .First()
                .ReadPermission.Should().BeTrue();
 
-            content.UserPermissions
+            content.Result
                .First()
                .ManagementPermission.Should().BeTrue();
         }
