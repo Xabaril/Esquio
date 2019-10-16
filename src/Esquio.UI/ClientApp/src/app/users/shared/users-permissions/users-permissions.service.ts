@@ -16,7 +16,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async add(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/permission`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/users`, {
       method: 'POST',
       body: JSON.stringify({
         subjectId: userPermissions.subjectId,
@@ -42,7 +42,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async update(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/permission`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/users`, {
       method: 'PUT',
       body: JSON.stringify({
         subjectId: userPermissions.subjectId,
@@ -58,7 +58,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async remove(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/permissions/${userPermissions.subjectId}`, {
+    const response = await fetch(`${settings.ApiUrl}/v1/users/${userPermissions.subjectId}`, {
       method: 'DELETE'
     });
 

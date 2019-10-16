@@ -20,7 +20,7 @@
       </div>
 
       <template
-        slot="subjectId"
+        slot="managementPermission"
         slot-scope="data"
       >
         <div class="text-right">
