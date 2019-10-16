@@ -4,24 +4,19 @@
 
     <div class="container">
       <div class="row">
-        <div class="col d-flex justify-content-end">
+        <div class="col d-flex justify-content-center">
           <img
             class="not_allowed-image"
             src="~/assets/images/esquio01.png"
           />
         </div>
-        <div class="col">
-          <div class="not_allowed-symbol">¿?</div>
-        </div>
       </div>
     </div>
-
-    <div class="not_allowed-actions">
+    <div class="not_allowed-actions mt-3">
       <router-link to="/logout">
         <button
           type="button"
-          class="btn btn-lg btn-raised btn-primary"
-        >
+          class="btn btn-lg btn-raised btn-primary">
           {{$t('not_allowed.action')}}
         </button>
       </router-link>
