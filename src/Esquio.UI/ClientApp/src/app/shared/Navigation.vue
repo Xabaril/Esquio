@@ -1,9 +1,9 @@
 <template>
 <div class="navigation">
   <div class="container navigation-container">
-    <div class="navigation-title">
+    <router-link to="/" class="navigation-title">
       {{$t('common.title')}}
-    </div>
+    </router-link>
     <div class="navigation-items">
       <!-- <router-link class="navigation-link navigation-link--home" :to="{ name: 'home'}" active-class="active">{{$t('common.menu.home')}}</router-link> -->
       <router-link v-if="breadcrumb.length > 0" class="navigation-link navigation-link--breadcrumb" :to="{ name: 'products-list'}" active-class="active">{{$t('common.menu.products')}}</router-link>
@@ -12,7 +12,9 @@
     </div>
     <div v-if="user" class="navigation-profile">
       <b-dropdown :text="`${user.profile.name} ${$t(user.roleName)}`" variant="outline-light">
-      <router-link to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
+      <router-link  to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
+      <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/users" tag="b-dropdown-item">{{$t('submenu.users')}}</router-link>
+
       <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>
     </div>
@@ -61,14 +63,15 @@ export default class extends Vue {
   }
 
   private configureAbilities(): void {
-    if (this.$ability.rules.length > 0) {
+    if (!this.$ability || !this.authService.userAbility || this.$ability.rules.length > 0) {
       return;
     }
 
     this.$ability.update(this.authService.userAbility.rules);
   }
 
-  @Watch('$route') onChangeRoute(nextRoute: Route) {
+  @Watch('$route') async onChangeRoute(nextRoute: Route) {
+    await this.authService.getUser();
     this.breadcrumb = generateBreadcrumb(nextRoute);
     this.user = this.user || this.authService.user;
 

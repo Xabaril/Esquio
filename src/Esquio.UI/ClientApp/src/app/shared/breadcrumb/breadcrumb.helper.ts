@@ -30,6 +30,11 @@ export function generateBreadcrumb(route: Route): BreadCrumbItem[] {
   const parts = route.path.split(SEPARATOR).filter(x => x);
   const breadcrumb = [];
 
+  // TODO: Improve in future
+  if (route.path.includes('users')) {
+    return breadcrumb;
+  }
+
   parts.forEach((part, key) => {
     const sufix = part === ADD_ROUTE ? ADD_ROUTE : EDIT_ROUTE;
     const name = breadcrumbTemplate[key] + sufix;

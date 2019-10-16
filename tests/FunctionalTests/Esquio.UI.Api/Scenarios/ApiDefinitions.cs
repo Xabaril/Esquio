@@ -147,9 +147,24 @@
                     return $"api/v1/users/my";
                 }
 
+                public static string List(int pageIndex = 0, int pageCount = 1)
+                {
+                    return $"api/v1/users?pageIndex={pageIndex}&pageCount={pageCount}";
+                }
+
                 public static string Add()
                 {
-                    return $"api/v1/users/permission";
+                    return $"api/v1/users";
+                }
+
+                public static string Delete(string subjectId)
+                {
+                    return $"api/v1/users/{subjectId}";
+                }
+
+                public static string Details(string subjectId)
+                {
+                    return $"api/v1/users/{subjectId}";
                 }
             }
         }

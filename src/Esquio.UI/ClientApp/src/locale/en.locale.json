@@ -158,7 +158,8 @@
   },
   "submenu": {
     "logout": "Logout",
-    "token": "Get Private token"
+    "token": "Get Private token",
+    "users": "Manage Users"
   },
   "tokens": {
     "error": "Cannot generate token",
@@ -168,5 +169,49 @@
     "reader": "(Reader)",
     "writer": "(Writer)",
     "manager": "(Manager)"
+  },
+  "not_allowed": {
+    "title": "You're not allowed to open this page, please switch your account.",
+    "action": "Switch account"
+  },
+  "not_found": {
+    "title": "404 the content cannot be found.",
+    "action": "Go home"
+  },
+  "users": {
+    "title": "Users Management",
+    "detail": "Users detail",
+    "actions": {
+      "add": "Add user",
+      "delete": "Delete",
+      "save": "Save user",
+      "see_detail": "Open"
+    },
+    "fields": {
+      "id": "Identifier",
+      "subject": "Subject"
+    },
+    "placeholders": {
+      "subjectHelp": "The user to add to Esquio",
+      "role": "Choose a role for this user"
+    },
+    "roles": {
+      "0": "Manager",
+      "1": "Contributor",
+      "2": "Reader"
+    },
+    "errors": {
+      "add": "Cannot create this user",
+      "update": "Cannot update the user",
+      "delete": "Cannot delete the user"
+    },
+    "success": {
+      "add": "The user was created",
+      "update": "The user was updated",
+      "delete": "The user was deleted"
+    },
+    "confirm": {
+      "title": "Are you sure to delete '{0}' user?"
+    }
   }
 }

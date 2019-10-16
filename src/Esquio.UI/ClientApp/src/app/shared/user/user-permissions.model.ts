@@ -1,5 +1,6 @@
 export interface UserPermissions {
-  isAuthorized: boolean;
+  subjectId?: string;
+  isAuthorized?: boolean;
   managementPermission: boolean;
   readPermission: boolean;
   writePermission: boolean;

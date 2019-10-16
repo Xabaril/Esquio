@@ -6,7 +6,7 @@
       id="value_name"
       @blur="onBlurInput"
       :label="$t('parameters.string.valueName')"
-      validators="required|min:3"
+      validators="required|min:1"
       :help-label="$t('parameters.string.valueHelp')"
     />
 

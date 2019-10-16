@@ -1,5 +1,5 @@
 <template>
-<section class="products">
+<section class="users">
   <router-view></router-view>
 </section>
 </template>
@@ -9,6 +9,6 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class extends Vue {
-  public name = 'Products';
+  public name = 'Users';
 }
 </script>

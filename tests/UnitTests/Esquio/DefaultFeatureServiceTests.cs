@@ -3,7 +3,6 @@ using Esquio.Abstractions;
 using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Esquio.Model;
-using Esquio.Toggles;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
