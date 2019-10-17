@@ -34,6 +34,7 @@ namespace Esquio
         {
             var featureCorrelationId = Guid.NewGuid();
             var totalTime = ValueStopwatch.StartNew();
+            productName ??= _options.DefaultProductName;
 
             try
             {

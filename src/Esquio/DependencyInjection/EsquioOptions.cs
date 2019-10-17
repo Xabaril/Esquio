@@ -14,6 +14,21 @@ namespace Esquio.DependencyInjection
         {
             typeof(IToggle).Assembly
         };
+
+        internal string DefaultProductName = null;
+
+        /// <summary>
+        /// Configure default product name to be used when product parameter is not specified. This 
+        /// override default product name configured on <see cref="EsquioConstants.DEFAULT_PRODUCT_NAME"/>
+        /// </summary>
+        /// <param name="productName">The product name to be used when the "Product" parameter is not stablished.</param>
+        /// <returns></returns>
+        public EsquioOptions ConfigureDefaultProductName(string productName)
+        {
+            DefaultProductName = productName;
+            return this;
+        }
+
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
         /// <summary>
         /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetDisabled.

@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 opt.OnErrorBehavior = options.OnErrorBehavior;
                 opt.NotFoundBehavior = options.NotFoundBehavior;
+                opt.DefaultProductName = options.DefaultProductName;
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
