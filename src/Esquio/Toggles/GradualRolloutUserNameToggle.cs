@@ -18,7 +18,6 @@ namespace Esquio.Toggles
         : IToggle
     {
         internal const string Percentage = nameof(Percentage);
-        internal const string AnonymousUser = nameof(AnonymousUser);
         internal const int Partitions = 100;
 
         private readonly IUserNameProviderService _userNameProviderService;
@@ -55,11 +54,17 @@ namespace Esquio.Toggles
                 if (percentage > 0)
                 {
                     var currentUserName = await _userNameProviderService
-                        .GetCurrentUserNameAsync() ?? AnonymousUser;
+                        .GetCurrentUserNameAsync();
 
-                    var assignedPartition = _partitioner.ResolvePartition(currentUserName, partitions: 100);
+                    if (currentUserName != null)
+                    {
+                        // this only apply for authenticted users, we apply some entropy to currentUserName.
+                        // adding this entropy ensure that not all features with gradual rollout for username are enabled/disable at the same time for the same user.
 
-                    return assignedPartition <= percentage;
+                        var assignedPartition = _partitioner.ResolvePartition(featureName + currentUserName, partitions: 100);
+
+                        return assignedPartition <= percentage;
+                    }
                 }
             }
 

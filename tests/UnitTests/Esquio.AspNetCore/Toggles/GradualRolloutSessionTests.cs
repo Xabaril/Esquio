@@ -86,7 +86,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             do
             {
                 sessionId = Guid.NewGuid().ToString();
-                var partition = new DefaultValuePartitioner().ResolvePartition(sessionId);
+                var partition = new DefaultValuePartitioner().ResolvePartition(Constants.FeatureName + sessionId, partitions: 100);
 
                 if (partition <= percentage)
                 {

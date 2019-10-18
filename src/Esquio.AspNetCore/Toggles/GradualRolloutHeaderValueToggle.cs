@@ -19,8 +19,6 @@ namespace Esquio.AspNetCore.Toggles
     public class GradualRolloutHeaderValueToggle
         : IToggle
     {
-        const string NO_HEADER_DEFAULT_VALUE = "no-header-value";
-
         internal const string HeaderName = nameof(HeaderName);
         internal const string Percentage = nameof(Percentage);
 
@@ -52,6 +50,7 @@ namespace Esquio.AspNetCore.Toggles
             var data = toggle.GetData();
 
             string headerName = data.HeaderName;
+
             if (Double.TryParse(data.Percentage.ToString(), out double percentage))
             {
                 if (percentage > 0d)
@@ -60,10 +59,14 @@ namespace Esquio.AspNetCore.Toggles
                         .Request
                         .Headers[headerName];
 
-                    var headerValue = values != StringValues.Empty ? values.First() : NO_HEADER_DEFAULT_VALUE;
+                    if (values != StringValues.Empty)
+                    {
+                        // this only apply when header exist, we apply also some entropy to header value.
+                        // adding this entropy ensure that not all features with gradual rollout for claim value are enabled/disable at the same time for the same user.
 
-                    var assignedPartition = _partitioner.ResolvePartition(headerValue);
-                    return assignedPartition <= percentage;
+                        var assignedPartition = _partitioner.ResolvePartition(featureName + values.First(), partitions: 100);
+                        return assignedPartition <= percentage;
+                    }
                 }
             }
 

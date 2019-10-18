@@ -97,7 +97,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             do
             {
                 header_value = Guid.NewGuid().ToString();
-                var partition = new DefaultValuePartitioner().ResolvePartition(header_value);
+                var partition = new DefaultValuePartitioner().ResolvePartition(Constants.FeatureName + header_value, partitions: 100);
 
                 if (partition <= percentage)
                 {

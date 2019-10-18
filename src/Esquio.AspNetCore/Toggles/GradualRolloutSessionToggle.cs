@@ -50,14 +50,15 @@ namespace Esquio.AspNetCore.Toggles
             {
                 if (percentage > 0d)
                 {
-
                     var sessionId = _httpContextAccessor
                         .HttpContext
                         .Session
                         .Id;
 
-                    var assignedPartition = _partitioner.ResolvePartition(sessionId);
+                    // we apply also some entropy to sessionid value.
+                    // adding this entropy ensure that not all features with gradual rollout for claim value are enabled/disable at the same time for the same user.
 
+                    var assignedPartition = _partitioner.ResolvePartition(featureName + sessionId);
                     return assignedPartition <= percentage;
                 }
             }
