@@ -87,6 +87,15 @@ steps:
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack Miniprofiler.Esquio'
+  inputs:
+    command: 'pack'
+    feedsToUse: 'select'
+    packagesToPack: './tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
+    buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: NuGetCommand@2
   displayName: 'push package to Nuget Feed as pre-release'
   inputs:
