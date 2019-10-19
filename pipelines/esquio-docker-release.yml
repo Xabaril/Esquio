@@ -11,7 +11,7 @@ steps:
 - task: Docker@2
   inputs:    
     containerRegistry: 'DockerHubXabaril'
-    repository: '$(uiImageName)'
+    repository: 'xabarilcoding/esquioui'
     command: 'buildAndPush'
     Dockerfile: 'demos/AppWithUI/ui-dockerfile'
     buildContext: '$(Build.SourcesDirectory)'
