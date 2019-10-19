@@ -11,6 +11,8 @@ trigger:
         - tests/*
         - pipelines/esquio-master-ci.yml
 
+pr: none
+
 pool:
   name: Hosted Ubuntu 1604
 
