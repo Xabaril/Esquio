@@ -8,6 +8,7 @@ variables:
   acrName: esquio.azurecr.io
   appWebAppName: esquiodemoapp
   uiWebAppName: esquiodemoui
+  uiImageName: esquioui
 
 steps:
 - task: Docker@0
