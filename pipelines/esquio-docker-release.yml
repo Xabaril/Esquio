@@ -4,9 +4,6 @@ pr: none
 pool:
   name: Hosted Ubuntu 1604
 
-variables:
-  uiImageName: esquioui
-  
 steps:
 - task: Docker@2
   inputs:    
