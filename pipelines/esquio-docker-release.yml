@@ -5,41 +5,44 @@ pool:
   name: Hosted Ubuntu 1604
 
 variables:
-  appImageName: esquiodemoapp
   uiImageName: esquioui
-  acrName: esquio.azurecr.io
-  appWebAppName: esquiodemoapp
-  uiWebAppName: esquiodemoui
-  dockerRepo: esquio
   
-  
-
 steps:
-- task: Docker@0
-  displayName: 'Build ui Image'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Build an image'
-    dockerFile: 'demos/AppWithUI/ui-dockerfile'
-    defaultContext: false
-    context: '$(Build.SourcesDirectory)'
-    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
-    includeLatestTag: true
-    workingDirectory: '$(Build.SourcesDirectory)'
+- task: Docker@2
+  inputs:    
+    containerRegistry: 'DockerHubXabaril'
+    repository: 'xabarilcoding'
+    command: 'buildAndPush'
+    Dockerfile: 'demos/AppWithUI/ui-dockerfile'
+    buildContext: '$(Build.SourcesDirectory)'
+    tags: |
+      $(Build.BuildId)
+      latest
+# - task: Docker@2
+#   displayName: 'Build ui Image'
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerRegistryConnection: 'DockerHubXabaril'
+#     action: 'Build an image'
+#     dockerFile: 'demos/AppWithUI/ui-dockerfile'
+#     defaultContext: false
+#     context: '$(Build.SourcesDirectory)'
+#     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+#     includeLatestTag: true
+#     workingDirectory: '$(Build.SourcesDirectory)'
 
-- task: Docker@0
-  displayName: 'Push ui image with version $(Build.BuildId)'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Push an image'
-    imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
+# - task: Docker@0
+#   displayName: 'Push ui image with version $(Build.BuildId)'
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerRegistryConnection: 'DockerHubXabaril'
+#     action: 'Push an image'
+#     imageName: 'xabarilcoding/$(uiImageName):$(Build.BuildId)'
 
-- task: Docker@0
-  displayName: 'Push ui image latest'
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: 'DockerHubXabaril'
-    action: 'Push an image'
-    imageName: 'xabarilcoding/$(uiImageName):latest'
+# - task: Docker@0
+#   displayName: 'Push ui image latest'
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerRegistryConnection: 'DockerHubXabaril'
+#     action: 'Push an image'
+#     imageName: 'xabarilcoding/$(uiImageName):latest'
