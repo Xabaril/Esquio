@@ -23,6 +23,7 @@
     <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
     <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>1.1.0$(VersionSuffix)</esquiocli>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
@@ -66,6 +67,7 @@
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
+    <mcmastercommandlineutils>2.4.2</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
