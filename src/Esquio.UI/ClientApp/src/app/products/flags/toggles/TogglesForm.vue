@@ -446,7 +446,7 @@ export default class extends Vue {
         box-shadow: none;
       }
 
-      input[type="radio"]{
+      input[type='radio'] {
         margin-left: 0;
         margin-top: 0;
       }
