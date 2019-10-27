@@ -1,8 +1,8 @@
 <template>
-  <section class="toggles_form container u-container-medium pl-0 pr-0">
-    <div class="row">
+  <article class="toggles_form container u-container-medium pl-0 pr-0">
+    <header>
       <h1>{{$t('toggles.detail')}}</h1>
-    </div>
+    </header>
     <form class="row u-hidden">
       <input-text
         class="toggles_form-group form-group col-md-6 is-disabled"
@@ -18,7 +18,7 @@
     <div
       v-if="accordion && !isEditing"
       id="accordion"
-      class="toggles_form-accordion row"
+      class="toggles_form-accordion"
     >
       <div
         class="toggles_form-card card"
@@ -26,16 +26,17 @@
         :key="key"
       >
         <div class="toggles_form-header card-header">
-          <h5 class="toggles_form-title mb-0">
-            <button
-              class="btn btn-link"
+          <button
+              class="btn toggles_form-action-button"
               data-toggle="collapse"
               :data-target="`#c${i}`"
               aria-expanded="true"
             >
-              {{key}}
-            </button>
-          </h5>
+              <i class="material-icons">add_circle_outline</i>
+          </button>
+          <h2 class="toggles_form-title">
+          {{key}}
+          </h2>
         </div>
 
         <div
@@ -97,6 +98,7 @@
 
     <div
       v-if="paramDetails"
+      class="mt-3 mb-3"
       :class="{'is-disabled': isEditing && isLoading}"
     >
       <div
@@ -104,7 +106,7 @@
         :key="key"
       >
 
-        <h3>{{parameter.name}}</h3>
+        <h4>{{parameter.name}}</h4>
         <p>{{parameter.description}}</p>
 
         <parameter
@@ -131,7 +133,7 @@
         @click="onClickSave"
       />
     </FloatingContainer>
-  </section>
+  </article>
 </template>
 
 <script lang="ts">
@@ -408,46 +410,92 @@ export default class extends Vue {
     padding-left: 0;
   }
 
-  &-button {
-    text-align: left;
+  &-action-button {
+    border-radius: 100%;
+    line-height: 0;
 
-    &.is-active {
-      color: get-color(basic, brightest);
-      background-color: get-color(secondary, bright);
+    &:hover {
+      background-color: transparent;
+      color: get-color(primary, normal);
     }
 
-    &--editing {
-      pointer-events: none;
+    .material-icons {
+      font-size: get-font-size(xl);
+    }
+  }
+
+  .btn-group-vertical {
+    margin: 0;
+  }
+
+  .toggles_form {
+    &-button.btn-outline-secondary {
+      text-align: left;
+      font-size: get-font-size(s);
+      border: 0;
+      padding: .25rem 0;
+      color: get-color(basic, darkest);
+
+      &:active,
+      &.is-active,
+      &:focus,
+      &:hover {
+        background-color: transparent;
+        border: 0;
+        color: get-color(basic, darkest);
+        box-shadow: none;
+      }
+
+      input[type="radio"]{
+        margin-left: 0;
+        margin-top: 0;
+      }
+
+      &--editing {
+        pointer-events: none;
+        background-color: transparent;
+      }
+
+      &.is-active {
+        background-color: transparent;
+      }
     }
   }
 
   &-accordion {
-    border: 1px solid get-color(basic, normal);
     flex-direction: column;
   }
 
   &-card {
     box-shadow: none;
+    margin-bottom: .5rem;
+    background-color: get-color(basic, brighter);
+    min-height: 2.5rem;
+    border-radius: .25rem;
   }
 
   &-header {
-    padding: 0;
+    padding: .75rem .5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 0;
 
     /deep/ button {
-      &:hover {
-        background-color: get-color(secondary, bright);
-        color: get-color(basic, brightest);
-      }
+      padding: 0;
+      margin: 0;
     }
   }
 
   &-title {
-    margin-left: .5rem;
-    margin-top: .5rem;
+    margin: 0;
+    padding-bottom: 0;
+    margin-left: .25rem;
+    font-size: get-font-size(m);
+    line-height: 1.2rem;
   }
 
   &-body {
-    padding: 0 1.25rem;
+    padding: .25rem 1rem .25rem 2.25rem;
   }
 
   &-friendlyname {

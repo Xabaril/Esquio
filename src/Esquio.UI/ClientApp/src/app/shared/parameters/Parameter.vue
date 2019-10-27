@@ -1,5 +1,5 @@
 <template>
-  <div class="parameter">
+  <div class="parameter row">
     <component :is="selectedComponent" :options="options" @change="onChangeParameterValue"></component>
   </div>
 </template>
