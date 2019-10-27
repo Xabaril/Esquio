@@ -446,6 +446,7 @@ export default class extends Vue {
         box-shadow: none;
       }
 
+      // stylelint-disable selector-no-qualifying-type
       input[type='radio'] {
         margin-left: 0;
         margin-top: 0;
