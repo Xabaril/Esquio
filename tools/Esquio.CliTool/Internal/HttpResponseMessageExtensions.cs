@@ -15,13 +15,15 @@ namespace System.Net.Http
             {
                 var content = await responseMessage.Content.ReadAsStringAsync();
 
-                var problemDetails =  JsonSerializer.Deserialize<BadRequestResponse>(content,new JsonSerializerOptions()
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetailsResponse>(content, new JsonSerializerOptions()
                 {
                     AllowTrailingCommas = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
 
-                if (problemDetails != null && problemDetails.Errors.Any())
+                if (problemDetails != null
+                    && problemDetails.Errors != null
+                    && problemDetails.Errors.Any())
                 {
                     var builder = new StringBuilder();
 
@@ -61,13 +63,13 @@ namespace System.Net.Http
             }
         }
 
-        private class BadRequestResponse
+        private class ProblemDetailsResponse
         {
             public int Status { get; set; }
 
             public string Detail { get; set; }
 
-            public Dictionary<string,IEnumerable<string>> Errors { get; set; }
+            public Dictionary<string, IEnumerable<string>> Errors { get; set; }
         }
     }
 }

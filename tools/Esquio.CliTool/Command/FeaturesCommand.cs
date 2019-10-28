@@ -1,13 +1,15 @@
-﻿using McMaster.Extensions.CommandLineUtils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Esquio.CliTool.Internal;
+using McMaster.Extensions.CommandLineUtils;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
 {
     [Command("features", Description = "Manage Esquio Features"),
-         Subcommand(typeof(RolloutCommand)),
-         Subcommand(typeof(RolloffCommand))]
+        Subcommand(typeof(RolloutCommand)),
+        Subcommand(typeof(RolloffCommand)),
+        Subcommand(typeof(ListCommand))]
     internal class FeaturesCommand
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
@@ -20,29 +22,122 @@ namespace Esquio.CliTool.Command
 
         private class RolloutCommand
         {
-            [Option("--name", Description = "The feature name to be rolled out.")]
-            public string Name { get; set; }
+            [Option("--feature-id", Description = "The feature name to be rolled out.")]
+            [Required]
+            public int FeatureId { get; set; }
 
-            [Option("--product", Description = "The product where feature is created.")]
-            public string Product { get; set; }
+            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Required]
+            public string Uri { get; set; }
 
-            private void OnExecute(IConsole console)
+            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Required]
+            public string ApiKey { get; set; }
+
+
+            private async Task<int> OnExecute(IConsole console)
             {
-                console.WriteLine($"we are on Rollout feature command {Name} {Product}");
+                var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClient.Create(Uri, ApiKey);
+
+                var response = await client.RolloutFeatureAsync(FeatureId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    console.ForegroundColor = System.ConsoleColor.Green;
+                    console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 0;
+                }
+                else
+                {
+                    console.ForegroundColor = System.ConsoleColor.Red;
+                    console.WriteLine(await response.GetErrorDetailAsync());
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 1;
+                }
             }
         }
 
         private class RolloffCommand
         {
-            [Option("--name", Description = "The feature name to be rolled out.")]
-            public string Name { get; set; }
+            [Option("--feature-id", Description = "The feature name to be rolled out.")]
+            [Required]
+            public int FeatureId { get; set; }
 
-            [Option("--product", Description = "The product where the feature is created.")]
-            public string Product { get; set; }
+            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Required]
+            public string Uri { get; set; }
 
-            private void OnExecute(IConsole console)
+            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Required]
+            public string ApiKey { get; set; }
+
+            private async Task<int> OnExecute(IConsole console)
             {
-                console.WriteLine($"we are on Remove product command {Name}");
+                var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClient.Create(Uri, ApiKey);
+
+                var response = await client.RollbackFeatureAsync(FeatureId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    console.ForegroundColor = System.ConsoleColor.Green;
+                    console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 0;
+                }
+                else
+                {
+                    console.ForegroundColor = System.ConsoleColor.Red;
+                    console.WriteLine(await response.GetErrorDetailAsync());
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 1;
+                }
+            }
+        }
+        private class ListCommand
+        {
+            [Option("--product-id", Description = "The feature name to be rolled out.")]
+            [Required]
+            public int ProductId { get; set; }
+
+            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Required]
+            public string Uri { get; set; }
+
+            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Required]
+            public string ApiKey { get; set; }
+
+
+            private async Task<int> OnExecute(IConsole console)
+            {
+                var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClient.Create(Uri, ApiKey);
+
+                var response = await client.ListFeaturesAsync(ProductId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    console.ForegroundColor = System.ConsoleColor.Green;
+                    console.WriteLine(await response.GetContentDetailAsync());
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 0;
+                }
+                else
+                {
+                    console.ForegroundColor = System.ConsoleColor.Red;
+                    console.WriteLine(await response.GetErrorDetailAsync());
+                    console.ForegroundColor = defaultForegroundColor;
+
+                    return 1;
+                }
             }
         }
     }

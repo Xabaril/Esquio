@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Internal
 {
-    public class EsquioClient
+    public class EsquioClient : IDisposable
     {
         private readonly HttpClient _httpClient;
 
@@ -37,6 +37,29 @@ namespace Esquio.CliTool.Internal
         public async Task<HttpResponseMessage> RemoveProductAsync(int productId)
         {
             return await _httpClient.DeleteAsync($"api/v1/products/{productId}");
+        }
+
+        public async Task<HttpResponseMessage> ListFeaturesAsync(int productId)
+        {
+            return await _httpClient.GetAsync($"api/v1/products/{productId}/flags");
+        }
+
+        public async Task<HttpResponseMessage> RolloutFeatureAsync(int featureId)
+        {
+            return await _httpClient.PutAsync($"api/v1/flags/{featureId}/rollout", new StringContent(string.Empty));
+        }
+
+        public async Task<HttpResponseMessage> RollbackFeatureAsync(int featureId)
+        {
+            return await _httpClient.PutAsync($"api/v1/flags/{featureId}/rollback", new StringContent(string.Empty));
+        }
+
+        public void Dispose()
+        {
+            if (_httpClient != null)
+            {
+                _httpClient.Dispose();
+            }
         }
 
         public static EsquioClient Create(string uri, string apikey)

@@ -8,7 +8,6 @@ namespace Esquio.CliTool
     class Program
     {
         static void Main(string[] args) => CommandLineApplication.Execute<Program>(args);
-
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
             console.WriteLine("You must specify at a subcommand.");
