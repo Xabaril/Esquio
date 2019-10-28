@@ -1,12 +1,18 @@
 import { injectable } from 'inversify-props';
-import { settings, PaginatedResponse } from '~/core';
-import { IFlagsService } from './iflags.service';
+import { settings } from '~/core';
+import { addQueryParams, PaginatedResponse, PaginationInfo } from '~/shared';
 import { Flag } from './flag.model';
+import { IFlagsService } from './iflags.service';
 
 @injectable()
 export class FlagsService implements IFlagsService {
-  public async get(productId: number): Promise<PaginatedResponse<Flag[]>> {
-    const response = await fetch(`${settings.ApiUrl}/v1/products/${productId}/flags`);
+  public async get(productId: number, pagination?: PaginationInfo): Promise<PaginatedResponse<Flag[]>> {
+    const params = {
+      pageIndex: pagination.pageIndex,
+      pageCount: pagination.pageCount
+    };
+
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/products/${productId}/flags`,params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch flags');

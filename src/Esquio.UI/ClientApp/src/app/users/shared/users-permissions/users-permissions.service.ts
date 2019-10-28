@@ -1,12 +1,17 @@
 import { injectable } from 'inversify-props';
-import { settings, PaginatedResponse } from '~/core';
+import { settings } from '~/core';
+import { addQueryParams, PaginatedResponse, PaginationInfo, UserPermissions } from '~/shared';
 import { IUsersPermissionsService } from './iusers-permissions.service';
-import { UserPermissions } from '~/shared';
 
 @injectable()
 export class UsersPermissionsService implements IUsersPermissionsService {
-  public async get(): Promise<PaginatedResponse<UserPermissions[]>> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users`);
+  public async get(pagination: PaginationInfo): Promise<PaginatedResponse<UserPermissions[]>> {
+    const params = {
+      pageIndex: pagination.pageIndex,
+      pageCount: pagination.pageCount
+    };
+
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/users`, params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch users permissions');

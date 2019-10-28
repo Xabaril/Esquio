@@ -1,6 +1,5 @@
-import { PaginatedResponse } from '~/core';
-import { Tag } from './tag.model';
 import { FormTag } from './form-tag.model';
+import { Tag } from './tag.model';
 
 export interface ITagsService {
   get(featureId: number): Promise<Tag[]>;

@@ -10,6 +10,8 @@
       :empty-text="$t('common.empty')"
       :empty-filtered-text="$t('common.empty_filtered')"
       show-empty
+      :per-page="0"
+      :current-page="paginationInfo.pageIndex"
     >
       <div
         slot="table-busy"
@@ -44,6 +46,14 @@
       </template>
     </b-table>
 
+    <b-pagination
+      v-model="paginationInfo.pageIndex"
+      :total-rows="paginationInfo.rows"
+      :per-page="paginationInfo.pageCount"
+      @change="onChangePage"
+      align="right"
+    ></b-pagination>
+
     <FloatingTop
       :text="$t('users.actions.add')"
       :to="{name: 'users-add'}"
@@ -55,7 +65,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop, UserPermissions } from '~/shared';
+import { FloatingTop, UserPermissions, PaginationInfo } from '~/shared';
 import { IUsersPermissionsService } from './shared';
 
 @Component({
@@ -67,6 +77,7 @@ export default class extends Vue {
   public name = 'UsersList';
   public usersPermissions: UserPermissions[] = null;
   public isLoading = true;
+  public paginationInfo = new PaginationInfo();
   public columns = [
     {
       key: 'subjectId',
@@ -88,10 +99,19 @@ export default class extends Vue {
     await this.deleteUserPermissions(userPermissions);
   }
 
+  public onChangePage(page: number): void {
+    this.usersPermissions = null;
+    this.isLoading = true;
+    this.paginationInfo.pageIndex = page - 1;
+    this.getUsersPermissions();
+  }
+
   private async getUsersPermissions(): Promise<void> {
     try {
-      const response = await this.usersPermissionsService.get();
+      const response = await this.usersPermissionsService.get(this.paginationInfo);
       this.usersPermissions = response.result;
+      this.paginationInfo.rows = response.total;
+      this.paginationInfo.pageIndex = response.pageIndex + 1;
     } catch (e) {
       this.$alert(this.$t('users.errors.get'), AlertType.Error);
     } finally {

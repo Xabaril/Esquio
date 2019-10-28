@@ -1,8 +1,8 @@
-import { PaginatedResponse } from '~/core';
+import { PaginatedResponse, PaginationInfo } from '~/shared';
 import { Product } from './product.model';
 
 export interface IProductsService {
-  get(): Promise<PaginatedResponse<Product[]>>;
+  get(pagination?: PaginationInfo): Promise<PaginatedResponse<Product[]>>;
   detail(id: number): Promise<Product>;
   add(product: Product): Promise<void>;
   update(product: Product): Promise<void>;

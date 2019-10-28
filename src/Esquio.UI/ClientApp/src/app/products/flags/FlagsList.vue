@@ -9,6 +9,8 @@
       :empty-text="$t('common.empty')"
       :empty-filtered-text="$t('common.empty_filtered')"
       show-empty
+      :per-page="0"
+      :current-page="paginationInfo.currentPage"
     >
       <div
         slot="table-busy"
@@ -87,13 +89,21 @@
         </div>
       </template>
     </b-table>
+
+    <b-pagination
+      v-model="paginationInfo.currentPage"
+      :total-rows="paginationInfo.rows"
+      :per-page="paginationInfo.pageCount"
+      @change="onChangePage"
+      align="right"
+    ></b-pagination>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { CustomSwitch } from '~/shared';
+import { CustomSwitch, PaginationInfo } from '~/shared';
 import { AlertType } from '~/core';
 import { Flag } from './flag.model';
 import { IFlagsService } from './iflags.service';
@@ -107,6 +117,7 @@ export default class extends Vue {
   public name = 'FlagsList';
   public flags: Flag[] = null;
   public isLoading = true;
+  public paginationInfo = new PaginationInfo();
   public columns = [
     {
       key: 'name',
@@ -150,10 +161,19 @@ export default class extends Vue {
     await this.rolloffFlag(flag);
   }
 
+  public onChangePage(page: number): void {
+    this.flags = null;
+    this.isLoading = true;
+    this.paginationInfo.currentPage = page - 1;
+    this.getFlags();
+  }
+
   private async getFlags(): Promise<void> {
     try {
-      const response = await this.flagsService.get(Number(this.productId));
+      const response = await this.flagsService.get(Number(this.productId), this.paginationInfo);
       this.flags = response.result;
+      this.paginationInfo.rows = response.total;
+      this.paginationInfo.currentPage = response.pageIndex + 1;
     } catch (e) {
       this.$alert(this.$t('flags.errors.get'), AlertType.Error);
     } finally {
