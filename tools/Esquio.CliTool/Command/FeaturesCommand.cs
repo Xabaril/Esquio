@@ -26,11 +26,11 @@ namespace Esquio.CliTool.Command
             [Required]
             public int FeatureId { get; set; }
 
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             [Required]
             public string ApiKey { get; set; }
 
@@ -38,25 +38,26 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
-
-                var response = await client.RolloutFeatureAsync(FeatureId);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.RolloutFeatureAsync(FeatureId);
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }
@@ -67,76 +68,78 @@ namespace Esquio.CliTool.Command
             [Required]
             public int FeatureId { get; set; }
 
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
-
-                var response = await client.RollbackFeatureAsync(FeatureId);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.RollbackFeatureAsync(FeatureId);
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }
+
         private class ListCommand
         {
             [Option("--product-id", Description = "The feature name to be rolled out.")]
             [Required]
             public int ProductId { get; set; }
 
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             [Required]
             public string ApiKey { get; set; }
-
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
-
-                var response = await client.ListFeaturesAsync(ProductId);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine(await response.GetContentDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.ListFeaturesAsync(ProductId);
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine(await response.GetContentDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }

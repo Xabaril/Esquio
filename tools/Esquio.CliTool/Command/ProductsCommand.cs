@@ -30,36 +30,38 @@ namespace Esquio.CliTool.Command
             [Required]
             public string Description { get; set; }
 
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
 
-                var response = await client.AddProductAsync(Name, Description);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine($"The product {Name} was added succesfully.");
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.AddProductAsync(Name, Description);
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine($"The product {Name} was added succesfully.");
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }
@@ -69,70 +71,76 @@ namespace Esquio.CliTool.Command
             [Option("--id", Description = "The product id to delete.")]
             public int Id { get; set; }
 
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
+            [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
+            [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
 
-                var response = await client.RemoveProductAsync(Id);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine($"The product with identifier {Id} was removed succesfully.");
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.RemoveProductAsync(Id);
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine($"The product with identifier {Id} was removed succesfully.");
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }
 
         private class ListCommand
         {
-            [Option("--uri", Description = "The Esquio UI url base path.")]
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
             public string Uri { get; set; }
 
-            [Option("--api-key", Description = "The valid Esquio UI Api Key used for Esquio authentication.")]
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClient.Create(Uri, ApiKey);
 
-                var response = await client.ListProductsAsync();
-
-                if (response.IsSuccessStatusCode)
+                using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    console.ForegroundColor = System.ConsoleColor.Green;
-                    console.WriteLine(await response.GetContentDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    var response = await client.ListProductsAsync();
 
-                    return 0;
-                }
-                else
-                {
-                    console.ForegroundColor = System.ConsoleColor.Red;
-                    console.WriteLine(await response.GetErrorDetailAsync());
-                    console.ForegroundColor = defaultForegroundColor;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.WriteLine(await response.GetContentDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
 
-                    return 1;
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
                 }
             }
         }
