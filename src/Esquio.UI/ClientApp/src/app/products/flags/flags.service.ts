@@ -12,7 +12,7 @@ export class FlagsService implements IFlagsService {
       pageCount: pagination.pageCount
     };
 
-    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/products/${productId}/flags`,params));
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/products/${productId}/flags`, params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch flags');
