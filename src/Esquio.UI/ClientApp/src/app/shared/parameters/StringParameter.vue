@@ -1,7 +1,7 @@
 <template>
-  <div class="string_parameter" data-testid="string-parameter">
+  <div class="string_parameter col-md-6" data-testid="string-parameter">
     <input-text
-      class="form-group col-md-6"
+      class="form-group"
       v-model="value"
       id="value_name"
       @blur="onBlurInput"

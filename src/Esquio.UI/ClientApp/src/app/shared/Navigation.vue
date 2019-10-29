@@ -1,5 +1,5 @@
 <template>
-<div class="navigation">
+<header class="navigation">
   <div class="container navigation-container">
     <router-link to="/" class="navigation-title">
       {{$t('common.title')}}
@@ -19,7 +19,7 @@
     </b-dropdown>
     </div>
   </div>
-</div>
+</header>
 </template>
 
 <script lang="ts">
