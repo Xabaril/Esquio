@@ -1,12 +1,18 @@
 import { injectable } from 'inversify-props';
-import { settings, PaginatedResponse } from '~/core';
+import { settings } from '~/core';
+import { addQueryParams, PaginatedResponse, PaginationInfo } from '~/shared';
 import { IProductsService } from './iproducts.service';
 import { Product } from './product.model';
 
 @injectable()
 export class ProductsService implements IProductsService {
-  public async get(): Promise<PaginatedResponse<Product[]>> {
-    const response = await fetch(`${settings.ApiUrl}/v1/products`);
+  public async get(pagination: PaginationInfo): Promise<PaginatedResponse<Product[]>> {
+    const params = {
+      pageIndex: pagination.pageIndex,
+      pageCount: pagination.pageCount
+    };
+
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/products`, params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch products');

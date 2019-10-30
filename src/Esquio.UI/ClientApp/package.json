@@ -9,7 +9,7 @@
     "lint": "npm run lint:scripts && npm run lint:styles",
     "lint:scripts": "vue-cli-service lint",
     "lint:styles": "stylelint \"./src/**/*.(scss|vue)\"",
-    "dev:client": "await tcp localhost:62001 && vue-cli-service build --watch --dest \"../wwwroot\"",
+    "dev:client": "await tcp localhost:63414 && vue-cli-service build --watch --dest \"../wwwroot\"",
     "dev:dotnet": "await tcp localhost:5433 && dotnet run -p ..",
     "dev:infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
     "start": "run-p -r dev:**"
@@ -35,6 +35,7 @@
     "nprogress": "^0.2.0",
     "oidc-client": "^1.8.2",
     "popper.js": "^1.15.0",
+    "qs": "^6.9.0",
     "reflect-metadata": "^0.1.13",
     "vee-validate": "^2.2.11",
     "vue": "^2.6.6",
