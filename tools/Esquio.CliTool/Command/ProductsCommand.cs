@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
 {
-    [Command("products", Description = "Manage Esquio Products"),
+    [Command(Constants.ProductsCommandName, Description = Constants.ProductsDescriptionCommandName),
         Subcommand(typeof(AddCommand)),
         Subcommand(typeof(RemoveCommand)),
         Subcommand(typeof(ListCommand))]
@@ -14,9 +14,9 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine("You must specify the sub command.");
+            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
 
-            app.ShowHelp();
+            app.ShowHelp(usePager: true);
             return 1;
         }
 
@@ -26,7 +26,7 @@ namespace Esquio.CliTool.Command
             [Required]
             public string Name { get; set; }
 
-            [Option("--description", Description = "The product description to be added")]
+            [Option("--description", Description = "The product description to be added.")]
             [Required]
             public string Description { get; set; }
 
@@ -48,7 +48,7 @@ namespace Esquio.CliTool.Command
 
                     if (response.IsSuccessStatusCode)
                     {
-                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.ForegroundColor = Constants.SuccessColor;
                         console.WriteLine($"The product {Name} was added succesfully.");
                         console.ForegroundColor = defaultForegroundColor;
 
@@ -56,7 +56,7 @@ namespace Esquio.CliTool.Command
                     }
                     else
                     {
-                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.ForegroundColor = Constants.ErrorColor;
                         console.WriteLine(await response.GetErrorDetailAsync());
                         console.ForegroundColor = defaultForegroundColor;
 
@@ -89,7 +89,7 @@ namespace Esquio.CliTool.Command
 
                     if (response.IsSuccessStatusCode)
                     {
-                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.ForegroundColor = Constants.SuccessColor;
                         console.WriteLine($"The product with identifier {Id} was removed succesfully.");
                         console.ForegroundColor = defaultForegroundColor;
 
@@ -97,7 +97,7 @@ namespace Esquio.CliTool.Command
                     }
                     else
                     {
-                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.ForegroundColor = Constants.ErrorColor;
                         console.WriteLine(await response.GetErrorDetailAsync());
                         console.ForegroundColor = defaultForegroundColor;
 
@@ -127,7 +127,7 @@ namespace Esquio.CliTool.Command
 
                     if (response.IsSuccessStatusCode)
                     {
-                        console.ForegroundColor = System.ConsoleColor.Green;
+                        console.ForegroundColor = Constants.SuccessColor;
                         console.WriteLine(await response.GetContentDetailAsync());
                         console.ForegroundColor = defaultForegroundColor;
 
@@ -135,7 +135,7 @@ namespace Esquio.CliTool.Command
                     }
                     else
                     {
-                        console.ForegroundColor = System.ConsoleColor.Red;
+                        console.ForegroundColor = Constants.ErrorColor;
                         console.WriteLine(await response.GetErrorDetailAsync());
                         console.ForegroundColor = defaultForegroundColor;
 

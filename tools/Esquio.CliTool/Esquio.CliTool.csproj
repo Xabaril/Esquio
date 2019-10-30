@@ -3,10 +3,10 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <ToolCommandName>dotnet-esquio</ToolCommandName>
     <PackageId>Esquio.Cli</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>$(esquiocli)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

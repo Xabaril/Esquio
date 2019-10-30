@@ -54,6 +54,29 @@ namespace Esquio.CliTool.Internal
             return await _httpClient.PutAsync($"api/v1/flags/{featureId}/rollback", new StringContent(string.Empty));
         }
 
+        public async Task<HttpResponseMessage> ListTogglesAsync(int featureId)
+        {
+            return await _httpClient.GetAsync($"api/v1/flags/{featureId}");
+        }
+
+        public async Task<HttpResponseMessage> GetToggleAsync(int toggleId)
+        {
+            return await _httpClient.GetAsync($"api/v1/toggles/{toggleId}");
+        }
+
+        public async Task<HttpResponseMessage> SetParameterValue(int toggleId, string name, string value)
+        {
+            var jsonContent = JsonSerializer.Serialize(new
+            {
+                Name = name,
+                Value = value,
+            });
+
+            var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            return await _httpClient.PostAsync($"api/v1/toggles/{toggleId}/parameters",content);
+        }
+
         public void Dispose()
         {
             if (_httpClient != null)

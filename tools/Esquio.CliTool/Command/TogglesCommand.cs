@@ -6,108 +6,24 @@ using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
 {
-    [Command(Constants.FeaturesCommandName, Description = Constants.FeaturesDescriptionCommandName),
-        Subcommand(typeof(RolloutCommand)),
-        Subcommand(typeof(RolloffCommand)),
+    [Command(Constants.TogglesCommandName, Description = Constants.TogglesDescriptionCommandName),
+        Subcommand(typeof(GetCommand)),
         Subcommand(typeof(ListCommand))]
-    internal class FeaturesCommand
+    internal class TogglesCommand
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
             console.WriteLine(Constants.SpecifySubCommandErrorMessage);
 
-            app.ShowHelp(usePager:true);
+            app.ShowHelp(usePager: true);
             return 1;
-        }
-
-        private class RolloutCommand
-        {
-            [Option("--feature-id", Description = "The feature identifier to be rolled out.")]
-            [Required]
-            public int FeatureId { get; set; }
-
-            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            [Required]
-            public string Uri { get; set; }
-
-            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            [Required]
-            public string ApiKey { get; set; }
-
-
-            private async Task<int> OnExecute(IConsole console)
-            {
-                var defaultForegroundColor = console.ForegroundColor;
-                using (var client = EsquioClient.Create(Uri, ApiKey))
-                {
-                    var response = await client.RolloutFeatureAsync(FeatureId);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 1;
-                    }
-                }
-            }
-        }
-
-        private class RolloffCommand
-        {
-            [Option("--feature-id", Description = "The feature identifier to be rolled of.")]
-            [Required]
-            public int FeatureId { get; set; }
-
-            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            [Required]
-            public string Uri { get; set; }
-
-            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            [Required]
-            public string ApiKey { get; set; }
-
-            private async Task<int> OnExecute(IConsole console)
-            {
-                var defaultForegroundColor = console.ForegroundColor;
-                using (var client = EsquioClient.Create(Uri, ApiKey))
-                {
-                    var response = await client.RollbackFeatureAsync(FeatureId);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 1;
-                    }
-                }
-            }
         }
 
         private class ListCommand
         {
-            [Option("--product-id", Description = "The product id to list features.")]
+            [Option("--feature-id", Description = "The feature identifier to list toggles.")]
             [Required]
-            public int ProductId { get; set; }
+            public int FeatureId { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             [Required]
@@ -122,7 +38,48 @@ namespace Esquio.CliTool.Command
                 var defaultForegroundColor = console.ForegroundColor;
                 using (var client = EsquioClient.Create(Uri, ApiKey))
                 {
-                    var response = await client.ListFeaturesAsync(ProductId);
+                    var response = await client.ListTogglesAsync(FeatureId);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        console.ForegroundColor = Constants.SuccessColor;
+                        console.WriteLine(await response.GetContentDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 0;
+                    }
+                    else
+                    {
+                        console.ForegroundColor = Constants.ErrorColor;
+                        console.WriteLine(await response.GetErrorDetailAsync());
+                        console.ForegroundColor = defaultForegroundColor;
+
+                        return 1;
+                    }
+                }
+            }
+        }
+
+        private class GetCommand
+        {
+            [Option("--toggle-id", Description = "The toggle identifier.")]
+            [Required]
+            public int ToggleId { get; set; }
+
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
+            [Required]
+            public string Uri { get; set; }
+
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
+            [Required]
+            public string ApiKey { get; set; }
+
+            private async Task<int> OnExecute(IConsole console)
+            {
+                var defaultForegroundColor = console.ForegroundColor;
+                using (var client = EsquioClient.Create(Uri, ApiKey))
+                {
+                    var response = await client.GetToggleAsync(ToggleId);
 
                     if (response.IsSuccessStatusCode)
                     {
