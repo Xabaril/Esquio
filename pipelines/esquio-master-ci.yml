@@ -86,6 +86,15 @@ steps:
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet pack EF Core Store'
+  inputs:
+    command: 'pack'
+    feedsToUse: 'select'
+    packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
+    buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
+- task: DotNetCoreCLI@2
   displayName: 'dotnet pack Miniprofiler.Esquio'
   inputs:
     command: 'pack'
@@ -95,11 +104,11 @@ steps:
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack EF Core Store'
+  displayName: 'dotnet pack Esquio.CliTool'
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
+    packagesToPack: './tools/Esquio.CliTool/Esquio.CliToolcsproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
