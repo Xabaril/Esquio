@@ -10,7 +10,7 @@
       :empty-filtered-text="$t('common.empty_filtered')"
       show-empty
       :per-page="0"
-      :current-page="paginationInfo.currentPage"
+      :current-page="paginationInfo.pageIndex"
     >
       <div
         slot="table-busy"
@@ -91,7 +91,7 @@
     </b-table>
 
     <b-pagination
-      v-model="paginationInfo.currentPage"
+      v-model="paginationInfo.pageIndex"
       :total-rows="paginationInfo.rows"
       :per-page="paginationInfo.pageCount"
       @change="onChangePage"
@@ -164,7 +164,7 @@ export default class extends Vue {
   public onChangePage(page: number): void {
     this.flags = null;
     this.isLoading = true;
-    this.paginationInfo.currentPage = page - 1;
+    this.paginationInfo.pageIndex = page - 1;
     this.getFlags();
   }
 
@@ -173,7 +173,7 @@ export default class extends Vue {
       const response = await this.flagsService.get(Number(this.productId), this.paginationInfo);
       this.flags = response.result;
       this.paginationInfo.rows = response.total;
-      this.paginationInfo.currentPage = response.pageIndex + 1;
+      this.paginationInfo.pageIndex = response.pageIndex + 1;
     } catch (e) {
       this.$alert(this.$t('flags.errors.get'), AlertType.Error);
     } finally {
