@@ -1,5 +1,6 @@
 ﻿using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,27 +23,27 @@ namespace Esquio.CliTool.Command
 
         private class AddCommand
         {
-            [Option("--name", Description = "The product name to be added.")]
+            [Option("--name <NAME>", Description = "The product name to be added.")]
             [Required]
             public string Name { get; set; }
 
-            [Option("--description", Description = "The product description to be added.")]
+            [Option("--description <DESCRIPTION>", Description = "The product description to be added.")]
             [Required]
             public string Description { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            [Required]
             public string Uri { get; set; }
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
 
-                using (var client = EsquioClient.Create(Uri, ApiKey))
+                using (var client = EsquioClient.Create(
+                    uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
+                    apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
                 {
                     var response = await client.AddProductAsync(Name, Description);
 
@@ -68,22 +69,22 @@ namespace Esquio.CliTool.Command
 
         private class RemoveCommand
         {
-            [Option("--id", Description = "The product id to delete.")]
+            [Option("--product-id <PRODUCT-ID>", Description = "The product id to delete.")]
             public int Id { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            [Required]
             public string Uri { get; set; }
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
 
-                using (var client = EsquioClient.Create(Uri, ApiKey))
+                using (var client = EsquioClient.Create(
+                    uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
+                    apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
                 {
                     var response = await client.RemoveProductAsync(Id);
 
@@ -110,18 +111,18 @@ namespace Esquio.CliTool.Command
         private class ListCommand
         {
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            [Required]
             public string Uri { get; set; }
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            [Required]
             public string ApiKey { get; set; }
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
 
-                using (var client = EsquioClient.Create(Uri, ApiKey))
+                using (var client = EsquioClient.Create(
+                     uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
+                     apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
                 {
                     var response = await client.ListProductsAsync();
 

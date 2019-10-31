@@ -19,11 +19,14 @@ namespace Esquio.CliTool.Internal
         public const string ParametersCommandName = "parameters";
         public const string ParametersDescriptionCommandName = "Manage Esquio parameters using Esquio UI HTTP API";
 
-        public const string ApiKeyParameter = "--api-key";
-        public const string ApiKeyDescription = "The valid Esquio UI Api Key used for Esquio authentication.";
+        public const string ApiKeyEnvironmentVariable = "ESQUIO_API_KEY";
+        public const string ApiKeyParameter = "--api-key <APIKEY>";
+        public const string ApiKeyDescription = "The valid Esquio UI Api Key used for Esquio authentication. If is not present, the environment variable ESQUIO_API_KEY will be used.";
 
-        public const string UriParameter = "--uri";
-        public const string UriDescription = "The Esquio UI url base path.";
+        public const string UriEnvironmentVariable = "ESQUIO_URI";
+        public const string UriDefaultValue = "http://localhost";
+        public const string UriParameter = "--uri <URI>";
+        public const string UriDescription = "The Esquio UI url base path.If is not present, the environment variable ESQUIO_URI will be used.";
 
         public const string SpecifySubCommandErrorMessage = "You must specify at a subcommand";
 
