@@ -101,7 +101,7 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: './tools/Esquio.CliTool/Esquio.CliToolcsproj'
+    packagesToPack: './tools/Esquio.CliTool/Esquio.CliTool.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
