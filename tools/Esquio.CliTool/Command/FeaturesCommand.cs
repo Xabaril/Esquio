@@ -17,7 +17,7 @@ namespace Esquio.CliTool.Command
         {
             console.WriteLine(Constants.SpecifySubCommandErrorMessage);
 
-            app.ShowHelp(usePager:true);
+            app.ShowHelp(usePager: true);
             return 1;
         }
 
@@ -27,20 +27,36 @@ namespace Esquio.CliTool.Command
             [Required]
             public int FeatureId { get; set; }
 
+            [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
+            public bool NoPrompt { get; set; } = false;
+
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            public string Uri { get; set; }
+            public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            public string ApiKey { get; set; }
-
+            public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
 
             private async Task<int> OnExecute(IConsole console)
             {
+                if (!NoPrompt)
+                {
+                    var proceed = Prompt.GetYesNo(
+                        prompt: Constants.NoPromptMessage,
+                        defaultAnswer: true,
+                        promptColor: Constants.PromptColor,
+                        promptBgColor: Constants.PromptBgColor);
+
+                    if (!proceed)
+                    {
+                        return 0;
+                    }
+                }
+
                 var defaultForegroundColor = console.ForegroundColor;
 
                 using (var client = EsquioClient.Create(
-                    uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
-                    apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
+                    uri: Uri ?? Constants.UriDefaultValue,
+                    apikey: ApiKey))
                 {
                     var response = await client.RolloutFeatureAsync(FeatureId);
 
@@ -70,19 +86,36 @@ namespace Esquio.CliTool.Command
             [Required]
             public int FeatureId { get; set; }
 
+            [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
+            public bool NoPrompt { get; set; } = false;
+
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            public string Uri { get; set; }
+            public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            public string ApiKey { get; set; }
+            public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
 
             private async Task<int> OnExecute(IConsole console)
             {
+                if (!NoPrompt)
+                {
+                    var proceed = Prompt.GetYesNo(
+                        prompt: Constants.NoPromptMessage,
+                        defaultAnswer: true,
+                        promptColor: Constants.PromptColor,
+                        promptBgColor: Constants.PromptBgColor);
+
+                    if (!proceed)
+                    {
+                        return 0;
+                    }
+                }
+
                 var defaultForegroundColor = console.ForegroundColor;
 
                 using (var client = EsquioClient.Create(
-                    uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
-                    apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
+                    uri: Uri ?? Constants.UriDefaultValue,
+                    apikey: ApiKey))
                 {
                     var response = await client.RollbackFeatureAsync(FeatureId);
 
@@ -113,18 +146,18 @@ namespace Esquio.CliTool.Command
             public int ProductId { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
-            public string Uri { get; set; }
+            public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
 
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
-            public string ApiKey { get; set; }
+            public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
 
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
 
                 using (var client = EsquioClient.Create(
-                    uri: Uri ?? Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable) ?? Constants.UriDefaultValue,
-                    apikey: ApiKey ?? Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable)))
+                    uri: Uri ?? Constants.UriDefaultValue,
+                    apikey: ApiKey))
                 {
                     var response = await client.ListFeaturesAsync(ProductId);
 

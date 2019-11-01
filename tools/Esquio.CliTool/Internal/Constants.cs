@@ -19,6 +19,11 @@ namespace Esquio.CliTool.Internal
         public const string ParametersCommandName = "parameters";
         public const string ParametersDescriptionCommandName = "Manage Esquio parameters using Esquio UI HTTP API";
 
+        public const string NoPromptParameter = "--no-prompt <NO-PROMPT>";
+        public const string NoPromptDescription = "Show or hide prompt message";
+        public const string NoPromptMessage = "Are you sure to perform this action?";
+        
+
         public const string ApiKeyEnvironmentVariable = "ESQUIO_API_KEY";
         public const string ApiKeyParameter = "--api-key <APIKEY>";
         public const string ApiKeyDescription = "The valid Esquio UI Api Key used for Esquio authentication. If is not present, the environment variable ESQUIO_API_KEY will be used.";
@@ -30,6 +35,8 @@ namespace Esquio.CliTool.Internal
 
         public const string SpecifySubCommandErrorMessage = "You must specify at a subcommand";
 
+        public const ConsoleColor PromptColor = ConsoleColor.White;
+        public const ConsoleColor PromptBgColor = ConsoleColor.Black;
         public const ConsoleColor ErrorColor = ConsoleColor.Red;
         public const ConsoleColor SuccessColor = ConsoleColor.Green;
     }
