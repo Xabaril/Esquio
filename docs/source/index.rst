@@ -46,3 +46,12 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
    toggles/esquio
    toggles/aspnetcore
    toggles/extensibility
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+   :caption: Tools
+
+   tools/esquiocli
+   tools/miniprofiler
+
