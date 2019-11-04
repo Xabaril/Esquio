@@ -947,24 +947,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         public async Task list_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List("default"))
                   .GetAsync();
 
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
-        }
-
-        [Fact]
-        public async Task list_response_notfound_when_productid_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(productId: -1))
-                  .GetAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
         }
 
         [Fact]
@@ -979,15 +967,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("default")
                .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var feature2 = Builders.Feature()
-                .WithName("feature#2")
+                .WithName("feature2")
                 .Build();
 
             product.Features
@@ -1000,7 +988,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List("default"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1022,11 +1010,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
             content.Result
                 .First().Name
-                .Should().BeEquivalentTo("feature#1");
+                .Should().BeEquivalentTo("feature1");
 
             content.Result
                 .Last().Name
-                .Should().BeEquivalentTo("feature#2");
+                .Should().BeEquivalentTo("feature2");
         }
 
         [Fact]
@@ -1041,15 +1029,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("default")
                .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var feature2 = Builders.Feature()
-                .WithName("feature#2")
+                .WithName("feature2")
                 .Build();
 
             product.Features
@@ -1062,7 +1050,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id, pageIndex: 1, pageCount: 1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List("default", pageIndex: 1, pageCount: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1084,7 +1072,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
             content.Result
                 .Single().Name
-                .Should().BeEquivalentTo("feature#2");
+                .Should().BeEquivalentTo("feature2");
         }
         [Fact]
         [ResetDatabase]
@@ -1098,15 +1086,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("default")
                .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var feature2 = Builders.Feature()
-                .WithName("feature#2")
+                .WithName("feature2")
                 .Build();
 
             product.Features
@@ -1120,7 +1108,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List("default"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1169,15 +1157,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("default")
                .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var feature2 = Builders.Feature()
-                .WithName("feature#2")
+                .WithName("feature2")
                 .Build();
 
             product.Features
@@ -1191,7 +1179,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List("default"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1211,15 +1199,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("default")
                .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var feature2 = Builders.Feature()
-                .WithName("feature#2")
+                .WithName("feature2")
                 .Build();
 
             product.Features
@@ -1232,7 +1220,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Id, pageIndex: 10, pageCount: 10))
+                  .CreateRequest(ApiDefinitions.V1.Flags.List(product.Name, pageIndex: 10, pageCount: 10))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 

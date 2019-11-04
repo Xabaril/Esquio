@@ -21,14 +21,13 @@ namespace Esquio.UI.Api.Features.Products.Details
         {
             var product = await _storeDbContext
                .Products
-               .Where(f => f.Id == request.ProductId)
+               .Where(f => f.Name == request.ProductName)
                .SingleOrDefaultAsync(cancellationToken);
 
             if (product != null)
             {
                 return new DetailsProductResponse()
                 {
-                    Id = product.Id,
                     Name = product.Name,
                     Description = product.Description
                 };

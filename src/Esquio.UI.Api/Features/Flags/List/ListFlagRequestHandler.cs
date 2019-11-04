@@ -20,12 +20,12 @@ namespace Esquio.UI.Api.Features.Flags.List
         {
             var total = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntityId == request.ProductId)
+                .Where(f => f.ProductEntity.Name == request.ProductName)
                 .CountAsync(cancellationToken);
 
             var features = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntityId == request.ProductId)
+                .Where(f => f.ProductEntity.Name == request.ProductName)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
@@ -37,7 +37,6 @@ namespace Esquio.UI.Api.Features.Flags.List
                 PageIndex = request.PageIndex,
                 Result = features.Select(f => new ListFlagResponseDetail
                 {
-                    Id = f.Id,
                     Enabled = f.Enabled,
                     Description = f.Description,
                     Name = f.Name

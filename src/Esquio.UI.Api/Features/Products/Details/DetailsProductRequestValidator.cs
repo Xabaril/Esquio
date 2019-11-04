@@ -8,9 +8,11 @@ namespace Esquio.UI.Api.Features.Products.Details
     {
         public DetailsProductRequestValidator()
         {
-            this.RuleFor(rf => rf.ProductId)
-                .GreaterThan(0)
-                .LessThan(Int32.MaxValue);
+            this.RuleFor(rf => rf.ProductName)
+                .NotEmpty()
+                .MinimumLength(5)
+                .MaximumLength(200)
+                .Matches("^[a-zA-Z][a-zA-Z0-9]*$");
         }
     }
 }

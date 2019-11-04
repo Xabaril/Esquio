@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Products.Delete
         {
             var product = await _storeDbContext
                 .Products
-                .Where(p => p.Id == request.ProductId)
+                .Where(p => p.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (product != null)
@@ -36,8 +36,8 @@ namespace Esquio.UI.Api.Features.Products.Delete
                 return Unit.Value;
             }
 
-            Log.ProductNotExist(_logger, request.ProductId.ToString());
-            throw new InvalidOperationException($"The product with identifier {request.ProductId} does not exist.");
+            Log.ProductNotExist(_logger, request.ProductName);
+            throw new InvalidOperationException($"The product {request.ProductName} does not exist.");
         }
     }
 }

@@ -5,6 +5,6 @@ namespace Esquio.UI.Api.Features.Products.Delete
 {
     public class DeleteProductRequest : IRequest
     {
-        public int ProductId { get; set; }
+        public string ProductName { get; set; }
     }
 }

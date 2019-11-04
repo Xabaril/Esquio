@@ -93,10 +93,10 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/products/{productId:int:min(1)}/flags")]
-        public async Task<IActionResult> List(int productId, [FromQuery]ListFlagRequest request, CancellationToken cancellationToken = default)
+        [Route("api/v1/products/{productName}/flags")]
+        public async Task<IActionResult> List(string productName, [FromQuery]ListFlagRequest request, CancellationToken cancellationToken = default)
         {
-            request.ProductId = productId;
+            request.ProductName = productName;
 
             var list = await _mediator.Send(request, cancellationToken);
 

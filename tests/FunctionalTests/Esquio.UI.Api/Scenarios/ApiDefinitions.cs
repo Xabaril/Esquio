@@ -15,20 +15,20 @@
                     return $"api/v1/products";
                 }
 
-                public static string Update()
+                public static string Update(string productName)
                 {
-                    return $"api/v1/products";
+                    return $"api/v1/products/{productName}";
                 }
 
-                public static string Delete(int productId)
+                public static string Delete(string name)
                 {
-                    return $"api/v1/products/{productId}";
+                    return $"api/v1/products/{name}";
                 }
-                public static string Get(int productId)
+                public static string Get(string name)
                 {
-                    return $"api/v1/products/{productId}";
+                    return $"api/v1/products/{name}";
                 }
-                public static string List(int pageIndex, int pageCount)
+                public static string List(int pageIndex = 0, int pageCount = 10)
                 {
                     return $"api/v1/products?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
@@ -60,13 +60,13 @@
                 {
                     return $"api/v1/flags/{featureId}";
                 }
-                public static string List(int productId)
+                public static string List(string productName)
                 {
-                    return $"api/v1/products/{productId}/flags";
+                    return $"api/v1/products/{productName}/flags";
                 }
-                public static string List(int productId, int pageIndex, int pageCount)
+                public static string List(string productName, int pageIndex, int pageCount)
                 {
-                    return $"api/v1/products/{productId}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
+                    return $"api/v1/products/{productName}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
             }
 

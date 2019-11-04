@@ -15,8 +15,6 @@ namespace Esquio.UI.Api.Features.Flags.List
 
     public class ListFlagResponseDetail
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }

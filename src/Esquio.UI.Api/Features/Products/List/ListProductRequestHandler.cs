@@ -35,9 +35,8 @@ namespace Esquio.UI.Api.Features.Products.List
                 PageIndex = request.PageIndex,
                 Result = features.Select(p => new ListProductResponseDetail
                 {
-                    Id = p.Id,
-                    Description = p.Description,
-                    Name = p.Name
+                    Name = p.Name,
+                    Description = p.Description
                 }).ToList()
             };
         }

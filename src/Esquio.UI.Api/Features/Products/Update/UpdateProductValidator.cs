@@ -7,13 +7,11 @@ namespace Esquio.UI.Api.Features.Products.Update
     {
         public UpdateProductValidator()
         {
-            RuleFor(x => x.ProductId)
-                .GreaterThan(0);
-
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(200);
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
 
             RuleFor(x => x.Description)
                 .MaximumLength(2000);

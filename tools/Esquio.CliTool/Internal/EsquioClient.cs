@@ -34,9 +34,9 @@ namespace Esquio.CliTool.Internal
             return await _httpClient.PostAsync("api/v1/products", content);
         }
 
-        public async Task<HttpResponseMessage> RemoveProductAsync(int productId)
+        public async Task<HttpResponseMessage> RemoveProductAsync(string name)
         {
-            return await _httpClient.DeleteAsync($"api/v1/products/{productId}");
+            return await _httpClient.DeleteAsync($"api/v1/products/{name}");
         }
 
         public async Task<HttpResponseMessage> ListFeaturesAsync(int productId)

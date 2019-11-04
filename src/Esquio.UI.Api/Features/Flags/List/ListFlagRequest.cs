@@ -8,6 +8,6 @@ namespace Esquio.UI.Api.Features.Flags.List
 
         public int PageCount { get; set; } = 10;
 
-        internal int ProductId { get; set; }
+        internal string ProductName { get; set; }
     }
 }
