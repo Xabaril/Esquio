@@ -20,15 +20,15 @@
                     return $"api/v1/products";
                 }
 
-                public static string Delete(int productId)
+                public static string Delete(string name)
                 {
-                    return $"api/v1/products/{productId}";
+                    return $"api/v1/products/{name}";
                 }
-                public static string Get(int productId)
+                public static string Get(string name)
                 {
-                    return $"api/v1/products/{productId}";
+                    return $"api/v1/products/{name}";
                 }
-                public static string List(int pageIndex, int pageCount)
+                public static string List(int pageIndex = 0, int pageCount = 10)
                 {
                     return $"api/v1/products?pageIndex={pageIndex}&pageCount={pageCount}";
                 }

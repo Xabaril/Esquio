@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Features.Products.Update
         {
             var existing = await _storeDbContext
                 .Products
-                .Where(p => p.Id == request.ProductId)
+                .Where(p => p.Name == request.CurrentName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (existing != null)
@@ -38,8 +38,8 @@ namespace Esquio.UI.Api.Features.Products.Update
                 return Unit.Value;
             }
 
-            Log.ProductNotExist(_logger, request.ProductId.ToString());
-            throw new InvalidOperationException($"A product with id {request.ProductId} does not exist.");
+            Log.ProductNotExist(_logger, request.CurrentName);
+            throw new InvalidOperationException($"The product {request.CurrentName} does not exist.");
         }
     }
 }

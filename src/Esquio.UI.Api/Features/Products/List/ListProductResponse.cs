@@ -15,8 +15,6 @@ namespace Esquio.UI.Api.Features.Products.List
 
     public class ListProductResponseDetail
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }

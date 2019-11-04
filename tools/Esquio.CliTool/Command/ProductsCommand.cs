@@ -69,8 +69,9 @@ namespace Esquio.CliTool.Command
 
         private class RemoveCommand
         {
-            [Option("--product-id <PRODUCT-ID>", Description = "The product id to delete.")]
-            public int Id { get; set; }
+            [Option("--name <NAME>", Description = "The product name to delete.")]
+            [Required]
+            public string Name { get; set; }
 
             [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
             public bool NoPrompt { get; set; } = false;
@@ -103,12 +104,12 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.RemoveProductAsync(Id);
+                    var response = await client.RemoveProductAsync(Name);
 
                     if (response.IsSuccessStatusCode)
                     {
                         console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The product with identifier {Id} was removed succesfully.");
+                        console.WriteLine($"The product {Name} was removed succesfully.");
                         console.ForegroundColor = defaultForegroundColor;
 
                         return 0;

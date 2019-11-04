@@ -29,7 +29,7 @@ namespace Esquio.UI.Api
                 .AddCustomProblemDetails()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
-                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductValidator).Assembly))
+                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductRequestValidator).Assembly))
                     .AddJsonOptions(options=>
                     {
                         options.JsonSerializerOptions.Converters.Add(new NumberToStringConverter());
