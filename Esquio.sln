@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{89B085DE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniProfiler.Esquio", "tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj", "{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.CliTool", "tools\Esquio.CliTool\Esquio.CliTool.csproj", "{0387A8AA-2431-42CB-8638-C490F2F7E099}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0387A8AA-2431-42CB-8638-C490F2F7E099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0387A8AA-2431-42CB-8638-C490F2F7E099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0387A8AA-2431-42CB-8638-C490F2F7E099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0387A8AA-2431-42CB-8638-C490F2F7E099}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{EB193805-A859-4D3D-8E19-A4EFAD60761B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{5493D18A-430B-4AA8-9C2C-3830931AADF5} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 		{5B9AB74E-82E6-41C9-AD07-D8883EEA4480} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
+		{0387A8AA-2431-42CB-8638-C490F2F7E099} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}

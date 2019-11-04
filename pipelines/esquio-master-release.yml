@@ -93,6 +93,14 @@ steps:
     packagesToPack: './tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack Esquio.CliTool'
+  inputs:
+    command: 'pack'
+    feedsToUse: 'select'
+    packagesToPack: './tools/Esquio.CliTool/Esquio.CliTool.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
 - template: /pipelines/templates/nuget-push-package.yml
   parameters:
       nugetServiceConnection: 'Nuget Release'

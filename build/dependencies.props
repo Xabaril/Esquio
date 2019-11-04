@@ -23,23 +23,24 @@
     <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
     <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>1.1.0$(VersionSuffix)</esquiocli>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
     <esquiotoggleshttp>1.1.0</esquiotoggleshttp>
     <esquiotogglesgeolocation>1.1.0</esquiotogglesgeolocation>
-</PropertyGroup> 
+  </PropertyGroup>
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
     <systemtextjson>4.6.0</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
-    
+
     <microsoftextensionsdependencyinjectionabstractions>3.0.0</microsoftextensionsdependencyinjectionabstractions>
     <microsoftextensionsprimitives>3.0.0</microsoftextensionsprimitives>
     <microsoftextensionsoptions>3.0.0</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.0.0</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationabstractions>3.0.0</microsoftextensionsconfigurationabstractions>
     <microsoftextensionsconfigurationbinder>3.0.0</microsoftextensionsconfigurationbinder>
     <microsoftextensionsconfigurationjson>3.0.0</microsoftextensionsconfigurationjson>
     <microsoftextensionslogging>3.0.0</microsoftextensionslogging>
@@ -66,22 +67,23 @@
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
+    <mcmastercommandlineutils>2.4.2</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
     <microsoftextensionshosting>3.0.0</microsoftextensionshosting>
     <microsoftaspnetcoretesthost>3.0.0</microsoftaspnetcoretesthost>
-    
+
     <microsoftentityframeworkcoreinmemory>3.0.0</microsoftentityframeworkcoreinmemory>
     <microsoftentityframeworkcoresqlite>3.0.0</microsoftentityframeworkcoresqlite>
-    
+
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <fluentassertions>5.9.0</fluentassertions>
     <achevetesthost>3.0.0</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
-  
+
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>

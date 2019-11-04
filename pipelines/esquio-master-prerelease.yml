@@ -96,6 +96,15 @@ steps:
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack Esquio.CliTool'
+  inputs:
+    command: 'pack'
+    feedsToUse: 'select'
+    packagesToPack: './tools/Esquio.CliTool/Esquio.CliTool.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
+    buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
 - task: NuGetCommand@2
   displayName: 'push package to Nuget Feed as pre-release'
   inputs:
