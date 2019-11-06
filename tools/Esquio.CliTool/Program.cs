@@ -14,7 +14,10 @@ namespace Esquio.CliTool
         static void Main(string[] args) => CommandLineApplication.Execute<Program>(args);
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
+            console.WriteLine(Constants.AsciiArt);
+
             app.ShowHelp(usePager: true);
+
             return 1;
         }
     }

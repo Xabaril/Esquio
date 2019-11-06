@@ -23,7 +23,7 @@
     <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
     <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
-    <esquiocli>1.1.0$(VersionSuffix)</esquiocli>
+    <esquiocli>1.1.1$(VersionSuffix)</esquiocli>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
