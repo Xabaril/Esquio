@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
@@ -24,7 +23,7 @@ namespace Esquio.AspNetCore.Providers
         {
             var key = GetKey(featureName, productName);
 
-            _httpContextAccessor.HttpContext
+            var added = _httpContextAccessor.HttpContext
                 .Items
                 .TryAdd(key, new EvaluationResult()
                 {
@@ -40,7 +39,8 @@ namespace Esquio.AspNetCore.Providers
         {
             var key = GetKey(featureName, productName);
 
-            if (_httpContextAccessor.HttpContext.Items.TryGetValue(key, out var value))
+            if (_httpContextAccessor.HttpContext.Items
+                .TryGetValue(key, out var value))
             {
                 enabled = ((EvaluationResult)value).Enabled;
                 return Task.FromResult(true);
@@ -48,24 +48,6 @@ namespace Esquio.AspNetCore.Providers
 
             enabled = false;
             return Task.FromResult(false);
-        }
-
-        public Task<IEnumerable<EvaluationResult>> GetAllAsync()
-        {
-            var evaluationResults
-                = new List<EvaluationResult>();
-
-            var esquioItems = _httpContextAccessor.HttpContext
-                .Items
-                .Where(k => k.Key.ToString().StartsWith(KEY_PREFIX));
-
-            foreach (var (key, value) in esquioItems)
-            {
-                var result = value as EvaluationResult;
-                evaluationResults.Add(result);
-            }
-
-            return Task.FromResult((IEnumerable<EvaluationResult>)evaluationResults);
         }
 
         string GetKey(string featureName, string productName)

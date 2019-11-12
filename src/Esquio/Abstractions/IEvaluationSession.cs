@@ -26,12 +26,6 @@ namespace Esquio.Abstractions
         /// <param name="productName">The product name.</param>
         /// <returns>A <see cref="Task"/> that complete when finished.</returns>
         Task SetAsync(string featureName, string productName, bool enabled);
-
-        /// <summary>
-        /// Get all evaluation results on the session store.
-        /// </summary>
-        /// <returns>A <see cref="Task{IEnumerable{EvaluationResult}}"/> that complete when finished, yielding a collection of evaluation results.</returns>
-        Task<IEnumerable<EvaluationResult>> GetAllAsync();
     }
 
     public sealed class EvaluationResult

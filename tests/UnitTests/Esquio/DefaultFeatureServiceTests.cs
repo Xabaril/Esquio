@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -83,9 +82,33 @@ namespace UnitTests.Esquio
             enabled.Should()
                 .BeTrue();
         }
+        [Fact]
+        public async Task use_session_if_feature_exist_before_evaluate()
+        {
+            var feature = Build.Feature("sample")
+                .Enabled()
+                .AddOne(new Toggle(typeof(AllwaysOnToggle).FullName))
+                .Build();
+
+            var session = new PersistEvaluationSession();
+
+            var featureService = CreateFeatureService(new List<Feature>() { feature }, evaluationSession: session, onErrorBehavior: OnErrorBehavior.SetEnabled);
+
+            var enabled = await featureService.IsEnabledAsync("sample");
+
+            enabled.Should()
+                .BeTrue();
+
+            feature.Disabled();
+
+            enabled = await featureService.IsEnabledAsync("sample");
+
+            enabled.Should()
+                .BeTrue();
+        }
 
         [Fact]
-        public async Task be_enabled_when_feature_exist_but_any_toggle_is_not_active()
+        public async Task be_disabled_when_feature_exist_but_any_toggle_is_not_active()
         {
             var feature = Build.Feature("sample")
                .Enabled()
@@ -146,11 +169,11 @@ namespace UnitTests.Esquio
                 .BeFalse();
         }
 
-        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
+        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, IEvaluationSession evaluationSession = null, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();
-            var session = new NoEvaluationSession();
+            var session = evaluationSession ?? new NoEvaluationSession();
 
             var esquioOptions = new EsquioOptions();
             esquioOptions.ConfigureOnErrorBehavior(onErrorBehavior);
@@ -159,7 +182,6 @@ namespace UnitTests.Esquio
             var options = Options.Create<EsquioOptions>(esquioOptions);
             var loggerFactory = new LoggerFactory();
 
-            var listener = new DiagnosticListener("Esquio");
             var esquioDiagnostics = new EsquioDiagnostics(loggerFactory);
 
             return new DefaultFeatureService(store, activator, session, options, esquioDiagnostics);
@@ -207,6 +229,42 @@ namespace UnitTests.Esquio
                 {typeof(AllwaysOffToggle).FullName,typeof(AllwaysOffToggle) },
                 {typeof(ThrowInvalidOperationExceptionToggle).FullName,typeof(ThrowInvalidOperationExceptionToggle) }
             };
+        }
+
+        private class PersistEvaluationSession
+            : IEvaluationSession
+        {
+            List<EvaluationResult> _results = new List<EvaluationResult>();
+
+            public Task SetAsync(string featureName, string productName, bool enabled)
+            {
+                var evaluationResult = _results.Where(er => er.FeatureName == featureName && er.ProductName == productName)
+                    .SingleOrDefault();
+
+                _results.Add(new EvaluationResult()
+                {
+                    FeatureName = featureName,
+                    ProductName = productName,
+                    Enabled = enabled
+                });
+
+                return Task.CompletedTask;
+            }
+
+            public Task<bool> TryGetAsync(string featureName, string productName, out bool enabled)
+            {
+                var evaluationResult = _results.Where(er => er.FeatureName == featureName && er.ProductName == productName)
+                    .SingleOrDefault();
+
+                if (evaluationResult != null)
+                {
+                    enabled = evaluationResult.Enabled;
+                    return Task.FromResult(true);
+                }
+
+                enabled = false;
+                return Task.FromResult(false);
+            }
         }
     }
 }

@@ -3,16 +3,14 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
     public sealed class EsquioProcessor
         : ITelemetryProcessor
     {
-        const string KEY_PREFIX = "Esquio";
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
@@ -34,31 +32,22 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 
         private void AddEsquioProperties(ITelemetry telemetryItem)
         {
-            if (_httpContextAccessor.HttpContext != null 
-                &&
-                _httpContextAccessor.HttpContext.RequestServices != null)
+            var esquioContextItems = _httpContextAccessor.HttpContext?.Items
+                .Where(i => i.Key.ToString().StartsWith("Esquio")); //TODO: magic string remove
+
+            if (esquioContextItems != null)
             {
-                var session = _httpContextAccessor.HttpContext.RequestServices
-                  .GetService<IEvaluationSession>();
+                ISupportProperties telemetry = telemetryItem as ISupportProperties;
 
-                if (session != null)
+                if (telemetry != null
+                    &&
+                    esquioContextItems != null)
                 {
-                    var entries = session.GetAllAsync().Result;
-
-                    ISupportProperties telemetry = telemetryItem as ISupportProperties;
-
-                    if (telemetry != null
-                        &&
-                        entries != null)
+                    foreach (var (key, value) in esquioContextItems)
                     {
-                        foreach (var item in entries)
+                        if (!telemetry.Properties.ContainsKey(key.ToString()))
                         {
-                            var key = $"{KEY_PREFIX}:{item.ProductName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{item.FeatureName}";
-
-                            if (!telemetry.Properties.ContainsKey(key.ToString()))
-                            {
-                                telemetry.Properties.Add(key.ToString(), item.Enabled.ToString());
-                            }
+                            telemetry.Properties.Add(key.ToString(), ((EvaluationResult)value).Enabled.ToString());
                         }
                     }
                 }
