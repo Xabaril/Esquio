@@ -13,54 +13,56 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
     {
         const string KEY_PREFIX = "Esquio";
 
-        //private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
-        public EsquioProcessor(ITelemetryProcessor next/*, IHttpContextAccessor httpContextAccessor*/)
+        public EsquioProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
-            //_httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public void Process(ITelemetry item)
         {
-            //AddEsquioPropertiesAsync(item);
+            AddEsquioProperties(item);
 
-            //if (_next != null)
-            //{
+            if (_next != null)
+            {
                 _next.Process(item);
-            //}
+            }
         }
 
-        //private void AddEsquioPropertiesAsync(ITelemetry telemetryItem)
-        //{
-        //    if (_httpContextAccessor.HttpContext != null)
-        //    {
-        //        var session = _httpContextAccessor.HttpContext.RequestServices
-        //          .GetService<IEvaluationSession>();
+        private void AddEsquioProperties(ITelemetry telemetryItem)
+        {
+            if (_httpContextAccessor.HttpContext != null 
+                &&
+                _httpContextAccessor.HttpContext.RequestServices != null)
+            {
+                var session = _httpContextAccessor.HttpContext.RequestServices
+                  .GetService<IEvaluationSession>();
 
-        //        if (session != null)
-        //        {
-        //            var entries = session.GetAllAsync().Result;
+                if (session != null)
+                {
+                    var entries = session.GetAllAsync().Result;
 
-        //            ISupportProperties telemetry = telemetryItem as ISupportProperties;
+                    ISupportProperties telemetry = telemetryItem as ISupportProperties;
 
-        //            if (telemetry != null
-        //                &&
-        //                entries != null)
-        //            {
-        //                foreach (var item in entries)
-        //                {
-        //                    var key = $"{KEY_PREFIX}:{item.ProductName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{item.FeatureName}";
+                    if (telemetry != null
+                        &&
+                        entries != null)
+                    {
+                        foreach (var item in entries)
+                        {
+                            var key = $"{KEY_PREFIX}:{item.ProductName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{item.FeatureName}";
 
-        //                    if (!telemetry.Properties.ContainsKey(key.ToString()))
-        //                    {
-        //                        telemetry.Properties.Add(key.ToString(), item.Enabled.ToString());
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                            if (!telemetry.Properties.ContainsKey(key.ToString()))
+                            {
+                                telemetry.Properties.Add(key.ToString(), item.Enabled.ToString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

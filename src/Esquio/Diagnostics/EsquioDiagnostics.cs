@@ -9,12 +9,12 @@ namespace Esquio.Diagnostics
         private readonly ILogger _logger;
         private readonly DiagnosticListener _listener;
 
-        public EsquioDiagnostics(DiagnosticListener listener, ILoggerFactory loggerFactory)
+        public EsquioDiagnostics(ILoggerFactory loggerFactory)
         {
             _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
             _logger = loggerFactory.CreateLogger("Esquio");
-            _listener = listener ?? throw new ArgumentNullException(nameof(listener));
+            _listener = new DiagnosticListener(EsquioConstants.ESQUIO_LISTENER_NAME);
         }
 
         public void BeginFeatureEvaluation(Guid correlationId, string featureName, string productName)

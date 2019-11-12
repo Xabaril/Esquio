@@ -150,7 +150,7 @@ namespace UnitTests.Esquio
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();
-            var observer = new NoFeatureEvaluationObserver();
+            var session = new NoEvaluationSession();
 
             var esquioOptions = new EsquioOptions();
             esquioOptions.ConfigureOnErrorBehavior(onErrorBehavior);
@@ -158,11 +158,11 @@ namespace UnitTests.Esquio
 
             var options = Options.Create<EsquioOptions>(esquioOptions);
             var loggerFactory = new LoggerFactory();
-            
-            var listener = new DiagnosticListener("Esquio");
-            var esquioDiagnostics = new EsquioDiagnostics(listener, loggerFactory);
 
-            return new DefaultFeatureService(store, activator, observer, options, esquioDiagnostics);
+            var listener = new DiagnosticListener("Esquio");
+            var esquioDiagnostics = new EsquioDiagnostics(loggerFactory);
+
+            return new DefaultFeatureService(store, activator, session, options, esquioDiagnostics);
         }
         private class FakeRuntimeStore
             : IRuntimeFeatureStore
