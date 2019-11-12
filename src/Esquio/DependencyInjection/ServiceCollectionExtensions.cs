@@ -37,14 +37,14 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IFeatureEvaluationObserver, NoFeatureEvaluationObserver>();
+            builder.Services.AddScoped<IEvaluationSession, NoEvaluationSession>();
 
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
             builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
             builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
-            var listener = new DiagnosticListener("Esquio");
+            var listener = new DiagnosticListener(EsquioConstants.ESQUIO_LISTENER_NAME);
 
             builder.Services.AddSingleton<DiagnosticListener>(listener);
             builder.Services.AddSingleton<DiagnosticSource>(listener);

@@ -34,6 +34,11 @@ namespace Esquio.Diagnostics
             }
         }
 
+        public void FeatureEvaluationFromSession(string featureName, string productName)
+        {
+            Log.FeatureServiceFromSession(_logger, featureName, productName);
+        }
+
         public void FeatureEvaluationNotFound(Guid correlationId, string featureName, string productName)
         {
             Log.FeatureServiceNotFoundFeature(_logger, featureName, productName);

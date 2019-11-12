@@ -14,8 +14,7 @@ namespace WebApp
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                        .UseApplicationInsights();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }

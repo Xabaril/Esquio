@@ -22,6 +22,7 @@
 
         // - diagnostic listener activities
         public const string ESQUIO_LISTENER_NAME = "Esquio";
+        //public const string ESQUIO_LISTENER_NAME = "Microsoft.AspNetCore";
         public const string ESQUIO_BEGINFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationBegin";
         public const string ESQUIO_ENDFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationEnd";
         public const string ESQUIO_THROWFEATURE_ACTIVITY_NAME = "Esquio.FeatureEvaluationThrow";

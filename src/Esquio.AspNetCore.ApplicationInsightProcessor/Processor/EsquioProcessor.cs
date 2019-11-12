@@ -1,55 +1,66 @@
-﻿using Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics;
+﻿using Esquio.Abstractions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
-    internal class EsquioProcessor
+    public sealed class EsquioProcessor
         : ITelemetryProcessor
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        const string KEY_PREFIX = "Esquio";
+
+        //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
-        public EsquioProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
+        public EsquioProcessor(ITelemetryProcessor next/*, IHttpContextAccessor httpContextAccessor*/)
         {
             _next = next;
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            //_httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public void Process(ITelemetry item)
         {
-            AddEsquioProperties(item);
+            //AddEsquioPropertiesAsync(item);
 
-            if (_next != null)
-            {
+            //if (_next != null)
+            //{
                 _next.Process(item);
-            }
+            //}
         }
-        private void AddEsquioProperties(ITelemetry telemetryItem)
-        {
-            var esquioContextItems = _httpContextAccessor.HttpContext?
-                .Items
-                .Where(item => item.Key.ToString().StartsWith(HttpContextItemObserver.EsquioItemKeyName));
 
-            ISupportProperties telemetry = telemetryItem as ISupportProperties;
+        //private void AddEsquioPropertiesAsync(ITelemetry telemetryItem)
+        //{
+        //    if (_httpContextAccessor.HttpContext != null)
+        //    {
+        //        var session = _httpContextAccessor.HttpContext.RequestServices
+        //          .GetService<IEvaluationSession>();
 
-            if (telemetry != null
-                &&
-                esquioContextItems != null)
-            {
-                foreach (var (key, value) in esquioContextItems)
-                {
-                    if (!telemetry.Properties.ContainsKey(key.ToString()))
-                    {
-                        telemetry.Properties.Add(key.ToString(), value.ToString());
-                    }
-                }
-            }
-        }
+        //        if (session != null)
+        //        {
+        //            var entries = session.GetAllAsync().Result;
+
+        //            ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+        //            if (telemetry != null
+        //                &&
+        //                entries != null)
+        //            {
+        //                foreach (var item in entries)
+        //                {
+        //                    var key = $"{KEY_PREFIX}:{item.ProductName ?? EsquioConstants.DEFAULT_PRODUCT_NAME}:{item.FeatureName}";
+
+        //                    if (!telemetry.Properties.ContainsKey(key.ToString()))
+        //                    {
+        //                        telemetry.Properties.Add(key.ToString(), item.Enabled.ToString());
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

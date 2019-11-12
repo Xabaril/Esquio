@@ -58,8 +58,8 @@
     <hellangmiddlewareproblemdetails>3.1.0</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.5.0</fluentvalidationaspnetcore>
-    <microsoftapplicationinsights>2.10.0</microsoftapplicationinsights>
-    <microsoftapplicationinsightsaspnetcore>2.7.1</microsoftapplicationinsightsaspnetcore>
+    <microsoftapplicationinsights>2.11.0</microsoftapplicationinsights>
+    <microsoftapplicationinsightsaspnetcore>2.8.2</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">

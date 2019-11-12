@@ -1,5 +1,7 @@
+using Esquio.AspNetCore.ApplicationInsightProcessor.Processor;
 using Esquio.Toggles.GeoLocation;
 using Esquio.Toggles.Http;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Services;
 namespace WebApp
@@ -15,12 +19,18 @@ namespace WebApp
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            //add ApplicationInsights
+
+            services.AddApplicationInsightsTelemetry()
+                .AddApplicationInsightsTelemetryProcessor<EsquioProcessor>();
+
             //add MVC 
             services
                 .AddLocalization(options => options.ResourcesPath = "Resources")
@@ -71,8 +81,10 @@ namespace WebApp
                 {
                     setup.LoginPath = "/account/login";
                 });
+
+            
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
+        public void Configure(IApplicationBuilder app,IWebHostEnvironment env, DiagnosticListener listener)
         {
             if (env.IsDevelopment())
             {
@@ -118,7 +130,6 @@ namespace WebApp
                         builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
                     };
                 })
-                .AddApplicationInsightProcessor()
                 .Services;
         }
 
@@ -133,7 +144,6 @@ namespace WebApp
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(Configuration, "Esquio")
-                .AddApplicationInsightProcessor()
                 .Services;
         }
     }

@@ -1,7 +1,4 @@
-﻿using Esquio.Abstractions;
-using Esquio.AspNetCore.ApplicationInsightProcessor;
-using Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics;
-using Esquio.AspNetCore.ApplicationInsightProcessor.Processor;
+﻿using Esquio.AspNetCore.ApplicationInsightProcessor.Processor;
 using Esquio.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -21,8 +18,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IEsquioBuilder AddApplicationInsightProcessor(this IEsquioBuilder builder)
         {
             builder.Services.AddApplicationInsightsTelemetryProcessor<EsquioProcessor>();
-            builder.Services.AddScoped<IFeatureEvaluationObserver, HttpContextItemObserver>();
-            builder.Services.AddSingleton<EsquioAspNetCoreApplicationInsightDiagnostics>();
 
             return builder;
         }

@@ -30,6 +30,7 @@ namespace Esquio.DependencyInjection
         }
 
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
+
         /// <summary>
         /// Configure default <see cref="OnErrorBehavior"/> to used when feature evaluation throw an exception. Default value is SetDisabled.
         /// </summary>
@@ -40,7 +41,9 @@ namespace Esquio.DependencyInjection
             OnErrorBehavior = onErrorBehavior;
             return this;
         }
+
         internal NotFoundBehavior NotFoundBehavior { get; set; } = NotFoundBehavior.SetDisabled;
+
         /// <summary>
         /// Configure default <see cref="NotFoundBehavior"/> to used when feature to evaluate not exist in the store. Default value is SetDisabled.
         /// </summary>
@@ -51,6 +54,7 @@ namespace Esquio.DependencyInjection
             NotFoundBehavior = notFoundBehavior;
             return this;
         }
+
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <typeparamref name="T"/> is defined.
         /// </summary>
@@ -60,6 +64,7 @@ namespace Esquio.DependencyInjection
         {
             return RegisterTogglesFromAssemblyContaining(typeof(T));
         }
+
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <param name="type"/> is defined.
         /// </summary>
@@ -69,6 +74,7 @@ namespace Esquio.DependencyInjection
         {
             return RegisterTogglesFromAssembly(type.GetTypeInfo().Assembly);
         }
+
         /// <summary>
         /// Register custom  <see cref="Esquio.Abstractions.IToggle"/> defined in <paramref name="assembly"/>.
         /// </summary>
@@ -79,6 +85,7 @@ namespace Esquio.DependencyInjection
             AssembliesToRegister.Add(assembly);
             return this;
         }
+
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in <paramref name="assemblies"/>.
         /// </summary>
