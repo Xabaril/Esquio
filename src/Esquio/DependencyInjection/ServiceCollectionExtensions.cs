@@ -44,10 +44,6 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
             builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
-            var listener = new DiagnosticListener("Esquio");
-
-            builder.Services.AddSingleton<DiagnosticListener>(listener);
-            builder.Services.AddSingleton<DiagnosticSource>(listener);
             builder.Services.AddSingleton<EsquioDiagnostics>();
 
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);

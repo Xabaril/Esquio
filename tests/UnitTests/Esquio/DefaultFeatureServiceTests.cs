@@ -159,8 +159,7 @@ namespace UnitTests.Esquio
             var options = Options.Create<EsquioOptions>(esquioOptions);
             var loggerFactory = new LoggerFactory();
             
-            var listener = new DiagnosticListener("Esquio");
-            var esquioDiagnostics = new EsquioDiagnostics(listener, loggerFactory);
+            var esquioDiagnostics = new EsquioDiagnostics(loggerFactory);
 
             return new DefaultFeatureService(store, activator, observer, options, esquioDiagnostics);
         }

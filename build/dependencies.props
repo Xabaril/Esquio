@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>1.1.0$(VersionSuffix)</esquio>
+    <esquio>1.1.1$(VersionSuffix)</esquio>
     <esquioaspnetcore>1.1.0$(VersionSuffix)</esquioaspnetcore>
     <esquioaspnetcoreapplicationinsightsprocessor>1.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
     <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
