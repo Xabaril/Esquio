@@ -24,6 +24,7 @@ namespace Esquio.UI.Api.Features.Products.Delete
         {
             var product = await _storeDbContext
                 .Products
+
                 .Where(p => p.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -38,6 +39,7 @@ namespace Esquio.UI.Api.Features.Products.Delete
 
             Log.ProductNotExist(_logger, request.ProductName);
             throw new InvalidOperationException($"The product {request.ProductName} does not exist.");
+
         }
     }
 }
