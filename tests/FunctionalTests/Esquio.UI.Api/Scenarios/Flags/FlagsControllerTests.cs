@@ -9,6 +9,7 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -270,7 +271,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status200OK);
 
             response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: feature.Id))
+                .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Name,feature.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -425,7 +426,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#2")
+                .WithName("product2")
                 .Build();
 
             var feature = Builders.Feature()
@@ -448,7 +449,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status200OK);
 
             response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: feature.Id))
+                .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Name,feature.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -472,7 +473,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#2")
+                .WithName("product2")
                 .Build();
 
             var feature = Builders.Feature()
@@ -508,7 +509,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#2")
+                .WithName("product2")
                 .Build();
 
             var feature = Builders.Feature()
@@ -555,7 +556,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Delete(1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete("productName","featureName"))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -575,11 +576,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#1")
+                .WithName("product1")
                 .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var toggle1 = Builders.Toggle()
@@ -594,7 +595,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Delete(feature.Id))
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete(product.Name,feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -614,11 +615,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#1")
+                .WithName("product1")
                 .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             product.Features.Add(feature);
@@ -627,7 +628,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Delete(feature.Id))
+              .CreateRequest(ApiDefinitions.V1.Flags.Delete(product.Name,feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -641,26 +642,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Delete("productName","featureName"))
                   .DeleteAsync();
 
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
         }
-        [Fact]
-        public async Task delete_response_not_found_if_feature_is_not_positive_int()
-        {
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: -1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
-
 
         [Fact]
         [ResetDatabase]
@@ -674,13 +662,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#2")
+               .WithName("product2")
                .Build();
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-                   .CreateRequest(ApiDefinitions.V1.Flags.Delete(featureId: 1))
+                   .CreateRequest(ApiDefinitions.V1.Flags.Delete("product2","nonexisting"))
                    .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                    .DeleteAsync();
 
@@ -688,88 +676,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
         }
-        [Fact]
-        [ResetDatabase]
-        public async Task get_response_ok_if_feature_exist()
-        {
-            var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithWritePermission(false)
-                .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
-            var product = Builders.Product()
-               .WithName("product#1")
-               .Build();
-
-            var feature = Builders.Feature()
-                .WithName("feature#1")
-                .Build();
-
-            var toggle1 = Builders.Toggle()
-              .WithType("toggle-type-1")
-              .Build();
-
-            var toggle2 = Builders.Toggle()
-                .WithType("toggle-type-2")
-                .Build();
-
-            feature.Toggles
-                .Add(toggle1);
-
-            feature.Toggles
-                .Add(toggle2);
-
-            product.Features
-                .Add(feature);
-
-            await _fixture.Given
-                .AddProduct(product);
-
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(feature.Id))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .GetAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status200OK);
-
-            var content = await response.Content
-                .ReadAs<DetailsFlagResponse>();
-
-            content.Id
-                .Should()
-                .Be(feature.Id);
-
-            content.Name
-                .Should()
-                .BeEquivalentTo(feature.Name);
-
-            content.Description
-                .Should()
-                .BeEquivalentTo(feature.Description);
-
-            content.Enabled
-                .Should()
-                .Be(feature.Enabled);
-
-            content.ProductName
-                .Should()
-                .BeEquivalentTo(product.Name);
-
-            content.Toggles
-                .Any(t=>t.Type == "toggle-type-1")
-                .Should()
-                .BeTrue();
-
-            content.Toggles
-                .Any(t => t.Type == "toggle-type-2")
-                .Should()
-                .BeTrue();
-        }
+       
         [Fact]
         [ResetDatabase]
         public async Task get_response_forbidden_if_user_is_not_authorized()
@@ -782,10 +689,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
             await _fixture.Given
                 .AddPermission(permission);
 
-            
+
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(1))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get("productName","featureName"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -806,11 +713,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("product1")
                .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("feature1")
                 .Build();
 
             var toggle1 = Builders.Toggle()
@@ -834,7 +741,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(feature.Id))
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Name,feature.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -844,10 +751,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
 
             var content = await response.Content
                 .ReadAs<DetailsFlagResponse>();
-
-            content.Id
-                .Should()
-                .Be(feature.Id);
 
             content.Name
                 .Should()
@@ -861,17 +764,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Should()
                 .Be(feature.Enabled);
 
-            content.ProductName
-                .Should()
-                .Be(product.Name);
-
             content.Toggles
                 .Should()
                 .ContainEquivalentOf(new ToggleDetail
                 {
                     Id = toggle1.Id,
                     FriendlyName = "Between dates",
-                    Type = toggle1.Type
+                    Type = toggle1.Type,
+                    Parameters = new List<ParameterDetail>()
                 });
 
             content.Toggles
@@ -880,7 +780,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                {
                    Id = toggle2.Id,
                    FriendlyName = "On Environment",
-                   Type = toggle2.Type
+                   Type = toggle2.Type,
+                   Parameters = new List<ParameterDetail>()
                });
         }
 
@@ -896,13 +797,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product#1")
+                .WithName("product1")
                 .Build();
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: 1))
+              .CreateRequest(ApiDefinitions.V1.Flags.Get(product.Name, "nonexisting"))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -911,32 +812,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
                 .Be(StatusCodes.Status404NotFound);
         }
 
-        [Fact]
-        [ResetDatabase]
-        public async Task get_response_not_found_if_feature_is_not_positive_int()
-        {
-            var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: -1))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
-        }
+        
         [Fact]
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Flags.Get(featureId: 1))
-                  .DeleteAsync();
+                  .CreateRequest(ApiDefinitions.V1.Flags.Get("productName","featureName"))
+                  .GetAsync();
 
             response.StatusCode
                 .Should()

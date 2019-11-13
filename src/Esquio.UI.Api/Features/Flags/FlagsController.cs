@@ -68,7 +68,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/v1/flags/{featureId:int:min(1)}")]
+        [Route("api/v1/products/{productName}/flags/{featureName}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteFlagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -78,7 +78,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/flags/{featureId:int:min(1)}")]
+        [Route("api/v1/products/{productName}/flags/{featureName}")]
         public async Task<IActionResult> Get([FromRoute]DetailsFlagRequest request, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(request, cancellationToken);

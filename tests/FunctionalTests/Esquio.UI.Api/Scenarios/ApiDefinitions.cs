@@ -52,13 +52,13 @@
                 {
                     return $"api/v1/flags/{featureId}/rollback";
                 }
-                public static string Delete(int featureId)
+                public static string Delete(string productName, string featureName)
                 {
-                    return $"api/v1/flags/{featureId}";
+                    return $"api/v1/products/{productName}/flags/{featureName}";
                 }
-                public static string Get(int featureId)
+                public static string Get(string productName, string featureName)
                 {
-                    return $"api/v1/flags/{featureId}";
+                    return $"api/v1/products/{productName}/flags/{featureName}";
                 }
                 public static string List(string productName)
                 {

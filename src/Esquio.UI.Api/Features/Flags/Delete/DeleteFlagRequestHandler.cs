@@ -25,8 +25,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
         {
             var feature = await _storeDbContext
                 .Features
-                .Where(f => f.Id == request.FeatureId)
-                .Include(f => f.Toggles)
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (feature != null)
@@ -37,7 +36,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
                 return Unit.Value;
             }
 
-            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
+            Log.FeatureNotExist(_logger, request.FeatureName);
             throw new InvalidOperationException("Feature does not exist in the store.");
         }
     }
