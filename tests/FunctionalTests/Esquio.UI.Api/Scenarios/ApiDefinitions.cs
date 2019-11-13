@@ -48,9 +48,9 @@
                 {
                     return $"api/v1/flags/{featureId}/rollout";
                 }
-                public static string Rollback(int featureId)
+                public static string Rollback(string productName, string featureName)
                 {
-                    return $"api/v1/flags/{featureId}/rollback";
+                    return $"api/v1/products/{productName}/flags/{featureName}/rollback";
                 }
                 public static string Delete(string productName, string featureName)
                 {

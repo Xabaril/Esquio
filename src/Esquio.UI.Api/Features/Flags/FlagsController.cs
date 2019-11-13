@@ -58,7 +58,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("api/v1/flags/{featureId:int:min(1)}/rollback")]
+        [Route("api/v1/products/{productName}/flags/{featureName}/rollback")]
         public async Task<IActionResult> Rollback([FromRoute]RollbackFlagRequest rollbackFlagRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rollbackFlagRequest, cancellationToken);

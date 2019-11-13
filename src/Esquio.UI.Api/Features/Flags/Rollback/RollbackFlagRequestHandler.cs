@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
         {
             var feature = await _storeDbContext
                 .Features
-                .Where(f => f.Id == request.FeatureId)
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -43,7 +43,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
                 return Unit.Value;
             }
 
-            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
+            Log.FeatureNotExist(_logger, request.FeatureName.ToString());
             throw new InvalidOperationException("Feature does not exist in the store.");
         }
     }
