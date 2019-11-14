@@ -25,19 +25,27 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
         {
             var toggle = await _storeDbContext
                 .Toggles
-                .Where(t => t.Id == request.ToggleId)
+                .Include(f => f.Parameters)
+                .Where(f => f.FeatureEntity.Name == request.FeatureName && f.FeatureEntity.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (toggle != null)
             {
-                _storeDbContext.Remove(toggle);
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
+                try
+                {
+                    _storeDbContext.Remove(toggle);
+                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                }
+
 
                 return Unit.Value;
             }
 
-            Log.ToggleNotExist(_logger, request.ToggleId.ToString());
-            throw new InvalidOperationException($"Toggle with id {request.ToggleId} does not exist in the store.");
+            Log.ToggleNotExist(_logger, request.ToggleType);
+            throw new InvalidOperationException($"Toggle with id {request.ToggleType} does not exist in the store.");
         }
     }
 }

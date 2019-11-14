@@ -4,7 +4,11 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
 {
     public class AddParameterToggleRequest : IRequest
     {
-        internal int ToggleId { get; set; }
+        public string ProductName { get; set; }
+
+        public string FeatureName { get; set; }
+
+        public string ToggleType { get; set; }
 
         public string Name { get; set; }
 

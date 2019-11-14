@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Features.Toggles.Add
             var feature = await _storeDbContext
                 .Features
                 .Include(t => t.Toggles)
-                .Where(t => t.Id == request.FeatureId)
+                .Where(t => t.Name == request.FeatureName && t.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (feature != null)
@@ -46,6 +46,7 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                     }
 
                     feature.Toggles.Add(toggle);
+
                     await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                     return toggle.Id;
@@ -55,8 +56,8 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                 throw new InvalidOperationException($"Toggle with type {request.Type} already exist on this feature.");
             }
 
-            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
-            throw new InvalidOperationException($"The feature with id {request.FeatureId} does not exist in the store.");
+            Log.FeatureNotExist(_logger, request.FeatureName);
+            throw new InvalidOperationException($"The feature {request.FeatureName} does not exist in the store.");
         }
     }
 }

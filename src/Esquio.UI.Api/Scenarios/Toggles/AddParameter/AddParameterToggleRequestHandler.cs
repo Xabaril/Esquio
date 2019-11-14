@@ -24,35 +24,46 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
 
         public async Task<Unit> Handle(AddParameterToggleRequest request, CancellationToken cancellationToken)
         {
-            var toggle = await _storeDbContext
-                .Toggles
-                .Include(t => t.Parameters)
-                .Where(t => t.Id == request.ToggleId)
+            var feature = await _storeDbContext
+                .Features
+                .Include(f => f.Toggles)
+                    .ThenInclude(t=>t.Parameters)
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (toggle != null)
+            if (feature != null)
             {
-                var parameter = toggle.Parameters
-                    .Where(p => p.Name.Equals(request.Name))
+                var toggle = feature.Toggles
+                    .Where(t => t.Type == request.ToggleType)
                     .SingleOrDefault();
 
-                if (parameter != null)
+                if (toggle != null)
                 {
-                    parameter.Value = request.Value;
-                }
-                else
-                {
-                    toggle.Parameters.Add(
-                        new ParameterEntity(toggle.Id, request.Name, request.Value));
+                    var parameter = toggle.Parameters
+                        .Where(p => p.Name.Equals(request.Name))
+                        .SingleOrDefault();
+
+                    if (parameter != null)
+                    {
+                        parameter.Value = request.Value;
+                    }
+                    else
+                    {
+                        toggle.Parameters.Add(
+                            new ParameterEntity(toggle.Id, request.Name, request.Value));
+                    }
+
+                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+
+                    return Unit.Value;
                 }
 
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
+                Log.ToggleNotExist(_logger, request.ToggleType);
+                throw new InvalidOperationException($"Toggle {request.ToggleType} does not exist on feature {request.FeatureName} for product {request.ProductName}.");
             }
 
-            Log.ToggleNotExist(_logger, request.ToggleId.ToString());
-            throw new InvalidOperationException($"Toggle with id {request.ToggleId} does not exist.");
+            Log.FeatureNotExist(_logger, request.FeatureName);
+            throw new InvalidOperationException($"Feature {request.FeatureName} does not exist on product {request.ProductName}.");
         }
     }
 }

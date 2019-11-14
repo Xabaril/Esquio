@@ -40,23 +40,14 @@ namespace Esquio.UI.Api.Features.Toggles
             return NotFound();
         }
 
-        [HttpPost]
-        [Authorize(Policies.Write)]
-        [Route("api/v1/toggles/{toggleId:int:min(1)}/parameters")]
-        public async Task<IActionResult> AddParameter(int toggleId, AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
-        {
-            parameterToggleRequest.ToggleId = toggleId;
-            await _mediator.Send(parameterToggleRequest, cancellationToken);
-
-            return Created($"api/v1/toggle/{parameterToggleRequest.ToggleId}", null);
-        }
+       
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/v1/toggles/{toggleId:int:min(1)}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
+        [Route("api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest deleteToggleRequest, CancellationToken cancellationToken = default)
         {
-            await _mediator.Send(detailsToggleRequest, cancellationToken);
+            await _mediator.Send(deleteToggleRequest, cancellationToken);
 
             return NoContent();
         }
@@ -83,12 +74,25 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpPost]
         [Authorize(Policies.Write)]
+        [Route("api/v1/toggles/parameters")]
+        public async Task<IActionResult> AddParameter(AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(parameterToggleRequest, cancellationToken);
+
+            //TODO: THIS URL IS NOT VALID
+            return Created($"api/v1/toggle/", null);
+        }
+
+
+        [HttpPost]
+        [Authorize(Policies.Write)]
         [Route("api/v1/toggles")]
         public async Task<IActionResult> Add(AddToggleRequest postToggleRequest, CancellationToken cancellationToken = default)
         {
-            var toggleId = await _mediator.Send(postToggleRequest, cancellationToken);
+            await _mediator.Send(postToggleRequest, cancellationToken);
 
-            return Created($"api/v1/toggle/{toggleId}", null);
+            //TODO: THIS URL IS NOT VALID
+            return Created($"api/v1/products/{postToggleRequest.ProductName}/features/{postToggleRequest.FeatureName}", null);
         }
     }
 }

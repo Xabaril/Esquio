@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Toggles.AddParameter
+namespace Esquio.UI.Api.Features.Toggles.Delete
 {
     public class DeleteToggleRequestValidator
-        : AbstractValidator<AddParameterToggleRequest>
+        : AbstractValidator<DeleteToggleRequest>
     {
         public DeleteToggleRequestValidator()
         {
@@ -22,11 +22,6 @@ namespace Esquio.UI.Api.Features.Toggles.AddParameter
             this.RuleFor(pr => pr.ToggleType)
                 .NotEmpty();
 
-            this.RuleFor(pr => pr.Name)
-                .NotEmpty();
-
-            this.RuleFor(rf => rf.Value)
-                .NotEmpty();
         }
     }
 }

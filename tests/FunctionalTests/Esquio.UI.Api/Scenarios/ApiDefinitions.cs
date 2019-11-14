@@ -100,9 +100,9 @@
                 {
                     return $"api/v1/toggles/{toggleId}";
                 }
-                public static string Delete(int toggleId)
+                public static string Delete(string productName, string featureName, string toggleType)
                 {
-                    return $"api/v1/toggles/{toggleId}";
+                    return $"api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}";
                 }
                 public static string Reveal(string toggleType)
                 {
@@ -116,9 +116,9 @@
                 {
                     return "api/v1/toggles";
                 }
-                public static string PostParameter(int toggleId)
+                public static string PostParameter()
                 {
-                    return $"api/v1/toggles/{toggleId}/parameters";
+                    return $"api/v1/toggles/parameters";
                 }
             }
 
