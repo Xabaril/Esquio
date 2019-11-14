@@ -14,7 +14,8 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="$(microsoftaspnetcoremvcversioningapiexplorerversion)" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="$(hellangmiddlewareproblemdetails)" />

@@ -36,6 +36,7 @@
     <systemtextjson>4.6.0</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoremvcversioningapiexplorerversion>4.0.0</microsoftaspnetcoremvcversioningapiexplorerversion>
 
     <microsoftextensionsdependencyinjectionabstractions>3.0.0</microsoftextensionsdependencyinjectionabstractions>
     <microsoftextensionsprimitives>3.0.0</microsoftextensionsprimitives>

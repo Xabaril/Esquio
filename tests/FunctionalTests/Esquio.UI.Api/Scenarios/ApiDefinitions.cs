@@ -2,7 +2,7 @@
 {
     public static class ApiDefinitions
     {
-        public static class V1
+        public static class V2
         {
             public static class Product
             {
@@ -74,23 +74,23 @@
             {
                 public static string Add()
                 {
-                    return $"api/v1/apikeys/";
+                    return $"api/apikeys?api-version=2.0";
                 }
                 public static string Delete(int apiKeyId)
                 {
-                    return $"api/v1/apikeys/{apiKeyId}";
+                    return $"api/apikeys/{apiKeyId}?api-version=2.0";
                 }
                 public static string Get(int apiKeyId)
                 {
-                    return $"api/v1/apikeys/{apiKeyId}";
+                    return $"api/apikeys/{apiKeyId}?api-version=2.0";
                 }
                 public static string List()
                 {
-                    return $"api/v1/apikeys/";
+                    return $"api/apikeys?api-version=2.0";
                 }
                 public static string List(int pageIndex, int pageCount)
                 {
-                    return $"api/v1/apikeys?pageIndex={pageIndex}&pageCount={pageCount}";
+                    return $"api/apikeys?pageIndex={pageIndex}&pageCount={pageCount}&api-version=2.0";
                 }
             }
 

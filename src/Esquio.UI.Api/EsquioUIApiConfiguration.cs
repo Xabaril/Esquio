@@ -7,6 +7,7 @@ using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -27,6 +28,14 @@ namespace Esquio.UI.Api
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
                 .AddCustomProblemDetails()
+                .AddApiVersioning(setup =>
+                {
+                    setup.DefaultApiVersion = new ApiVersion(2, 0);
+                    setup.ReportApiVersions = true;
+                    setup.AssumeDefaultVersionWhenUnspecified = true;
+                    setup.UseApiBehavior = true;
+                })
+                .AddVersionedApiExplorer()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
                     .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductRequestValidator).Assembly))

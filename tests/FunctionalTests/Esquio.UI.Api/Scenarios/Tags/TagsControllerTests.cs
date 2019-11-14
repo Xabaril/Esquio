@@ -27,7 +27,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task not_allow_to_untag_features_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Untag("tag", 1))
+              .CreateRequest(ApiDefinitions.V2.Tags.Untag("tag", 1))
               .DeleteAsync();
 
             response.StatusCode
@@ -69,7 +69,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Untag(tag.Name, feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Untag(tag.Name, feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -106,7 +106,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Untag("tag", feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Untag("tag", feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -149,7 +149,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Tag(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -191,7 +191,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Tag(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -241,7 +241,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest("performance");
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature2.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Tag(feature2.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -266,7 +266,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Tag(1))
+              .CreateRequest(ApiDefinitions.V2.Tags.Tag(1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -312,7 +312,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag.Name);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.Tag(feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.Tag(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PostAsJsonAsync(request);
 
@@ -368,7 +368,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.List(feature.Id))
+              .CreateRequest(ApiDefinitions.V2.Tags.List(feature.Id))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -394,7 +394,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V1.Tags.List(1))
+              .CreateRequest(ApiDefinitions.V2.Tags.List(1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 

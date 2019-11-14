@@ -34,7 +34,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName:"foo",featureName:"bar",toggleType:"type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName:"foo",featureName:"bar",toggleType:"type"))
                   .GetAsync();
 
             response.StatusCode
@@ -68,7 +68,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName: product.Name, featureName: feature.Name, toggleType: "non-existing-toggle"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName: product.Name, featureName: feature.Name, toggleType: "non-existing-toggle"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -118,7 +118,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(product.Name,feature.Name,toggle.Type))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(product.Name,feature.Name,toggle.Type))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -185,7 +185,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(product.Name,feature.Name,toggle.Type))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(product.Name,feature.Name,toggle.Type))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -206,7 +206,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName: "foo", featureName: "bar", toggleType: "type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName: "foo", featureName: "bar", toggleType: "type"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -219,7 +219,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Delete(productName: "fooproduct", featureName: "barfeature", toggleType: "type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Delete(productName: "fooproduct", featureName: "barfeature", toggleType: "type"))
                   .DeleteAsync();
 
             response.StatusCode
@@ -240,7 +240,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Delete(productName:"fooproduct", featureName:"barfeature", toggleType: "type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Delete(productName:"fooproduct", featureName:"barfeature", toggleType: "type"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -275,7 +275,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Delete(product.Name, feature.Name, "non-existing"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Delete(product.Name, feature.Name, "non-existing"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -325,7 +325,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Delete(product.Name, feature.Name, toggle.Type))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Delete(product.Name, feature.Name, toggle.Type))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -337,7 +337,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task reveal_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.FromToToggle"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.FromToToggle"))
                   .GetAsync();
 
             response.StatusCode
@@ -358,7 +358,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.NonExisting"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.NonExisting"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -408,7 +408,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle, Esquio"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle, Esquio"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -484,7 +484,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -497,7 +497,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task knowntypes_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.KnownTypes())
                   .GetAsync();
 
             response.StatusCode
@@ -518,7 +518,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.KnownTypes())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -539,7 +539,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.KnownTypes())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.KnownTypes())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -581,7 +581,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task add_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Post())
                   .PostAsync();
 
             response.StatusCode
@@ -638,7 +638,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Post())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(body);
 
@@ -689,7 +689,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Post())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Post())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(body);
 
@@ -702,7 +702,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task addparameter_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .PostAsync();
 
             response.StatusCode
@@ -731,7 +731,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -761,7 +761,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -791,7 +791,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -821,7 +821,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -852,7 +852,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -910,7 +910,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -960,7 +960,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
@@ -990,7 +990,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.PostParameter())
+                  .CreateRequest(ApiDefinitions.V2.Toggles.PostParameter())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(parameterToggleRequest);
 
