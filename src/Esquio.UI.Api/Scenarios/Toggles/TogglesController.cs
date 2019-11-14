@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/toggles/{toggleId:int:min(1)}")]
+        [Route("api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}")]
         public async Task<IActionResult> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
             var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
@@ -39,8 +39,6 @@ namespace Esquio.UI.Api.Features.Toggles
 
             return NotFound();
         }
-
-       
 
         [HttpDelete]
         [Authorize(Policies.Write)]
@@ -79,10 +77,8 @@ namespace Esquio.UI.Api.Features.Toggles
         {
             await _mediator.Send(parameterToggleRequest, cancellationToken);
 
-            //TODO: THIS URL IS NOT VALID
-            return Created($"api/v1/toggle/", null);
+            return Created($"api/v1/products/{parameterToggleRequest.ProductName}/features/{parameterToggleRequest.FeatureName}/toggles/{parameterToggleRequest.ToggleType}", null);
         }
-
 
         [HttpPost]
         [Authorize(Policies.Write)]
@@ -91,8 +87,7 @@ namespace Esquio.UI.Api.Features.Toggles
         {
             await _mediator.Send(postToggleRequest, cancellationToken);
 
-            //TODO: THIS URL IS NOT VALID
-            return Created($"api/v1/products/{postToggleRequest.ProductName}/features/{postToggleRequest.FeatureName}", null);
+            return Created($"api/v1/products/{postToggleRequest.ProductName}/features/{postToggleRequest.FeatureName}/toggles/{postToggleRequest.ToggleType}", null);
         }
     }
 }

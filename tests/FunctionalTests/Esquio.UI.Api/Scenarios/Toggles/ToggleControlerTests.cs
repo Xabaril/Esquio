@@ -34,32 +34,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName:"foo",featureName:"bar",toggleType:"type"))
                   .GetAsync();
 
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status401Unauthorized);
-        }
-
-        [Fact]
-        [ResetDatabase]
-        public async Task get_response_not_found_if_toggle_is_not_positive_int()
-        {
-            var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
-            var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: -1))
-                  .GetAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status404NotFound);
         }
 
         [Fact]
@@ -74,19 +54,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("barfeature")
                 .Build();
-
-            var toggle1 = Builders.Toggle()
-              .WithType("toggle-type-1")
-              .Build();
-
-            feature.Toggles
-                .Add(toggle1);
 
             product.Features
                 .Add(feature);
@@ -95,7 +68,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: toggle1.Id * 2))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName: product.Name, featureName: feature.Name, toggleType: "non-existing-toggle"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -116,11 +89,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("barfeature")
                 .Build();
 
             var toggle = Builders.Toggle()
@@ -145,7 +118,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: toggle.Id))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(product.Name,feature.Name,toggle.Type))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -170,11 +143,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Parameters
                 .First()
-                .Id
-                .Should().Be(parameter.Id);
-
-            content.Parameters
-                .First()
                 .Name
                 .Should().Be("From");
 
@@ -196,11 +164,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("barfeature")
                 .Build();
 
             var toggle = Builders.Toggle()
@@ -217,7 +185,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: toggle.Id))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(product.Name,feature.Name,toggle.Type))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -238,7 +206,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(toggleId: 1))
+                  .CreateRequest(ApiDefinitions.V1.Toggles.Get(productName: "foo", featureName: "bar", toggleType: "type"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -665,7 +633,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                Type = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(EnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
             };
 
@@ -708,7 +676,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                Type = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(EnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
                     new AddToggleRequestDetailParameter()
@@ -743,6 +711,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task addparameter_response_bad_request_if_name_is_null()
         {
             var permission = Builders.Permission()

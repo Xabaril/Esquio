@@ -17,7 +17,6 @@ namespace Esquio.UI.Api.Features.Toggles.Details
 
     public class ParameterDetail
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
     }

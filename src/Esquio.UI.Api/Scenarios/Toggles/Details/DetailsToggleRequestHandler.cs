@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Toggles.Details
             var toggle = await _storeDbContext
                 .Toggles
                 .Include(t => t.Parameters)
-                .Where(t => t.Id == request.ToggleId)
+                .Where(t => t.Type == request.ToggleType && t.FeatureEntity.Name == request.FeatureName && t.FeatureEntity.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (toggle != null)
@@ -43,7 +43,6 @@ namespace Esquio.UI.Api.Features.Toggles.Details
                         Description = attribute != null ? attribute.Description : "No description",
                         Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
                         {
-                            Id = parameter.Id,
                             Name = parameter.Name,
                             Value = parameter.Value
                         }).ToList()

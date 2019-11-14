@@ -2,10 +2,10 @@
 
 namespace Esquio.UI.Api.Features.Toggles.Delete
 {
-    public class DeleteToggleRequestValidator
+    public class DetailsToggleRequestValidator
         : AbstractValidator<DeleteToggleRequest>
     {
-        public DeleteToggleRequestValidator()
+        public DetailsToggleRequestValidator()
         {
             RuleFor(x => x.ProductName)
                .NotEmpty()

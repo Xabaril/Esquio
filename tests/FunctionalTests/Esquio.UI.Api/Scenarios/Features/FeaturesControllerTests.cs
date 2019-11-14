@@ -1137,6 +1137,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Flags
         }
 
         [Fact]
+        [ResetDatabase]
         public async Task update_response_badrequest_if_description_is_greater_than_2000()
         {
             var permission = Builders.Permission()

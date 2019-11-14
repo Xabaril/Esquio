@@ -96,9 +96,9 @@
 
             public static class Toggles
             {
-                public static string Get(int toggleId)
+                public static string Get(string productName,string featureName, string toggleType)
                 {
-                    return $"api/v1/toggles/{toggleId}";
+                    return $"api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}";
                 }
                 public static string Delete(string productName, string featureName, string toggleType)
                 {

@@ -33,11 +33,11 @@ namespace Esquio.UI.Api.Features.Toggles.Add
             if (feature != null)
             {
                 var alreadyExistToggleType = feature.Toggles
-                    .Any(t => t.Type == request.Type);
+                    .Any(t => t.Type == request.ToggleType);
 
                 if (!alreadyExistToggleType)
                 {
-                    var toggle = new ToggleEntity(feature.Id, request.Type);
+                    var toggle = new ToggleEntity(feature.Id, request.ToggleType);
 
                     foreach (var item in request.Parameters)
                     {
@@ -52,8 +52,8 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                     return toggle.Id;
                 }
 
-                Log.ToggleTypeAlreadyExist(_logger, request.Type, feature.Name);
-                throw new InvalidOperationException($"Toggle with type {request.Type} already exist on this feature.");
+                Log.ToggleTypeAlreadyExist(_logger, request.ToggleType, feature.Name);
+                throw new InvalidOperationException($"Toggle with type {request.ToggleType} already exist on this feature.");
             }
 
             Log.FeatureNotExist(_logger, request.FeatureName);
