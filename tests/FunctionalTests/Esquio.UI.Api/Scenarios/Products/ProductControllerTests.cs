@@ -50,7 +50,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             await _fixture.Given
@@ -79,7 +79,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             content.Result
                 .First().Name
-                .Should().BeEquivalentTo("product#1");
+                .Should().BeEquivalentTo(product.Name);
 
         }
 
@@ -95,11 +95,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product1 = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             var product2 = Builders.Product()
-               .WithName("product#2")
+               .WithName("barproduct")
                .Build();
 
             await _fixture.Given
@@ -128,7 +128,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             content.Result
                 .Single().Name
-                .Should().BeEquivalentTo("product#2");
+                .Should().BeEquivalentTo(product2.Name);
         }
 
         [Fact]
@@ -203,7 +203,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             await _fixture.Given
@@ -259,7 +259,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-              .WithName("product1")
+              .WithName("fooproduct")
               .Build();
 
             await _fixture.Given
@@ -267,7 +267,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "product1",
+                Name = product.Name,
                 Description = "some description"
             };
 
@@ -294,7 +294,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "two",
+                Name = new string('c', 2),
                 Description = "some description"
             };
 
@@ -348,7 +348,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "product1",
+                Name = "fooproduct",
                 Description = new string('d', 2001)
             };
 
@@ -375,7 +375,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "product1",
+                Name = "fooproduct",
                 Description = "some description"
             };
 
@@ -402,7 +402,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "product#1",
+                Name = "fooproduct~#4",
                 Description = "some description"
             };
 
@@ -430,7 +430,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var productRequest = new AddProductRequest()
             {
-                Name = "product1",
+                Name = "fooproduct",
                 Description = "some description"
             };
 
@@ -489,14 +489,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-             .WithName("product1")
+             .WithName("fooproduct")
              .Build();
 
             await _fixture.Given
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Get("product1"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Get(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -508,7 +508,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .ReadAs<DetailsProductResponse>();
 
             content.Name
-                .Should().BeEquivalentTo("product1");
+                .Should().BeEquivalentTo(product.Name);
         }
 
         [Fact]
@@ -557,7 +557,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Delete("product"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -578,14 +578,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-             .WithName("product1")
+             .WithName("fooproduct")
              .Build();
 
             await _fixture.Given
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Delete("product1"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -607,7 +607,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Delete("product"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -628,11 +628,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-                .WithName("product1")
+                .WithName("fooproduct")
                 .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature1")
+                .WithName("barfeature")
                 .Build();
 
             var toggle = Builders.Toggle()
@@ -657,7 +657,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Delete("product1"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Delete(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -670,7 +670,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Update("nonexisting"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Update("fooproduct"))
                   .PutAsync();
 
             response.StatusCode
@@ -692,12 +692,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var request = new UpdateProductRequest()
             {
-                Name = "product",
+                Name = "fooproduct",
                 Description = "description"
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Update("nonexisting"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Update("barproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -715,7 +715,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Update("nonexisting"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Update("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -733,7 +733,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Update("nonexisting"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Update("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -755,12 +755,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var request = new UpdateProductRequest()
             {
-                Name = "product2",
+                Name = "fooproduct",
                 Description = new string('d', 2001)
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V1.Product.Update("nonexisting"))
+                  .CreateRequest(ApiDefinitions.V1.Product.Update("barproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -782,7 +782,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-            .WithName("product1")
+            .WithName("fooproduct")
             .Build();
 
             await _fixture.Given
@@ -790,7 +790,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var request = new UpdateProductRequest()
             {
-                Name = "product2",
+                Name = "barpdroduct",
                 Description = "description for product#2"
             };
 
@@ -816,7 +816,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var product = Builders.Product()
-            .WithName("product1")
+            .WithName("fooproduct")
             .Build();
 
             await _fixture.Given
@@ -824,7 +824,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             var request = new UpdateProductRequest()
             {
-                Name = "product2",
+                Name = "barproduct",
                 Description = "description for product#2"
             };
 

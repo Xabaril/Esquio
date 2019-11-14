@@ -1,0 +1,33 @@
+﻿using System.Collections.Generic;
+
+namespace Esquio.UI.Api.Features.Flags.Details
+{
+    public class DetailsFeatureResponse
+    {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public List<ToggleDetail> Toggles { get; set; }
+    }
+
+    public class ToggleDetail
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; }
+
+        public string FriendlyName { get; set; }
+
+        public List<ParameterDetail> Parameters { get; set; }
+    }
+
+    public class ParameterDetail
+    {
+        public string Name { get; set; }
+
+        public string Value { get; set; }
+    }
+}

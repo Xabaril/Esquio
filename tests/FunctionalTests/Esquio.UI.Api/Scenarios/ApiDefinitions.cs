@@ -34,39 +34,39 @@
                 }
             }
 
-            public static class Flags
+            public static class Features
             {
-                public static string Add()
+                public static string Add(string productName)
                 {
-                    return $"api/v1/flags";
+                    return $"api/v1/products/{productName}/features";
                 }
-                public static string Update()
+                public static string Update(string productName, string featureName)
                 {
-                    return $"api/v1/flags";
+                    return $"api/v1/products/{productName}/features/{featureName}";
                 }
-                public static string Rollout(int featureId)
+                public static string Rollout(string productName, string featureName)
                 {
-                    return $"api/v1/flags/{featureId}/rollout";
+                    return $"api/v1/products/{productName}/features/{featureName}/rollout";
                 }
                 public static string Rollback(string productName, string featureName)
                 {
-                    return $"api/v1/products/{productName}/flags/{featureName}/rollback";
+                    return $"api/v1/products/{productName}/features/{featureName}/rollback";
                 }
                 public static string Delete(string productName, string featureName)
                 {
-                    return $"api/v1/products/{productName}/flags/{featureName}";
+                    return $"api/v1/products/{productName}/features/{featureName}";
                 }
                 public static string Get(string productName, string featureName)
                 {
-                    return $"api/v1/products/{productName}/flags/{featureName}";
+                    return $"api/v1/products/{productName}/features/{featureName}";
                 }
                 public static string List(string productName)
                 {
-                    return $"api/v1/products/{productName}/flags";
+                    return $"api/v1/products/{productName}/features";
                 }
                 public static string List(string productName, int pageIndex, int pageCount)
                 {
-                    return $"api/v1/products/{productName}/flags?pageIndex={pageIndex}&pageCount={pageCount}";
+                    return $"api/v1/products/{productName}/features?pageIndex={pageIndex}&pageCount={pageCount}";
                 }
             }
 

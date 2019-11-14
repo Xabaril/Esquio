@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\Parameters\**" />
-    <EmbeddedResource Remove="Features\Parameters\**" />
-    <None Remove="Features\Parameters\**" />
+    <Compile Remove="Scenarios\Parameters\**" />
+    <EmbeddedResource Remove="Scenarios\Parameters\**" />
+    <None Remove="Scenarios\Parameters\**" />
     <Compile Remove="Infrastructure\Policies.cs" />
     <None Include="Infrastructure\Authorization\Policies.cs" />
   </ItemGroup>
