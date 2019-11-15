@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Users
 {
     [Authorize]
+    [ApiVersion("2.0")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController
         : Controller
@@ -28,7 +30,7 @@ namespace Esquio.UI.Api.Features.Users
         }
 
         [HttpGet]
-        [Route("api/v1/users/my")]
+        [Route("my")]
         public async Task<IActionResult> My(CancellationToken cancellationToken = default)
         {
             var request = new MyRequest()
@@ -48,7 +50,7 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpGet]
         [Authorize(Policies.Management)]
-        [Route("api/v1/users")]
+        [Route("")]
         public async Task<IActionResult> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
@@ -58,7 +60,7 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpGet]
         [Authorize(Policies.Management)]
-        [Route("api/v1/users/{subjectId}")]
+        [Route("{subjectId}")]
         public async Task<IActionResult> Details([FromRoute]DetailsUsersRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
@@ -68,7 +70,7 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpDelete]
         [Authorize(Policies.Management)]
-        [Route("api/v1/users/{subjectid}")]
+        [Route("{subjectid}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteUsersRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -77,7 +79,7 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpPost]
         [Authorize(Policies.Management)]
-        [Route("api/v1/users")]
+        [Route("")]
         public async Task<IActionResult> Add([FromBody]AddPermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -86,7 +88,7 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpPut]
         [Authorize(Policies.Management)]
-        [Route("api/v1/users")]
+        [Route("")]
         public async Task<IActionResult> Update([FromBody]UpdatePermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

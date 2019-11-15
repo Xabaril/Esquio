@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System;
 
 namespace Esquio.UI.Api.Features.Tags.Delete
 {
@@ -11,9 +10,17 @@ namespace Esquio.UI.Api.Features.Tags.Delete
             this.RuleFor(rf => rf.Tag)
                 .NotNull();
 
-            this.RuleFor(rf => rf.FeatureId)
-                .GreaterThan(0)
-                .LessThan(Int32.MaxValue);
+            RuleFor(x => x.FeatureName)
+                .NotEmpty()
+                .MinimumLength(5)
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
+
+            RuleFor(x => x.ProductName)
+                .NotEmpty()
+                .MinimumLength(5)
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
         }
     }
 }

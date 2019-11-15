@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Tags
 {
     [Authorize]
+    [ApiVersion("2.0")]
     [ApiController]
     public class TagsController : ControllerBase
     {
@@ -23,7 +24,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/tags/{featureId:int:min(1)}")]
+        [Route("api/products/{productName}/features/{featureName}/tags")]
         public async Task<IActionResult> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -33,7 +34,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/v1/tags/{featureId:int:min(1)}/{tag}")]
+        [Route("api/products/{productName}/features/{featureName}/tags/untag/{tag}")]
         public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -43,10 +44,12 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/v1/tags/{featureId:int:min(1)}")]
-        public async Task<IActionResult> Tag(int featureId, AddTagRequest request, CancellationToken cancellationToken = default)
+        [Route("api/products/{productName}/features/{featureName}/tags/tag")]
+        public async Task<IActionResult> Tag(string productName,string featureName, AddTagRequest request, CancellationToken cancellationToken = default)
         {
-            request.FeatureId = featureId;
+            request.ProductName = productName;
+            request.FeatureName = featureName;
+
             await _mediator.Send(request, cancellationToken);
 
             return Ok();

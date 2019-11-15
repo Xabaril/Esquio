@@ -8,9 +8,17 @@ namespace Esquio.UI.Api.Features.Tags.List
     {
         public ListTagValidator()
         {
-            this.RuleFor(rf => rf.FeatureId)
-                .GreaterThan(0)
-                .LessThan(Int32.MaxValue);
+            RuleFor(x => x.ProductName)
+                .NotEmpty()
+                .MinimumLength(5)
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
+
+            RuleFor(x => x.FeatureName)
+                .NotEmpty()
+                .MinimumLength(5)
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
         }
     }
 }

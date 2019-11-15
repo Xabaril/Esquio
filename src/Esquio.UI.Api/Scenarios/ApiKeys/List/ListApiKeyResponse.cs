@@ -16,8 +16,6 @@ namespace Esquio.UI.Api.Features.ApiKeys.List
 
     public class ListApiKeyResponseDetail
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public DateTime ValidTo { get; set; }

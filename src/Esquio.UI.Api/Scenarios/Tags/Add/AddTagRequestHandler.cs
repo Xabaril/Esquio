@@ -26,7 +26,7 @@ namespace Esquio.UI.Api.Features.Tags.Add
         {
             var feature = await _dbContext
                 .Features
-                .Where(f => f.Id == request.FeatureId)
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (feature != null)
@@ -60,13 +60,13 @@ namespace Esquio.UI.Api.Features.Tags.Add
                 }
                 else
                 {
-                    Log.FeatureTagAlreadyExist(_logger, request.FeatureId.ToString(), request.Tag);
+                    Log.FeatureTagAlreadyExist(_logger, request.FeatureName, request.Tag);
                     throw new InvalidOperationException($"Tag already exist for this feature");
                 }
             }
 
-            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
-            throw new InvalidOperationException($"The feature with id {request.FeatureId} does not exist in the store.");
+            Log.FeatureNotExist(_logger, request.FeatureName);
+            throw new InvalidOperationException($"The feature with id {request.FeatureName} does not exist in the store.");
         }
     }
 }

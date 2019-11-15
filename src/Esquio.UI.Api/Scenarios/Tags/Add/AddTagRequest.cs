@@ -14,6 +14,8 @@ namespace Esquio.UI.Api.Features.Tags.Add
 
         public string Tag { get; set; }
 
-        internal int FeatureId { get; set; }
+        internal string ProductName { get; set; }
+
+        internal string FeatureName { get; set; }
     }
 }

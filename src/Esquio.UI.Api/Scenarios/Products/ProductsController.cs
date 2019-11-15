@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Products
 {
     [Authorize]
+    [ApiVersion("2.0")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -25,7 +27,7 @@ namespace Esquio.UI.Api.Features.Products
         }
 
         [HttpGet]
-        [Route("api/v1/products")]
+        [Route("")]
         [Authorize(Policies.Read)]
         public async Task<IActionResult> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
@@ -36,7 +38,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/products/{productName}")]
+        [Route("{productName}")]
         public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(request, cancellationToken);
@@ -50,7 +52,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/v1/products")]
+        [Route("")]
         public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
         {
             var idProduct = await _mediator.Send(request, cancellationToken);
@@ -60,7 +62,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("api/v1/products/{productName}")]
+        [Route("{productName}")]
         public async Task<IActionResult> Update(string productName, UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
             request.CurrentName = productName;
@@ -72,7 +74,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/v1/products/{productName}")]
+        [Route("{productName}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

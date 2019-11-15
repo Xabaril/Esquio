@@ -37,7 +37,7 @@ namespace Esquio.UI.Api.Features.ApiKeys
 
         [HttpGet]
         [Authorize(Policies.Management)]
-        [Route("{apiKeyId:int:min(1)}")]
+        [Route("{name}")]
         public async Task<IActionResult> Get([FromRoute]DetailsApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(request, cancellationToken);
@@ -57,12 +57,12 @@ namespace Esquio.UI.Api.Features.ApiKeys
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Created($"api/v1/apikeys/{response.ApiKeyId}", response);
+            return Created($"api/apikeys/{request.Name}?api-version=2.0", response);
         }
 
         [HttpDelete]
         [Authorize(Policies.Management)]
-        [Route("{apiKeyId:int:min(1)}")]
+        [Route("{name}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

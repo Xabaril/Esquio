@@ -43,8 +43,8 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
 
                 return new AddApiKeyResponse()
                 {
-                    ApiKeyId = apiKey.Id,
-                    ApiKey = apiKey.Key
+                    Name = apiKey.Name,
+                    Key = apiKey.Key
                 };
             }
 

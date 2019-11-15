@@ -37,7 +37,6 @@ namespace Esquio.UI.Api.Features.ApiKeys.List
                 PageIndex = request.PageIndex,
                 Result = apiKeys.Select(ak => new ListApiKeyResponseDetail
                 {
-                    Id = ak.Id,
                     Name = ak.Name,
                     ValidTo = ak.ValidTo,
                 }).ToList()

@@ -20,14 +20,13 @@ namespace Esquio.UI.Api.Features.ApiKeys.Details
         {
             var apiKey = await _storeDbContext
                .ApiKeys
-               .Where(f => f.Id == request.ApiKeyId)
+               .Where(f => f.Name == request.Name)
                .SingleOrDefaultAsync(cancellationToken);
 
             if (apiKey != null)
             {
                 return new DetailsApiKeyResponse()
                 {
-                    Id = apiKey.Id,
                     Name = apiKey.Name,
                     ValidTo = apiKey.ValidTo,
                 };

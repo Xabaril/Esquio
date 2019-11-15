@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Toggles
 {
     [Authorize]
+    [ApiVersion("2.0")]
     [ApiController]
     public class TogglesController : ControllerBase
     {
@@ -27,7 +28,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}")]
+        [Route("api/products/{productName}/features/{featureName}/toggles/{toggleType}")]
         public async Task<IActionResult> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
             var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
@@ -42,7 +43,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/v1/products/{productName}/features/{featureName}/toggles/{toggleType}")]
+        [Route("api/products/{productName}/features/{featureName}/toggles/{toggleType}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest deleteToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(deleteToggleRequest, cancellationToken);
@@ -52,7 +53,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/toggles/parameters/{toggleType}")]
+        [Route("api/toggles/parameters/{toggleType}")]
         public async Task<IActionResult> Reveal([FromRoute]RevealToggleRequest revealToggleRequest, CancellationToken cancellationToken = default)
         {
             var reveal = await _mediator.Send(revealToggleRequest, cancellationToken);
@@ -62,7 +63,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/v1/toggles/types")]
+        [Route("api/toggles/types")]
         public async Task<IActionResult> KnownTypes(CancellationToken cancellationToken = default)
         {
             var toggleList = await _mediator.Send(new KnownTypesToggleRequest(), cancellationToken);
@@ -72,7 +73,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/v1/toggles/parameters")]
+        [Route("api/toggles/parameters")]
         public async Task<IActionResult> AddParameter(AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(parameterToggleRequest, cancellationToken);
@@ -82,7 +83,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/v1/toggles")]
+        [Route("api/toggles")]
         public async Task<IActionResult> Add(AddToggleRequest postToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(postToggleRequest, cancellationToken);

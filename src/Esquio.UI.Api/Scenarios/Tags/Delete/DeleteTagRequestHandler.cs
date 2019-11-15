@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Tags.Delete
         public async Task<Unit> Handle(DeleteTagRequest request, CancellationToken cancellationToken)
         {
             var featureTag = await _storeDbContext.FeatureTagEntities
-                .Where(ft => ft.FeatureEntityId == request.FeatureId && ft.TagEntity.Name == request.Tag)
+                .Where(ft => ft.FeatureEntity.Name == request.FeatureName && ft.FeatureEntity.ProductEntity.Name == request.ProductName && ft.TagEntity.Name == request.Tag)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if ( featureTag != null )
@@ -36,8 +36,8 @@ namespace Esquio.UI.Api.Features.Tags.Delete
                 return Unit.Value;
             }
 
-            Log.FeatureTagNotExist(_logger, request.FeatureId.ToString(), request.Tag);
-            throw new InvalidOperationException($"The feature tag association between feature {request.FeatureId} and tag {request.Tag} does not exist.");
+            Log.FeatureTagNotExist(_logger, request.FeatureName, request.Tag);
+            throw new InvalidOperationException($"The feature tag association between feature {request.FeatureName} and tag {request.Tag} does not exist.");
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
         {
             var apikey = await _storeDbContext
                 .ApiKeys
-                .Where(f => f.Id == request.ApiKeyId)
+                .Where(f => f.Name == request.Name)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (apikey != null)
@@ -36,8 +36,8 @@ namespace Esquio.UI.Api.Features.Flags.Delete
                 return Unit.Value;
             }
 
-            Log.ApiKeyNotExist(_logger, request.ApiKeyId.ToString());
-            throw new InvalidOperationException($"The ApiKey with identifier {request.ApiKeyId} does not exist and can't be deleted.");
+            Log.ApiKeyNotExist(_logger, request.Name);
+            throw new InvalidOperationException($"The ApiKey with identifier {request.Name} does not exist and can't be deleted.");
         }
     }
 }

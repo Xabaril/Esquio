@@ -8,9 +8,11 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
     {
         public AddApiKeyRequestValidator()
         {
-            this.RuleFor(f => f.Name)
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .MinimumLength(5)
                 .MaximumLength(200)
-                .NotNull();
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Esquio.UI.Api.Features.Tags.List
 {
     public class ListTagRequest : IRequest<List<TagResponseDetail>>
     {
-        public int FeatureId { get; set; }
+        public string ProductName { get; set; }
+
+        public string FeatureName { get; set; }
     }
 }

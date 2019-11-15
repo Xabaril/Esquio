@@ -2,8 +2,8 @@
 {
     public class AddApiKeyResponse
     {
-        public string ApiKey { get; set; }
+        public string Name { get; set; }
 
-        public int ApiKeyId { get; set; }
+        public string Key { get; set; }
     }
 }

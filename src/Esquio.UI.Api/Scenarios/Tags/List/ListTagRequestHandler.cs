@@ -1,5 +1,4 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +27,7 @@ namespace Esquio.UI.Api.Features.Tags.List
             var feature = await _dbContext.Features
                 .Include(f => f.FeatureTags)
                 .ThenInclude(ft => ft.TagEntity)
-                .Where(f => f.Id == request.FeatureId)
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (feature != null)
@@ -38,8 +37,8 @@ namespace Esquio.UI.Api.Features.Tags.List
                     .ToList();
             }
 
-            Log.FeatureNotExist(_logger, request.FeatureId.ToString());
-            throw new InvalidOperationException($"The feature with id {request.FeatureId} does not exist in the store.");
+            Log.FeatureNotExist(_logger, request.FeatureName);
+            throw new InvalidOperationException($"The feature with id {request.FeatureName} does not exist in the store.");
         }
     }
 }
