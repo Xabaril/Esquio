@@ -737,7 +737,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Should()
                 .ContainEquivalentOf(new ToggleDetail
                 {
-                    Id = toggle1.Id,
                     FriendlyName = "Between dates",
                     Type = toggle1.Type,
                     Parameters = new List<ParameterDetail>()
@@ -747,7 +746,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .Should()
                .ContainEquivalentOf(new ToggleDetail
                {
-                   Id = toggle2.Id,
                    FriendlyName = "On Environment",
                    Type = toggle2.Type,
                    Parameters = new List<ParameterDetail>()

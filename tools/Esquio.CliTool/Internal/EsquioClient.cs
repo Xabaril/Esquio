@@ -20,7 +20,7 @@ namespace Esquio.CliTool.Internal
 
         public async Task<HttpResponseMessage> ListProductsAsync()
         {
-            return await _httpClient.GetAsync($"api/products?pageIndex=0&pageCount=99?api-version={HTTP_API_VERSION}");
+            return await _httpClient.GetAsync($"api/products?pageIndex=0&pageCount=99&api-version={HTTP_API_VERSION}");
         }
 
         public async Task<HttpResponseMessage> AddProductAsync(string productName, string description)

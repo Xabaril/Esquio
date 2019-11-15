@@ -15,20 +15,18 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine(Constants.AsciiArt);
-            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
-
             app.ShowHelp(usePager: true);
+
             return 1;
         }
 
         private class RolloutCommand
         {
-            [Option("--product <PRODUCT NAME>", Description = "The product name.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE NAME>", Description = "The feature name to be rolled out.")]
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled out.")]
             [Required]
             public string FeatureName { get; set; }
 
@@ -87,11 +85,11 @@ namespace Esquio.CliTool.Command
 
         private class RolloffCommand
         {
-            [Option("--product <PRODUCT NAME>", Description = "The product name.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE NAME>", Description = "The feature name to be rolled off.")]
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
             [Required]
             public string FeatureName { get; set; }
 
@@ -150,7 +148,7 @@ namespace Esquio.CliTool.Command
 
         private class ListCommand
         {
-            [Option("--product <PRODUCT NAME>", Description = "The product to list features.")]
+            [Option("--product <PRODUCT>", Description = "The product to list features.")]
             [Required]
             public string ProductName { get; set; }
 

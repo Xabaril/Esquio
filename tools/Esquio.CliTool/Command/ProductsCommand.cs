@@ -16,6 +16,7 @@ namespace Esquio.CliTool.Command
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
             app.ShowHelp(usePager: true);
+
             return 1;
         }
 

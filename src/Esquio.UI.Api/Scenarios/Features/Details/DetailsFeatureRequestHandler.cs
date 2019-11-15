@@ -49,7 +49,6 @@ namespace Esquio.UI.Api.Features.Flags.Details
 
                         return new ToggleDetail()
                         {
-                            Id = toggle.Id,
                             Type = toggle.Type,
                             FriendlyName = designTypeAttribute?.FriendlyName ?? toggle.Type,
                             Parameters = parameters
