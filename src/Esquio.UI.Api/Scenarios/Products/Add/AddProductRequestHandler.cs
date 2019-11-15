@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Products.Add
 {
-    public class AddProductRequestHandler : IRequestHandler<AddProductRequest, int>
+    public class AddProductRequestHandler : IRequestHandler<AddProductRequest, string>
     {
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<AddProductRequestHandler> _logger;
@@ -22,7 +22,7 @@ namespace Esquio.UI.Api.Features.Products.Add
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<int> Handle(AddProductRequest request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddProductRequest request, CancellationToken cancellationToken)
         {
             var existing = await _storeDbContext
                 .Products
@@ -36,7 +36,7 @@ namespace Esquio.UI.Api.Features.Products.Add
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
-                return product.Id;
+                return product.Name;
             }
 
             Log.ProductAlreadyExist(_logger, request.Name);

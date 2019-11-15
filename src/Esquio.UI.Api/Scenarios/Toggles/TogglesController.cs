@@ -28,7 +28,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/products/{productName}/features/{featureName}/toggles/{toggleType}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
         public async Task<IActionResult> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
             var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
@@ -43,7 +43,7 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}/toggles/{toggleType}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest deleteToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(deleteToggleRequest, cancellationToken);

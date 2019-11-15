@@ -29,7 +29,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features")]
+        [Route("api/products/{productName:slug}/features")]
         public async Task<IActionResult> Add(string productName,AddFeatureRequest addfeatureRequest, CancellationToken cancellationToken = default)
         {
             addfeatureRequest.ProductName = productName;
@@ -41,7 +41,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}")]
         public async Task<IActionResult> Update(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
         {
             updateFeatureRequest.CurrentName = featureName;
@@ -56,7 +56,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}/rollout")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/rollout")]
         public async Task<IActionResult> Rollout([FromRoute]RolloutFeatureRequest rolloutFeatureRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rolloutFeatureRequest, cancellationToken);
@@ -66,7 +66,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}/rollback")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/rollback")]
         public async Task<IActionResult> Rollback([FromRoute]RollbackFlagRequest rollbackFeatureRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(rollbackFeatureRequest, cancellationToken);
@@ -76,7 +76,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteFeatureRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -86,7 +86,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/products/{productName}/features/{featureName}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}")]
         public async Task<IActionResult> Get([FromRoute]DetailsFeatureRequest request, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(request, cancellationToken);
@@ -101,7 +101,7 @@ namespace Esquio.UI.Api.Features.Flags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/products/{productName}/features")]
+        [Route("api/products/{productName:slug}/features")]
         public async Task<IActionResult> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;

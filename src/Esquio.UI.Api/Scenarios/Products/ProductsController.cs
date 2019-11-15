@@ -38,7 +38,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("{productName}")]
+        [Route("{productName:slug}")]
         public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(request, cancellationToken);
@@ -55,14 +55,14 @@ namespace Esquio.UI.Api.Features.Products
         [Route("")]
         public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
         {
-            var idProduct = await _mediator.Send(request, cancellationToken);
+            var product = await _mediator.Send(request, cancellationToken);
 
-            return Created($"api/v1/product/{idProduct}", null);
+            return Created($"api/products/{product}?api-version=2.0", null);
         }
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("{productName}")]
+        [Route("{productName:slug}")]
         public async Task<IActionResult> Update(string productName, UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
             request.CurrentName = productName;
@@ -74,7 +74,7 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("{productName}")]
+        [Route("{productName:slug}")]
         public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

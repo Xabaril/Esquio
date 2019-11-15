@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/products/{productName}/features/{featureName}/tags")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/tags")]
         public async Task<IActionResult> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -34,7 +34,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}/tags/untag/{tag}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/untag/{tag}")]
         public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -44,7 +44,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpPost]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName}/features/{featureName}/tags/tag")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/tag")]
         public async Task<IActionResult> Tag(string productName,string featureName, AddTagRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
