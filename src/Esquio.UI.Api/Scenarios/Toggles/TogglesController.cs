@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Toggles
 {
-    //[Authorize]
+    [Authorize]
     [ApiVersion("2.0")]
     [ApiController]
     public class TogglesController : ControllerBase
@@ -62,7 +62,7 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        //[Authorize(Policies.Read)]
+        [Authorize(Policies.Read)]
         [Route("api/toggles/types")]
         public async Task<IActionResult> KnownTypes(CancellationToken cancellationToken = default)
         {
