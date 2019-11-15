@@ -1,14 +1,13 @@
 import { injectable } from 'inversify-props';
 import { settings } from '~/core';
 import { ITogglesService } from './itoggles.service';
-import { Toggle } from './toggle.model';
-import { ToggleParameter } from './toggle-parameter.model';
 import { ToggleParameterDetail } from './toggle-parameter-detail.model';
+import { Toggle } from './toggle.model';
 
 @injectable()
 export class TogglesService implements ITogglesService {
   public async detail(id: number): Promise<Toggle> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${id}`);
+    const response = await fetch(`${settings.ApiUrl}/products/{productname}/features/{name}/toggles/type-->${id}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch toggle ${id}`);
@@ -18,7 +17,7 @@ export class TogglesService implements ITogglesService {
   }
 
   public async params(toggle: Toggle): Promise<ToggleParameterDetail[]> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/parameters/${toggle.type}`);
+    const response = await fetch(`${settings.ApiUrl}/toggles/parameters/${toggle.type}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch toggle ${toggle.type}`);
@@ -30,7 +29,7 @@ export class TogglesService implements ITogglesService {
   }
 
   public async types(): Promise<any> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/types`);
+    const response = await fetch(`${settings.ApiUrl}/toggles/types`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch known toggle types`);
@@ -40,9 +39,10 @@ export class TogglesService implements ITogglesService {
   }
 
   public async add(featureId: number, toggle: Toggle): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles`, {
+    const response = await fetch(`${settings.ApiUrl}/toggles`, {
       method: 'POST',
       body: JSON.stringify({featureId, type: toggle.type, parameters: toggle.parameters})
+      // productname, feature name, X id
     });
 
     if (!response.ok) {
@@ -51,10 +51,13 @@ export class TogglesService implements ITogglesService {
   }
 
   public async addParameter(toggle: Toggle, parameterName: string, value: any): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${toggle.id}/parameters`, {
+    const response = await fetch(`${settings.ApiUrl}/toggles/parameters`, {
       method: 'POST',
       body: JSON.stringify({
-        toggleId: toggle.id,
+        toggleId: toggle.id, // X
+        // productname
+        // featurename
+        //togle type
         name: parameterName,
         value
       })
@@ -66,7 +69,7 @@ export class TogglesService implements ITogglesService {
   }
 
   public async remove(toggle: Toggle): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${toggle.id}`, {
+    const response = await fetch(`${settings.ApiUrl}/products/{productname}/features/{name}/toggles/type-->${toggle.id}`, {
       method: 'DELETE'
     });
 

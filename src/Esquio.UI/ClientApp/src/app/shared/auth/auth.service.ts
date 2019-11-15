@@ -1,9 +1,9 @@
+import { Ability } from '@casl/ability';
 import { injectable } from 'inversify';
 import Oidc from 'oidc-client';
-import { User, UserPermissions, defineAbilitiesFor } from '~/shared/user';
 import { settings } from '~/core';
+import { defineAbilitiesFor, User, UserPermissions } from '~/shared/user';
 import { IAuthService } from './iauth.service';
-import { Ability } from '@casl/ability';
 
 // Configure logs
 Oidc.Log.logger = window.console;
@@ -118,7 +118,7 @@ export class AuthService implements IAuthService {
   }
 
   public async getRolesAndDefinePermissions(): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/my`);
+    const response = await fetch(`${settings.ApiUrl}/users/my`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch permissions');

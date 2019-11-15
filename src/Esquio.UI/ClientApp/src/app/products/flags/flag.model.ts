@@ -1,8 +1,8 @@
 import { Toggle } from './toggles';
 
 export interface Flag {
-  id: number;
-  productId: number;
+  id: number;  // TODO: remove
+  productId: number; // TODO: remove
   name: string;
   description: string;
   enabled: boolean;

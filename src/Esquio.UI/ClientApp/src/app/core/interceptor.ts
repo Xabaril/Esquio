@@ -1,7 +1,7 @@
-import fetchIntercept from 'fetch-intercept';
-import nprogress from 'nprogress/nprogress.js';
-import { container, cid } from 'inversify-props';
 import { IAuthService } from '@/shared';
+import fetchIntercept from 'fetch-intercept';
+import { cid, container } from 'inversify-props';
+import nprogress from 'nprogress/nprogress.js';
 
 
 export function registerInterceptor(next = null) {
@@ -18,6 +18,7 @@ export function registerInterceptor(next = null) {
       config.headers = {
         ...headers,
         'Content-Type': 'application/json',
+        'x-api-version': '2.0',
         Authorization: `Bearer ${authService.user.access_token}`
       };
       return [url, config];

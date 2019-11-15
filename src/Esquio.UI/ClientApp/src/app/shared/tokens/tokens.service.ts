@@ -1,12 +1,12 @@
-import { ITokensService } from './itokens.service';
 import { injectable } from 'inversify-props';
-import { Token } from './token.model';
 import { settings } from '~/core';
+import { ITokensService } from './itokens.service';
+import { Token } from './token.model';
 
 @injectable()
 export class TokensService implements ITokensService {
   public async generate(): Promise<Token> {
-    const response = await fetch(`${settings.ApiUrl}/v1/apikeys`, {
+    const response = await fetch(`${settings.ApiUrl}/apikeys`, {
       method: 'POST',
       body: JSON.stringify({
         name: performance.now(),
