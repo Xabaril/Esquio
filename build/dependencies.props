@@ -17,29 +17,39 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
+<<<<<<< HEAD
     <esquio>2.0.0$(VersionSuffix)</esquio>
     <esquioaspnetcore>2.0.0$(VersionSuffix)</esquioaspnetcore>
     <esquioaspnetcoreapplicationinsightsprocessor>2.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
     <esquioconfigurationstore>2.0.0$(VersionSuffix)</esquioconfigurationstore>
     <esquioentityframeworkstore>2.0.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>2.0.0$(VersionSuffix)</esquiominiprofiler>
+=======
+    <esquio>1.1.1$(VersionSuffix)</esquio>
+    <esquioaspnetcore>1.1.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>1.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>1.1.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquioentityframeworkstore>1.1.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>1.1.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>1.1.2$(VersionSuffix)</esquiocli>
+>>>>>>> ac10b034df000b04b0c120d24aac251a765b661d
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
-    <esquiotoggleshttp>1.1.0</esquiotoggleshttp>
-    <esquiotogglesgeolocation>1.1.0</esquiotogglesgeolocation>
-</PropertyGroup> 
+    <esquiotoggleshttp>1.1.1</esquiotoggleshttp>
+    <esquiotogglesgeolocation>1.1.1</esquiotogglesgeolocation>
+  </PropertyGroup>
   <PropertyGroup Label="Package Dependencies">
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
     <systemtextjson>4.6.0</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.0.0</microsoftaspnetcoreauthenticationjwtbearer>
-    
+
     <microsoftextensionsdependencyinjectionabstractions>3.0.0</microsoftextensionsdependencyinjectionabstractions>
     <microsoftextensionsprimitives>3.0.0</microsoftextensionsprimitives>
     <microsoftextensionsoptions>3.0.0</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.0.0</microsoftextensionsconfigurationabstractions> 
+    <microsoftextensionsconfigurationabstractions>3.0.0</microsoftextensionsconfigurationabstractions>
     <microsoftextensionsconfigurationbinder>3.0.0</microsoftextensionsconfigurationbinder>
     <microsoftextensionsconfigurationjson>3.0.0</microsoftextensionsconfigurationjson>
     <microsoftextensionslogging>3.0.0</microsoftextensionslogging>
@@ -66,22 +76,23 @@
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
+    <mcmastercommandlineutils>2.4.2</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
     <microsoftextensionshosting>3.0.0</microsoftextensionshosting>
     <microsoftaspnetcoretesthost>3.0.0</microsoftaspnetcoretesthost>
-    
+
     <microsoftentityframeworkcoreinmemory>3.0.0</microsoftentityframeworkcoreinmemory>
     <microsoftentityframeworkcoresqlite>3.0.0</microsoftentityframeworkcoresqlite>
-    
+
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
     <fluentassertions>5.9.0</fluentassertions>
     <achevetesthost>3.0.0</achevetesthost>
     <respawn>3.2.0</respawn>
   </PropertyGroup>
-  
+
   <PropertyGroup Label="CLI Tools Versions">
     <DotnetXUnitPackageVersion>2.4.0</DotnetXUnitPackageVersion>
     <DotnetWatcherToolPackageVersion>2.0.0</DotnetWatcherToolPackageVersion>

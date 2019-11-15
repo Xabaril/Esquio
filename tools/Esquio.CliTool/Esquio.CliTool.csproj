@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <ToolCommandName>dotnet-esquio</ToolCommandName>
+    <PackageId>Esquio.Cli</PackageId>
+    <PackageVersion>$(esquiocli)</PackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="$(mcmastercommandlineutils)" />
+  </ItemGroup>
+
+</Project>
