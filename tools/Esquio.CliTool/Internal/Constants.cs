@@ -39,5 +39,13 @@ namespace Esquio.CliTool.Internal
         public const ConsoleColor PromptBgColor = ConsoleColor.Black;
         public const ConsoleColor ErrorColor = ConsoleColor.Red;
         public const ConsoleColor SuccessColor = ConsoleColor.Green;
+
+        public const string AsciiArt = @"
+_____ ____   ___  _   _ ___ ___  
+| ____/ ___| / _ \| | | |_ _/ _ \ 
+|  _| \___ \| | | | | | || | | | |
+| |___ ___) | |_| | |_| || | |_| |
+|_____|____/ \__\_\\___/|___\___/ 
+                                  ";
     }
 }
