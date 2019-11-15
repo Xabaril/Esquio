@@ -1,9 +1,9 @@
-﻿using Esquio.Abstractions.Providers;
+﻿using Esquio.Abstractions;
+using Esquio.Abstractions.Providers;
 using Esquio.AspNetCore.Diagnostics;
 using Esquio.AspNetCore.Endpoints;
 using Esquio.AspNetCore.Providers;
 using Esquio.DependencyInjection;
-using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -29,9 +29,13 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
             builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddScoped<IUserNameProviderService, AspNetCoreUserNameProviderService>();
             builder.Services.AddScoped<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddSingleton<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
+
+            builder.Services.AddScoped<IEvaluationSession, HttpContextEvaluationSession>();
+            
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 
             builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();

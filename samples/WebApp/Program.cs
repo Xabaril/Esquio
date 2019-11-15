@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace WebApp
@@ -12,10 +13,13 @@ namespace WebApp
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(builder=>
+                {
+                    builder.AddJsonFile("esquio.json", optional: false, reloadOnChange: true);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                        .UseApplicationInsights();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }

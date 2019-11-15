@@ -9,6 +9,10 @@ namespace Esquio.Diagnostics
         {
             _featureServiceBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
         }
+        public static void FeatureServiceFromSession(ILogger logger, string featureName, string productName)
+        {
+            _featureServiceFromSession(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+        }
         public static void FeatureServiceNotFoundFeature(ILogger logger, string featureName, string productName)
         {
             _featureServiceNotFound(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
@@ -50,6 +54,11 @@ namespace Esquio.Diagnostics
             LogLevel.Debug,
             EventIds.DefaultFeatureServiceBegin,
             "Running DefaultFeatureService to check {featureName} for product {productName}.");
+
+        private static readonly Action<ILogger, string, string, Exception> _featureServiceFromSession = LoggerMessage.Define<string, string>(
+            LogLevel.Information,
+            EventIds.DefaultFeatureServiceFromSession,
+            "DefaultFeatureService use session result for {featureName} on product {productName}.");
 
         private static readonly Action<ILogger, string, string, bool, long, Exception> _featureServiceEnd = LoggerMessage.Define<string, string, bool, long>(
             LogLevel.Debug,

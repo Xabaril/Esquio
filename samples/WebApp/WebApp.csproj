@@ -73,8 +73,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties esquio_1json__JsonSchema="http://json.schemastore.org/esquio" /></VisualStudio></ProjectExtensions>
+
 
 </Project>

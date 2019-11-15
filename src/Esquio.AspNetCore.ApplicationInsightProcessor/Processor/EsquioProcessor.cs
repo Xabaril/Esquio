@@ -1,15 +1,14 @@
-﻿using Esquio.AspNetCore.ApplicationInsightProcessor.Diagnostics;
+﻿using Esquio.Abstractions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
-    internal class EsquioProcessor
+    public sealed class EsquioProcessor
         : ITelemetryProcessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -30,23 +29,26 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
                 _next.Process(item);
             }
         }
+
         private void AddEsquioProperties(ITelemetry telemetryItem)
         {
-            var esquioContextItems = _httpContextAccessor.HttpContext?
-                .Items
-                .Where(item => item.Key.ToString().StartsWith(HttpContextItemObserver.EsquioItemKeyName));
+            var esquioContextItems = _httpContextAccessor.HttpContext?.Items
+                .Where(i => i.Key.ToString().StartsWith("Esquio")); //TODO: magic string remove
 
-            ISupportProperties telemetry = telemetryItem as ISupportProperties;
-
-            if (telemetry != null
-                &&
-                esquioContextItems != null)
+            if (esquioContextItems != null)
             {
-                foreach (var (key, value) in esquioContextItems)
+                ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+                if (telemetry != null
+                    &&
+                    esquioContextItems != null)
                 {
-                    if (!telemetry.Properties.ContainsKey(key.ToString()))
+                    foreach (var (key, value) in esquioContextItems)
                     {
-                        telemetry.Properties.Add(key.ToString(), value.ToString());
+                        if (!telemetry.Properties.ContainsKey(key.ToString()))
+                        {
+                            telemetry.Properties.Add(key.ToString(), ((EvaluationResult)value).Enabled.ToString());
+                        }
                     }
                 }
             }
