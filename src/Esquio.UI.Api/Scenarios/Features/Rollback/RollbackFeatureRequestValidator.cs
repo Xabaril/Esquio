@@ -11,14 +11,12 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
             this.RuleFor(rf => rf.FeatureName)
                .NotEmpty()
                .MinimumLength(5)
-               .MaximumLength(200)
-               .Matches(ApiConstants.Constraints.NamesRegularExpression);
+               .MaximumLength(200);
 
             this.RuleFor(rf => rf.ProductName)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(200)
-                .Matches(ApiConstants.Constraints.NamesRegularExpression);
+                .MaximumLength(200);
         }
     }
 }

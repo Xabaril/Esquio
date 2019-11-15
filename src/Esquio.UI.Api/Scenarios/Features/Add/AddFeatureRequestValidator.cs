@@ -10,7 +10,8 @@ namespace Esquio.UI.Api.Features.Flags.Add
         {
             this.RuleFor(f => f.Name)
                 .MaximumLength(200)
-                .NotNull();
+                .NotNull()
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
 
             this.RuleFor(f => f.Description)
                 .MaximumLength(2000)

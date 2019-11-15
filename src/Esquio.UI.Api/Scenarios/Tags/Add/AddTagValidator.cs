@@ -9,7 +9,8 @@ namespace Esquio.UI.Api.Features.Tags.Add
         public AddTagValidator()
         {
             this.RuleFor(rf => rf.Tag)
-                .NotNull();
+                .NotNull()
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
         }
     }
 }

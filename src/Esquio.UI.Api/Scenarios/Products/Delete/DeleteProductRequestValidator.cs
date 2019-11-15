@@ -10,8 +10,7 @@ namespace Esquio.UI.Api.Features.Products.Delete
             RuleFor(x => x.ProductName)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(200)
-                .Matches(ApiConstants.Constraints.NamesRegularExpression);
+                .MaximumLength(200);
         }
     }
 }

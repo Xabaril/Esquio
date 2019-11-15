@@ -34,7 +34,7 @@ namespace Esquio.UI.Api.Features.Tags
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/untag/{tag}")]
+        [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/untag/{tag:slug}")]
         public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

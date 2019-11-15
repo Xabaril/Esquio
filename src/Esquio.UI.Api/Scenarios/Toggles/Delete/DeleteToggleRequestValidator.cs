@@ -10,14 +10,13 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
             RuleFor(x => x.ProductName)
                .NotEmpty()
                .MinimumLength(5)
-               .MaximumLength(200)
-               .Matches(ApiConstants.Constraints.NamesRegularExpression);
+               .MaximumLength(200);
+
 
             RuleFor(x => x.FeatureName)
                .NotEmpty()
                .MinimumLength(5)
-               .MaximumLength(200)
-               .Matches(ApiConstants.Constraints.NamesRegularExpression);
+               .MaximumLength(200);
 
             this.RuleFor(pr => pr.ToggleType)
                 .NotEmpty();

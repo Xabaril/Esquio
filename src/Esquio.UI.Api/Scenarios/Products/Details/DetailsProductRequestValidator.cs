@@ -11,8 +11,7 @@ namespace Esquio.UI.Api.Features.Products.Details
             this.RuleFor(rf => rf.ProductName)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(200)
-                .Matches("^[a-zA-Z][a-zA-Z0-9]*$");
+                .MaximumLength(200);
         }
     }
 }
