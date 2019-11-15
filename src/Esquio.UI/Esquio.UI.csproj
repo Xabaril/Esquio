@@ -20,7 +20,8 @@
   <ItemGroup>
     <PackageReference Include="Esquio.Toggles.Http" Version="$(esquiotoggleshttp)" />
     <PackageReference Include="Esquio.Toggles.GeoLocation" Version="$(esquiotogglesgeolocation)" />
-    
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="$(microsoftaspnetcoremvcversioningapiexplorerversion)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />

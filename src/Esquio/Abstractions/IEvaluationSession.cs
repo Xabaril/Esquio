@@ -50,10 +50,5 @@ namespace Esquio.Abstractions
             enabled = false;
             return Task.FromResult(false);
         }
-
-        public Task<IEnumerable<EvaluationResult>> GetAllAsync()
-        {
-            return Task.FromResult(Enumerable.Empty<EvaluationResult>());
-        }
     }
 }

@@ -15,9 +15,6 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine(Constants.AsciiArt);
-            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
-
             app.ShowHelp(usePager: true);
             return 1;
         }
