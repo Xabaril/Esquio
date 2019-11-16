@@ -4,7 +4,7 @@
     {
         public static class Constraints
         {
-            public const string NamesRegularExpression = "^[a-zA-Z][a-zA-Z0-9\\s-]*$";
+            public const string NamesRegularExpression = "^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$";
         }
         public static class Pagination
         {
