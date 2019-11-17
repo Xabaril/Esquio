@@ -1,4 +1,4 @@
-import { RouteConfig, NavigationGuard } from 'vue-router';
+import { NavigationGuard, RouteConfig } from 'vue-router';
 import { AbilityAction, AbilitySubject } from '~/shared';
 
 export default (requireAuth: NavigationGuard): RouteConfig[] => {
@@ -28,7 +28,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':id',
+          path: ':productName',
           name: 'products-edit',
           component: () => import('./ProductsForm.vue'),
           props: true,
@@ -39,7 +39,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productId/add',
+          path: ':productName/add',
           name: 'flags-add',
           component: () => import('./flags/FlagsForm.vue'),
           props: true,
@@ -50,7 +50,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productId/:id',
+          path: ':productName/:name',
           name: 'flags-edit',
           component: () => import('./flags/FlagsForm.vue'),
           props: true,
@@ -61,7 +61,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productId/:id/add',
+          path: ':productName/:name/add',
           name: 'toggles-add',
           component: () => import('./flags/toggles/TogglesForm.vue'),
           props: true,
@@ -72,7 +72,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productId/:id/:toggleId',
+          path: ':productName/:name/:toggleName',
           name: 'toggles-edit',
           component: () => import('./flags/toggles/TogglesForm.vue'),
           props: true,

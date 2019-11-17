@@ -13,7 +13,7 @@
         v-model="form.name"
         id="flag_name"
         :label="$t('flags.fields.name')"
-        validators="required|min:5"
+        validators="required|min:5|regex:^[a-zA-Z][a-zA-Z0-9\\s-]*$"
         :help-label="$t('flags.placeholders.nameHelp')"
       />
 
@@ -55,7 +55,7 @@
       class="row mt-4"
     >
       <h2>{{$t('toggles.title')}}</h2>
-      <TogglesList :flagId="id" :toggles="form.toggles" />
+      <TogglesList :flagName="name" :toggles="form.toggles" />
     </div>
 
     <FloatingContainer>
@@ -77,7 +77,7 @@
     <FloatingTop
       v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
       :text="$t('flags.actions.add_toggle')"
-      :to="{name: 'toggles-add', params: { productId: productId, flagId: id }}"
+      :to="{name: 'toggles-add', params: { productName, flagName }}"
     />
   </section>
 </template>
@@ -120,13 +120,12 @@ export default class extends Vue {
   public formTag = '';
   public isInvalid = false;
   public form: Flag = {
-    productId: null,
-    id: null,
     name: null,
     description: null,
     enabled: false,
     toggles: null
   };
+  public oldFlag: Flag = null;
 
   public tagsValidator = [
     {
@@ -139,11 +138,11 @@ export default class extends Vue {
   @Inject() flagsService: IFlagsService;
   @Inject() tagsService: ITagsService;
 
-  @Prop({ type: [String, Number] }) id: string;
-  @Prop({ type: [String, Number], required: true }) productId: string;
+  @Prop({ type: [String, Number] }) flagName: string;
+  @Prop({ type: [String, Number], required: true }) productName: string;
 
   get isEditing(): boolean {
-    return !!this.id;
+    return !!this.flagName;
   }
 
   get areActionsDisabled(): boolean {
@@ -211,27 +210,22 @@ export default class extends Vue {
 
   private async getFlag(): Promise<void> {
     try {
-      const { name, description, id, enabled, toggles } = await this.flagsService.detail(
-        Number(this.id)
-      );
+      const flagFromServer = await this.flagsService.detail(this.productName, this.flagName);
 
-      this.form.name = name;
-      this.form.description = description;
-      this.form.id = id;
-      this.form.enabled = enabled;
-      this.form.toggles = toggles;
+      this.form = {...flagFromServer};
+      this.oldFlag = {...flagFromServer};
     } catch (e) {
       this.$alert(this.$t('flags.errors.detail'), AlertType.Error);
     }
   }
 
   private async getTags(): Promise<void> {
-    if (!this.form || !this.form.id) {
+    if (!this.form || !this.form.name) {
       return;
     }
 
     try {
-      this.tags = await this.tagsService.get(this.form.id);
+      this.tags = await this.tagsService.get(this.form.name);
       this.formTags = await this.tagsService.toFormTags(this.tags);
     } catch (e) {
       this.$alert(this.$t('tags.errors.get'), AlertType.Error);
@@ -240,10 +234,7 @@ export default class extends Vue {
 
   private async addFlag(): Promise<void> {
     try {
-      await this.flagsService.add({
-        ...this.form,
-        productId: Number(this.productId)
-      });
+      await this.flagsService.add(this.productName, this.form);
 
       this.goBack();
 
@@ -255,7 +246,7 @@ export default class extends Vue {
 
   private async updateFlag(): Promise<void> {
     try {
-      await this.flagsService.update(this.form);
+      await this.flagsService.update(this.productName, this.form, this.oldFlag);
 
       this.goBack();
 
@@ -267,12 +258,12 @@ export default class extends Vue {
 
   private async addFormTag(tag: FormTag): Promise<void> {
     const [newTag] = this.tagsService.toTags([tag]);
-    await this.tagsService.add(Number(this.id), newTag);
+    await this.tagsService.add(this.flagName, newTag);
   }
 
   private async removeFormTag(tag: FormTag): Promise<void> {
     const [removedTag] = this.tagsService.toTags([tag]);
-    await this.tagsService.remove(Number(this.id), removedTag);
+    await this.tagsService.remove(this.flagName, removedTag);
   }
 
   private isTagAllowed(tag: FormTag): boolean {
@@ -297,7 +288,7 @@ export default class extends Vue {
     }
 
     try {
-      const response = await this.flagsService.remove(this.form);
+      const response = await this.flagsService.remove(this.productName, this.form);
       this.$alert(this.$t('flags.success.delete'));
 
       return true;
@@ -312,7 +303,7 @@ export default class extends Vue {
     this.$router.push({
       name: 'products-edit',
       params: {
-        id: this.productId
+        productId: this.productName
       }
     });
   }

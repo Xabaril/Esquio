@@ -30,7 +30,7 @@
             v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Flag)"
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
-            :to="{name: 'flags-add', params: { productId }}"
+            :to="{name: 'flags-add', params: { productName }}"
           >
             {{$t('flags.actions.add_first')}}
           </router-link>
@@ -53,7 +53,7 @@
         <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Flag)"
           class="text-right">
-          <router-link :to="{ name: 'flags-edit', params: { id: data.item.id, productId }}">
+          <router-link :to="{ name: 'flags-edit', params: { flagName: data.item.name, productName }}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -139,7 +139,7 @@ export default class extends Vue {
 
   @Inject() flagsService: IFlagsService;
 
-  @Prop({ required: true, type: [String, Number] }) productId: string;
+  @Prop({ required: true, type: [String, Number] }) productName: string;
 
   public created(): void {
     this.getFlags();
@@ -170,7 +170,7 @@ export default class extends Vue {
 
   private async getFlags(): Promise<void> {
     try {
-      const response = await this.flagsService.get(Number(this.productId), this.paginationInfo);
+      const response = await this.flagsService.get(this.productName, this.paginationInfo);
       this.flags = response.result;
       this.paginationInfo.rows = response.total;
       this.paginationInfo.pageIndex = response.pageIndex + 1;
@@ -187,8 +187,8 @@ export default class extends Vue {
     }
 
     try {
-      await this.flagsService.remove(flag);
-      this.flags = this.flags.filter(x => x.id !== flag.id);
+      await this.flagsService.remove(this.productName, flag);
+      this.flags = this.flags.filter(x => x.name !== flag.name);
       this.$alert(this.$t('flags.success.delete'));
     } catch (e) {
       this.$alert(this.$t('flags.errors.delete'), AlertType.Error);
@@ -199,7 +199,7 @@ export default class extends Vue {
 
   private async updateFlagSwitch(flag: Flag): Promise<void> {
     try {
-      await this.flagsService.update(flag);
+      await this.flagsService.update(this.productName, flag, flag);
 
       this.$alert(!flag.enabled ? this.$t('flags.success.off') : this.$t('flags.success.on'));
     } catch (e) {
@@ -215,7 +215,7 @@ export default class extends Vue {
     }
 
     try {
-      await this.flagsService.rollout(flag);
+      await this.flagsService.rollout(this.productName, flag);
       this.$alert(this.$t('flags.success.rollout'));
       this.getFlags();
     } catch (e) {
@@ -231,7 +231,7 @@ export default class extends Vue {
     }
 
     try {
-      await this.flagsService.rollback(flag);
+      await this.flagsService.rollback(this.productName, flag);
       this.$alert(this.$t('flags.success.rolloff'));
       this.getFlags();
     } catch (e) {

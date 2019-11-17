@@ -8,7 +8,7 @@ import { Product } from './product.model';
 export class ProductsService implements IProductsService {
   public async get(pagination: PaginationInfo): Promise<PaginatedResponse<Product[]>> {
     const params = {
-      pageIndex: pagination.pageIndex,
+      pageIndex: pagination.pageIndex - 1,
       pageCount: pagination.pageCount
     };
 
@@ -21,11 +21,11 @@ export class ProductsService implements IProductsService {
     return response.json();
   }
 
-  public async detail(id: number): Promise<Product> { // TODO: change id for name, validate form
-    const response = await fetch(`${settings.ApiUrl}/products/${id}`);
+  public async detail(name: string): Promise<Product> {
+    const response = await fetch(`${settings.ApiUrl}/products/${name}`);
 
     if (!response.ok) {
-      throw new Error(`Cannot fetch product ${id}`);
+      throw new Error(`Cannot fetch product ${name}`);
     }
 
     return response.json();
@@ -42,15 +42,14 @@ export class ProductsService implements IProductsService {
     }
   }
 
-  public async update(product: Product): Promise<void> {
-    // TODO: Use original name and new name //////////////////////// this name
-    const response = await fetch(`${settings.ApiUrl}/products/${product.name}`, {
+  public async update(product: Product, oldProduct: Product): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${oldProduct.name}`, {
       method: 'PUT',
       body: JSON.stringify(product)
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot update product ${product.id}`);
+      throw new Error(`Cannot update product ${oldProduct.name}`);
     }
   }
 

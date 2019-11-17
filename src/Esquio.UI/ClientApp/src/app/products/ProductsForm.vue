@@ -9,7 +9,7 @@
         v-model="form.name"
         id="product_name"
         :label="$t('products.fields.name')"
-        validators="required|min:5"
+        validators="required|min:5|regex:^[a-zA-Z][a-zA-Z0-9\\s-]*$"
         :help-label="$t('products.placeholders.nameHelp')"
       />
 
@@ -28,7 +28,7 @@
       class="row"
     >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productId="id"
+      <FlagsList :productName="name"
       />
     </div>
 
@@ -51,7 +51,7 @@
     <FloatingTop
       v-if="isEditing && $can($constants.AbilityAction.Create, $constants.AbilitySubject.Flag)"
       :text="$t('products.actions.add_flag')"
-      :to="{name: 'flags-add', params: { productId: form.id }}"
+      :to="{name: 'flags-add', params: { productName: form.name }}"
     />
   </section>
 </template>
@@ -85,14 +85,15 @@ import { IProductsService } from './iproducts.service';
 export default class extends Vue {
   public name = 'ProductsForm';
   public isLoading = false;
-  public form: Product = { id: null, name: null, description: null };
+  public form: Product = { name: null, description: null };
+  public oldProduct: Product = null;
 
   @Inject() productsService: IProductsService;
 
-  @Prop({ type: [String, Number]}) id: string;
+  @Prop({ type: [String, Number]}) productName: string;
 
   get isEditing(): boolean {
-    return !!this.id;
+    return !!this.productName;
   }
 
   get areActionsDisabled(): boolean {
@@ -136,13 +137,9 @@ export default class extends Vue {
   private async getProduct(): Promise<void> {
     this.isLoading = true;
     try {
-      const { name, description, id } = await this.productsService.detail(
-        Number(this.id)
-      );
-
-      this.form.name = name;
-      this.form.description = description;
-      this.form.id = id;
+      const productFromServer = await this.productsService.detail(this.productName);
+      this.form = {...productFromServer};
+      this.oldProduct = {...productFromServer};
     } catch (e) {
       this.$alert(this.$t('products.errors.detail'), AlertType.Error);
     } finally {
@@ -162,7 +159,7 @@ export default class extends Vue {
 
   private async updateProduct(): Promise<void> {
     try {
-      await this.productsService.update(this.form);
+      await this.productsService.update(this.form, this.oldProduct);
 
       this.$alert(this.$t('products.success.update'));
     } catch (e) {
