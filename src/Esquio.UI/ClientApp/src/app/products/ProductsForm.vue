@@ -28,7 +28,7 @@
       class="row"
     >
       <h2>{{$t('flags.title')}}</h2>
-      <FlagsList :productName="name"
+      <FlagsList :productName="productName"
       />
     </div>
 
@@ -90,7 +90,7 @@ export default class extends Vue {
 
   @Inject() productsService: IProductsService;
 
-  @Prop({ type: [String, Number]}) productName: string;
+  @Prop({ type: String }) productName: string;
 
   get isEditing(): boolean {
     return !!this.productName;

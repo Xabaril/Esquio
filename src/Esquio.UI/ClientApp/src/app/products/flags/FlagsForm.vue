@@ -55,7 +55,7 @@
       class="row mt-4"
     >
       <h2>{{$t('toggles.title')}}</h2>
-      <TogglesList :flagName="name" :toggles="form.toggles" />
+      <TogglesList :flagName="flagName" :productName="productName" :toggles="form.toggles" />
     </div>
 
     <FloatingContainer>
@@ -138,8 +138,8 @@ export default class extends Vue {
   @Inject() flagsService: IFlagsService;
   @Inject() tagsService: ITagsService;
 
-  @Prop({ type: [String, Number] }) flagName: string;
-  @Prop({ type: [String, Number], required: true }) productName: string;
+  @Prop({ type: String }) flagName: string;
+  @Prop({ type: String, required: true }) productName: string;
 
   get isEditing(): boolean {
     return !!this.flagName;

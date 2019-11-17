@@ -139,10 +139,11 @@ export default class extends Vue {
 
   @Inject() flagsService: IFlagsService;
 
-  @Prop({ required: true, type: [String, Number] }) productName: string;
+  @Prop({ required: true, type: String }) productName: string;
 
   public created(): void {
     this.getFlags();
+    console.log(this.productName);
   }
 
   public async onClickDelete(flag: Flag): Promise<void> {
