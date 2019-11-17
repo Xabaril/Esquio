@@ -61,7 +61,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productName/:name/add',
+          path: ':productName/:flagName/:type/add',
           name: 'toggles-add',
           component: () => import('./flags/toggles/TogglesForm.vue'),
           props: true,
@@ -72,7 +72,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           }
         },
         {
-          path: ':productName/:name/:toggleName',
+          path: ':productName/:flagName/:type',
           name: 'toggles-edit',
           component: () => import('./flags/toggles/TogglesForm.vue'),
           props: true,

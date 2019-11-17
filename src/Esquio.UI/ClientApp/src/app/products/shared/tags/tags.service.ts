@@ -6,9 +6,8 @@ import { Tag } from './tag.model';
 
 @injectable()
 export class TagsService implements ITagsService {
-  // TODO: do it
-  public async get(featureId: number): Promise<Tag[]> {
-    const response = await fetch(`${settings.ApiUrl}/products/{productname}/features/{name}/tags`);
+  public async get(productName: string, flagName: string): Promise<Tag[]> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch tags');
@@ -17,8 +16,8 @@ export class TagsService implements ITagsService {
     return response.json();
   }
 
-  public async add(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/products/{productname}/features/{name}/tags/tag`, {
+  public async add(productName: string, flagName: string, tag: Tag): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags/tag`, {
       method: 'POST',
       body: JSON.stringify({
         tag: tag.name
@@ -30,8 +29,8 @@ export class TagsService implements ITagsService {
     }
   }
 
-  public async remove(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/products/{productname}/features/{name}/tags/untag/${tag.name}`, {
+  public async remove(productName: string, flagName: string, tag: Tag): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags/untag/${tag.name}`, {
       method: 'DELETE'
     });
 

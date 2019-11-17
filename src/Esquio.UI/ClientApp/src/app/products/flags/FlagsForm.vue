@@ -225,7 +225,7 @@ export default class extends Vue {
     }
 
     try {
-      this.tags = await this.tagsService.get(this.form.name);
+      this.tags = await this.tagsService.get(this.productName, this.form.name);
       this.formTags = await this.tagsService.toFormTags(this.tags);
     } catch (e) {
       this.$alert(this.$t('tags.errors.get'), AlertType.Error);
@@ -258,12 +258,12 @@ export default class extends Vue {
 
   private async addFormTag(tag: FormTag): Promise<void> {
     const [newTag] = this.tagsService.toTags([tag]);
-    await this.tagsService.add(this.flagName, newTag);
+    await this.tagsService.add(this.productName, this.flagName, newTag);
   }
 
   private async removeFormTag(tag: FormTag): Promise<void> {
     const [removedTag] = this.tagsService.toTags([tag]);
-    await this.tagsService.remove(this.flagName, removedTag);
+    await this.tagsService.remove(this.productName, this.flagName, removedTag);
   }
 
   private isTagAllowed(tag: FormTag): boolean {
