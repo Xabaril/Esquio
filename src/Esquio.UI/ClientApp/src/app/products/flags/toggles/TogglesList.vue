@@ -42,7 +42,7 @@
         <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
           class="text-right">
-          <router-link :to="{ name: 'toggles-edit', params: { toggleId: data.item.id, id: flagId }}">
+          <router-link :to="{ name: 'toggles-edit', params: { type: data.item.type, productName, flagName }}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -103,7 +103,7 @@ export default class extends Vue {
   }
 
   private async deleteToggle(toggle: Toggle): Promise<void> {
-    if (!await this.$confirm(this.$t('toggles.confirm.title', [toggle.type]))) {
+    if (!await this.$confirm(this.$t('toggles.confirm.title', [toggle.friendlyName]))) {
       return;
     }
 

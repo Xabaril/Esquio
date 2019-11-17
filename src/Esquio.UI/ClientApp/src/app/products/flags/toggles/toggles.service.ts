@@ -41,7 +41,7 @@ export class TogglesService implements ITogglesService {
   public async add(productName: string, featureName: string, toggle: Toggle): Promise<void> {
     const response = await fetch(`${settings.ApiUrl}/toggles`, {
       method: 'POST',
-      body: JSON.stringify({productName, featureName, type: toggle.type, parameters: toggle.parameters})
+      body: JSON.stringify({productName, featureName, toggleType: toggle.type, parameters: toggle.parameters})
     });
 
     if (!response.ok) {
