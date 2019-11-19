@@ -3,19 +3,18 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
-    public sealed class EsquioProcessor
+    public sealed class EsquioAspNetScopedEvaluationSessionProcessor
         : ITelemetryProcessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
-        public EsquioProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
+        public EsquioAspNetScopedEvaluationSessionProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
@@ -35,11 +34,10 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
         {
             if (_httpContextAccessor.HttpContext != null)
             {
-                const string ITEMS_PREFIX = "Esquio";
 
                 var esquioScopedEvaluationResults = _httpContextAccessor.HttpContext?
                     .Items
-                    .Where(i => i.Key.ToString().StartsWith(ITEMS_PREFIX));
+                    .Where(i => i.Key.ToString().StartsWith(EsquioConstants.ESQUIO));
 
                 if (esquioScopedEvaluationResults != null)
                 {

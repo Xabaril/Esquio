@@ -9,8 +9,6 @@ namespace Esquio.AspNetCore.Providers
     internal sealed class AspNetScopedEvaluationSession
         : IScopedEvaluationSession
     {
-        const string KEY_PREFIX = "Esquio";
-
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AspNetScopedEvaluationSession(IHttpContextAccessor httpContextAccesor)
@@ -52,7 +50,7 @@ namespace Esquio.AspNetCore.Providers
 
         string GetKey(string featureName, string productName)
         {
-            return $"{KEY_PREFIX}:{productName}:{featureName}";
+            return $"{EsquioConstants.ESQUIO}:{productName}:{featureName}";
         }
     }
 }
