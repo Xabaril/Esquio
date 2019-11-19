@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
@@ -11,7 +10,6 @@ namespace Esquio.AspNetCore.Providers
         : IScopedEvaluationSession
     {
         const string KEY_PREFIX = "Esquio";
-        const string KEY_FORMAT = "{0}:{1}:{2}";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -40,7 +38,8 @@ namespace Esquio.AspNetCore.Providers
         {
             var key = GetKey(featureName, productName);
 
-            if (_httpContextAccessor.HttpContext.Items
+            if (_httpContextAccessor.HttpContext
+                .Items
                 .TryGetValue(key, out var value))
             {
                 enabled = ((ScopedEvaluationResult)value).Enabled;
@@ -53,7 +52,7 @@ namespace Esquio.AspNetCore.Providers
 
         string GetKey(string featureName, string productName)
         {
-            return string.Format(KEY_FORMAT, KEY_PREFIX, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, featureName);
+            return $"{KEY_PREFIX}:{productName}:{featureName}";
         }
     }
 }

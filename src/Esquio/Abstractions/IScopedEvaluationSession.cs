@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Esquio.Abstractions
 {
@@ -28,7 +26,7 @@ namespace Esquio.Abstractions
         Task SetAsync(string featureName, string productName, bool enabled);
     }
 
-    public class ScopedEvaluationResult
+    public sealed class ScopedEvaluationResult
     {
         public bool Enabled { get; set; }
 
