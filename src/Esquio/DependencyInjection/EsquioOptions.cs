@@ -15,7 +15,7 @@ namespace Esquio.DependencyInjection
             typeof(IToggle).Assembly
         };
 
-        internal string DefaultProductName = null;
+        internal string DefaultProductName = EsquioConstants.DEFAULT_PRODUCT_NAME;
 
         /// <summary>
         /// Configure default product name to be used when product parameter is not specified. This 
@@ -52,6 +52,19 @@ namespace Esquio.DependencyInjection
         public EsquioOptions ConfigureNotFoundBehavior(NotFoundBehavior notFoundBehavior)
         {
             NotFoundBehavior = notFoundBehavior;
+            return this;
+        }
+
+        internal bool EvaluationSessionEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Configure if <see cref="IScopedEvaluationSession"/> is used on <see cref="IFeatureService"/> evaluation process.
+        /// </summary>
+        /// <param name="useSession">True if evaluation session is used, else False.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public EsquioOptions UseEvalationSession(bool useSession = true)
+        {
+            EvaluationSessionEnabled = useSession;
             return this;
         }
 

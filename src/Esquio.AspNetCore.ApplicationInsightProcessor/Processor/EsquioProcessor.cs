@@ -3,6 +3,7 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -32,22 +33,28 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 
         private void AddEsquioProperties(ITelemetry telemetryItem)
         {
-            var esquioContextItems = _httpContextAccessor.HttpContext?.Items
-                .Where(i => i.Key.ToString().StartsWith("Esquio")); //TODO: magic string remove
-
-            if (esquioContextItems != null)
+            if (_httpContextAccessor.HttpContext != null)
             {
-                ISupportProperties telemetry = telemetryItem as ISupportProperties;
+                const string ITEMS_PREFIX = "Esquio";
 
-                if (telemetry != null
-                    &&
-                    esquioContextItems != null)
+                var esquioScopedEvaluationResults = _httpContextAccessor.HttpContext?
+                    .Items
+                    .Where(i => i.Key.ToString().StartsWith(ITEMS_PREFIX));
+
+                if (esquioScopedEvaluationResults != null)
                 {
-                    foreach (var (key, value) in esquioContextItems)
+                    ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+                    if (telemetry != null
+                        &&
+                        esquioScopedEvaluationResults != null)
                     {
-                        if (!telemetry.Properties.ContainsKey(key.ToString()))
+                        foreach (var (key, value) in esquioScopedEvaluationResults)
                         {
-                            telemetry.Properties.Add(key.ToString(), ((EvaluationResult)value).Enabled.ToString());
+                            if (!telemetry.Properties.ContainsKey(key.ToString()))
+                            {
+                                telemetry.Properties.Add(key.ToString(), ((ScopedEvaluationResult)value).Enabled.ToString());
+                            }
                         }
                     }
                 }

@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddScoped<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
             builder.Services.AddSingleton<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
 
-            builder.Services.AddScoped<IEvaluationSession, HttpContextEvaluationSession>();
+            builder.Services.AddScoped<IScopedEvaluationSession, AspNetScopedEvaluationSession>();
             
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
 

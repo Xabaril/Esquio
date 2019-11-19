@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
 {
-    internal class AspNetEnvironmentNameProviderService
+    internal sealed class AspNetEnvironmentNameProviderService
         : IEnvironmentNameProviderService
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
