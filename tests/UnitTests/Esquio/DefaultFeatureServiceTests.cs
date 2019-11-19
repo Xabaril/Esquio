@@ -169,11 +169,11 @@ namespace UnitTests.Esquio
                 .BeFalse();
         }
 
-        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, IEvaluationSession evaluationSession = null, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
+        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, IScopedEvaluationSession evaluationSession = null, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();
-            var session = evaluationSession ?? new NoEvaluationSession();
+            var session = evaluationSession ?? new NoScopedEvaluationSession();
 
             var esquioOptions = new EsquioOptions();
             esquioOptions.ConfigureOnErrorBehavior(onErrorBehavior);
@@ -232,16 +232,16 @@ namespace UnitTests.Esquio
         }
 
         private class PersistEvaluationSession
-            : IEvaluationSession
+            : IScopedEvaluationSession
         {
-            List<EvaluationResult> _results = new List<EvaluationResult>();
+            List<ScopedEvaluationResult> _results = new List<ScopedEvaluationResult>();
 
             public Task SetAsync(string featureName, string productName, bool enabled)
             {
                 var evaluationResult = _results.Where(er => er.FeatureName == featureName && er.ProductName == productName)
                     .SingleOrDefault();
 
-                _results.Add(new EvaluationResult()
+                _results.Add(new ScopedEvaluationResult()
                 {
                     FeatureName = featureName,
                     ProductName = productName,

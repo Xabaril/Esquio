@@ -7,19 +7,19 @@ namespace Esquio.Diagnostics
     {
         public static void FeatureServiceProcessingBegin(ILogger logger, string featureName, string productName)
         {
-            _featureServiceBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceBegin(logger, featureName, productName, null);
         }
         public static void FeatureServiceFromSession(ILogger logger, string featureName, string productName)
         {
-            _featureServiceFromSession(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceFromSession(logger, featureName, productName, null);
         }
         public static void FeatureServiceNotFoundFeature(ILogger logger, string featureName, string productName)
         {
-            _featureServiceNotFound(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceNotFound(logger, featureName, productName, null);
         }
         public static void FeatureServiceDisabledFeature(ILogger logger, string featureName, string productName)
         {
-            _featureServiceDisabled(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureServiceDisabled(logger, featureName, productName, null);
         }
         public static void FeatureServiceToggleIsNotActive(ILogger logger, string toggle, string featureName)
         {
@@ -27,11 +27,11 @@ namespace Esquio.Diagnostics
         }
         public static void FeatureServiceProcessingFail(ILogger logger, string featureName, string productName, Exception exception)
         {
-            _featureServiceThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
+            _featureServiceThrow(logger, featureName, productName, exception);
         }
         public static void FeatureServiceProcessingEnd(ILogger logger, string featureName, string productName, bool enabled, long elapsedMilliseconds)
         {
-            _featureServiceEnd(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, enabled, elapsedMilliseconds, null);
+            _featureServiceEnd(logger, featureName, productName, enabled, elapsedMilliseconds, null);
         }
         public static void DefaultToggleTypeActivatorResolveTypeBegin(ILogger logger, string toggleType)
         {

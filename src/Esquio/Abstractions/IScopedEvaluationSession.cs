@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Esquio.Abstractions
 {
     /// <summary>
-    /// Base contract for <see cref="IEvaluationSession"/> functionality. Basically, this is the responsible
-    /// for feature evaluation session results.
+    /// Base contract for <see cref="IScopedEvaluationSession"/> used for store feature evaluation session results on the same execution scope.
+    /// By default, a NO evaluation session is used and scoped evaluation results are never stored and reused on <see cref="IFeatureService"/>.
     /// </summary>
-    public interface IEvaluationSession
+    public interface IScopedEvaluationSession
     {
         /// <summary>
         /// Try to get a previous feature evaluation from the session store.
@@ -28,17 +26,17 @@ namespace Esquio.Abstractions
         Task SetAsync(string featureName, string productName, bool enabled);
     }
 
-    public sealed class EvaluationResult
+    public sealed class ScopedEvaluationResult
     {
-        public string FeatureName { get; set; }
+        public bool Enabled { get; set; }
 
         public string ProductName { get; set; }
 
-        public bool Enabled { get; set; }
+        public string FeatureName { get; set; }
     }
 
-    internal sealed class NoEvaluationSession
-        : IEvaluationSession
+    internal sealed class NoScopedEvaluationSession
+        : IScopedEvaluationSession
     {
         public Task SetAsync(string featureName, string productName, bool enabled)
         {

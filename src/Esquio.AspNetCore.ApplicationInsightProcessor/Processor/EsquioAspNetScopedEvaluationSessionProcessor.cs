@@ -8,13 +8,13 @@ using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
-    public sealed class EsquioProcessor
+    public sealed class EsquioAspNetScopedEvaluationSessionProcessor
         : ITelemetryProcessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
-        public EsquioProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
+        public EsquioAspNetScopedEvaluationSessionProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
@@ -32,22 +32,27 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 
         private void AddEsquioProperties(ITelemetry telemetryItem)
         {
-            var esquioContextItems = _httpContextAccessor.HttpContext?.Items
-                .Where(i => i.Key.ToString().StartsWith("Esquio")); //TODO: magic string remove
-
-            if (esquioContextItems != null)
+            if (_httpContextAccessor.HttpContext != null)
             {
-                ISupportProperties telemetry = telemetryItem as ISupportProperties;
 
-                if (telemetry != null
-                    &&
-                    esquioContextItems != null)
+                var esquioScopedEvaluationResults = _httpContextAccessor.HttpContext?
+                    .Items
+                    .Where(i => i.Key.ToString().StartsWith(EsquioConstants.ESQUIO));
+
+                if (esquioScopedEvaluationResults != null)
                 {
-                    foreach (var (key, value) in esquioContextItems)
+                    ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+                    if (telemetry != null
+                        &&
+                        esquioScopedEvaluationResults != null)
                     {
-                        if (!telemetry.Properties.ContainsKey(key.ToString()))
+                        foreach (var (key, value) in esquioScopedEvaluationResults)
                         {
-                            telemetry.Properties.Add(key.ToString(), ((EvaluationResult)value).Enabled.ToString());
+                            if (!telemetry.Properties.ContainsKey(key.ToString()))
+                            {
+                                telemetry.Properties.Add(key.ToString(), ((ScopedEvaluationResult)value).Enabled.ToString());
+                            }
                         }
                     }
                 }

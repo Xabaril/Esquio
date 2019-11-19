@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Providers
 {
-    internal class HttpContextEvaluationSession
-        : IEvaluationSession
+    internal sealed class AspNetScopedEvaluationSession
+        : IScopedEvaluationSession
     {
-        const string KEY_PREFIX = "Esquio";
-        const string KEY_FORMAT = "{0}:{1}:{2}";
-
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HttpContextEvaluationSession(IHttpContextAccessor httpContextAccesor)
+        public AspNetScopedEvaluationSession(IHttpContextAccessor httpContextAccesor)
         {
             _httpContextAccessor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
@@ -23,9 +20,9 @@ namespace Esquio.AspNetCore.Providers
         {
             var key = GetKey(featureName, productName);
 
-            var added = _httpContextAccessor.HttpContext
+            _httpContextAccessor.HttpContext
                 .Items
-                .TryAdd(key, new EvaluationResult()
+                .TryAdd(key, new ScopedEvaluationResult()
                 {
                     FeatureName = featureName,
                     ProductName = productName,
@@ -39,10 +36,11 @@ namespace Esquio.AspNetCore.Providers
         {
             var key = GetKey(featureName, productName);
 
-            if (_httpContextAccessor.HttpContext.Items
+            if (_httpContextAccessor.HttpContext
+                .Items
                 .TryGetValue(key, out var value))
             {
-                enabled = ((EvaluationResult)value).Enabled;
+                enabled = ((ScopedEvaluationResult)value).Enabled;
                 return Task.FromResult(true);
             }
 
@@ -52,7 +50,7 @@ namespace Esquio.AspNetCore.Providers
 
         string GetKey(string featureName, string productName)
         {
-            return string.Format(KEY_FORMAT, KEY_PREFIX, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, featureName);
+            return $"{EsquioConstants.ESQUIO}:{productName}:{featureName}";
         }
     }
 }

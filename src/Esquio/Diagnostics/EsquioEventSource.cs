@@ -85,8 +85,6 @@ namespace Esquio.Diagnostics
         [Event(3, Level = EventLevel.Error)]
         public void FeatureEvaluationThrow(string featureName, string productName, string error)
         {
-            productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
-
             Interlocked.Increment(ref _perSecondFeatureThrows);
             WriteEvent(3, featureName, productName, error);
         }
@@ -94,8 +92,6 @@ namespace Esquio.Diagnostics
         [Event(4, Level = EventLevel.Informational)]
         public void FeatureEvaluated(string featureName, string productName, long elapsedMilliseconds)
         {
-            productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
-
             Interlocked.Increment(ref _perSecondFeatureEvaluations);
 
             if (featureName != null)
@@ -121,8 +117,6 @@ namespace Esquio.Diagnostics
         [Event(5, Level = EventLevel.Error)]
         public void FeatureEvaluationNotFound(string featureName, string productName)
         {
-            productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
-
             Interlocked.Increment(ref _perSecondFeatureNotFound);
             WriteEvent(5, featureName, productName);
         }

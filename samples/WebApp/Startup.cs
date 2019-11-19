@@ -132,7 +132,7 @@ namespace WebApp
             return services
                 .AddEsquio(setup =>
                 {
-                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
+                    //esquio contribution toggles on https://github.com/xabaril/esquio.contrib 
                     setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
                     setup.RegisterTogglesFromAssemblyContaining<IpApiContryNameToggle>();
                 })

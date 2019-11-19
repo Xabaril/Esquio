@@ -33,10 +33,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.OnErrorBehavior = options.OnErrorBehavior;
                 opt.NotFoundBehavior = options.NotFoundBehavior;
                 opt.DefaultProductName = options.DefaultProductName;
+                opt.EvaluationSessionEnabled = options.EvaluationSessionEnabled;
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IEvaluationSession, NoEvaluationSession>();
+            builder.Services.AddScoped<IScopedEvaluationSession, NoScopedEvaluationSession>();
 
             builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
             builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();

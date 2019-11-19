@@ -1,4 +1,5 @@
-﻿using Esquio.EntityFrameworkCore.Store;
+﻿using Esquio;
+using Esquio.EntityFrameworkCore.Store;
 using Esquio.EntityFrameworkCore.Store.Diagnostics;
 using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.EntityFrameworkCore.Store.Options;
@@ -80,7 +81,20 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("non-existing-feature", "default");
+            var expected = await store.FindFeatureAsync("non-existing-feature", EsquioConstants.DEFAULT_PRODUCT_NAME);
+
+            expected.Should()
+                .BeNull();
+        }
+
+        [Theory]
+        [MemberData(nameof(Data))]
+        public async Task get_null_when_feature_exist_on_diferent_product(DbContextOptions<StoreDbContext> options)
+        {
+            var store = new EntityFrameworkCoreStoreBuilder(options)
+                .Build();
+
+            var expected = await store.FindFeatureAsync("app-feature", "non-existing-product");
 
             expected.Should()
                 .BeNull();
@@ -93,7 +107,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("app-feature", "default");
+            var expected = await store.FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME);
 
             expected.Should()
                 .NotBeNull();
@@ -117,38 +131,6 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 .First()
                 .Value.Should().Be("value1");
         }
-        [Theory]
-        [MemberData(nameof(Data))]
-        public async Task get_back_feature_when_is_configured_and_default_product_is_used(DbContextOptions<StoreDbContext> options)
-        {
-            var store = new EntityFrameworkCoreStoreBuilder(options)
-                .Build();
-
-            var expected = await store.FindFeatureAsync("app-feature");
-
-            expected.Should()
-                .NotBeNull();
-
-            expected.GetToggles()
-                .Count().Should().Be(1);
-
-            expected.GetToggles()
-                .First()
-                .GetParameters()
-                .Count().Should().Be(2);
-
-            expected.GetToggles()
-                .First()
-                .GetParameters()
-                .First()
-                .Name.Should().Be("strparam");
-            expected.GetToggles()
-                .First()
-                .GetParameters()
-                .First()
-                .Value.Should().Be("value1");
-        }
-
 
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>
             new TheoryData<DbContextOptions<StoreDbContext>>
