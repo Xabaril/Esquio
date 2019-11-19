@@ -25,7 +25,7 @@ namespace Esquio.DependencyInjection
         /// <returns></returns>
         public EsquioOptions ConfigureDefaultProductName(string productName)
         {
-            DefaultProductName = productName;
+            DefaultProductName = productName ?? throw new ArgumentNullException(nameof(productName));
             return this;
         }
 

@@ -7,17 +7,17 @@ namespace Esquio.Configuration.Store.Diagnostics
     {
         public static void FeatureNotExist(ILogger logger, string featureName, string productName)
         {
-            _featureNotExist(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureNotExist(logger, featureName, productName, null);
         }
 
         public static void FeatureExist(ILogger logger, string featureName, string productName)
         {
-            _featureExist(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureExist(logger, featureName, productName, null);
         }
 
         public static void BeginFindFeature(ILogger logger, string featureName, string productName)
         {
-            _beginFindFeature(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _beginFindFeature(logger, featureName, productName, null);
         }
 
         private static readonly Action<ILogger, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string>(

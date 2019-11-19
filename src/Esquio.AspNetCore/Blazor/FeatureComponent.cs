@@ -14,9 +14,9 @@ namespace Esquio.AspNetCore.Blazor
 
         /// <summary>
         /// The product name that determines whether the content can be displayed. If you do not specicify a product name,
-        /// default will be used.
+        /// default configured product will be used.
         /// </summary>
-        [Parameter] public string Product { get; set; } = EsquioConstants.DEFAULT_PRODUCT_NAME;
+        [Parameter] public string Product { get; set; }
 
         /// <summary>
         /// A comma delimited list of feature names that are allowed to display the content.

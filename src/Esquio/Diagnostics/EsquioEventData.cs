@@ -32,7 +32,7 @@ namespace Esquio.Diagnostics
         {
             CorrelationId = correlationId;
             Feature = feature;
-            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            Product = productName;
         }
     }
 
@@ -66,7 +66,7 @@ namespace Esquio.Diagnostics
         {
             CorrelationId = correlationId;
             Feature = feature;
-            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            Product = productName;
         }
     }
 
@@ -106,7 +106,7 @@ namespace Esquio.Diagnostics
         {
             CorrelationId = correlationId;
             Feature = feature;
-            Product = product ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            Product = product;
             Exception = exception;
         }
     }
@@ -195,7 +195,7 @@ namespace Esquio.Diagnostics
         {
             CorrelationId = correlationId;
             Feature = feature;
-            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            Product = productName;
             ToggleType = toggleType;
         }
     }
@@ -242,7 +242,7 @@ namespace Esquio.Diagnostics
         {
             CorrelationId = correlationId;
             Feature = feature;
-            Product = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            Product = productName;
             ToggleType = toggleType;
             Active = active;
         }

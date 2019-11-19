@@ -24,16 +24,22 @@ namespace Esquio.Configuration.Store
 
         public Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
         {
+            _ = featureName ?? throw new ArgumentNullException(featureName);
+            _ = productName ?? throw new ArgumentNullException(productName);
+
             _diagnostics.BeginFindFeature(featureName, productName);
+
             var feature = GetFeatureFromConfiguration(featureName, productName);
 
             if (feature != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
+                
                 return Task.FromResult(feature.To());
             }
 
             _diagnostics.FeatureNotExist(featureName, productName);
+            
             return Task.FromResult<Feature>(null);
         }
 
@@ -41,7 +47,7 @@ namespace Esquio.Configuration.Store
         {
             var product = _options?.Value
                 .Products
-                .FirstOrDefault(a => a.Name.Equals(productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(a => a.Name.Equals(productName, StringComparison.InvariantCultureIgnoreCase));
 
             if (product != null)
             {

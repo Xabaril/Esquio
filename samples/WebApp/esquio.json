@@ -16,7 +16,7 @@
               {
                 "Type": "Esquio.Toggles.GradualRolloutUserNameToggle",
                 "Parameters": {
-                  "Percentage": 50
+                  "Percentage": 100
                 }
               }
             ]

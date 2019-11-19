@@ -11,7 +11,7 @@ namespace Esquio.AspNetCore.Diagnostics
         }
         public static void FeatureMatcherPolicyEvaluatingFeatures(ILogger logger, string endpointDisplayName, string names, string productName)
         {
-            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName, null);
         }
         public static void FeatureMatcherPolicyEndpointIsNotValid(ILogger logger, string endpointDisplayName)
         {
@@ -27,25 +27,25 @@ namespace Esquio.AspNetCore.Diagnostics
         }
         public static void FeatureTagHelperBegin(ILogger logger, string featureName, string productName)
         {
-            _featureTagHelperBegin(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureTagHelperBegin(logger, featureName, productName, null);
         }
         public static void FeatureTagHelperClearContent(ILogger logger, string featureName, string productName)
         {
-            _featureTagHelperClearContent(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _featureTagHelperClearContent(logger, featureName, productName, null);
         }
         public static void EsquioMiddlewareThrow(ILogger logger, string featureName, string productName, Exception exception)
         {
-            _esquioMiddlewareThrow(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, exception);
+            _esquioMiddlewareThrow(logger, featureName, productName, exception);
         }
         public static void EsquioMiddlewareEvaluatingFeature(ILogger logger, string featureName, string productName)
         {
-            _esquioMiddlewareEvaluateFeature(logger, featureName, productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME, null);
+            _esquioMiddlewareEvaluateFeature(logger, featureName, productName, null);
         }
         public static void EsquioMiddlewareSuccess(ILogger logger)
         {
             _esquioMiddlewareSuccess(logger, null);
         }
-        
+
         private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointCanBeApplied = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureEndpointMatcherCanBeAppliedToEndpoint,
@@ -86,7 +86,7 @@ namespace Esquio.AspNetCore.Diagnostics
             LogLevel.Debug,
             EventIds.EsquioMiddlewareSuccess,
             "Esquio middleware perform feature evaluation succesfully.");
-       
+
 
     }
 }

@@ -22,11 +22,12 @@ namespace Esquio.EntityFrameworkCore.Store
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
         {
-            _diagnostics.FindFeature(featureName, productName);
+            _ = featureName ?? throw new ArgumentNullException(nameof(featureName));
+            _ = productName ?? throw new ArgumentNullException(nameof(productName));
 
-            productName = productName ?? EsquioConstants.DEFAULT_PRODUCT_NAME;
+            _diagnostics.FindFeature(featureName, productName);
 
             var featureEntity = await _storeDbContext
                 .Features
@@ -38,11 +39,13 @@ namespace Esquio.EntityFrameworkCore.Store
             if (featureEntity != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
+
                 return ConvertToFeatureModel(featureEntity);
             }
             else
             {
                 _diagnostics.FeatureNotExist(featureName, productName);
+
                 return null;
             }
         }

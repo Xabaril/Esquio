@@ -1,10 +1,8 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Diagnostics;
-using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading;
