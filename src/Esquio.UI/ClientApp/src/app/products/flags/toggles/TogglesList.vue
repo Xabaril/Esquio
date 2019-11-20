@@ -28,7 +28,7 @@
             v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
             class="btn btn-raised btn-primary d-inline-block"
             tag="button"
-            :to="{name: 'toggles-add', params: { id: flagId }}"
+            :to="{name: 'toggles-add', params: { flagName: flagName }}"
           >
             {{$t('toggles.actions.add_first')}}
           </router-link>
@@ -42,7 +42,7 @@
         <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
           class="text-right">
-          <router-link :to="{ name: 'toggles-edit', params: { toggleId: data.item.id, id: flagId }}">
+          <router-link :to="{ name: 'toggles-edit', params: { type: data.item.type, productName, flagName }}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -94,7 +94,8 @@ export default class extends Vue {
 
   @Inject() togglesService: ITogglesService;
 
-  @Prop({ required: true, type: [Number, String] }) flagId: number;
+  @Prop({ required: true, type: String }) flagName: string;
+  @Prop({ required: true, type: String }) productName: string;
   @Prop({ type: Array }) toggles: Toggle[];
 
   public async onClickDelete(toggle: Toggle): Promise<void> {
@@ -102,13 +103,13 @@ export default class extends Vue {
   }
 
   private async deleteToggle(toggle: Toggle): Promise<void> {
-    if (!await this.$confirm(this.$t('toggles.confirm.title', [toggle.id]))) {
+    if (!await this.$confirm(this.$t('toggles.confirm.title', [toggle.friendlyName]))) {
       return;
     }
 
     try {
-      await this.togglesService.remove(toggle);
-      this.toggles = this.toggles.filter(x => x.id !== toggle.id);
+      await this.togglesService.remove(this.productName, this.flagName, toggle);
+      this.toggles = this.toggles.filter(x => x.type !== toggle.type);
       this.$alert(this.$t('toggles.success.delete'));
     } catch (e) {
       this.$alert(this.$t('toggles.errors.delete'), AlertType.Error);

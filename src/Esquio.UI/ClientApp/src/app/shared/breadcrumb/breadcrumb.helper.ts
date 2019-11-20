@@ -1,5 +1,5 @@
-import { BreadCrumbItem } from './breadcrumb.model';
 import { Route } from 'vue-router';
+import { BreadCrumbItem } from './breadcrumb.model';
 
 const SEPARATOR = '/';
 export const ADD_ROUTE = 'add';
@@ -38,19 +38,30 @@ export function generateBreadcrumb(route: Route): BreadCrumbItem[] {
   parts.forEach((part, key) => {
     const sufix = part === ADD_ROUTE ? ADD_ROUTE : EDIT_ROUTE;
     const name = breadcrumbTemplate[key] + sufix;
-    const id = isNaN(Number(part)) ? '' : part;
-    let productId = '';
+    const id = part !== ADD_ROUTE && part !== EDIT_ROUTE ? part : '';
+    let productName = '';
+    let flagName = '';
+    let type = '';
 
-    if (id && key > 0) {
-      productId = breadcrumb[key - 1].productId || breadcrumb[key - 1].id;
+    if (key > 1) {
+      const prev = breadcrumb[key - 1];
+      productName = prev.productName || prev.id;
+      flagName = prev.productName && !prev.flagName ? prev.id : prev.flagName;
+      type = prev.flagName && !prev.type ? prev.id : prev.type;
     }
 
     breadcrumb.push({
       name,
       id,
-      productId
+      productName: productName,
+      flagName: flagName,
+      type: type,
     });
   });
 
   return breadcrumb.slice(1);
+}
+
+export function cleanBreadcrumbName(name: string): string {
+  return decodeURI(name);
 }

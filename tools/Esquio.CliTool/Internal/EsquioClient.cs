@@ -9,6 +9,8 @@ namespace Esquio.CliTool.Internal
 {
     public class EsquioClient : IDisposable
     {
+        const string HTTP_API_VERSION = "2.0";
+
         private readonly HttpClient _httpClient;
 
         private EsquioClient(HttpClient httpClient)
@@ -18,7 +20,7 @@ namespace Esquio.CliTool.Internal
 
         public async Task<HttpResponseMessage> ListProductsAsync()
         {
-            return await _httpClient.GetAsync($"api/v1/products?pageIndex=0&pageCount=99");
+            return await _httpClient.GetAsync($"api/products?pageIndex=0&pageCount=99&api-version={HTTP_API_VERSION}");
         }
 
         public async Task<HttpResponseMessage> AddProductAsync(string productName, string description)
@@ -31,50 +33,53 @@ namespace Esquio.CliTool.Internal
 
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            return await _httpClient.PostAsync("api/v1/products", content);
+            return await _httpClient.PostAsync("api/products?api-version={HTTP_API_VERSION}", content);
         }
 
-        public async Task<HttpResponseMessage> RemoveProductAsync(int productId)
+        public async Task<HttpResponseMessage> RemoveProductAsync(string productName)
         {
-            return await _httpClient.DeleteAsync($"api/v1/products/{productId}");
+            return await _httpClient.DeleteAsync($"api/products/{productName}?api-version={HTTP_API_VERSION}");
         }
 
-        public async Task<HttpResponseMessage> ListFeaturesAsync(int productId)
+        public async Task<HttpResponseMessage> ListFeaturesAsync(string productName)
         {
-            return await _httpClient.GetAsync($"api/v1/products/{productId}/flags");
+            return await _httpClient.GetAsync($"api/products/{productName}/features?api-version={HTTP_API_VERSION}");
         }
 
-        public async Task<HttpResponseMessage> RolloutFeatureAsync(int featureId)
+        public async Task<HttpResponseMessage> RolloutFeatureAsync(string productName, string featureName)
         {
-            return await _httpClient.PutAsync($"api/v1/flags/{featureId}/rollout", new StringContent(string.Empty));
+            return await _httpClient.PutAsync($"api/products/{productName}/features/{featureName}/rollout?api-version={HTTP_API_VERSION}", new StringContent(string.Empty));
         }
 
-        public async Task<HttpResponseMessage> RollbackFeatureAsync(int featureId)
+        public async Task<HttpResponseMessage> RollbackFeatureAsync(string productName, string featureName)
         {
-            return await _httpClient.PutAsync($"api/v1/flags/{featureId}/rollback", new StringContent(string.Empty));
+            return await _httpClient.PutAsync($"api/products/{productName}/features/{featureName}/rollback?api-version={HTTP_API_VERSION}", new StringContent(string.Empty));
         }
 
-        public async Task<HttpResponseMessage> ListTogglesAsync(int featureId)
+        public async Task<HttpResponseMessage> ListTogglesAsync(string productName, string featureName)
         {
-            return await _httpClient.GetAsync($"api/v1/flags/{featureId}");
+            return await _httpClient.GetAsync($"api/products/{productName}/features/{featureName}?api-version={HTTP_API_VERSION}");
         }
 
-        public async Task<HttpResponseMessage> GetToggleAsync(int toggleId)
+        public async Task<HttpResponseMessage> GetToggleAsync(string productName, string featureName, string toggleType)
         {
-            return await _httpClient.GetAsync($"api/v1/toggles/{toggleId}");
+            return await _httpClient.GetAsync($"api/products/{productName}/features/{featureName}/toggles/{toggleType}?api-version={HTTP_API_VERSION}");
         }
 
-        public async Task<HttpResponseMessage> SetParameterValue(int toggleId, string name, string value)
+        public async Task<HttpResponseMessage> SetParameterValue(string productName, string featureName,string toggleType, string name, string value)
         {
             var jsonContent = JsonSerializer.Serialize(new
             {
+                ProductName = productName,
+                FeatureName = featureName,
+                ToggleType = toggleType,
                 Name = name,
                 Value = value,
             });
 
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            return await _httpClient.PostAsync($"api/v1/toggles/{toggleId}/parameters",content);
+            return await _httpClient.PostAsync($"api/toggles/parameters?api-version={HTTP_API_VERSION}", content);
         }
 
         public void Dispose()

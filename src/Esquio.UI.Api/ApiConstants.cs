@@ -1,11 +1,15 @@
 ﻿namespace Esquio.UI.Api
 {
-    public static class ApiConstants
+    static class ApiConstants
     {
+        public static class Constraints
+        {
+            public const string NamesRegularExpression = "^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$";
+        }
         public static class Pagination
         {
-            public const int PageIndex = 1;
-            public const int PageSize = 10;
+            public const int PageIndex = 0;
+            public const int PageCount = 10;
         }
 
         public static class Messages

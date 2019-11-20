@@ -1,24 +1,23 @@
 import { injectable } from 'inversify-props';
 import { settings } from '~/core';
 import { ITogglesService } from './itoggles.service';
-import { Toggle } from './toggle.model';
-import { ToggleParameter } from './toggle-parameter.model';
 import { ToggleParameterDetail } from './toggle-parameter-detail.model';
+import { Toggle } from './toggle.model';
 
 @injectable()
 export class TogglesService implements ITogglesService {
-  public async detail(id: number): Promise<Toggle> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${id}`);
+  public async detail(productName: string, flagName: string, type: string): Promise<Toggle> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/toggles/${type}`);
 
     if (!response.ok) {
-      throw new Error(`Cannot fetch toggle ${id}`);
+      throw new Error(`Cannot fetch toggle ${type} in feature ${flagName} and product ${productName}`);
     }
 
     return response.json();
   }
 
   public async params(toggle: Toggle): Promise<ToggleParameterDetail[]> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/parameters/${toggle.type}`);
+    const response = await fetch(`${settings.ApiUrl}/toggles/parameters/${toggle.type}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch toggle ${toggle.type}`);
@@ -30,7 +29,7 @@ export class TogglesService implements ITogglesService {
   }
 
   public async types(): Promise<any> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/types`);
+    const response = await fetch(`${settings.ApiUrl}/toggles/types`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch known toggle types`);
@@ -39,39 +38,41 @@ export class TogglesService implements ITogglesService {
     return response.json();
   }
 
-  public async add(featureId: number, toggle: Toggle): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles`, {
+  public async add(productName: string, featureName: string, toggle: Toggle): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/toggles`, {
       method: 'POST',
-      body: JSON.stringify({featureId, type: toggle.type, parameters: toggle.parameters})
+      body: JSON.stringify({productName, featureName, toggleType: toggle.type, parameters: toggle.parameters})
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot create toggle ${toggle.id}`);
+      throw new Error(`Cannot create toggle ${toggle.type} in feature ${featureName} and product ${productName}`);
     }
   }
 
-  public async addParameter(toggle: Toggle, parameterName: string, value: any): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${toggle.id}/parameters`, {
+  public async addParameter(productName: string, featureName: string, toggle: Toggle, parameterName: string, value: any): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/toggles/parameters`, {
       method: 'POST',
       body: JSON.stringify({
-        toggleId: toggle.id,
+        productName,
+        featureName,
+        type: toggle.type,
         name: parameterName,
         value
       })
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot add parameters to toggle ${toggle.id}`);
+      throw new Error(`Cannot add parameters to toggle ${toggle.type} in feature ${featureName} and product ${productName}`);
     }
   }
 
-  public async remove(toggle: Toggle): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/toggles/${toggle.id}`, {
+  public async remove(productName: string, flagName: string, toggle: Toggle): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/toggles/${toggle.type}`, {
       method: 'DELETE'
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot delete toggle ${toggle.id}`);
+      throw new Error(`Cannot delete toggle ${toggle.type} in feature ${flagName} and product ${productName}`);
     }
   }
 }

@@ -8,11 +8,11 @@ import { Product } from './product.model';
 export class ProductsService implements IProductsService {
   public async get(pagination: PaginationInfo): Promise<PaginatedResponse<Product[]>> {
     const params = {
-      pageIndex: pagination.pageIndex,
+      pageIndex: pagination.pageIndex - 1,
       pageCount: pagination.pageCount
     };
 
-    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/products`, params));
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/products`, params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch products');
@@ -21,18 +21,18 @@ export class ProductsService implements IProductsService {
     return response.json();
   }
 
-  public async detail(id: number): Promise<Product> {
-    const response = await fetch(`${settings.ApiUrl}/v1/products/${id}`);
+  public async detail(name: string): Promise<Product> {
+    const response = await fetch(`${settings.ApiUrl}/products/${name}`);
 
     if (!response.ok) {
-      throw new Error(`Cannot fetch product ${id}`);
+      throw new Error(`Cannot fetch product ${name}`);
     }
 
     return response.json();
   }
 
   public async add(product: Product): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/products`, {
+    const response = await fetch(`${settings.ApiUrl}/products`, {
       method: 'POST',
       body: JSON.stringify(product)
     });
@@ -42,28 +42,24 @@ export class ProductsService implements IProductsService {
     }
   }
 
-  public async update(product: Product): Promise<void> {
-    // TODO: Remove this temporal behaviour
-    const _product = product as any;
-    _product.productId = product.id;
-
-    const response = await fetch(`${settings.ApiUrl}/v1/products`, {
+  public async update(product: Product, oldProduct: Product): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${oldProduct.name}`, {
       method: 'PUT',
-      body: JSON.stringify(_product)
+      body: JSON.stringify(product)
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot update product ${product.id}`);
+      throw new Error(`Cannot update product ${oldProduct.name}`);
     }
   }
 
   public async remove(product: Product): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/products/${product.id}`, {
+    const response = await fetch(`${settings.ApiUrl}/products/${product.name}`, {
       method: 'DELETE'
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot delete product ${product.id}`);
+      throw new Error(`Cannot delete product ${product.name}`);
     }
   }
 }
