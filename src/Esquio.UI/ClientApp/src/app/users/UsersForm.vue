@@ -92,7 +92,7 @@ export default class extends Vue {
 
   @Inject() usersPermissionsService: IUsersPermissionsService;
 
-  @Prop({ type: [String, Number] }) subjectId: string;
+  @Prop({ type: String }) subjectId: string;
 
   get isEditing(): boolean {
     return !!this.subjectId;

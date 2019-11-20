@@ -171,7 +171,7 @@ export default class extends Vue {
   public name = 'TogglesForm';
   public isLoading = false;
   public types = null;
-  public form: Toggle = { id: null, type: null, friendlyName: null, parameters: [] };
+  public form: Toggle = { type: null, friendlyName: null, parameters: [] };
   public accordion: { [key: string]: any } = null;
   public paramDetails: ToggleParameterDetail[] = null;
   public flag: Flag = null;
@@ -179,12 +179,12 @@ export default class extends Vue {
   @Inject() togglesService: ITogglesService;
   @Inject() flagsService: IFlagsService;
 
-  @Prop({ type: [String, Number] }) productId: string;
-  @Prop({ type: [String, Number] }) toggleId: string;
-  @Prop({ type: [String, Number] }) id: string; // FlagId
+  @Prop({ type: String }) productName: string;
+  @Prop({ type: String }) flagName: string;
+  @Prop({ type: String }) type: string;
 
   get isEditing(): boolean {
-    return !!this.toggleId;
+    return !!this.type;
   }
 
   get areActionsDisabled(): boolean {
@@ -291,18 +291,15 @@ export default class extends Vue {
   }
 
   private async getFlag(): Promise<void> {
-    this.flag = await this.flagsService.detail(Number(this.id));
+    this.flag = await this.flagsService.detail(this.productName, this.flagName);
   }
 
   private async getToggle(): Promise<void> {
     this.isLoading = true;
     try {
-      const { type, id, parameters, friendlyName } = await this.togglesService.detail(
-        Number(this.toggleId)
-      );
+      const { type, parameters, friendlyName } = await this.togglesService.detail(this.productName, this.flagName, this.type);
 
       this.form.type = type;
-      this.form.id = Number(this.toggleId);
       this.form.parameters = parameters || [];
       this.form.friendlyName = friendlyName;
     } catch (e) {
@@ -326,7 +323,7 @@ export default class extends Vue {
 
   private async addToggle(): Promise<void> {
     try {
-      await this.togglesService.add(Number(this.id), this.form);
+      await this.togglesService.add(this.productName, this.flagName, this.form);
 
       this.$alert(this.$t('toggles.success.add'));
     } catch (e) {
@@ -336,13 +333,13 @@ export default class extends Vue {
 
   private async deleteToggle(): Promise<boolean> {
     if (
-      !(await this.$confirm(this.$t('toggles.confirm.title', [this.form.id])))
+      !(await this.$confirm(this.$t('toggles.confirm.title', [this.form.type])))
     ) {
       return false;
     }
 
     try {
-      await this.togglesService.remove(this.form);
+      await this.togglesService.remove(this.productName, this.flagName, this.form);
       this.$alert(this.$t('toggles.success.delete'));
       return true;
     } catch (e) {
@@ -384,7 +381,7 @@ export default class extends Vue {
     this.isLoading = true;
 
     try {
-      await this.togglesService.addParameter(this.form, parameter.name, value);
+      await this.togglesService.addParameter(this.productName, this.flagName, this.form, parameter.name, value);
       this.isLoading = false;
       this.$alert(this.$t('toggles.success.update'));
     } catch (e) {

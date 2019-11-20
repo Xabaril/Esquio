@@ -13,18 +13,24 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine(Constants.AsciiArt);
-            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
-
             app.ShowHelp(usePager: true);
+            
             return 1;
         }
 
         private class SetCommand
         {
-            [Option("--toggle-id <TOGGLE-ID>", Description = "The parameter identifier.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
-            public int ToggleId { get; set; }
+            public string ProductName { get; set; }
+
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Required]
+            public string FeatureName { get; set; }
+
+            [Option("--toggle <TOGGLE>", Description = "The toggle identifier.")]
+            [Required]
+            public string ToggleType { get; set; }
 
             [Option("--name <NAME>", Description = "The parameter value.")]
             [Required]
@@ -47,7 +53,7 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.SetParameterValue(ToggleId, ParameterName, ParameterValue);
+                    var response = await client.SetParameterValue(ProductName, FeatureName, ToggleType, ParameterName, ParameterValue);
 
                     if (response.IsSuccessStatusCode)
                     {

@@ -15,18 +15,20 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine(Constants.AsciiArt);
-            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
-
             app.ShowHelp(usePager: true);
+
             return 1;
         }
 
         private class RolloutCommand
         {
-            [Option("--feature-id <FEATURE-ID>", Description = "The feature identifier to be rolled out.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
-            public int FeatureId { get; set; }
+            public string ProductName { get; set; }
+
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled out.")]
+            [Required]
+            public string FeatureName { get; set; }
 
             [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
             public bool NoPrompt { get; set; } = false;
@@ -59,12 +61,12 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.RolloutFeatureAsync(FeatureId);
+                    var response = await client.RolloutFeatureAsync(ProductName, FeatureName);
 
                     if (response.IsSuccessStatusCode)
                     {
                         console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                        console.WriteLine($"The feature {FeatureName} was rolled out.");
                         console.ForegroundColor = defaultForegroundColor;
 
                         return 0;
@@ -83,9 +85,13 @@ namespace Esquio.CliTool.Command
 
         private class RolloffCommand
         {
-            [Option("--feature-id <FEATURE-ID>", Description = "The feature identifier to be rolled of.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
-            public int FeatureId { get; set; }
+            public string ProductName { get; set; }
+
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Required]
+            public string FeatureName { get; set; }
 
             [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
             public bool NoPrompt { get; set; } = false;
@@ -117,13 +123,13 @@ namespace Esquio.CliTool.Command
                 using (var client = EsquioClient.Create(
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
-                {
-                    var response = await client.RollbackFeatureAsync(FeatureId);
+                { 
+                    var response = await client.RollbackFeatureAsync(ProductName, FeatureName);
 
                     if (response.IsSuccessStatusCode)
                     {
                         console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The feature with Id {FeatureId} was rolled out.");
+                        console.WriteLine($"The feature {FeatureName} was rolled out.");
                         console.ForegroundColor = defaultForegroundColor;
 
                         return 0;
@@ -142,9 +148,9 @@ namespace Esquio.CliTool.Command
 
         private class ListCommand
         {
-            [Option("--product-id <PRODUCT-ID>", Description = "The product id to list features.")]
+            [Option("--product <PRODUCT>", Description = "The product to list features.")]
             [Required]
-            public int ProductId { get; set; }
+            public string ProductName { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
@@ -160,7 +166,7 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.ListFeaturesAsync(ProductId);
+                    var response = await client.ListFeaturesAsync(ProductName);
 
                     if (response.IsSuccessStatusCode)
                     {

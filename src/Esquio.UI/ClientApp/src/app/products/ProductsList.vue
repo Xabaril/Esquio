@@ -38,13 +38,13 @@
       </template>
 
       <template
-        slot="id"
+        slot="actions"
         slot-scope="data"
       >
         <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Product)"
           class="text-right">
-          <router-link :to="{name: 'products-edit', params: {id: data.item.id}}">
+          <router-link :to="{name: 'products-edit', params: {productName: data.item.name}}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
@@ -110,7 +110,7 @@ export default class extends Vue {
       label: () => this.$t('products.fields.description')
     },
     {
-      key: 'id',
+      key: 'actions',
       label: ''
     }
   ];
@@ -156,7 +156,7 @@ export default class extends Vue {
 
     try {
       const response = await this.productsService.remove(product);
-      this.products = this.products.filter(x => x.id !== product.id);
+      this.products = this.products.filter(x => x.name !== product.name);
       this.$alert(this.$t('products.success.delete'));
 
     } catch (e) {

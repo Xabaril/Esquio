@@ -11,7 +11,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
       pageCount: pagination.pageCount
     };
 
-    const response = await fetch(addQueryParams(`${settings.ApiUrl}/v1/users`, params));
+    const response = await fetch(addQueryParams(`${settings.ApiUrl}/users`, params));
 
     if (!response.ok) {
       throw new Error('Cannot fetch users permissions');
@@ -21,7 +21,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async add(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users`, {
+    const response = await fetch(`${settings.ApiUrl}/users`, {
       method: 'POST',
       body: JSON.stringify({
         subjectId: userPermissions.subjectId,
@@ -37,7 +37,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async detail(subjectId: string): Promise<UserPermissions> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/${subjectId}`);
+    const response = await fetch(`${settings.ApiUrl}/users/${subjectId}`);
 
     if (!response.ok) {
       throw new Error(`Cannot fetch user ${subjectId}`);
@@ -47,7 +47,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async update(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users`, {
+    const response = await fetch(`${settings.ApiUrl}/users`, {
       method: 'PUT',
       body: JSON.stringify({
         subjectId: userPermissions.subjectId,
@@ -63,7 +63,7 @@ export class UsersPermissionsService implements IUsersPermissionsService {
   }
 
   public async remove(userPermissions: UserPermissions): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/users/${userPermissions.subjectId}`, {
+    const response = await fetch(`${settings.ApiUrl}/users/${userPermissions.subjectId}`, {
       method: 'DELETE'
     });
 

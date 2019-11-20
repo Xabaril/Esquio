@@ -14,18 +14,20 @@ namespace Esquio.CliTool.Command
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine(Constants.AsciiArt);
-            console.WriteLine(Constants.SpecifySubCommandErrorMessage);
-
             app.ShowHelp(usePager: true);
+
             return 1;
         }
 
         private class ListCommand
         {
-            [Option("--feature-id <FEATURE-ID>", Description = "The feature identifier to list toggles.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
-            public int FeatureId { get; set; }
+            public string ProductName { get; set; }
+
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Required]
+            public string FeatureName { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
@@ -41,7 +43,7 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.ListTogglesAsync(FeatureId);
+                    var response = await client.ListTogglesAsync(ProductName,FeatureName);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -65,9 +67,17 @@ namespace Esquio.CliTool.Command
 
         private class GetCommand
         {
-            [Option("--toggle-id <TOGGLE-ID>", Description = "The toggle identifier.")]
+            [Option("--product <PRODUCT>", Description = "The product name.")]
             [Required]
-            public int ToggleId { get; set; }
+            public string ProductName { get; set; }
+
+            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Required]
+            public string FeatureName { get; set; }
+
+            [Option("--toggle <TOGGLE>", Description = "The toggle identifier.")]
+            [Required]
+            public string ToggleType { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
@@ -83,7 +93,7 @@ namespace Esquio.CliTool.Command
                     uri: Uri ?? Constants.UriDefaultValue,
                     apikey: ApiKey))
                 {
-                    var response = await client.GetToggleAsync(ToggleId);
+                    var response = await client.GetToggleAsync(ProductName, FeatureName, ToggleType);
 
                     if (response.IsSuccessStatusCode)
                     {

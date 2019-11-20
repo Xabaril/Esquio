@@ -8,15 +8,15 @@
         "dotnet-ef"
       ]
     },
-    "dotnet-counters":{
-      "version":"3.0.47001",
-      "commands":[
+    "dotnet-counters": {
+      "version": "3.0.47001",
+      "commands": [
         "dotnet-counters"
       ]
     },
-	"dotnet-trace":{
-      "version":"3.0.47001",
-      "commands":[
+    "dotnet-trace": {
+      "version": "3.0.47001",
+      "commands": [
         "dotnet-trace"
       ]
     }

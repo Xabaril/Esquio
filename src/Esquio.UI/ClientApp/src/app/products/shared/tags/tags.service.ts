@@ -1,13 +1,13 @@
 import { injectable } from 'inversify-props';
 import { settings } from '~/core';
+import { FormTag } from './form-tag.model';
 import { ITagsService } from './itags.service';
 import { Tag } from './tag.model';
-import { FormTag } from './form-tag.model';
 
 @injectable()
 export class TagsService implements ITagsService {
-  public async get(featureId: number): Promise<Tag[]> {
-    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}`);
+  public async get(productName: string, flagName: string): Promise<Tag[]> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags`);
 
     if (!response.ok) {
       throw new Error('Cannot fetch tags');
@@ -16,12 +16,11 @@ export class TagsService implements ITagsService {
     return response.json();
   }
 
-  public async add(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}`, {
+  public async add(productName: string, flagName: string, tag: Tag): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags/tag`, {
       method: 'POST',
       body: JSON.stringify({
-        tag: tag.name,
-        featureId: featureId,
+        tag: tag.name
       })
     });
 
@@ -30,8 +29,8 @@ export class TagsService implements ITagsService {
     }
   }
 
-  public async remove(featureId: number, tag: Tag): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/v1/tags/${featureId}/${tag.name}`, {
+  public async remove(productName: string, flagName: string, tag: Tag): Promise<void> {
+    const response = await fetch(`${settings.ApiUrl}/products/${productName}/features/${flagName}/tags/untag/${tag.name}`, {
       method: 'DELETE'
     });
 

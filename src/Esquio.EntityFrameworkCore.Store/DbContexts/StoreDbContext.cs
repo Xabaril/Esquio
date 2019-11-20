@@ -185,10 +185,7 @@ namespace Esquio.EntityFrameworkCore.Store
                 }
                 else if (Entry.Entity is ParameterEntity parameter)
                 {
-                    return changeTracker.Entries<ToggleEntity>()
-                        .Single(t => t.Entity.Id == parameter.ToggleEntityId)
-                        .Entity
-                        .FeatureEntityId;
+                    return parameter.ToggleEntity?.FeatureEntityId ?? 0;  
                 }
 
                 throw new Exception("Invalid entity type.");
