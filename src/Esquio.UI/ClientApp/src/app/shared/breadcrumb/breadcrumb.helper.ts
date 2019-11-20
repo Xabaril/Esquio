@@ -61,3 +61,7 @@ export function generateBreadcrumb(route: Route): BreadCrumbItem[] {
 
   return breadcrumb.slice(1);
 }
+
+export function cleanBreadcrumbName(name: string): string {
+  return decodeURI(name);
+}
