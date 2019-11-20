@@ -42,7 +42,7 @@
         <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
           class="text-right">
-          <router-link :to="{ name: 'toggles-edit', params: { type: data.item.friendlyName, productName, flagName }}">
+          <router-link :to="{ name: 'toggles-edit', params: { type: data.item.type, productName, flagName }}">
             <button
               type="button"
               class="btn btn-sm btn-raised btn-primary"
