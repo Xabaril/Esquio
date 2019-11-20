@@ -18,11 +18,18 @@ namespace Esquio.UI.Controllers
     [HttpGet]
     public IActionResult Get()
     {
-      var settings = _configuration.GetSection("Settings").GetChildren();
-      var security = _configuration.GetSection("Security").GetSection("Jwt").GetChildren();
-      var result = settings.Concat(security).ToDictionary(x => x.Key, x => x.Value);
+      var settings = _configuration.GetSection("Settings")
+                .GetChildren();
 
-      return Ok(result);
+      var security = _configuration.GetSection("Security")
+                .GetSection("Jwt")
+                .GetChildren();
+
+      var clientConfigurationSettings = settings
+                .Concat(security)
+                .ToDictionary(x => x.Key, x => x.Value);
+
+      return Ok(clientConfigurationSettings);
     }
   }
 }

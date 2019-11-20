@@ -20,7 +20,7 @@ export class AuthService implements IAuthService {
   public init(): void {
     this.config = {
       authority: settings.Authority,
-      client_id: 'spa',
+      client_id: settings.ClientId,
       redirect_uri: window.location.protocol + '//' + window.location.host + '/callback',
       post_logout_redirect_uri: window.location.protocol + '//' + window.location.host,
 
