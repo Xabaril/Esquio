@@ -9,7 +9,7 @@ export class TokensService implements ITokensService {
     const response = await fetch(`${settings.ApiUrl}/apikeys`, {
       method: 'POST',
       body: JSON.stringify({
-        name: performance.now(),
+        name: 'abc-' + Date.now(),
       })
     });
 
