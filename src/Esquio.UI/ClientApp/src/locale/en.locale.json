@@ -18,7 +18,7 @@
     "detail": "Product detail",
     "actions": {
       "add": "Add product",
-      "add_flag": "Add flag",
+      "add_flag": "Add feature",
       "save": "Save product",
       "see_detail": "Open",
       "add_first": "Add your first product",
@@ -50,13 +50,13 @@
     }
   },
   "flags": {
-    "title": "Flags",
-    "detail": "Flag detail",
+    "title": "Features",
+    "detail": "Feature detail",
     "actions": {
-      "add": "Add flag",
-      "save": "Save flag",
+      "add": "Add feature",
+      "save": "Save feature",
       "see_detail": "Open",
-      "add_first": "Add your first flag",
+      "add_first": "Add your first feature",
       "add_toggle": "Add new toggle",
       "delete": "Delete",
       "rollout": "Rollout",
@@ -64,38 +64,38 @@
     },
     "fields": {
       "id": "Identifier",
-      "name": "Flag",
+      "name": "Feature",
       "description": "Description",
       "enabled": "Enabled"
     },
     "placeholders": {
-      "nameHelp": "The name for the flag",
-      "descriptionHelp": "A short description about the flag",
+      "nameHelp": "The name for the feature",
+      "descriptionHelp": "A short description about the feature",
       "tag": "Add new tag"
     },
     "errors": {
-      "get": "Cannot fetch flags",
-      "add": "Cannot create this flag",
-      "detail": "Cannot fetch this flag",
-      "update": "Cannot update the flag",
-      "delete": "Cannot delete the flag",
-      "change": "Cannot change the flag",
-      "rollout": "Cannot rollout the flag",
-      "rolloff": "Cannot rolloff the flag"
+      "get": "Cannot fetch features",
+      "add": "Cannot create this feature",
+      "detail": "Cannot fetch this feature",
+      "update": "Cannot update the feature",
+      "delete": "Cannot delete the flfeatureag",
+      "change": "Cannot change the feature",
+      "rollout": "Cannot rollout the feature",
+      "rolloff": "Cannot rolloff the feature"
     },
     "success": {
-      "add": "The new flag was created",
-      "update": "The flag was updated",
-      "delete": "The flag was deleted",
-      "off": "Flag switched off",
-      "on": "Flag switched on",
-      "rollout": "Flag rolled out",
-      "rolloff": "Flag rolled off"
+      "add": "The new feature was created",
+      "update": "The feature was updated",
+      "delete": "The feature was deleted",
+      "off": "Feature switched off",
+      "on": "Feature switched on",
+      "rollout": "Feature rolled out",
+      "rolloff": "Feature rolled off"
     },
     "confirm": {
-      "title": "Are you sure to delete '{0}' flag?",
-      "rollout": "Are you sure to rollout '{0}' flag?",
-      "rolloff": "Are you sure to rolloff '{0}' flag?"
+      "title": "Are you sure to delete '{0}' feature?",
+      "rollout": "Are you sure to rollout '{0}' feature?",
+      "rolloff": "Are you sure to rolloff '{0}' feature?"
     }
   },
   "tags": {
@@ -150,10 +150,10 @@
   },
   "breadcrumb": {
     "products-edit": "Product",
-    "flags-edit": "Flag",
+    "flags-edit": "Feature",
     "toggles-edit": "Toggle",
     "products-add": "Add Product",
-    "flags-add": "Add Flag",
+    "flags-add": "Add Feature",
     "toggles-add": "Add Toggle"
   },
   "submenu": {

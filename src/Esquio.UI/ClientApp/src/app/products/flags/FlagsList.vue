@@ -143,7 +143,6 @@ export default class extends Vue {
 
   public created(): void {
     this.getFlags();
-    console.log(this.productName);
   }
 
   public async onClickDelete(flag: Flag): Promise<void> {

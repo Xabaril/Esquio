@@ -1,5 +1,7 @@
 export interface BreadCrumbItem {
   id?: string;
-  productId?: string;
+  productName?: string;
+  flagName?: string;
+  type?: string;
   name: string;
 }
