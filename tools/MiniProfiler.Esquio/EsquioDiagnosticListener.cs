@@ -42,6 +42,7 @@ namespace MiniProfiler.Esquio
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
+                    timing.StackTraceSnippet = "Feature Evaluated";
                     timing?.Stop();
                 }
             }
@@ -51,6 +52,8 @@ namespace MiniProfiler.Esquio
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
+                    timing.Errored = true;
+                    timing.StackTraceSnippet = "Feature NotFound";
                     timing?.Stop();
                 }
             }
@@ -63,6 +66,7 @@ namespace MiniProfiler.Esquio
                     if (timing != null)
                     {
                         timing.Errored = true;
+                        timing.StackTraceSnippet = "Toggle Execution Failure";
                         timing.Stop();
                     }
                 }
@@ -83,6 +87,7 @@ namespace MiniProfiler.Esquio
                 {
                     if (timing != null)
                     {
+                        timing.StackTraceSnippet = "Toggle Execution success";
                         timing.Stop();
                     }
                 }
