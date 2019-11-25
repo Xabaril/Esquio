@@ -113,7 +113,7 @@
     },
     "fields": {
       "id": "Identifier",
-      "typeName": "Type"
+      "type": "Type"
     },
     "placeholders": {
       "typeHelp": "Choose your toggle from the buttons of the list",

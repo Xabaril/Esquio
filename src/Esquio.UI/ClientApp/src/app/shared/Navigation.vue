@@ -47,7 +47,7 @@ export default class extends Vue {
 
   @navigationStore.State('toggleFriendlyName') toggleFriendlyName;
 
-  // Becauseis not in the url
+  // Because is not in the url
   get breadCrumbWithFriendlyName(): BreadCrumbItem[] {
     this.breadcrumb.map(page => {
       if (page.name === 'toggles-edit') {

@@ -55,7 +55,7 @@ export class TogglesService implements ITogglesService {
       body: JSON.stringify({
         productName,
         featureName,
-        type: toggle.type,
+        toggleType: toggle.type,
         name: parameterName,
         value
       })
