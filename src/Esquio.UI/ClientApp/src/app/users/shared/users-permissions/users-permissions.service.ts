@@ -7,7 +7,7 @@ import { IUsersPermissionsService } from './iusers-permissions.service';
 export class UsersPermissionsService implements IUsersPermissionsService {
   public async get(pagination: PaginationInfo): Promise<PaginatedResponse<UserPermissions[]>> {
     const params = {
-      pageIndex: pagination.pageIndex,
+      pageIndex: pagination.pageIndex - 1,
       pageCount: pagination.pageCount
     };
 
