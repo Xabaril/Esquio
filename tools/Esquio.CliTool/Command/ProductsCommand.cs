@@ -22,11 +22,11 @@ namespace Esquio.CliTool.Command
 
         private class AddCommand
         {
-            [Option("--name <NAME>", Description = "The product name to be added.")]
+            [Option("--name <NAME>", Description = "The name of product to be added.")]
             [Required]
             public string Name { get; set; }
 
-            [Option("--description <DESCRIPTION>", Description = "The product description to be added.")]
+            [Option("--description <DESCRIPTION>", Description = "The description of product to be added.")]
             [Required]
             public string Description { get; set; }
 
@@ -68,7 +68,7 @@ namespace Esquio.CliTool.Command
 
         private class RemoveCommand
         {
-            [Option("--name <NAME>", Description = "The product name to delete.")]
+            [Option("--name <NAME>", Description = "The name of product to delete.")]
             [Required]
             public string Name { get; set; }
 

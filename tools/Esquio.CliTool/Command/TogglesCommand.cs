@@ -21,11 +21,11 @@ namespace Esquio.CliTool.Command
 
         private class ListCommand
         {
-            [Option("--product <PRODUCT>", Description = "The product name.")]
+            [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Option("--feature-name <FEATURE-NAME>", Description = "The feature name to be rolled off.")]
             [Required]
             public string FeatureName { get; set; }
 
@@ -67,15 +67,15 @@ namespace Esquio.CliTool.Command
 
         private class GetCommand
         {
-            [Option("--product <PRODUCT>", Description = "The product name.")]
+            [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Option("--feature-name <FEATURE-NAME>", Description = "The feature name to be rolled off.")]
             [Required]
             public string FeatureName { get; set; }
 
-            [Option("--toggle <TOGGLE>", Description = "The toggle identifier.")]
+            [Option("--toggle-type <TOGGLE-TYPE>", Description = "The toggle identifier.")]
             [Required]
             public string ToggleType { get; set; }
 

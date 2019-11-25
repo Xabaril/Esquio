@@ -41,7 +41,11 @@ namespace Esquio.CliTool.Internal
         public const ConsoleColor SuccessColor = ConsoleColor.Green;
 
         public const string AsciiArt = @"
-_____ ____   ___  _   _ ___ ___  
+                          ___   
+     +++        `  _ ,  '       
+    (o o)      -  (o)o)  -      
+ooO--(_)--Ooo--ooO'(_)--Ooo-ooO--
+_____ ____   ___  _   _ ___ ___ 
 | ____/ ___| / _ \| | | |_ _/ _ \ 
 |  _| \___ \| | | | | | || | | | |
 | |___ ___) | |_| | |_| || | |_| |

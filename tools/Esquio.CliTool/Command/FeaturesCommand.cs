@@ -22,11 +22,11 @@ namespace Esquio.CliTool.Command
 
         private class RolloutCommand
         {
-            [Option("--product <PRODUCT>", Description = "The product name.")]
+            [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE>", Description = "The feature name to be rolled out.")]
+            [Option("--feature-name <FEATURE-NAME>", Description = "The feature name to be rolled out.")]
             [Required]
             public string FeatureName { get; set; }
 
@@ -85,11 +85,11 @@ namespace Esquio.CliTool.Command
 
         private class RolloffCommand
         {
-            [Option("--product <PRODUCT>", Description = "The product name.")]
+            [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--feature <FEATURE>", Description = "The feature name to be rolled off.")]
+            [Option("--feature-name <FEATURE-NAME>", Description = "The feature name to be rolled off.")]
             [Required]
             public string FeatureName { get; set; }
 
@@ -148,7 +148,7 @@ namespace Esquio.CliTool.Command
 
         private class ListCommand
         {
-            [Option("--product <PRODUCT>", Description = "The product to list features.")]
+            [Option("--product-name <PRODUCT-NAME>", Description = "The product to list features.")]
             [Required]
             public string ProductName { get; set; }
 
