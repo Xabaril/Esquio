@@ -27,15 +27,15 @@
       >
         <div class="toggles_form-header card-header">
           <button
-              class="btn toggles_form-action-button"
-              data-toggle="collapse"
-              :data-target="`#c${i}`"
-              aria-expanded="true"
-            >
-              <i class="material-icons">add_circle_outline</i>
+            class="btn toggles_form-action-button"
+            data-toggle="collapse"
+            :data-target="`#c${i}`"
+            aria-expanded="true"
+          >
+            <i class="material-icons">add_circle_outline</i>
           </button>
           <h2 class="toggles_form-title">
-          {{key}}
+            {{key}}
           </h2>
         </div>
 
@@ -156,6 +156,9 @@ import { ToggleParameterDetail } from './toggle-parameter-detail.model';
 import { ToggleTypesInfo } from './toggle-types.model';
 import { IFlagsService } from '../iflags.service';
 import { Flag } from '../flag.model';
+import { Action, namespace } from 'vuex-class';
+
+const navigationStore = namespace('navigation');
 
 @Component({
   components: {
@@ -183,6 +186,9 @@ export default class extends Vue {
   @Prop({ type: String }) flagName: string;
   @Prop({ type: String }) type: string;
 
+  @navigationStore.Action('setFriendly') setFriendlyInStore;
+
+
   get isEditing(): boolean {
     return !!this.type;
   }
@@ -199,6 +205,7 @@ export default class extends Vue {
     }
 
     await this.getToggle();
+    this.setFriendlyInStore(this.form.friendlyName);
   }
 
   public async onClickSave(): Promise<void> {
@@ -279,15 +286,17 @@ export default class extends Vue {
 
     this.accordion = this.accordion || {};
 
-    this.types.toggles.forEach(({ assembly, type, description, friendlyName }) => {
-      this.accordion[assembly] = this.accordion[assembly] || [];
+    this.types.toggles.forEach(
+      ({ assembly, type, description, friendlyName }) => {
+        this.accordion[assembly] = this.accordion[assembly] || [];
 
-      this.accordion[assembly].push({
-        type,
-        description,
-        friendlyName
-      });
-    });
+        this.accordion[assembly].push({
+          type,
+          description,
+          friendlyName
+        });
+      }
+    );
   }
 
   private async getFlag(): Promise<void> {
@@ -297,7 +306,15 @@ export default class extends Vue {
   private async getToggle(): Promise<void> {
     this.isLoading = true;
     try {
-      const { type, parameters, friendlyName } = await this.togglesService.detail(this.productName, this.flagName, this.type);
+      const {
+        type,
+        parameters,
+        friendlyName
+      } = await this.togglesService.detail(
+        this.productName,
+        this.flagName,
+        this.type
+      );
 
       this.form.type = type;
       this.form.parameters = parameters || [];
@@ -339,7 +356,11 @@ export default class extends Vue {
     }
 
     try {
-      await this.togglesService.remove(this.productName, this.flagName, this.form);
+      await this.togglesService.remove(
+        this.productName,
+        this.flagName,
+        this.form
+      );
       this.$alert(this.$t('toggles.success.delete'));
       return true;
     } catch (e) {
@@ -381,7 +402,13 @@ export default class extends Vue {
     this.isLoading = true;
 
     try {
-      await this.togglesService.addParameter(this.productName, this.flagName, this.form, parameter.name, value);
+      await this.togglesService.addParameter(
+        this.productName,
+        this.flagName,
+        this.form,
+        parameter.name,
+        value
+      );
       this.isLoading = false;
       this.$alert(this.$t('toggles.success.update'));
     } catch (e) {
@@ -430,7 +457,7 @@ export default class extends Vue {
       text-align: left;
       font-size: get-font-size(s);
       border: 0;
-      padding: .25rem 0;
+      padding: 0.25rem 0;
       color: get-color(basic, darkest);
 
       &:active,
@@ -465,14 +492,14 @@ export default class extends Vue {
 
   &-card {
     box-shadow: none;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     background-color: get-color(basic, brighter);
     min-height: 2.5rem;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
   }
 
   &-header {
-    padding: .75rem .5rem;
+    padding: 0.75rem 0.5rem;
     display: flex;
     align-items: center;
     border-bottom: 0;
@@ -486,18 +513,18 @@ export default class extends Vue {
   &-title {
     margin: 0;
     padding-bottom: 0;
-    margin-left: .25rem;
+    margin-left: 0.25rem;
     font-size: get-font-size(m);
     line-height: 1.2rem;
   }
 
   &-body {
-    padding: .25rem 1rem .25rem 2.25rem;
+    padding: 0.25rem 1rem 0.25rem 2.25rem;
   }
 
   &-friendlyname {
     display: inline-block;
-    transform: translateY(-.2rem);
+    transform: translateY(-0.2rem);
   }
 }
 </style>

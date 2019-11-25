@@ -95,12 +95,10 @@ export class AuthService implements IAuthService {
 
   private handleEvents(): void {
     this.manager.events.addUserLoaded(user => {
-      console.log('#response', { message: 'User loaded' });
       return this.getUser();
     });
 
     this.manager.events.addUserUnloaded(() => {
-      console.log('#response', { message: 'User logged out locally' });
       return this.getUser();
     });
 

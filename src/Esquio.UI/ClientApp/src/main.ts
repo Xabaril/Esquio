@@ -1,18 +1,18 @@
-import 'reflect-metadata';
-import { Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
+import 'reflect-metadata';
 import VeeValidate from 'vee-validate';
-
+import { Vue } from 'vue-property-decorator';
 import { getSettings } from '~/core';
-import { vendor, configurePlugins } from './app/vendor';
-import { router } from './app/app.router';
+import { IAuthService, ITranslateService } from '~/shared';
 import { containerBuilder } from './app/app.container';
 import { Filters } from './app/app.filters';
-import store from './app/app.store';
+import { router } from './app/app.router';
 import App from './app/App.vue';
-
-import { ITranslateService, IAuthService } from '~/shared';
+import { createStore } from './app/store';
+import { configurePlugins, vendor } from './app/vendor';
 import './styles/app.scss';
+
+
 
 export class AppModule {
   @Inject() translateService: ITranslateService;
@@ -38,7 +38,7 @@ export class AppModule {
     let options = {
       el: '#app',
       router: router(),
-      store,
+      store: createStore(),
       i18n: this.translateService.i18n,
       render: create => create(App)
     };
