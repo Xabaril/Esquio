@@ -457,7 +457,7 @@ export default class extends Vue {
       text-align: left;
       font-size: get-font-size(s);
       border: 0;
-      padding: 0.25rem 0;
+      padding: .25rem 0;
       color: get-color(basic, darkest);
 
       &:active,
@@ -492,14 +492,14 @@ export default class extends Vue {
 
   &-card {
     box-shadow: none;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
     background-color: get-color(basic, brighter);
     min-height: 2.5rem;
-    border-radius: 0.25rem;
+    border-radius: .25rem;
   }
 
   &-header {
-    padding: 0.75rem 0.5rem;
+    padding: .75rem .5rem;
     display: flex;
     align-items: center;
     border-bottom: 0;
@@ -513,18 +513,18 @@ export default class extends Vue {
   &-title {
     margin: 0;
     padding-bottom: 0;
-    margin-left: 0.25rem;
+    margin-left: .25rem;
     font-size: get-font-size(m);
     line-height: 1.2rem;
   }
 
   &-body {
-    padding: 0.25rem 1rem 0.25rem 2.25rem;
+    padding: .25rem 1rem .25rem 2.25rem;
   }
 
   &-friendlyname {
     display: inline-block;
-    transform: translateY(-0.2rem);
+    transform: translateY(-.2rem);
   }
 }
 </style>
