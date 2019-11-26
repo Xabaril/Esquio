@@ -1,6 +1,33 @@
 
 # ChangeLog 
 
+## Release - ESquio 2.0
+
+- UI
+    - New
+        - Use slug's instead of resource id on our http api's.
+        - Added mature versioning model, we support api version from query string or http header.
+        - Improved breadcrumb.
+        - Added support for ClientId parametrization on client.
+    - Fixes
+        - Accumulated issues from previous versions.
+- Esquio
+    - New
+        - Added new abstraction IScopedEvaluationSession used to store feature evaluation result in the same scope.
+    - Fixes
+        - Accumulated issues from previous versions.
+- Esquio.CliTool
+    - New
+        - Added new cli tool to interop with Esquio UI http api from the command line.
+- Esquio.Miniprofiler
+    - New
+    -Fixes
+        - Fixes stack trace message to show on miniprofiler ui
+
+## Patch - Esquio 1.1.1 released on 2019, November 13
+
+- Fix issue on how we use DiagnosticListener, overlaping default DiagnosticListener created by Asp.Net Core host. This issue break Application Insight telemetry processors. 
+
 ## Release -  Esquio 1.1 released on 2019, October 18
 
 - Created new MiniProfiler extension for profile feature evaluation.

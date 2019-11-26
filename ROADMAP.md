@@ -1,6 +1,20 @@
 
 # Roadmap 
 
+## Release - Esquio 2.0 December 2019
+
+- Esquio 2.0
+- Esquio.AspNetCore 2.0
+- Esquio.ConfigurationStore 2.0
+- Esquio.EntityFrameworkStore 2.0
+- Esquio.CliTool 2.0
+- Esquio.MiniProfiler 2.0
+- Esquio.UI 2.0
+
+## Path - Esquio 1.1.1 Octover 2019
+
+- Fix issue with DiagnosticListener that break Application Insight collector
+
 ## Release - Esquio 1.1  November 2019
 
 ## Patch - Esquio.AspNetCore 1.0.1 released on 2019, October 8
