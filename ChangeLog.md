@@ -1,7 +1,7 @@
 
 # ChangeLog 
 
-## Release - ESquio 2.0
+## Release - Esquio 2.0
 
 - UI
     - New
