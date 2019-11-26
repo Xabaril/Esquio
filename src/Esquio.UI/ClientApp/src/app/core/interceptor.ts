@@ -18,7 +18,7 @@ export function registerInterceptor(next = null) {
       config.headers = {
         ...headers,
         'Content-Type': 'application/json',
-        'x-api-version': '2.0',
+        'X-Api-Version': '2.0',
         Authorization: `Bearer ${authService.user.access_token}`
       };
       return [url, config];

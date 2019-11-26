@@ -97,7 +97,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.FromToToggle, Esquio")
+              .WithType("Esquio.Toggles.FromToToggle,Esquio")
               .Build();
 
             var parameter = Builders.Parameter()
@@ -131,7 +131,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.FromToToggle, Esquio");
+                .BeEquivalentTo("Esquio.Toggles.FromToToggle,Esquio");
 
             content.Assembly
                 .Should()
@@ -379,15 +379,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var product = Builders.Product()
-               .WithName("product#1")
+               .WithName("fooproduct")
                .Build();
 
             var feature = Builders.Feature()
-                .WithName("feature#1")
+                .WithName("barfeatuer")
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.EnvironmentToggle, Esquio")
+              .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
               .Build();
 
             var parameter = Builders.Parameter()
@@ -408,7 +408,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle, Esquio"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle,Esquio"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -421,7 +421,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.EnvironmentToggle, Esquio");
+                .BeEquivalentTo("Esquio.Toggles.EnvironmentToggle,Esquio");
 
             content.Parameters
                 .Count

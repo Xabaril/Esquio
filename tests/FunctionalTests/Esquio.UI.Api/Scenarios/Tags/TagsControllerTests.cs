@@ -220,11 +220,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .Build();
 
             var feature1 = Builders.Feature()
-                .WithName("barfeature1")
+                .WithName("barfeatureone")
                 .Build();
 
             var feature2 = Builders.Feature()
-               .WithName("barfeature2")
+               .WithName("barfeaturetwo")
                .Build();
 
             var tag = Builders.Tag()

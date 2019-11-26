@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -36,6 +37,9 @@ namespace Esquio.UI.Api
                     setup.ReportApiVersions = true;
                     setup.AssumeDefaultVersionWhenUnspecified = true;
                     setup.UseApiBehavior = true;
+                    setup.ApiVersionReader = ApiVersionReader.Combine(
+                        new QueryStringApiVersionReader(),
+                        new HeaderApiVersionReader(ApiConstants.ApiVersionHeaderName));
                 })
                 .AddVersionedApiExplorer()
                 .AddMvc()
