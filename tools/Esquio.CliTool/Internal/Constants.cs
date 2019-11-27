@@ -22,7 +22,13 @@ namespace Esquio.CliTool.Internal
         public const string NoPromptParameter = "--no-prompt <NO-PROMPT>";
         public const string NoPromptDescription = "Show or hide prompt message";
         public const string NoPromptMessage = "Are you sure to perform this action?";
-        
+
+        public const string PageIndexParameter = "--page-index <PAGE-INDEX>";
+        public const string PageIndexDescription = "Set the query page index results.";
+
+        public const string PageCountParameter = "--page-count <PAGE-COUNT>";
+        public const string PageCountDescription = "Set the query page count results.";
+
 
         public const string ApiKeyEnvironmentVariable = "ESQUIO_API_KEY";
         public const string ApiKeyParameter = "--api-key <APIKEY>";

@@ -1,4 +1,3 @@
-using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Infrastructure.Data.Seed;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

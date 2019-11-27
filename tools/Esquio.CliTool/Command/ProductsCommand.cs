@@ -133,6 +133,12 @@ namespace Esquio.CliTool.Command
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
 
+            [Option(Constants.PageIndexParameter, Description = Constants.PageIndexDescription)]
+            public int PageIndex { get; set; } = 0;
+
+            [Option(Constants.PageCountParameter, Description = Constants.PageCountDescription)]
+            public int PageCount { get; set; } = 10;
+
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
@@ -141,7 +147,7 @@ namespace Esquio.CliTool.Command
                      uri: Uri ?? Constants.UriDefaultValue,
                      apikey: ApiKey))
                 {
-                    var response = await client.ListProductsAsync();
+                    var response = await client.ListProductsAsync(pageIndex: PageIndex, pageCount: PageCount);
 
                     if (response.IsSuccessStatusCode)
                     {
