@@ -1,6 +1,7 @@
 ﻿using Esquio.CliTool.Command;
 using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
+using Newtonsoft.Json;
 using System;
 
 namespace Esquio.CliTool
@@ -25,16 +26,18 @@ namespace Esquio.CliTool
 
                 return app.Execute(args);
             }
-            catch (ApiException exception)
+            catch (ApiException<ValidationProblemDetails> exception)
             {
-                var defaultForegroundColor = Console.ForegroundColor;
-                Console.ForegroundColor = Constants.ErrorColor;
-                Console.WriteLine(exception.Message);
-                Console.ForegroundColor = defaultForegroundColor;
-
+                PhysicalConsole.Singleton.WriteObject(exception.Result, Constants.ErrorColor);
+                return 1;
+            }
+            catch (ApiException<ProblemDetails> exception)
+            {
+                PhysicalConsole.Singleton.WriteObject(exception.Result, Constants.ErrorColor);
                 return 1;
             }
         }
+
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
             app.ShowHelp(usePager: true);

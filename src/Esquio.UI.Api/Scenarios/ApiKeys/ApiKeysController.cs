@@ -5,6 +5,7 @@ using Esquio.UI.Api.Features.Flags.Delete;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -28,6 +29,8 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
+        [ProducesResponseType(typeof(ListApiKeyResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ListApiKeyResponse>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(request, cancellationToken);
@@ -38,6 +41,9 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("{name:slug}")]
+        [ProducesResponseType(typeof(DetailsApiKeyResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsApiKeyResponse>> Get(string name, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(new DetailsApiKeyRequest { Name = name }, cancellationToken);
@@ -53,6 +59,9 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpPost]
         [Authorize(Policies.Management)]
         [Route("")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AddApiKeyResponse>> Add(AddApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
@@ -63,6 +72,8 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpDelete]
         [Authorize(Policies.Management)]
         [Route("{name:slug}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete([FromRoute]DeleteApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

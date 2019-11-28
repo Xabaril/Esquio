@@ -36,10 +36,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ListApiKeyResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -61,11 +68,21 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/AddApiKeyResponse"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -88,11 +105,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -115,10 +135,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/DetailsApiKeyResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -149,11 +179,21 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -195,10 +235,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ListFeatureResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -237,10 +284,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -268,10 +325,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/DetailsFeatureResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -297,10 +364,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -326,10 +403,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -354,11 +441,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -388,10 +478,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ListProductResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -413,11 +510,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "201": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -440,11 +540,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -467,10 +570,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/DetailsProductResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -499,11 +612,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -529,13 +645,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/TagResponseDetail"
               }
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -560,11 +683,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -603,10 +729,13 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -632,10 +761,20 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/DetailsToggleResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -658,11 +797,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -688,10 +830,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/RevealToggleResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -713,11 +862,21 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -731,10 +890,17 @@
         "operationId": "Toggles_KnownTypes",
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/KnownTypesToggleResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -758,11 +924,21 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ValidationProblemDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -776,10 +952,20 @@
         "operationId": "Users_My",
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/MyResponse"
+            }
+          },
+          "403": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -809,10 +995,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ListUsersResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -835,11 +1028,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -862,10 +1058,13 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -888,10 +1087,13 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -914,10 +1116,17 @@
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/DetailsUsersResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         }
@@ -968,6 +1177,31 @@
         }
       }
     },
+    "ProblemDetails": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      }
+    },
     "DetailsApiKeyResponse": {
       "type": "object",
       "required": [
@@ -983,16 +1217,26 @@
         }
       }
     },
-    "AddApiKeyResponse": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
+    "ValidationProblemDetails": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetails"
         },
-        "key": {
-          "type": "string"
+        {
+          "type": "object",
+          "properties": {
+            "errors": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
-      }
+      ]
     },
     "AddApiKeyRequest": {
       "type": "object",
@@ -1482,6 +1726,29 @@
         },
         "type": {
           "type": "string"
+        }
+      }
+    },
+    "MyResponse": {
+      "type": "object",
+      "required": [
+        "isAuthorized",
+        "readPermission",
+        "writePermission",
+        "managementPermission"
+      ],
+      "properties": {
+        "isAuthorized": {
+          "type": "boolean"
+        },
+        "readPermission": {
+          "type": "boolean"
+        },
+        "writePermission": {
+          "type": "boolean"
+        },
+        "managementPermission": {
+          "type": "boolean"
         }
       }
     },

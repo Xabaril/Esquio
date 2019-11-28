@@ -4,6 +4,7 @@ using Esquio.UI.Api.Features.Tags.List;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace Esquio.UI.Api.Features.Tags
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/tags")]
+        [ProducesResponseType(typeof(List<TagResponseDetail>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TagResponseDetail>>> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -36,6 +39,8 @@ namespace Esquio.UI.Api.Features.Tags
         [HttpDelete]
         [Authorize(Policies.Write)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/untag/{tag:slug}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Untag([FromRoute]DeleteTagRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -46,6 +51,8 @@ namespace Esquio.UI.Api.Features.Tags
         [HttpPost]
         [Authorize(Policies.Write)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/tags/tag")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Tag(string productName,string featureName, AddTagRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;

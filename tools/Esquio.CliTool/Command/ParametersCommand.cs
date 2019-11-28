@@ -46,7 +46,6 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 await client.Toggles_AddParameterAsync(
                     new AddParameterToggleRequest 
@@ -58,9 +57,7 @@ namespace Esquio.CliTool.Command
                         Value = ParameterValue
                     });
 
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.");
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.", Constants.SuccessColor);
 
                 return 0;
             }

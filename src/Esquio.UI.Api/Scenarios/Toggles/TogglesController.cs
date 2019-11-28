@@ -7,6 +7,7 @@ using Esquio.UI.Api.Features.Toggles.Reveal;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -29,6 +30,9 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
+        [ProducesResponseType(typeof(DetailsToggleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsToggleResponse>> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
         {
             var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
@@ -44,6 +48,8 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpDelete]
         [Authorize(Policies.Write)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest deleteToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(deleteToggleRequest, cancellationToken);
@@ -54,6 +60,8 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/toggles/parameters/{toggleType}")]
+        [ProducesResponseType(typeof(RevealToggleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RevealToggleResponse>> Reveal([FromRoute]RevealToggleRequest revealToggleRequest, CancellationToken cancellationToken = default)
         {
             var reveal = await _mediator.Send(revealToggleRequest, cancellationToken);
@@ -64,6 +72,8 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/toggles/types")]
+        [ProducesResponseType(typeof(KnownTypesToggleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<KnownTypesToggleResponse>> KnownTypes(CancellationToken cancellationToken = default)
         {
             var toggleList = await _mediator.Send(new KnownTypesToggleRequest(), cancellationToken);
@@ -74,6 +84,9 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpPost]
         [Authorize(Policies.Write)]
         [Route("api/toggles/parameters")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddParameter(AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(parameterToggleRequest, cancellationToken);
@@ -84,6 +97,9 @@ namespace Esquio.UI.Api.Features.Toggles
         [HttpPost]
         [Authorize(Policies.Write)]
         [Route("api/toggles")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add(AddToggleRequest postToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(postToggleRequest, cancellationToken);

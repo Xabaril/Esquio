@@ -55,13 +55,9 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 await client.Features_RolloutAsync(new RolloutFeatureRequest { ProductName = ProductName, FeatureName = FeatureName });
-
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine($"The feature {FeatureName} was rolled out.");
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteLine($"The feature {FeatureName} was rolled out.", Constants.SuccessColor);
 
                 return 0;
             }
@@ -102,13 +98,9 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 await client.Features_RollbackAsync(new RollbackFlagRequest{ ProductName = ProductName, FeatureName = FeatureName });
-
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine($"The feature {FeatureName} was rolled off.");
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteLine($"The feature {FeatureName} was rolled off.", Constants.SuccessColor);
 
                 return 0;
             }
@@ -134,13 +126,9 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 var response = await client.Features_ListAsync(ProductName, PageIndex, PageCount);
-
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteObject(response, Constants.SuccessColor);
 
                 return 0;
             }

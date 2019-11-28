@@ -38,7 +38,6 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 await client.Products_AddAsync(
                     new AddProductRequest
@@ -47,9 +46,7 @@ namespace Esquio.CliTool.Command
                         Description = Description
                     });
 
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine($"The product {Name} was added succesfully.");
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteLine($"The product {Name} was added succesfully.", Constants.SuccessColor);
 
                 return 0;
             }
@@ -86,7 +83,6 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 await client.Products_DeleteAsync(
                     new DeleteProductRequest
@@ -94,9 +90,7 @@ namespace Esquio.CliTool.Command
                         ProductName = Name
                     });
 
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine($"The product {Name} was removed succesfully.");
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteLine($"The product {Name} was removed succesfully.", Constants.SuccessColor);
 
                 return 0;
             }
@@ -118,13 +112,10 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var defaultForegroundColor = console.ForegroundColor;
                 var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
                 var response = await client.Products_ListAsync(PageIndex, PageCount);
 
-                console.ForegroundColor = Constants.SuccessColor;
-                console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
-                console.ForegroundColor = defaultForegroundColor;
+                console.WriteObject(response, Constants.SuccessColor);
 
                 return 0;
             }

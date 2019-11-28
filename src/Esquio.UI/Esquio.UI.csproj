@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Compile Remove="Abstractions\**" />
-    <Content Remove="Abstractions\**" />
+    <Content Remove="Abstractions\**" />    
     <EmbeddedResource Remove="Abstractions\**" />
     <None Remove="Abstractions\**" />
   </ItemGroup>

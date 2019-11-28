@@ -6,6 +6,7 @@ using Esquio.UI.Api.Features.Products.Update;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -29,6 +30,8 @@ namespace Esquio.UI.Api.Features.Products
         [HttpGet]
         [Route("")]
         [Authorize(Policies.Read)]
+        [ProducesResponseType(typeof(ListProductResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ListProductResponse>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -39,6 +42,9 @@ namespace Esquio.UI.Api.Features.Products
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("{productName:slug}")]
+        [ProducesResponseType(typeof(DetailsProductResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsProductResponse>> Get(string productName, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(new DetailsProductRequest { ProductName = productName }, cancellationToken);
@@ -53,6 +59,8 @@ namespace Esquio.UI.Api.Features.Products
         [HttpPost]
         [Authorize(Policies.Write)]
         [Route("")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(request, cancellationToken);
@@ -63,6 +71,8 @@ namespace Esquio.UI.Api.Features.Products
         [HttpPut]
         [Authorize(Policies.Write)]
         [Route("{productName:slug}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(string productName, UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
             request.CurrentName = productName;
@@ -75,6 +85,8 @@ namespace Esquio.UI.Api.Features.Products
         [HttpDelete]
         [Authorize(Policies.Write)]
         [Route("{productName:slug}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);

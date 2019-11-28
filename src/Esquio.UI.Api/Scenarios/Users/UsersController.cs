@@ -7,6 +7,7 @@ using Esquio.UI.Api.Features.Users.Update;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
@@ -31,6 +32,9 @@ namespace Esquio.UI.Api.Features.Users
 
         [HttpGet]
         [Route("my")]
+        [ProducesResponseType(typeof(MyResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> My(CancellationToken cancellationToken = default)
         {
             var request = new MyRequest()
@@ -51,6 +55,8 @@ namespace Esquio.UI.Api.Features.Users
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
+        [ProducesResponseType(typeof(ListUsersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ListUsersResponse>> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
@@ -61,6 +67,8 @@ namespace Esquio.UI.Api.Features.Users
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("{subjectId}")]
+        [ProducesResponseType(typeof(DetailsUsersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsUsersResponse>> Details(string subjectId, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(new DetailsUsersRequest { SubjectId = subjectId }, cancellationToken);
@@ -71,15 +79,19 @@ namespace Esquio.UI.Api.Features.Users
         [HttpDelete]
         [Authorize(Policies.Management)]
         [Route("{subjectid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete([FromRoute]DeleteUsersRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPost]
         [Authorize(Policies.Management)]
         [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add([FromBody]AddPermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
@@ -89,6 +101,8 @@ namespace Esquio.UI.Api.Features.Users
         [HttpPut]
         [Authorize(Policies.Management)]
         [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update([FromBody]UpdatePermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
