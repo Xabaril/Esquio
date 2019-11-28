@@ -47,8 +47,10 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Toggles_AddParameterAsync(
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await esquioClient.Toggles_AddParameterAsync(
                     new AddParameterToggleRequest 
                     { 
                         ProductName = ProductName,

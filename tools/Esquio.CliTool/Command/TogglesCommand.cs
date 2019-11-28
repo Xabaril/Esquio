@@ -38,8 +38,10 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                var response = await client.Features_GetAsync(ProductName, FeatureName);
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                var response = await esquioClient.Features_GetAsync(ProductName, FeatureName);
 
                 console.ForegroundColor = Constants.SuccessColor;
                 console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));

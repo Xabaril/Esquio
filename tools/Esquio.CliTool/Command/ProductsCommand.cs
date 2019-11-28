@@ -39,8 +39,10 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Products_AddAsync(
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await esquioClient.Products_AddAsync(
                     new AddProductRequest
                     {
                         Name = Name,
@@ -87,8 +89,10 @@ namespace Esquio.CliTool.Command
                 }
 
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Products_DeleteAsync(
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await esquioClient.Products_DeleteAsync(
                     new DeleteProductRequest
                     {
                         ProductName = Name
@@ -119,8 +123,10 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                var response = await client.Products_ListAsync(PageIndex, PageCount);
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                var response = await esquioClient.Products_ListAsync(PageIndex, PageCount);
 
                 console.ForegroundColor = Constants.SuccessColor;
                 console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));

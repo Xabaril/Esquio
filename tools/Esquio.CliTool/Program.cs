@@ -25,6 +25,24 @@ namespace Esquio.CliTool
 
                 return app.Execute(args);
             }
+            catch (ApiException exception) when (exception.StatusCode == 401)
+            {
+                var defaultForegroundColor = Console.ForegroundColor;
+                Console.ForegroundColor = Constants.ErrorColor;
+                Console.WriteLine("The current api key is not valid and result is UnAuhtorized.");
+                Console.ForegroundColor = defaultForegroundColor;
+
+                return 1;
+            }
+            catch (ApiException exception) when (exception.StatusCode == 404)
+            {
+                var defaultForegroundColor = Console.ForegroundColor;
+                Console.ForegroundColor = Constants.ErrorColor;
+                Console.WriteLine("The current resource is Not Found.");
+                Console.ForegroundColor = defaultForegroundColor;
+
+                return 1;
+            }
             catch (ApiException exception)
             {
                 var defaultForegroundColor = Console.ForegroundColor;

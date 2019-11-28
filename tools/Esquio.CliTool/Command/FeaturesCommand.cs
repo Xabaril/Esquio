@@ -56,8 +56,10 @@ namespace Esquio.CliTool.Command
                 }
 
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Features_RolloutAsync(new RolloutFeatureRequest { ProductName = ProductName, FeatureName = FeatureName });
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await esquioClient.Features_RolloutAsync(new RolloutFeatureRequest { ProductName = ProductName, FeatureName = FeatureName });
 
                 console.ForegroundColor = Constants.SuccessColor;
                 console.WriteLine($"The feature {FeatureName} was rolled out.");
@@ -103,8 +105,11 @@ namespace Esquio.CliTool.Command
                 }
 
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Features_RollbackAsync(new RollbackFlagRequest{ ProductName = ProductName, FeatureName = FeatureName });
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await esquioClient.Features_RollbackAsync(
+                    new RollbackFlagRequest { ProductName = ProductName, FeatureName = FeatureName });
 
                 console.ForegroundColor = Constants.SuccessColor;
                 console.WriteLine($"The feature {FeatureName} was rolled off.");
@@ -135,8 +140,10 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                var response = await client.Features_ListAsync(ProductName, PageIndex, PageCount);
+                var esquioClient = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                var response = await esquioClient.Features_ListAsync(ProductName, PageIndex, PageCount);
 
                 console.ForegroundColor = Constants.SuccessColor;
                 console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
