@@ -19,7 +19,7 @@ namespace Esquio.CliTool.Internal
         public EsquioClient Create(string uri, string apiKey)
         {
             _httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
-            _httpClient.DefaultRequestHeaders.Add("x-api-version", "2.0");
+            _httpClient.DefaultRequestHeaders.Add("x-api-version", Constants.CurrentVersion);
             
             return new EsquioClient(uri ?? Constants.UriDefaultValue, _httpClient);
         }

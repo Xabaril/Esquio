@@ -9,6 +9,8 @@ namespace Esquio.CliTool.Internal
 
         public const string CommandName = "dotnet-esquio";
 
+        public const string CurrentVersion = "2.0";
+
         public const string ProductsCommandName = "products";
         public const string ProductsDescriptionCommandName = "Manage Esquio products using Esquio UI HTTP API";
 
