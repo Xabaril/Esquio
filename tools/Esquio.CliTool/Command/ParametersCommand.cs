@@ -2,7 +2,6 @@
 using McMaster.Extensions.CommandLineUtils;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
@@ -48,30 +47,22 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                await client.Toggles_AddParameterAsync(
+                    new AddParameterToggleRequest 
+                    { 
+                        ProductName = ProductName,
+                        FeatureName = FeatureName,
+                        ToggleType = ToggleType,
+                        Name = ParameterName,
+                        Value = ParameterValue
+                    });
 
-                using (var client = EsquioClient.Create(
-                    uri: Uri ?? Constants.UriDefaultValue,
-                    apikey: ApiKey))
-                {
-                    var response = await client.SetParameterValue(ProductName, FeatureName, ToggleType, ParameterName, ParameterValue);
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.");
+                console.ForegroundColor = defaultForegroundColor;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.");
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
     }

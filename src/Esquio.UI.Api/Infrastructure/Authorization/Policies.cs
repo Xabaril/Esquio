@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Esquio.UI.Api.Infrastructure.Authorization
+﻿namespace Esquio.UI.Api.Infrastructure.Authorization
 {
     static class Policies
     {

@@ -51,7 +51,7 @@ namespace Esquio.UI.Api.Features.Users
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
-        public async Task<IActionResult> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ListUsersResponse>> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
@@ -61,9 +61,9 @@ namespace Esquio.UI.Api.Features.Users
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("{subjectId}")]
-        public async Task<IActionResult> Details([FromRoute]DetailsUsersRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsUsersResponse>> Details(string subjectId, CancellationToken cancellationToken = default)
         {
-            var response = await _mediator.Send(request, cancellationToken);
+            var response = await _mediator.Send(new DetailsUsersRequest { SubjectId = subjectId }, cancellationToken);
 
             return Ok(response);
         }

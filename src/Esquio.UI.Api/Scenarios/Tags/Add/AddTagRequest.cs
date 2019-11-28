@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Esquio.UI.Api.Features.Tags.Add
 {

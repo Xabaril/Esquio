@@ -4,11 +4,13 @@ namespace Esquio.CliTool.Internal
 {
     internal class Constants
     {
+        public const int PageIndex = 0;
+        public const int PageCount = 10;
+
         public const string CommandName = "dotnet-esquio";
 
         public const string ProductsCommandName = "products";
         public const string ProductsDescriptionCommandName = "Manage Esquio products using Esquio UI HTTP API";
-
 
         public const string FeaturesCommandName = "features";
         public const string FeaturesDescriptionCommandName = "Manage Esquio features using Esquio UI HTTP API";
@@ -22,7 +24,6 @@ namespace Esquio.CliTool.Internal
         public const string NoPromptParameter = "--no-prompt <NO-PROMPT>";
         public const string NoPromptDescription = "Show or hide prompt message";
         public const string NoPromptMessage = "Are you sure to perform this action?";
-        
 
         public const string ApiKeyEnvironmentVariable = "ESQUIO_API_KEY";
         public const string ApiKeyParameter = "--api-key <APIKEY>";
@@ -32,6 +33,12 @@ namespace Esquio.CliTool.Internal
         public const string UriDefaultValue = "http://localhost";
         public const string UriParameter = "--uri <URI>";
         public const string UriDescription = "The Esquio UI url base path.If is not present, the environment variable ESQUIO_URI will be used.";
+
+        public const string PageIndexParameter = "--page-index <INDEX>";
+        public const string PageIndexDescription = "The page index. If is not present, the default value 0 will be used.";
+
+        public const string PageCountParameter = "--page-count <COUNT>";
+        public const string PageCountDescription = "The page size. If is not present, the default value 10 will be used.";
 
         public const string SpecifySubCommandErrorMessage = "You must specify at a subcommand";
 

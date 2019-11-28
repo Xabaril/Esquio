@@ -11,6 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="$(mcmastercommandlineutils)" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="$(microsoftextensionshttp)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
+    <PackageReference Include="NSwag.MSBuild" Version="$(nswagmsbuild)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
+
+  <Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
+    <Exec Command="$(NSwagExe_Core30) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId" />
+  </Target>
 
 </Project>

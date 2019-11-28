@@ -87,9 +87,9 @@ namespace Esquio.UI.Api.Features.Flags
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}")]
-        public async Task<IActionResult> Get([FromRoute]DetailsFeatureRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsFeatureResponse>> Get(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            var feature = await _mediator.Send(request, cancellationToken);
+            var feature = await _mediator.Send(new DetailsFeatureRequest(productName, featureName), cancellationToken);
 
             if (feature != null)
             {
@@ -102,7 +102,7 @@ namespace Esquio.UI.Api.Features.Flags
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/products/{productName:slug}/features")]
-        public async Task<IActionResult> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ListFeatureResponse>> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
 

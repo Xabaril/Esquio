@@ -1,5 +1,4 @@
-﻿using Esquio.Model;
-using Esquio.Toggles;
+﻿using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;

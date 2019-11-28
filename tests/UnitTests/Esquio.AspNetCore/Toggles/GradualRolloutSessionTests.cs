@@ -1,9 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Esquio.AspNetCore.Toggles;
-using Esquio.Diagnostics;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

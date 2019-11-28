@@ -29,7 +29,7 @@ namespace Esquio.UI.Api.Features.Products
         [HttpGet]
         [Route("")]
         [Authorize(Policies.Read)]
-        public async Task<IActionResult> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ListProductResponse>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
@@ -39,9 +39,9 @@ namespace Esquio.UI.Api.Features.Products
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("{productName:slug}")]
-        public async Task<IActionResult> Get([FromRoute]DetailsProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsProductResponse>> Get(string productName, CancellationToken cancellationToken = default)
         {
-            var product = await _mediator.Send(request, cancellationToken);
+            var product = await _mediator.Send(new DetailsProductRequest { ProductName = productName }, cancellationToken);
 
             if (product != null)
             {

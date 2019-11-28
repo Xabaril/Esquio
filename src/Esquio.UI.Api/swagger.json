@@ -1,0 +1,1613 @@
+﻿{
+  "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v12.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "My Title",
+    "version": "1.0.0"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/ApiKeys": {
+      "get": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "operationId": "ApiKeys_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListApiKeyResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "operationId": "ApiKeys_Add",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddApiKeyRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddApiKeyResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "operationId": "ApiKeys_Delete",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteApiKeyRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/ApiKeys/{name}": {
+      "get": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "operationId": "ApiKeys_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsApiKeyResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features": {
+      "post": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Add",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "addfeatureRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddFeatureRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_List",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListFeatureResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features/{featureName}": {
+      "put": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Update",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "updateFeatureRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateFeatureRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsFeatureResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features/rollout": {
+      "put": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Rollout",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "rolloutFeatureRequest",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/RolloutFeatureRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features/rollback": {
+      "put": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Rollback",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "rollbackFeatureRequest",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/RollbackFlagRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features": {
+      "delete": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Delete",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteFeatureRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListProductResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Add",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddProductRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Delete",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteProductRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Products/{productName}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsProductResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Update",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateProductRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "operationId": "Tags_List",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/ListTagRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TagResponseDetail"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features/tags/untag": {
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "operationId": "Tags_Untag",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteTagRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features/{featureName}/tags/tag": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "operationId": "Tags_Tag",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddTagRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/products/features/toggles": {
+      "get": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_Details",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "detailsToggleRequest",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DetailsToggleRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsToggleResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_Delete",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "deleteToggleRequest",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteToggleRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/toggles/parameters": {
+      "get": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_Reveal",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "revealToggleRequest",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/RevealToggleRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RevealToggleResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_AddParameter",
+        "parameters": [
+          {
+            "name": "parameterToggleRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddParameterToggleRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/toggles/types": {
+      "get": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_KnownTypes",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/KnownTypesToggleResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/toggles": {
+      "post": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_Add",
+        "parameters": [
+          {
+            "name": "postToggleRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddToggleRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/my": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_My",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListUsersResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Delete",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DeleteUsersRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Add",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddPermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Update",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{subjectId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Details",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsUsersResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ListApiKeyResponse": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListApiKeyResponseDetail"
+          }
+        }
+      }
+    },
+    "ListApiKeyResponseDetail": {
+      "type": "object",
+      "required": [
+        "validTo"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "DetailsApiKeyResponse": {
+      "type": "object",
+      "required": [
+        "validTo"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "AddApiKeyResponse": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "AddApiKeyRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "DeleteApiKeyRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AddFeatureRequest": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdateFeatureRequest": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RolloutFeatureRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        }
+      }
+    },
+    "RollbackFlagRequest": {
+      "type": "object",
+      "properties": {
+        "featureName": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteFeatureRequest": {
+      "type": "object",
+      "properties": {
+        "featureName": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsFeatureResponse": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "toggles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ToggleDetail"
+          }
+        }
+      }
+    },
+    "ToggleDetail": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "friendlyName": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParameterDetail"
+          }
+        }
+      }
+    },
+    "ParameterDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "ListFeatureResponse": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListFlagResponseDetail"
+          }
+        }
+      }
+    },
+    "ListFlagResponseDetail": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ListProductResponse": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListProductResponseDetail"
+          }
+        }
+      }
+    },
+    "ListProductResponseDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsProductResponse": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "AddProductRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateProductRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteProductRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        }
+      }
+    },
+    "TagResponseDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ListTagRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteTagRequest": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        }
+      }
+    },
+    "AddTagRequest": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsToggleResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "assembly": {
+          "type": "string"
+        },
+        "friendlyName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParameterDetail2"
+          }
+        }
+      }
+    },
+    "ParameterDetail2": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsToggleRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "toggleType": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteToggleRequest": {
+      "type": "object",
+      "properties": {
+        "toggleType": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        }
+      }
+    },
+    "RevealToggleResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RevealToggleParameterResponse"
+          }
+        }
+      }
+    },
+    "RevealToggleParameterResponse": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "clrType": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "RevealToggleRequest": {
+      "type": "object",
+      "properties": {
+        "toggleType": {
+          "type": "string"
+        }
+      }
+    },
+    "KnownTypesToggleResponse": {
+      "type": "object",
+      "required": [
+        "scannedAssemblies"
+      ],
+      "properties": {
+        "scannedAssemblies": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "toggles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/KnownTypesToggleDetailResponse"
+          }
+        }
+      }
+    },
+    "KnownTypesToggleDetailResponse": {
+      "type": "object",
+      "properties": {
+        "assembly": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "friendlyName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "AddParameterToggleRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "toggleType": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "AddToggleRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "toggleType": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AddToggleRequestDetailParameter"
+          }
+        }
+      }
+    },
+    "AddToggleRequestDetailParameter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "ListUsersResponse": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListUsersResponseDetail"
+          }
+        }
+      }
+    },
+    "ListUsersResponseDetail": {
+      "type": "object",
+      "required": [
+        "managementPermission",
+        "readPermission",
+        "writePermission"
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "managementPermission": {
+          "type": "boolean"
+        },
+        "readPermission": {
+          "type": "boolean"
+        },
+        "writePermission": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DetailsUsersResponse": {
+      "type": "object",
+      "required": [
+        "managementPermission",
+        "readPermission",
+        "writePermission"
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "managementPermission": {
+          "type": "boolean"
+        },
+        "readPermission": {
+          "type": "boolean"
+        },
+        "writePermission": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DeleteUsersRequest": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        }
+      }
+    },
+    "AddPermissionRequest": {
+      "type": "object",
+      "required": [
+        "read",
+        "write",
+        "manage"
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "write": {
+          "type": "boolean"
+        },
+        "manage": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdatePermissionRequest": {
+      "type": "object",
+      "required": [
+        "read",
+        "write",
+        "manage"
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "write": {
+          "type": "boolean"
+        },
+        "manage": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

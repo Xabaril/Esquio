@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System;
 
 namespace Esquio.UI.Api.Features.Flags.Rollback
 {

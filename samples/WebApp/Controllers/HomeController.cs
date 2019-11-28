@@ -1,4 +1,3 @@
-using Esquio.AspNetCore.Endpoints.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApp.Models;

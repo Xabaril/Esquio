@@ -1,7 +1,7 @@
 ﻿using Esquio.CliTool.Command;
 using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
-using McMaster.Extensions.CommandLineUtils.Abstractions;
+using System;
 
 namespace Esquio.CliTool
 {
@@ -14,14 +14,26 @@ namespace Esquio.CliTool
     {
         static int Main(string[] args)
         {
-            var app = new CommandLineApplication<Program>
+            try
             {
-                HelpTextGenerator = new EsquioHelpGenerator()
-            };
+                var app = new CommandLineApplication<Program>
+                {
+                    HelpTextGenerator = new EsquioHelpGenerator()
+                };
 
-            app.Conventions.UseDefaultConventions();
+                app.Conventions.UseDefaultConventions();
 
-            return app.Execute(args);
+                return app.Execute(args);
+            }
+            catch (ApiException exception)
+            {
+                var defaultForegroundColor = Console.ForegroundColor;
+                Console.ForegroundColor = Constants.ErrorColor;
+                Console.WriteLine(exception.Message);
+                Console.ForegroundColor = defaultForegroundColor;
+
+                return 1;
+            }
         }
         private int OnExecute(CommandLineApplication app, IConsole console)
         {

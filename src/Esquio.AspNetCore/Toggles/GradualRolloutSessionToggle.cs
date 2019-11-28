@@ -1,5 +1,4 @@
 ﻿using Esquio.Abstractions;
-using Esquio.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading;

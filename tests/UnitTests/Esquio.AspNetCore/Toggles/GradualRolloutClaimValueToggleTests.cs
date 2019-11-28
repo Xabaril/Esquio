@@ -3,7 +3,6 @@ using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UnitTests.Builders;

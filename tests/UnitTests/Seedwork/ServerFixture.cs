@@ -1,5 +1,4 @@
 ﻿using Esquio.AspNetCore.Endpoints.Metadata;
-using Esquio.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using Xunit;
 
 namespace UnitTests.Seedwork

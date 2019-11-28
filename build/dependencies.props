@@ -31,6 +31,10 @@
     <esquiotogglesgeolocation>1.1.1</esquiotogglesgeolocation>
   </PropertyGroup>
   <PropertyGroup Label="Package Dependencies">
+    <nswagmsbuild>13.1.6</nswagmsbuild>
+
+    <newtonsoftjson>12.0.3</newtonsoftjson>
+    
     <microsoftcsharp>4.6.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.6.0</systemdiagnosticsdiagnosticsource>
     <systemtextjson>4.6.0</systemtextjson>
@@ -47,7 +51,7 @@
     <microsoftextensionslogging>3.0.0</microsoftextensionslogging>
     <microsoftextensionsloggingabstractions>3.0.0</microsoftextensionsloggingabstractions>
     <microsoftextensionsloggingconsole>3.0.0</microsoftextensionsloggingconsole>
-
+    <microsoftextensionshttp>3.0.1</microsoftextensionshttp>
     <microsoftentityframeworkcore>3.0.0</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.0.0</microsoftentityframeworkcorerelational>
     <microsoftentityframeworkcoresqlserver>3.0.0</microsoftentityframeworkcoresqlserver>

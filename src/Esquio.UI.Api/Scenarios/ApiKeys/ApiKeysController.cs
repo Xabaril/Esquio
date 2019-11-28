@@ -28,7 +28,7 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
-        public async Task<IActionResult> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ListApiKeyResponse>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(request, cancellationToken);
 
@@ -38,9 +38,9 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("{name:slug}")]
-        public async Task<IActionResult> Get([FromRoute]DetailsApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsApiKeyResponse>> Get(string name, CancellationToken cancellationToken = default)
         {
-            var apiKeys = await _mediator.Send(request, cancellationToken);
+            var apiKeys = await _mediator.Send(new DetailsApiKeyRequest { Name = name }, cancellationToken);
 
             if (apiKeys != null)
             {
@@ -53,7 +53,7 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpPost]
         [Authorize(Policies.Management)]
         [Route("")]
-        public async Task<IActionResult> Add(AddApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<AddApiKeyResponse>> Add(AddApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
 

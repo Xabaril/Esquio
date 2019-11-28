@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,10 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="$(hellangmiddlewareproblemdetails)" />
+    <PackageReference Include="NSwag.MSBuild" Version="$(nswagmsbuild)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     
   </ItemGroup>
 
@@ -26,5 +31,10 @@
     <ProjectReference Include="..\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
+
+  <Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Core30) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
+    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Core30) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />
+  </Target>
 
 </Project>

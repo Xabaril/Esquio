@@ -1,8 +1,8 @@
 ﻿using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
@@ -39,30 +39,19 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-
-                using (var client = EsquioClient.Create(
-                    uri: Uri ?? Constants.UriDefaultValue,
-                    apikey: ApiKey))
-                {
-                    var response = await client.AddProductAsync(Name, Description);
-
-                    if (response.IsSuccessStatusCode)
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                await client.Products_AddAsync(
+                    new AddProductRequest
                     {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The product {Name} was added succesfully.");
-                        console.ForegroundColor = defaultForegroundColor;
+                        Name = Name,
+                        Description = Description
+                    });
 
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine($"The product {Name} was added succesfully.");
+                console.ForegroundColor = defaultForegroundColor;
 
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
 
@@ -98,30 +87,18 @@ namespace Esquio.CliTool.Command
                 }
 
                 var defaultForegroundColor = console.ForegroundColor;
-
-                using (var client = EsquioClient.Create(
-                    uri: Uri ?? Constants.UriDefaultValue,
-                    apikey: ApiKey))
-                {
-                    var response = await client.RemoveProductAsync(Name);
-
-                    if (response.IsSuccessStatusCode)
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                await client.Products_DeleteAsync(
+                    new DeleteProductRequest
                     {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine($"The product {Name} was removed succesfully.");
-                        console.ForegroundColor = defaultForegroundColor;
+                        ProductName = Name
+                    });
 
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine($"The product {Name} was removed succesfully.");
+                console.ForegroundColor = defaultForegroundColor;
 
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
 
@@ -133,33 +110,23 @@ namespace Esquio.CliTool.Command
             [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
             public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
 
+            [Option(Constants.PageIndexParameter, Description = Constants.PageIndexDescription)]
+            public int PageIndex { get; set; } = Constants.PageIndex;
+
+            [Option(Constants.PageCountParameter, Description = Constants.PageCountDescription)]
+            public int PageCount { get; set; } = Constants.PageCount;
+
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var response = await client.Products_ListAsync(PageIndex, PageCount);
 
-                using (var client = EsquioClient.Create(
-                     uri: Uri ?? Constants.UriDefaultValue,
-                     apikey: ApiKey))
-                {
-                    var response = await client.ListProductsAsync();
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
+                console.ForegroundColor = defaultForegroundColor;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine(await response.GetContentDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
     }

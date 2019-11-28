@@ -1,8 +1,8 @@
 ﻿using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Esquio.CliTool.Command
@@ -38,30 +38,14 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var response = await client.Features_GetAsync(ProductName, FeatureName);
 
-                using (var client = EsquioClient.Create(
-                    uri: Uri ?? Constants.UriDefaultValue,
-                    apikey: ApiKey))
-                {
-                    var response = await client.ListTogglesAsync(ProductName,FeatureName);
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
+                console.ForegroundColor = defaultForegroundColor;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine(await response.GetContentDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
-
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
 
@@ -88,30 +72,20 @@ namespace Esquio.CliTool.Command
             private async Task<int> OnExecute(IConsole console)
             {
                 var defaultForegroundColor = console.ForegroundColor;
-
-                using (var client = EsquioClient.Create(
-                    uri: Uri ?? Constants.UriDefaultValue,
-                    apikey: ApiKey))
-                {
-                    var response = await client.GetToggleAsync(ProductName, FeatureName, ToggleType);
-
-                    if (response.IsSuccessStatusCode)
+                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var response = await client.Toggles_DetailsAsync(
+                    new DetailsToggleRequest
                     {
-                        console.ForegroundColor = Constants.SuccessColor;
-                        console.WriteLine(await response.GetContentDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
+                        ProductName = ProductName,
+                        FeatureName = FeatureName,
+                        ToggleType = ToggleType
+                    });
 
-                        return 0;
-                    }
-                    else
-                    {
-                        console.ForegroundColor = Constants.ErrorColor;
-                        console.WriteLine(await response.GetErrorDetailAsync());
-                        console.ForegroundColor = defaultForegroundColor;
+                console.ForegroundColor = Constants.SuccessColor;
+                console.WriteLine(JsonConvert.SerializeObject(response));
+                console.ForegroundColor = defaultForegroundColor;
 
-                        return 1;
-                    }
-                }
+                return 0;
             }
         }
     }

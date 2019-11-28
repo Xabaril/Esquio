@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace Esquio.UI.Api.Features.Tags
         [HttpGet]
         [Authorize(Policies.Read)]
         [Route("api/products/{productName:slug}/features/{featureName:slug}/tags")]
-        public async Task<IActionResult> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<TagResponseDetail>>> List([FromRoute]ListTagRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
