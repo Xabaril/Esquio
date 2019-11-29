@@ -1,15 +1,18 @@
 using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Infrastructure.OpenApi;
 using Esquio.UI.Infrastructure.Security.ApiKey;
 using Esquio.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 
 namespace Esquio.UI
@@ -26,7 +29,9 @@ namespace Esquio.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>()
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
+                .AddSwaggerGen()
                 .AddAuthentication(options =>
                 {
                     options.DefaultScheme = "secured";
@@ -67,7 +72,7 @@ namespace Esquio.UI
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersion)
         {
             EsquioUIApiConfiguration.Configure(app,
                 preConfigure: host =>
@@ -76,6 +81,14 @@ namespace Esquio.UI
                        .AddRewrite(@"^(?!.*(api\/|.*\.(js|css|ico)|fonts\/|img\/|static\/|swagger*|ws\/*)).*$", "index.html", skipRemainingRules: true);
 
                     return host
+                        .UseSwagger()
+                        .UseSwaggerUI(setup =>
+                        {
+                            foreach (var description in apiVersion.ApiVersionDescriptions)
+                            {
+                                setup.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+                            }
+                        })
                         .UseHttpsRedirection()
                         .UseRewriter(rewriteOptions)
                         .UseDefaultFiles()

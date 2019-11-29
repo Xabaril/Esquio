@@ -1,8 +1,6 @@
 ﻿using Esquio.CliTool.Command;
 using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
-using Newtonsoft.Json;
-using System;
 
 namespace Esquio.CliTool
 {
