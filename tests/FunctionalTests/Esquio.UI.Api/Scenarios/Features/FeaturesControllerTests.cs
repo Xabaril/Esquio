@@ -97,7 +97,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
               .CreateRequest(ApiDefinitions.V2.Features.Rollback(product.Name, feature.Name))
@@ -174,7 +174,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
         [Fact]
         [ResetDatabase]
@@ -255,7 +255,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V2.Features.Get(product.Name, feature.Name))
@@ -341,7 +341,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -376,7 +376,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
               .CreateRequest(ApiDefinitions.V2.Features.Rollout(product.Name, feature.Name))
@@ -385,7 +385,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -419,7 +419,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V2.Features.Get(product.Name, feature.Name))
@@ -514,7 +514,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
         [Fact]
         [ResetDatabase]
@@ -1228,7 +1228,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

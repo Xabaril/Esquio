@@ -2,7 +2,7 @@
 
 namespace Esquio.UI.Api.Features.Flags.Rollback
 {
-    public class RollbackFlagRequest
+    public class RollbackFeatureRequest
      : IRequest
     {
         public string FeatureName { get; set; }

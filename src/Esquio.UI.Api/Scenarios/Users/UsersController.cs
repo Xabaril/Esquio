@@ -57,7 +57,7 @@ namespace Esquio.UI.Api.Features.Users
         [Route("")]
         [ProducesResponseType(typeof(ListUsersResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListUsersResponse>> List([FromQuery]ListUsersRequest request,CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ListUsersResponse>> List([FromQuery]ListUsersRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
@@ -81,8 +81,13 @@ namespace Esquio.UI.Api.Features.Users
         [Route("{subjectid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete([FromRoute]DeleteUsersRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete(string subjectId, CancellationToken cancellationToken = default)
         {
+            var request = new DeleteUsersRequest()
+            {
+                SubjectId = subjectId
+            };
+
             await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
@@ -95,18 +100,19 @@ namespace Esquio.UI.Api.Features.Users
         public async Task<IActionResult> Add([FromBody]AddPermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
+            //TODO: fix url  and set NoContent
             return Ok();
         }
 
         [HttpPut]
         [Authorize(Policies.Management)]
         [Route("")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update([FromBody]UpdatePermissionRequest request, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(request, cancellationToken);
-            return Ok();
+            return NoContent();
         }
     }
 }

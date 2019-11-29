@@ -29,13 +29,20 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpGet]
         [Authorize(Policies.Read)]
-        [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(typeof(DetailsToggleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DetailsToggleResponse>> Details([FromRoute]DetailsToggleRequest detailsToggleRequest, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsToggleResponse>> Details(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
-            var toggle = await _mediator.Send(detailsToggleRequest, cancellationToken);
+            var request = new DetailsToggleRequest()
+            {
+                ProductName = productName,
+                FeatureName = featureName,
+                ToggleType = toggleType
+            };
+
+            var toggle = await _mediator.Send(request, cancellationToken);
 
             if (toggle != null)
             {
@@ -47,12 +54,19 @@ namespace Esquio.UI.Api.Features.Toggles
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("api/products/{productName:slug}/features/{featureName:slug}/toggles/{toggleType}")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete([FromRoute]DeleteToggleRequest deleteToggleRequest, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
-            await _mediator.Send(deleteToggleRequest, cancellationToken);
+            var request = new DeleteToggleRequest()
+            {
+                ProductName = productName,
+                FeatureName = featureName,
+                ToggleType = toggleType
+            };
+
+            await _mediator.Send(request, cancellationToken);
 
             return NoContent();
         }
@@ -62,9 +76,14 @@ namespace Esquio.UI.Api.Features.Toggles
         [Route("api/toggles/parameters/{toggleType}")]
         [ProducesResponseType(typeof(RevealToggleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RevealToggleResponse>> Reveal([FromRoute]RevealToggleRequest revealToggleRequest, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<RevealToggleResponse>> Reveal(string toggleType, CancellationToken cancellationToken = default)
         {
-            var reveal = await _mediator.Send(revealToggleRequest, cancellationToken);
+            var request = new RevealToggleRequest()
+            {
+                ToggleType = toggleType
+            };
+
+            var reveal = await _mediator.Send(request, cancellationToken);
 
             return Ok(reveal);
         }
@@ -91,6 +110,7 @@ namespace Esquio.UI.Api.Features.Toggles
         {
             await _mediator.Send(parameterToggleRequest, cancellationToken);
 
+            //TODO: fix created at action
             return Created($"api/v1/products/{parameterToggleRequest.ProductName}/features/{parameterToggleRequest.FeatureName}/toggles/{parameterToggleRequest.ToggleType}", null);
         }
 

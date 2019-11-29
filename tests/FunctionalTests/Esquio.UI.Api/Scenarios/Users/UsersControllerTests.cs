@@ -678,7 +678,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

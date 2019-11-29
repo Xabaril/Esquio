@@ -88,12 +88,8 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Products_DeleteAsync(
-                    new DeleteProductRequest
-                    {
-                        ProductName = Name
-                    });
-
+                await client.Products_DeleteAsync(Name);
+                    
                 console.WriteLine($"The product {Name} was removed succesfully.", Constants.SuccessColor);
 
                 return 0;

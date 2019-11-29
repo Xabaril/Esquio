@@ -73,13 +73,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                var response = await client.Toggles_DetailsAsync(
-                    new DetailsToggleRequest
-                    {
-                        ProductName = ProductName,
-                        FeatureName = FeatureName,
-                        ToggleType = ToggleType
-                    });
+                var response = await client.Toggles_DetailsAsync(ProductName, FeatureName, ToggleType);
 
                 console.WriteObject(response, Constants.SuccessColor);
 

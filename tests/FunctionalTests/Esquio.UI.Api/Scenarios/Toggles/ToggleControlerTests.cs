@@ -34,7 +34,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName:"foo",featureName:"bar",toggleType:"type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName:"fooproduct",featureName:"barfeature",toggleType:"type"))
                   .GetAsync();
 
             response.StatusCode
@@ -206,7 +206,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName: "foo", featureName: "bar", toggleType: "type"))
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Get(productName: "fooproduct", featureName: "barfeature", toggleType: "type"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 

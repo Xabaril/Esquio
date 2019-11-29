@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Flags.Rollback
 {
     internal class RollbackFeatureRequestHandler
-        : IRequestHandler<RollbackFlagRequest>
+        : IRequestHandler<RollbackFeatureRequest>
     {
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<RollbackFeatureRequestHandler> _logger;
@@ -21,7 +21,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<Unit> Handle(RollbackFlagRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RollbackFeatureRequest request, CancellationToken cancellationToken)
         {
             var feature = await _storeDbContext
                 .Features

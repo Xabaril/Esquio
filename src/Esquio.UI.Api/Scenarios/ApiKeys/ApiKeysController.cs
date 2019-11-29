@@ -71,11 +71,16 @@ namespace Esquio.UI.Api.Features.ApiKeys
 
         [HttpDelete]
         [Authorize(Policies.Management)]
-        [Route("{name:slug}")]
+        [Route("{name:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete([FromRoute]DeleteApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete(string name, CancellationToken cancellationToken = default)
         {
+            var request = new DeleteApiKeyRequest()
+            {
+                Name = name
+            };
+
             await _mediator.Send(request, cancellationToken);
 
             return NoContent();

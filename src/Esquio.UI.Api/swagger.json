@@ -86,36 +86,6 @@
             }
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "ApiKeys"
-        ],
-        "operationId": "ApiKeys_Delete",
-        "parameters": [
-          {
-            "type": "object",
-            "name": "request",
-            "in": "path",
-            "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteApiKeyRequest"
-            },
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
       }
     },
     "/api/ApiKeys/{name}": {
@@ -142,6 +112,33 @@
             }
           },
           "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "operationId": "ApiKeys_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
             "description": ""
           },
           "500": {
@@ -283,7 +280,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           },
           "400": {
@@ -292,6 +289,40 @@
             "schema": {
               "$ref": "#/definitions/ValidationProblemDetails"
             }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
           },
           "500": {
             "x-nullable": false,
@@ -344,7 +375,7 @@
         }
       }
     },
-    "/api/products/features/rollout": {
+    "/api/products/{productName}/features/{featureName}/rollout": {
       "put": {
         "tags": [
           "Features"
@@ -352,18 +383,22 @@
         "operationId": "Features_Rollout",
         "parameters": [
           {
-            "type": "object",
-            "name": "rolloutFeatureRequest",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/RolloutFeatureRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           },
           "400": {
@@ -383,7 +418,7 @@
         }
       }
     },
-    "/api/products/features/rollback": {
+    "/api/products/{productName}/features/{featureName}/rollback": {
       "put": {
         "tags": [
           "Features"
@@ -391,18 +426,22 @@
         "operationId": "Features_Rollback",
         "parameters": [
           {
-            "type": "object",
-            "name": "rollbackFeatureRequest",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/RollbackFlagRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           },
           "400": {
@@ -411,38 +450,6 @@
             "schema": {
               "$ref": "#/definitions/ValidationProblemDetails"
             }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/products/features": {
-      "delete": {
-        "tags": [
-          "Features"
-        ],
-        "operationId": "Features_Delete",
-        "parameters": [
-          {
-            "type": "object",
-            "name": "request",
-            "in": "path",
-            "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteFeatureRequest"
-            },
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
           },
           "500": {
             "x-nullable": false,
@@ -511,36 +518,6 @@
         ],
         "responses": {
           "201": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_Delete",
-        "parameters": [
-          {
-            "type": "object",
-            "name": "request",
-            "in": "path",
-            "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteProductRequest"
-            },
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
             "description": ""
           },
           "500": {
@@ -623,9 +600,36 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
       }
     },
-    "/api/products/features/tags": {
+    "/api/products/{productName}/features/{featureName}/tags": {
       "get": {
         "tags": [
           "Tags"
@@ -633,13 +637,17 @@
         "operationId": "Tags_List",
         "parameters": [
           {
-            "type": "object",
-            "name": "request",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/ListTagRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
@@ -664,7 +672,7 @@
         }
       }
     },
-    "/api/products/features/tags/untag": {
+    "/api/products/{productName}/features/{featureName}/tags/untag/{tag}": {
       "delete": {
         "tags": [
           "Tags"
@@ -672,13 +680,24 @@
         "operationId": "Tags_Untag",
         "parameters": [
           {
-            "type": "object",
-            "name": "request",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteTagRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "tag",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
@@ -741,7 +760,7 @@
         }
       }
     },
-    "/api/products/features/toggles": {
+    "/api/products/{productName}/features/{featureName}/toggles/{toggleType}": {
       "get": {
         "tags": [
           "Toggles"
@@ -749,13 +768,24 @@
         "operationId": "Toggles_Details",
         "parameters": [
           {
-            "type": "object",
-            "name": "detailsToggleRequest",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DetailsToggleRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "toggleType",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
@@ -786,13 +816,24 @@
         "operationId": "Toggles_Delete",
         "parameters": [
           {
-            "type": "object",
-            "name": "deleteToggleRequest",
+            "type": "string",
+            "name": "productName",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteToggleRequest"
-            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "toggleType",
+            "in": "path",
+            "required": true,
             "x-nullable": false
           }
         ],
@@ -810,7 +851,7 @@
         }
       }
     },
-    "/api/toggles/parameters": {
+    "/api/toggles/parameters/{toggleType}": {
       "get": {
         "tags": [
           "Toggles"
@@ -818,13 +859,10 @@
         "operationId": "Toggles_Reveal",
         "parameters": [
           {
-            "type": "object",
-            "name": "revealToggleRequest",
+            "type": "string",
+            "name": "toggleType",
             "in": "path",
             "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/RevealToggleRequest"
-            },
             "x-nullable": false
           }
         ],
@@ -844,7 +882,33 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/toggles/types": {
+      "get": {
+        "tags": [
+          "Toggles"
+        ],
+        "operationId": "Toggles_KnownTypes",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/KnownTypesToggleResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/toggles/parameters": {
       "post": {
         "tags": [
           "Toggles"
@@ -870,30 +934,6 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/ValidationProblemDetails"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/toggles/types": {
-      "get": {
-        "tags": [
-          "Toggles"
-        ],
-        "operationId": "Toggles_KnownTypes",
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/KnownTypesToggleResponse"
             }
           },
           "500": {
@@ -1010,36 +1050,6 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Delete",
-        "parameters": [
-          {
-            "type": "object",
-            "name": "request",
-            "in": "path",
-            "required": true,
-            "x-schema": {
-              "$ref": "#/definitions/DeleteUsersRequest"
-            },
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Users"
@@ -1086,7 +1096,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           },
           "500": {
@@ -1121,6 +1131,35 @@
             "schema": {
               "$ref": "#/definitions/DetailsUsersResponse"
             }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{subjectid}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
           },
           "500": {
             "x-nullable": false,
@@ -1250,14 +1289,6 @@
         }
       }
     },
-    "DeleteApiKeyRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
     "AddFeatureRequest": {
       "type": "object",
       "required": [
@@ -1289,39 +1320,6 @@
         },
         "enabled": {
           "type": "boolean"
-        }
-      }
-    },
-    "RolloutFeatureRequest": {
-      "type": "object",
-      "properties": {
-        "productName": {
-          "type": "string"
-        },
-        "featureName": {
-          "type": "string"
-        }
-      }
-    },
-    "RollbackFlagRequest": {
-      "type": "object",
-      "properties": {
-        "featureName": {
-          "type": "string"
-        },
-        "productName": {
-          "type": "string"
-        }
-      }
-    },
-    "DeleteFeatureRequest": {
-      "type": "object",
-      "properties": {
-        "featureName": {
-          "type": "string"
-        },
-        "productName": {
-          "type": "string"
         }
       }
     },
@@ -1493,43 +1491,10 @@
         }
       }
     },
-    "DeleteProductRequest": {
-      "type": "object",
-      "properties": {
-        "productName": {
-          "type": "string"
-        }
-      }
-    },
     "TagResponseDetail": {
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
-        }
-      }
-    },
-    "ListTagRequest": {
-      "type": "object",
-      "properties": {
-        "productName": {
-          "type": "string"
-        },
-        "featureName": {
-          "type": "string"
-        }
-      }
-    },
-    "DeleteTagRequest": {
-      "type": "object",
-      "properties": {
-        "tag": {
-          "type": "string"
-        },
-        "featureName": {
-          "type": "string"
-        },
-        "productName": {
           "type": "string"
         }
       }
@@ -1576,34 +1541,6 @@
         }
       }
     },
-    "DetailsToggleRequest": {
-      "type": "object",
-      "properties": {
-        "productName": {
-          "type": "string"
-        },
-        "featureName": {
-          "type": "string"
-        },
-        "toggleType": {
-          "type": "string"
-        }
-      }
-    },
-    "DeleteToggleRequest": {
-      "type": "object",
-      "properties": {
-        "toggleType": {
-          "type": "string"
-        },
-        "productName": {
-          "type": "string"
-        },
-        "featureName": {
-          "type": "string"
-        }
-      }
-    },
     "RevealToggleResponse": {
       "type": "object",
       "properties": {
@@ -1628,14 +1565,6 @@
           "type": "string"
         },
         "description": {
-          "type": "string"
-        }
-      }
-    },
-    "RevealToggleRequest": {
-      "type": "object",
-      "properties": {
-        "toggleType": {
           "type": "string"
         }
       }
@@ -1821,14 +1750,6 @@
         },
         "writePermission": {
           "type": "boolean"
-        }
-      }
-    },
-    "DeleteUsersRequest": {
-      "type": "object",
-      "properties": {
-        "subjectId": {
-          "type": "string"
         }
       }
     },

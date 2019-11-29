@@ -65,12 +65,13 @@ namespace Esquio.UI.Api.Features.Products
         {
             var product = await _mediator.Send(request, cancellationToken);
 
+            //TODO: fix created url at actions
             return Created($"api/products/{product}?api-version=2.0", null);
         }
 
         [HttpPut]
         [Authorize(Policies.Write)]
-        [Route("{productName:slug}")]
+        [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(string productName, UpdateProductRequest request, CancellationToken cancellationToken = default)
@@ -84,11 +85,16 @@ namespace Esquio.UI.Api.Features.Products
 
         [HttpDelete]
         [Authorize(Policies.Write)]
-        [Route("{productName:slug}")]
+        [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete([FromRoute]DeleteProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete(string productName, CancellationToken cancellationToken = default)
         {
+            var request = new DeleteProductRequest()
+            {
+                ProductName = productName
+            };
+
             await _mediator.Send(request, cancellationToken);
 
             return NoContent();

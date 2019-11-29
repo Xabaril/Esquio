@@ -3,7 +3,7 @@
 namespace Esquio.UI.Api.Features.Flags.Rollback
 {
     class RollbackFeatureRequestValidator
-        : AbstractValidator<RollbackFlagRequest>
+        : AbstractValidator<RollbackFeatureRequest>
     {
         public RollbackFeatureRequestValidator()
         {

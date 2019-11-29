@@ -58,11 +58,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Features_RolloutAsync(
-                    new RolloutFeatureRequest{ 
-                        ProductName = ProductName, 
-                        FeatureName = FeatureName 
-                    });
+                await client.Features_RolloutAsync(ProductName, FeatureName);
 
                 console.WriteLine($"The feature {FeatureName} was rolled out.", Constants.SuccessColor);
 
@@ -108,11 +104,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Features_RollbackAsync(
-                    new RollbackFlagRequest{ 
-                        ProductName = ProductName, 
-                        FeatureName = FeatureName 
-                    });
+                await client.Features_RollbackAsync(ProductName, FeatureName);
 
                 console.WriteLine($"The feature {FeatureName} was rolled off.", Constants.SuccessColor);
 
