@@ -37,7 +37,9 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
                 var response = await client.Features_GetAsync(ProductName, FeatureName);
 
                 console.WriteObject(response, Constants.SuccessColor);
@@ -68,7 +70,9 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
                 var response = await client.Toggles_DetailsAsync(
                     new DetailsToggleRequest
                     {

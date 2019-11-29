@@ -55,8 +55,15 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Features_RolloutAsync(new RolloutFeatureRequest { ProductName = ProductName, FeatureName = FeatureName });
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await client.Features_RolloutAsync(
+                    new RolloutFeatureRequest{ 
+                        ProductName = ProductName, 
+                        FeatureName = FeatureName 
+                    });
+
                 console.WriteLine($"The feature {FeatureName} was rolled out.", Constants.SuccessColor);
 
                 return 0;
@@ -98,8 +105,15 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                await client.Features_RollbackAsync(new RollbackFlagRequest{ ProductName = ProductName, FeatureName = FeatureName });
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await client.Features_RollbackAsync(
+                    new RollbackFlagRequest{ 
+                        ProductName = ProductName, 
+                        FeatureName = FeatureName 
+                    });
+
                 console.WriteLine($"The feature {FeatureName} was rolled off.", Constants.SuccessColor);
 
                 return 0;
@@ -126,7 +140,9 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
                 var response = await client.Features_ListAsync(ProductName, PageIndex, PageCount);
                 console.WriteObject(response, Constants.SuccessColor);
 

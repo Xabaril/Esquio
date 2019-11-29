@@ -25,7 +25,7 @@ namespace Esquio.CliTool.Internal
 
         public const string NoPromptParameter = "--no-prompt <NO-PROMPT>";
         public const string NoPromptDescription = "Show or hide prompt message";
-        public const string NoPromptMessage = "Are you sure to perform this action?";
+        public const string NoPromptMessage = "Would you like me to do so?";
 
         public const string ApiKeyEnvironmentVariable = "ESQUIO_API_KEY";
         public const string ApiKeyParameter = "--api-key <APIKEY>";
@@ -48,6 +48,11 @@ namespace Esquio.CliTool.Internal
         public const ConsoleColor PromptBgColor = ConsoleColor.Black;
         public const ConsoleColor ErrorColor = ConsoleColor.Red;
         public const ConsoleColor SuccessColor = ConsoleColor.Green;
+
+        public const string NotFoundErrorMessage = "Command execution result is Not Found, please ensure resource exist and you configure ESQUIO HTTP URI.";
+        public const string UnauthorizedErrorMessage = "Command execution result is Forbidden, please ensure that your api key is a valid api key in configured Esquio UI HTTP API.";
+        public const string BadRquestErrorMessage = "Command execution result is BadRequest, please check validation result:";
+        public const string InternalErrorMessage = "Uncaught exception from server.";
 
         public const string AsciiArt = @"
                           ___   

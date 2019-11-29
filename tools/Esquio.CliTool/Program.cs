@@ -1,6 +1,7 @@
 ﻿using Esquio.CliTool.Command;
 using Esquio.CliTool.Internal;
 using McMaster.Extensions.CommandLineUtils;
+using System.Net;
 
 namespace Esquio.CliTool
 {
@@ -13,25 +14,36 @@ namespace Esquio.CliTool
     {
         static int Main(string[] args)
         {
+            var app = new CommandLineApplication<Program>
+            {
+                HelpTextGenerator = new EsquioHelpGenerator()
+            };
+
+            app.Conventions.UseDefaultConventions();
+
             try
             {
-                var app = new CommandLineApplication<Program>
-                {
-                    HelpTextGenerator = new EsquioHelpGenerator()
-                };
-
-                app.Conventions.UseDefaultConventions();
-
                 return app.Execute(args);
             }
-            catch (ApiException<ValidationProblemDetails> exception)
+            catch (ApiException apiException) when (apiException.StatusCode == (int)HttpStatusCode.NotFound)
             {
-                PhysicalConsole.Singleton.WriteObject(exception.Result, Constants.ErrorColor);
+                PhysicalConsole.Singleton.WriteLine(Constants.NotFoundErrorMessage, Constants.ErrorColor);
                 return 1;
             }
-            catch (ApiException<ProblemDetails> exception)
+            catch (ApiException apiException) when (apiException.StatusCode == (int)HttpStatusCode.Unauthorized)
             {
-                PhysicalConsole.Singleton.WriteObject(exception.Result, Constants.ErrorColor);
+                PhysicalConsole.Singleton.WriteLine(Constants.UnauthorizedErrorMessage, Constants.ErrorColor);
+                return 1;
+            }
+            catch (ApiException apiException) when (apiException.StatusCode == (int)HttpStatusCode.BadRequest)
+            {
+                PhysicalConsole.Singleton.WriteLine(Constants.BadRquestErrorMessage, Constants.ErrorColor);
+                PhysicalConsole.Singleton.WriteLine(apiException.Response, Constants.ErrorColor);
+                return 1;
+            }
+            catch (ApiException)
+            {
+                PhysicalConsole.Singleton.WriteLine(Constants.InternalErrorMessage, Constants.ErrorColor);
                 return 1;
             }
         }
@@ -40,7 +52,7 @@ namespace Esquio.CliTool
         {
             app.ShowHelp(usePager: true);
 
-            return 1;
+            return 0;
         }
     }
 }

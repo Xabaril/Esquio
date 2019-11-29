@@ -38,7 +38,9 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
                 await client.Products_AddAsync(
                     new AddProductRequest
                     {
@@ -83,7 +85,9 @@ namespace Esquio.CliTool.Command
                     }
                 }
 
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
                 await client.Products_DeleteAsync(
                     new DeleteProductRequest
                     {
@@ -112,8 +116,10 @@ namespace Esquio.CliTool.Command
 
             private async Task<int> OnExecute(IConsole console)
             {
-                var client = EsquioClientFactory.Instance.Create(Uri, ApiKey);
-                var response = await client.Products_ListAsync(PageIndex, PageCount);
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                var response = await client.Products_ListAsync(pageIndex: PageIndex, pageCount: PageCount);
 
                 console.WriteObject(response, Constants.SuccessColor);
 
