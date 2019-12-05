@@ -1,4 +1,4 @@
 export interface Token {
-  apiKey: string;
-  apiKeyId: string;
+  key: string;
+  id: string;
 }

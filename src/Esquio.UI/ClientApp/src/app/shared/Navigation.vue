@@ -33,6 +33,7 @@ import { ITokensService } from './tokens';
 import { AlertType } from '~/core';
 import { nextTick } from '~/core/helpers';
 import { State, namespace, Getter } from 'vuex-class';
+import copy from 'copy-to-clipboard';
 
 const navigationStore = namespace('navigation');
 
@@ -62,15 +63,7 @@ export default class extends Vue {
   public async onClickGenerateToken(): Promise<void> {
     try {
       const response = await this.tokensService.generate();
-      // Super fast hack, because this is temporal :)
-      const $copy = document.createElement('textarea');
-      $copy.classList.add('is-invisible');
-      $copy.value = response.apiKey;
-      document.querySelector('body').appendChild($copy);
-      await nextTick(100);
-      $copy.select();
-      document.execCommand('copy');
-      $copy.remove();
+      copy(response.key);
 
       this.$alert(this.$t('tokens.success'));
     } catch (e) {
