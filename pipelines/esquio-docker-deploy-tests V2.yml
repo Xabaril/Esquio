@@ -1,0 +1,80 @@
+trigger: none
+
+pool:
+  name: Hosted Ubuntu 1604
+
+variables:
+  appImageName: esquiodemoapp2
+  acrName: esquio.azurecr.io
+  appWebAppName: esquiodemoapp2
+  uiWebAppName: esquiodemoui2
+  uiImageName: esquiouiv2
+
+steps:
+- task: Docker@0
+  displayName: 'Build app image'
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Azure'
+    azureContainerRegistry: '$(acrName)'
+    action: 'Build an image'
+    dockerFile: 'demos/AppWithUI/app-dockerfile'
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: '$(appImageName):$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: Docker@0
+  displayName: 'Push app image'
+  inputs:
+    azureSubscription: 'Azure'
+    azureContainerRegistry: $(acrName)
+    action: 'Push an image'
+    imageName: '$(appImageName):$(Build.BuildId)'
+
+- task: Docker@0
+  displayName: 'Build ui image'
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Azure'
+    azureContainerRegistry: '$(acrName)'
+    action: 'Build an image'
+    dockerFile: 'demos/AppWithUI/ui-dockerfile'
+    defaultContext: false
+    context: '$(Build.SourcesDirectory)'
+    imageName: '$(uiImageName):$(Build.BuildId)'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: Docker@0
+  displayName: 'Push ui image'
+  inputs:
+    azureSubscription: 'Azure'
+    azureContainerRegistry: $(acrName)
+    action: 'Push an image'
+    imageName: '$(uiImageName):$(Build.BuildId)'
+
+- task: AzureRmWebAppDeployment@3
+  displayName: 'Azure App Service Deploy: $(appWebAppName)'
+  inputs:
+    azureSubscription: 'Azure'
+    appType: applinux
+    WebAppName: $(appWebAppName)
+    DockerNamespace: $(acrName)
+    DockerRepository: '$(appImageName)'
+    DockerImageTag: '$(Build.BuildId)'
+    AppSettings: '-EFStore "true" -ApplicationInsights__InstrumentationKey "$(appInsightsInstrumentationKey)" -ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    TakeAppOfflineFlag: true
+
+- task: AzureRmWebAppDeployment@3
+  displayName: 'Azure App Service Deploy: $(uiWebAppName)'
+  inputs:
+    azureSubscription: 'Azure'
+    appType: 'applinux'
+    WebAppName: '$(uiWebAppName)'
+    DockerNamespace: '$(acrName)'
+    DockerRepository: '$(uiImageName)'
+    DockerImageTag: 'latest'
+    AppSettings: '-ConnectionStrings__Esquio "$(sqlConnection)" -DOCKER_REGISTRY_SERVER_USERNAME "$(dockerRegistryUserName)" -DOCKER_REGISTRY_SERVER_URL "https://$(acrName)" -DOCKER_REGISTRY_SERVER_PASSWORD "$(dockerRegistryPassword)"'
+    TakeAppOfflineFlag: true
+
+
