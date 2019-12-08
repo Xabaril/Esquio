@@ -1,0 +1,115 @@
+{
+    "id": "83BAA888-44E5-4B12-A2BD-0B7B16A37201",
+    "name": "set-toggle-parameter",
+    "friendlyName": "Set toggle parameter with Esquio",
+    "description": "Use this task to set the value for a toggle parameter with Esquio",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "luisfraile",
+    "version": {
+        "Major": 2,
+        "Minor": 0,
+        "Patch": 4
+    },
+    "instanceNameFormat": "Set toggle parameter with Esquio",
+    "inputs": [
+        {
+            "name": "EsquioService",
+            "type": "connectedService:esquio-v2",
+            "label": "Esquio service endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Select the esquio end point to use. If needed, click on 'manage', and add a new service endpoint of type 'Esquio'"
+          },
+          {
+            "name": "productId",
+            "type": "pickList",
+            "label": "Esquio product",
+            "required": true,
+            "helpMarkDown": "Select the name of the product for the feature.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "flagId",
+            "type": "pickList",
+            "label": "Esquio feature",
+            "required": true,
+            "helpMarkDown": "Select the name of the feature to rollout.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "toggleType",
+            "type": "pickList",
+            "label": "Esquio Toggle",
+            "required": true,
+            "helpMarkDown": "Select the name of the toggle to change parameter.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "parameterId",
+            "type": "pickList",
+            "label": "Esquio parameter",
+            "required": true,
+            "helpMarkDown": "Select the name of the toggle parameter to change parameter.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "parameterValue",
+            "type": "string",
+            "label": "Esquio parameter value",
+            "required": true,
+            "helpMarkDown": "Enter the value toggle parameter to change parameter."
+          }
+    ], 
+        "dataSourceBindings": [
+        {
+          "target": "productId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioProductsV2",
+          "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+        },
+        {
+          "target": "flagId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioFlagsV2",
+          "parameters": {
+            "productId": "$(productId)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+        },
+        {
+          "target": "toggleType",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioFlagDetailedV2",
+          "parameters": {
+            "flagId": "$(flagId)",
+            "productId": "$(productId)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{type}}}\", \"DisplayValue\":\"{{{friendlyName}}}\"}"
+        },
+        {
+          "target": "parameterId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioToggleDetailedV2",
+          "parameters": {
+            "flagId": "$(flagId)",
+            "productId": "$(productId)",
+            "toggleType": "$(toggleType)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{name}}}\"}"
+        }
+      ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

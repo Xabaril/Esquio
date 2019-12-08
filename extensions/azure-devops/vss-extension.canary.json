@@ -1,8 +1,8 @@
 {
     "manifestVersion": 1,
-    "id": "esquio-extensions",
-    "version": "2.0.0",
-    "name": "Esquio extensions",
+    "id": "esquio-extensions-canary",
+    "version": "2.1.0",
+    "name": "Esquio extensions (canary)",
     "description": "Esquio extensions for Azure DevOps",
     "publisher": "xabaril",
     "targets": [

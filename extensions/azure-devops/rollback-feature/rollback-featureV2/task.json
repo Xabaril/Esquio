@@ -1,0 +1,67 @@
+{
+    "id": "DA5DD5F1-7C95-4700-B616-3D213054ED85",
+    "name": "esquio-rollback-feature",
+    "friendlyName": "Rollback feature with Esquio",
+    "description": "Use this task to rollback features with Esquio",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "xabaril",
+    "version": {
+        "Major": 2,
+        "Minor": 0,
+        "Patch": 2
+    },
+    "instanceNameFormat": "Esquio rollback feature",
+    "inputs": [
+        {
+            "name": "EsquioService",
+            "type": "connectedService:esquio-v2",
+            "label": "Esquio service endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Select the esquio end point to use. If needed, click on 'manage', and add a new service endpoint of type 'Esquio'"
+          },
+          {
+            "name": "productId",
+            "type": "pickList",
+            "label": "Esquio product",
+            "required": true,
+            "helpMarkDown": "Select the name of the product for the feature.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          },
+          {
+            "name": "flagId",
+            "type": "pickList",
+            "label": "Esquio feature",
+            "required": true,
+            "helpMarkDown": "Select the name of the feature to rollback.",
+            "properties": {
+              "EditableOptions": "True"
+            }
+          }
+    ], 
+        "dataSourceBindings": [
+        {
+          "target": "productId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioProductsV2",
+          "resultTemplate": "{ \"Value\":\"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+        },
+        {
+          "target": "flagId",
+          "endpointId": "$(EsquioService)",
+          "dataSourceName": "EsquioFlagsV2",
+          "parameters": {
+            "productId": "$(productId)"
+          },
+          "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+        }
+      ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
