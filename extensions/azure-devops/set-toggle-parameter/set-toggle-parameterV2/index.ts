@@ -8,7 +8,7 @@ async function run() {
         const featureName: string = tl.getInput('featureName', true);
         const toggleType: string = tl.getInput('toggleType', true);
         const productName: string = tl.getInput('productName', true);
-        const parameterName: string = tl.getInput('parameterId', true);
+        const parameterName: string = tl.getInput('parameterName', true);
         const parameterValue: string = tl.getInput('parameterValue', true);
 
         const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));

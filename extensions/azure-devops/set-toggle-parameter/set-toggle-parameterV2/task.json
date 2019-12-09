@@ -22,7 +22,7 @@
             "helpMarkDown": "Select the esquio end point to use. If needed, click on 'manage', and add a new service endpoint of type 'Esquio'"
           },
           {
-            "name": "productId",
+            "name": "productName",
             "type": "pickList",
             "label": "Esquio product",
             "required": true,
@@ -32,7 +32,7 @@
             }
           },
           {
-            "name": "flagId",
+            "name": "featureName",
             "type": "pickList",
             "label": "Esquio feature",
             "required": true,
@@ -52,7 +52,7 @@
             }
           },
           {
-            "name": "parameterId",
+            "name": "parameterName",
             "type": "pickList",
             "label": "Esquio parameter",
             "required": true,
@@ -96,7 +96,7 @@
           "resultTemplate": "{ \"Value\" : \"{{{type}}}\", \"DisplayValue\":\"{{{friendlyName}}}\"}"
         },
         {
-          "target": "parameterId",
+          "target": "parameterName",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioToggleDetailedV2",
           "parameters": {
