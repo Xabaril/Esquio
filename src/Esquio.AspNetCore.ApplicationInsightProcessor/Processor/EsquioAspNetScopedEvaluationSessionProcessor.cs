@@ -34,7 +34,6 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
         {
             if (_httpContextAccessor.HttpContext != null)
             {
-
                 var esquioScopedEvaluationResults = _httpContextAccessor.HttpContext?
                     .Items
                     .Where(i => i.Key.ToString().StartsWith(EsquioConstants.ESQUIO));

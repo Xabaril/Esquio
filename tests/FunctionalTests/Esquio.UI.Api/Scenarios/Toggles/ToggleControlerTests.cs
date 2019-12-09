@@ -286,7 +286,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
         [Fact]
         [ResetDatabase]
-        public async Task delete_response_no_content_if_toggle_exist()
+        public async Task delete_response_no_content_if_toggle_exist_and_is_the_only_one()
         {
             var permission = Builders.Permission()
               .WithAllPrivilegesForDefaultIdentity()
@@ -333,6 +333,68 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Should()
                 .Be(StatusCodes.Status204NoContent);
         }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task delete_response_no_content_if_toggle_exist_and_feature_has_many_different()
+        {
+            var permission = Builders.Permission()
+              .WithAllPrivilegesForDefaultIdentity()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+               .WithName("fooproduct")
+               .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var togglefoo = Builders.Toggle()
+              .WithType("togglefoo")
+              .Build();
+
+            var togglebar = Builders.Toggle()
+            .WithType("togglebar")
+            .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("param1")
+                .WithValue("value1")
+                .Build();
+
+            togglefoo.Parameters
+                .Add(parameter);
+
+            togglebar.Parameters
+             .Add(parameter);
+
+
+            feature.Toggles
+                .Add(togglefoo);
+
+            feature.Toggles
+                .Add(togglebar);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V2.Toggles.Delete(product.Name, feature.Name, togglebar.Type))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
+
         [Fact]
         public async Task reveal_response_unauthorized_when_user_request_is_not_authenticated()
         {

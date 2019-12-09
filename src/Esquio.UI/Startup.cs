@@ -29,6 +29,7 @@ namespace Esquio.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCors()
                 .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>()
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddSwaggerGen()
@@ -81,6 +82,13 @@ namespace Esquio.UI
                        .AddRewrite(@"^(?!.*(api\/|.*\.(js|css|ico)|fonts\/|img\/|static\/|swagger*|ws\/*)).*$", "index.html", skipRemainingRules: true);
 
                     return host
+                        .UseCors(policy=>
+                        {
+                            policy
+                                .AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                        })
                         .UseSwagger()
                         .UseSwaggerUI(setup =>
                         {

@@ -34,7 +34,7 @@ Add the content below to your ``appsettings.json`` file::
           "Esquio": {
             "Products": [
               {
-                "Name": "Console",
+                "Name": "default",
                 "Features": [
                   {
                     "Name": "Colored",
@@ -141,7 +141,7 @@ To enable this endpoint, in the ``Configure`` method, insert the middleware to e
             routes.MapEsquio(pattern: "esquio");
         });
 
-Now you can start your application and check out your features at http(s)://server:port/esquio?productName=Console&featureName=Colored::
+Now you can start your application and check out your features at http(s)://server:port/esquio?featureName=Colored::
 
         [
           {
