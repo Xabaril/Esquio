@@ -3,17 +3,9 @@ pool: Hosted Windows 2019 with VS2019
 variables:
   marketplaceConnection: 'Xabaril Marketplace'
   publisher: xabaril
-  extensionid: esquio-extensions
-  packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
+  extensionid: esquio-extensions-canary
+  packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version)-canary.vsix'
 
-
-# trigger:
-#   branches:
-#     include:
-#     - master
-#   paths:
-#     include: 
-#     - extensions/*
 trigger: none
 
 steps:
@@ -34,6 +26,21 @@ steps:
 - template: templates/azure-task-build-template.yml
   parameters:
     pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV1'
+    taskName: 'set toggle parameter'
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollback-feature/rollback-featureV2'
+    taskName: rollback
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollout-feature/rollout-featureV2'
+    taskName: rollout
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV2'
     taskName: 'set toggle parameter'
 
 - task: ExtensionVersion@1
@@ -59,7 +66,7 @@ steps:
     fileType: 'vsix'
     vsixFile: '$(packagefile)'
     updateTasksVersion: false
-    extensionVisibility: 'public'
+    extensionVisibility: 'private'
 
 # - task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
 #   inputs:
