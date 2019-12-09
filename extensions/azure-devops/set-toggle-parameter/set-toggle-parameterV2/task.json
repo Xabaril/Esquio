@@ -81,7 +81,7 @@
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagsV2",
           "parameters": {
-            "productId": "$(productName)"
+            "productName": "$(productName)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
         },
