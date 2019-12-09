@@ -25,9 +25,9 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
         {
             var toggle = await _storeDbContext
                 .Toggles
-                .Include(t=>t.FeatureEntity)
+                .Include(t => t.FeatureEntity)
                 .Include(t => t.Parameters)
-                .Where(f => f.FeatureEntity.Name == request.FeatureName && f.FeatureEntity.ProductEntity.Name == request.ProductName)
+                .Where(t => t.FeatureEntity.Name == request.FeatureName && t.FeatureEntity.ProductEntity.Name == request.ProductName && t.Type == request.ToggleType)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (toggle != null)
