@@ -71,17 +71,17 @@
     ], 
         "dataSourceBindings": [
         {
-          "target": "productId",
+          "target": "productName",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioProductsV2",
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
         },
         {
-          "target": "flagId",
+          "target": "featureName",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagsV2",
           "parameters": {
-            "productId": "$(productId)"
+            "productId": "$(productName)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
         },
@@ -90,8 +90,8 @@
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagDetailedV2",
           "parameters": {
-            "flagId": "$(flagId)",
-            "productId": "$(productId)"
+            "featureName": "$(featureName)",
+            "productName": "$(productName)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{type}}}\", \"DisplayValue\":\"{{{friendlyName}}}\"}"
         },
@@ -100,8 +100,8 @@
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioToggleDetailedV2",
           "parameters": {
-            "flagId": "$(flagId)",
-            "productId": "$(productId)",
+            "featureName": "$(featureName)",
+            "productName": "$(productName)",
             "toggleType": "$(toggleType)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{name}}}\"}"

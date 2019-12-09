@@ -22,7 +22,7 @@
             "helpMarkDown": "Select the esquio end point to use. If needed, click on 'manage', and add a new service endpoint of type 'Esquio'"
           },
           {
-            "name": "productId",
+            "name": "productName",
             "type": "pickList",
             "label": "Esquio product",
             "required": true,
@@ -32,7 +32,7 @@
             }
           },
           {
-            "name": "flagId",
+            "name": "featureName",
             "type": "pickList",
             "label": "Esquio feature",
             "required": true,
@@ -44,17 +44,17 @@
     ], 
         "dataSourceBindings": [
         {
-          "target": "productId",
+          "target": "productName",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioProductsV2",
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
         },
         {
-          "target": "flagId",
+          "target": "featureName",
           "endpointId": "$(EsquioService)",
           "dataSourceName": "EsquioFlagsV2",
           "parameters": {
-            "productId": "$(productId)"
+            "productName": "$(productName)"
           },
           "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
         }

@@ -40,18 +40,18 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, productId, flagId, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
+        var esquioConnection, productName, featureName, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     esquioConnection = tl.getInput('EsquioService', true);
-                    productId = tl.getInput('productId', true);
-                    flagId = tl.getInput('flagId', true);
+                    productName = tl.getInput('productName', true);
+                    featureName = tl.getInput('featureName', true);
                     esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
                     serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
                     esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                    return [4 /*yield*/, rollbackFeature(esquioUrl, esquioApiKey, productId, flagId)];
+                    return [4 /*yield*/, rollbackFeature(esquioUrl, esquioApiKey, productName, featureName)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
@@ -64,13 +64,13 @@ function run() {
         });
     });
 }
-function rollbackFeature(esquioUrl, esquioApiKey, productId, flagId) {
+function rollbackFeature(esquioUrl, esquioApiKey, productName, featureName) {
     return __awaiter(this, void 0, void 0, function () {
         var options, req;
         return __generator(this, function (_a) {
             options = {
                 hostname: esquioUrl.host,
-                path: "/api/products/" + productId + "/features/" + flagId + "/rollback",
+                path: "/api/products/" + productName + "/features/" + featureName + "/rollback",
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

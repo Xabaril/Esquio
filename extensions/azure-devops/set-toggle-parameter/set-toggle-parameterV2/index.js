@@ -40,21 +40,21 @@ var url = require("url");
 var https = require('https');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var esquioConnection, flagId, toggleType, productId, parameterName, parameterValue, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
+        var esquioConnection, featureName, toggleType, productName, parameterName, parameterValue, esquioUrl, serverEndpointAuth, esquioApiKey, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     esquioConnection = tl.getInput('EsquioService', true);
-                    flagId = tl.getInput('flagId', true);
+                    featureName = tl.getInput('featureName', true);
                     toggleType = tl.getInput('toggleType', true);
-                    productId = tl.getInput('productId', true);
+                    productName = tl.getInput('productName', true);
                     parameterName = tl.getInput('parameterId', true);
                     parameterValue = tl.getInput('parameterValue', true);
                     esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
                     serverEndpointAuth = tl.getEndpointAuthorization(esquioConnection, false);
                     esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
-                    return [4 /*yield*/, setToggleParameter(esquioUrl, esquioApiKey, productId, flagId, toggleType, parameterName, parameterValue)];
+                    return [4 /*yield*/, setToggleParameter(esquioUrl, esquioApiKey, productName, featureName, toggleType, parameterName, parameterValue)];
                 case 1:
                     _a.sent();
                     return [3 /*break*/, 3];
@@ -67,7 +67,7 @@ function run() {
         });
     });
 }
-function setToggleParameter(esquioUrl, esquioApiKey, productId, flagId, toggleType, parameterName, parameterValue) {
+function setToggleParameter(esquioUrl, esquioApiKey, productName, featureName, toggleType, parameterName, parameterValue) {
     return __awaiter(this, void 0, void 0, function () {
         var options, postData, req;
         return __generator(this, function (_a) {
@@ -81,8 +81,8 @@ function setToggleParameter(esquioUrl, esquioApiKey, productId, flagId, toggleTy
                 }
             };
             postData = JSON.stringify({
-                "ProductName": productId,
-                "FeatureName": flagId,
+                "ProductName": productName,
+                "FeatureName": featureName,
                 "ToggleType": toggleType,
                 "Name": parameterName,
                 "Value": parameterValue
