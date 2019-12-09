@@ -14,7 +14,9 @@ The tasks included in this version are:
 
 Before being able to use any of this tasks you need to create an Esquio [Service Connection](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) (enabled after installing the extension) and configure an API key in Esquio to use it with the service connection.
 
-![Service connection](images/service-connection.png)
+Depending on which version of Esquio (v1.0 or v2.0) you are using you have to types of Esquio Service connection. Use the one according to the version of Esquio you are using, as there are changes in the API which will affect it.
+
+![Service connection](images/service-connection-v2.png)
 
 The parameters needed are:
 
@@ -24,6 +26,10 @@ The parameters needed are:
 
 Once you enter all the values you can click on *Verify connection* to check if the connection is well configured.
 
+## Task versioning
+
+As with the service connection the tasks has a v1.0 and a v2.0 depending on which version of Esquio you are using, when adding them to your pipelines be sure to use the right version, using *@1* or *@2* at the end of the task name.
+
 ## Rollout feature with Esquio task
 
 ![Rollout feature with Esquio](images/rollout.png)
@@ -31,8 +37,8 @@ Once you enter all the values you can click on *Verify connection* to check if t
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to enable.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio feature:** Picklist to select the Esquio feature desired to enable. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
 
 ## Rollback feature with Esquio task
 
@@ -41,8 +47,8 @@ Parameters for this task are:
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to rollback.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
 
 ## Set toggle parameter with Esquio
 
@@ -51,8 +57,8 @@ Parameters for this task are:
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to rollback.
-- **Esquio toggle:** Picklist for Esquio toggle for the feature to set a particular parameter.
-- **Esquio parameter:** Picklist for the Esquio parameter, associated with the toggle, to set the value.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
+- **Esquio toggle:** Picklist for Esquio toggle for the feature to set a particular parameter. In v2.0, instead of the numeric *id* we use the toggle type name from Esquio.
+- **Esquio parameter:** Picklist for the Esquio parameter, associated with the toggle, to set the value. In v2.0, instead of the numeric *id* we use the parameter name from Esquio.
 - **Esquio parameter value:** New value for the Esquio Toggle parameter.
