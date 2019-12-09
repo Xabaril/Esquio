@@ -54,6 +54,7 @@ steps:
 - task: PackageVSTSExtension@1
   inputs:
     rootFolder: 'extensions/azure-devops'
+    patternManifest: 'vss-extension-canary.json'
     outputPath: '$(packagefile)'
     extensionVersion: '$(Extension.Version)'
     updateTasksVersion: true
