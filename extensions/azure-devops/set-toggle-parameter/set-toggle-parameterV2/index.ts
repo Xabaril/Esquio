@@ -5,9 +5,9 @@ const https = require('https');
 async function run() {
     try {
         const esquioConnection = tl.getInput('EsquioService', true);
-        const flagId: string = tl.getInput('flagId', true);
+        const featureName: string = tl.getInput('featureName', true);
         const toggleType: string = tl.getInput('toggleType', true);
-        const productId: string = tl.getInput('productId', true);
+        const productName: string = tl.getInput('productName', true);
         const parameterName: string = tl.getInput('parameterId', true);
         const parameterValue: string = tl.getInput('parameterValue', true);
 
@@ -15,14 +15,14 @@ async function run() {
         const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
         const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
 
-        await setToggleParameter(esquioUrl, esquioApiKey, productId, flagId, toggleType, parameterName, parameterValue);
+        await setToggleParameter(esquioUrl, esquioApiKey, productName, featureName, toggleType, parameterName, parameterValue);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
 }
 
-async function setToggleParameter(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, productId: string, flagId: string, toggleType: string, parameterName: string, parameterValue: string) {
+async function setToggleParameter(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, productName: string, featureName: string, toggleType: string, parameterName: string, parameterValue: string) {
     const options = {
         hostname: esquioUrl.host,
         path: `/api/toggles/parameters`,
@@ -34,8 +34,8 @@ async function setToggleParameter(esquioUrl: url.UrlWithStringQuery, esquioApiKe
     }
 
     var postData = JSON.stringify({
-        "ProductName": productId,
-        "FeatureName": flagId,
+        "ProductName": productName,
+        "FeatureName": featureName,
         "ToggleType": toggleType,
         "Name": parameterName,
         "Value": parameterValue

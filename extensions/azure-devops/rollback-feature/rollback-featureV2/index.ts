@@ -5,24 +5,24 @@ const https = require('https');
 async function run() {
     try {
         const esquioConnection = tl.getInput('EsquioService', true);
-        const productId: string = tl.getInput('productId', true);
-        const flagId: string = tl.getInput('flagId', true);
+        const productName: string = tl.getInput('productName', true);
+        const featureName: string = tl.getInput('featureName', true);
 
         const esquioUrl = url.parse(tl.getEndpointUrl(esquioConnection, false));
         const serverEndpointAuth: tl.EndpointAuthorization = tl.getEndpointAuthorization(esquioConnection, false);
         const esquioApiKey = serverEndpointAuth["parameters"]["apitoken"];
 
-        await rollbackFeature(esquioUrl, esquioApiKey, productId, flagId);
+        await rollbackFeature(esquioUrl, esquioApiKey, productName, featureName);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
 }
 
-async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, productId: string, flagId: string) {
+async function rollbackFeature(esquioUrl: url.UrlWithStringQuery, esquioApiKey: string, productName: string, featureName: string) {
     const options = {
         hostname: esquioUrl.host,
-        path: `/api/products/${productId}/features/${flagId}/rollback`,
+        path: `/api/products/${productName}/features/${featureName}/rollback`,
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
