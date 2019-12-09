@@ -160,17 +160,17 @@
                     },
                     {
                         "name": "EsquioFlagsV2",
-                        "endpointUrl": "{{endpoint.url}}/api/products/$(productId)/features",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features",
                         "resultSelector": "jsonpath:$.result[*]"
                     },
                     {
                         "name": "EsquioFlagDetailedV2",
-                        "endpointUrl": "{{endpoint.url}}/api/products/$(productId)/features/$(flagId)",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features/$(featureName)",
                         "resultSelector": "jsonpath:$.toggles[*]"
                     },
                     {
                         "name": "EsquioToggleDetailedV2",
-                        "endpointUrl": "{{endpoint.url}}/api/products/$(productId)/features/$(flagId)/toggles/$(toggleType)",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features/$(featureName)/toggles/$(toggleType)",
                         "resultSelector": "jsonpath:$.parameters[*]"
                     }
                 ],
