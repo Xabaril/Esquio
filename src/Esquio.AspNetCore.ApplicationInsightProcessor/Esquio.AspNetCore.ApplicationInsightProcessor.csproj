@@ -19,7 +19,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="$(microsoftapplicationinsights)" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(microsoftsourcelinkgithub)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 
 namespace Microsoft.AspNetCore.Hosting
 {
-    public static class IWebHostExtensions
+    static class IHostExtensions
     {
-        public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext, IServiceProvider> seeder = null)
+        public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder = null)
             where TContext : DbContext
         {
-            using (var scope = webHost.Services.CreateScope())
+            using (var scope = host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetService<TContext>();
 
@@ -28,7 +29,7 @@ namespace Microsoft.AspNetCore.Hosting
                 }
             }
 
-            return webHost;
+            return host;
         }
     }
 }
