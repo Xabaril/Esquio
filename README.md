@@ -39,3 +39,9 @@ Esquio is built using the following great open source projects and free services
 ## Code of conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).  For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Videos
+
+NetCore y Feature Flags **(Spanish)**
+
+[![MeetUp | NetCore y Feature Flags(Spanish)](https://img.youtube.com/vi/VCGZZOFaPL0/0.jpg)](https://www.youtube.com/watch?v=VCGZZOFaPL0)
