@@ -28,8 +28,8 @@ steps:
   displayName: 'install dotnet sdk'
   inputs:
     packageType: 'sdk'
-    version: '3.0.100'
-    includePreviewVersions: true
+    useGlobalJson: true
+    workingDirectory: '$(Build.SourcesDirectory)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
   inputs:
@@ -55,54 +55,48 @@ steps:
   displayName: 'dotnet pack Esquio'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './src/Esquio/Esquio.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Esquio AspNetCore'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './src/Esquio.AspNetCore/Esquio.AspNetCore.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Configuration Store'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack EF Core  Store'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Miniprofiler.Esquio'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-preview.$(Build.BuildNumber)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack Esquio.CliTool'
   inputs:
     command: 'pack'
-    feedsToUse: 'select'
     packagesToPack: './tools/Esquio.CliTool/Esquio.CliTool.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
     versioningScheme: 'off'
     buildProperties: 'VersionSuffix=-prerelease.$(Build.BuildNumber)'
 - task: NuGetCommand@2
