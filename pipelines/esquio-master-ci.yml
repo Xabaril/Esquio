@@ -36,7 +36,7 @@ steps:
   inputs:
     packageType: 'sdk'
     useGlobalJson: true
-    workingDirectory: '$(System.BuildSourcesDirectory)'
+    workingDirectory: '$(Build.SourcesDirectory)'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
   inputs:
