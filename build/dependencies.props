@@ -27,8 +27,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
-    <esquiotoggleshttp>1.1.1</esquiotoggleshttp>
-    <esquiotogglesgeolocation>1.1.1</esquiotogglesgeolocation>
+    <esquiotoggleshttp>2.0.0</esquiotoggleshttp>
+    <esquiotogglesgeolocation>2.0.0</esquiotogglesgeolocation>
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
