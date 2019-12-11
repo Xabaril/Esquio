@@ -21,7 +21,7 @@ steps:
   inputs:
     version: 'v0.6.x'
 
-- template: templates/azure-task-build-template.yml
+- template: templates/azure-task-build-template.yml  
   parameters:
     pathToExtension: 'extensions/azure-devops/rollback-feature/rollback-featureV1'
     taskName: rollback
@@ -34,6 +34,21 @@ steps:
 - template: templates/azure-task-build-template.yml
   parameters:
     pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV1'
+    taskName: 'set toggle parameter'
+    
+- template: templates/azure-task-build-template.yml  
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollback-feature/rollback-featureV2'
+    taskName: rollback
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollout-feature/rollout-featureV2'
+    taskName: rollout
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV2'
     taskName: 'set toggle parameter'
 
 - task: ExtensionVersion@1
