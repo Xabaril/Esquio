@@ -51,7 +51,7 @@ namespace Esquio.UI.Infrastructure.OpenApi
                         }
                     }
                 },
-                Description = "ESquio UI OpenId Security Scheme"
+                Description = "Esquio UI OpenId Security Scheme"
             });
 
             options.AddSecurityDefinition("apikey", new OpenApiSecurityScheme
