@@ -89,21 +89,20 @@ namespace WebApp
             }
 
             app.UseMiniProfiler()
+                .UseCors()
                 .UseCookiePolicy()
                 .UseStaticFiles()
                 .UseAuthentication()
                 .UseRouting()
                 .UseAuthorization()
-                .UseCors();
+                .UseEndpoints(routes =>
+                {
+                    routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
 
-            app.UseEndpoints(routes =>
-            {
-                routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
-
-                routes.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=Match}/{action=Index}/{id?}");
-            });
+                    routes.MapControllerRoute(
+                            name: "default",
+                            pattern: "{controller=Match}/{action=Index}/{id?}");
+                });
         }
 
         private IServiceCollection AddEsquioWithEntityFrameworkCoreStore(IServiceCollection services)
