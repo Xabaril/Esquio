@@ -41,11 +41,6 @@ namespace Esquio.CliTool
                 PhysicalConsole.Singleton.WriteLine(apiException.Response, Constants.ErrorColor);
                 return 1;
             }
-            //catch (ApiException)
-            //{
-            //    PhysicalConsole.Singleton.WriteLine(Constants.InternalErrorMessage, Constants.ErrorColor);
-            //    return 1;
-            //}
         }
 
         private int OnExecute(CommandLineApplication app, IConsole console)
