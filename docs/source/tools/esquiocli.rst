@@ -5,7 +5,7 @@ Esquio CLI
 
 To install **Esquio.CLI** open a console window and type the following command using the *.NET Core CLI*::
 
-        dotnet tools install -g Esquio.Cli
+        dotnet tool install -g Esquio.Cli
 
 .. image:: ../images/miniprofiler.png
 
