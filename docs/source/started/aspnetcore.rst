@@ -10,7 +10,7 @@ Setup
 
 To install Esquio open a console window and type the following command using the .NET Core CLI::
 
-        dotnet package add Esquio.AspNetCore
+        dotnet add package Esquio.AspNetCore
 
 
 or using Powershell or Package Manager::
