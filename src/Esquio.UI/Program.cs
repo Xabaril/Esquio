@@ -32,20 +32,5 @@ namespace Esquio.UI
                 logging.ClearProviders();
                 logging.AddSerilog(dispose: true);
             });
-
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //        .ConfigureAppConfiguration((hostingContext, configuration) =>
-        //        {
-        //            Log.Logger = new LoggerConfiguration()
-        //                .ReadFrom.Configuration(configuration.Build())
-        //                .CreateLogger();
-        //        })
-        //        .ConfigureLogging((hostingContext, logging) =>
-        //        {
-        //            logging.ClearProviders();
-        //            logging.AddSerilog(dispose: true);
-        //        })
-        //        .UseStartup<Startup>();
     }
 }

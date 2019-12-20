@@ -1,7 +1,13 @@
 
 # ChangeLog 
 
-## Release - Esquio 2.0
+## Patch - Esquio 2.0.1 released on 2019, December 20
+
+- Esquio
+    - New
+        - Added new EnvironmentVariableToggle.
+
+## Release - 2.0
 
 - UI
     - New
@@ -28,7 +34,7 @@
 
 - Fix issue on how we use DiagnosticListener, overlaping default DiagnosticListener created by Asp.Net Core host. This issue break Application Insight telemetry processors. 
 
-## Release -  Esquio 1.1 released on 2019, October 18
+## Release - 1.1 released on 2019, October 18
 
 - Created new MiniProfiler extension for profile feature evaluation.
 - UI
@@ -76,7 +82,7 @@ Thanks to our external contributors Meir Blachman @Meir017, Jorge Turrado @JorTu
 - Esquio 1.0.1
     - Fixing bug on FromToToggle when use one digit on month, day or hour.
 
-## Release - Esquio 1.0 released on 2019, September 24
+## Release - 1.0 released on 2019, September 24
 
 - Esquio 1.0
 - Esquio.AspNetCore 1.0
