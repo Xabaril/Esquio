@@ -7,6 +7,7 @@ variables:
   packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version)-canary.vsix'
 
 trigger: none
+pr: none
 
 steps:
 - task: TfxInstaller@1
