@@ -1,7 +1,6 @@
 name: CI Esquio workflow
 
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
