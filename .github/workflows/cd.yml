@@ -2,7 +2,8 @@ name: Esquio Continous Deployment
 on: 
   push:
     tags:       
-      - release-*  # Push events to release-*
+      - release-*  # Push events to release-* 
+      
 jobs:
   build:
     name: Build
