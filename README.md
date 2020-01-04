@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/xabaril/Esquio/_apis/build/status/esquio-master-release?branchName=master)](https://dev.azure.com/xabaril/Esquio/_build/latest?definitionId=4&branchName=master)
+![Esquio Build](https://github.com/xabaril/Esquio/workflows/Esquio%20Continous%20Integration/badge.svg?branch=master)
 
 ## About [Esquio](https://esquio.readthedocs.io) 
 
