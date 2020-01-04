@@ -1,8 +1,6 @@
 name: Esquio Continous Deployment
 on: 
   push:
-    branches: 
-      - master
     tags:       
       - release-*  # Push events to release-*
 jobs:
