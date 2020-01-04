@@ -29,7 +29,7 @@ jobs:
     - name: dotnet test [UnitTests]
       run: dotnet test ./tests/UnitTests/UnitTests.csproj -c Release --no-build
     - name: dotnet test [FunctionalTests]
-      run: dotnet test ./tests/FunctionalTests\FunctionalTests.csproj -c Release --no-build
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c Release --no-build
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c Release --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]
