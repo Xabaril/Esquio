@@ -4,6 +4,9 @@ on:
     - cron:  '0 6 * * *'
 jobs:
   build:
+    env:
+      BUILD_CONFIG: Release
+
     name: Build
     runs-on: ubuntu-latest
     services:
@@ -21,21 +24,21 @@ jobs:
       with:
         version: 3.1.100
     - name: dotnet build
-      run: dotnet build Esquio.sln -c Release
+      run: dotnet build Esquio.sln -c $BUILD_CONFIG
     - name: dotnet test [UnitTests]
-      run: dotnet test ./tests/UnitTests/UnitTests.csproj -c Release --no-build
+      run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet test [FunctionalTests]
-      run: dotnet test ./tests/FunctionalTests\FunctionalTests.csproj -c Release --no-build
+      run: dotnet test ./tests/FunctionalTests\FunctionalTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet pack [Esquio]
-      run: dotnet pack ./src/Esquio/Esquio.csproj -c Release --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]
-      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c Release --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore.ApplicationInsightProcessor]
-      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c Release --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.Configuration.Store]
-      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c Release --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
-      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c Release --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.2
       with:
