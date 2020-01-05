@@ -7,7 +7,6 @@ export { default as Navigation } from './Navigation.vue';
 export * from './pagination';
 export * from './parameters';
 export * from './query';
-export * from './tokens';
 export * from './translate';
 export * from './user';
 

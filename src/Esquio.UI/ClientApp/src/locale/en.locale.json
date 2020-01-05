@@ -158,7 +158,7 @@
   },
   "submenu": {
     "logout": "Logout",
-    "token": "Get Private token",
+    "token": "Manage Tokens",
     "users": "Manage Users"
   },
   "tokens": {
