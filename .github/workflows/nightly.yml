@@ -1,4 +1,4 @@
-name: Esquio Continous Deployment
+name: Esquio Nightly Build
 on:
   schedule:
     - cron:  '0 6 * * *'
@@ -28,7 +28,7 @@ jobs:
     - name: dotnet test [UnitTests]
       run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet test [FunctionalTests]
-      run: dotnet test ./tests/FunctionalTests\FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]
