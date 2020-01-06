@@ -46,4 +46,4 @@ jobs:
     # - name: add package repository
     #   run: nuget source Add -Name "GPR" -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
     - name: push packages
-      run: nuget push ./artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/Xabaril --skip-duplicate
+      run: nuget push ./artifacts/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/Xabaril --skip-duplicate
