@@ -46,7 +46,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
       with:
         nuget-version: latest
-    - name: Setup nuget config
-      run: sed 's/GITHUB_TOKEN/${{ secrets.GITHUB_TOKEN }}/g' .nuget.config > nuget.config
+    - name: add package repository
+      run: nuget source Add -Config NuGet.config -Name "GPR" -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
     - name: push packages
       run: dotnet nuget push ./artifacts/*.nupkg -s "GPR" --skip-duplicate
