@@ -226,21 +226,19 @@
       "validTo": "Valid To Date"
     },
     "placeholders": {
-      "nameHelp": "The name for the Api Key",
+      "nameHelp": "The name for the Api Key (XX-000)",
       "validTo": "Date until the Api Key will be valid"
     },
     "errors": {
-      "add": "Cannot create this user",
-      "update": "Cannot update the user",
-      "delete": "Cannot delete the user"
+      "add": "Cannot create this Api Key",
+      "delete": "Cannot delete the Api Key"
     },
     "success": {
-      "add": "The user was created",
-      "update": "The user was updated",
-      "delete": "The user was deleted"
+      "add": "The Api Key was created",
+      "delete": "The Api Key was deleted"
     },
     "confirm": {
-      "title": "Are you sure to delete '{0}' user?"
+      "title": "Are you sure to delete '{0}' Api Key?"
     }
   }
 }

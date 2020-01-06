@@ -9,7 +9,7 @@
         v-model="form.name"
         id="user_name"
         :label="$t('tokens.fields.name')"
-        validators="required|min:1"
+        validators="required|min:5|regex:^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$"
         :help-label="$t('tokens.placeholders.nameHelp')"
       />
 
