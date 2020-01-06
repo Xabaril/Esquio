@@ -16,8 +16,6 @@
       <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/users" tag="b-dropdown-item">{{$t('submenu.users')}}</router-link>
 
       <router-link v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Token)" to="/tokens" tag="b-dropdown-item">{{$t('submenu.token')}}</router-link>
-
-      <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
     </b-dropdown>
     </div>
   </div>
@@ -59,17 +57,6 @@ export default class extends Vue {
     return this.breadcrumb;
   }
 
-  // In the future this will be it owns component
-  public async onClickGenerateToken(): Promise<void> {
-    // try {
-    //   const response = await this.tokensService.generate();
-    //   copy(response.key);
-
-    //   this.$alert(this.$t('tokens.success'));
-    // } catch (e) {
-    //   this.$alert(this.$t('tokens.error'), AlertType.Error);
-    // }
-  }
   public clean(text: string): string {
     return cleanBreadcrumbName(text);
   }

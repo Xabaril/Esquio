@@ -21,6 +21,11 @@
       </div>
     </form>
 
+    <div class="row" v-if="result">
+      <span>Lorem ipsum</span>
+      <input type="text" disabled v-model="result" />
+    </div>
+
     <FloatingContainer>
       <FloatingSave
         :text="$t('tokens.actions.save')"
@@ -48,6 +53,7 @@ import {
 import { AlertType } from '~/core';
 import { Token } from './token.model';
 import { ITokensService } from './itokens.service';
+import copy from 'copy-to-clipboard';
 
 enum Role {
   Manager,
@@ -67,6 +73,7 @@ enum Role {
 export default class extends Vue {
   public name = 'UsersForm';
   public isLoading = false;
+  public result: string = null;
 
   public form: Token = {
     name: null,
@@ -98,7 +105,10 @@ export default class extends Vue {
 
   private async addToken(): Promise<void> {
     try {
-      await this.tokensService.add(this.form);
+      const response = await this.tokensService.add(this.form);
+      this.result = response.key;
+      copy(this.result);
+
       this.form = {
         name: null,
         validTo: new Date()
@@ -106,7 +116,7 @@ export default class extends Vue {
 
       this.dateOptions = {
         form: this.form
-      }
+      };
 
       this.$emit('add');
       this.$validator.reset();

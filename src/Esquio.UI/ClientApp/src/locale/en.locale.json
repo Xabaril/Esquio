@@ -234,7 +234,7 @@
       "delete": "Cannot delete the Api Key"
     },
     "success": {
-      "add": "The Api Key was created",
+      "add": "The Api Key was created and copied to the clipboard",
       "delete": "The Api Key was deleted"
     },
     "confirm": {
