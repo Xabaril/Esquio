@@ -216,10 +216,10 @@
   },
   "tokens": {
     "title": "User Api Keys",
+    "detail": "Add Api Key",
     "actions": {
-      "add": "Add Api Key",
       "delete": "Delete",
-      "save": "Save Api Key"
+      "save": "Add Api Key"
     },
     "fields": {
       "name": "Name",

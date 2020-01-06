@@ -16,16 +16,6 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
             action: AbilityAction.Read,
             subject: AbilitySubject.Token
           }
-        },
-        {
-          path: 'add',
-          name: 'tokens-add',
-          component: () => import('./TokensForm.vue'),
-          beforeEnter: requireAuth,
-          meta: {
-            action: AbilityAction.Create,
-            subject: AbilitySubject.Token
-          }
         }
       ]
     }

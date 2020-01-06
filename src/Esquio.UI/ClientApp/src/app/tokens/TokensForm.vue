@@ -85,7 +85,6 @@ export default class extends Vue {
     }
 
     await this.addToken();
-    this.goBack();
   }
 
   public onChangeDate(date: Date): void {
@@ -100,12 +99,6 @@ export default class extends Vue {
     } catch (e) {
       this.$alert(this.$t('tokens.errors.add'), AlertType.Error);
     }
-  }
-
-  private goBack(): void {
-    this.$router.push({
-      name: 'tokens-list'
-    });
   }
 }
 </script>

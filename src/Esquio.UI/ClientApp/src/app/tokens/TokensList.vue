@@ -1,5 +1,8 @@
 <template>
   <section class="tokens_list container u-container-medium">
+    <div class="col">
+      <TokensForm />
+    </div>
     <h1>{{$t('tokens.title')}}</h1>
     <b-table
       striped
@@ -53,11 +56,6 @@
       @change="onChangePage"
       align="right"
     ></b-pagination>
-
-    <FloatingTop
-      :text="$t('tokens.actions.add')"
-      :to="{name: 'tokens-add'}"
-    />
   </section>
 </template>
 
@@ -65,13 +63,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop, UserPermissions, PaginationInfo, IDateService } from '~/shared';
+import { UserPermissions, PaginationInfo, IDateService } from '~/shared';
 import { ITokensService } from './itokens.service';
+import { default as TokensForm } from './TokensForm.vue';
 import { Token } from './token.model';
 
 @Component({
   components: {
-    FloatingTop
+    TokensForm
   }
 })
 export default class extends Vue {
