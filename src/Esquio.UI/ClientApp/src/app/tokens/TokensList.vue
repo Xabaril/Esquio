@@ -1,7 +1,7 @@
 <template>
   <section class="tokens_list container u-container-medium">
     <div class="col">
-      <TokensForm />
+      <TokensForm @add="onAddToken"/>
     </div>
     <h1>{{$t('tokens.title')}}</h1>
     <b-table
@@ -108,6 +108,10 @@ export default class extends Vue {
     this.tokens = null;
     this.isLoading = true;
     this.paginationInfo.pageIndex = page - 1;
+    this.getTokens();
+  }
+
+  public onAddToken(): void {
     this.getTokens();
   }
 

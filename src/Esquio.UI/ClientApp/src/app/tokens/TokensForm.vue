@@ -17,7 +17,7 @@
         <label for="role" class="bmd-label-floating ml-3">
           {{$t('tokens.placeholders.validTo')}}
         </label>
-        <DateParameter :options="{}" @change="onChangeDate"/>
+        <DateParameter :options="dateOptions" @change="onChangeDate"/>
       </div>
     </form>
 
@@ -67,9 +67,14 @@ enum Role {
 export default class extends Vue {
   public name = 'UsersForm';
   public isLoading = false;
+
   public form: Token = {
     name: null,
     validTo: null
+  };
+
+  public dateOptions = {
+    form: this.form
   };
 
   @Inject() dateService: IDateService;
@@ -94,6 +99,17 @@ export default class extends Vue {
   private async addToken(): Promise<void> {
     try {
       await this.tokensService.add(this.form);
+      this.form = {
+        name: null,
+        validTo: new Date()
+      };
+
+      this.dateOptions = {
+        form: this.form
+      }
+
+      this.$emit('add');
+      this.$validator.reset();
 
       this.$alert(this.$t('tokens.success.add'));
     } catch (e) {

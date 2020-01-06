@@ -22,6 +22,7 @@ export class TokensService implements ITokensService {
   }
 
   public async add(token: Token): Promise<Token> {
+    console.log(token);
     const response = await fetch(`${settings.ApiUrl}/apikeys`, {
       method: 'POST',
       body: JSON.stringify(token)
