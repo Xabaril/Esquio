@@ -20,7 +20,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
         {
           path: 'add',
           name: 'tokens-add',
-          // component: () => import('./TokensForm.vue'),
+          component: () => import('./TokensForm.vue'),
           beforeEnter: requireAuth,
           meta: {
             action: AbilityAction.Create,

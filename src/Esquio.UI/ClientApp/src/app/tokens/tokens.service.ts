@@ -21,12 +21,10 @@ export class TokensService implements ITokensService {
     return response.json();
   }
 
-  public async generate(): Promise<Token> {
+  public async add(token: Token): Promise<Token> {
     const response = await fetch(`${settings.ApiUrl}/apikeys`, {
       method: 'POST',
-      body: JSON.stringify({
-        name: 'abc-' + Date.now(),
-      })
+      body: JSON.stringify(token)
     });
 
     if (!response.ok) {

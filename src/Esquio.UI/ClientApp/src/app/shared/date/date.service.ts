@@ -6,7 +6,7 @@ import { Time } from './time.model';
 export class DateService implements IDateService {
 
   public dateTimeToString(date: Date, time?: Time): string {
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` + (time ? ` ${time.HH}:${time.mm}:${time.ss}`: '');
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` + (time ? ` ${time.HH}:${time.mm}:${time.ss}` : '');
   }
 
   public stringToDateTime(rawDate: string): [Date, Time] {
@@ -39,7 +39,6 @@ export class DateService implements IDateService {
 
   public fancyFormatDateTime(rawDate: Date | string): string {
     const [date, time] = this.stringToDateTime(rawDate.toString());
-    debugger;
 
     return this.dateTimeToString(date, time);
   }
