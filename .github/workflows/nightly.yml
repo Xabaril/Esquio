@@ -44,6 +44,6 @@ jobs:
       with:
         nuget-version: latest
     - name: add package repository
-      run: nuget source Add -Name GPR -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
+      run: nuget source Add -Name "GPR" -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
     - name: push packages
-      run: dotnet nuget push **/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/Xabaril --skip-duplicate
+      run: dotnet nuget push **/*.nupkg -Source "GPR" --skip-duplicate
