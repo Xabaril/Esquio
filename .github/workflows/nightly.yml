@@ -31,15 +31,15 @@ jobs:
     - name: dotnet test [FunctionalTests]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet pack [Esquio]
-      run: dotnet pack ./src/Esquio/Esquio.csproj -o ./artifacts -c $BUILD_CONFIG --version-sufix nightly --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio/Esquio.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix nightly --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]
-      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -o ./artifacts -c $BUILD_CONFIG --version-sufix nightly --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix nightly --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore.ApplicationInsightProcessor]
-      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -o ./artifacts -c $BUILD_CONFIG --version-sufix nightly --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix nightly --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.Configuration.Store]
-      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-sufix nightly --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix nightly --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
-      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-sufix nightly --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix nightly --no-build --include-source --include-symbols
     - name: Publish nuget
       run: |
           for f in ./artifacts/*.nupkg
