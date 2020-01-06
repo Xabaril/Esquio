@@ -26,12 +26,8 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import DatePicker from 'vuejs-datepicker';
 import VueTimepicker from 'vue2-timepicker';
-
-type Time = {
-  HH: string,
-  mm: string,
-  ss: string
-};
+import { Time, IDateService } from '~/shared';
+import { Inject } from 'inversify-props';
 
 @Component({
   components: {
@@ -50,6 +46,7 @@ export default class extends Vue {
   };
 
   @Prop({ required: true }) options: any;
+  @Inject() dateService: IDateService;
 
   public created(): void {
     this.stringToDateTime(this.options.value || new Date());
@@ -57,43 +54,20 @@ export default class extends Vue {
   }
 
   private stringToDateTime(value: string): void {
-    this.date = new Date(value);
-
-    if (isNaN(this.date.getTime())) {
-      this.date = new Date();
-      this.time = {
-        HH: '0',
-        mm: '0',
-        ss: '0'
-      };
-
-      return;
-    }
-
-    const hh = this.date.getHours() + '';
-    const mm = this.date.getMinutes() + '';
-    const ss = this.date.getSeconds() + '';
-
-    this.time = {
-      HH: hh.length > 1 ? hh : `0${hh}`,
-      mm: mm.length > 1 ? mm : `0${mm}`,
-      ss: ss.length > 1 ? ss : `0${ss}`
-    };
-  }
-
-  private dateTimeToString(): string {
-    return `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()} ${this.time.HH}:${this.time.mm}:${this.time.ss}`;
+    const [date, time] = this.dateService.stringToDateTime(value);
+    this.date = date;
+    this.time = time;
   }
 
   @Watch('date')
   onChangeValue() {
-    this.value = this.dateTimeToString();
+    this.value = this.dateService.dateTimeToString(this.date, this.time);
     this.$emit('change', this.value);
   }
 
   @Watch('time')
   onChangeTime() {
-    this.value = this.dateTimeToString();
+    this.value = this.dateService.dateTimeToString(this.date, this.time);
     this.$emit('change', this.value);
   }
 }

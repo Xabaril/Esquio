@@ -22,6 +22,15 @@
       </div>
 
       <template
+        slot="validTo"
+        slot-scope="data"
+      >
+        <div>
+          {{formatDate(data.item.validTo)}}
+        </div>
+      </template>
+
+      <template
         slot="managementPermission"
         slot-scope="data"
       >
@@ -56,7 +65,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop, UserPermissions, PaginationInfo } from '~/shared';
+import { FloatingTop, UserPermissions, PaginationInfo, IDateService } from '~/shared';
 import { ITokensService } from './itokens.service';
 import { Token } from './token.model';
 
@@ -72,8 +81,12 @@ export default class extends Vue {
   public paginationInfo = new PaginationInfo();
   public columns = [
     {
-      key: 'subjectId',
-      label: () => this.$t('tokens.fields.subject')
+      key: 'name',
+      label: () => this.$t('tokens.fields.name')
+    },
+    {
+      key: 'validTo',
+      label: () => this.$t('tokens.fields.date')
     },
     {
       key: 'managementPermission',
@@ -82,6 +95,7 @@ export default class extends Vue {
   ];
 
   @Inject() tokensService: ITokensService;
+  @Inject() dateService: IDateService;
 
   public created(): void {
     this.getTokens();
@@ -112,13 +126,13 @@ export default class extends Vue {
   }
 
   private async deleteToken(token: Token): Promise<void> {
-    if (!await this.$confirm(this.$t('tokens.confirm.title', [token.id]))) {
+    if (!await this.$confirm(this.$t('tokens.confirm.title', [token.name]))) {
       return;
     }
 
     try {
-      // const response = await this.tokensService.remove(token);
-      this.tokens = this.tokens.filter(x => x.id !== token.id);
+      const response = await this.tokensService.remove(token);
+      this.tokens = this.tokens.filter(x => x.name !== token.name);
       this.$alert(this.$t('tokens.success.delete'));
     } catch (e) {
       this.$alert(this.$t('tokens.errors.delete'), AlertType.Error);
@@ -126,6 +140,10 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private formatDate(validTo: Date): string {
+    return this.dateService.fancyFormatDateTime(validTo);
   }
 }
 </script>

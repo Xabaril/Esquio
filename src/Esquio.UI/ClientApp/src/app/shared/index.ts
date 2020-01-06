@@ -1,5 +1,6 @@
 export * from './auth';
 export { default as CustomSwitch } from './CustomSwitch.vue';
+export * from './date';
 export * from './floating';
 export * from './input';
 export { default as Loading } from './Loading.vue';

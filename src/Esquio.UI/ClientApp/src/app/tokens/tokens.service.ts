@@ -37,12 +37,12 @@ export class TokensService implements ITokensService {
   }
 
   public async remove(token: Token): Promise<void> {
-    const response = await fetch(`${settings.ApiUrl}/apikeys/${token.id}`, {
+    const response = await fetch(`${settings.ApiUrl}/apikeys/${token.name}`, {
       method: 'DELETE'
     });
 
     if (!response.ok) {
-      throw new Error(`Cannot delete token ${token.id}`);
+      throw new Error(`Cannot delete token ${token.name}`);
     }
   }
 

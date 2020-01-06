@@ -1,4 +1,4 @@
 export interface Token {
-  key: string;
-  id: string;
+  name: string;
+  validTo: Date;
 }
