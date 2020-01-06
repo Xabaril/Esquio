@@ -44,6 +44,6 @@ jobs:
       with:
         nuget-version: latest
     - name: add package repository
-      run: nuget source Add -Config nuget.config -Name NuGet -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
+      run: nuget source Add -Name NuGet -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
     - name: push packages
       run: dotnet nuget push **/*.nupkg -s https://nuget.pkg.github.com/Xabaril/index.json --skip-duplicate
