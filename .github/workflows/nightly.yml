@@ -1,10 +1,7 @@
 name: Esquio Nightly Build
 on:
-  # schedule:
-  #   - cron:  '0 6 * * *'
-  push:
-    branches: 
-      - master
+  schedule:
+    - cron:  '0 6 * * *'
 jobs:
   build:
     env:
@@ -47,6 +44,6 @@ jobs:
       with:
         nuget-version: latest
     - name: add package repository
-      run: nuget source Add -Config NuGet.config -Name "GPR" -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
+      run: nuget source Add -Config NuGet.config -Name "github" -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
     - name: push packages
-      run: dotnet nuget push ./artifacts/*.nupkg -s "GPR" --skip-duplicate
+      run: dotnet nuget push ./artifacts/*.nupkg -s "github" -k ${{secrets.GITHUB_TOKEN}} --skip-duplicate
