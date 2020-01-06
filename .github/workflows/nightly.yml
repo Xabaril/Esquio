@@ -45,7 +45,5 @@ jobs:
         nuget-version: latest
     - name: add package repository
       run: nuget source Add -Name NuGet -Source https://nuget.pkg.github.com/Xabaril/index.json -UserName Xabaril -Password ${{ secrets.GITHUB_TOKEN }} -StorePasswordInClearText
-    - name: set api key for repository
-      run: nuget setapikey ${{ secrets.GITHUB_TOKEN }} -Source https://nuget.pkg.github.com/Xabaril/index.json
     - name: push packages
-      run: dotnet nuget push **/*.nupkg -s https://nuget.pkg.github.com/Xabaril/index.json --skip-duplicate
+      run: dotnet nuget push **/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/Xabaril/index.json --skip-duplicate
