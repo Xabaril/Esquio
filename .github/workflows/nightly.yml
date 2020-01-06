@@ -46,4 +46,4 @@ jobs:
     - name: Setup nuget config
       run: sed 's/GITHUB_TOKEN/${{ secrets.GITHUB_TOKEN }}/g' .nuget.config > nuget.config
     - name: push packages
-      run: dotnet nuget push ./artifacts/*.nupkg -s "gpr" --skip-duplicate
+      run: dotnet nuget push ./artifacts/*.nupkg -s "GPR" --skip-duplicate
