@@ -28,7 +28,7 @@
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
     <esquiotoggleshttp>2.0.0</esquiotoggleshttp>
-    <esquiotogglesgeolocation>2.0.0</esquiotogglesgeolocation>
+    <esquiotogglesgeolocation>2.0.1</esquiotogglesgeolocation>
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
@@ -43,7 +43,7 @@
     <systemtextjson>4.7.0</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.1.0</microsoftaspnetcoreauthenticationjwtbearer>
-    <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.0</microsoftaspnetcoremvcversioningapiexplorerversion>
+    <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.1</microsoftaspnetcoremvcversioningapiexplorerversion>
 
     <microsoftextensionsdependencyinjectionabstractions>3.1.0</microsoftextensionsdependencyinjectionabstractions>
     <microsoftextensionsprimitives>3.1.0</microsoftextensionsprimitives>
