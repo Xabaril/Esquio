@@ -45,7 +45,5 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
       with:
         nuget-version: latest
-    - name: add package repository
-      run: nuget source Add -Config nuget.config -Name NuGet -Source https://api.nuget.org/v3/index.json -UserName Xabaril -Password ${{ secrets.NUGET_API_KEY }} -StorePasswordInClearText
     - name: push packages
-      run: dotnet nuget push **/*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push **/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
