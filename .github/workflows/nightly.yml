@@ -43,6 +43,13 @@ jobs:
       run: |
           for f in ./artifacts/*.nupkg
           do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
+            curl --silent --show-error --fail -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
+            if [ $? -eq 0 ]
+            then
+              echo "successfully pushed $f"
+            else
+              echo "failed to push $f" >&2
+              exit 1
+            fi
           done
       shell: bash
