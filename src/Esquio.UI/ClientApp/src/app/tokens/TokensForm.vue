@@ -22,8 +22,11 @@
     </form>
 
     <div class="row" v-if="result">
-      <span>Lorem ipsum</span>
-      <input type="text" disabled v-model="result" />
+      <b-alert show>{{$t('tokens.copy')}}</b-alert>
+      <b-alert variant="success" show>
+        {{result}}
+        <i class="tokens_form-copy material-icons" @click="onClickCopy">file_copy</i>
+      </b-alert>
     </div>
 
     <FloatingContainer>
@@ -103,11 +106,14 @@ export default class extends Vue {
     this.form.validTo = new Date(date);
   }
 
+  public onClickCopy(): void {
+    this.copyToken();
+  }
+
   private async addToken(): Promise<void> {
     try {
       const response = await this.tokensService.add(this.form);
       this.result = response.key;
-      copy(this.result);
 
       this.form = {
         name: null,
@@ -125,6 +131,11 @@ export default class extends Vue {
     } catch (e) {
       this.$alert(this.$t('tokens.errors.add'), AlertType.Error);
     }
+  }
+
+  private copyToken(): void {
+      copy(this.result);
+      this.$alert(this.$t('tokens.success.copy'));
   }
 }
 </script>
@@ -146,6 +157,13 @@ export default class extends Vue {
     .bmd-label-floating {
       top: 0;
     }
+  }
+
+  &-copy {
+    cursor: pointer;
+    font-size: 1.4rem;
+    margin-left: .5rem;
+    transform: translateY(.25rem);
   }
 }
 </style>

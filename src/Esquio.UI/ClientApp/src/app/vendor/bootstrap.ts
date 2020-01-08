@@ -1,16 +1,3 @@
 // Remember to add also the corresponding SCSS File -> /styles/vendor/_bootstrap.scss
-export {
-  ButtonPlugin,
-  ButtonToolbarPlugin,
-  ButtonGroupPlugin,
-  ModalPlugin,
-  PaginationPlugin,
-  SpinnerPlugin,
-  TablePlugin,
-  FormCheckboxPlugin,
-  FormPlugin,
-  CardPlugin,
-  CollapsePlugin,
-  ProgressPlugin,
-  DropdownPlugin
-} from 'bootstrap-vue';
+export { AlertPlugin, ButtonGroupPlugin, ButtonPlugin, ButtonToolbarPlugin, CardPlugin, CollapsePlugin, DropdownPlugin, FormCheckboxPlugin, FormPlugin, ModalPlugin, PaginationPlugin, ProgressPlugin, SpinnerPlugin, TablePlugin } from 'bootstrap-vue';
+
