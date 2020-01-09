@@ -5,6 +5,7 @@ export * from './floating';
 export * from './input';
 export { default as Loading } from './Loading.vue';
 export { default as Navigation } from './Navigation.vue';
+export { default as PaginatedTable } from './PaginatedTable.vue';
 export * from './pagination';
 export * from './parameters';
 export * from './query';
