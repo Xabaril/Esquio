@@ -17,7 +17,10 @@ export class UsersPermissionsService implements IUsersPermissionsService {
       throw new Error('Cannot fetch users permissions');
     }
 
-    return response.json();
+    const result = await response.json();
+    result.PaginatedResponse += 1;
+
+    return result;
   }
 
   public async add(userPermissions: UserPermissions): Promise<void> {

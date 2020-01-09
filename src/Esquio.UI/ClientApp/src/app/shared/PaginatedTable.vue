@@ -4,7 +4,7 @@
       striped
       hover
       :items="items"
-      :fields="fields"
+      :fields="columns"
       :busy="busy"
       :empty-text="$t('common.empty')"
       :empty-filtered-text="$t('common.empty_filtered')"
@@ -31,6 +31,14 @@
       </template>
 
       <template
+        slot="extra"
+        slot-scope="data"
+      >
+
+        <slot name="extra" :item="data.item" />
+      </template>
+
+      <template
         slot="actions"
         slot-scope="data"
       >
@@ -51,18 +59,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { BvTableFieldArray } from 'bootstrap-vue';
 import { PaginationInfo } from './pagination';
 
 @Component
 export default class extends Vue {
   public name = 'PaginatedTable';
+  public columns: BvTableFieldArray = [
+    {
+      key: 'extra',
+      label: ''
+    },
+    {
+      key: 'actions',
+      label: ''
+    }
+  ];
 
   @Prop({ required: true, type: Array }) fields: BvTableFieldArray;
   @Prop({ type: Array, default: () => [] }) items: Array<any>;
   @Prop({ type: Boolean, default: false }) busy: boolean;
-  @Prop({ required: true, type: Object}) paginationInfo: PaginationInfo;
+  @Prop({ type: PaginationInfo, default: () => new PaginationInfo() }) paginationInfo: PaginationInfo;
+
+  public created(): void {
+    this.updateColumns();
+  }
 
   public onChangePage(page: number): void {
     this.$emit('change-page', page);
@@ -70,6 +92,18 @@ export default class extends Vue {
 
   public get showPagination(): boolean {
     return this.paginationInfo.rows > this.paginationInfo.pageCount;
+  }
+
+  private updateColumns(): void {
+    this.columns = [...this.fields, ...this.columns];
+    this.columns = this.columns.map((column: any) => {
+      column.label = column.label ? this.$t(column.label) : column.label;
+      return column;
+    });
+  }
+
+  @Watch('fields') onChangefields() {
+    this.updateColumns();
   }
 }
 </script>

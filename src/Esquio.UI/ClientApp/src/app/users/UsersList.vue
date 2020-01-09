@@ -1,28 +1,16 @@
 <template>
   <section class="users_list container u-container-medium">
     <h1>{{$t('users.title')}}</h1>
-    <b-table
-      striped
-      hover
-      :items="usersPermissions"
-      :fields="columns"
-      :busy="isLoading"
-      :empty-text="$t('common.empty')"
-      :empty-filtered-text="$t('common.empty_filtered')"
-      show-empty
-      :per-page="0"
-      :current-page="paginationInfo.pageIndex"
-    >
-      <div
-        slot="table-busy"
-        class="text-center text-primary my-2"
-      >
-        <b-spinner class="align-middle"></b-spinner>
-        <strong class="ml-2">{{$t('common.loading')}}</strong>
-      </div>
 
+    <PaginatedTable
+      :fields="columns"
+      :items="usersPermissions"
+      :busy="isLoading"
+      :paginationInfo="paginationInfo"
+      @change-page="onChangePage"
+    >
       <template
-        slot="managementPermission"
+        slot="actions"
         slot-scope="data"
       >
         <div class="text-right">
@@ -44,15 +32,7 @@
           </button>
         </div>
       </template>
-    </b-table>
-
-    <b-pagination
-      v-model="paginationInfo.pageIndex"
-      :total-rows="paginationInfo.rows"
-      :per-page="paginationInfo.pageCount"
-      @change="onChangePage"
-      align="right"
-    ></b-pagination>
+    </PaginatedTable>
 
     <FloatingTop
       :text="$t('users.actions.add')"
@@ -65,12 +45,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop, UserPermissions, PaginationInfo } from '~/shared';
+import { FloatingTop, UserPermissions, PaginationInfo, PaginatedTable } from '~/shared';
 import { IUsersPermissionsService } from './shared';
 
 @Component({
   components: {
-    FloatingTop
+    FloatingTop,
+    PaginatedTable
   }
 })
 export default class extends Vue {
@@ -81,11 +62,7 @@ export default class extends Vue {
   public columns = [
     {
       key: 'subjectId',
-      label: () => this.$t('users.fields.subject')
-    },
-    {
-      key: 'managementPermission',
-      label: ''
+      label: 'users.fields.subject'
     }
   ];
 
@@ -102,7 +79,7 @@ export default class extends Vue {
   public onChangePage(page: number): void {
     this.usersPermissions = null;
     this.isLoading = true;
-    this.paginationInfo.pageIndex = page - 1;
+    this.paginationInfo.pageIndex = page;
     this.getUsersPermissions();
   }
 
@@ -111,7 +88,7 @@ export default class extends Vue {
       const response = await this.usersPermissionsService.get(this.paginationInfo);
       this.usersPermissions = response.result;
       this.paginationInfo.rows = response.total;
-      this.paginationInfo.pageIndex = response.pageIndex + 1;
+      this.paginationInfo.pageIndex = response.pageIndex;
     } catch (e) {
       this.$alert(this.$t('users.errors.get'), AlertType.Error);
     } finally {

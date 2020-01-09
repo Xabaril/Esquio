@@ -74,15 +74,11 @@ export default class extends Vue {
   public columns = [
     {
       key: 'name',
-      label: () => this.$t('products.fields.name')
+      label: 'products.fields.name'
     },
     {
       key: 'description',
-      label: () => this.$t('products.fields.description')
-    },
-    {
-      key: 'actions',
-      label: ''
+      label: 'products.fields.description'
     }
   ];
 

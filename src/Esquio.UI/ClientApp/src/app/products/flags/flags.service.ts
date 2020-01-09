@@ -18,7 +18,10 @@ export class FlagsService implements IFlagsService {
       throw new Error('Cannot fetch features');
     }
 
-    return response.json();
+    const result = await response.json();
+    result.pageIndex += 1;
+
+    return result;
   }
 
   public async detail(productName: string, name: string): Promise<Flag> {
