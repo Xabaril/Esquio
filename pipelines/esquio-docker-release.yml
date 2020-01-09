@@ -1,6 +1,9 @@
 trigger: none
 pr: none 
 
+variables:
+  dockerUITagBase: '2.0'
+
 pool:
   name: Hosted Ubuntu 1604
 
@@ -13,5 +16,5 @@ steps:
     Dockerfile: 'demos/AppWithUI/ui-dockerfile'
     buildContext: '$(Build.SourcesDirectory)'
     tags: |
-      $(Build.BuildId)
+      $(dockerUITagBase).$(Build.BuildId)
       latest
