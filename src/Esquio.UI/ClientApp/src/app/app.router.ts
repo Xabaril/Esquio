@@ -1,9 +1,10 @@
-import VueRouter from 'vue-router';
 import { Vue } from 'vue-property-decorator';
-import { productsModule } from './products';
-import { usersModule } from './users';
-// import { homeModule } from './home';
-import authRoutes from './shared/auth/auth.routes';
+import VueRouter from 'vue-router';
+import { productsModule } from '~/products';
+// import { homeModule } from '~/home';
+import authRoutes from '~/shared/auth/auth.routes';
+import { tokensModule } from '~/tokens';
+import { usersModule } from '~/users';
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,7 @@ export function router() {
       // ...homeModule.routes(requireAuth),
       ...productsModule.routes(requireAuth),
       ...usersModule.routes(requireAuth),
+      ...tokensModule.routes(requireAuth),
       ...authRoutes.routes(),
       {
         path: '/',

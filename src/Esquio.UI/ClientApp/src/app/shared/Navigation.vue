@@ -15,7 +15,7 @@
       <router-link  to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
       <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/users" tag="b-dropdown-item">{{$t('submenu.users')}}</router-link>
 
-      <b-dropdown-item href="#" @click="onClickGenerateToken">{{$t('submenu.token')}}</b-dropdown-item>
+      <router-link v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Token)" to="/tokens" tag="b-dropdown-item">{{$t('submenu.token')}}</router-link>
     </b-dropdown>
     </div>
   </div>
@@ -29,7 +29,6 @@ import { User, AbilityAction, AbilitySubject } from './user';
 import { Inject } from 'inversify-props';
 import { BreadCrumbItem, generateBreadcrumb, cleanBreadcrumbName } from './breadcrumb';
 import { Route } from 'vue-router';
-import { ITokensService } from './tokens';
 import { AlertType } from '~/core';
 import { nextTick } from '~/core/helpers';
 import { State, namespace, Getter } from 'vuex-class';
@@ -44,7 +43,6 @@ export default class extends Vue {
   public breadcrumb: BreadCrumbItem[] = [];
 
   @Inject() authService: IAuthService;
-  @Inject() tokensService: ITokensService;
 
   @navigationStore.State('toggleFriendlyName') toggleFriendlyName;
 
@@ -59,17 +57,6 @@ export default class extends Vue {
     return this.breadcrumb;
   }
 
-  // In the future this will be it owns component
-  public async onClickGenerateToken(): Promise<void> {
-    try {
-      const response = await this.tokensService.generate();
-      copy(response.key);
-
-      this.$alert(this.$t('tokens.success'));
-    } catch (e) {
-      this.$alert(this.$t('tokens.error'), AlertType.Error);
-    }
-  }
   public clean(text: string): string {
     return cleanBreadcrumbName(text);
   }

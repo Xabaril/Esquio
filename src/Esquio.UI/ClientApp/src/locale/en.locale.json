@@ -158,12 +158,8 @@
   },
   "submenu": {
     "logout": "Logout",
-    "token": "Get Private token",
+    "token": "Manage Tokens",
     "users": "Manage Users"
-  },
-  "tokens": {
-    "error": "Cannot generate token",
-    "success": "The token was successfully copied to your clipboard"
   },
   "roles": {
     "reader": "(Reader)",
@@ -212,6 +208,35 @@
     },
     "confirm": {
       "title": "Are you sure to delete '{0}' user?"
+    }
+  },
+  "tokens": {
+    "title": "User Api Keys",
+    "detail": "Add Api Key",
+    "copy": "Make sure to copy your new personal access token now. You won’t be able to see it again!",
+    "actions": {
+      "delete": "Delete",
+      "save": "Add Api Key"
+    },
+    "fields": {
+      "name": "Name",
+      "validTo": "Valid To Date"
+    },
+    "placeholders": {
+      "nameHelp": "The name for the Api Key (XX-000)",
+      "validTo": "Date until the Api Key will be valid"
+    },
+    "errors": {
+      "add": "Cannot create this Api Key",
+      "delete": "Cannot delete the Api Key"
+    },
+    "success": {
+      "add": "The Api Key was created and copied to the clipboard",
+      "delete": "The Api Key was deleted",
+      "copy": "The token was successfully copied"
+    },
+    "confirm": {
+      "title": "Are you sure to delete '{0}' Api Key?"
     }
   }
 }

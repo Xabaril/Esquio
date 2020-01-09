@@ -2,8 +2,8 @@ import { PaginatedResponse, PaginationInfo, UserPermissions } from '~/shared';
 
 export interface IUsersPermissionsService {
   get(pagination?: PaginationInfo): Promise<PaginatedResponse<UserPermissions[]>>;
-  add(product: UserPermissions): Promise<void>;
+  add(userPermission: UserPermissions): Promise<void>;
   detail(subjectId: string): Promise<UserPermissions>;
-  update(product: UserPermissions): Promise<void>;
-  remove(product: UserPermissions): Promise<void>;
+  update(userPermission: UserPermissions): Promise<void>;
+  remove(userPermission: UserPermissions): Promise<void>;
 }
