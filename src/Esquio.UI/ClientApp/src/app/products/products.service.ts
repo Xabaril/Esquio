@@ -18,7 +18,10 @@ export class ProductsService implements IProductsService {
       throw new Error('Cannot fetch products');
     }
 
-    return response.json();
+    const result = await response.json();
+    result.pageIndex += 1;
+
+    return result;
   }
 
   public async detail(name: string): Promise<Product> {

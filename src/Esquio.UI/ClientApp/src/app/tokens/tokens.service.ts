@@ -18,7 +18,10 @@ export class TokensService implements ITokensService {
       throw new Error('Cannot fetch tokens');
     }
 
-    return response.json();
+    const result = await response.json();
+    result.pageIndex += 1;
+
+    return result;
   }
 
   public async add(token: Token): Promise<Token> {

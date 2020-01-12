@@ -1,77 +1,47 @@
 <template>
   <section class="products_list container u-container-medium">
     <h1>{{$t('products.title')}}</h1>
-    <b-table
-      striped
-      hover
-      :items="products"
+
+    <PaginatedTable
       :fields="columns"
+      :items="products"
       :busy="isLoading"
-      :empty-text="$t('common.empty')"
-      :empty-filtered-text="$t('common.empty_filtered')"
-      show-empty
-      :per-page="0"
-      :current-page="paginationInfo.pageIndex"
-    >
-      <div
-        slot="table-busy"
-        class="text-center text-primary my-2"
-      >
-        <b-spinner class="align-middle"></b-spinner>
-        <strong class="ml-2">{{$t('common.loading')}}</strong>
-      </div>
-
-      <template
-        slot="empty"
-        slot-scope="scope"
-      >
-        <div class="text-center">
-          <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
+      :paginationInfo="paginationInfo"
+      @change-page="onChangePage">
+        <template slot="empty">
           <button
-            v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Product)"
-            class="btn btn-raised btn-primary d-inline-block"
-            @click="onClickAddFirst"
-          >
-            {{$t('products.actions.add_first')}}
-          </button>
-        </div>
-      </template>
-
-      <template
-        slot="actions"
-        slot-scope="data"
-      >
-        <div
-          v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Product)"
-          class="text-right">
-          <router-link :to="{name: 'products-edit', params: {productName: data.item.name}}">
-            <button
-              type="button"
-              class="btn btn-sm btn-raised btn-primary"
+              v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Product)"
+              class="btn btn-raised btn-primary d-inline-block"
+              @click="onClickAddFirst"
             >
-              {{$t('products.actions.see_detail')}}
-            </button>
-          </router-link>
-
-          <button
-            v-if="$can($constants.AbilityAction.Delete, $constants.AbilitySubject.Product)"
-            type="button"
-            class="btn btn-sm btn-raised btn-danger ml-2"
-            @click="onClickDelete(data.item)"
-          >
-            {{$t('products.actions.delete')}}
+              {{$t('products.actions.add_first')}}
           </button>
-        </div>
-      </template>
-    </b-table>
+        </template>
 
-    <b-pagination
-      v-model="paginationInfo.pageIndex"
-      :total-rows="paginationInfo.rows"
-      :per-page="paginationInfo.pageCount"
-      @change="onChangePage"
-      align="right"
-    ></b-pagination>
+        <template
+          slot="actions"
+          slot-scope="data"
+        >
+          <div
+            v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Product)"
+            class="text-right">
+            <router-link :to="{name: 'products-edit', params: {productName: data.item.name}}">
+              <button type="button" class="btn btn-sm btn-raised btn-primary">
+                {{$t('products.actions.see_detail')}}
+              </button>
+            </router-link>
+
+            <button
+              v-if="$can($constants.AbilityAction.Delete, $constants.AbilitySubject.Product)"
+              type="button"
+              class="btn btn-sm btn-raised btn-danger ml-2"
+              @click="onClickDelete(data.item)"
+            >
+              {{$t('products.actions.delete')}}
+            </button>
+          </div>
+        </template>
+    </PaginatedTable>
 
     <FloatingTop
       v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Product)"
@@ -85,13 +55,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { FloatingTop, PaginationInfo } from '~/shared';
+import { FloatingTop, PaginationInfo, PaginatedTable } from '~/shared';
 import { Product } from './product.model';
 import { IProductsService } from './iproducts.service';
 
 @Component({
   components: {
-    FloatingTop
+    FloatingTop,
+    PaginatedTable
   }
 })
 export default class extends Vue {
@@ -103,15 +74,11 @@ export default class extends Vue {
   public columns = [
     {
       key: 'name',
-      label: () => this.$t('products.fields.name')
+      label: 'products.fields.name'
     },
     {
       key: 'description',
-      label: () => this.$t('products.fields.description')
-    },
-    {
-      key: 'actions',
-      label: ''
+      label: 'products.fields.description'
     }
   ];
 
@@ -132,7 +99,7 @@ export default class extends Vue {
   public onChangePage(page: number): void {
     this.products = null;
     this.isLoading = true;
-    this.paginationInfo.pageIndex = page - 1;
+    this.paginationInfo.pageIndex = page;
     this.getProducts();
   }
 
@@ -141,7 +108,7 @@ export default class extends Vue {
       const response = await this.productsService.get(this.paginationInfo);
       this.products = response.result;
       this.paginationInfo.rows = response.total;
-      this.paginationInfo.pageIndex = response.pageIndex + 1;
+      this.paginationInfo.pageIndex = response.pageIndex;
     } catch (e) {
       this.$alert(this.$t('products.errors.get'), AlertType.Error);
     } finally {

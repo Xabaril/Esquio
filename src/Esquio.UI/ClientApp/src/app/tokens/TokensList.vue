@@ -4,37 +4,16 @@
       <TokensForm @add="onAddToken"/>
     </div>
     <h1>{{$t('tokens.title')}}</h1>
-    <b-table
-      striped
-      hover
-      :items="tokens"
+
+    <PaginatedTable
       :fields="columns"
+      :items="tokens"
       :busy="isLoading"
-      :empty-text="$t('common.empty')"
-      :empty-filtered-text="$t('common.empty_filtered')"
-      show-empty
-      :per-page="0"
-      :current-page="paginationInfo.pageIndex"
+      :paginationInfo="paginationInfo"
+      @change-page="onChangePage"
     >
-      <div
-        slot="table-busy"
-        class="text-center text-primary my-2"
-      >
-        <b-spinner class="align-middle"></b-spinner>
-        <strong class="ml-2">{{$t('common.loading')}}</strong>
-      </div>
-
       <template
-        slot="validTo"
-        slot-scope="data"
-      >
-        <div>
-          {{formatDate(data.item.validTo)}}
-        </div>
-      </template>
-
-      <template
-        slot="managementPermission"
+        slot="actions"
         slot-scope="data"
       >
         <div class="text-right">
@@ -47,15 +26,16 @@
           </button>
         </div>
       </template>
-    </b-table>
 
-    <b-pagination
-      v-model="paginationInfo.pageIndex"
-      :total-rows="paginationInfo.rows"
-      :per-page="paginationInfo.pageCount"
-      @change="onChangePage"
-      align="right"
-    ></b-pagination>
+      <template
+        slot="extra"
+        slot-scope="data"
+      >
+         <div>
+          {{formatDate(data.item.validTo)}}
+        </div>
+      </template>
+    </PaginatedTable>
   </section>
 </template>
 
@@ -63,33 +43,30 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { UserPermissions, PaginationInfo, IDateService } from '~/shared';
+import { UserPermissions, PaginationInfo, IDateService, PaginatedTable } from '~/shared';
 import { ITokensService } from './itokens.service';
 import { default as TokensForm } from './TokensForm.vue';
 import { Token } from './token.model';
 
 @Component({
   components: {
-    TokensForm
+    TokensForm,
+    PaginatedTable
   }
 })
 export default class extends Vue {
-  public name = 'UsersList';
+  public name = 'TokensList';
   public tokens: Token[] = null;
   public isLoading = true;
   public paginationInfo = new PaginationInfo();
   public columns = [
     {
       key: 'name',
-      label: () => this.$t('tokens.fields.name')
+      label: 'tokens.fields.name'
     },
     {
-      key: 'validTo',
-      label: () => this.$t('tokens.fields.date')
-    },
-    {
-      key: 'managementPermission',
-      label: ''
+      key: 'extra',
+      label: 'tokens.fields.validTo'
     }
   ];
 
@@ -107,7 +84,7 @@ export default class extends Vue {
   public onChangePage(page: number): void {
     this.tokens = null;
     this.isLoading = true;
-    this.paginationInfo.pageIndex = page - 1;
+    this.paginationInfo.pageIndex = page;
     this.getTokens();
   }
 
@@ -120,7 +97,7 @@ export default class extends Vue {
       const response = await this.tokensService.get(this.paginationInfo);
       this.tokens = response.result;
       this.paginationInfo.rows = response.total;
-      this.paginationInfo.pageIndex = response.pageIndex + 1;
+      this.paginationInfo.pageIndex = response.pageIndex;
     } catch (e) {
       this.$alert(this.$t('tokens.errors.get'), AlertType.Error);
     } finally {

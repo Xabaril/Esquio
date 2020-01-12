@@ -1,45 +1,26 @@
 <template>
   <section class="toggles_list container">
-    <b-table
-      striped
-      hover
-      :items="toggles"
+    <PaginatedTable
       :fields="columns"
+      :items="toggles"
       :busy="isLoading"
-      :empty-text="$t('common.empty')"
-      :empty-filtered-text="$t('common.empty_filtered')"
-      show-empty
     >
-      <div
-        slot="table-busy"
-        class="text-center text-primary my-2"
-      >
-        <b-spinner class="align-middle"></b-spinner>
-        <strong class="ml-2">{{$t('common.loading')}}</strong>
-      </div>
-
-      <template
-        slot="empty"
-        slot-scope="scope"
-      >
-        <div class="text-center">
-          <h4 class="d-inline-block mr-3">{{ scope.emptyText }}</h4>
-          <router-link
-            v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
-            class="btn btn-raised btn-primary d-inline-block"
-            tag="button"
-            :to="{name: 'toggles-add', params: { flagName: flagName }}"
-          >
-            {{$t('toggles.actions.add_first')}}
-          </router-link>
-        </div>
+      <template slot="empty">
+        <router-link
+          v-if="$can($constants.AbilityAction.Create, $constants.AbilitySubject.Toggle)"
+          class="btn btn-raised btn-primary d-inline-block"
+          tag="button"
+          :to="{name: 'toggles-add', params: { flagName: flagName }}"
+        >
+          {{$t('toggles.actions.add_first')}}
+        </router-link>
       </template>
 
       <template
-        slot="id"
+        slot="actions"
         slot-scope="data"
       >
-        <div
+       <div
           v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Toggle)"
           class="text-right">
           <router-link :to="{ name: 'toggles-edit', params: { type: data.item.type, productName, flagName }}">
@@ -61,21 +42,22 @@
           </button>
         </div>
       </template>
-    </b-table>
+    </PaginatedTable>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
-import { CustomSwitch } from '~/shared';
+import { CustomSwitch, PaginatedTable } from '~/shared';
 import { AlertType } from '~/core';
 import { Toggle } from './toggle.model';
 import { ITogglesService } from './itoggles.service';
 
 @Component({
   components: {
-    CustomSwitch
+    CustomSwitch,
+    PaginatedTable
   }
 })
 export default class extends Vue {
@@ -84,11 +66,7 @@ export default class extends Vue {
   public columns = [
     {
       key: 'friendlyName',
-      label: () => this.$t('toggles.fields.type')
-    },
-    {
-      key: 'id',
-      label: ''
+      label: 'toggles.fields.type'
     }
   ];
 
