@@ -61,3 +61,5 @@ jobs:
       run: dotnet nuget push ./artifacts/Esquio.Configuration.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish MiniProfiler nuget
       run: dotnet nuget push ./artifacts/Esquio.MiniProfiler.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Cli nuget
+      run: dotnet nuget push ./artifacts/Esquio.Cli.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
