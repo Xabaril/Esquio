@@ -50,14 +50,14 @@ jobs:
       with:
         nuget-version: latest
     - name: Publish Esquio AspNetCore nuget
-      run: dotnet nuget push /artifacts/Esquio.AspNetCore.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Esquio nuget
-      run: dotnet nuget push /artifacts/Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Application Insights nuget
-      run: dotnet nuget push /artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish EntityFramework Store  nuget
-      run: dotnet nuget push /artifacts/Esquio.EntityFrameworkCore.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/Esquio.EntityFrameworkCore.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Configuration Store nuget
-      run: dotnet nuget push /artifacts/Esquio.Configuration.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/Esquio.Configuration.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish MiniProfiler nuget
-      run: dotnet nuget push /artifacts/MiniProfiler.Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/MiniProfiler.Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
