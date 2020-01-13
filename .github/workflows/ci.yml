@@ -43,3 +43,7 @@ jobs:
       run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
       run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.MiniProfiler]
+      run: dotnet pack ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Cli]
+      run: dotnet pack ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols

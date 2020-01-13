@@ -10,7 +10,7 @@
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>
-    <PackageId>MiniProfiler.Esquio</PackageId>
+    <PackageId>Esquio.MiniProfiler</PackageId>
     <PackageVersion>$(esquiominiprofiler)</PackageVersion>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
