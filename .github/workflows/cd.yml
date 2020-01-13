@@ -63,13 +63,6 @@ jobs:
             curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
           done
       shell: bash
-    - name: Publish MiniProfiler nuget
-      run: |
-          for f in ./artifacts/Esquio.MiniProfiler.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
     - name: Publish Application Insights nuget
       run: |
           for f in ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg
@@ -87,6 +80,13 @@ jobs:
     - name: Publish Configuration Store nuget
       run: |
           for f in ./artifacts/Esquio.Configuration.Store.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish MiniProfiler nuget
+      run: |
+          for f in ./artifacts/MiniProfiler.Esquio.*.nupkg
           do
             curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
           done
