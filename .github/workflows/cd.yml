@@ -42,7 +42,7 @@ jobs:
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
       run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.MiniProfiler]
-      run: dotnet pack ./src/tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack  ./tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.2
       with:
