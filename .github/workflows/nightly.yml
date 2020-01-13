@@ -43,42 +43,7 @@ jobs:
       run: dotnet pack  ./tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: Publish nuget
       run: |
-          for f in ./artifacts/Esquio.AspNetCore.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
-    - name: Publish nuget
-      run: |
-          for f in ./artifacts/Esquio.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
-    - name: Publish nuget
-      run: |
-          for f in ./artifacts/Esquio.MiniProfiler.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
-    - name: Publish nuget
-      run: |
-          for f in ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
-    - name: Publish nuget
-      run: |
-          for f in ./artifacts/Esquio.EntityFrameworkCore.Store.*.nupkg
-          do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
-          done
-      shell: bash
-    - name: Publish nuget
-      run: |
-          for f in ./artifacts/Esquio.Configuration.Store.*.nupkg
+          for f in ./artifacts/*.nupkg
           do
             curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
           done

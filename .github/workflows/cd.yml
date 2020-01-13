@@ -49,5 +49,45 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
       with:
         nuget-version: latest
-    - name: push packages
-      run: dotnet nuget push **/artifacts/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Esquio AspNetCore nuget
+      run: |
+          for f in ./artifacts/Esquio.AspNetCore.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish Esquio nuget
+      run: |
+          for f in ./artifacts/Esquio.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish MiniProfiler nuget
+      run: |
+          for f in ./artifacts/Esquio.MiniProfiler.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish Application Insights nuget
+      run: |
+          for f in ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish EntityFramework Store  nuget
+      run: |
+          for f in ./artifacts/Esquio.EntityFrameworkCore.Store.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
+    - name: Publish Configuration Store nuget
+      run: |
+          for f in ./artifacts/Esquio.Configuration.Store.*.nupkg
+          do
+            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+          done
+      shell: bash
