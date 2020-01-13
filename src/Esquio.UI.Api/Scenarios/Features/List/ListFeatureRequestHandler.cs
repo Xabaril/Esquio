@@ -20,12 +20,12 @@ namespace Esquio.UI.Api.Features.Flags.List
         {
             var total = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntity.Name == request.ProductName)
+                .Where(f => f.ProductEntity.Name == request.ProductName && !f.Archived)
                 .CountAsync(cancellationToken);
 
             var features = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntity.Name == request.ProductName)
+                .Where(f => f.ProductEntity.Name == request.ProductName && !f.Archived)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);

@@ -52,6 +52,11 @@
                 {
                     return $"api/products/{productName}/features/{featureName}/rollback?api-version=2.0";
                 }
+
+                public static string Archive(string productName, string featureName)
+                {
+                    return $"api/products/{productName}/features/{featureName}/archive?api-version=2.0";
+                }
                 public static string Delete(string productName, string featureName)
                 {
                     return $"api/products/{productName}/features/{featureName}?api-version=2.0";

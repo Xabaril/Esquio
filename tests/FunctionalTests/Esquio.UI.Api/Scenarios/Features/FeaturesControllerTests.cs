@@ -27,6 +27,115 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
         }
 
         [Fact]
+        public async Task archive_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V2.Features.Archive(productName: "fooproduct", featureName: "barfeature"))
+                .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task archive_response_bad_request_if_feature_not_exist()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("product")
+                .Build();
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V2.Features.Archive(product.Name, featureName: "barfeature"))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task archive_response_forbidden_when_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithWritePermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V2.Features.Archive(product.Name, feature.Name))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task archive_response_ok_when_product_and_feature_exist()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .WithReadPermission(false)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .WithArchived(false)
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V2.Features.Archive(product.Name, feature.Name))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .PutAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
+
+        [Fact]
         public async Task rollback_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
@@ -864,6 +973,65 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.Result
                 .Last().Name
                 .Should().BeEquivalentTo(feature2.Name);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task list_response_ok_and_skip_archived_features()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+               .WithName("fooproduct")
+               .Build();
+
+            var feature1 = Builders.Feature()
+                .WithName("barfeature1")
+                .Build();
+
+            var feature2 = Builders.Feature()
+                .WithName("barfeature2")
+                .WithArchived(true)
+                .Build();
+
+            product.Features
+                .Add(feature1);
+
+            product.Features
+               .Add(feature2);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V2.Features.List(product.Name))
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var content = await response.Content
+                .ReadAs<ListFeatureResponse>();
+
+            content.Total
+                .Should().Be(1);
+
+            content.Count
+                .Should().Be(1);
+
+            content.PageIndex
+                .Should().Be(0);
+
+            content.Result
+                .First().Name
+                .Should().BeEquivalentTo(feature1.Name);
         }
 
         [Fact]

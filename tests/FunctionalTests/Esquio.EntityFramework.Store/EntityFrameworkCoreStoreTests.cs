@@ -43,7 +43,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
                 dbContext.SaveChanges();
 
-                var appFeature = new FeatureEntity(product.Id, "app-feature", enabled: true);
+                var appFeature = new FeatureEntity(product.Id, "app-feature", enabled: true, archived: false);
 
                 var toggle = new ToggleEntity(appFeature.Id, "Esquio.Toggles.XToggle");
 

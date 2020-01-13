@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Features.Flags.Add;
+using Esquio.UI.Api.Features.Flags.Archive;
 using Esquio.UI.Api.Features.Flags.Delete;
 using Esquio.UI.Api.Features.Flags.Details;
 using Esquio.UI.Api.Features.Flags.List;
@@ -87,6 +88,25 @@ namespace Esquio.UI.Api.Features.Flags
         public async Task<IActionResult> Rollback(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new RollbackFeatureRequest()
+            {
+                ProductName = productName,
+                FeatureName = featureName
+            };
+
+            await _mediator.Send(request, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Authorize(Policies.Write)]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/archive")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Archive(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            var request = new ArchiveFeatureRequest()
             {
                 ProductName = productName,
                 FeatureName = featureName

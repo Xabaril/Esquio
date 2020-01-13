@@ -11,5 +11,7 @@ namespace Esquio.UI.Api.Features.Flags.Add
         public string Description { get; set; }
 
         public bool Enabled { get; set; }
+
+        public bool Archived { get; set; }
     }
 }
