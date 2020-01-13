@@ -1,8 +1,10 @@
 name: Esquio Continous Deployment
 on: 
   push:
-    tags:       
-      - release-*  # Push events to release-* 
+    branches:
+      - master
+    # tags:       
+    #   - release-*  # Push events to release-* 
       
 jobs:
   build:
@@ -32,20 +34,20 @@ jobs:
     - name: dotnet test [FunctionalTests]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet pack [Esquio]
-      run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.AspNetCore]
-      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.AspNetCore.ApplicationInsightProcessor]
-      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.Configuration.Store]
-      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
-      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.MiniProfiler]
-      run: dotnet pack  ./tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+      run: dotnet pack  ./tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.2
       with:
         nuget-version: latest
     - name: push packages
-      run: dotnet nuget push **/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./artifacts/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
