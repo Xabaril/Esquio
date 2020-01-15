@@ -151,6 +151,52 @@
         }
       }
     },
+    "/api/audit": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "operationId": "Audit_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListAuditRequest"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
     "/api/products/{productName}/features": {
       "post": {
         "tags": [
@@ -1286,6 +1332,23 @@
         "validTo": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "ListAuditRequest": {
+      "type": "object",
+      "required": [
+        "pageIndex",
+        "pageCount"
+      ],
+      "properties": {
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageCount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

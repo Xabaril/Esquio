@@ -41,5 +41,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 await db.SaveChangesAsync();
             });
         }
+
+        public async Task AddHistory(params HistoryEntity[] histories)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                db.AddRange(histories);
+
+                await db.SaveChangesAsync();
+            });
+        }
     }
 }
