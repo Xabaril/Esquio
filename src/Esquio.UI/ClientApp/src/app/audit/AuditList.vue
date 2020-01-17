@@ -14,7 +14,7 @@
         slot-scope="data"
       >
          <div>
-          {{formatDate(data.item.validTo)}}
+          {{data.item}}
         </div>
       </template>
     </PaginatedTable>
@@ -62,6 +62,13 @@ export default class extends Vue {
   @Inject() dateService: IDateService;
 
   public created(): void {
+    this.getAudit();
+  }
+
+  public onChangePage(page: number): void {
+    this.audit = null;
+    this.isLoading = true;
+    this.paginationInfo.pageIndex = page;
     this.getAudit();
   }
 

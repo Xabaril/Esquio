@@ -1,4 +1,5 @@
 import { container } from 'inversify-props';
+import { auditModule } from '~/audit';
 import { homeModule } from '~/home';
 import { productsModule } from '~/products';
 import * as s from '~/shared';
@@ -18,6 +19,7 @@ export function containerBuilder(): void {
     // Bind services for each module
     usersModule.container();
     tokensModule.container();
+    auditModule.container();
     productsModule.container();
     homeModule.container();
 }
