@@ -10,12 +10,17 @@
       @change-page="onChangePage"
     >
       <template
+        slot="actions"
+        slot-scope="data"
+      >
+        <vue-json-pretty :data="JSON.parse(data.item.oldValues)" />
+      </template>
+
+      <template
         slot="extra"
         slot-scope="data"
       >
-         <div>
-          {{data.item}}
-        </div>
+        <vue-json-pretty :data="JSON.parse(data.item.newValues)" />
       </template>
     </PaginatedTable>
   </section>
@@ -25,12 +30,19 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Inject } from 'inversify-props';
 import { AlertType } from '~/core';
-import { UserPermissions, PaginationInfo, IDateService, PaginatedTable } from '~/shared';
+import {
+  UserPermissions,
+  PaginationInfo,
+  IDateService,
+  PaginatedTable
+} from '~/shared';
 import { IAuditService } from './iaudit.service';
 import { AuditItem } from './audit-item.model';
+import VueJsonPretty from 'vue-json-pretty';
 
 @Component({
   components: {
+    VueJsonPretty,
     PaginatedTable
   }
 })
@@ -49,11 +61,11 @@ export default class extends Vue {
       label: 'audit.fields.featureName'
     },
     {
-      key: 'oldValues',
+      key: 'extra',
       label: 'audit.fields.oldValues'
     },
     {
-      key: 'newValues',
+      key: 'actions',
       label: 'audit.fields.newValues'
     }
   ];
