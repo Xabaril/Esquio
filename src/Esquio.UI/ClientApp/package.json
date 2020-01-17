@@ -9,7 +9,7 @@
     "lint": "npm run lint:scripts && npm run lint:styles",
     "lint:scripts": "vue-cli-service lint",
     "lint:styles": "stylelint \"./src/**/*.(scss|vue)\"",
-    "dev:client": "await tcp localhost:63414 && vue-cli-service build --watch --dest \"../wwwroot\"",
+    "dev:client": "await tcp localhost:5000 && vue-cli-service build --watch --dest \"../wwwroot\"",
     "dev:dotnet": "await tcp localhost:5433 && dotnet run -p ..",
     "dev:infrastructure": "docker-compose -f \"../../../build/docker-compose-infrastructure.yml\" up",
     "start": "run-p -r dev:**"
