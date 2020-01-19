@@ -10,17 +10,13 @@
       @change-page="onChangePage"
     >
       <template
-        slot="actions"
-        slot-scope="data"
-      >
-        <vue-json-pretty :data="JSON.parse(data.item.oldValues)" />
-      </template>
-
-      <template
         slot="extra"
         slot-scope="data"
       >
-        <vue-json-pretty :data="JSON.parse(data.item.newValues)" />
+        <div class="audit_list-code row">
+          <vue-json-pretty class="col-6" :show-line="true" :highlight-mouseover-node="true"  :data="JSON.parse(data.item.oldValues)" />
+          <vue-json-pretty class="col-6" :show-line="true" :highlight-mouseover-node="true" :data="JSON.parse(data.item.newValues)" />
+        </div>
       </template>
     </PaginatedTable>
   </section>
@@ -62,11 +58,7 @@ export default class extends Vue {
     },
     {
       key: 'extra',
-      label: 'audit.fields.oldValues'
-    },
-    {
-      key: 'actions',
-      label: 'audit.fields.newValues'
+      label: 'audit.fields.values'
     }
   ];
 
@@ -99,3 +91,12 @@ export default class extends Vue {
 }
 </script>
 
+<style lang="scss" scoped>
+.audit_list {
+  &-code {
+    /deep/ .vjs-tree {
+      font-size: get-font-size(s);
+    }
+  }
+}
+</style>

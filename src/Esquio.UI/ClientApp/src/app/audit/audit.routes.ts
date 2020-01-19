@@ -14,7 +14,7 @@ export default (requireAuth: NavigationGuard): RouteConfig[] => {
           beforeEnter: requireAuth,
           meta: {
             action: AbilityAction.Read,
-            subject: AbilitySubject.Token // TODO change this permission
+            subject: AbilitySubject.Permission
           }
         }
       ]

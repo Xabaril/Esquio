@@ -238,5 +238,16 @@
     "confirm": {
       "title": "Are you sure to delete '{0}' Api Key?"
     }
+  },
+  "audit": {
+    "title": "Audit",
+    "fields": {
+      "productName": "Product",
+      "featureName": "Feature",
+      "values": "Old Values / New Values"
+    },
+    "errors": {
+      "get": "Cannot get audit data"
+    }
   }
 }
