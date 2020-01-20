@@ -1,5 +1,5 @@
 <template>
-  <section class="audit_list container u-container-medium">
+  <section class="audit_list container u-container-big">
     <h1>{{$t('audit.title')}}</h1>
 
     <PaginatedTable
@@ -14,8 +14,30 @@
         slot-scope="data"
       >
         <div class="audit_list-code row">
-          <vue-json-pretty class="col-6" :show-line="true" :highlight-mouseover-node="true"  :data="JSON.parse(data.item.oldValues)" />
-          <vue-json-pretty class="col-6" :show-line="true" :highlight-mouseover-node="true" :data="JSON.parse(data.item.newValues)" />
+          <vue-json-pretty
+            class="col-6"
+            :show-line="true"
+            :highlight-mouseover-node="true"
+            :deep="0"
+            :data="JSON.parse(data.item.oldValues)"
+          />
+          <vue-json-pretty
+            class="col-6"
+            :show-line="true"
+            :highlight-mouseover-node="true"
+            :deep="0"
+            :data="JSON.parse(data.item.newValues)"
+          />
+        </div>
+      </template>
+
+      <template
+        slot="actions"
+        slot-scope="data"
+      >
+
+        <div>
+          {{formatDate(data.item.createdAt)}}
         </div>
       </template>
     </PaginatedTable>
@@ -57,6 +79,10 @@ export default class extends Vue {
       label: 'audit.fields.featureName'
     },
     {
+      key: 'actions',
+      label: 'audit.fields.date'
+    },
+    {
       key: 'extra',
       label: 'audit.fields.values'
     }
@@ -87,6 +113,10 @@ export default class extends Vue {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private formatDate(validTo: Date): string {
+    return this.dateService.fancyFormatDateTime(validTo);
   }
 }
 </script>

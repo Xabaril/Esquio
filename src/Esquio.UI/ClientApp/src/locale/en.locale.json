@@ -245,7 +245,8 @@
     "fields": {
       "productName": "Product",
       "featureName": "Feature",
-      "values": "Old Values / New Values"
+      "values": "Old Values / New Values",
+      "date": "Created At"
     },
     "errors": {
       "get": "Cannot get audit data"
