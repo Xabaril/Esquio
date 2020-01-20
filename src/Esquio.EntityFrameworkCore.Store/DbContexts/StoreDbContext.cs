@@ -30,6 +30,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public DbSet<ApiKeyEntity> ApiKeys { get; set; }
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
+        public DbSet<RingEntity> Rings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

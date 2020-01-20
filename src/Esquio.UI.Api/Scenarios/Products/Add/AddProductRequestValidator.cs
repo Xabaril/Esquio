@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Products.Add
+namespace Esquio.UI.Api.Scenarios.Products.Add
 {
     public class AddProductRequestValidator
         : AbstractValidator<AddProductRequest>
@@ -15,6 +15,11 @@ namespace Esquio.UI.Api.Features.Products.Add
 
             RuleFor(x => x.Description)
                 .MaximumLength(2000);
+
+            RuleFor(x => x.DefaultRingName)
+                .NotEmpty()
+                .MinimumLength(2)
+                .MaximumLength(200);
         }
     }
 }

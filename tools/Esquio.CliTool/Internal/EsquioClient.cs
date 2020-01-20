@@ -927,6 +927,88 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task Features_ArchiveAsync(string productName, string featureName)
+        {
+            return Features_ArchiveAsync(productName, featureName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task Features_ArchiveAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productName == null)
+                throw new System.ArgumentNullException("productName");
+    
+            if (featureName == null)
+                throw new System.ArgumentNullException("featureName");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/archive");
+            urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ValidationProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new ApiException<ValidationProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new ApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ListProductResponse> Products_ListAsync(int? pageIndex, int? pageCount)
         {
             return Products_ListAsync(pageIndex, pageCount, System.Threading.CancellationToken.None);
@@ -2641,6 +2723,9 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Always)]
         public bool Enabled { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("archived", Required = Newtonsoft.Json.Required.Always)]
+        public bool Archived { get; set; }
+    
     
     }
     
@@ -2787,6 +2872,9 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("defaultRingName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultRingName { get; set; }
     
     
     }

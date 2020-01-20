@@ -1524,6 +1524,9 @@
         },
         "description": {
           "type": "string"
+        },
+        "defaultRingName": {
+          "type": "string"
         }
       }
     },

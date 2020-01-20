@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.Add
+namespace Esquio.UI.Api.Scenarios.Products.Add
 {
     public class AddProductRequestHandler : IRequestHandler<AddProductRequest, string>
     {
@@ -32,6 +32,10 @@ namespace Esquio.UI.Api.Features.Products.Add
             if (existing == null)
             {
                 var product = new ProductEntity(request.Name, request.Description);
+
+                product.Rings
+                    .Add(new RingEntity(product.Id,request.DefaultRingName));
+
                 _storeDbContext.Add(product);
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);

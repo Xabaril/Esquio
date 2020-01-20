@@ -388,7 +388,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Should()
                 .Be(StatusCodes.Status201Created);
         }
-
+        
         [Fact]
         [ResetDatabase]
         public async Task add_response_badrequest_when_name_is_not_valid()
@@ -404,6 +404,34 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             {
                 Name = "fooproduct~#4",
                 Description = "some description"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V2.Product.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(productRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_when_ringname_is_not_valid()
+        {
+            var permission = Builders.Permission()
+             .WithAllPrivilegesForDefaultIdentity()
+             .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var productRequest = new AddProductRequest()
+            {
+                Name = "fooproduct~#4",
+                Description = "some description",
+                DefaultRingName = "X"
             };
 
             var response = await _fixture.TestServer

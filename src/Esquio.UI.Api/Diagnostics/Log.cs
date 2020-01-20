@@ -79,7 +79,7 @@ namespace Esquio.UI.Api.Diagnostics
 
         public static void SubjectIdAlreadyExist(ILogger logger, string subjectId)
         {
-            _subjectIdAlreadyExist(logger, subjectId,null);
+            _subjectIdAlreadyExist(logger, subjectId, null);
         }
 
         public static void MyIsNotAuthorized(ILogger logger, string subjectId)
@@ -90,6 +90,12 @@ namespace Esquio.UI.Api.Diagnostics
         {
             _subjectIdDoesNotExist(logger, subjectId, null);
         }
+
+        public static void RingAlreadyExist(ILogger logger, string ring, string productName)
+        {
+            _ringAlreadyExist(logger, ring, productName, null);
+        }
+
 
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
@@ -163,5 +169,9 @@ namespace Esquio.UI.Api.Diagnostics
            LogLevel.Warning,
            EventIds.SubjectIdDoesNotExist,
            "The subject id {subjectId} does not exist on the store.");
+        private static readonly Action<ILogger, string, string, Exception> _ringAlreadyExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.RingAlreadyExist,
+          "The ring with name {ringName} already exist for product {productName} in the store and can't be created.");
     }
 }

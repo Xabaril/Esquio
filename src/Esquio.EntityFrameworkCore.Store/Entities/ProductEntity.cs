@@ -13,12 +13,15 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public ICollection<FeatureEntity> Features { get; set; }
 
+        public ICollection<RingEntity> Rings { get; set; }
+
         public ProductEntity(string name, string description = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
 
             Features = new List<FeatureEntity>();
+            Rings = new List<RingEntity>();
         }
     }
 }
