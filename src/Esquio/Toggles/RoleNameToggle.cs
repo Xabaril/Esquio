@@ -19,32 +19,25 @@ namespace Esquio.Toggles
         internal const string Roles = nameof(Roles);
 
         private readonly IRoleNameProviderService _roleNameProviderService;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instance of <see cref="RoleNameToggle"/>.
         /// </summary>
         /// <param name="roleNameProviderService">The <see cref="IRoleNameProviderService"/> service to be used.</param>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
-        public RoleNameToggle(IRoleNameProviderService roleNameProviderService, IRuntimeFeatureStore featureStore)
+        public RoleNameToggle(IRoleNameProviderService roleNameProviderService)
         {
             _roleNameProviderService = roleNameProviderService ?? throw new ArgumentNullException(nameof(roleNameProviderService));
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public async Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             var currentRole = await _roleNameProviderService
                 .GetCurrentRoleNameAsync();
 
             if (currentRole != null)
             {
-                var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-                var toggle = feature.GetToggle(this.GetType().FullName);
-                var data = toggle.GetData();
-
-                string activeRoles = data.Roles?.ToString();
+                string activeRoles = context.Data[Roles]?.ToString();
 
                 if (activeRoles != null)
                 {
@@ -54,6 +47,7 @@ namespace Esquio.Toggles
                         currentRole, StringSegmentComparer.OrdinalIgnoreCase);
                 }
             }
+
             return false;
         }
     }

@@ -22,10 +22,11 @@ namespace Esquio.EntityFrameworkCore.Store
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
         {
             _ = featureName ?? throw new ArgumentNullException(nameof(featureName));
             _ = productName ?? throw new ArgumentNullException(nameof(productName));
+            _ = ringName ?? throw new ArgumentNullException(nameof(ringName));
 
             _diagnostics.FindFeature(featureName, productName);
 

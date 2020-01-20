@@ -7,7 +7,7 @@ namespace UnitTests.Seedwork
     public class AllwaysOffToggle
         : IToggle
     {
-        public Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(false);
         }

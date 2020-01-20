@@ -3,7 +3,5 @@
     internal interface IFeatureFilterMetadata
     {
         string Names { get; }
-
-        string ProductName { get; }
     }
 }

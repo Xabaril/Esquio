@@ -194,7 +194,7 @@ namespace UnitTests.Esquio
             {
                 _defaultFeatures = defaultFeatures ?? throw new ArgumentNullException(nameof(defaultFeatures));
             }
-            public Task<Feature> FindFeatureAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+            public Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(_defaultFeatures.Where(f => f.Name == featureName)
                     .SingleOrDefault());
@@ -204,7 +204,7 @@ namespace UnitTests.Esquio
         private class ThrowInvalidOperationExceptionToggle
             : IToggle
         {
-            public Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+            public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
             {
                 throw new InvalidOperationException("throw exception");
             }

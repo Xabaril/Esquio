@@ -19,36 +19,23 @@ namespace Esquio.Toggles
         private const string EnvironmentVariable = nameof(EnvironmentVariable);
         private const string Values = nameof(Values);
 
-        private readonly IRuntimeFeatureStore _featureStore;
-
-        public EnvironmentVariableToggle(IRuntimeFeatureStore featureStore)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext  context, CancellationToken cancellationToken = default)
         {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
-        }
-
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
-        {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            string environmentVariable = data.EnvironmentVariable
-                .ToString();
-
-            string validValues = data.Values
-                .ToString();
+            string environmentVariable = context.Data[EnvironmentVariable]?.ToString();
+            string validValues = context.Data[Values]?.ToString();
 
             string environmentVariableValue = Environment
                 .GetEnvironmentVariable(environmentVariable);
 
-            if ( environmentVariableValue != null )
+            if (environmentVariableValue != null)
             {
                 var tokenizer = new StringTokenizer(validValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+                var active = tokenizer.Contains(environmentVariableValue, StringSegmentComparer.OrdinalIgnoreCase);
 
-                return tokenizer.Contains(environmentVariableValue, StringSegmentComparer.OrdinalIgnoreCase);
+                return Task.FromResult(active);
             }
 
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

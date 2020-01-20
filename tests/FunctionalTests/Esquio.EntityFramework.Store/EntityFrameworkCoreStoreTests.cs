@@ -68,7 +68,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("non-existing-feature", "non-existing-product");
+            var expected = await store.FindFeatureAsync("non-existing-feature", "non-existing-product", EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .BeNull();
@@ -81,7 +81,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("non-existing-feature", EsquioConstants.DEFAULT_PRODUCT_NAME);
+            var expected = await store.FindFeatureAsync("non-existing-feature", EsquioConstants.DEFAULT_PRODUCT_NAME,EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .BeNull();
@@ -94,7 +94,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("app-feature", "non-existing-product");
+            var expected = await store.FindFeatureAsync("app-feature", "non-existing-product", EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .BeNull();
@@ -107,7 +107,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME);
+            var expected = await store.FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME,EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .NotBeNull();

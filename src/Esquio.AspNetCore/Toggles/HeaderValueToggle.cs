@@ -23,28 +23,21 @@ namespace Esquio.AspNetCore.Toggles
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
-        public HeaderValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public HeaderValueToggle(IHttpContextAccessor httpContextAccessor)
         {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         ///<inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            string headerName = data.HeaderName?.ToString();
-            string allowedValues = data.HeaderValues?.ToString();
+            string headerName = context.Data[HeaderName]?.ToString();
+            string allowedValues = context.Data[HeaderValues]?.ToString();
 
             if (headerName != null
                 &&
@@ -57,15 +50,13 @@ namespace Esquio.AspNetCore.Toggles
                 foreach (var item in values)
                 {
                     var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
+                    var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
 
-                    if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
+                    return Task.FromResult(active);
                 }
             }
 
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

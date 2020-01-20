@@ -27,7 +27,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
+                var store = new DelegatedValueFeatureStore((_, __, ___) => null);
                 new ClaimValueToggle(store, null);
             });
         }
@@ -50,7 +50,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var store = new DelegatedValueFeatureStore((_, __,___) => feature);
             var claimValueToggle = new ClaimValueToggle(store, new FakeHttpContextAccesor(context));
 
             var active = await claimValueToggle.IsActiveAsync(Constants.FeatureName);

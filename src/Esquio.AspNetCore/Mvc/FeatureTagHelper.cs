@@ -59,12 +59,6 @@ namespace Esquio.AspNetCore.Mvc
         [HtmlAttributeName(EXCLUDE_NAME_ATTRIBUTE)]
         public string Exclude { get; set; }
 
-        /// <summary>
-        /// The product name when the features are configured. If null a default product is used.
-        /// </summary>
-        [HtmlAttributeName(PRODUCT_NAME_ATTRIBUTE)]
-        public string Product { get; set; }
-
         /// <inheritdoc/>
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -77,7 +71,7 @@ namespace Esquio.AspNetCore.Mvc
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            _diagnostics.FeatureTagHelperBegin(Names, Product);
+            _diagnostics.FeatureTagHelperBegin(Names);
 
             var cancellationToken = ViewContext?
                 .HttpContext?
@@ -106,11 +100,11 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, cancellationToken);
 
                         if (featureActive)
                         {
-                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names);
 
                             output.SuppressOutput();
                             return;
@@ -130,11 +124,11 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, cancellationToken);
 
                         if (!featureActive)
                         {
-                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names);
 
                             output.SuppressOutput();
                             return;
@@ -154,11 +148,11 @@ namespace Esquio.AspNetCore.Mvc
 
                     if (featureName.HasValue && featureName.Length > 0)
                     {
-                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, Product, cancellationToken);
+                        featureActive = await _featuresService.IsEnabledAsync(featureName.Value, cancellationToken);
 
                         if (!featureActive)
                         {
-                            _diagnostics.FeatureTagHelperClearContent(Names, Product);
+                            _diagnostics.FeatureTagHelperClearContent(Names);
 
                             output.SuppressOutput();
                             return;

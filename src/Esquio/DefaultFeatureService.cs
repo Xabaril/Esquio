@@ -3,6 +3,7 @@ using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,13 +31,12 @@ namespace Esquio
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
-        public async Task<bool> IsEnabledAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public async Task<bool> IsEnabledAsync(string featureName, CancellationToken cancellationToken = default)
         {
             var enabled = true;
             var correlationId = Guid.NewGuid();
             var ringName = _options.DefaultRingName;
-
-            productName ??= _options.DefaultProductName;
+            var productName = _options.DefaultProductName;
 
             try
             {
@@ -84,7 +84,7 @@ namespace Esquio
             _diagnostics.BeginFeatureEvaluation(correlationId, featureName, productName);
 
             var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
+                .FindFeatureAsync(featureName, productName, ringName, cancellationToken);
 
             if (feature == null)
             {
@@ -115,7 +115,15 @@ namespace Esquio
 
                     if (toggleInstance != null)
                     {
-                        active = await toggleInstance?.IsActiveAsync(featureName, productName, cancellationToken);
+                        var executionContext = new ToggleExecutionContext()
+                        {
+                            FeatureName = featureName,
+                            ProductName = productName,
+                            RingName = ringName,
+                            Data = toggle.GetParameters().ToDictionary(tp => tp.Name, tp => tp.Value)
+                        };
+
+                        active = await toggleInstance?.IsActiveAsync(executionContext, cancellationToken);
                     }
 
                     _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);

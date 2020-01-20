@@ -19,33 +19,25 @@ namespace Esquio.AspNetCore.Toggles
         internal const string Percentage = nameof(Percentage);
 
         private readonly IValuePartitioner _partitioner;
-        private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Create a new instance.
         /// </summary>
         /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
         public GradualRolloutSessionToggle(
             IValuePartitioner partitioner,
-            IRuntimeFeatureStore featureStore,
             IHttpContextAccessor httpContextAccessor)
         {
             _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         ///<inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
+            if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
                 if (percentage > 0d)
                 {
@@ -57,12 +49,14 @@ namespace Esquio.AspNetCore.Toggles
                     // we apply also some entropy to sessionid value.
                     // adding this entropy ensure that not all features with gradual rollout for claim value are enabled/disable at the same time for the same user.
 
-                    var assignedPartition = _partitioner.ResolvePartition(featureName + sessionId);
-                    return assignedPartition <= percentage;
+                    var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + sessionId);
+                    var active = assignedPartition <= percentage;
+
+                    return Task.FromResult(active);
                 }
             }
 
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Esquio.AspNetCore.Endpoints
                 {
                     foreach (var metadata in allMetadata)
                     {
-                        _diagnostics.FeatureMatcherPolicyEvaluatingFeatures(endpoint.DisplayName, metadata.Names, metadata.ProductName);
+                        _diagnostics.FeatureMatcherPolicyEvaluatingFeatures(endpoint.DisplayName, metadata.Names);
 
                         var featureService = httpContext
                             .RequestServices
@@ -90,7 +90,7 @@ namespace Esquio.AspNetCore.Endpoints
 
                             if (featureName.HasValue && featureName.Length > 0)
                             {
-                                if (!await featureService.IsEnabledAsync(featureName.Value, metadata.ProductName))
+                                if (!await featureService.IsEnabledAsync(featureName.Value))
                                 {
                                     _diagnostics.FeatureMatcherPolicyEndpointIsNotValid(endpoint.DisplayName);
 

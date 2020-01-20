@@ -19,29 +19,20 @@ namespace Esquio.Toggles
         private const string Environments = nameof(Environments);
 
         private readonly IEnvironmentNameProviderService _environmentNameProviderService;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instace of <see cref="EnvironmentToggle"/>.
         /// </summary>
         /// <param name="environmentNameProviderService">The <see cref="IEnvironmentNameProviderService"/> service to be used.</param>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
-        public EnvironmentToggle(IEnvironmentNameProviderService environmentNameProviderService, IRuntimeFeatureStore featureStore)
+        public EnvironmentToggle(IEnvironmentNameProviderService environmentNameProviderService)
         {
             _environmentNameProviderService = environmentNameProviderService ?? throw new ArgumentNullException(nameof(environmentNameProviderService));
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
         }
 
         ///  <inheritdoc />
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public async Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
-
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            string environments = data.Environments?.ToString();
+            string environments = context.Data[Environments]?.ToString();
 
             var currentEnvironment = await _environmentNameProviderService
                 .GetEnvironmentNameAsync(cancellationToken);
@@ -52,6 +43,7 @@ namespace Esquio.Toggles
 
                 return tokenizer.Contains(currentEnvironment, StringSegmentComparer.OrdinalIgnoreCase);
             }
+
             return false;
         }
     }

@@ -22,34 +22,24 @@ namespace Esquio.Toggles
 
         private readonly IUserNameProviderService _userNameProviderService;
         private readonly IValuePartitioner _partitioner;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instance of <see cref="GradualRolloutUserNameToggle"/> toggle.
         /// </summary>
         /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
         /// <param name="userNameProviderService">The <see cref="IUserNameProviderService"/> service to be used.</param>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         public GradualRolloutUserNameToggle(
             IValuePartitioner partitioner,
-            IUserNameProviderService userNameProviderService,
-            IRuntimeFeatureStore featureStore)
+            IUserNameProviderService userNameProviderService)
         {
             _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
             _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
-            _featureStore = featureStore ?? throw new System.ArgumentNullException(nameof(featureStore));
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public async Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
-
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
+            if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
                 if (percentage > 0)
                 {
@@ -61,7 +51,7 @@ namespace Esquio.Toggles
                         // this only apply for authenticted users, we apply some entropy to currentUserName.
                         // adding this entropy ensure that not all features with gradual rollout for username are enabled/disable at the same time for the same user.
 
-                        var assignedPartition = _partitioner.ResolvePartition(featureName + currentUserName, partitions: 100);
+                        var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + currentUserName, partitions: 100);
 
                         return assignedPartition <= percentage;
                     }

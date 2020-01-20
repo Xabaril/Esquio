@@ -9,9 +9,9 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _featureMatcherPolicyEndpointCanBeApplied(logger, endpointDisplayName, null);
         }
-        public static void FeatureMatcherPolicyEvaluatingFeatures(ILogger logger, string endpointDisplayName, string names, string productName)
+        public static void FeatureMatcherPolicyEvaluatingFeatures(ILogger logger, string endpointDisplayName, string names)
         {
-            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, productName, null);
+            _featureMathcherPolicyValidatingMetadata(logger, endpointDisplayName, names, null);
         }
         public static void FeatureMatcherPolicyEndpointIsNotValid(ILogger logger, string endpointDisplayName)
         {
@@ -25,21 +25,21 @@ namespace Esquio.AspNetCore.Diagnostics
         {
             _featureMatcherPolicyExecutingFallbackEndpoint(logger, requestPath, null);
         }
-        public static void FeatureTagHelperBegin(ILogger logger, string featureName, string productName)
+        public static void FeatureTagHelperBegin(ILogger logger, string featureName)
         {
-            _featureTagHelperBegin(logger, featureName, productName, null);
+            _featureTagHelperBegin(logger, featureName, null);
         }
-        public static void FeatureTagHelperClearContent(ILogger logger, string featureName, string productName)
+        public static void FeatureTagHelperClearContent(ILogger logger, string featureName)
         {
-            _featureTagHelperClearContent(logger, featureName, productName, null);
+            _featureTagHelperClearContent(logger, featureName, null);
         }
-        public static void EsquioMiddlewareThrow(ILogger logger, string featureName, string productName, Exception exception)
+        public static void EsquioMiddlewareThrow(ILogger logger, string featureName, Exception exception)
         {
-            _esquioMiddlewareThrow(logger, featureName, productName, exception);
+            _esquioMiddlewareThrow(logger, featureName, exception);
         }
-        public static void EsquioMiddlewareEvaluatingFeature(ILogger logger, string featureName, string productName)
+        public static void EsquioMiddlewareEvaluatingFeature(ILogger logger, string featureName)
         {
-            _esquioMiddlewareEvaluateFeature(logger, featureName, productName, null);
+            _esquioMiddlewareEvaluateFeature(logger, featureName, null);
         }
         public static void EsquioMiddlewareSuccess(ILogger logger)
         {
@@ -50,10 +50,10 @@ namespace Esquio.AspNetCore.Diagnostics
             LogLevel.Debug,
             EventIds.FeatureEndpointMatcherCanBeAppliedToEndpoint,
             "FeatureMatcherPolicy can be applied to endpoint {endpointDisplayName}.");
-        private static readonly Action<ILogger, string, string, string, Exception> _featureMathcherPolicyValidatingMetadata = LoggerMessage.Define<string, string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _featureMathcherPolicyValidatingMetadata = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureEndpointMatcherValidatingFeatures,
-            "FeatureMatcherPolicy is validating features for endpoint {endpointDisplayName} for features {names} on product {productName}.");
+            "FeatureMatcherPolicy is validating features for endpoint {endpointDisplayName} for features {names}.");
         private static readonly Action<ILogger, string, Exception> _featureMatcherPolicyEndpointIsNotValid = LoggerMessage.Define<string>(
            LogLevel.Debug,
            EventIds.FeatureEndpointMatcherEndPointNotValid,
@@ -66,22 +66,22 @@ namespace Esquio.AspNetCore.Diagnostics
           LogLevel.Debug,
           EventIds.FeatureEndpointMatcherUsingFallbackEndPoint,
           "FeatureMatcherPolicy use fallback enpoint configured service because the endpoint for request {requestPath} does not have valid candidates to use.");
-        private static readonly Action<ILogger, string, string, Exception> _featureTagHelperBegin = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, Exception> _featureTagHelperBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperBeginProcess,
-            "FeatureTagHelper begin check if {featureName} for product {productName} is enabled.");
-        private static readonly Action<ILogger, string, string, Exception> _featureTagHelperClearContent = LoggerMessage.Define<string, string>(
+            "FeatureTagHelper begin check if {featureName} is enabled.");
+        private static readonly Action<ILogger, string, Exception> _featureTagHelperClearContent = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperClearContent,
-            "FeatureTagHelper is clearing inner content because {featureName} for product {productName} is not enabled.");
-        private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string, string>(
+            "FeatureTagHelper is clearing inner content because {featureName} is not enabled.");
+        private static readonly Action<ILogger, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string>(
             LogLevel.Error,
             EventIds.EsquioMiddlewareThrow,
-            "Esquio middleware throw exception when evaluating {featureName} for product {productName}.");
-        private static readonly Action<ILogger, string, string, Exception> _esquioMiddlewareEvaluateFeature = LoggerMessage.Define<string, string>(
+            "Esquio middleware throw exception when evaluating {featureName}.");
+        private static readonly Action<ILogger, string, Exception> _esquioMiddlewareEvaluateFeature = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareEvaluateFeature,
-            "Evaluating {featureName} for product {productName} on Esquio middleware.");
+            "Evaluating {featureName} for product on Esquio middleware.");
         private static readonly Action<ILogger, Exception> _esquioMiddlewareSuccess = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareSuccess,

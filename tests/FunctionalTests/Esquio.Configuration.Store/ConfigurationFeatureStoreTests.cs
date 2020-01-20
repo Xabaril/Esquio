@@ -19,19 +19,20 @@ namespace FunctionalTests.Esquio.Configuration.Store
         [Fact]
         public async Task return_null_when_find_a_non_existing_feature()
         {
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-product-name","ring"))
                 .Should().BeNull();
 
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", Product))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", Product,"ring"))
                 .Should().BeNull();
         }
+
         [Fact]
         public async Task return_feature_if_is_configured()
         {
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name", "ring"))
                 .Should().BeNull();
 
-            var feature = await _fixture.FeatureStore.FindFeatureAsync("FeatureA", Product);
+            var feature = await _fixture.FeatureStore.FindFeatureAsync("FeatureA", Product, "ring");
 
             feature.Should().NotBeNull();
 
@@ -40,9 +41,10 @@ namespace FunctionalTests.Esquio.Configuration.Store
         }
     }
 
-    class FakeToggle : IToggle
+    class FakeToggle 
+        : IToggle
     {
-        public Task<bool> IsActiveAsync(string productName, string featureName, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(false);
         }

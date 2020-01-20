@@ -27,7 +27,7 @@ namespace ConsoleApp
 
             var featureService = serviceProvider.GetService<IFeatureService>();
 
-            if (await featureService.IsEnabledAsync("Colored", "Console"))
+            if (await featureService.IsEnabledAsync("Colored"))
             {
                 Console.BackgroundColor = ConsoleColor.Blue;
             }

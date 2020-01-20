@@ -21,39 +21,31 @@ namespace Esquio.Toggles
         internal const string From = nameof(From);
         internal const string To = nameof(To);
 
-        private readonly IRuntimeFeatureStore _featureStore;
-
-        /// <summary>
-        /// Create a new instance of <see cref="FromToToggle"/>.
-        /// </summary>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
-        public FromToToggle(IRuntimeFeatureStore featureStore)
-        {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
-        }
-
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
-
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
             var parseExactFormats = new string[] { DEFAULT_FORMAT_DATE, SINGLE_DIGIT_FORMAT_DATE };
 
-            var fromDate = DateTime.ParseExact(data.From.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            var toDate = DateTime.ParseExact(data.To.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var fromDate = DateTime.ParseExact(
+                context.Data[From].ToString(), 
+                parseExactFormats, 
+                CultureInfo.InvariantCulture, 
+                DateTimeStyles.AssumeUniversal);
+
+            var toDate = DateTime.ParseExact(
+                context.Data[To].ToString(), 
+                parseExactFormats,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal);
 
             var now = DateTime.UtcNow;
 
             if (now > fromDate && now < toDate)
             {
-                return true;
+                return Task.FromResult(true);
             }
 
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

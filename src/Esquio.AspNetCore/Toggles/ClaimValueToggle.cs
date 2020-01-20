@@ -21,29 +21,20 @@ namespace Esquio.AspNetCore.Toggles
         internal const string ClaimValues = nameof(ClaimValues);
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
-        public ClaimValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public ClaimValueToggle(IHttpContextAccessor httpContextAccessor)
         {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
         ///<inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
-
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            string claimType = data.ClaimType?.ToString();
-            string allowedValues = data.ClaimValues?.ToString();
+            string claimType = context.Data[ClaimType]?.ToString();
+            string allowedValues = context.Data[ClaimValues]?.ToString();
 
             if (claimType != null
                 &&
@@ -59,13 +50,15 @@ namespace Esquio.AspNetCore.Toggles
                     {
                         var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
-                        return tokenizer.Contains(
+                        var active = tokenizer.Contains(
                             value, StringSegmentComparer.OrdinalIgnoreCase);
+
+                        return Task.FromResult(active);
                     }
                 }
             }
 
-            return false;
+            return Task.FromResult(false);
         }
     }
 }

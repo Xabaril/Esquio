@@ -59,7 +59,7 @@ namespace Esquio.AspNetCore.Blazor
 
                 if (featureName.HasValue && featureName.Length > 0)
                 {
-                    _isEnabled = await FeatureService.IsEnabledAsync(featureName.Value, Product);
+                    _isEnabled = await FeatureService.IsEnabledAsync(featureName.Value);
 
                     if (!_isEnabled)
                     {
