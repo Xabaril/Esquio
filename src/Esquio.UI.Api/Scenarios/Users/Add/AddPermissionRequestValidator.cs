@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Users.Add
+namespace Esquio.UI.Api.Scenarios.Users.Add
 {
     public class AddPermissionRequestValidator
         : AbstractValidator<AddPermissionRequest>

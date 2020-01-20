@@ -1,5 +1,5 @@
-﻿using Esquio.UI.Api.Features.Tags.Add;
-using Esquio.UI.Api.Features.Tags.List;
+﻿using Esquio.UI.Api.Scenarios.Tags.Add;
+using Esquio.UI.Api.Scenarios.Tags.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

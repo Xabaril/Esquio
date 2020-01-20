@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Users.List
+namespace Esquio.UI.Api.Scenarios.Users.List
 {
     public class ListUsersRequestHandler
         : IRequestHandler<ListUsersRequest,ListUsersResponse>

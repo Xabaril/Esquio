@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.ApiKeys.List
+namespace Esquio.UI.Api.Scenarios.ApiKeys.List
 {
     public class ListApiKeyRequest : IRequest<ListApiKeyResponse>
     {

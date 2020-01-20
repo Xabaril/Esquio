@@ -15,9 +15,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data
                  options.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName);
              });
 
-
-            //TODO: fix connection
-
             return new StoreDbContext(optionsBuilder.Options);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Flags.Archive
+namespace Esquio.UI.Api.Scenarios.Flags.Archive
 {
     public class ArchiveFeatureRequest
      : IRequest

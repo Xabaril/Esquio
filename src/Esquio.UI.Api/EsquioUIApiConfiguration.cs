@@ -1,4 +1,4 @@
-﻿using Esquio.UI.Api.Features.Products.Add;
+﻿using Esquio.UI.Api.Scenarios.Products.Add;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Infrastructure.Behaviors;
 using Esquio.UI.Api.Infrastructure.Routes;

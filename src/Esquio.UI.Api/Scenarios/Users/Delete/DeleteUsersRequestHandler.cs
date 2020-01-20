@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Users.Delete
+namespace Esquio.UI.Api.Scenarios.Users.Delete
 {
     public class DeleteUsersRequestHandler
         : IRequestHandler<DeleteUsersRequest>

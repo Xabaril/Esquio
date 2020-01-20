@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Toggles.Delete
+namespace Esquio.UI.Api.Scenarios.Toggles.Delete
 {
     public class DetailsToggleRequestValidator
         : AbstractValidator<DeleteToggleRequest>

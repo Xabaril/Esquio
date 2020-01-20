@@ -1,11 +1,11 @@
-﻿using Esquio.UI.Api.Features.Flags.Add;
-using Esquio.UI.Api.Features.Flags.Archive;
-using Esquio.UI.Api.Features.Flags.Delete;
-using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.List;
-using Esquio.UI.Api.Features.Flags.Rollback;
-using Esquio.UI.Api.Features.Flags.Rollout;
-using Esquio.UI.Api.Features.Flags.Update;
+﻿using Esquio.UI.Api.Scenarios.Flags.Add;
+using Esquio.UI.Api.Scenarios.Flags.Archive;
+using Esquio.UI.Api.Scenarios.Flags.Delete;
+using Esquio.UI.Api.Scenarios.Flags.Details;
+using Esquio.UI.Api.Scenarios.Flags.List;
+using Esquio.UI.Api.Scenarios.Flags.Rollback;
+using Esquio.UI.Api.Scenarios.Flags.Rollout;
+using Esquio.UI.Api.Scenarios.Flags.Update;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +15,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags
+namespace Esquio.UI.Api.Scenarios.Flags
 {
     [Authorize]
     [ApiVersion("2.0")]
@@ -40,7 +40,6 @@ namespace Esquio.UI.Api.Features.Flags
 
             await _mediator.Send(addfeatureRequest, cancellationToken);
 
-            //TODO: fix url created at action
             return Created($"api/v1/products/{addfeatureRequest.ProductName}/features/{addfeatureRequest.Name}", null);
         }
 

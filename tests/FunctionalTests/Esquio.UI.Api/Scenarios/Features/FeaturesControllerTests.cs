@@ -1,7 +1,7 @@
-﻿using Esquio.UI.Api.Features.Flags.Add;
-using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.List;
-using Esquio.UI.Api.Features.Flags.Update;
+﻿using Esquio.UI.Api.Scenarios.Flags.Add;
+using Esquio.UI.Api.Scenarios.Flags.Details;
+using Esquio.UI.Api.Scenarios.Flags.List;
+using Esquio.UI.Api.Scenarios.Flags.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

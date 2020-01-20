@@ -6,6 +6,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private int _productId = 1;
         private string _name = "ring-name";
+        private bool _default = false;
 
         public RingEntityBuilder WithName(string name)
         {
@@ -19,9 +20,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
+        public RingEntityBuilder WithDefault(bool @default)
+        {
+            _default = @default;
+            return this;
+        }
+
         public RingEntity Build()
         {
-            return new RingEntity(_productId, _name);
+            return new RingEntity(productEntityId: _productId, name: _name, byDefault: _default);
         }
     }
 }

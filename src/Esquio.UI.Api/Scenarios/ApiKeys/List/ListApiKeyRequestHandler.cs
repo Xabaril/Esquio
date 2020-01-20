@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.ApiKeys.List
+namespace Esquio.UI.Api.Scenarios.ApiKeys.List
 {
     public class ListApiKeyRequestHandler : IRequestHandler<ListApiKeyRequest, ListApiKeyResponse>
     {

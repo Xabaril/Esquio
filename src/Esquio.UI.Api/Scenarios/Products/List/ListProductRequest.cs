@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Products.List
+namespace Esquio.UI.Api.Scenarios.Products.List
 {
     public class ListProductRequest : IRequest<ListProductResponse>
     {

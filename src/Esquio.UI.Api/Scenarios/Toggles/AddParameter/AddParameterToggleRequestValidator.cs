@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Toggles.AddParameter
+namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 {
     public class DeleteToggleRequestValidator
         : AbstractValidator<AddParameterToggleRequest>

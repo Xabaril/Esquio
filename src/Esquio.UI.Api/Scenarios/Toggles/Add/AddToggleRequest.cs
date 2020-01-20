@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Toggles.Add
+namespace Esquio.UI.Api.Scenarios.Toggles.Add
 {
     public class AddToggleRequest : IRequest<int>
     {

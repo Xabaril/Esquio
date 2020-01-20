@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Update
+namespace Esquio.UI.Api.Scenarios.Flags.Update
 {
     public class UpdateFeatureRequestHandler : IRequestHandler<UpdateFeatureRequest, string>
     {

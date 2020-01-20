@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Flags.Update
+namespace Esquio.UI.Api.Scenarios.Flags.Update
 {
     public class UpdateFeatureRequestValidator
         : AbstractValidator<UpdateFeatureRequest>

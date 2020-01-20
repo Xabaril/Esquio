@@ -14,6 +14,10 @@
                 {
                     return $"api/products?api-version=2.0";
                 }
+                public static string AddRing(string productName)
+                {
+                    return $"api/products/{productName}/ring?api-version=2.0";
+                }
 
                 public static string Update(string productName)
                 {
@@ -23,6 +27,10 @@
                 public static string Delete(string name)
                 {
                     return $"api/products/{name}?api-version=2.0";
+                }
+                public static string DeleteRing(string productName,string ringName)
+                {
+                    return $"api/products/{productName}/ring/{ringName}?api-version=2.0";
                 }
                 public static string Get(string name)
                 {

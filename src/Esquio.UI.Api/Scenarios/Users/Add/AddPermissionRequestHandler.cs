@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Users.Add
+namespace Esquio.UI.Api.Scenarios.Users.Add
 {
     public class AddPermissionRequestHandler
         : IRequestHandler<AddPermissionRequest>

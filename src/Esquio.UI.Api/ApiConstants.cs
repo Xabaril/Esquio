@@ -26,7 +26,7 @@
 
         public static class DefaultNames
         {
-            public const string DefaultRingName = "Test";
+            public const string DefaultRingName = "Default";
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Flags.Details
+namespace Esquio.UI.Api.Scenarios.Flags.Details
 {
     public class DetailsFeatureResponse
     {

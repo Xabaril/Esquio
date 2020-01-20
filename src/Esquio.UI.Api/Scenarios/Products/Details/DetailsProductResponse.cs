@@ -1,4 +1,4 @@
-﻿namespace Esquio.UI.Api.Features.Products.Details
+﻿namespace Esquio.UI.Api.Scenarios.Products.Details
 {
     public class DetailsProductResponse
     {

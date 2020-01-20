@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Delete
+namespace Esquio.UI.Api.Scenarios.Flags.Delete
 {
     public class DeleteApiKeyRequestHandler : IRequestHandler<DeleteApiKeyRequest>
     {

@@ -1,4 +1,4 @@
-﻿namespace Esquio.UI.Api.Features.ApiKeys.Add
+﻿namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 {
     public class AddApiKeyResponse
     {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Flags.Rollout
+namespace Esquio.UI.Api.Scenarios.Flags.Rollout
 {
     public class RolloutFeatureRequest
         :IRequest

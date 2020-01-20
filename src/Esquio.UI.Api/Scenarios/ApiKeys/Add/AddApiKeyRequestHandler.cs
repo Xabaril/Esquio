@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.ApiKeys.Add
+namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 {
     public class AddAddApiKeyRequestHandler : IRequestHandler<AddApiKeyRequest, AddApiKeyResponse>
     {

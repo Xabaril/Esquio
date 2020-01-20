@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Toggles.Details
+namespace Esquio.UI.Api.Scenarios.Toggles.Details
 {
     public class DetailsToggleRequest : IRequest<DetailsToggleResponse>
     {

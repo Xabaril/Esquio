@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Archive
+namespace Esquio.UI.Api.Scenarios.Flags.Archive
 {
     internal class ArchiveFeatureRequestHandler
         : IRequestHandler<ArchiveFeatureRequest>

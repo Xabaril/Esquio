@@ -10,7 +10,8 @@ namespace Esquio.UI.Api.Scenarios.Products.AddRing
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MinimumLength(5)
-                .MaximumLength(200);
+                .MaximumLength(200)
+                .Matches(ApiConstants.Constraints.NamesRegularExpression);
         }
     }
 }

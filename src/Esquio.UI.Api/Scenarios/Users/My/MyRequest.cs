@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Users.My
+namespace Esquio.UI.Api.Scenarios.Users.My
 {
     public class MyRequest 
         : IRequest<MyResponse>

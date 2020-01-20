@@ -1,6 +1,6 @@
-﻿using Esquio.UI.Api.Features.ApiKeys.Add;
-using Esquio.UI.Api.Features.ApiKeys.Details;
-using Esquio.UI.Api.Features.ApiKeys.List;
+﻿using Esquio.UI.Api.Scenarios.ApiKeys.Add;
+using Esquio.UI.Api.Scenarios.ApiKeys.Details;
+using Esquio.UI.Api.Scenarios.ApiKeys.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

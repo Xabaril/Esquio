@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Flags.Delete
+namespace Esquio.UI.Api.Scenarios.Flags.Delete
 {
     public class DeleteFeatureRequestValidator
         : AbstractValidator<DeleteFeatureRequest>

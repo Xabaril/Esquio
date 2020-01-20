@@ -1,8 +1,8 @@
-﻿using Esquio.UI.Api.Features.Users.Add;
-using Esquio.UI.Api.Features.Users.Details;
-using Esquio.UI.Api.Features.Users.List;
-using Esquio.UI.Api.Features.Users.My;
-using Esquio.UI.Api.Features.Users.Update;
+﻿using Esquio.UI.Api.Scenarios.Users.Add;
+using Esquio.UI.Api.Scenarios.Users.Details;
+using Esquio.UI.Api.Scenarios.Users.List;
+using Esquio.UI.Api.Scenarios.Users.My;
+using Esquio.UI.Api.Scenarios.Users.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Add
+namespace Esquio.UI.Api.Scenarios.Flags.Add
 {
     public class AddFeatureRequestHandler : IRequestHandler<AddFeatureRequest, string>
     {

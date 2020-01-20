@@ -1,9 +1,9 @@
-﻿using Esquio.UI.Api.Features.Users.Add;
-using Esquio.UI.Api.Features.Users.Delete;
-using Esquio.UI.Api.Features.Users.Details;
-using Esquio.UI.Api.Features.Users.List;
-using Esquio.UI.Api.Features.Users.My;
-using Esquio.UI.Api.Features.Users.Update;
+﻿using Esquio.UI.Api.Scenarios.Users.Add;
+using Esquio.UI.Api.Scenarios.Users.Delete;
+using Esquio.UI.Api.Scenarios.Users.Details;
+using Esquio.UI.Api.Scenarios.Users.List;
+using Esquio.UI.Api.Scenarios.Users.My;
+using Esquio.UI.Api.Scenarios.Users.Update;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +14,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Users
+namespace Esquio.UI.Api.Scenarios.Users
 {
     [Authorize]
     [ApiVersion("2.0")]

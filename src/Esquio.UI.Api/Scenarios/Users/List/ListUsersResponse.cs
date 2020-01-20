@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Users.List
+namespace Esquio.UI.Api.Scenarios.Users.List
 {
     public class ListUsersResponse
     {

@@ -1,4 +1,4 @@
-﻿namespace Esquio.UI.Api.Features.Users.My
+﻿namespace Esquio.UI.Api.Scenarios.Users.My
 {
     public class MyResponse
     {

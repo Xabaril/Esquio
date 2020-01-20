@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Products.Update
+namespace Esquio.UI.Api.Scenarios.Products.Update
 {
     public class UpdateProductRequest : IRequest
     {

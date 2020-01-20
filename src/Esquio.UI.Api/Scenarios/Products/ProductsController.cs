@@ -1,10 +1,11 @@
-﻿using Esquio.UI.Api.Features.Products.Delete;
-using Esquio.UI.Api.Features.Products.Details;
-using Esquio.UI.Api.Features.Products.List;
-using Esquio.UI.Api.Features.Products.Update;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Scenarios.Products.Add;
 using Esquio.UI.Api.Scenarios.Products.AddRing;
+using Esquio.UI.Api.Scenarios.Products.Delete;
+using Esquio.UI.Api.Scenarios.Products.DeleteRing;
+using Esquio.UI.Api.Scenarios.Products.Details;
+using Esquio.UI.Api.Scenarios.Products.List;
+using Esquio.UI.Api.Scenarios.Products.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products
+namespace Esquio.UI.Api.Scenarios.Products
 {
     [Authorize]
     [ApiVersion("2.0")]
@@ -107,6 +108,24 @@ namespace Esquio.UI.Api.Features.Products
             var request = new DeleteProductRequest()
             {
                 ProductName = productName
+            };
+
+            await _mediator.Send(request, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Authorize(Policies.Write)]
+        [Route("{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteRing(string productName, string ringName, CancellationToken cancellationToken = default)
+        {
+            var request = new DeleteRingRequest()
+            {
+                ProductName = productName,
+                RingName = ringName
             };
 
             await _mediator.Send(request, cancellationToken);

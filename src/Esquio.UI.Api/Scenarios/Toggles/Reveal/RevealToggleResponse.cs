@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Toggles.Reveal
+namespace Esquio.UI.Api.Scenarios.Toggles.Reveal
 {
     public class RevealToggleResponse
     {

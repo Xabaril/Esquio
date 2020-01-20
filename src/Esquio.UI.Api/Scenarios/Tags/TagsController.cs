@@ -1,6 +1,6 @@
-﻿using Esquio.UI.Api.Features.Tags.Add;
-using Esquio.UI.Api.Features.Tags.Delete;
-using Esquio.UI.Api.Features.Tags.List;
+﻿using Esquio.UI.Api.Scenarios.Tags.Add;
+using Esquio.UI.Api.Scenarios.Tags.Delete;
+using Esquio.UI.Api.Scenarios.Tags.List;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags
+namespace Esquio.UI.Api.Scenarios.Tags
 {
     [Authorize]
     [ApiVersion("2.0")]

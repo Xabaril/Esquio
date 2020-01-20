@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Flags.Rollback
+namespace Esquio.UI.Api.Scenarios.Flags.Rollback
 {
     class RollbackFeatureRequestValidator
         : AbstractValidator<RollbackFeatureRequest>

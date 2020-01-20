@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Tags.Add
+namespace Esquio.UI.Api.Scenarios.Tags.Add
 {
     public class AddTagValidator 
         : AbstractValidator<AddTagRequest>

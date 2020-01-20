@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Toggles.KnownTypes
+namespace Esquio.UI.Api.Scenarios.Toggles.KnownTypes
 {
     public class KnownTypesToggleResponse
     {

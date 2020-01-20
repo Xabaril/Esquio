@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.List
+namespace Esquio.UI.Api.Scenarios.Flags.List
 {
     public class ListFeatureRequestHandler : IRequestHandler<ListFeatureRequest, ListFeatureResponse>
     {

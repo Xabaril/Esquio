@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Flags.Rollback
+namespace Esquio.UI.Api.Scenarios.Flags.Rollback
 {
     public class RollbackFeatureRequest
      : IRequest

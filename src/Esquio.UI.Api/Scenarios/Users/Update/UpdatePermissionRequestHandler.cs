@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Users.Update
+namespace Esquio.UI.Api.Scenarios.Users.Update
 {
     public class UpdatePermissionRequestHandler
         : IRequestHandler<UpdatePermissionRequest>

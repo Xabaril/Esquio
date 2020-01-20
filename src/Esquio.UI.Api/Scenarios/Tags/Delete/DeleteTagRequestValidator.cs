@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Tags.Delete
+namespace Esquio.UI.Api.Scenarios.Tags.Delete
 {
     public class DeleteTagRequestValidator
         : AbstractValidator<DeleteTagRequest>

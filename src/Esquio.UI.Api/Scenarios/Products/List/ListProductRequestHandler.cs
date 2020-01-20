@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.List
+namespace Esquio.UI.Api.Scenarios.Products.List
 {
     public class ListProductRequestHandler : IRequestHandler<ListProductRequest, ListProductResponse>
     {

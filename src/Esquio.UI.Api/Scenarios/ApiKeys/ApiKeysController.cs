@@ -1,7 +1,7 @@
-﻿using Esquio.UI.Api.Features.ApiKeys.Add;
-using Esquio.UI.Api.Features.ApiKeys.Details;
-using Esquio.UI.Api.Features.ApiKeys.List;
-using Esquio.UI.Api.Features.Flags.Delete;
+﻿using Esquio.UI.Api.Scenarios.ApiKeys.Add;
+using Esquio.UI.Api.Scenarios.ApiKeys.Details;
+using Esquio.UI.Api.Scenarios.ApiKeys.List;
+using Esquio.UI.Api.Scenarios.Flags.Delete;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.ApiKeys
+namespace Esquio.UI.Api.Scenarios.ApiKeys
 {
     [Authorize()]
     [ApiVersion("2.0")]

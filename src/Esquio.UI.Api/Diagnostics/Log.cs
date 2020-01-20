@@ -96,6 +96,15 @@ namespace Esquio.UI.Api.Diagnostics
             _ringAlreadyExist(logger, ring, productName, null);
         }
 
+        public static void RingNotExist(ILogger logger, string ring, string productName)
+        {
+            _ringNotExist(logger, ring, productName, null);
+        }
+
+        public static void CantDeleteDefaultRing(ILogger logger, string ring, string productName)
+        {
+            _cantDeleteDefaultRing(logger, ring, productName, null);
+        }
 
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
@@ -173,5 +182,13 @@ namespace Esquio.UI.Api.Diagnostics
           LogLevel.Warning,
           EventIds.RingAlreadyExist,
           "The ring with name {ringName} already exist for product {productName} in the store and can't be created.");
+        private static readonly Action<ILogger, string, string, Exception> _ringNotExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.RingNotExist,
+          "The ring with name {ringName} does not exist for product {productName} in the store.");
+        private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultRing = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.CantDeleteDefaultRing,
+          "The ring with name {ringName} is default ring for product {productName} and can't be deleted.");
     }
 }

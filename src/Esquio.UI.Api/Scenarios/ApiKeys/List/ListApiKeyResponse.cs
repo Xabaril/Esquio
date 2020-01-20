@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.ApiKeys.List
+namespace Esquio.UI.Api.Scenarios.ApiKeys.List
 {
     public class ListApiKeyResponse
     {

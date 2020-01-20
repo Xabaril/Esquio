@@ -47,8 +47,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Esquio.UI.Api\Seedwork\Data\Migrations\" />
-  </ItemGroup>
-
 </Project>

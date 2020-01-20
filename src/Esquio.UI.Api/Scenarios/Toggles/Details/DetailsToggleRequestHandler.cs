@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Details
+namespace Esquio.UI.Api.Scenarios.Toggles.Details
 {
     public class DetailsToggleRequestHandler : IRequestHandler<DetailsToggleRequest, DetailsToggleResponse>
     {

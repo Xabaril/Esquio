@@ -1,9 +1,9 @@
-﻿using Esquio.UI.Api.Features.Toggles.Add;
-using Esquio.UI.Api.Features.Toggles.AddParameter;
-using Esquio.UI.Api.Features.Toggles.Delete;
-using Esquio.UI.Api.Features.Toggles.Details;
-using Esquio.UI.Api.Features.Toggles.KnownTypes;
-using Esquio.UI.Api.Features.Toggles.Reveal;
+﻿using Esquio.UI.Api.Scenarios.Toggles.Add;
+using Esquio.UI.Api.Scenarios.Toggles.AddParameter;
+using Esquio.UI.Api.Scenarios.Toggles.Delete;
+using Esquio.UI.Api.Scenarios.Toggles.Details;
+using Esquio.UI.Api.Scenarios.Toggles.KnownTypes;
+using Esquio.UI.Api.Scenarios.Toggles.Reveal;
 using Esquio.UI.Api.Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +13,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles
+namespace Esquio.UI.Api.Scenarios.Toggles
 {
     [Authorize]
     [ApiVersion("2.0")]

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Flags.Update
+namespace Esquio.UI.Api.Scenarios.Flags.Update
 {
     public class UpdateFeatureRequest : IRequest<string>
     {

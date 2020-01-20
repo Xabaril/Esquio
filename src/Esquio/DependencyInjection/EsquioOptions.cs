@@ -29,6 +29,20 @@ namespace Esquio.DependencyInjection
             return this;
         }
 
+        internal string DefaultRingName = EsquioConstants.DEFAULT_RING_NAME;
+
+        /// <summary>
+        /// Configure default ring name to be used
+        /// </summary>
+        /// <param name="ringName">The ring name to be used.</param>
+        /// <returns></returns>
+        public EsquioOptions ConfigureDefaultRingName(string ringName)
+        {
+            DefaultRingName = ringName ?? throw new ArgumentNullException(nameof(ringName));
+            return this;
+        }
+
+
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
 
         /// <summary>

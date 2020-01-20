@@ -41,5 +41,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 await db.SaveChangesAsync();
             });
         }
+
+        public async Task AddRing(params RingEntity[] rings)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                db.AddRange(rings);
+
+                await db.SaveChangesAsync();
+            });
+        }
     }
 }

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Rollout
+namespace Esquio.UI.Api.Scenarios.Flags.Rollout
 {
     internal class RolloutFeatureRequestHandler
         : IRequestHandler<RolloutFeatureRequest>

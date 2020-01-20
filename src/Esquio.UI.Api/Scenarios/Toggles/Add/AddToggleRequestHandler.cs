@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Add
+namespace Esquio.UI.Api.Scenarios.Toggles.Add
 {
     public class AddToggleRequestHandler : IRequestHandler<AddToggleRequest, int>
     {

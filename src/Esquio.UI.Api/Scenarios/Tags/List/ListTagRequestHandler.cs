@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags.List
+namespace Esquio.UI.Api.Scenarios.Tags.List
 {
     public class ListTagRequestHandler : IRequestHandler<ListTagRequest, List<TagResponseDetail>>
     {

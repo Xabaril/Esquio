@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags.Add
+namespace Esquio.UI.Api.Scenarios.Tags.Add
 {
     public class AddTagRequestHandler : IRequestHandler<AddTagRequest>
     {

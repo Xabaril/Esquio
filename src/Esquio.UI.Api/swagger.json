@@ -672,6 +672,80 @@
         }
       }
     },
+    "/api/Products/{productName}/ring": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_AddRing",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddRingRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Products/{productName}/ring/{ringName}": {
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_DeleteRing",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ringName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
     "/api/products/{productName}/features/{featureName}/tags": {
       "get": {
         "tags": [
@@ -1526,6 +1600,14 @@
           "type": "string"
         },
         "defaultRingName": {
+          "type": "string"
+        }
+      }
+    },
+    "AddRingRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
           "type": "string"
         }
       }

@@ -22,9 +22,14 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(200);
+            builder.Property(p => p.ByDefault)
+                .IsRequired()
+                .HasDefaultValueSql("0");
             builder.HasOne(r => r.Product)
                 .WithMany(p => p.Rings)
                 .HasForeignKey(r => r.ProductEntityId);
+
+
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Products.List
+namespace Esquio.UI.Api.Scenarios.Products.List
 {
     public class ListProductResponse
     {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Features.Flags.Archive
+namespace Esquio.UI.Api.Scenarios.Flags.Archive
 {
     class ArchiveFeatureRequestValidator
         : AbstractValidator<ArchiveFeatureRequest>

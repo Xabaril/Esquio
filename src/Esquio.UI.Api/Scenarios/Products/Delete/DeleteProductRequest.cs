@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Features.Products.Delete
+namespace Esquio.UI.Api.Scenarios.Products.Delete
 {
     public class DeleteProductRequest : IRequest
     {

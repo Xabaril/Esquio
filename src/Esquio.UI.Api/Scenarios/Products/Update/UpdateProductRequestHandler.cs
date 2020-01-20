@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.Update
+namespace Esquio.UI.Api.Scenarios.Products.Update
 {
     public class UpdateProductRequestHandler : IRequestHandler<UpdateProductRequest>
     {

@@ -34,6 +34,8 @@ namespace Esquio
         {
             var enabled = true;
             var correlationId = Guid.NewGuid();
+            var ringName = _options.DefaultRingName;
+
             productName ??= _options.DefaultProductName;
 
             try
@@ -50,7 +52,7 @@ namespace Esquio
                     // if evaluation session is not enabled ( true by default ) or this product/feature combination
                     // is not on the session store, evaluate it again!
 
-                    enabled = await GetRuntimeEvaluationResult(productName, featureName, correlationId, cancellationToken);
+                    enabled = await GetRuntimeEvaluationResult(productName, ringName, featureName, correlationId, cancellationToken);
 
                     if (_options.EvaluationSessionEnabled)
                     {
@@ -74,7 +76,7 @@ namespace Esquio
             }
         }
 
-        private async Task<bool> GetRuntimeEvaluationResult(string productName, string featureName, Guid correlationId, CancellationToken cancellationToken = default)
+        private async Task<bool> GetRuntimeEvaluationResult(string productName, string ringName, string featureName, Guid correlationId, CancellationToken cancellationToken = default)
         {
             var totalTime = ValueStopwatch.StartNew();
             var enabled = true;
