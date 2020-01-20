@@ -1,4 +1,6 @@
-﻿using Esquio.AspNetCore.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -13,22 +15,12 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class claimvalue_toggle_tests
     {
         [Fact]
-        public void throw_if_store_service_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var accessor = new FakeHttpContextAccesor();
-                new ClaimValueToggle(null, accessor);
-            });
-        }
-
-        [Fact]
         public void throw_if_httpcontextaccessor_is_null()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var store = new DelegatedValueFeatureStore((_, __, ___) => null);
-                new ClaimValueToggle(store, null);
+                new ClaimValueToggle(null);
             });
         }
 
@@ -47,13 +39,19 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .Build();
 
             var context = new DefaultHttpContext();
+
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __,___) => feature);
-            var claimValueToggle = new ClaimValueToggle(store, new FakeHttpContextAccesor(context));
+            var store = new DelegatedValueFeatureStore((_, __, ___) => feature);
+            var claimValueToggle = new ClaimValueToggle(new FakeHttpContextAccesor(context));
 
-            var active = await claimValueToggle.IsActiveAsync(Constants.FeatureName);
+            var active = await claimValueToggle.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -74,13 +72,19 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                 .Build();
 
             var context = new DefaultHttpContext();
+
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "not_some_claim_value") }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var claimValueToggle = new ClaimValueToggle(store, new FakeHttpContextAccesor(context));
+            var store = new DelegatedValueFeatureStore((_, __,___) => feature);
+            var claimValueToggle = new ClaimValueToggle(new FakeHttpContextAccesor(context));
 
-            var active = await claimValueToggle.IsActiveAsync(Constants.FeatureName);
+            var active = await claimValueToggle.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeFalse();

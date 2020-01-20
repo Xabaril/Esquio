@@ -1,4 +1,6 @@
-﻿using Esquio.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -13,21 +15,21 @@ namespace UnitTests.Esquio.Toggles
         private const string Users = nameof(Users);
 
         [Fact]
-        public async Task be_not_active_if_user_provider_is_null()
+        public void be_not_active_if_user_provider_is_null()
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user1;user2")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                await new UserNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+                new UserNameToggle(null);
             });
         }
 
@@ -38,14 +40,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user2")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => null);
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeFalse();
         }
@@ -57,14 +65,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter("Users","SomeUser")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeFalse();
         }
@@ -76,14 +90,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user1")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => "user2");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+              ToggleExecutionContext.FromToggle(
+                  feature.Name,
+                  EsquioConstants.DEFAULT_PRODUCT_NAME,
+                  EsquioConstants.DEFAULT_RING_NAME,
+                  toggle));
 
             active.Should().BeFalse();
         }
@@ -95,14 +115,21 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user1")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+              ToggleExecutionContext.FromToggle(
+                  feature.Name,
+                  EsquioConstants.DEFAULT_PRODUCT_NAME,
+                  EsquioConstants.DEFAULT_RING_NAME,
+                  toggle));
+
             active.Should().BeTrue();
         }
 
@@ -113,14 +140,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user1")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => "UsEr1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+              ToggleExecutionContext.FromToggle(
+                  feature.Name,
+                  EsquioConstants.DEFAULT_PRODUCT_NAME,
+                  EsquioConstants.DEFAULT_RING_NAME,
+                  toggle));
 
             active.Should().BeTrue();
         }
@@ -132,14 +165,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<UserNameToggle>()
                 .AddOneParameter(Users, "user1;user2")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle(userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+              ToggleExecutionContext.FromToggle(
+                  feature.Name,
+                  EsquioConstants.DEFAULT_PRODUCT_NAME,
+                  EsquioConstants.DEFAULT_RING_NAME,
+                  toggle));
 
             active.Should().BeTrue();
         }

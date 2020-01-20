@@ -1,4 +1,6 @@
-﻿using Esquio.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -13,17 +15,6 @@ namespace UnitTests.Esquio.Toggles
         private const string EnvironmentVariable = nameof(EnvironmentVariable);
         private const string Values = nameof(Values);
 
-        [Fact]
-        public async Task throw_if_environment_provider_is_null()
-        {
-            var store = new DelegatedValueFeatureStore((_, __) => null);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            {
-                await new EnvironmentVariableToggle(null)
-                .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
-            });
-        }
 
         [Fact]
         public async Task be_not_active_if_current_environmentvariable_does_not_have_a_valid_value()
@@ -33,15 +24,18 @@ namespace UnitTests.Esquio.Toggles
                 .AddOneParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
                 .AddOneParameter(Values, "Production")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-
-            var active = await new EnvironmentVariableToggle(store)
-                .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentVariableToggle().IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeFalse();
         }
@@ -62,10 +56,12 @@ namespace UnitTests.Esquio.Toggles
 
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Production", EnvironmentVariableTarget.Process);
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-
-            var active = await new EnvironmentVariableToggle(store)
-                .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentVariableToggle().IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }
@@ -86,10 +82,14 @@ namespace UnitTests.Esquio.Toggles
 
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Production", EnvironmentVariableTarget.Process);
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
 
-            var active = await new EnvironmentVariableToggle(store)
-                .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentVariableToggle().IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }
@@ -110,10 +110,12 @@ namespace UnitTests.Esquio.Toggles
 
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing", EnvironmentVariableTarget.Process);
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-
-            var active = await new EnvironmentVariableToggle(store)
-                .IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentVariableToggle().IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }

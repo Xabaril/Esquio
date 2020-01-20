@@ -1,4 +1,6 @@
-﻿using Esquio.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -12,24 +14,11 @@ namespace UnitTests.Esquio.Toggles
         private const string Roles = nameof(Roles);
 
         [Fact]
-        public async Task throw_if_role_provider_is_null()
+        public void throw_if_role_provider_is_null()
         {
-            var store = new DelegatedValueFeatureStore((_,__) => null);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                await new RoleNameToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
-            });
-        }
-
-        [Fact]
-        public async Task throw_if_store_is_null()
-        {
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            {
-                await new RoleNameToggle(roleNameProvider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+                new RoleNameToggle(null);
             });
         }
 
@@ -40,14 +29,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter(Roles, "role1")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeFalse();
         }
@@ -59,14 +54,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter("Roles","SomeRole")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "role1");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeFalse();
         }
@@ -78,14 +79,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter(Roles, "admin")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "user");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+                           ToggleExecutionContext.FromToggle(
+                               feature.Name,
+                               EsquioConstants.DEFAULT_PRODUCT_NAME,
+                               EsquioConstants.DEFAULT_RING_NAME,
+                               toggle));
 
             active.Should().BeFalse();
         }
@@ -97,14 +104,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter(Roles, "admin")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "admin");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeTrue();
         }
@@ -116,14 +129,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter(Roles, "admin")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "AdMiN");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeTrue();
         }
@@ -135,14 +154,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<RoleNameToggle>()
                 .AddOneParameter(Roles, "admin;user")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var roleNameProvider = new DelegatedRoleNameProviderService(() => "user");
 
-            var active = await new RoleNameToggle(roleNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
 
             active.Should().BeTrue();
         }

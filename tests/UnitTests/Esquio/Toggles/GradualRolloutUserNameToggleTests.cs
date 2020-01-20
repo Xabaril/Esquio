@@ -1,4 +1,5 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
 using Esquio.Toggles;
 using FluentAssertions;
 using System;
@@ -17,21 +18,20 @@ namespace UnitTests.Esquio.Toggles
         public void throw_if_partitioner_is_null()
         {
             var toggle = Build
-                   .Toggle<GradualRolloutUserNameToggle>()
-                   .AddOneParameter(Percentage, 100)
-                   .Build();
+                .Toggle<GradualRolloutUserNameToggle>()
+                .AddOneParameter(Percentage, 100)
+                .Build();
 
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new GradualRolloutUserNameToggle(partitioner: null, userNameProvider, store);
+                new GradualRolloutUserNameToggle(partitioner: null, userNameProvider);
             });
         }
 
@@ -39,44 +39,20 @@ namespace UnitTests.Esquio.Toggles
         public void throw_if_username_provider_is_null()
         {
             var toggle = Build
-                   .Toggle<GradualRolloutUserNameToggle>()
-                   .AddOneParameter(Percentage, 100)
-                   .Build();
+                .Toggle<GradualRolloutUserNameToggle>()
+                .AddOneParameter(Percentage, 100)
+                .Build();
 
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new GradualRolloutUserNameToggle(partitioner, userNameProviderService: null, store);
-            });
-        }
-
-        [Fact]
-        public void throw_if_runtimestore_provider_is_null()
-        {
-            var toggle = Build
-                   .Toggle<GradualRolloutUserNameToggle>()
-                   .AddOneParameter(Percentage, 100)
-                   .Build();
-
-            var feature = Build
-                .Feature(Constants.FeatureName)
-                .AddOne(toggle)
-                .Build();
-
-
-            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
-            var partitioner = new DefaultValuePartitioner();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new GradualRolloutUserNameToggle(partitioner, userNameProvider, featureStore: null);
+                new GradualRolloutUserNameToggle(partitioner, userNameProviderService: null);
             });
         }
 
@@ -84,18 +60,24 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_active_when_percentage_is_hundred_percent()
         {
             var toggle = Build
-                   .Toggle<GradualRolloutUserNameToggle>()
-                   .AddOneParameter(Percentage, 100)
-                   .Build();
+                .Toggle<GradualRolloutUserNameToggle>()
+                .AddOneParameter(Percentage, 100)
+                .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
             var partitioner = new DefaultValuePartitioner();
 
-            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }
@@ -107,15 +89,21 @@ namespace UnitTests.Esquio.Toggles
                    .Toggle<GradualRolloutUserNameToggle>()
                    .AddOneParameter(Percentage, 0)
                    .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
             var partitioner = new DefaultValuePartitioner();
 
-            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeFalse();
         }
@@ -145,13 +133,17 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var userNameProvider = new DelegatedUserNameProviderService(() => username);
             var partitioner = new DefaultValuePartitioner();
 
-            var actual = await new GradualRolloutUserNameToggle(partitioner, userNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
-            actual.Should().Be(expected);
+            active.Should().Be(expected);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Esquio.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -15,24 +17,11 @@ namespace UnitTests.Esquio.Toggles
         private const string Environments = nameof(Environments);
 
         [Fact]
-        public async Task throw_if_environment_provider_is_null()
+        public void throw_if_environment_provider_is_null()
         {
-            var store = new DelegatedValueFeatureStore((_, __) => null);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                await new EnvironmentToggle(null, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
-            });
-        }
-
-        [Fact]
-        public async Task throw_if_store_provider_is_null()
-        {
-            var provider = new DelegatedEnvironmentNameProviderService(() => string.Empty);
-
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            {
-                await new EnvironmentToggle(provider, null).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+                new EnvironmentToggle(null);
             });
         }
 
@@ -43,14 +32,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter(Environments, $"{Development}:{Production}")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => null);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeFalse();
         }
@@ -62,14 +57,21 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter("Environments","Production")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+
+            
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeFalse();
         }
@@ -81,15 +83,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter(Environments, Production)
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
 
-            var store = new DelegatedValueFeatureStore((_,__) => feature);
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeFalse();
         }
@@ -101,14 +108,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter(Environments, Development)
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }
@@ -120,14 +133,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter(Environments, Development)
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }
@@ -139,14 +158,20 @@ namespace UnitTests.Esquio.Toggles
                 .Toggle<EnvironmentToggle>()
                 .AddOneParameter(Environments, $"{Development};{Production}")
                 .Build();
+
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            
             var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider, store).IsActiveAsync(Constants.FeatureName, Constants.ProductName);
+            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should().BeTrue();
         }

@@ -115,15 +115,9 @@ namespace Esquio
 
                     if (toggleInstance != null)
                     {
-                        var executionContext = new ToggleExecutionContext()
-                        {
-                            FeatureName = featureName,
-                            ProductName = productName,
-                            RingName = ringName,
-                            Data = toggle.GetParameters().ToDictionary(tp => tp.Name, tp => tp.Value)
-                        };
-
-                        active = await toggleInstance?.IsActiveAsync(executionContext, cancellationToken);
+                        active = await toggleInstance?.IsActiveAsync(
+                            ToggleExecutionContext.FromToggle(featureName, productName, ringName, toggle),
+                            cancellationToken);
                     }
 
                     _diagnostics.Togglevaluation(featureName, productName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
