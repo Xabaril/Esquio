@@ -159,7 +159,8 @@
   "submenu": {
     "logout": "Logout",
     "token": "Manage Tokens",
-    "users": "Manage Users"
+    "users": "Manage Users",
+    "audit": "View Audit"
   },
   "roles": {
     "reader": "(Reader)",

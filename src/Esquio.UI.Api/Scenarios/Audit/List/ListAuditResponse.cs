@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Esquio.UI.Api.Features.Audit.List
 {
@@ -15,6 +16,8 @@ namespace Esquio.UI.Api.Features.Audit.List
 
     public class ListAuditResponseDetail
     {
+        public DateTime CreatedAt { get; set; }
+
         public string ProductName { get; set; }
 
         public string FeatureName { get; set; }
