@@ -45,8 +45,6 @@
 
         <slot name="actions" :item="data.item" />
       </template>
-
-      <slot/>
     </b-table>
 
     <b-pagination

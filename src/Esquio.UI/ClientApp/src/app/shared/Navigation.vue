@@ -15,6 +15,8 @@
       <router-link  to="/logout" tag="b-dropdown-item">{{$t('submenu.logout')}}</router-link>
       <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/users" tag="b-dropdown-item">{{$t('submenu.users')}}</router-link>
 
+       <router-link v-if="$can($constants.AbilityAction.Manage, $constants.AbilitySubject.Permission)" to="/audit" tag="b-dropdown-item">{{$t('submenu.audit')}}</router-link>
+
       <router-link v-if="$can($constants.AbilityAction.Read, $constants.AbilitySubject.Token)" to="/tokens" tag="b-dropdown-item">{{$t('submenu.token')}}</router-link>
     </b-dropdown>
     </div>

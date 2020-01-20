@@ -31,6 +31,12 @@ p, span > .d > #s,
       margin: 0 auto;
       max-width: 60rem !important;
     }
+
+    &-big {
+      position: relative;
+      margin: 0 auto;
+      max-width: 85rem !important;
+    }
   }
 
   &-hidden {
