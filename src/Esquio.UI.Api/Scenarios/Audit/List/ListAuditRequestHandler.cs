@@ -27,6 +27,7 @@ namespace Esquio.UI.Api.Features.Audit.List
                            on h.FeatureId equals f.Id
                            select new
                            {
+                               h.CreatedAt,
                                Feature = f.Name,
                                Product = f.ProductEntity.Name,
                                h.OldValues,
@@ -34,6 +35,7 @@ namespace Esquio.UI.Api.Features.Audit.List
                            })
                            .Skip(request.PageIndex * request.PageCount)
                            .Take(request.PageCount)
+                           .OrderByDescending(h=>h.CreatedAt)
                            .ToListAsync(cancellationToken);
 
             return new ListAuditResponse()
@@ -43,6 +45,7 @@ namespace Esquio.UI.Api.Features.Audit.List
                 PageIndex = request.PageIndex,
                 Result = history.Select(h => new ListAuditResponseDetail
                 {
+                    CreatedAt = h.CreatedAt,
                     FeatureName = h.Feature,
                     ProductName = h.Product,
                     OldValues = h.OldValues,
