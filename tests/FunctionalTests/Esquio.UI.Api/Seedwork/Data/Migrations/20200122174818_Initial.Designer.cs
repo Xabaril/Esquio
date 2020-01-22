@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200120101928_Initial")]
+    [Migration("20200122174818_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,6 +142,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<int>("RingEntityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ToggleEntityId")
                         .HasColumnType("int");
 
@@ -151,6 +154,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RingEntityId");
 
                     b.HasIndex("ToggleEntityId");
 
@@ -314,6 +319,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ParameterEntity", b =>
                 {
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", "RingEntity")
+                        .WithMany()
+                        .HasForeignKey("RingEntityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
                         .WithMany("Parameters")
                         .HasForeignKey("ToggleEntityId")

@@ -6,8 +6,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private string _name = "Esquio.Toggles.FromToToggle";
         private string _value = string.Empty;
-
-        private int _featureId = 1;
+        private int _toggleId = 1;
+        private int _ringId;
 
         public ParameterEntityBuilder WithName(string name)
         {
@@ -20,10 +20,22 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             _value = value;
             return this;
         }
-      
+
+        public ParameterEntityBuilder WithRing(RingEntity ring)
+        {
+            _ringId = ring.Id;
+            return this;
+        }
+        public ParameterEntityBuilder WithRing(ToggleEntity toggle)
+        {
+            _toggleId = toggle.Id;
+            return this;
+        }
+
+
         public ParameterEntity Build()
         {
-            return new ParameterEntity(_featureId, _name, _value);
+            return new ParameterEntity(_toggleId, _ringId,_name, _value);
         }
     }
 }

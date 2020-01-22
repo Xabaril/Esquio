@@ -39,10 +39,27 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
                 {
                     var toggle = new ToggleEntity(feature.Id, request.ToggleType);
 
+                    var allowedRings = await _storeDbContext
+                        .Rings
+                        .Where(p => p.ProductEntityId == feature.ProductEntityId)
+                        .ToListAsync();
+
+                    var defaultRing = allowedRings
+                          .Where(r => r.ByDefault)
+                          .SingleOrDefault();
+
+                    var selectedRing = defaultRing;
+
+                    if (!string.IsNullOrEmpty(request.RingName))
+                    {
+                        selectedRing = allowedRings
+                           .Where(r => r.Name == request.RingName)
+                           .SingleOrDefault();
+                    }
+
                     foreach (var item in request.Parameters)
                     {
-                        toggle.Parameters.Add(
-                            new ParameterEntity(toggle.Id, item.Name, item.Value));
+                        toggle.AddOrUpdateParameter(selectedRing, defaultRing, item.Name, item.Value);
                     }
 
                     feature.Toggles.Add(toggle);

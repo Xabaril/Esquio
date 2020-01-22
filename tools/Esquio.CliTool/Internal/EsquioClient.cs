@@ -3166,6 +3166,9 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("featureName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FeatureName { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ringName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RingName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("toggleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ToggleType { get; set; }
     
@@ -3186,6 +3189,9 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("featureName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FeatureName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ringName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RingName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("toggleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ToggleType { get; set; }

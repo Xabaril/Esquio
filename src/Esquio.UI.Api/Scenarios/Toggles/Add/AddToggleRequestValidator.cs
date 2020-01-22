@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
+namespace Esquio.UI.Api.Scenarios.Toggles.Add
 {
-    public class AddParameterToggleRequestValidator
-        : AbstractValidator<AddParameterToggleRequest>
+    public class AddToggleRequestValidator
+        : AbstractValidator<AddToggleRequest>
     {
-        public AddParameterToggleRequestValidator()
+        public AddToggleRequestValidator()
         {
             RuleFor(x => x.ProductName)
                .NotEmpty()
@@ -23,12 +23,6 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
                .When(r=>!string.IsNullOrEmpty(r.RingName));
 
             this.RuleFor(pr => pr.ToggleType)
-                .NotEmpty();
-
-            this.RuleFor(pr => pr.Name)
-                .NotEmpty();
-
-            this.RuleFor(rf => rf.Value)
                 .NotEmpty();
         }
     }

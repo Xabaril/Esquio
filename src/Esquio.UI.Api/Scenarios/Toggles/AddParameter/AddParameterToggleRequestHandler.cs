@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
             var feature = await _storeDbContext
                 .Features
                 .Include(f => f.Toggles)
-                    .ThenInclude(t=>t.Parameters)
+                    .ThenInclude(t => t.Parameters)
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -39,19 +39,25 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 
                 if (toggle != null)
                 {
-                    var parameter = toggle.Parameters
-                        .Where(p => p.Name.Equals(request.Name))
-                        .SingleOrDefault();
+                    var allowedRings = await _storeDbContext
+                        .Rings
+                        .Where(p => p.ProductEntityId == feature.ProductEntityId)
+                        .ToListAsync();
 
-                    if (parameter != null)
+                    var defaultRing = allowedRings
+                           .Where(r => r.ByDefault)
+                           .SingleOrDefault();
+
+                    var selectedRing = defaultRing;
+
+                    if (!string.IsNullOrEmpty(request.RingName))
                     {
-                        parameter.Value = request.Value;
+                        selectedRing = allowedRings
+                           .Where(r => r.Name == request.RingName)
+                           .SingleOrDefault();
                     }
-                    else
-                    {
-                        toggle.Parameters.Add(
-                            new ParameterEntity(toggle.Id, request.Name, request.Value));
-                    }
+                    
+                    toggle.AddOrUpdateParameter(selectedRing, defaultRing, request.Name, request.Value);
 
                     await _storeDbContext.SaveChangesAsync(cancellationToken);
 
@@ -64,6 +70,24 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 
             Log.FeatureNotExist(_logger, request.FeatureName);
             throw new InvalidOperationException($"Feature {request.FeatureName} does not exist on product {request.ProductName}.");
+        }
+
+        void SetOrAddParameterValue(ToggleEntity toggle, RingEntity ring, string parameterName, string value)
+        {
+            var parameter = toggle.Parameters
+                .Where(p => p.Name.Equals(parameterName))
+                .SingleOrDefault();
+
+            if (parameter != null)
+            {
+                parameter.Value = value;
+                parameter.RingEntityId = ring.Id;
+            }
+            else
+            {
+                toggle.Parameters.Add(
+                    new ParameterEntity(toggle.Id, ring.Id, parameterName, value));
+            }
         }
     }
 }

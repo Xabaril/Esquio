@@ -27,6 +27,11 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);
+
+            builder.HasOne(p => p.RingEntity)
+                .WithMany()
+                .HasForeignKey(p => p.RingEntityId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

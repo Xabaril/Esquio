@@ -1745,6 +1745,9 @@
         "featureName": {
           "type": "string"
         },
+        "ringName": {
+          "type": "string"
+        },
         "toggleType": {
           "type": "string"
         },
@@ -1763,6 +1766,9 @@
           "type": "string"
         },
         "featureName": {
+          "type": "string"
+        },
+        "ringName": {
           "type": "string"
         },
         "toggleType": {

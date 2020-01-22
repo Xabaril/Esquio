@@ -38,25 +38,30 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
         {
             if (!dbContext.Products.Any())
             {
+                //add product
                 var product = new ProductEntity("default", "description");
                 dbContext.Products.Add(product);
-
                 dbContext.SaveChanges();
 
-                var appFeature = new FeatureEntity(product.Id, "app-feature", enabled: true, archived: false);
+                //add ring
 
-                var toggle = new ToggleEntity(appFeature.Id, "Esquio.Toggles.XToggle");
+                var ring = new RingEntity(product.Id, "default", byDefault: true);
+                dbContext.Rings.Add(ring);
+                dbContext.SaveChanges();
 
-                var stringparameter = new ParameterEntity(toggle.Id, "strparam", "value1");
+                //add default default with toggle on default ring
+                var feature = new FeatureEntity(product.Id, "app-feature", enabled: true, archived: false);
+                var toggle = new ToggleEntity(feature.Id, "Esquio.Toggles.XToggle");
+
+                var stringparameter = new ParameterEntity(toggle.Id, ring.Id, "strparam", "value1");
                 toggle.Parameters.Add(stringparameter);
 
-                var intparameter = new ParameterEntity(toggle.Id, "intparam", "1");
+                var intparameter = new ParameterEntity(toggle.Id, ring.Id, "intparam", "1");
                 toggle.Parameters.Add(intparameter);
 
-                appFeature.Toggles.Add(toggle);
+                feature.Toggles.Add(toggle);
 
-                dbContext.Features.Add(appFeature);
-
+                dbContext.Features.Add(feature);
                 dbContext.SaveChanges();
             }
         }
@@ -81,7 +86,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("non-existing-feature", EsquioConstants.DEFAULT_PRODUCT_NAME,EsquioConstants.DEFAULT_RING_NAME);
+            var expected = await store.FindFeatureAsync("non-existing-feature", EsquioConstants.DEFAULT_PRODUCT_NAME, EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .BeNull();
@@ -107,7 +112,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
             var store = new EntityFrameworkCoreStoreBuilder(options)
                 .Build();
 
-            var expected = await store.FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME,EsquioConstants.DEFAULT_RING_NAME);
+            var expected = await store.FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME, EsquioConstants.DEFAULT_RING_NAME);
 
             expected.Should()
                 .NotBeNull();

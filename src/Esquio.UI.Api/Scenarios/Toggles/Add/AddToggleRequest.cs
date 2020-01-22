@@ -9,6 +9,8 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
 
         public string FeatureName { get; set; }
 
+        public string RingName { get; set; }
+
         public string ToggleType { get; set; }
 
         public List<AddToggleRequestDetailParameter> Parameters { get; set; } = new List<AddToggleRequestDetailParameter>();
