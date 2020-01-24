@@ -156,21 +156,20 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
               .WithName("fooproduct")
               .Build();
 
+            var ring = Builders.Ring()
+                .WithName("production")
+                .Build();
+
+            product.Rings
+                .Add(ring);
+
             await _fixture.Given
                 .AddProduct(product);
 
-            var ring = Builders.Ring()
-             .WithName("production")
-             .WithProduct(product)
-             .Build();
-
-            await _fixture.Given
-               .AddRing(ring);
-
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.Product.DeleteRing(product.Name, ring.Name))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V2.Product.DeleteRing(product.Name, ring.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()

@@ -2,7 +2,7 @@
   <div class="app">
     <Navigation />
 
-    <div class="app-content container">
+    <div class="app-content">
       <router-view></router-view>
     </div>
   </div>

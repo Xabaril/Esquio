@@ -12,6 +12,52 @@
     "application/json"
   ],
   "paths": {
+    "/api/audit": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "operationId": "Audit_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListAuditRequest"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
     "/api/ApiKeys": {
       "get": {
         "tags": [
@@ -1290,6 +1336,48 @@
     }
   },
   "definitions": {
+    "ListAuditRequest": {
+      "type": "object",
+      "required": [
+        "pageIndex",
+        "pageCount"
+      ],
+      "properties": {
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ProblemDetails": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      }
+    },
     "ListApiKeyResponse": {
       "type": "object",
       "required": [
@@ -1330,31 +1418,6 @@
         "validTo": {
           "type": "string",
           "format": "date-time"
-        }
-      }
-    },
-    "ProblemDetails": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "instance": {
-          "type": "string"
-        },
-        "extensions": {
-          "type": "object",
-          "additionalProperties": {}
         }
       }
     },

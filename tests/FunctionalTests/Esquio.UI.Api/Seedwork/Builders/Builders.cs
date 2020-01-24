@@ -2,6 +2,10 @@
 {
     public static class Builders
     {
+        public static HistoryBuilder History()
+        {
+            return new HistoryBuilder();
+        }
         public static IdentityBuilder Identity()
         {
             return new IdentityBuilder();

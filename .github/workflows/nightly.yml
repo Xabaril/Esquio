@@ -39,6 +39,10 @@ jobs:
       run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix "-nightly" --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
       run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix "-nightly" --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.MiniProfiler]
+      run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --version-suffix "-nightly" --include-source --include-symbols
+    - name: dotnet pack [Esquio.CLi]
+      run: dotnet pack  ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --no-build --version-suffix "-nightly" --include-source --include-symbols
     - name: Publish nuget
       run: |
           for f in ./artifacts/*.nupkg

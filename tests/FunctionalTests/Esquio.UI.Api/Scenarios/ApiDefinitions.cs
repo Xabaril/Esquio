@@ -41,6 +41,17 @@
                     return $"api/products?pageIndex={pageIndex}&pageCount={pageCount}&api-version=2.0";
                 }
             }
+            public static class Audit
+            {
+                public static string List()
+                {
+                    return $"api/audit?api-version=2.0";
+                }
+                public static string List(int pageIndex, int pageCount)
+                {
+                    return $"api/audit?pageIndex={pageIndex}&pageCount={pageCount}&api-version=2.0";
+                }
+            }
 
             public static class Features
             {
@@ -142,7 +153,7 @@
                     return $"api/products/{productName}/features/{featureName}/tags?api-version=2.0";
                 }
 
-                public static string Untag(string productName,string featureName,string tag)
+                public static string Untag(string productName, string featureName, string tag)
                 {
                     return $"api/products/{productName}/features/{featureName}/tags/untag/{tag}?api-version=2.0";
                 }

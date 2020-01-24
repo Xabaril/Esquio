@@ -47,6 +47,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
                 db.AddRange(rings);
+            });
+        }
+
+        public async Task AddHistory(params HistoryEntity[] histories)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                db.AddRange(histories);
+
 
                 await db.SaveChangesAsync();
             });

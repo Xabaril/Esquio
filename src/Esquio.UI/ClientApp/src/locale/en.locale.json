@@ -159,7 +159,8 @@
   "submenu": {
     "logout": "Logout",
     "token": "Manage Tokens",
-    "users": "Manage Users"
+    "users": "Manage Users",
+    "audit": "View Audit"
   },
   "roles": {
     "reader": "(Reader)",
@@ -237,6 +238,18 @@
     },
     "confirm": {
       "title": "Are you sure to delete '{0}' Api Key?"
+    }
+  },
+  "audit": {
+    "title": "Audit",
+    "fields": {
+      "productName": "Product",
+      "featureName": "Feature",
+      "values": "Old Values / New Values",
+      "date": "Created At"
+    },
+    "errors": {
+      "get": "Cannot get audit data"
     }
   }
 }

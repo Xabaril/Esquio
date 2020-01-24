@@ -66,6 +66,7 @@ import { PaginationInfo } from './pagination';
 @Component
 export default class extends Vue {
   public name = 'PaginatedTable';
+  // TODO: Make extra and actions more generic, see adutilist
   public columns: BvTableFieldArray = [
     {
       key: 'extra',

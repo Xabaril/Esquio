@@ -23,7 +23,7 @@
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.EntityFrameworkCore.Store\Esquio.EntityFrameworkCore.Store.csproj" />
-    <ProjectReference Include="..\..\tools\MiniProfiler.Esquio\MiniProfiler.Esquio.csproj" />
+    <ProjectReference Include="..\..\tools\Esquio.MiniProfiler\Esquio.MiniProfiler.csproj" />
   </ItemGroup>
 
 

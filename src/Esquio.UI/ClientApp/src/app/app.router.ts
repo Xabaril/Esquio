@@ -1,5 +1,6 @@
 import { Vue } from 'vue-property-decorator';
 import VueRouter from 'vue-router';
+import { auditModule } from '~/audit';
 import { productsModule } from '~/products';
 // import { homeModule } from '~/home';
 import authRoutes from '~/shared/auth/auth.routes';
@@ -18,6 +19,7 @@ export function router() {
       ...productsModule.routes(requireAuth),
       ...usersModule.routes(requireAuth),
       ...tokensModule.routes(requireAuth),
+      ...auditModule.routes(requireAuth),
       ...authRoutes.routes(),
       {
         path: '/',
