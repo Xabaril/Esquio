@@ -24,12 +24,13 @@ namespace Esquio.UI.Api.Features.Audit.List
 
             var history = await (from h in _storeDbContext.History
                            join f in _storeDbContext.Features
-                           on h.FeatureId equals f.Id
+                           on h.FeatureId equals f.Id into leftjoin
+                           from lj in leftjoin.DefaultIfEmpty()
                            select new
                            {
                                h.CreatedAt,
-                               Feature = f.Name,
-                               Product = f.ProductEntity.Name,
+                               Feature = lj == default ? "removed from database" : lj.Name,
+                               Product = lj == default ? "removed from database" : lj.ProductEntity.Name,
                                h.OldValues,
                                h.NewValues
                            })

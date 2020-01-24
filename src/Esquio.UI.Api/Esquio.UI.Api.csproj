@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

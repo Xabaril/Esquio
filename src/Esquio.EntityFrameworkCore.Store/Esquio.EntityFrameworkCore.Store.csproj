@@ -7,6 +7,7 @@
     <Description>EntityFrameworkCode store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration;EF;Entity Framework;EFCore;Entity Framework Core</PackageTags>
     <Version>$(esquioentityframeworkstore)</Version>
+    <LangVersion>latest</LangVersion>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>

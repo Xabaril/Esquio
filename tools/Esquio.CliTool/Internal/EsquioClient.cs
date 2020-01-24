@@ -355,14 +355,14 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName)
+        public System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount)
         {
-            return Audit_ListAsync(pageIndex, pageCount, productName, System.Threading.CancellationToken.None);
+            return Audit_ListAsync(pageIndex, pageCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/audit?");
@@ -373,10 +373,6 @@ namespace Esquio.CliTool.Internal
             if (pageCount != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (productName != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("productName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
