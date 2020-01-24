@@ -37,21 +37,24 @@ namespace Esquio.EntityFrameworkCore.Store
                     .ThenInclude(t => t.Parameters)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (featureEntity != null)
+            var defaultRing = await _storeDbContext
+                .Rings
+                .Where(r => r.Product.Name == productName && r.ByDefault)
+                .SingleOrDefaultAsync();
+
+            if (featureEntity != null && defaultRing != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
-
-                return ConvertToFeatureModel(featureEntity);
+                return ConvertToFeatureModel(featureEntity, ringName, defaultRing.Name);
             }
             else
             {
                 _diagnostics.FeatureNotExist(featureName, productName);
-
                 return null;
             }
         }
 
-        private Feature ConvertToFeatureModel(FeatureEntity featureEntity)
+        private Feature ConvertToFeatureModel(FeatureEntity featureEntity, string selectedRing, string defaultRing)
         {
             var feature = new Feature(featureEntity.Name);
 
@@ -68,9 +71,35 @@ namespace Esquio.EntityFrameworkCore.Store
             {
                 var toggle = new Toggle(toggleConfiguration.Type);
 
-                toggle.AddParameters(toggleConfiguration
-                    .Parameters
-                    .Select(p => new Parameter(p.Name, p.Value)));
+                var groupingParameters = toggleConfiguration.Parameters
+                    .GroupBy(g => g.RingName);
+
+                var defaultRingParameters = groupingParameters
+                    .Where(g => g.Key == defaultRing)
+                    .SingleOrDefault();
+
+                if (defaultRingParameters != null 
+                    && 
+                    defaultRingParameters.Any())
+                {
+                    toggle.AddParameters(
+                        defaultRingParameters.Select(p => new Parameter(p.Name, p.Value)));
+                }
+
+                if ( selectedRing != defaultRing)
+                {
+                    var selectedRingParameters = groupingParameters
+                        .Where(g => g.Key == selectedRing)
+                        .SingleOrDefault();
+
+                    if ( selectedRingParameters != null 
+                        &&
+                        selectedRingParameters.Any())
+                    {
+                        toggle.AddParameters(
+                            selectedRingParameters.Select(p => new Parameter(p.Name, p.Value)));
+                    }
+                }
 
                 feature.AddToggle(toggle);
             }

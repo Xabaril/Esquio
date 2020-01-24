@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
+namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -178,18 +178,14 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ToggleEntityId = table.Column<int>(nullable: false),
-                    RingEntityId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Value = table.Column<string>(maxLength: 4000, nullable: false)
+                    Value = table.Column<string>(maxLength: 4000, nullable: false),
+                    RingName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Parameters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Parameters_Rings_RingEntityId",
-                        column: x => x.RingEntityId,
-                        principalTable: "Rings",
-                        principalColumn: "Id");
+                    table.UniqueConstraint("AK_Parameters_Name_RingName_ToggleEntityId", x => new { x.Name, x.RingName, x.ToggleEntityId });
                     table.ForeignKey(
                         name: "FK_Parameters_Toggles_ToggleEntityId",
                         column: x => x.ToggleEntityId,
@@ -219,11 +215,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 name: "IX_FeatureTags_TagEntityId",
                 table: "FeatureTags",
                 column: "TagEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Parameters_RingEntityId",
-                table: "Parameters",
-                column: "RingEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Parameters_ToggleEntityId",
@@ -277,10 +268,10 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Rings");
 
             migrationBuilder.DropTable(
-                name: "Rings");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Toggles");

@@ -45,23 +45,35 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
                 //add ring
 
-                var ring = new RingEntity(product.Id, "default", byDefault: true);
-                dbContext.Rings.Add(ring);
+                var defaultRing = new RingEntity(product.Id, "Test", byDefault: true);
+                dbContext.Rings.Add(defaultRing);
+
+                var productionRing = new RingEntity(product.Id, "Production", byDefault: false);
+                dbContext.Rings.Add(productionRing);
+
                 dbContext.SaveChanges();
 
                 //add default default with toggle on default ring
                 var feature = new FeatureEntity(product.Id, "app-feature", enabled: true, archived: false);
                 var toggle = new ToggleEntity(feature.Id, "Esquio.Toggles.XToggle");
 
-                var stringparameter = new ParameterEntity(toggle.Id, ring.Id, "strparam", "value1");
-                toggle.Parameters.Add(stringparameter);
+                var stringparameterOnDefaultRing = new ParameterEntity(toggle.Id, defaultRing.Name, "strparam", "value1");
+                toggle.Parameters.Add(stringparameterOnDefaultRing);
 
-                var intparameter = new ParameterEntity(toggle.Id, ring.Id, "intparam", "1");
-                toggle.Parameters.Add(intparameter);
+                var stringparameterOnProductionRing = new ParameterEntity(toggle.Id, productionRing.Name, "strparam", "value2");
+                toggle.Parameters.Add(stringparameterOnProductionRing);
 
-                feature.Toggles.Add(toggle);
+                var intparameterOnDefaultRing = new ParameterEntity(toggle.Id, defaultRing.Name, "intparam", "1");
+                toggle.Parameters.Add(intparameterOnDefaultRing);
+
+                var intparameterOnProductionRing = new ParameterEntity(toggle.Id, productionRing.Name, "intparam", "2");
+                toggle.Parameters.Add(intparameterOnProductionRing);
+
+                feature.Toggles
+                    .Add(toggle);
 
                 dbContext.Features.Add(feature);
+
                 dbContext.SaveChanges();
             }
         }
@@ -135,6 +147,63 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
                 .GetParameters()
                 .First()
                 .Value.Should().Be("value1");
+            expected.GetToggles()
+               .First()
+               .GetParameters()
+               .Last()
+               .Name.Should().Be("intparam");
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .Last()
+                .Value.Should().Be("1");
+        }
+
+        [Theory]
+        [MemberData(nameof(Data))]
+        public async Task get_back_feature_with_specified_ring_parameters_when_is_configured(DbContextOptions<StoreDbContext> options)
+        {
+            var store = new EntityFrameworkCoreStoreBuilder(options)
+                .Build();
+
+            var expected = await store
+                .FindFeatureAsync("app-feature", EsquioConstants.DEFAULT_PRODUCT_NAME, "Production");
+
+            expected.Should()
+                .NotBeNull();
+
+            expected.GetToggles()
+                .Count().Should().Be(1);
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .Count().Should().Be(2);
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .First()
+                .Name.Should().Be("strparam");
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .First()
+                .Value.Should().Be("value2");
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .Last()
+                .Name.Should().Be("intparam");
+
+            expected.GetToggles()
+                .First()
+                .GetParameters()
+                .Last()
+                .Value.Should().Be("2");
         }
 
         public static TheoryData<DbContextOptions<StoreDbContext>> Data =>

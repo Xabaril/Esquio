@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Esquio.UI.Infrastructure.Data.Migrations
+namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20191016222032_RemoveInvalidParametersUniqueIndex")]
-    partial class RemoveInvalidParametersUniqueIndex
+    [Migration("20200123102735_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -58,6 +58,11 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Archived")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
@@ -137,6 +142,10 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<string>("RingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ToggleEntityId")
                         .HasColumnType("int");
 
@@ -146,6 +155,8 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name", "RingName", "ToggleEntityId");
 
                     b.HasIndex("ToggleEntityId");
 
@@ -209,6 +220,33 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("ByDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("0");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("ProductEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductEntityId");
+
+                    b.ToTable("Rings");
                 });
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.TagEntity", b =>
@@ -289,9 +327,18 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", b =>
+                {
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ProductEntity", "Product")
+                        .WithMany("Rings")
+                        .HasForeignKey("ProductEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", b =>
                 {
-                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.FeatureEntity", null)
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.FeatureEntity", "FeatureEntity")
                         .WithMany("Toggles")
                         .HasForeignKey("FeatureEntityId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -140,6 +140,10 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<string>("RingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ToggleEntityId")
                         .HasColumnType("int");
 
@@ -149,6 +153,8 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name", "RingName", "ToggleEntityId");
 
                     b.HasIndex("ToggleEntityId");
 
@@ -212,6 +218,33 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("ByDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("0");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("ProductEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductEntityId");
+
+                    b.ToTable("Rings");
                 });
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.TagEntity", b =>
@@ -288,6 +321,15 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                     b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
                         .WithMany("Parameters")
                         .HasForeignKey("ToggleEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", b =>
+                {
+                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ProductEntity", "Product")
+                        .WithMany("Rings")
+                        .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

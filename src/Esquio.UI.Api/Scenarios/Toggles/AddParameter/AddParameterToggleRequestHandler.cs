@@ -1,5 +1,4 @@
 ﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
 using Esquio.UI.Api.Diagnostics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -56,12 +55,17 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
                            .Where(r => r.Name == request.RingName)
                            .SingleOrDefault();
                     }
-                    
-                    toggle.AddOrUpdateParameter(selectedRing, defaultRing, request.Name, request.Value);
 
-                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+                    if (selectedRing != null)
+                    {
+                        toggle.AddOrUpdateParameter(selectedRing, defaultRing, request.Name, request.Value);
 
-                    return Unit.Value;
+                        await _storeDbContext.SaveChangesAsync(cancellationToken);
+                        return Unit.Value;
+                    }
+
+                    Log.RingNotExist(_logger, request.RingName,request.ProductName);
+                    throw new InvalidOperationException($"Ring {request.RingName} does not exist for product {request.ProductName}.");
                 }
 
                 Log.ToggleNotExist(_logger, request.ToggleType);
@@ -70,24 +74,6 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 
             Log.FeatureNotExist(_logger, request.FeatureName);
             throw new InvalidOperationException($"Feature {request.FeatureName} does not exist on product {request.ProductName}.");
-        }
-
-        void SetOrAddParameterValue(ToggleEntity toggle, RingEntity ring, string parameterName, string value)
-        {
-            var parameter = toggle.Parameters
-                .Where(p => p.Name.Equals(parameterName))
-                .SingleOrDefault();
-
-            if (parameter != null)
-            {
-                parameter.Value = value;
-                parameter.RingEntityId = ring.Id;
-            }
-            else
-            {
-                toggle.Parameters.Add(
-                    new ParameterEntity(toggle.Id, ring.Id, parameterName, value));
-            }
         }
     }
 }

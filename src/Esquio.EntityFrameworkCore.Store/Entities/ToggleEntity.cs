@@ -43,25 +43,25 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
         void AddOrUpdateParameter(RingEntity ring, string parameterName, string value)
         {
             var parameter = this.Parameters
-                .Where(p => p.Name == parameterName && p.RingEntityId == ring.Id)
+                .Where(p => p.Name == parameterName && p.RingName == ring.Name)
                 .SingleOrDefault();
 
             if (parameter != null)
             {
                 parameter.Value = value;
-                parameter.RingEntityId = ring.Id;
+                parameter.RingName = ring.Name;
             }
             else
             {
                 this.Parameters.Add(
-                    new ParameterEntity(Id, ring.Id, parameterName, value));
+                    new ParameterEntity(Id, ring.Name, parameterName, value));
             }
         }
 
         bool HasParameter(RingEntity ring, string parameterName)
         {
             return this.Parameters
-                .Where(p => p.Name == parameterName && p.RingEntityId == ring.Id)
+                .Where(p => p.Name == parameterName && p.RingName == ring.Name)
                 .Any();
         }
     }

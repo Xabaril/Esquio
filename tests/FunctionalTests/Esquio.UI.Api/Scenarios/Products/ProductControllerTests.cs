@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Api;
+﻿using Esquio;
+using Esquio.UI.Api;
 using Esquio.UI.Api.Scenarios.Products.Add;
 using Esquio.UI.Api.Scenarios.Products.AddRing;
 using Esquio.UI.Api.Scenarios.Products.Details;
@@ -968,6 +969,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("fooproduct")
                 .Build();
 
+            var ring = Builders.Ring()
+                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .Build();
+
             var feature = Builders.Feature()
                 .WithName("barfeature")
                 .Build();
@@ -979,6 +984,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var parameter = Builders.Parameter()
                 .WithName("param1")
                 .WithValue("value1")
+                .WithRingName(ring.Name)
                 .Build();
 
             toggle.Parameters
@@ -989,6 +995,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             product.Features
                 .Add(feature);
+
+            product.Rings
+                .Add(ring);
 
             await _fixture.Given
                 .AddProduct(product);

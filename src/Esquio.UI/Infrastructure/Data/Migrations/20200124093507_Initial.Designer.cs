@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
+namespace Esquio.UI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200122174818_Initial")]
+    [Migration("20200124093507_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,8 +142,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("RingEntityId")
-                        .HasColumnType("int");
+                    b.Property<string>("RingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ToggleEntityId")
                         .HasColumnType("int");
@@ -155,7 +156,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RingEntityId");
+                    b.HasAlternateKey("Name", "RingName", "ToggleEntityId");
 
                     b.HasIndex("ToggleEntityId");
 
@@ -319,12 +320,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             modelBuilder.Entity("Esquio.EntityFrameworkCore.Store.Entities.ParameterEntity", b =>
                 {
-                    b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.RingEntity", "RingEntity")
-                        .WithMany()
-                        .HasForeignKey("RingEntityId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Esquio.EntityFrameworkCore.Store.Entities.ToggleEntity", "ToggleEntity")
                         .WithMany("Parameters")
                         .HasForeignKey("ToggleEntityId")

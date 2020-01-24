@@ -57,16 +57,22 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
                            .SingleOrDefault();
                     }
 
-                    foreach (var item in request.Parameters)
+                    if (selectedRing != null)
                     {
-                        toggle.AddOrUpdateParameter(selectedRing, defaultRing, item.Name, item.Value);
+                        foreach (var item in request.Parameters)
+                        {
+                            toggle.AddOrUpdateParameter(selectedRing, defaultRing, item.Name, item.Value);
+                        }
+
+                        feature.Toggles
+                            .Add(toggle);
+
+                        await _storeDbContext.SaveChangesAsync(cancellationToken);
+                        return toggle.Id;
                     }
 
-                    feature.Toggles.Add(toggle);
-
-                    await _storeDbContext.SaveChangesAsync(cancellationToken);
-
-                    return toggle.Id;
+                    Log.RingNotExist(_logger, request.RingName, request.ProductName);
+                    throw new InvalidOperationException($"Ring {request.RingName} does not exist for product {request.ProductName}.");
                 }
 
                 Log.ToggleTypeAlreadyExist(_logger, request.ToggleType, feature.Name);

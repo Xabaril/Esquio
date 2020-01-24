@@ -37,10 +37,6 @@
     <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
   </ItemGroup>
-  
-   <ItemGroup>
-     <Folder Include="Infrastructure\Data\Migrations\" />
-   </ItemGroup>
 
 </Project>
  

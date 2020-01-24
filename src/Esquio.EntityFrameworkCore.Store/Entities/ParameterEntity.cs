@@ -10,19 +10,17 @@ namespace Esquio.EntityFrameworkCore.Store.Entities
 
         public ToggleEntity ToggleEntity { get; set; }
 
-        public int RingEntityId { get; set; }
-
-        public RingEntity RingEntity { get; set; }
-
         public string Name { get; set; }
 
         public string Value { get; set; }
 
+        public string RingName { get; set; }
 
-        public ParameterEntity(int toggleEntityId, int ringEntityId, string name, string value)
+
+        public ParameterEntity(int toggleEntityId, string ringName,string name, string value)
         {
             ToggleEntityId = toggleEntityId;
-            RingEntityId = ringEntityId;
+            RingName = ringName ?? throw new ArgumentNullException(nameof(ringName));
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Value = value ?? throw new ArgumentNullException(nameof(value));
         }
