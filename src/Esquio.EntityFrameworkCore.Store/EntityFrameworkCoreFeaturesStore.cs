@@ -37,15 +37,11 @@ namespace Esquio.EntityFrameworkCore.Store
                     .ThenInclude(t => t.Parameters)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            var defaultRing = await _storeDbContext
-                .Rings
-                .Where(r => r.Product.Name == productName && r.ByDefault)
-                .SingleOrDefaultAsync();
 
-            if (featureEntity != null && defaultRing != null)
+            if (featureEntity != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
-                return ConvertToFeatureModel(featureEntity, ringName, defaultRing.Name);
+                return ConvertToFeatureModel(featureEntity, ringName);
             }
             else
             {
@@ -54,7 +50,7 @@ namespace Esquio.EntityFrameworkCore.Store
             }
         }
 
-        private Feature ConvertToFeatureModel(FeatureEntity featureEntity, string selectedRing, string defaultRing)
+        private Feature ConvertToFeatureModel(FeatureEntity featureEntity, string ringName)
         {
             var feature = new Feature(featureEntity.Name);
 
@@ -75,24 +71,24 @@ namespace Esquio.EntityFrameworkCore.Store
                     .GroupBy(g => g.RingName);
 
                 var defaultRingParameters = groupingParameters
-                    .Where(g => g.Key == defaultRing)
+                    .Where(g => g.Key == EsquioConstants.DEFAULT_RING_NAME)
                     .SingleOrDefault();
 
-                if (defaultRingParameters != null 
-                    && 
+                if (defaultRingParameters != null
+                    &&
                     defaultRingParameters.Any())
                 {
                     toggle.AddParameters(
                         defaultRingParameters.Select(p => new Parameter(p.Name, p.Value)));
                 }
 
-                if ( selectedRing != defaultRing)
+                if (ringName != EsquioConstants.DEFAULT_RING_NAME)
                 {
                     var selectedRingParameters = groupingParameters
-                        .Where(g => g.Key == selectedRing)
+                        .Where(g => g.Key == ringName)
                         .SingleOrDefault();
 
-                    if ( selectedRingParameters != null 
+                    if (selectedRingParameters != null
                         &&
                         selectedRingParameters.Any())
                     {

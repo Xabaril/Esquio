@@ -45,7 +45,7 @@ namespace FunctionalTests.Esquio.EntityFramework.Store
 
                 //add ring
 
-                var defaultRing = new RingEntity(product.Id, "Test", byDefault: true);
+                var defaultRing = new RingEntity(product.Id, EsquioConstants.DEFAULT_RING_NAME, byDefault: true);
                 dbContext.Rings.Add(defaultRing);
 
                 var productionRing = new RingEntity(product.Id, "Production", byDefault: false);
