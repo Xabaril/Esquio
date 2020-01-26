@@ -22,21 +22,11 @@ namespace Esquio.UI.Api.Features.Audit.List
                 .History
                 .CountAsync(cancellationToken);
 
-            var history = await (from h in _storeDbContext.History
-                           join f in _storeDbContext.Features
-                           on h.FeatureId equals f.Id
-                           select new
-                           {
-                               h.CreatedAt,
-                               Feature = f.Name,
-                               Product = f.ProductEntity.Name,
-                               h.OldValues,
-                               h.NewValues
-                           })
-                           .Skip(request.PageIndex * request.PageCount)
-                           .Take(request.PageCount)
-                           .OrderByDescending(h=>h.CreatedAt)
-                           .ToListAsync(cancellationToken);
+            var history = await _storeDbContext.History
+                .Skip(request.PageIndex * request.PageCount)
+                .Take(request.PageCount)
+                .OrderByDescending(h=>h.CreatedAt)
+                .ToListAsync(cancellationToken);
 
             return new ListAuditResponse()
             {
@@ -46,8 +36,9 @@ namespace Esquio.UI.Api.Features.Audit.List
                 Result = history.Select(h => new ListAuditResponseDetail
                 {
                     CreatedAt = h.CreatedAt,
-                    FeatureName = h.Feature,
-                    ProductName = h.Product,
+                    Action = h.Action,
+                    FeatureName = h.FeatureName,
+                    ProductName = h.ProductName,
                     OldValues = h.OldValues,
                     NewValues = h.NewValues
                 }).ToList()

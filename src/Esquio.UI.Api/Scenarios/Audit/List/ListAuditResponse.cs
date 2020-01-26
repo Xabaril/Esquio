@@ -18,6 +18,8 @@ namespace Esquio.UI.Api.Features.Audit.List
     {
         public DateTime CreatedAt { get; set; }
 
+        public string Action { get; set; }
+
         public string ProductName { get; set; }
 
         public string FeatureName { get; set; }

@@ -82,7 +82,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .AddPermission(permission);
 
             var history = Builders.History()
-                .WithFeatureId(feature.Id)
+                .WithFeatureName(feature.Name)
+                .WithProductName(product.Name)
                 .WithOldValues("")
                 .WithNewValues("{environments:development}")
                 .Build();
@@ -133,13 +134,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .AddPermission(permission);
 
             var history1 = Builders.History()
-                .WithFeatureId(feature.Id)
+                .WithFeatureName(feature.Name)
+                .WithProductName(product.Name)
                 .WithOldValues("")
                 .WithNewValues("{environments:development}")
                 .Build();
 
             var history2 = Builders.History()
-                .WithFeatureId(feature.Id)
+                .WithFeatureName(feature.Name)
+                .WithProductName(product.Name)
                 .WithOldValues("")
                 .WithNewValues("{environments:development}")
                 .Build();

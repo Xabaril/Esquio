@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
+namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -28,9 +28,10 @@ namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FeatureId = table.Column<int>(nullable: false),
+                    Action = table.Column<string>(nullable: true),
+                    ProductName = table.Column<string>(nullable: true),
+                    FeatureName = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    KeyValues = table.Column<string>(nullable: true),
                     NewValues = table.Column<string>(nullable: true),
                     OldValues = table.Column<string>(nullable: true)
                 },

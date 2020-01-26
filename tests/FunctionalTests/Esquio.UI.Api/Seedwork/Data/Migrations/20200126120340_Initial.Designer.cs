@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
+namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200123102735_Initial")]
+    [Migration("20200126120340_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,19 +110,22 @@ namespace FunctionalTests.ESquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Action")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KeyValues")
+                    b.Property<string>("FeatureName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewValues")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

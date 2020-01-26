@@ -108,11 +108,17 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Action")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FeatureName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KeyValues")
                         .HasColumnType("nvarchar(max)");
@@ -121,6 +127,9 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
