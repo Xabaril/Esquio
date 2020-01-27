@@ -117,6 +117,11 @@ namespace Esquio.EntityFrameworkCore.Store
 
         private string GetFeatureNameFromEntry(EntityEntry entry)
         {
+            //well, get the feature name depends on 
+            //the change tracker state. If the entity(ies) on the current operation load 
+            //related data (feature) name exist, else a unknown result
+            //is set on history.
+
             if (entry.Entity is FeatureEntity feature)
             {
                 return feature.Name;
@@ -135,6 +140,11 @@ namespace Esquio.EntityFrameworkCore.Store
 
         private string GetProductNameFromEntry(EntityEntry entry)
         {
+            //well, get the product name depends on 
+            //the change tracker state. If the entity(ies) on the current operation load 
+            //related data (product) name exist, else a unknown result
+            //is set on history.
+
             if (entry.Entity is FeatureEntity feature)
             {
                 return feature.ProductEntity?.Name ?? UNKNOWN;
@@ -164,6 +174,8 @@ namespace Esquio.EntityFrameworkCore.Store
                     ||
                     property.Metadata.IsPrimaryKey())
                 {
+                    // primary, foreign keys or temporary data is not relevant
+                    // because these id's can be removed and related data loss
                     continue;
                 }
 
@@ -185,7 +197,7 @@ namespace Esquio.EntityFrameworkCore.Store
                 }
             }
 
-            return oldValues.Count > 0 ? JsonSerializer.Serialize(oldValues) : "{}";
+            return oldValues.Any() ? JsonSerializer.Serialize(oldValues) : "{}";
         }
 
         private string GetNewValues(EntityEntry entry)
@@ -200,10 +212,13 @@ namespace Esquio.EntityFrameworkCore.Store
                     ||
                     property.Metadata.IsPrimaryKey())
                 {
+                    // primary, foreign keys or temporary data is not relevant
+                    // because these id's can be removed and related data loss
                     continue;
                 }
 
                 var propertyName = property.Metadata.Name;
+
                 switch (entry.State)
                 {
                     case EntityState.Modified:
@@ -220,7 +235,7 @@ namespace Esquio.EntityFrameworkCore.Store
                 }
             }
 
-            return newValues.Count > 0 ? JsonSerializer.Serialize(newValues) : "{}";
+            return newValues.Any() ? JsonSerializer.Serialize(newValues) : "{}";
         }
     }
 }
