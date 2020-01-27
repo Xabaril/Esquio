@@ -8,6 +8,6 @@ namespace Esquio.UI.Api.Scenarios.Products.Add
 
         public string Description { get; set; }
 
-        public string DefaultRingName { get; set; } = ApiConstants.DefaultNames.DefaultRingName;
+        public string DefaultRingName { get; set; } = EsquioConstants.DEFAULT_RING_NAME;
     }
 }

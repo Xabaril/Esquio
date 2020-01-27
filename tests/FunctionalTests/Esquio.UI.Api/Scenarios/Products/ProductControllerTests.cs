@@ -131,7 +131,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.Product.DeleteRing(product.Name, ApiConstants.DefaultNames.DefaultRingName))
+                  .CreateRequest(ApiDefinitions.V2.Product.DeleteRing(product.Name, EsquioConstants.DEFAULT_RING_NAME))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 

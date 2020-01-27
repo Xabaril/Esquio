@@ -107,7 +107,7 @@ namespace Esquio.EntityFrameworkCore.Store
 
         private void AddHistoryEntityAfterSave(IEnumerable<HistoryEntity> historyEntities)
         {
-            if ( historyEntities != null
+            if (historyEntities != null
                 &&
                 historyEntities.Any())
             {
@@ -206,7 +206,7 @@ namespace Esquio.EntityFrameworkCore.Store
 
             foreach (var property in entry.Properties)
             {
-                if (property.Metadata.IsForeignKey() 
+                if (property.Metadata.IsForeignKey()
                     ||
                     property.IsTemporary
                     ||

@@ -114,13 +114,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FeatureName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyValues")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewValues")

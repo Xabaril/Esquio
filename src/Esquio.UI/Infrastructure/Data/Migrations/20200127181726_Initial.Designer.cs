@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esquio.UI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200126113324_Initial")]
+    [Migration("20200127181726_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,13 +116,7 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FeatureName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyValues")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewValues")

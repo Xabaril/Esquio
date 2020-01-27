@@ -109,7 +109,7 @@ namespace WebApp
         {
             return services
                 .AddEsquio(setup =>
-                {
+                {       
                     //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
                     //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
                     //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
@@ -132,8 +132,8 @@ namespace WebApp
                 .AddEsquio(setup =>
                 {
                     //esquio contribution toggles on https://github.com/xabaril/esquio.contrib 
-                    setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
-                    setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
+                    //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                    //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(Configuration, "Esquio")

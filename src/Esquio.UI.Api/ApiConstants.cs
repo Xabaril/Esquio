@@ -23,10 +23,5 @@
             public const string ProblemJson = "application/problem+json";
             public const string ProblemXml = "application/problem+xml";
         }
-
-        public static class DefaultNames
-        {
-            public const string DefaultRingName = "Default";
-        }
     }
 }

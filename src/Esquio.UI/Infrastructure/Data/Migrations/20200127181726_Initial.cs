@@ -28,8 +28,6 @@ namespace Esquio.UI.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FeatureId = table.Column<int>(nullable: false),
-                    KeyValues = table.Column<string>(nullable: true),
                     Action = table.Column<string>(nullable: true),
                     ProductName = table.Column<string>(nullable: true),
                     FeatureName = table.Column<string>(nullable: true),
