@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+    <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
+    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
+    <Description>Distributed store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration;Distributed Store</PackageTags>
+    <Version>$(esquiodistributedstore)</Version>
+    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+    <Company>$(Company)</Company>
+    <Authors>$(Authors)</Authors>
+    <PackageId>Esquio.Distributed.Store</PackageId>
+    <PackageVersion>$(esquiodistributedstore)</PackageVersion>
+    <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="$(microsoftextensionshttp)" />
+    <PackageReference Include="System.Text.Json" Version="$(systemtextjson)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+
+</Project>

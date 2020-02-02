@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Audit
 {
     [Authorize]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     public class AuditController : ControllerBase
     {

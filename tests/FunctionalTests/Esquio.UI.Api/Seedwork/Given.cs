@@ -1,4 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 using System.Threading.Tasks;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork

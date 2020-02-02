@@ -46,13 +46,11 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
                             authenticationScheme: Scheme.Name);
 
                         Log.ApiKeyAuthenticationSuccess(Logger);
-
                         return AuthenticateResult.Success(ticket);
                     }
                     else
                     {
                         Log.ApiKeyAuthenticationNotFound(Logger, selectedApiKey);
-
                         return AuthenticateResult.Fail("The api key does not exist in the store.");
                     }
 
@@ -60,13 +58,11 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
                 catch (Exception exception)
                 {
                     Log.ApiKeyAuthenticationFail(Logger, exception);
-
                     return AuthenticateResult.Fail(exception);
                 }
             }
 
             Log.ApiKeyAuthenticationDoesNotExist(Logger);
-
             return AuthenticateResult.NoResult();
         }
     }

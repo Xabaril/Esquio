@@ -25,7 +25,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
         public async Task list_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.Audit.List())
+                .CreateRequest(ApiDefinitions.V3.Audit.List())
                 .GetAsync();
 
             response.StatusCode
@@ -46,7 +46,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.Audit.List())
+                .CreateRequest(ApiDefinitions.V3.Audit.List())
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -92,7 +92,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .AddHistory(history);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Audit.List())
+              .CreateRequest(ApiDefinitions.V3.Audit.List())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -151,7 +151,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .AddHistory(history1,history2);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Audit.List(pageIndex:1,pageCount:1))
+              .CreateRequest(ApiDefinitions.V3.Audit.List(pageIndex:1,pageCount:1))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 

@@ -33,7 +33,7 @@ namespace Esquio.UI.Api
                 .AddCustomProblemDetails()
                 .AddApiVersioning(setup =>
                 {
-                    setup.DefaultApiVersion = new ApiVersion(2, 0);
+                    setup.DefaultApiVersion = new ApiVersion(3, 0);
                     setup.ReportApiVersions = true;
                     setup.AssumeDefaultVersionWhenUnspecified = true;
                     setup.UseApiBehavior = true;

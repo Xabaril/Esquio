@@ -1,5 +1,5 @@
 ﻿using Esquio.Abstractions;
-using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -792,6 +792,49 @@
         }
       }
     },
+    "/api/Store/product/feature": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "operationId": "Store_Get",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DetailsStoreRequest"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ring",
+            "in": "query",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsStoreResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/products/{productName}/features/{featureName}/tags": {
       "get": {
         "tags": [
@@ -1682,6 +1725,41 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsStoreResponse": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "featureName": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "toggles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      }
+    },
+    "DetailsStoreRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "ringName": {
           "type": "string"
         }
       }

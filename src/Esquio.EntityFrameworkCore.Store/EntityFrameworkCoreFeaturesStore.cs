@@ -41,7 +41,7 @@ namespace Esquio.EntityFrameworkCore.Store
             if (featureEntity != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
-                return ConvertToFeatureModel(featureEntity, ringName);
+                return ConvertToFeature(featureEntity, ringName);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace Esquio.EntityFrameworkCore.Store
             }
         }
 
-        private Feature ConvertToFeatureModel(FeatureEntity featureEntity, string ringName)
+        private Feature ConvertToFeature(FeatureEntity featureEntity, string ringName)
         {
             var feature = new Feature(featureEntity.Name);
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.ApiKeys
 {
     [Authorize()]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     [Route("api/[controller]")]
     public class ApiKeysController : ControllerBase

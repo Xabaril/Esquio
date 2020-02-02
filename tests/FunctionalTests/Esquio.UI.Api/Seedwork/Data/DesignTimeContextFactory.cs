@@ -1,4 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store;
+﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
