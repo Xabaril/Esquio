@@ -8,6 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static AuthenticationBuilder AddApiKey(this AuthenticationBuilder authenticationBuilder, Action<ApiKeyOptions> setup = null)
         {
+            authenticationBuilder.Services
+                .AddScoped<IApiKeyStore, DefaultApiKeyStore>();
+
             return authenticationBuilder.AddScheme<ApiKeyOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationDefaults.ApiKeyScheme, setup);
         }
     }

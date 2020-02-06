@@ -60,7 +60,6 @@ namespace Esquio.UI
                     
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddScoped<IApiKeyStore,DefaultApiKeyStore>()
                 .AddDbContext<StoreDbContext>(options =>
                 {
                     options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>

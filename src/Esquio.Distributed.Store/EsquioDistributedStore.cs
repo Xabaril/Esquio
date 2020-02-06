@@ -16,6 +16,15 @@ namespace Esquio.Distributed.Store
     {
         public const string HTTP_CLIENT_NAME = "Esquio";
 
+        public static JsonSerializerOptions _serializationOptions = new JsonSerializerOptions()
+        {
+            AllowTrailingCommas = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true,
+            IgnoreNullValues = false,
+            ReadCommentHandling = JsonCommentHandling.Disallow
+        };
+
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly EsquioDistributedStoreDiagnostics _diagnostics;
 
@@ -44,20 +53,21 @@ namespace Esquio.Distributed.Store
                     .ReadAsStringAsync();
 
                 var content = JsonSerializer
-                    .Deserialize<DistributedStoreResponse>(stringContent);
+                    .Deserialize<DistributedStoreResponse>(stringContent, _serializationOptions);
 
-                if ( content  != null )
+                if (content != null)
                 {
                     return ConvertToFeature(content);
                 }
-
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
                 _diagnostics.FeatureNotExist(featureName, productName, ringName);
                 return null;
             }
 
             _diagnostics.RequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
             throw new InvalidOperationException("Distributed store response is not success status code.");
-            
         }
 
         private Feature ConvertToFeature(DistributedStoreResponse content)
@@ -92,7 +102,7 @@ namespace Esquio.Distributed.Store
 
             public bool Enabled { get; set; }
 
-            public Dictionary<string, Dictionary<string, object>> Toggles { get; set; } = new Dictionary<string, Dictionary<string, object>>();
+            public Dictionary<string, Dictionary<string, string>> Toggles { get; set; } = new Dictionary<string, Dictionary<string, string>>();
         }
     }
 }

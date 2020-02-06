@@ -37,9 +37,11 @@ namespace Esquio.UI.Api.Scenarios.Store.Details
             {
                 return CreateResponse(featureEntity, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
             }
-
-            Log.FeatureNotExist(_logger, request.FeatureName);
-            throw new InvalidOperationException($"The feature {request.FeatureName} does not exist on {request.ProductName}");
+            else
+            {
+                Log.FeatureNotExist(_logger, request.FeatureName);
+                return null;
+            }
         }
 
         private DetailsStoreResponse CreateResponse(FeatureEntity featureEntity, string ringName)

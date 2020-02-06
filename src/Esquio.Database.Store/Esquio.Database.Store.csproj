@@ -1,29 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
-    <Description>Distributed store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
-    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Store;Distributed Store</PackageTags>
-    <Version>$(esquiodistributedstore)</Version>
+    <Description>Database store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration;Database Store</PackageTags>
+    <Version>$(esquiodatabasestore)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>
-    <PackageId>Esquio.Distributed.Store</PackageId>
-    <PackageVersion>$(esquiodistributedstore)</PackageVersion>
+    <PackageId>Esquio.Database.Store</PackageId>
+    <PackageVersion>$(esquiodatabasestore)</PackageVersion>
     <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="$(microsoftextensionshttp)" />
-    <PackageReference Include="System.Text.Json" Version="$(systemtextjson)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
-
 
 </Project>

@@ -35,7 +35,12 @@ namespace Esquio.UI.Api.Scenarios.Store
             var feature = await _mediator
                 .Send(request, cancellationToken);
 
-            return Ok(feature);
+            if (feature != null)
+            {
+                return Ok(feature);
+            }
+
+            return NotFound();
         }
     }
 }

@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.CliTool", "tools\Esq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.MiniProfiler", "tools\Esquio.MiniProfiler\Esquio.MiniProfiler.csproj", "{A0E1822D-406F-47A4-983E-C9A4BCF83AE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.Distributed.Store", "src\Esquio.Distributed.Store\Esquio.Distributed.Store.csproj", "{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.Distributed.Store", "src\Esquio.Distributed.Store\Esquio.Distributed.Store.csproj", "{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.Database.Store", "src\Esquio.Database.Store\Esquio.Database.Store.csproj", "{FF19A83D-9F7D-43FB-8622-9077243DBFC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,10 @@ Global
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF19A83D-9F7D-43FB-8622-9077243DBFC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF19A83D-9F7D-43FB-8622-9077243DBFC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF19A83D-9F7D-43FB-8622-9077243DBFC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF19A83D-9F7D-43FB-8622-9077243DBFC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +141,7 @@ Global
 		{0387A8AA-2431-42CB-8638-C490F2F7E099} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 		{A0E1822D-406F-47A4-983E-C9A4BCF83AE2} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
+		{FF19A83D-9F7D-43FB-8622-9077243DBFC5} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}

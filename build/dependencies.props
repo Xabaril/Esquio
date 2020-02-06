@@ -21,6 +21,7 @@
     <esquioaspnetcore>3.0.0$(VersionSuffix)</esquioaspnetcore>
     <esquioaspnetcoreapplicationinsightsprocessor>3.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
     <esquioconfigurationstore>3.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquiodatabasestore>3.0.0$(VersionSuffix)</esquiodatabasestore>
     <esquioentityframeworkstore>3.0.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>3.0.0$(VersionSuffix)</esquiominiprofiler>
     <esquiocli>3.0.0$(VersionSuffix)</esquiocli>
