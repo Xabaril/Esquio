@@ -57,19 +57,34 @@ namespace Esquio.UI
                         return ApiKeyAuthenticationDefaults.ApiKeyScheme;
                     };
                 });
-                    
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddDbContext<StoreDbContext>(options =>
+                .AddEntityFramework(storeOptions =>
                 {
-                    options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
-                     {
-                         setup.MaxBatchSize(10);
-                         setup.EnableRetryOnFailure();
+                    storeOptions.DefaultSchema = "aaa";
 
-                         setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                     });
+                    storeOptions.ConfigureDbContext = options =>
+                    {
+                        options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
+                        {
+                            setup.MaxBatchSize(10);
+                            setup.EnableRetryOnFailure();
+
+                            setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                        });
+                    };
                 });
+
+                //.AddDbContext<StoreDbContext>(options =>
+                //{
+                //    options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
+                //     {
+                //         setup.MaxBatchSize(10);
+                //         setup.EnableRetryOnFailure();
+
+                //         setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                //     });
+                //});
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersion)

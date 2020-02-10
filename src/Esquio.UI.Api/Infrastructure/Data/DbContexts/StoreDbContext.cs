@@ -2,6 +2,7 @@
 using Esquio.UI.Api.Infrastructure.Data.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         private readonly StoreOptions storeOptions;
 
-        public StoreDbContext(DbContextOptions<StoreDbContext> options) : this(options, new StoreOptions()) { }
+        public StoreDbContext(DbContextOptions<StoreDbContext> options, IOptions<StoreOptions> storeOptions)
+            : this(options, storeOptions.Value) { }
 
         public StoreDbContext(DbContextOptions<StoreDbContext> options, StoreOptions storeOptions) : base(options)
         {
