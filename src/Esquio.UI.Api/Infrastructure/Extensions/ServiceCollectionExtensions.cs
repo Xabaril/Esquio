@@ -46,22 +46,5 @@ namespace Microsoft.Extensions.DependencyInjection
                     };
                 });
 
-
-        public static IServiceCollection AddEntityFramework(this IServiceCollection services, Action<StoreOptions> configurer = null)
-        {
-            var options = new StoreOptions();
-            configurer?.Invoke(options);
-
-            services.Configure<StoreOptions>(configurer);
-
-            services.AddDbContext<StoreDbContext>(optionsAction =>
-            {
-                options.ConfigureDbContext?.Invoke(optionsAction);
-            });
-
-
-
-            return services;
-        }
     }
 }

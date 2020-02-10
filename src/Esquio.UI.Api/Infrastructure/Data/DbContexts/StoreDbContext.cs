@@ -16,15 +16,14 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
     {
         const string UNKNOWN = nameof(UNKNOWN);
 
-        private readonly StoreOptions storeOptions;
+        private readonly StoreOptions _storeOptions;
 
-        public StoreDbContext(DbContextOptions<StoreDbContext> options, IOptions<StoreOptions> storeOptions)
-            : this(options, storeOptions.Value) { }
-
-        public StoreDbContext(DbContextOptions<StoreDbContext> options, StoreOptions storeOptions) : base(options)
+        public StoreDbContext(DbContextOptions<StoreDbContext> dbContextOptions, IOptions<StoreOptions> storeOptions)
+            : base(dbContextOptions)
         {
-            this.storeOptions = storeOptions;
+            _storeOptions = storeOptions.Value;
         }
+
 
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<FeatureEntity> Features { get; set; }
@@ -39,7 +38,8 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, storeOptions);
+            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, _storeOptions);
 
             base.OnModelCreating(modelBuilder);
         }

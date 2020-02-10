@@ -2,21 +2,22 @@
 using Esquio.UI.Api.Infrastructure.Data.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
 {
     internal class ParameterEntityTypeConfiguration : IEntityTypeConfiguration<ParameterEntity>
     {
-        private readonly StoreOptions storeOptions;
+        private readonly StoreOptions _storeOptions;
 
         public ParameterEntityTypeConfiguration(StoreOptions storeOptions)
         {
-            this.storeOptions = storeOptions;
+            this._storeOptions = storeOptions ?? throw new ArgumentNullException(nameof(storeOptions));
         }
 
         public void Configure(EntityTypeBuilder<ParameterEntity> builder)
         {
-            builder.ToTable(storeOptions.Parameters);
+            builder.ToTable(_storeOptions.Parameters);
 
             builder.HasKey(x => x.Id);
 
