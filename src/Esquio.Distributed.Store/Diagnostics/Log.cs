@@ -10,29 +10,50 @@ namespace Esquio.Distributed.Store.Diagnostics
             _findFeature(logger, featureName, productName, ringName, null);
         }
 
+
+        public static void FindFeatureFromCache(ILogger logger, string cacheEntry)
+        {
+            _findFeatureFromCache(logger, cacheEntry, null);
+        }
+
+        public static void FindFeatureFromStore(ILogger logger, string featureName, string productName, string ringName)
+        {
+            _findFeatureFromStore(logger, featureName, productName, ringName, null);
+        }
+
         public static void FeatureNotExist(ILogger logger, string featureName, string productName, string ringName)
         {
             _findFeature(logger, featureName, productName, ringName, null);
         }
 
-        public static void GetThrow(ILogger logger, string request, int statusCode)
+        public static void StoreRequestFailed(ILogger logger, string request, int statusCode)
         {
-            _getThrow(logger, request, statusCode, null);
+            _storeRequestFailed(logger, request, statusCode, null);
         }
 
         private static readonly Action<ILogger, string, string, string, Exception> _findFeature = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             EventIds.FindFeature,
-            "Finding feature with name {featureName} for product {productName}({ringName}).");
+            "Distributed store trying to find feature with name {featureName} for product {productName}({ringName}).");
+
+        private static readonly Action<ILogger, string, Exception> _findFeatureFromCache = LoggerMessage.Define<string>(
+           LogLevel.Information,
+           EventIds.FindFeatureFromCache,
+           "Finding feature from configured cache using entry {cacheEntry}.");
+
+        private static readonly Action<ILogger, string, string, string, Exception> _findFeatureFromStore = LoggerMessage.Define<string, string, string>(
+          LogLevel.Information,
+          EventIds.FindFeatureFromStore,
+          "Finding feature from store with name {featureName} for product {productName}({ringName}).");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotExist,
             "Feature with name {featureName} for product {productName}({ringName}) does not exist on the store.");
 
-        private static readonly Action<ILogger, string, int, Exception> _getThrow = LoggerMessage.Define<string, int>(
+        private static readonly Action<ILogger, string, int, Exception> _storeRequestFailed = LoggerMessage.Define<string, int>(
           LogLevel.Error,
-          EventIds.GetThrow,
+          EventIds.StoreRequestFailed,
           "Request GET to distributed store {request} throw with status code {statusCode}.");
 
     }

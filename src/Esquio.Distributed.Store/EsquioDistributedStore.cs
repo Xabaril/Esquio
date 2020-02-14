@@ -1,6 +1,9 @@
 ﻿using Esquio.Abstractions;
+using Esquio.Distributed.Store.DependencyInjection;
 using Esquio.Distributed.Store.Diagnostics;
 using Esquio.Model;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +28,16 @@ namespace Esquio.Distributed.Store
             ReadCommentHandling = JsonCommentHandling.Disallow
         };
 
+        private readonly IDistributedCache _cache;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly EsquioDistributedStoreDiagnostics _diagnostics;
+        private readonly DistributedStoreOptions _options;
 
-        public EsquioDistributedStore(IHttpClientFactory httpClientFactory, EsquioDistributedStoreDiagnostics diagnostics)
+        public EsquioDistributedStore(IDistributedCache cache, IHttpClientFactory httpClientFactory, IOptions<DistributedStoreOptions> options, EsquioDistributedStoreDiagnostics diagnostics)
         {
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
@@ -42,23 +49,54 @@ namespace Esquio.Distributed.Store
 
             _diagnostics.FindFeature(featureName, productName, ringName);
 
-            var httpClient = _httpClientFactory.CreateClient(HTTP_CLIENT_NAME);
+            string featureConfiguration = null;
+
+            if (_options.CacheEnabled)
+            {
+                var cacheKey = GetCacheKey(featureName, productName, ringName);
+
+                _diagnostics.GetFeatureFromCache(cacheKey);
+
+                featureConfiguration = await _cache
+                    .GetStringAsync(cacheKey, cancellationToken);
+
+                if (!String.IsNullOrEmpty(featureConfiguration))
+                {
+                    return ConvertFromSerializedString(featureConfiguration);
+                }
+                else
+                {
+                    featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
+                    await _cache.SetStringAsync(cacheKey, featureConfiguration, cancellationToken);
+                }
+            }
+            else
+            {
+                _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
+                featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
+            }
+
+            return ConvertFromSerializedString(featureConfiguration);
+
+            string GetCacheKey(string featureName, string productName, string ringName) 
+                =>
+                $"esquio:product:{productName}:ring:{ringName}:feature:{featureName}";
+        }
+
+
+        private async Task<string> GetFeatureConfiguration(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
+        {
+            var httpClient = _httpClientFactory
+                .CreateClient(HTTP_CLIENT_NAME);
 
             var response = await httpClient
-                .GetAsync($"api/store/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0");
+                .GetAsync($"api/store/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
-                var stringContent = await response.Content
+                return await response
+                    .Content
                     .ReadAsStringAsync();
-
-                var content = JsonSerializer
-                    .Deserialize<DistributedStoreResponse>(stringContent, _serializationOptions);
-
-                if (content != null)
-                {
-                    return ConvertToFeature(content);
-                }
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -66,12 +104,15 @@ namespace Esquio.Distributed.Store
                 return null;
             }
 
-            _diagnostics.RequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
+            _diagnostics.StoreRequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
             throw new InvalidOperationException("Distributed store response is not success status code.");
         }
 
-        private Feature ConvertToFeature(DistributedStoreResponse content)
+        private Feature ConvertFromSerializedString(string featureConfiguration)
         {
+            var content = JsonSerializer
+                .Deserialize<DistributedStoreResponse>(featureConfiguration, _serializationOptions);
+
             var feature = new Feature(content.FeatureName);
 
             if (content.Enabled)

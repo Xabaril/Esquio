@@ -92,8 +92,6 @@ namespace FunctionalTests.Esquio.Distributed.Store
 
             var featureModel = await store
                 .FindFeatureAsync("non-existing", product.Name, EsquioConstants.DEFAULT_RING_NAME);
-
-          
         }
 
         [Fact]

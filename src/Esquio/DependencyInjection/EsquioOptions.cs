@@ -22,7 +22,7 @@ namespace Esquio.DependencyInjection
         /// override default product name configured on <see cref="EsquioConstants.DEFAULT_PRODUCT_NAME"/>
         /// </summary>
         /// <param name="productName">The product name to be used when the "Product" parameter is not stablished.</param>
-        /// <returns></returns>
+        /// <returns>The same configuration to be chained.</returns>
         public EsquioOptions ConfigureDefaultProductName(string productName)
         {
             DefaultProductName = productName ?? throw new ArgumentNullException(nameof(productName));

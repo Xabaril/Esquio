@@ -6,7 +6,7 @@
         "Features": [
           {
             "Name": "MatchScore",
-            "Enabled": true,
+            "Enabled": false,
             "Toggles": []
           },
           {
@@ -16,7 +16,7 @@
               {
                 "Type": "Esquio.Toggles.GradualRolloutUserNameToggle",
                 "Parameters": {
-                  "Percentage": 100
+                  "Percentage": 92
                 }
               }
             ]

@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebApp.Services;
+
 namespace WebApp
 {
     public class Startup
@@ -21,14 +23,25 @@ namespace WebApp
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            //add ApplicationInsights
-            services.AddApplicationInsightsTelemetry();
-
-            //add MVC 
+            //add application default services
             services
+                .AddApplicationInsightsTelemetry()
                 .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; });
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; })
+                .Services
+                .AddSingleton<IMatchService, MatchService>()
+                .AddAuthentication(setup =>
+                {
+                    setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    setup.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
+                {
+                    setup.LoginPath = "/account/login";
+                });
 
             //add mini-profiler and esquio profiling
             services
@@ -45,35 +58,29 @@ namespace WebApp
                     options.IgnoredPaths.Add("/js");
                     options.IgnoredPaths.Add("/assets");
 
-                }).AddEsquio();
+                }).AddEsquioProfiler();
 
+            //add and configure esquio
+            services
+                .AddEsquio(setup =>
+                {
+                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
+                    //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
+                    //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
+                })
+                // for local store use .AddConfigurationStore(Configuration)
+                // for distributed store use .AddDistributedStore(setup=>{})
+                .AddDistributedStore(setup=>
+                {
+                    setup.ConfigureUri("http://localhost:3643");
+                    setup.ConfigureApiKey("W60JrzfzHhQvKvLsdDVMjxrTObBn540P+9alngXVkXA=");
+                })
+                .AddAspNetCoreDefaultServices()
+                .AddApplicationInsightProcessor();
 
-            //add esquio wiht ef or configuration store
-            if (Configuration["EFStore"] != null)
-            {
-                //Use EF store
-                AddEsquioWithEntityFrameworkCoreStore(services);
-            }
-            else
-            {
-                //Use configuration store (appsettings.json| env var etc.. )
-                AddEsquioWithConfigurationStore(services);
-            }
 
             //Add custom services and authentication
-            services
-                .AddSingleton<IMatchService, MatchService>()
-                .AddAuthentication(setup =>
-                {
-                    setup.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    setup.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    setup.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    setup.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, setup =>
-                {
-                    setup.LoginPath = "/account/login";
-                });
+            
 
             
         }
@@ -103,42 +110,6 @@ namespace WebApp
                             name: "default",
                             pattern: "{controller=Match}/{action=Index}/{id?}");
                 });
-        }
-
-        private IServiceCollection AddEsquioWithEntityFrameworkCoreStore(IServiceCollection services)
-        {
-            return services
-                .AddEsquio(setup =>
-                {       
-                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
-                    //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
-                    //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
-                })
-                .AddAspNetCoreDefaultServices()
-                .AddEntityFrameworkCoreStore(options =>
-                {
-                    options.ConfigureDbContext = (builder) =>
-                    {
-                        builder.UseSqlServer(Configuration.GetConnectionString("Esquio"));
-                    };
-                })
-                .AddApplicationInsightProcessor()
-                .Services;
-        }
-
-        private IServiceCollection AddEsquioWithConfigurationStore(IServiceCollection services)
-        {
-            return services
-                .AddEsquio(setup =>
-                {
-                    //esquio contribution toggles on https://github.com/xabaril/esquio.contrib 
-                    //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
-                    //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
-                })
-                .AddAspNetCoreDefaultServices()
-                .AddConfigurationStore(Configuration, "Esquio")
-                .AddApplicationInsightProcessor()
-                .Services;
         }
     }
 }
