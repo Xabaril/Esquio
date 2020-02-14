@@ -1,20 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-
-namespace Esquio.UI.Api.Infrastructure.Data.Options
+﻿namespace Esquio.UI.Api.Infrastructure.Data.Options
 {
     /// <summary>
     /// Provide programatically configuration for <see cref="StoreDbContext"/>.
     /// </summary>
     public class StoreOptions
     {
-        public Action<DbContextOptionsBuilder> ConfigureDbContext { get; set; }
-
-        /// <summary>
-        /// Get or set a new action for add new configuration for <see cref="DbContextOptionsBuilder"/>
-        /// </summary>
-        public Action<IServiceProvider,DbContextOptionsBuilder> ResolveDbContextOptions { get; set; }
-
         /// <summary>
         /// Get or set default schema for store configuration tables.
         /// </summary>
@@ -69,6 +59,5 @@ namespace Esquio.UI.Api.Infrastructure.Data.Options
         /// Get or set default table configuration for Rings.
         /// </summary>
         public TableConfiguration Rings { get; set; } = new TableConfiguration("Rings");
-
     }
 }

@@ -1,14 +1,11 @@
 using Esquio.UI.Api;
-using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Services;
 using Esquio.UI.Infrastructure.OpenApi;
-using Esquio.UI.Infrastructure.Security.ApiKey;
 using Esquio.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -59,32 +56,8 @@ namespace Esquio.UI
                 });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddEntityFramework(storeOptions =>
-                {
-                    storeOptions.DefaultSchema = "aaa";
+                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]);
 
-                    storeOptions.ConfigureDbContext = options =>
-                    {
-                        options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
-                        {
-                            setup.MaxBatchSize(10);
-                            setup.EnableRetryOnFailure();
-
-                            setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                        });
-                    };
-                });
-
-                //.AddDbContext<StoreDbContext>(options =>
-                //{
-                //    options.UseSqlServer(Configuration["ConnectionStrings:Esquio"], setup =>
-                //     {
-                //         setup.MaxBatchSize(10);
-                //         setup.EnableRetryOnFailure();
-
-                //         setup.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                //     });
-                //});
         }
 
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider apiVersion)

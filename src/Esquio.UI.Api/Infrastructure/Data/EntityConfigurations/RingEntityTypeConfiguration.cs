@@ -2,22 +2,23 @@
 using Esquio.UI.Api.Infrastructure.Data.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
 {
     public class RingEntityTypeConfiguration
         : IEntityTypeConfiguration<Entities.RingEntity>
     {
-        private readonly StoreOptions storeOption;
+        private readonly StoreOptions _storeOptions;
 
         public RingEntityTypeConfiguration(StoreOptions storeOption)
         {
-            this.storeOption = storeOption;
+            this._storeOptions = storeOption ?? throw new ArgumentNullException(nameof(storeOption));
         }
 
         public void Configure(EntityTypeBuilder<RingEntity> builder)
         {
-            builder.ToTable(storeOption.Rings);
+            builder.ToTable(_storeOptions.Rings);
 
             builder.HasKey(p => p.Id);
 
