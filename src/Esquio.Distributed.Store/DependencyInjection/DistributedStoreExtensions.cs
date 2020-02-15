@@ -1,4 +1,5 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
 using Esquio.DependencyInjection;
 using Esquio.Distributed.Store;
 using Esquio.Distributed.Store.DependencyInjection;
@@ -23,16 +24,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
         public static IEsquioBuilder AddDistributedStore(this IEsquioBuilder builder, Action<DistributedStoreOptions> setup)
         {
+            const string XAPIKEYHEADERNAME = "X-API-KEY";
+
             builder.Services
                 .Configure(setup);
 
             builder.Services
-                .AddHttpClient(EsquioDistributedStore.HTTP_CLIENT_NAME, (serviceProvider, httpclient) =>
+                .AddHttpClient(EsquioConstants.ESQUIO, (serviceProvider, httpclient) =>
                  {
                      var options = serviceProvider.GetRequiredService<IOptions<DistributedStoreOptions>>();
 
                      httpclient.BaseAddress = options.Value.BaseAddress;
-                     httpclient.DefaultRequestHeaders.Add("X-Api-Key", options.Value.ApiKey);
+                     httpclient.DefaultRequestHeaders.Add(XAPIKEYHEADERNAME, options.Value.ApiKey);
 
                  }).Services
                 .AddDistributedMemoryCache()

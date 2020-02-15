@@ -5,10 +5,7 @@ using Esquio.Model;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,17 +14,6 @@ namespace Esquio.Distributed.Store
     internal class EsquioDistributedStore
         : IRuntimeFeatureStore
     {
-        public const string HTTP_CLIENT_NAME = "Esquio";
-
-        public static JsonSerializerOptions _serializationOptions = new JsonSerializerOptions()
-        {
-            AllowTrailingCommas = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-            IgnoreNullValues = false,
-            ReadCommentHandling = JsonCommentHandling.Disallow
-        };
-
         private readonly IDistributedCache _cache;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly EsquioDistributedStoreDiagnostics _diagnostics;
@@ -53,18 +39,14 @@ namespace Esquio.Distributed.Store
 
             if (_options.CacheEnabled)
             {
-                var cacheKey = GetCacheKey(featureName, productName, ringName);
+                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, ringName);
 
                 _diagnostics.GetFeatureFromCache(cacheKey);
 
                 featureConfiguration = await _cache
                     .GetStringAsync(cacheKey, cancellationToken);
 
-                if (!String.IsNullOrEmpty(featureConfiguration))
-                {
-                    return ConvertFromSerializedString(featureConfiguration);
-                }
-                else
+                if (String.IsNullOrEmpty(featureConfiguration))
                 {
                     featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
                     await _cache.SetStringAsync(cacheKey, featureConfiguration, cancellationToken);
@@ -76,18 +58,14 @@ namespace Esquio.Distributed.Store
                 featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
             }
 
-            return ConvertFromSerializedString(featureConfiguration);
-
-            string GetCacheKey(string featureName, string productName, string ringName) 
-                =>
-                $"esquio:product:{productName}:ring:{ringName}:feature:{featureName}";
+            return featureConfiguration?
+                      .ToFeature();
         }
-
 
         private async Task<string> GetFeatureConfiguration(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
         {
             var httpClient = _httpClientFactory
-                .CreateClient(HTTP_CLIENT_NAME);
+                .CreateClient(EsquioConstants.ESQUIO);
 
             var response = await httpClient
                 .GetAsync($"api/store/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
@@ -107,43 +85,11 @@ namespace Esquio.Distributed.Store
             _diagnostics.StoreRequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
             throw new InvalidOperationException("Distributed store response is not success status code.");
         }
+    }
 
-        private Feature ConvertFromSerializedString(string featureConfiguration)
-        {
-            var content = JsonSerializer
-                .Deserialize<DistributedStoreResponse>(featureConfiguration, _serializationOptions);
-
-            var feature = new Feature(content.FeatureName);
-
-            if (content.Enabled)
-            {
-                feature.Enabled();
-            }
-            else
-            {
-                feature.Disabled();
-            }
-
-            foreach (var toggleConfiguration in content.Toggles)
-            {
-                var toggle = new Toggle(toggleConfiguration.Key);
-
-                toggle.AddParameters(
-                    toggleConfiguration.Value.Select(p => new Parameter(p.Key, p.Value)));
-
-                feature.AddToggle(toggle);
-            }
-
-            return feature;
-        }
-
-        private class DistributedStoreResponse
-        {
-            public string FeatureName { get; set; }
-
-            public bool Enabled { get; set; }
-
-            public Dictionary<string, Dictionary<string, string>> Toggles { get; set; } = new Dictionary<string, Dictionary<string, string>>();
-        }
+    internal static class CacheKeyCreator
+    {
+        public static string GetCacheKey(string productName, string featureName, string ringName)
+            => $"esquio:product:{productName}:ring:{ringName}:feature:{featureName}";
     }
 }

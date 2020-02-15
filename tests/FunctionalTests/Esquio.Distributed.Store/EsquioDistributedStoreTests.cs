@@ -1,16 +1,18 @@
 ﻿using Esquio;
 using Esquio.Distributed.Store;
+using Esquio.Distributed.Store.DependencyInjection;
 using Esquio.Distributed.Store.Diagnostics;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -86,19 +88,20 @@ namespace FunctionalTests.Esquio.Distributed.Store
             await _fixture.Given
                 .AddApiKey(apiKey);
 
-            var store = new EsquioDistributedStore(
-                new TestServerHttpClientFactory(_fixture, apiKeyValue),
-                new EsquioDistributedStoreDiagnostics(new LoggerFactory()));
+            var store = CreateStore(apiKey: apiKey.Key);
 
             var featureModel = await store
                 .FindFeatureAsync("non-existing", product.Name, EsquioConstants.DEFAULT_RING_NAME);
+
+            featureModel.Should()
+                .BeNull();
         }
 
         [Fact]
         [ResetDatabase]
         public async Task get_feature_from_the_store()
         {
-            
+
             var permission = Builders.Permission()
                 .WithAllPrivilegesForDefaultIdentity()
                 .Build();
@@ -155,9 +158,7 @@ namespace FunctionalTests.Esquio.Distributed.Store
             await _fixture.Given
                 .AddApiKey(apiKey);
 
-            var store = new EsquioDistributedStore(
-                new TestServerHttpClientFactory(_fixture, apiKeyValue),
-                new EsquioDistributedStoreDiagnostics(new LoggerFactory()));
+            var store = CreateStore(apiKey: apiKey.Key);
 
             var featureModel = await store
                 .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
@@ -202,6 +203,225 @@ namespace FunctionalTests.Esquio.Distributed.Store
                .Value
                .Should()
                .BeEquivalentTo("Development");
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_feature_from_the_store_use_cache_if_configured()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var defaultRing = Builders.Ring()
+                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithDefault(true)
+                .Build();
+
+            var product = Builders.Product()
+               .WithName("fooproduct")
+               .Build();
+
+            product.Rings
+                .Add(defaultRing);
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle = Builders.Toggle()
+                .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
+                .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .WithRingName(defaultRing.Name)
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var apiKeyValue = "barkey";
+
+            var apiKey = Builders.ApiKey()
+                .WithName("fooname")
+                .Withkey(apiKeyValue)
+                .WithValidTo(DateTime.UtcNow.AddDays(1))
+                .Build();
+
+            await _fixture.Given
+                .AddApiKey(apiKey);
+
+            var cache = CreateDefaultCache();
+            var store = CreateCachedStore(cache, apiKey: apiKey.Key, useCache: true);
+
+            var featureModel = await store
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+
+            featureModel.Name
+                .Should()
+                .BeEquivalentTo(feature.Name);
+
+            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name);
+
+            var entry = await cache.GetStringAsync(cacheKey);
+
+            entry.Should()
+                .NotBeNullOrWhiteSpace();
+
+            await cache.SetStringAsync(cacheKey, "{\"featureName\":\"barfeature\",\"enabled\":false}");
+
+            featureModel = await store
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+
+            featureModel.IsEnabled
+                .Should().BeFalse();
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_feature_from_the_store_dont_use_cache_if_isnot_configured()
+        {
+            var permission = Builders.Permission()
+                .WithAllPrivilegesForDefaultIdentity()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var defaultRing = Builders.Ring()
+                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithDefault(true)
+                .Build();
+
+            var product = Builders.Product()
+               .WithName("fooproduct")
+               .Build();
+
+            product.Rings
+                .Add(defaultRing);
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle = Builders.Toggle()
+                .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
+                .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .WithRingName(defaultRing.Name)
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var apiKeyValue = "barkey";
+
+            var apiKey = Builders.ApiKey()
+                .WithName("fooname")
+                .Withkey(apiKeyValue)
+                .WithValidTo(DateTime.UtcNow.AddDays(1))
+                .Build();
+
+            await _fixture.Given
+                .AddApiKey(apiKey);
+
+            var cache = CreateDefaultCache();
+            var store = CreateCachedStore(cache, apiKey: apiKey.Key, useCache: false);
+
+            var featureModel = await store
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+
+            featureModel.Name
+                .Should()
+                .BeEquivalentTo(feature.Name);
+
+            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name);
+
+            var entry = await cache.GetStringAsync(cacheKey);
+
+            entry.Should()
+                .BeNull();
+
+            await cache.SetStringAsync(cacheKey, "{\"featureName\":\"barfeature\",\"enabled\":false}");
+
+            featureModel = await store
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+
+            featureModel.IsEnabled
+                .Should().BeTrue();
+        }
+
+
+        private EsquioDistributedStore CreateStore(string apiKey)
+        {
+            var storeOptions = Options.Create(new DistributedStoreOptions()
+            {
+                CacheEnabled = false,
+                ApiKey = apiKey,
+                BaseAddress = new Uri("http://localhost")
+            });
+
+            var cache = CreateDefaultCache();
+
+            var diagnostics = new EsquioDistributedStoreDiagnostics(new LoggerFactory());
+
+            return new EsquioDistributedStore(
+                cache,
+                new TestServerHttpClientFactory(_fixture, apiKey),
+                storeOptions,
+                diagnostics);
+        }
+
+        private EsquioDistributedStore CreateCachedStore(IDistributedCache cache, string apiKey, bool useCache = true)
+        {
+            var storeOptions = Options.Create(new DistributedStoreOptions()
+            {
+                CacheEnabled = useCache,
+                ApiKey = apiKey,
+                BaseAddress = new Uri("http://localhost")
+            });
+
+            var diagnostics = new EsquioDistributedStoreDiagnostics(new LoggerFactory());
+
+            return new EsquioDistributedStore(
+                cache,
+                new TestServerHttpClientFactory(_fixture, apiKey),
+                storeOptions,
+                diagnostics);
+        }
+
+        private IDistributedCache CreateDefaultCache()
+        {
+            var cacheOptions = Options.Create(
+              new MemoryDistributedCacheOptions());
+
+            return new MemoryDistributedCache(cacheOptions);
         }
     }
 
