@@ -28,7 +28,7 @@ To install Esquio type the following command::
         dotnet package add Microsoft.Extensions.DependencyInjection
         dotnet package add Microsoft.Extensions.Logging.Console
         dotnet package add Microsoft.Extensions.Configuration.Json
-        dotnet package add Esquio
+        dotnet package add Esquio.Configuration.Store
         dotnet restore
 
 or using Powershell or Package Manager::
@@ -36,7 +36,7 @@ or using Powershell or Package Manager::
         Install-Package Microsoft.Extensions.DependencyInjection
         Install-Package Microsoft.Extensions.Logging.Console
         Install-Package Microsoft.Extensions.Configuration.Json
-        Install-Package Esquio
+        Install-Package Esquio.Configuration.Store
 
 Setup
 ^^^^^
