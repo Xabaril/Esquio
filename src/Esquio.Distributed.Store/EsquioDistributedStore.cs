@@ -48,13 +48,16 @@ namespace Esquio.Distributed.Store
 
                 if (String.IsNullOrEmpty(featureConfiguration))
                 {
+                    _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
                     featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
+
                     await _cache.SetStringAsync(cacheKey, featureConfiguration, cancellationToken);
                 }
             }
             else
             {
                 _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
+
                 featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
             }
 
@@ -90,6 +93,6 @@ namespace Esquio.Distributed.Store
     internal static class CacheKeyCreator
     {
         public static string GetCacheKey(string productName, string featureName, string ringName)
-            => $"esquio:product:{productName}:ring:{ringName}:feature:{featureName}";
+            => $"esquio:products:{productName}:rings:{ringName}:features:{featureName}";
     }
 }

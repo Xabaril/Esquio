@@ -24,18 +24,18 @@ namespace Esquio.Distributed.Store.DependencyInjection
         /// </summary>
         /// <param name="uri">The distributed store base address to be used.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public DistributedStoreOptions ConfigureUri(Uri uri)
+        public DistributedStoreOptions UseBaseAddress(Uri uri)
         {
             BaseAddress = uri;
             return this;
         }
 
         /// <summary>
-        /// Configure distributed store base address.
+        /// Configure Esquio base address.
         /// </summary>
-        /// <param name="uri">The distributed store base address to be used.</param>
+        /// <param name="uri">The Esquio base address to be used.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public DistributedStoreOptions ConfigureUri(string uri)
+        public DistributedStoreOptions UseBaseAddress(string uri)
         {
             BaseAddress = new Uri(uri);
             return this;
@@ -44,11 +44,11 @@ namespace Esquio.Distributed.Store.DependencyInjection
 
         internal string ApiKey = null;
         /// <summary>
-        /// Configure distributed store api key.
+        /// Configure Esquio api key.
         /// </summary>
-        /// <param name="uri">The distributed store api key to be used.</param>
+        /// <param name="uri">The Esquio store api key to be used.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public DistributedStoreOptions ConfigureApiKey(string apiKey)
+        public DistributedStoreOptions UseApiKey(string apiKey)
         {
             ApiKey = apiKey;
             return this;

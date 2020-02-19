@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.NotFoundBehavior = options.NotFoundBehavior;
                 opt.DefaultProductName = options.DefaultProductName;
                 opt.EvaluationSessionEnabled = options.EvaluationSessionEnabled;
+                opt.DefaultRingName = options.DefaultRingName;
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();

@@ -1,14 +1,10 @@
-using Esquio.Toggles.GeoLocation;
-using Esquio.Toggles.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using WebApp.Services;
 
 namespace WebApp
@@ -70,21 +66,22 @@ namespace WebApp
                 })
                 // for local store use .AddConfigurationStore(Configuration)
                 // for distributed store use .AddDistributedStore(setup=>{})
-                .AddDistributedStore(setup=>
+                .AddDistributedStore(setup =>
                 {
-                    setup.ConfigureUri("http://localhost:3643");
-                    setup.ConfigureApiKey("W60JrzfzHhQvKvLsdDVMjxrTObBn540P+9alngXVkXA=");
+                    setup.UseBaseAddress("http://localhost:32449")
+                         .UseApiKey("[SET-YOUR-API-KEY]")
+                         .UseCache(enabled: false);
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddApplicationInsightProcessor();
 
 
             //Add custom services and authentication
-            
 
-            
+
+
         }
-        public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
