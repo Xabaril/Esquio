@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Infrastructure.Security.ApiKey
+namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
 {
     internal class ApiKeyAuthenticationHandler
         : AuthenticationHandler<ApiKeyOptions>
@@ -32,7 +32,8 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
 
             if (apiKeyValues.Any())
             {
-                var selectedApiKey = apiKeyValues.Last();
+                var selectedApiKey = apiKeyValues
+                    .Last();
 
                 try
                 {

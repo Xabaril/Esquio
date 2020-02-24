@@ -7,18 +7,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Infrastructure.Security.ApiKey
+namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
 {
     internal interface IApiKeyStore
     {
         Task<ClaimsIdentity> ValidateApiKey(string apiKey, string authenticationScheme);
     }
 
-    public class DefaultApiKeyStore
+    internal class DefaultApiKeyStore
         : IApiKeyStore
     {
-        const string DEFAULT_APIKEY_USERNAME = "APIKEY-USER";
-
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<DefaultApiKeyStore> _logger;
 
@@ -43,7 +41,7 @@ namespace Esquio.UI.Infrastructure.Security.ApiKey
 
                 return new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name,DEFAULT_APIKEY_USERNAME)
+                    new Claim(ClaimTypes.Name, configuredKey.Key)
                 }, authenticationScheme);
             }
 

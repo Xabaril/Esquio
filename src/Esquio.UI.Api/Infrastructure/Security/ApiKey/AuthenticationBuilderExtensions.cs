@@ -1,4 +1,4 @@
-﻿using Esquio.UI.Infrastructure.Security.ApiKey;
+﻿using Esquio.UI.Api.Infrastructure.Security.ApiKey;
 using Microsoft.AspNetCore.Authentication;
 using System;
 

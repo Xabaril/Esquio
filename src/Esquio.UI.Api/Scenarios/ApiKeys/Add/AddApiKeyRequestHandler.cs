@@ -38,7 +38,20 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
                     ApiKeyGenerator.CreateApiKey(),
                     request.ValidTo ?? DateTime.UtcNow.AddYears(1));
 
-                _storeDbContext.Add(apiKey);
+                var apiKeyPermissions = new PermissionEntity()
+                {
+                    SubjectId = apiKey.Key,
+                    ReadPermission = request.Read,
+                    WritePermission = request.Write,
+                    ManagementPermission = request.Management
+                };
+
+                _storeDbContext
+                   .Add(apiKeyPermissions);
+
+                _storeDbContext
+                    .Add(apiKey);
+
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return new AddApiKeyResponse()

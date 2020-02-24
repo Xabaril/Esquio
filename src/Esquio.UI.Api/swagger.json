@@ -1502,9 +1502,23 @@
     },
     "AddApiKeyRequest": {
       "type": "object",
+      "required": [
+        "read",
+        "write",
+        "management"
+      ],
       "properties": {
         "name": {
           "type": "string"
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "write": {
+          "type": "boolean"
+        },
+        "management": {
+          "type": "boolean"
         },
         "validTo": {
           "type": "string",

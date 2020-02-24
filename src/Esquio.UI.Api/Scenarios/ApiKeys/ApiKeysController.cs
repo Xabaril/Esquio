@@ -66,7 +66,7 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Created($"api/apikeys/{request.Name}?api-version=2.0", response);
+            return Created($"api/apikeys/{request.Name}?api-version=3.0", response);
         }
 
         [HttpDelete]

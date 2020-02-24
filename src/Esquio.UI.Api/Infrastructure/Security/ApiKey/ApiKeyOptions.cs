@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace Esquio.UI.Infrastructure.Security.ApiKey
+namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
 {
     public class ApiKeyOptions
         : AuthenticationSchemeOptions
