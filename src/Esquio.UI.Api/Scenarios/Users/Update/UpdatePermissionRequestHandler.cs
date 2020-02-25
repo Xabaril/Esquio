@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ namespace Esquio.UI.Api.Scenarios.Users.Update
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<UpdatePermissionRequestHandler> _logger;
 
-        public UpdatePermissionRequestHandler(StoreDbContext storeDbContext,ILogger<UpdatePermissionRequestHandler> logger)
+        public UpdatePermissionRequestHandler(StoreDbContext storeDbContext, ILogger<UpdatePermissionRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -28,11 +29,9 @@ namespace Esquio.UI.Api.Scenarios.Users.Update
                 .Where(p => p.SubjectId == request.SubjectId)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if ( currentPermission  != null )
+            if (currentPermission != null)
             {
-                currentPermission.ReadPermission = request.Read;
-                currentPermission.WritePermission = request.Write;
-                currentPermission.ManagementPermission = request.Manage;
+                currentPermission.ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true);
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
                 return Unit.Value;

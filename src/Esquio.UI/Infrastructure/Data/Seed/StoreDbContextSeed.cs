@@ -22,9 +22,7 @@ namespace Esquio.UI.Infrastructure.Data.Seed
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
                         SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "1",
-                        ReadPermission = true,
-                        WritePermission = true,
-                        ManagementPermission = true,
+                        ApplicationRole = ApplicationRole.Management
                     };
 
                     context.Permissions.AddRange(aliceIdSvrPermission);

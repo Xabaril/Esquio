@@ -24,7 +24,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_header_version_if_client_specify_booth()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -46,7 +46,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_header_version()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -68,7 +68,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_querystring_version()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given

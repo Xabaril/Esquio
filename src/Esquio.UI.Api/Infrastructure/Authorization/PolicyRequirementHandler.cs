@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,14 +26,8 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
         {
             if (context.User != null && context.User.Identity.IsAuthenticated)
             {
-                if (!context.User.IsBearer())
-                {
-                    context.Succeed(requirement);
-
-                    return;
-                }
-
-                var subjectId = context.User.GetSubjectId();
+                var subjectId = context.User
+                    .FindFirstValue(requirement.ClaimType);
 
                 if (subjectId != null)
                 {
@@ -44,10 +39,10 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
                     {
                         bool allowed = requirement.Permission switch
                         {
-                            Policies.Read => currentPermission.ReadPermission,
-                            Policies.Write => currentPermission.WritePermission,
-                            Policies.Management => currentPermission.ManagementPermission,
-                            _ => throw new ArgumentNullException("Permission evaluation not supported.")
+                            Policies.Reader => (currentPermission.ApplicationRole & ApplicationRole.Reader) == ApplicationRole.Reader,
+                            Policies.Contributor => (currentPermission.ApplicationRole & ApplicationRole.Contributor) == ApplicationRole.Contributor,
+                            Policies.Management => (currentPermission.ApplicationRole & ApplicationRole.Management) == ApplicationRole.Management,
+                            _ => throw new ArgumentNullException("The configured authorization policy is not supported.")
                         };
 
                         if (!allowed)

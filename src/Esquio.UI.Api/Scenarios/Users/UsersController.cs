@@ -37,9 +37,11 @@ namespace Esquio.UI.Api.Scenarios.Users
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> My(CancellationToken cancellationToken = default)
         {
+            //TODO: NameIdentifier is used on different places :-(
+
             var request = new MyRequest()
             {
-                SubjectId = User.GetSubjectId()
+                SubjectId = User.FindFirstValue(ClaimTypes.NameIdentifier)
             };
 
             var response = await _mediator.Send(request, cancellationToken);

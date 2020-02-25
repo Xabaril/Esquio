@@ -4,47 +4,46 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
     public class PermissionsBuilder
     {
-        bool _readPermission = false;
-        bool _writePermission = false;
-        bool _managePermission = false;
-        string _nameIdentifier = "default-user-id";
+        ApplicationRole _applicationRole; 
+        string _nameIdentifier = "default-user";
 
         public PermissionsBuilder WithNameIdentifier(string nameIdentifier)
         {
             _nameIdentifier = nameIdentifier;
             return this;
         }
-        public PermissionsBuilder WithReadPermission(bool readPermisision)
+       
+        public PermissionsBuilder WithPermission(ApplicationRole role)
         {
-            _readPermission = readPermisision;
-            return this;
-        }
-        public PermissionsBuilder WithWritePermission(bool writePermission)
-        {
-            _writePermission = writePermission;
-            return this;
-        }
-        public PermissionsBuilder WithManagementPermission(bool managePermission)
-        {
-            _managePermission = managePermission;
+            _applicationRole = role;
             return this;
         }
 
-        public PermissionsBuilder WithAllPrivilegesForDefaultIdentity()
+        public PermissionsBuilder WithReaderPermission()
         {
-            _readPermission = true;
-            _writePermission = true;
-            _managePermission = true;
-            _nameIdentifier = IdentityBuilder.DEFAULT_NAME;
+            _applicationRole = ApplicationRole.Reader;
             return this;
         }
+
+        public PermissionsBuilder WithContributorPermission()
+        {
+            _applicationRole = ApplicationRole.Contributor;
+            return this;
+        }
+
+        public PermissionsBuilder WithManagementPermission()
+        {
+            _applicationRole = ApplicationRole.Management;
+            return this;
+        }
+
+     
         public PermissionEntity Build()
         {
             return new PermissionEntity()
             {
-                ReadPermission = _readPermission,
-                WritePermission = _writePermission,
-                ManagementPermission = _managePermission,
+                Kind = SubjectType.User,
+                ApplicationRole = _applicationRole,
                 SubjectId = _nameIdentifier
             };
         }

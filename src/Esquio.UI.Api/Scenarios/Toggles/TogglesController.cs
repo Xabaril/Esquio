@@ -28,7 +28,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(typeof(DetailsToggleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,7 +53,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -72,7 +72,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/toggles/parameters/{toggleType}")]
         [ProducesResponseType(typeof(RevealToggleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -89,7 +89,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/toggles/types")]
         [ProducesResponseType(typeof(KnownTypesToggleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -101,7 +101,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/toggles/parameters")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -115,7 +115,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/toggles")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]

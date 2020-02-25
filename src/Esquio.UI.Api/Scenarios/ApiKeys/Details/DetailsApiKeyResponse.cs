@@ -6,6 +6,8 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Details
     {
         public string Name { get; set; }
 
+        public string ActAs { get; set; }
+
         public DateTime ValidTo { get; set; }
     }
 }

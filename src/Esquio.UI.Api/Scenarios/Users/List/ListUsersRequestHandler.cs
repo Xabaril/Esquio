@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Users.List
 {
     public class ListUsersRequestHandler
-        : IRequestHandler<ListUsersRequest,ListUsersResponse>
+        : IRequestHandler<ListUsersRequest, ListUsersResponse>
     {
         private readonly StoreDbContext _storeDbContext;
 
@@ -30,9 +30,7 @@ namespace Esquio.UI.Api.Scenarios.Users.List
                 .Select(u => new ListUsersResponseDetail()
                 {
                     SubjectId = u.SubjectId,
-                    ManagementPermission = u.ManagementPermission,
-                    ReadPermission = u.ReadPermission,
-                    WritePermission = u.WritePermission
+                    ActAs = u.ApplicationRole.ToString(),
                 }).ToListAsync(cancellationToken);
 
             return new ListUsersResponse()

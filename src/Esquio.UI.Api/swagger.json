@@ -1473,6 +1473,9 @@
         "name": {
           "type": "string"
         },
+        "actAs": {
+          "type": "string"
+        },
         "validTo": {
           "type": "string",
           "format": "date-time"
@@ -1502,23 +1505,12 @@
     },
     "AddApiKeyRequest": {
       "type": "object",
-      "required": [
-        "read",
-        "write",
-        "management"
-      ],
       "properties": {
         "name": {
           "type": "string"
         },
-        "read": {
-          "type": "boolean"
-        },
-        "write": {
-          "type": "boolean"
-        },
-        "management": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         },
         "validTo": {
           "type": "string",
@@ -1954,23 +1946,14 @@
     "MyResponse": {
       "type": "object",
       "required": [
-        "isAuthorized",
-        "readPermission",
-        "writePermission",
-        "managementPermission"
+        "isAuthorized"
       ],
       "properties": {
         "isAuthorized": {
           "type": "boolean"
         },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
-        },
-        "managementPermission": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         }
       }
     },
@@ -2004,89 +1987,45 @@
     },
     "ListUsersResponseDetail": {
       "type": "object",
-      "required": [
-        "managementPermission",
-        "readPermission",
-        "writePermission"
-      ],
       "properties": {
         "subjectId": {
           "type": "string"
         },
-        "managementPermission": {
-          "type": "boolean"
-        },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         }
       }
     },
     "DetailsUsersResponse": {
       "type": "object",
-      "required": [
-        "managementPermission",
-        "readPermission",
-        "writePermission"
-      ],
       "properties": {
         "subjectId": {
           "type": "string"
         },
-        "managementPermission": {
-          "type": "boolean"
-        },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         }
       }
     },
     "AddPermissionRequest": {
       "type": "object",
-      "required": [
-        "read",
-        "write",
-        "manage"
-      ],
       "properties": {
         "subjectId": {
           "type": "string"
         },
-        "read": {
-          "type": "boolean"
-        },
-        "write": {
-          "type": "boolean"
-        },
-        "manage": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         }
       }
     },
     "UpdatePermissionRequest": {
       "type": "object",
-      "required": [
-        "read",
-        "write",
-        "manage"
-      ],
       "properties": {
         "subjectId": {
           "type": "string"
         },
-        "read": {
-          "type": "boolean"
-        },
-        "write": {
-          "type": "boolean"
-        },
-        "manage": {
-          "type": "boolean"
+        "actAs": {
+          "type": "string"
         }
       }
     }

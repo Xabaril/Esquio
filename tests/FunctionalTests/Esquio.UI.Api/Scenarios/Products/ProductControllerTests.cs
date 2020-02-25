@@ -33,8 +33,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -46,17 +46,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithWritePermission(false)
+                .WithReaderPermission()
                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -68,16 +67,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_badrequest_if_product_does_not_exist()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("fooproduct", "barring"))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("fooproduct", "barring"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -89,23 +88,23 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_badrequest_if_ring_does_not_exist()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var product = Builders.Product()
-              .WithName("fooproduct")
-              .Build();
+                .WithName("fooproduct")
+                .Build();
 
             await _fixture.Given
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, "barring"))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, "barring"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -117,23 +116,23 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_badrequest_if_ring_is_default()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var product = Builders.Product()
-              .WithName("fooproduct")
-              .Build();
+                .WithName("fooproduct")
+                .Build();
 
             await _fixture.Given
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, EsquioConstants.DEFAULT_RING_NAME))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, EsquioConstants.DEFAULT_RING_NAME))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -146,15 +145,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_noconent_when_success()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var product = Builders.Product()
-              .WithName("fooproduct")
-              .Build();
+                .WithName("fooproduct")
+                .Build();
 
             var ring = Builders.Ring()
                 .WithName("production")
@@ -193,8 +192,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task addring_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithWritePermission(false)
+                .WithReaderPermission()
                 .Build();
 
             await _fixture.Given
@@ -215,7 +213,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task addring_response_badrequest_if_ring_name_is_not_valid()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -246,7 +244,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task addring_response_badrequest_if_ring_name_lower_than_5_characters()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -277,7 +275,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task addring_response_badrequest_if_ring_name_grether_than_200_characters()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -308,7 +306,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task addring_response_created_when_success()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -352,7 +350,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_ok_and_use_default_skip_take_values()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -397,7 +395,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_ok_and_use_specific_skip_take_values()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -445,7 +443,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_ok_when_no_data()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -481,14 +479,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         [ResetDatabase]
         public async Task list_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
-            var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithReadPermission(false)
-                .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -505,7 +495,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_ok_when_no_page_data()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -561,7 +551,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_if_product_name_already_exist()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -595,7 +585,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_if_product_name_length_is_less_than_5()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -622,7 +612,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_if_product_name_length_is_greater_than_200()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -649,7 +639,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_if_description_length_is_greater_than_2000()
         {
             var permission = Builders.Permission()
-            .WithAllPrivilegesForDefaultIdentity()
+            .WithManagementPermission()
             .Build();
 
             await _fixture.Given
@@ -676,7 +666,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_created_when_success()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
+             .WithManagementPermission()
              .Build();
 
             await _fixture.Given
@@ -703,7 +693,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_when_name_is_not_valid()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
+             .WithManagementPermission()
              .Build();
 
             await _fixture.Given
@@ -730,7 +720,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_badrequest_when_ringname_is_not_valid()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
+             .WithManagementPermission()
              .Build();
 
             await _fixture.Given
@@ -758,8 +748,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
-             .WithWritePermission(false)
+             .WithReaderPermission()
              .Build();
 
             await _fixture.Given
@@ -798,7 +787,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task get_response_not_found_if_product_does_not_exist()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -819,7 +808,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task get_response_ok_if_product_exist()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -852,14 +841,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         [ResetDatabase]
         public async Task get_response_forbidden_if_user_is_not_authorized()
         {
-            var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithReadPermission(false)
-              .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.Get("product"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
@@ -887,7 +868,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task delete_response_badrequest_if_product_not_exist()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -908,7 +889,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task delete_response_no_content_when_delete_product_without_features()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -936,8 +917,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task delete_response_forbidden_when_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
-               .WithWritePermission(false)
+               .WithReaderPermission()
                .Build();
 
             await _fixture.Given
@@ -958,7 +938,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task delete_response_no_content_when_delete_product_with_features_toggles_and_parameters()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -1029,8 +1009,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_bad_request_if_product_does_not_exist()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -1053,6 +1033,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         [Fact]
         public async Task update_response_bad_request_if_product_name_is_less_than_5()
         {
+            var permission = Builders.Permission()
+                .WithContributorPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
             var request = new UpdateProductRequest()
             {
                 Name = new string('n', 2),
@@ -1092,7 +1079,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_bad_request_if_product_description_is_greater_than_2000()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -1119,16 +1106,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithWritePermission(false)
-              .Build();
+                .WithReaderPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var product = Builders.Product()
-            .WithName("fooproduct")
-            .Build();
+                .WithName("fooproduct")
+                .Build();
 
             await _fixture.Given
                 .AddProduct(product);
@@ -1154,15 +1140,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_no_content_if_product_is_updated()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var product = Builders.Product()
-            .WithName("fooproduct")
-            .Build();
+                .WithName("fooproduct")
+                .Build();
 
             await _fixture.Given
                 .AddProduct(product);
@@ -1174,9 +1160,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update(product.Name))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Product.Update(product.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PutAsJsonAsync(request);
 
             response.StatusCode
                 .Should()

@@ -38,8 +38,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
         public async Task list_response_forbidden_when_user_request_is_not_authorized()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
-               .WithManagementPermission(false)
+               .WithReaderPermission()
                .Build();
 
             await _fixture.Given
@@ -60,7 +59,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
         public async Task list_response_ok_and_use_default_skip_take_values()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             var product = Builders.Product()
@@ -112,7 +111,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
         public async Task list_response_ok_and_use_skip_take_values()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             var product = Builders.Product()

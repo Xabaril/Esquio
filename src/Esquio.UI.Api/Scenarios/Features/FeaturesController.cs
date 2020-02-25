@@ -29,7 +29,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -44,7 +44,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -60,7 +60,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -79,7 +79,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -98,7 +98,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/archive")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -117,7 +117,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -135,7 +135,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(typeof(DetailsFeatureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -153,7 +153,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features")]
         [ProducesResponseType(typeof(ListFeatureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

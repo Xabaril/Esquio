@@ -3005,6 +3005,9 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("validTo", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset ValidTo { get; set; }
@@ -3026,6 +3029,9 @@ namespace Esquio.CliTool.Internal
     {
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
         [Newtonsoft.Json.JsonProperty("validTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ValidTo { get; set; }
@@ -3426,14 +3432,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("isAuthorized", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAuthorized { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("readPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ReadPermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("writePermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool WritePermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("managementPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ManagementPermission { get; set; }
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
     
     }
@@ -3462,14 +3462,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("subjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SubjectId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("managementPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ManagementPermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("readPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ReadPermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("writePermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool WritePermission { get; set; }
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
     
     }
@@ -3480,14 +3474,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("subjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SubjectId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("managementPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ManagementPermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("readPermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool ReadPermission { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("writePermission", Required = Newtonsoft.Json.Required.Always)]
-        public bool WritePermission { get; set; }
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
     
     }
@@ -3498,14 +3486,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("subjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SubjectId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("read", Required = Newtonsoft.Json.Required.Always)]
-        public bool Read { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("write", Required = Newtonsoft.Json.Required.Always)]
-        public bool Write { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("manage", Required = Newtonsoft.Json.Required.Always)]
-        public bool Manage { get; set; }
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
     
     }
@@ -3516,14 +3498,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("subjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SubjectId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("read", Required = Newtonsoft.Json.Required.Always)]
-        public bool Read { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("write", Required = Newtonsoft.Json.Required.Always)]
-        public bool Write { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("manage", Required = Newtonsoft.Json.Required.Always)]
-        public bool Manage { get; set; }
+        [Newtonsoft.Json.JsonProperty("actAs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ActAs { get; set; }
     
     
     }

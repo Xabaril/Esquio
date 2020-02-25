@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Scenarios.Tags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags")]
         [ProducesResponseType(typeof(List<TagResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -43,7 +43,7 @@ namespace Esquio.UI.Api.Scenarios.Tags
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags/untag/{tag:slug}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -62,7 +62,7 @@ namespace Esquio.UI.Api.Scenarios.Tags
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags/tag")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

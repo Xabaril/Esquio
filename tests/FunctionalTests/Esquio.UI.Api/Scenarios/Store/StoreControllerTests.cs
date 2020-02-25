@@ -40,7 +40,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_ok_when_sucess()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -125,7 +125,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_ok_and_use_default_ring_if_not_specified()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
+             .WithManagementPermission()
              .Build();
 
             await _fixture.Given
@@ -210,7 +210,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_ok_and_use_spcified_ring_if_not_specified()
         {
             var permission = Builders.Permission()
-             .WithAllPrivilegesForDefaultIdentity()
+             .WithManagementPermission()
              .Build();
 
             await _fixture.Given

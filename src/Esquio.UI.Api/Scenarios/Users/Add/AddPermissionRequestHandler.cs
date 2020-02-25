@@ -17,7 +17,7 @@ namespace Esquio.UI.Api.Scenarios.Users.Add
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<AddPermissionRequestHandler> _logger;
 
-        public AddPermissionRequestHandler(StoreDbContext storeDbContext,ILogger<AddPermissionRequestHandler> logger)
+        public AddPermissionRequestHandler(StoreDbContext storeDbContext, ILogger<AddPermissionRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -29,24 +29,22 @@ namespace Esquio.UI.Api.Scenarios.Users.Add
                 .Where(p => p.SubjectId == request.SubjectId)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if ( currentPermission  == null )
+            if (currentPermission == null)
             {
-                 _storeDbContext
-                    .Permissions
-                    .Add(new PermissionEntity()
-                    {
-                        SubjectId = request.SubjectId,
-                        ReadPermission = request.Read,
-                        WritePermission = request.Write,
-                        ManagementPermission = request.Manage
-                    });
+                _storeDbContext
+                   .Permissions
+                   .Add(new PermissionEntity()
+                   {
+                       SubjectId = request.SubjectId,
+                       ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true)
+                   });
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
 
             Log.SubjectIdAlreadyExist(_logger, request.SubjectId);
-            throw new InvalidOperationException("SubjectId already exits on the store.");
+            throw new InvalidOperationException("The permission for this SubjectId already exits on the store.");
         }
     }
 }

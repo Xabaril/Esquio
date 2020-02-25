@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Scenarios.Products
 
         [HttpGet]
         [Route("")]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [ProducesResponseType(typeof(ListProductResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ListProductResponse>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
@@ -42,7 +42,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("{productName:slug}")]
         [ProducesResponseType(typeof(DetailsProductResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -59,7 +59,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -71,7 +71,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}/ring")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -85,7 +85,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -99,7 +99,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -116,7 +116,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

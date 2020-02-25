@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
+using FluentValidation;
 
 namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 {
@@ -12,6 +13,9 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
                 .MinimumLength(5)
                 .MaximumLength(200)
                 .Matches(ApiConstants.Constraints.NamesRegularExpression);
+
+            RuleFor(x => x.ActAs)
+                .IsEnumName(typeof(ApplicationRole), caseSensitive: false);
         }
     }
 }

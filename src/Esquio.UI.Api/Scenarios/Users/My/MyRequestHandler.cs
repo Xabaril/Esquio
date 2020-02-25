@@ -29,10 +29,7 @@ namespace Esquio.UI.Api.Scenarios.Users.My
 
             if (permission != null)
             {
-                return MyResponse.With(
-                    readPermission: permission.ReadPermission,
-                    writePermission: permission.WritePermission,
-                    managementPermission: permission.ManagementPermission);
+                return MyResponse.With(permission.ApplicationRole);
             }
 
             Log.MyIsNotAuthorized(_logger, request.SubjectId);

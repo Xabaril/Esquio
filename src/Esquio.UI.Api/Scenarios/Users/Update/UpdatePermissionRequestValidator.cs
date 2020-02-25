@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
+using FluentValidation;
 
 namespace Esquio.UI.Api.Scenarios.Users.Update
 {
@@ -8,13 +9,11 @@ namespace Esquio.UI.Api.Scenarios.Users.Update
     {
         public UpdatePermissionRequestValidator()
         {
-            this.RuleFor(p => p.Read)
-                .Equal(true)
-                .When(p => p.Write);
+            this.RuleFor(p => p.ActAs)
+                .IsEnumName(typeof(ApplicationRole), false);
 
-            this.RuleFor(p => p.Write)
-                .Equal(true)
-                .When(p => p.Manage);
+            this.RuleFor(p => p.SubjectId)
+                .NotEmpty();
         }
     }
 }

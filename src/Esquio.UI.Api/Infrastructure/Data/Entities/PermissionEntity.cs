@@ -1,4 +1,6 @@
-﻿namespace Esquio.UI.Api.Infrastructure.Data.Entities
+﻿using System;
+
+namespace Esquio.UI.Api.Infrastructure.Data.Entities
 {
     public class PermissionEntity
     {
@@ -6,10 +8,23 @@
 
         public string SubjectId { get; set; }
 
-        public bool ReadPermission { get; set; }
+        public SubjectType Kind { get; set; }
 
-        public bool WritePermission { get; set; }
+        public ApplicationRole ApplicationRole { get; set; }
+    }
 
-        public bool ManagementPermission { get; set; }
+    [Flags]
+    public enum ApplicationRole
+        : short
+    {
+        Reader = 1,
+        Contributor = 2,
+        Management = 3
+    }
+
+    public enum SubjectType
+    {
+        User = 1,
+        Application = 2
     }
 }

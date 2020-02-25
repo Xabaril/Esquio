@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -34,9 +35,7 @@ namespace Esquio.UI.Api.Scenarios.Users.Details
                 return new DetailsUsersResponse()
                 {
                     SubjectId = userPermission.SubjectId,
-                    WritePermission = userPermission.WritePermission,
-                    ReadPermission = userPermission.ReadPermission,
-                    ManagementPermission = userPermission.ManagementPermission
+                    ActAs = Enum.GetName(typeof(ApplicationRole),userPermission.ApplicationRole)
                 };
             }
 

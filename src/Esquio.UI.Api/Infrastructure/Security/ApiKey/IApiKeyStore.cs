@@ -41,7 +41,7 @@ namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
 
                 return new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, configuredKey.Key)
+                    new Claim(ClaimTypes.NameIdentifier, configuredKey.Key)
                 }, authenticationScheme);
             }
 

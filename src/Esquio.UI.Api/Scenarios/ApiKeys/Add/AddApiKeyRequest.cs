@@ -7,11 +7,7 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
     {
         public string Name { get; set; }
 
-        public bool Read { get; set; }
-
-        public bool Write { get; set; }
-
-        public bool Management { get; set; }
+        public string ActAs { get; set; }
 
         public DateTime? ValidTo { get; set; }
     }

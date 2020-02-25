@@ -33,7 +33,7 @@ namespace FunctionalTests.Esquio.Distributed.Store
         public async Task get_null_if_features_does_not_exist()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -101,9 +101,8 @@ namespace FunctionalTests.Esquio.Distributed.Store
         [ResetDatabase]
         public async Task get_feature_from_the_store()
         {
-
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -210,7 +209,7 @@ namespace FunctionalTests.Esquio.Distributed.Store
         public async Task get_feature_from_the_store_use_cache_if_configured()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -296,7 +295,7 @@ namespace FunctionalTests.Esquio.Distributed.Store
         public async Task get_feature_from_the_store_dont_use_cache_if_isnot_configured()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given

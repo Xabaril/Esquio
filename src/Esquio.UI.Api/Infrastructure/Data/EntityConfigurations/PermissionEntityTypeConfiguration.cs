@@ -27,14 +27,15 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
             builder.HasIndex(p => p.SubjectId)
                 .IsUnique();
 
-            builder.Property(p => p.ReadPermission)
-                .HasDefaultValue(false);
+            builder.Property(p => p.ApplicationRole)
+                .HasDefaultValue(ApplicationRole.Reader)
+                .HasConversion<string>()
+                .IsRequired();
 
-            builder.Property(p => p.WritePermission)
-                .HasDefaultValue(false);
-
-            builder.Property(p => p.ManagementPermission)
-                .HasDefaultValue(false);
+            builder.Property(p => p.Kind)
+                .HasDefaultValue(SubjectType.User)
+                .HasConversion<string>()
+                .IsRequired();
         }
     }
 }

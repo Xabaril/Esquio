@@ -23,8 +23,8 @@ namespace Esquio.UI.Api
             return services
                 .AddAuthorization(setup =>
                 {
-                    setup.AddPolicy(Policies.Read, builder => builder.AddRequirements(new PolicyRequirement(Policies.Read)));
-                    setup.AddPolicy(Policies.Write, builder => builder.AddRequirements(new PolicyRequirement(Policies.Write)));
+                    setup.AddPolicy(Policies.Reader, builder => builder.AddRequirements(new PolicyRequirement(Policies.Reader)));
+                    setup.AddPolicy(Policies.Contributor, builder => builder.AddRequirements(new PolicyRequirement(Policies.Contributor)));
                     setup.AddPolicy(Policies.Management, builder => builder.AddRequirements(new PolicyRequirement(Policies.Management)));
                 })
                 .AddScoped<IAuthorizationHandler, PolicyRequirementHandler>()

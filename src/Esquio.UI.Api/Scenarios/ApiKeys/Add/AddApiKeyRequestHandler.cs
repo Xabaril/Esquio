@@ -34,16 +34,15 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
             if (existing == null)
             {
                 var apiKey = new ApiKeyEntity(
-                    request.Name,
-                    ApiKeyGenerator.CreateApiKey(),
-                    request.ValidTo ?? DateTime.UtcNow.AddYears(1));
+                    name: request.Name,
+                    key: ApiKeyGenerator.CreateApiKey(),
+                    validTo: request.ValidTo ?? DateTime.UtcNow.AddYears(1));
 
                 var apiKeyPermissions = new PermissionEntity()
                 {
                     SubjectId = apiKey.Key,
-                    ReadPermission = request.Read,
-                    WritePermission = request.Write,
-                    ManagementPermission = request.Management
+                    Kind = SubjectType.Application,
+                    ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true)
                 };
 
                 _storeDbContext

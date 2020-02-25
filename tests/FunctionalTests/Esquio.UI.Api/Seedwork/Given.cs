@@ -16,8 +16,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
-                db.AddRange(apikeys);
-
+                await db.AddRangeAsync(apikeys);
                 await db.SaveChangesAsync();
             });
         }
@@ -26,8 +25,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
-                db.AddRange(products);
-
+                await db.AddRangeAsync(products);
                 await db.SaveChangesAsync();
             });
         }
@@ -36,8 +34,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
-                db.AddRange(permissions);
-
+                await db.AddRangeAsync(permissions);
                 await db.SaveChangesAsync();
             });
         }
@@ -46,7 +43,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
-                db.AddRange(rings);
+                await db.AddRangeAsync(rings);
             });
         }
 
@@ -54,9 +51,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {
-                db.AddRange(histories);
-
-
+                await db.AddRangeAsync(histories);
                 await db.SaveChangesAsync();
             });
         }
