@@ -33,14 +33,16 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 
             if (existing == null)
             {
+                var key = ApiKeyGenerator.CreateApiKey();
+
                 var apiKey = new ApiKeyEntity(
                     name: request.Name,
-                    key: ApiKeyGenerator.CreateApiKey(),
+                    key: key,
                     validTo: request.ValidTo ?? DateTime.UtcNow.AddYears(1));
 
                 var apiKeyPermissions = new PermissionEntity()
                 {
-                    SubjectId = apiKey.Key,
+                    SubjectId = key,
                     Kind = SubjectType.Application,
                     ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true)
                 };
@@ -56,7 +58,7 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
                 return new AddApiKeyResponse()
                 {
                     Name = apiKey.Name,
-                    Key = apiKey.Key
+                    Key = key
                 };
             }
 

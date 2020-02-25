@@ -13,8 +13,6 @@ namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
     internal class ApiKeyAuthenticationHandler
         : AuthenticationHandler<ApiKeyOptions>
     {
-        const string APIKEY_HEADER_NAME = "X-Api-Key";
-
         private readonly IApiKeyStore _apiKeyStore;
 
         public ApiKeyAuthenticationHandler(IApiKeyStore apikeyStore, IOptionsMonitor<ApiKeyOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock)
@@ -28,22 +26,21 @@ namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
             Log.ApiKeyAuthenticationBegin(Logger);
 
             var apiKeyValues = this.Context.Request
-                .Headers[APIKEY_HEADER_NAME];
+                .Headers[ApiConstants.ApiKeyHeaderName];
 
             if (apiKeyValues.Any())
             {
-                var selectedApiKey = apiKeyValues
-                    .Last();
+                var selectedApiKey = apiKeyValues.Last();
 
                 try
                 {
                     var identity = await _apiKeyStore
-                        .ValidateApiKey(selectedApiKey, Scheme.Name);
+                        .ValidateApiKey(apiKey: selectedApiKey, authenticationScheme: Scheme.Name);
 
                     if (identity != default)
                     {
                         var ticket = new AuthenticationTicket(
-                            new ClaimsPrincipal(identity),
+                            principal: new ClaimsPrincipal(identity),
                             authenticationScheme: Scheme.Name);
 
                         Log.ApiKeyAuthenticationSuccess(Logger);

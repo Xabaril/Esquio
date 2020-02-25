@@ -29,7 +29,7 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.Details
                 return new DetailsApiKeyResponse()
                 {
                     Name = apiKey.Name,
-                    ActAs = Enum.GetName(typeof(ApplicationRole), apiKey.ApplicationRole),
+                    ActAs = apiKey.ApplicationRole.ToString(),
                     ValidTo = apiKey.ValidTo,
                 };
             }

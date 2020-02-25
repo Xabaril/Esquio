@@ -37,14 +37,10 @@ namespace Esquio.UI.Api.Scenarios.Users
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> My(CancellationToken cancellationToken = default)
         {
-            //TODO: NameIdentifier is used on different places :-(
-
-            var request = new MyRequest()
+            var response = await _mediator.Send(new MyRequest()
             {
-                SubjectId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            };
-
-            var response = await _mediator.Send(request, cancellationToken);
+                SubjectId = User.GetSubjectId()
+            }, cancellationToken);
 
             if (response.IsAuthorized)
             {
@@ -73,7 +69,11 @@ namespace Esquio.UI.Api.Scenarios.Users
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsUsersResponse>> Details(string subjectId, CancellationToken cancellationToken = default)
         {
-            var response = await _mediator.Send(new DetailsUsersRequest { SubjectId = subjectId }, cancellationToken);
+            var response = await _mediator.Send(
+                new DetailsUsersRequest
+                {
+                    SubjectId = subjectId }
+                , cancellationToken);
 
             return Ok(response);
         }
@@ -85,12 +85,11 @@ namespace Esquio.UI.Api.Scenarios.Users
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(string subjectId, CancellationToken cancellationToken = default)
         {
-            var request = new DeleteUsersRequest()
+
+            await _mediator.Send(new DeleteUsersRequest()
             {
                 SubjectId = subjectId
-            };
-
-            await _mediator.Send(request, cancellationToken);
+            }, cancellationToken);
             return NoContent();
         }
 

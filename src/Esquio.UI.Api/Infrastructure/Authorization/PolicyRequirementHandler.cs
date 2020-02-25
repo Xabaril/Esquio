@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
             if (context.User != null && context.User.Identity.IsAuthenticated)
             {
                 var subjectId = context.User
-                    .FindFirstValue(requirement.ClaimType);
+                    .GetSubjectId();
 
                 if (subjectId != null)
                 {
@@ -61,7 +61,7 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
                 }
                 else
                 {
-                    Log.AuthorizationFailClaimIsNotPressent(_logger, requirement.ClaimType);
+                    Log.AuthorizationFailClaimIsNotPressent(_logger, ApiConstants.SubjectNameIdentifier);
                     context.Fail();
                 }
             }
