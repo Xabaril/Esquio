@@ -17,6 +17,7 @@ namespace WebApp
         {
             Configuration = configuration;
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             //add application default services
@@ -74,12 +75,6 @@ namespace WebApp
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddApplicationInsightProcessor();
-
-
-            //Add custom services and authentication
-
-
-
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

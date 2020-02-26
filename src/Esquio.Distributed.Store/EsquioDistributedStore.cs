@@ -19,12 +19,12 @@ namespace Esquio.Distributed.Store
         private readonly EsquioDistributedStoreDiagnostics _diagnostics;
         private readonly DistributedStoreOptions _options;
 
-        public EsquioDistributedStore(IDistributedCache cache, IHttpClientFactory httpClientFactory, IOptions<DistributedStoreOptions> options, EsquioDistributedStoreDiagnostics diagnostics)
+        public EsquioDistributedStore(IHttpClientFactory httpClientFactory, IOptions<DistributedStoreOptions> options, EsquioDistributedStoreDiagnostics diagnostics, IDistributedCache cache = null)
         {
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
+            _cache = cache;
         }
 
         public async Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
@@ -35,10 +35,16 @@ namespace Esquio.Distributed.Store
 
             _diagnostics.FindFeature(featureName, productName, ringName);
 
-            string featureConfiguration = null;
+            string featureConfiguration;
 
             if (_options.CacheEnabled)
             {
+                if(_cache == null )
+                {
+                    _diagnostics.DistributedCacheIsNotConfigured();
+                    throw new InvalidOperationException("Store is configured to use cache (CacheEnabled is true) but IDistributedCache is not configured.");
+                }
+
                 var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, ringName);
 
                 _diagnostics.GetFeatureFromCache(cacheKey);
@@ -51,13 +57,20 @@ namespace Esquio.Distributed.Store
                     _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
                     featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
 
-                    await _cache.SetStringAsync(cacheKey, featureConfiguration, cancellationToken);
+                    await _cache.SetStringAsync(
+                        cacheKey, 
+                        featureConfiguration,
+                        new DistributedCacheEntryOptions()
+                        {
+                            AbsoluteExpirationRelativeToNow = _options.AbsoluteExpirationRelativeToNow,
+                            SlidingExpiration = _options.SlidingExpiration,
+                        },
+                        cancellationToken);
                 }
             }
             else
             {
                 _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
-
                 featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
             }
 

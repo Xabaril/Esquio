@@ -19,7 +19,6 @@ namespace Esquio.Distributed.Store.Diagnostics
             Log.FindFeature(_logger, featureName, productName, ringName);
         }
 
-
         public void GetFeatureFromCache(string cacheEntry)
         {
             Log.FindFeatureFromCache(_logger, cacheEntry);
@@ -39,6 +38,11 @@ namespace Esquio.Distributed.Store.Diagnostics
         public void StoreRequestFailed(Uri request, HttpStatusCode statusCode)
         {
             Log.StoreRequestFailed(_logger, request.ToString(), (int)statusCode);
+        }
+
+        public void DistributedCacheIsNotConfigured()
+        {
+            Log.DistributedCacheIsNotConfigured(_logger);
         }
     }
 }

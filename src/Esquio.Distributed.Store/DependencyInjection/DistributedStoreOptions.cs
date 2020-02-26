@@ -5,15 +5,20 @@ namespace Esquio.Distributed.Store.DependencyInjection
     public sealed class DistributedStoreOptions
     {
         internal bool CacheEnabled = false;
+        internal TimeSpan? AbsoluteExpirationRelativeToNow = null;
+        internal TimeSpan? SlidingExpiration = null;
 
         /// <summary>
         /// Configure if cache is enabled on distributed store.
         /// </summary>
         /// <param name="enabled">If True distributed store use default IDistributedStore configured on container. Else, cache is not enabled.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public DistributedStoreOptions UseCache(bool enabled = false)
+        public DistributedStoreOptions UseCache(bool enabled = false, TimeSpan? absoluteExpirationRelativeToNow = null, TimeSpan? slidingExpiration = null)
         {
             CacheEnabled = enabled;
+            AbsoluteExpirationRelativeToNow = absoluteExpirationRelativeToNow;
+            SlidingExpiration = slidingExpiration;
+
             return this;
         }
 

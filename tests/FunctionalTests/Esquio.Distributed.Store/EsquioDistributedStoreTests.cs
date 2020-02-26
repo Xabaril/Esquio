@@ -292,6 +292,74 @@ namespace FunctionalTests.Esquio.Distributed.Store
 
         [Fact]
         [ResetDatabase]
+        public async Task get_feature_from_the_store_throw_if_cache_is_enabled_but_distributed_cache_service_is_null()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var defaultRing = Builders.Ring()
+                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithDefault(true)
+                .Build();
+
+            var product = Builders.Product()
+               .WithName("fooproduct")
+               .Build();
+
+            product.Rings
+                .Add(defaultRing);
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle = Builders.Toggle()
+                .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
+                .Build();
+
+            var parameter = Builders.Parameter()
+                .WithName("Environments")
+                .WithValue("Development")
+                .WithRingName(defaultRing.Name)
+                .Build();
+
+            toggle.Parameters
+                .Add(parameter);
+
+            feature.Toggles
+                .Add(toggle);
+
+            product.Features
+                .Add(feature);
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var apiKeyValue = "barkey";
+
+            var apiKey = Builders.ApiKey()
+                .WithName("fooname")
+                .Withkey(apiKeyValue)
+                .WithValidTo(DateTime.UtcNow.AddDays(1))
+                .Build();
+
+            await _fixture.Given
+                .AddApiKey(apiKey);
+
+            var store = CreateCachedStore(null, apiKey: apiKey.Key, useCache: true);
+
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            {
+                await store.FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+            });
+        }
+
+        [Fact]
+        [ResetDatabase]
         public async Task get_feature_from_the_store_dont_use_cache_if_isnot_configured()
         {
             var permission = Builders.Permission()
@@ -386,12 +454,9 @@ namespace FunctionalTests.Esquio.Distributed.Store
                 BaseAddress = new Uri("http://localhost")
             });
 
-            var cache = CreateDefaultCache();
-
             var diagnostics = new EsquioDistributedStoreDiagnostics(new LoggerFactory());
 
             return new EsquioDistributedStore(
-                cache,
                 new TestServerHttpClientFactory(_fixture, apiKey),
                 storeOptions,
                 diagnostics);
@@ -409,10 +474,10 @@ namespace FunctionalTests.Esquio.Distributed.Store
             var diagnostics = new EsquioDistributedStoreDiagnostics(new LoggerFactory());
 
             return new EsquioDistributedStore(
-                cache,
                 new TestServerHttpClientFactory(_fixture, apiKey),
                 storeOptions,
-                diagnostics);
+                diagnostics,
+                cache);
         }
 
         private IDistributedCache CreateDefaultCache()

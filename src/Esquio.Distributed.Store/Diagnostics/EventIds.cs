@@ -10,5 +10,6 @@ namespace Esquio.Distributed.Store.Diagnostics
         public static EventId FindFeatureFromStore = new EventId(803, nameof(FindFeatureFromStore));
 
         public static EventId StoreRequestFailed = new EventId(810, nameof(StoreRequestFailed));
+        public static EventId DistributedCacheIsNotRegistered = new EventId(811, nameof(DistributedCacheIsNotRegistered));
     }
 }

@@ -31,6 +31,11 @@ namespace Esquio.Distributed.Store.Diagnostics
             _storeRequestFailed(logger, request, statusCode, null);
         }
 
+        public static void DistributedCacheIsNotConfigured(ILogger logger)
+        {
+            _distributedStoreIsNotConfigured(logger, null);
+        }
+
         private static readonly Action<ILogger, string, string, string, Exception> _findFeature = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             EventIds.FindFeature,
@@ -55,6 +60,11 @@ namespace Esquio.Distributed.Store.Diagnostics
           LogLevel.Error,
           EventIds.StoreRequestFailed,
           "Request GET to distributed store {request} throw with status code {statusCode}.");
+
+        private static readonly Action<ILogger, Exception> _distributedStoreIsNotConfigured = LoggerMessage.Define(
+          LogLevel.Error,
+          EventIds.DistributedCacheIsNotRegistered,
+          "Store is configured to use cache (CacheEnabled is true) but the service IDistributedCache is not registered.");
 
     }
 }
