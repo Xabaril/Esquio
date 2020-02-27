@@ -47,6 +47,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.MiniProfiler", "tool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.Distributed.Store", "src\Esquio.Distributed.Store\Esquio.Distributed.Store.csproj", "{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Client", "src\Esquio.UI.Client\Esquio.UI.Client.csproj", "{91C69E3B-1E76-4AAF-82CD-DA80500E9082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.UI.Host", "src\Esquio.UI.Host\Esquio.UI.Host.csproj", "{294262AD-350C-4DE0-AEA3-0660A699DB66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +113,14 @@ Global
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91C69E3B-1E76-4AAF-82CD-DA80500E9082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91C69E3B-1E76-4AAF-82CD-DA80500E9082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91C69E3B-1E76-4AAF-82CD-DA80500E9082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91C69E3B-1E76-4AAF-82CD-DA80500E9082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +140,8 @@ Global
 		{0387A8AA-2431-42CB-8638-C490F2F7E099} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 		{A0E1822D-406F-47A4-983E-C9A4BCF83AE2} = {89B085DE-0270-49E9-8AC7-1B1D7119E962}
 		{577F1A94-BBAA-4BCF-B873-2E1B3725B5AD} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
+		{91C69E3B-1E76-4AAF-82CD-DA80500E9082} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
+		{294262AD-350C-4DE0-AEA3-0660A699DB66} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}
