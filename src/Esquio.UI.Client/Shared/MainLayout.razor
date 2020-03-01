@@ -1,5 +1,68 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="content">
-    @Body
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="index3.html" class="nav-link">Set here the breadcrumb</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <NavLink  href="/" class="brand-link">
+            <img src="dist/img/EsquioLogo.png" alt="Esquio Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">Esquio UI</span>
+        </NavLink>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">Alexander Pierce</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <NavLink href="/Products" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Products
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </NavLink>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        @Body
+    </div>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Esquio, a Feature Flags library for .NET Core Developers.
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; Esquio UI <a href="https://github.com/xabaril/esquio">Esquio</a>.</strong> All rights reserved.
+    </footer>
 </div>
