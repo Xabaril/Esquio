@@ -50,14 +50,14 @@ namespace Esquio.AspNetCore.Toggles
                 &&
                 allowedValues != null)
             {
+                var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
+
                 var values = _httpContextAccessor.HttpContext
                     .Request
                     .Headers[headerName];
 
                 foreach (var item in values)
                 {
-                    var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
-
                     if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
                     {
                         return true;

@@ -40,6 +40,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();
 
+            builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
+
             return builder;
         }
 

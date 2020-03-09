@@ -1,3 +1,4 @@
+using Esquio.AspNetCore.Toggles;
 using Esquio.Toggles.GeoLocation;
 using Esquio.Toggles.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
