@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace Esquio.UI.Client
@@ -8,7 +9,9 @@ namespace Esquio.UI.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
+            builder.Services.AddApiAuthorization();
+
+            //builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();
         }
