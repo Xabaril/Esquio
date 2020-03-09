@@ -6,23 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Esquio UI</title>
+    <base href="/" />
 
     <!--fonts-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
+    <link href="plugins/fontawesome-free/css/all.min.css" rel="stylesheet">
     <!--stylesheets-->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <base href="/" />
+    <link rel="stylesheet" href="css/adminlte.min.css">
+
 </head>
 
 <body class="hold-transition sidebar-mini">
     <app>Loading...</app>
     <!-- REQUIRED SCRIPTS -->
-    <script src="_framework/blazor.webassembly.js"></script>
+
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
+
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>

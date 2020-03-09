@@ -5,10 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="$(blazor)" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="$(blazor)" />-->
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="$(blazor)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
     <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
   </ItemGroup>
   </Project>

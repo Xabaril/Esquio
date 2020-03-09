@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.Distributed.Store", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Client", "src\Esquio.UI.Client\Esquio.UI.Client.csproj", "{91C69E3B-1E76-4AAF-82CD-DA80500E9082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.UI.Host", "src\Esquio.UI.Host\Esquio.UI.Host.csproj", "{294262AD-350C-4DE0-AEA3-0660A699DB66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Host", "src\Esquio.UI.Host\Esquio.UI.Host.csproj", "{294262AD-350C-4DE0-AEA3-0660A699DB66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "borrar", "borrar\borrar.csproj", "{C0C13810-7746-43FB-AC58-1141672A3384}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{294262AD-350C-4DE0-AEA3-0660A699DB66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0C13810-7746-43FB-AC58-1141672A3384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0C13810-7746-43FB-AC58-1141672A3384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0C13810-7746-43FB-AC58-1141672A3384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0C13810-7746-43FB-AC58-1141672A3384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

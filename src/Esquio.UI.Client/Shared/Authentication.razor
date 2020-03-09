@@ -1,0 +1,10 @@
+﻿@page "/authentication/{action}"
+@inject IAccessTokenProvider AuthenticationService
+@inject NavigationManager Navigation
+
+
+<RemoteAuthenticatorView Action="@Action" />
+
+@code{
+    [Parameter] public string Action { get; set; }
+}

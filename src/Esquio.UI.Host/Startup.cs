@@ -1,3 +1,7 @@
+using Esquio.UI.Api;
+using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Host.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -20,14 +24,42 @@ namespace Esquio.UI.Host
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCompression(options =>
-            {
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { MediaTypeNames.Application.Octet });
-            });
+            services
+                .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
+                .AddResponseCompression(options =>
+                {
+                    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                        new[] { MediaTypeNames.Application.Octet });
+                });
 
-            services.AddMvc();
-            
+            //services
+            //     .AddAuthentication(options =>
+            //     {
+            //         options.DefaultScheme = "secured";
+            //         options.DefaultChallengeScheme = "secured";
+            //     })
+            //    .AddApiKey()
+            //    .AddJwtBearer(options =>
+            //    {
+            //        Configuration.Bind("Security:Jwt", options);
+            //    })
+            //    .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
+            //    {
+            //        options.ForwardDefaultSelector = context =>
+            //        {
+            //            var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
+
+            //            if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+            //            {
+            //                return JwtBearerDefaults.AuthenticationScheme;
+            //            }
+
+            //            return ApiKeyAuthenticationDefaults.ApiKeyScheme;
+            //        };
+            //    });
+
+            EsquioUIApiConfiguration.ConfigureServices(services)
+                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]); ;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -37,19 +69,20 @@ namespace Esquio.UI.Host
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
+
             app.UseRouting();
-
-
-            app.UseClientSideBlazorFiles<Esquio.UI.Client.Program>();
-
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+            app.UseBlazorFrameworkFiles();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToClientSideBlazor<Esquio.UI.Client.Program>("index.html");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
