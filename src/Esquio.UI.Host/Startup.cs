@@ -59,7 +59,7 @@ namespace Esquio.UI.Host
                 });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]); ;
+                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
