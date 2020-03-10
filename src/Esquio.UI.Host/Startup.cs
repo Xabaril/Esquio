@@ -1,13 +1,17 @@
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Host.Infrastructure.OpenApi;
 using Esquio.UI.Host.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using System.Net.Mime;
 
@@ -25,6 +29,7 @@ namespace Esquio.UI.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>()
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddResponseCompression(options =>
                 {
@@ -33,6 +38,7 @@ namespace Esquio.UI.Host
                 });
 
             services
+                 .AddSwaggerGen()
                  .AddAuthentication(options =>
                  {
                      options.DefaultScheme = "secured";
@@ -62,8 +68,9 @@ namespace Esquio.UI.Host
                 .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersion)
         {
+         
             app.UseResponseCompression();
 
             if (env.IsDevelopment())
@@ -78,7 +85,18 @@ namespace Esquio.UI.Host
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseBlazorFrameworkFiles();
-            
+
+            app.UseSwagger();
+            app.UseSwaggerUI(setup =>
+            {
+                setup.EnableDeepLinking();
+
+                foreach (var description in apiVersion.ApiVersionDescriptions)
+                {
+                    setup.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+                }
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

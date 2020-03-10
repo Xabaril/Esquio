@@ -38,7 +38,7 @@
     <blazor>3.2.0-preview2.20158.3</blazor>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.1.6</nswagmsbuild>
-    <swashbuckleaspnetcore>5.0.0-rc4</swashbuckleaspnetcore>
+    <swashbuckleaspnetcore>5.0.0</swashbuckleaspnetcore>
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 
@@ -46,7 +46,7 @@
     <systemdiagnosticsdiagnosticsource>4.7.0</systemdiagnosticsdiagnosticsource>
     <systemtextjson>4.7.0</systemtextjson>
 
-    <microsoftaspnetcoreauthenticationjwtbearer>3.1.0</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.1.2</microsoftaspnetcoreauthenticationjwtbearer>
     <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.1</microsoftaspnetcoremvcversioningapiexplorerversion>
 
     <microsoftextensionsdependencyinjectionabstractions>3.1.0</microsoftextensionsdependencyinjectionabstractions>
@@ -59,10 +59,10 @@
     <microsoftextensionsloggingabstractions>3.1.0</microsoftextensionsloggingabstractions>
     <microsoftextensionsloggingconsole>3.1.0</microsoftextensionsloggingconsole>
     <microsoftextensionshttp>3.1.0</microsoftextensionshttp>
-    <microsoftentityframeworkcore>3.1.0</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.1.0</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.1.0</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.1.0</microsoftentityframeworkcoredesign>
+    <microsoftentityframeworkcore>3.1.2</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.1.2</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.1.2</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.1.2</microsoftentityframeworkcoredesign>
 
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
