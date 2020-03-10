@@ -32,31 +32,31 @@ namespace Esquio.UI.Host
                         new[] { MediaTypeNames.Application.Octet });
                 });
 
-            //services
-            //     .AddAuthentication(options =>
-            //     {
-            //         options.DefaultScheme = "secured";
-            //         options.DefaultChallengeScheme = "secured";
-            //     })
-            //    .AddApiKey()
-            //    .AddJwtBearer(options =>
-            //    {
-            //        Configuration.Bind("Security:Jwt", options);
-            //    })
-            //    .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
-            //    {
-            //        options.ForwardDefaultSelector = context =>
-            //        {
-            //            var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
+            services
+                 .AddAuthentication(options =>
+                 {
+                     options.DefaultScheme = "secured";
+                     options.DefaultChallengeScheme = "secured";
+                 })
+                .AddApiKey()
+                .AddJwtBearer(options =>
+                {
+                    Configuration.Bind("Security:Jwt", options);
+                })
+                .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
 
-            //            if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
-            //            {
-            //                return JwtBearerDefaults.AuthenticationScheme;
-            //            }
+                        if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+                        {
+                            return JwtBearerDefaults.AuthenticationScheme;
+                        }
 
-            //            return ApiKeyAuthenticationDefaults.ApiKeyScheme;
-            //        };
-            //    });
+                        return ApiKeyAuthenticationDefaults.ApiKeyScheme;
+                    };
+                });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
                 .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]); ;
@@ -75,8 +75,8 @@ namespace Esquio.UI.Host
             app.UseStaticFiles();
 
             app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseBlazorFrameworkFiles();
             
             app.UseEndpoints(endpoints =>
