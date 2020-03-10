@@ -1,10 +1,83 @@
 ﻿@page "/authentication/{action}"
 @inject IAccessTokenProvider AuthenticationService
+@inject IJSRuntime JS
+
 @inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
 
-<RemoteAuthenticatorView Action="@Action" />
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed">
+    <LogOut>
+        You are logout!
+    </LogOut>
+</RemoteAuthenticatorView>
 
 @code{
     [Parameter] public string Action { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (RemoteAuthenticationActions.IsAction(RemoteAuthenticationActions.LogIn, Action))
+        {
+            var tokenResult = await AuthenticationService.RequestAccessToken();
+
+            if (tokenResult.TryGetToken(out AccessToken accessToken))
+            {
+                if (tokenResult.Status == AccessTokenResultStatus.Success)
+                {
+                    var my = await WhoIam(accessToken);
+
+                    //TODO:guardar en local storage, ya estamos autenticados pero necesitamos el perfil
+                }
+            }
+        }
+    }
+
+    public async Task IsUserAllowed(RemoteAuthenticationState state)
+    {
+        var tokenResult = await AuthenticationService.RequestAccessToken();
+
+        if (tokenResult.TryGetToken(out AccessToken accessToken))
+        {
+            var my = await WhoIam(accessToken);
+
+            if (my != null)
+            {
+                //TODO: guardar en local storage y usarlo para mostrar menus
+            }
+            else
+            {
+                await SignOutManager.SetSignOutState();
+                Navigation.NavigateTo("authentication/logout");
+            }
+        }
+        else
+        {
+            Navigation.NavigateTo(tokenResult.RedirectUrl);
+        }
+    }
+
+
+    public async Task<MyResponse> WhoIam(AccessToken token)
+    {
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
+
+        try
+        {
+            return await httpClient.GetJsonAsync<MyResponse>("api/users/my");
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public class MyResponse
+    {
+        public bool IsAuthorized { get; set; }
+
+        public string ActAs { get; set; }
+    }
 }
