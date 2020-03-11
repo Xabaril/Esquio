@@ -1,3 +1,14 @@
 ﻿@page "/Products"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IEsquioService esquio
 
 <h1>Esquio Products</h1>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO: utilizar esquio service para obtener los productos
+        await esquio.GetProducts();
+    }
+}

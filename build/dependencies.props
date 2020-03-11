@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
-    <NetTestSdk>16.4.0</NetTestSdk>
+    <NetTestSdk>16.5.0</NetTestSdk>
     <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
@@ -35,30 +35,31 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
-    <blazor>3.2.0-preview2.20158.3</blazor>
+    <blazor>3.2.0-preview2.20160.5</blazor>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
-    <nswagmsbuild>13.1.6</nswagmsbuild>
-    <swashbuckleaspnetcore>5.0.0</swashbuckleaspnetcore>
+    <nswagmsbuild>13.2.5</nswagmsbuild>
+    <swashbuckleaspnetcore>5.1.0</swashbuckleaspnetcore>
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 
     <microsoftcsharp>4.7.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.7.0</systemdiagnosticsdiagnosticsource>
-    <systemtextjson>4.7.0</systemtextjson>
+    <systemtextjson>4.7.1</systemtextjson>
 
     <microsoftaspnetcoreauthenticationjwtbearer>3.1.2</microsoftaspnetcoreauthenticationjwtbearer>
     <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.1</microsoftaspnetcoremvcversioningapiexplorerversion>
 
-    <microsoftextensionsdependencyinjectionabstractions>3.1.0</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.1.0</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.1.0</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.1.0</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsconfigurationbinder>3.1.0</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.1.0</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.1.0</microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.1.0</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.1.0</microsoftextensionsloggingconsole>
-    <microsoftextensionshttp>3.1.0</microsoftextensionshttp>
+    <microsoftextensionsdependencyinjectionabstractions>3.1.2</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.1.2</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.1.2</microsoftextensionsoptions>
+    <microsoftextensionsconfigurationabstractions>3.1.2</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsconfigurationbinder>3.1.2</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.1.2</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.1.2</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.1.2</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.1.2</microsoftextensionsloggingconsole>
+    <microsoftextensionshttp>3.1.2</microsoftextensionshttp>
+    <microsoftextensionscachingmemory>3.1.2</microsoftextensionscachingmemory>
     <microsoftentityframeworkcore>3.1.2</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.1.2</microsoftentityframeworkcorerelational>
     <microsoftentityframeworkcoresqlserver>3.1.2</microsoftentityframeworkcoresqlserver>
@@ -68,32 +69,32 @@
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
 
-    <hellangmiddlewareproblemdetails>3.1.0</hellangmiddlewareproblemdetails>
-    <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
-    <fluentvalidationaspnetcore>8.6.0</fluentvalidationaspnetcore>
-    <microsoftapplicationinsights>2.12.0</microsoftapplicationinsights>
-    <microsoftapplicationinsightsaspnetcore>2.12.0</microsoftapplicationinsightsaspnetcore>
+    <hellangmiddlewareproblemdetails>4.4.0</hellangmiddlewareproblemdetails>
+    <mediatrextensionsmicrosoftdependencyinjection>8.0.0</mediatrextensionsmicrosoftdependencyinjection>
+    <fluentvalidationaspnetcore>8.6.2</fluentvalidationaspnetcore>
+    <microsoftapplicationinsights>2.13.1</microsoftapplicationinsights>
+    <microsoftapplicationinsightsaspnetcore>2.13.1</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
-    <mcmastercommandlineutils>2.4.4</mcmastercommandlineutils>
+    <mcmastercommandlineutils>2.6.0</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.1.0</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.1.0</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.1.2</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.1.2</microsoftaspnetcoretesthost>
 
-    <microsoftentityframeworkcoreinmemory>3.1.0</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.1.0</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcoreinmemory>3.1.2</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.1.2</microsoftentityframeworkcoresqlite>
 
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
-    <fluentassertions>5.9.0</fluentassertions>
+    <fluentassertions>5.10.2</fluentassertions>
     <achevetesthost>3.0.0</achevetesthost>
-    <respawn>3.2.0</respawn>
+    <respawn>3.3.0</respawn>
   </PropertyGroup>
 
   <PropertyGroup Label="CLI Tools Versions">

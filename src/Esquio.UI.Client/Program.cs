@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+﻿using Esquio.UI.Client.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Esquio.UI.Client
@@ -11,8 +16,6 @@ namespace Esquio.UI.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            //TODO: get from config!
-
             //add services
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddOidcAuthentication(options =>
@@ -22,6 +25,17 @@ namespace Esquio.UI.Client
                 options.ProviderOptions.DefaultScopes.Add("api");
                 options.ProviderOptions.ResponseType = "code";
             });
+
+            builder.Services.AddScoped<IEsquioService, EsquioService>(sp =>
+             {
+                 var navigationManager = sp.GetRequiredService<NavigationManager>();
+                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
+
+                 var httpClient = new HttpClient();
+                 httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
+
+                 return new EsquioService(httpClient, tokenService);
+             });
 
             await builder.Build().RunAsync();
         }

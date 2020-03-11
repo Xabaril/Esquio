@@ -1,15 +1,11 @@
 ﻿@page "/authentication/{action}"
 @inject IAccessTokenProvider AuthenticationService
-@inject IJSRuntime JS
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed">
-    <LogOut>
-        You are logout!
-    </LogOut>
 </RemoteAuthenticatorView>
 
 @code{
@@ -19,27 +15,28 @@
     {
         if (RemoteAuthenticationActions.IsAction(RemoteAuthenticationActions.LogIn, Action))
         {
-            var tokenResult = await AuthenticationService.RequestAccessToken();
-
-            if (tokenResult.TryGetToken(out AccessToken accessToken))
-            {
-                if (tokenResult.Status == AccessTokenResultStatus.Success)
-                {
-                    var my = await WhoIam(accessToken);
-
-                    //TODO:guardar en local storage, ya estamos autenticados pero necesitamos el perfil
-                }
-            }
+            await EvaluateAuthorization(notAllowed: () =>
+             {
+                 Navigation.NavigateTo("Forbidden");
+             });
         }
     }
 
-    public async Task IsUserAllowed(RemoteAuthenticationState state)
+    async Task IsUserAllowed(RemoteAuthenticationState state)
+    {
+        await EvaluateAuthorization(notAllowed: () =>
+         {
+             state.ReturnUrl = "Forbidden";
+         });
+    }
+
+    async Task EvaluateAuthorization(Action notAllowed)
     {
         var tokenResult = await AuthenticationService.RequestAccessToken();
 
         if (tokenResult.TryGetToken(out AccessToken accessToken))
         {
-            var my = await WhoIam(accessToken);
+            var my = await GetCurrentUserProfile(accessToken);
 
             if (my != null)
             {
@@ -47,8 +44,7 @@
             }
             else
             {
-                await SignOutManager.SetSignOutState();
-                Navigation.NavigateTo("authentication/logout");
+                notAllowed();
             }
         }
         else
@@ -57,8 +53,7 @@
         }
     }
 
-
-    public async Task<MyResponse> WhoIam(AccessToken token)
+    async Task<MyResponse> GetCurrentUserProfile(AccessToken token)
     {
         var httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(Navigation.BaseUri);
