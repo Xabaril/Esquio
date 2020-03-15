@@ -132,5 +132,19 @@ namespace Esquio.UI.Api.Scenarios.Products
 
             return NoContent();
         }
+
+        [HttpPost]
+        [Authorize(Policies.Contributor)]
+        [Route("{productName:slug:minlength(5):maxlength(200)}/ring")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddRing(string productName, AddRingRequest request, CancellationToken cancellationToken = default)
+        {
+            request.ProductName = productName;
+
+            await _mediator.Send(request, cancellationToken);
+
+            return Created($"api/products/{productName}?api-version=2.0", null);
+        }
     }
 }
