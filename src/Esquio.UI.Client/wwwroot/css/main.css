@@ -52,7 +52,7 @@ i.fa-trash-alt, i.fa-power-off, i.fa-upload, i.fa-download {
 }
 
     i.fa-trash-alt:hover, i.fa-power-off:hover {
-        color: lightcoral;
+        color: #f08080;
         cursor: pointer;
     }
 
