@@ -719,6 +719,40 @@
       }
     },
     "/api/Products/{productName}/ring": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_GetProductRings",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsRingResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Products"
@@ -1716,14 +1750,6 @@
         }
       }
     },
-    "AddRingRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
     "UpdateProductRequest": {
       "type": "object",
       "properties": {
@@ -1731,6 +1757,42 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsRingResponse": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "rings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DetailsRingResponseDetail"
+          }
+        }
+      }
+    },
+    "DetailsRingResponseDetail": {
+      "type": "object",
+      "required": [
+        "default"
+      ],
+      "properties": {
+        "ringName": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AddRingRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
           "type": "string"
         }
       }

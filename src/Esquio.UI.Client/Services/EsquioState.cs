@@ -4,15 +4,15 @@ namespace Esquio.UI.Client.Services
 {
     public class EsquioState
     {
-        public bool ShowingModal { get; set; } = false;
+        public bool WindowModalIsActive { get; set; } = false;
 
-        public event Action OnShowingModalChange;
+        public event Action OnWindowModalActiveChange;
 
-        public void ShowModal(bool showModal)
+        public void IsApplicationShowingWindowModal(bool showModal)
         {
-            ShowingModal = showModal;
+            WindowModalIsActive = showModal;
 
-            OnShowingModalChange?.Invoke();
+            OnWindowModalActiveChange?.Invoke();
         }
     }
 }

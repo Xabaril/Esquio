@@ -33,15 +33,15 @@ namespace Esquio.UI.Api.Scenarios.Products.Add
             {
                 var product = new ProductEntity(request.Name, request.Description);
 
-                product.Rings
-                    .Add(new RingEntity(
+                product.Rings.Add(new RingEntity(
                     productEntityId: product.Id,
                     name: request.DefaultRingName,
                     byDefault: true));
 
                 _storeDbContext.Add(product);
 
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
+                await _storeDbContext
+                    .SaveChangesAsync(cancellationToken);
 
                 return product.Name;
             }

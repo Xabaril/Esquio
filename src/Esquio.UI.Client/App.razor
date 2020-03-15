@@ -1,7 +1,7 @@
 ﻿@inject EsquioState state
 @implements IDisposable
 
-<div class="@(state.ShowingModal ? "modal-open" : "")">
+<div class="@(state.WindowModalIsActive ? "modal-open" : "")">
     <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
@@ -20,7 +20,7 @@
     </CascadingAuthenticationState>
 </div>
 
-@if (state.ShowingModal)
+@if (state.WindowModalIsActive)
 {
     <div class="modal-backdrop fade show"></div>
 }
@@ -29,16 +29,18 @@
 
     protected override void OnInitialized()
     {
-        state.OnShowingModalChange += ShowingModalChange;
+        state.OnWindowModalActiveChange += WindowModalActiveChange;
     }
 
-    private void ShowingModalChange()
+    private void WindowModalActiveChange()
     {
+        Console.WriteLine("window modal active changed");
+
         StateHasChanged();
     }
 
     public void Dispose()
     {
-        state.OnShowingModalChange -= ShowingModalChange;
+        state.OnWindowModalActiveChange -= WindowModalActiveChange;
     }
 }

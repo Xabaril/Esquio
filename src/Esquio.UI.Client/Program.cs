@@ -39,8 +39,6 @@ namespace Esquio.UI.Client
 
             builder.Services.AddScoped<EsquioState>();
 
-            //builder.Services.AddSingleton<IAppInteractionBus, AppInteractionBus>();
-
             await builder.Build()
                 .RunAsync();
         }

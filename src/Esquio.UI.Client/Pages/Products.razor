@@ -1,7 +1,7 @@
 ﻿@page "/products"
 @attribute [Authorize]
 @inherits ContainerComponentBase
-
+@inject EsquioState  state
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -153,10 +153,15 @@
     private void OpenModal()
     {
         showModal = true;
+
+        state.IsApplicationShowingWindowModal(showModal);
+        
     }
 
     private void CloseModal()
     {
         showModal = false;
+
+        state.IsApplicationShowingWindowModal(showModal);
     }
 }

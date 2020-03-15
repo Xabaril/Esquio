@@ -4,6 +4,7 @@ using Esquio.UI.Api.Scenarios.Products.AddRing;
 using Esquio.UI.Api.Scenarios.Products.Delete;
 using Esquio.UI.Api.Scenarios.Products.DeleteRing;
 using Esquio.UI.Api.Scenarios.Products.Details;
+using Esquio.UI.Api.Scenarios.Products.DetailsRing;
 using Esquio.UI.Api.Scenarios.Products.List;
 using Esquio.UI.Api.Scenarios.Products.Update;
 using MediatR;
@@ -70,20 +71,6 @@ namespace Esquio.UI.Api.Scenarios.Products
             return Created($"api/products/{product}?api-version=2.0", null);
         }
 
-        [HttpPost]
-        [Authorize(Policies.Contributor)]
-        [Route("{productName:slug:minlength(5):maxlength(200)}/ring")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddRing(string productName, AddRingRequest request, CancellationToken cancellationToken = default)
-        {
-            request.ProductName = productName;
-
-            await _mediator.Send(request, cancellationToken);
-
-            return Created($"api/products/{productName}?api-version=2.0", null);
-        }
-
         [HttpPut]
         [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}")]
@@ -113,6 +100,27 @@ namespace Esquio.UI.Api.Scenarios.Products
             await _mediator.Send(request, cancellationToken);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Authorize(Policies.Reader)]
+        [Route("{productName:slug}/ring")]
+        [ProducesResponseType(typeof(DetailsRingResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<DetailsRingResponse>> GetProductRings(string productName, CancellationToken cancellationToken = default)
+        {
+            var rings = await _mediator.Send(new DetailsRingRequest
+            { 
+                ProductName = productName 
+            }, cancellationToken);
+
+            if (rings != null)
+            {
+                return Ok(rings);
+            }
+
+            return NotFound();
         }
 
         [HttpDelete]

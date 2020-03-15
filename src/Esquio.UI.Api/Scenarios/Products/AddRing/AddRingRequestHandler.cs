@@ -31,11 +31,10 @@ namespace Esquio.UI.Api.Scenarios.Products.AddRing
 
             if (existing != null)
             {
-
                 var existingRing = await _storeDbContext
-                .Rings
-                .Where(r => r.Name == request.Name)
-                .SingleOrDefaultAsync(cancellationToken);
+                    .Rings
+                    .Where(r => r.Name == request.Name && r.Product.Name == request.ProductName)
+                    .SingleOrDefaultAsync(cancellationToken);
 
                 if (existingRing == null)
                 {

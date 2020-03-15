@@ -1,4 +1,4 @@
-﻿@inject EsquioState state
+﻿
 
 <div class="modal fade@(Show ? " show": "")" id="modal-lg" style="@(Show ? "display: block;": "")" aria-modal="true">
     <div class="modal-dialog modal-lg">
@@ -25,9 +25,4 @@
     [Parameter] public RenderFragment ModalBody { get; set; }
     [Parameter] public RenderFragment ModalFooter { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnClose { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        state.ShowModal(showModal: Show);
-    }
 }
