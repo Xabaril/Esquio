@@ -8,12 +8,12 @@
         }
         else
         {
-            <a href="@item.Link">@item.Title</a>
+            <NavLink href="@item.Link" class="brand-link">@item.Title</NavLink>
         }
-    </li>
+        </li>
     }
 </ol>
 
 @code {
-    [Parameter] public BreadcrumbItemViewModel[] Items { get; set; }
+    [Parameter] public IEnumerable<BreadcrumbItemViewModel> Items { get; set; }
 }

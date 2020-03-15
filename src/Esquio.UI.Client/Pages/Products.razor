@@ -7,9 +7,9 @@
         <div class="row mb-2">
             @*<div class="col-sm-6">
                     <Breadcrumb Items="breadcrumb" />
-                </div>*@
+            </div>*@
             <PageTitle Title="Products"
-                       Subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.">
+                       Subtitle="Show the Esquio Products in the store.">
                 <Icon>
                     <i class="fas fa-box-open"></i>
                 </Icon>
@@ -30,9 +30,6 @@
                 <Table Loader="Loader"
                        Total="@(items => items.Total)"
                        Count="@(items => items.Count)"
-                       SkeletonRows="3"
-                       SkeletonColumns="3"
-                       SkeletonActions="1"
                        @ref="table">
                     <TableHeader>
                         <th class="table-col-4">Name</th>
@@ -46,8 +43,7 @@
                                 <td>@product.Name</td>
                                 <td>@product.Description</td>
                                 <td class="table-component__action">
-                                    <i
-                                       class="far fa-trash-alt"
+                                    <i class="far fa-trash-alt"
                                        @onclick="@(() => Delete(product.Name))"
                                        @onclick:stopPropagation></i>
                                 </td>
@@ -84,51 +80,66 @@
     </ModalBody>
     <ModalFooter>
         <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalid">Save changes</button>
+        <button type="button" class="btn btn-primary" @onclick="AddProduct" disabled="@formInvalid">Save changes</button>
     </ModalFooter>
 </Modal>
 
 @code {
     private bool showModal = false;
-    private bool formInvalid = true;
+
+    private bool formInvalid;
     private ProductViewModel model;
     private EditContext editContext;
-    private BreadcrumbItemViewModel[] breadcrumb;
+
     private Table<ListProductResponse> table;
+
+    private IEnumerable<BreadcrumbItemViewModel> breadcrumb = new List<BreadcrumbItemViewModel>()
+    {
+        new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+        new BreadcrumbItemViewModel { Title = "Products", Active = true }
+    };
 
     protected override void OnInitialized()
     {
         InitModel();
 
-        editContext.OnFieldChanged += (_, __) =>
+        breadcrumb = new List<BreadcrumbItemViewModel>()
         {
-            formInvalid = !editContext.Validate();
-            StateHasChanged();
-        };
-    }
-
-    protected override void OnParametersSet()
-    {
-        breadcrumb = new[]
-        {
-            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
             new BreadcrumbItemViewModel { Title = "Products", Active = true }
         };
     }
 
     private void InitModel()
     {
+        formInvalid = true;
+        
+        if (editContext != null)
+        {
+            editContext.OnFieldChanged -= OnFieldChanged;
+        }
+
         model = new ProductViewModel();
         editContext = new EditContext(model);
+        editContext.OnFieldChanged += OnFieldChanged;
     }
 
     private Task<ListProductResponse> Loader(int pageIndex, int pageCount)
-        => Client.Products_ListAsync(pageIndex, pageCount);
+    {
+        return Client.Products_ListAsync(pageIndex, pageCount);
+    }
 
-    private async Task Add()
+    private void OnFieldChanged(object sender, FieldChangedEventArgs args)
+    {
+        formInvalid = !editContext.Validate();
+        StateHasChanged();
+    }
+
+    private async Task AddProduct()
     {
         await Client.Products_AddAsync(model.ToRequest());
         await table.OnAdd();
+
         CloseModal();
         InitModel();
     }

@@ -13,6 +13,7 @@ namespace Esquio.UI.Client.Services
         }
 
         public HttpClient HttpClient { get; }
+
         public IAccessTokenProvider AccessTokenProvider { get; }
     }
 }

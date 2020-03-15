@@ -1,7 +1,7 @@
 ﻿@typeparam TResponse
 @inject NavigationManager Navigation
 
-@if (items == null)
+@if (items is null)
 {
     <div class="card">
         <div class="card-header">
@@ -49,16 +49,16 @@ else
         <div class="card-header">
             <div class="card-tools">
                 <ul class="pagination pagination-sm float-right">
-                    <li class="page-item@(pageIndex  == 0 ? " disabled": "")">
+                    <li class="page-item@(currentPage  == 0 ? " disabled": "")">
                         <a
                             class="page-link"
                             href="#"
-                            @onclick="GoFirst"
+                            @onclick="()=>Load()"
                             @onclick:preventDefault>
                             «
                         </a>
                     </li>
-                    @for (int i = 1; i <= pages; i++)
+                    @for (int i = 1; i <= totalPages; i++)
                     {
                         // See: https://github.com/dotnet/aspnetcore/issues/16809
                         var index = i - 1;
@@ -72,11 +72,11 @@ else
                             </a>
                         </li>
                     }
-                    <li class="page-item@(pages == pageIndex + 1 ? " disabled": "")">
+                    <li class="page-item@(totalPages == currentPage + 1 ? " disabled": "")">
                         <a
                            class="page-link"
                            href="#"
-                           @onclick="GoLast"
+                           @onclick="()=>Load(totalPages-1)"
                            @onclick:preventDefault>
                             »
                         </a>
@@ -102,9 +102,15 @@ else
 }
 
 @code {
-    [Parameter] public int SkeletonRows { get; set; }
-    [Parameter] public int SkeletonColumns { get; set; }
-    [Parameter] public int SkeletonActions { get; set; }
+    
+    //Set Skeleton parameters ( or use by default )
+
+    [Parameter] public int SkeletonRows { get; set; } = 3;
+    [Parameter] public int SkeletonColumns { get; set; } = 3;
+    [Parameter] public int SkeletonActions { get; set; } = 1;
+
+    //Loader parameters
+
     [Parameter] public Func<int, int, Task<TResponse>> Loader { get; set; }
     [Parameter] public Func<TResponse, int> Total { get; set; }
     [Parameter] public Func<TResponse, int> Count { get; set; }
@@ -112,47 +118,54 @@ else
     [Parameter] public RenderFragment<TResponse> TableBody { get; set; }
 
     private TResponse items;
-    private int pages = 0;
-    private int pageIndex = 0;
-    private const int pageCount = 10;
+
+
+    //pagination
+    private int totalPages = 0;
+    private int currentPage = 0;
+
+    private const int MAX_ITEMS_IN_PAGE = 10;
 
     protected override async Task OnInitializedAsync()
     {
         if (Total == null) throw new ArgumentNullException($"The {nameof(Total)} parameter is required.");
         if (Count == null) throw new ArgumentNullException($"The {nameof(Count)} parameter is required.");
         if (Loader == null) throw new ArgumentNullException($"The {nameof(Loader)} parameter is required.");
+
         await Load();
     }
 
     public async Task OnAdd()
     {
-        var prevCount = Count(items);
-        items = await Load(pageIndex);
-        if (prevCount == pageCount)
+        if ( Count(items) == MAX_ITEMS_IN_PAGE)
         {
-            await Load(pageIndex + 1);
+            await Load(currentPage + 1);
+        }
+        else
+        {
+            await Load(currentPage);
         }
     }
 
     public async Task OnDelete()
     {
-        items = await Load(pageIndex);
-        if (Count(items) == 0 && pageIndex > 0)
+        await Load(currentPage);
+
+        if(Count(items) == 0 && currentPage > 0)
         {
-            await Load(pageIndex - 1);
+            await Load(currentPage - 1);
         }
     }
 
-    public Task Reload() => Load(pageIndex);
-
-    private async Task<TResponse> Load(int pageIndex = 0)
+    public Task Reload()
     {
-        this.pageIndex = pageIndex;
-        items = await Loader(pageIndex, pageCount);
-        pages = (Total(items) + pageCount - 1) / pageCount;
-        return items;
+        return Load(currentPage);
     }
 
-    private Task<TResponse> GoFirst() => Load();
-    private Task<TResponse> GoLast() => Load(pages - 1);
+    private async Task Load(int page = 0)
+    {
+        currentPage = page;
+        items = await Loader(currentPage, MAX_ITEMS_IN_PAGE);
+        totalPages = (Total(items) + MAX_ITEMS_IN_PAGE - 1) / MAX_ITEMS_IN_PAGE;
+    }
 }

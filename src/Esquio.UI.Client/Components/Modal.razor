@@ -1,4 +1,4 @@
-﻿@inject IEventBus bus
+﻿@inject EsquioState state
 
 <div class="modal fade@(Show ? " show": "")" id="modal-lg" style="@(Show ? "display: block;": "")" aria-modal="true">
     <div class="modal-dialog modal-lg">
@@ -28,13 +28,6 @@
 
     protected override void OnParametersSet()
     {
-        if (Show)
-        {
-            bus.Publish(ModalOpenEvent.Create());
-        }
-        else
-        {
-            bus.Publish(ModalCloseEvent.Create());
-        }
+        state.ShowModal(showModal: Show);
     }
 }

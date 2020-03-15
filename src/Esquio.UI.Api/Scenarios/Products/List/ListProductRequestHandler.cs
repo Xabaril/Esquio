@@ -22,7 +22,7 @@ namespace Esquio.UI.Api.Scenarios.Products.List
                 .Products
                 .CountAsync(cancellationToken);
 
-            var features = await _storeDbContext
+            var products = await _storeDbContext
                 .Products
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
@@ -30,10 +30,10 @@ namespace Esquio.UI.Api.Scenarios.Products.List
 
             return new ListProductResponse()
             {
-                Count = features.Count,
+                Count = products.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = features.Select(p => new ListProductResponseDetail
+                Result = products.Select(p => new ListProductResponseDetail
                 {
                     Name = p.Name,
                     Description = p.Description

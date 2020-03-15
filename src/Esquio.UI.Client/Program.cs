@@ -37,9 +37,12 @@ namespace Esquio.UI.Client
                  return new EsquioClient(new ApiConfiguration(httpClient, tokenService));
              });
 
-            builder.Services.AddSingleton<IEventBus, EventBus>();
+            builder.Services.AddScoped<EsquioState>();
 
-            await builder.Build().RunAsync();
+            //builder.Services.AddSingleton<IAppInteractionBus, AppInteractionBus>();
+
+            await builder.Build()
+                .RunAsync();
         }
     }
 }

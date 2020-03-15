@@ -13,7 +13,7 @@ namespace Esquio.UI.Client.ViewModels
         [StringLength(200, MinimumLength = 5, ErrorMessage = "The product description must be at least 5 characters long.")]
         public string Description { get; set; }
 
-        public string DefaultRingName { get; set; }
+        public string DefaultRingName { get; set; } = "Tests";
 
         public AddProductRequest ToRequest()
         {

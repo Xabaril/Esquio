@@ -14,7 +14,7 @@
         </div>
         <div class="row mb-2">
             <PageTitle Title="Features"
-                       Subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.">
+                       Subtitle="Show the collection of features on current product.">
                 <Icon>
                     <i class="fas fa-magic"></i>
                 </Icon>
@@ -35,9 +35,6 @@
                 <Table Loader="FeatureLoader"
                        Total="@(items => items.Total)"
                        Count="@(items => items.Count)"
-                       SkeletonRows="3"
-                       SkeletonColumns="6"
-                       SkeletonActions="4"
                        @ref="featuresTable">
                     <TableHeader>
                         <th class="table-col-4">Name</th>
@@ -120,10 +117,7 @@
             <div class="col-md-12">
                 <Table Loader="RingLoader"
                        Total="@(items => items.Total)"
-                       Count="@(items => items.Count)"
-                       SkeletonRows="3"
-                       SkeletonColumns="3"
-                       SkeletonActions="1">
+                       Count="@(items => items.Count)">
                     <TableHeader>
                         <th class="table-col-4">Name</th>
                         <th>Description</th>
@@ -171,29 +165,26 @@
 </Modal>
 
 @code {
+
     [Parameter] public string ProductName { get; set; }
 
+    //Feature form parameters
     private bool showFeatureModal = false;
     private bool featureFormInvalid = true;
     private FeatureViewModel featureModel;
     private EditContext featureEditContext;
-    private BreadcrumbItemViewModel[] breadcrumb;
     private Table<ListFeatureResponse> featuresTable;
+
+    //Rings form parameters
+    //TODO:
+
+    private List<BreadcrumbItemViewModel> breadcrumb;
 
     protected override void OnInitialized()
     {
         InitFeatureModel();
 
-        featureEditContext.OnFieldChanged += (_, __) =>
-        {
-            featureFormInvalid = !featureEditContext.Validate();
-            StateHasChanged();
-        };
-    }
-
-    protected override void OnParametersSet()
-    {
-        breadcrumb = new[]
+        breadcrumb = new List<BreadcrumbItemViewModel>()
         {
             new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
             new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
@@ -203,31 +194,29 @@
 
     private void InitFeatureModel()
     {
+        featureFormInvalid = true;
+
+        if (featureEditContext != null)
+        {
+            featureEditContext.OnFieldChanged += OnFeatureFieldChanged;
+        }
+
         featureModel = new FeatureViewModel();
         featureEditContext = new EditContext(featureModel);
+        featureEditContext.OnFieldChanged += OnFeatureFieldChanged;
+    }
+
+    private void OnFeatureFieldChanged(object sender, FieldChangedEventArgs args)
+    {
+        featureFormInvalid = !featureEditContext.Validate();
+        StateHasChanged();
     }
 
     private Task<ListFeatureResponse> FeatureLoader(int pageIndex, int pageCount)
-        => Client.Features_ListAsync(ProductName, pageIndex, pageCount);
+    {
+        return  Client.Features_ListAsync(ProductName, pageIndex, pageCount);
+    }
 
-    private Task<ListFeatureResponse> RingLoader(int pageIndex, int pageCount)
-        => Task.FromResult(
-            new ListFeatureResponse
-            {
-                Result = new List<ListFlagResponseDetail>
-                {
-                    new ListFlagResponseDetail
-                    {
-                        Name = "Staging",
-                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
-                    },
-                    new ListFlagResponseDetail
-                    {
-                        Name = "Production",
-                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
-                    }
-                    }
-            });
 
     private async Task ToggleFeature(ListFlagResponseDetail feature)
     {
@@ -237,19 +226,23 @@
             Description = feature.Description,
             Enabled = !feature.Enabled
         };
+
         await Client.Features_UpdateAsync(ProductName, feature.Name, request);
+
         await featuresTable.Reload();
     }
 
     private async Task RolloutFeature(string featureName)
     {
         await Client.Features_RolloutAsync(ProductName, featureName);
+
         await featuresTable.Reload();
     }
 
     private async Task RolloffFeature(string featureName)
     {
         await Client.Features_RollbackAsync(ProductName, featureName);
+
         await featuresTable.Reload();
     }
 
@@ -257,6 +250,7 @@
     {
         await Client.Features_AddAsync(ProductName, featureModel.ToRequest());
         await featuresTable.OnAdd();
+
         CloseFeatureModal();
         InitFeatureModel();
     }
@@ -275,5 +269,27 @@
     private void CloseFeatureModal()
     {
         showFeatureModal = false;
+    }
+
+    private Task<ListFeatureResponse> RingLoader(int pageIndex, int pageCount)
+    {
+        //TODO: pending
+        return Task.FromResult(
+            new ListFeatureResponse
+            {
+                Result = new List<ListFlagResponseDetail>
+                {
+                    new ListFlagResponseDetail
+                    {
+                        Name = "Staging",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+                    },
+                    new ListFlagResponseDetail
+                    {
+                        Name = "Production",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+                    }
+                    }
+            });
     }
 }

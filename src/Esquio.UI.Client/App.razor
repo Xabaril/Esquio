@@ -1,7 +1,7 @@
-﻿@inject IEventBus bus
+﻿@inject EsquioState state
 @implements IDisposable
 
-<div class="@(showModal ? "modal-open" : "")">
+<div class="@(state.ShowingModal ? "modal-open" : "")">
     <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
@@ -19,31 +19,26 @@
         </Router>
     </CascadingAuthenticationState>
 </div>
-@if (showModal)
+
+@if (state.ShowingModal)
 {
-<div class="modal-backdrop fade show"></div>
+    <div class="modal-backdrop fade show"></div>
 }
 
 @code {
-    public IDisposable subscription;
-    private static bool showModal = false;
 
     protected override void OnInitialized()
     {
-        subscription = bus.Subscribe((@event) =>
-        {
-            showModal = @event.Type switch
-            {
-                EventType.ModalOpenEvent => true,
-                EventType.ModalCloseEvent => false,
-                _ => showModal
-            };
-            StateHasChanged();
-        });
+        state.OnShowingModalChange += ShowingModalChange;
+    }
+
+    private void ShowingModalChange()
+    {
+        StateHasChanged();
     }
 
     public void Dispose()
     {
-        subscription?.Dispose();
+        state.OnShowingModalChange -= ShowingModalChange;
     }
 }
