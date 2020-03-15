@@ -26,7 +26,7 @@ namespace Esquio.UI.Client
                 options.ProviderOptions.ResponseType = "code";
             });
 
-            builder.Services.AddScoped<IEsquioService, EsquioService>(sp =>
+            builder.Services.AddTransient<IEsquioClient, EsquioClient>(sp =>
              {
                  var navigationManager = sp.GetRequiredService<NavigationManager>();
                  var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
@@ -34,8 +34,10 @@ namespace Esquio.UI.Client
                  var httpClient = new HttpClient();
                  httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
 
-                 return new EsquioService(httpClient, tokenService);
+                 return new EsquioClient(new ApiConfiguration(httpClient, tokenService));
              });
+
+            builder.Services.AddSingleton<IEventBus, EventBus>();
 
             await builder.Build().RunAsync();
         }

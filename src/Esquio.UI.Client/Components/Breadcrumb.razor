@@ -1,0 +1,19 @@
+﻿<ol class="breadcrumb float-sm-right">
+    @foreach (var item in Items)
+    {
+    <li class="breadcrumb-item@( item.Active ? " active": "" )">
+        @if (string.IsNullOrEmpty(item.Link))
+        {
+            @item.Title
+        }
+        else
+        {
+            <a href="@item.Link">@item.Title</a>
+        }
+    </li>
+    }
+</ol>
+
+@code {
+    [Parameter] public BreadcrumbItemViewModel[] Items { get; set; }
+}

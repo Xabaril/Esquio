@@ -1,0 +1,279 @@
+﻿@page "/products/{productName}"
+@attribute [Authorize]
+@inherits ContainerComponentBase
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="bottom-spacing">@ProductName</h1>
+            </div>
+            @*<div class="col-sm-6">
+                    <Breadcrumb Items="breadcrumb" />
+                </div>*@
+        </div>
+        <div class="row mb-2">
+            <PageTitle Title="Features"
+                       Subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.">
+                <Icon>
+                    <i class="fas fa-magic"></i>
+                </Icon>
+                <Actions>
+                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenFeatureModal">
+                        New Feature
+                    </button>
+                </Actions>
+            </PageTitle>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <Table Loader="FeatureLoader"
+                       Total="@(items => items.Total)"
+                       Count="@(items => items.Count)"
+                       SkeletonRows="3"
+                       SkeletonColumns="6"
+                       SkeletonActions="4"
+                       @ref="featuresTable">
+                    <TableHeader>
+                        <th class="table-col-4">Name</th>
+                        <th>Description</th>
+                        <th class="table-col-1"></th>
+                        <th class="table-col-1"></th>
+                        <th class="table-col-1"></th>
+                        <th class="table-col-1"></th>
+                    </TableHeader>
+                    <TableBody Context="features">
+                        @foreach (var feature in features.Result)
+                        {
+                            <tr>
+                                <td>@feature.Name</td>
+                                <td>@feature.Description</td>
+                                <td>
+                                    <div class="switch-container">
+                                        <input
+                                               type="checkbox"
+                                               id="switch-@feature.Name"
+                                               checked="@feature.Enabled"
+                                               @onchange="@(() => ToggleFeature(feature))" />
+                                        <label title="Enable/Disable" for="switch-@feature.Name"></label>
+                                    </div>
+                                </td>
+                                <td class="table-component__action">
+                                    <i
+                                       title="Rollout"
+                                       class="fas fa-upload"
+                                       @onclick="@(() => RolloutFeature(feature.Name))"
+                                       @onclick:stopPropagation>
+                                    </i>
+                                </td>
+                                <td class="table-component__action">
+                                    <i
+                                       title="Rolloff"
+                                       class="fas fa-download"
+                                       @onclick="@(() => RolloffFeature(feature.Name))"
+                                       @onclick:stopPropagation>
+                                    </i>
+                                </td>
+                                <td class="table-component__action">
+                                    <i
+                                       title="Delete"
+                                       class="far fa-trash-alt"
+                                       @onclick="@(() => DeleteFeature(feature.Name))"
+                                       @onclick:stopPropagation>
+                                    </i>
+                                </td>
+                            </tr>
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <PageTitle Title="Rings"
+                       Subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.">
+                <Icon>
+                    <i class="fas fa-ring"></i>
+                </Icon>
+                <Actions>
+                    <button type="button" class="btn btn-primary btn-shadow">
+                        New Ring
+                    </button>
+                </Actions>
+            </PageTitle>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <Table Loader="RingLoader"
+                       Total="@(items => items.Total)"
+                       Count="@(items => items.Count)"
+                       SkeletonRows="3"
+                       SkeletonColumns="3"
+                       SkeletonActions="1">
+                    <TableHeader>
+                        <th class="table-col-4">Name</th>
+                        <th>Description</th>
+                        <th class="table-col-1"></th>
+                    </TableHeader>
+                    <TableBody Context="features">
+                        @foreach (var feature in features.Result)
+                        {
+                            <tr>
+                                <td>@feature.Name</td>
+                                <td>@feature.Description</td>
+                                <td class="table-component__action">
+                                    <i title="Delete" class="far fa-trash-alt"></i>
+                                </td>
+                            </tr>
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<Modal Title="New Feature" Show="showFeatureModal" OnClose="CloseFeatureModal">
+    <ModalBody>
+        <EditForm EditContext="@featureEditContext">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="feature-name">Name</label>
+                <InputText id="feature-name" class="form-control" @bind-Value="featureModel.Name" placeholder="Enter feature name" />
+            </div>
+
+            <div class="form-group">
+                <label for="feature-description">Description</label>
+                <InputText id="feature-description" class="form-control" @bind-Value="featureModel.Description" placeholder="Enter feature description" />
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseFeatureModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="AddFeature" disabled="@featureFormInvalid">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+    [Parameter] public string ProductName { get; set; }
+
+    private bool showFeatureModal = false;
+    private bool featureFormInvalid = true;
+    private FeatureViewModel featureModel;
+    private EditContext featureEditContext;
+    private BreadcrumbItemViewModel[] breadcrumb;
+    private Table<ListFeatureResponse> featuresTable;
+
+    protected override void OnInitialized()
+    {
+        InitFeatureModel();
+
+        featureEditContext.OnFieldChanged += (_, __) =>
+        {
+            featureFormInvalid = !featureEditContext.Validate();
+            StateHasChanged();
+        };
+    }
+
+    protected override void OnParametersSet()
+    {
+        breadcrumb = new[]
+        {
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
+            new BreadcrumbItemViewModel { Title = ProductName, Active = true },
+        };
+    }
+
+    private void InitFeatureModel()
+    {
+        featureModel = new FeatureViewModel();
+        featureEditContext = new EditContext(featureModel);
+    }
+
+    private Task<ListFeatureResponse> FeatureLoader(int pageIndex, int pageCount)
+        => Client.Features_ListAsync(ProductName, pageIndex, pageCount);
+
+    private Task<ListFeatureResponse> RingLoader(int pageIndex, int pageCount)
+        => Task.FromResult(
+            new ListFeatureResponse
+            {
+                Result = new List<ListFlagResponseDetail>
+                {
+                    new ListFlagResponseDetail
+                    {
+                        Name = "Staging",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+                    },
+                    new ListFlagResponseDetail
+                    {
+                        Name = "Production",
+                        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+                    }
+                    }
+            });
+
+    private async Task ToggleFeature(ListFlagResponseDetail feature)
+    {
+        var request = new UpdateFeatureRequest
+        {
+            Name = feature.Name,
+            Description = feature.Description,
+            Enabled = !feature.Enabled
+        };
+        await Client.Features_UpdateAsync(ProductName, feature.Name, request);
+        await featuresTable.Reload();
+    }
+
+    private async Task RolloutFeature(string featureName)
+    {
+        await Client.Features_RolloutAsync(ProductName, featureName);
+        await featuresTable.Reload();
+    }
+
+    private async Task RolloffFeature(string featureName)
+    {
+        await Client.Features_RollbackAsync(ProductName, featureName);
+        await featuresTable.Reload();
+    }
+
+    private async Task AddFeature()
+    {
+        await Client.Features_AddAsync(ProductName, featureModel.ToRequest());
+        await featuresTable.OnAdd();
+        CloseFeatureModal();
+        InitFeatureModel();
+    }
+
+    private async Task DeleteFeature(string featureName)
+    {
+        await Client.Features_DeleteAsync(ProductName, featureName);
+        await featuresTable.OnDelete();
+    }
+
+    private void OpenFeatureModal()
+    {
+        showFeatureModal = true;
+    }
+
+    private void CloseFeatureModal()
+    {
+        showFeatureModal = false;
+    }
+}

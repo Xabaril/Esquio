@@ -11,7 +11,18 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(blazor)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(blazor)" />
-
+    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
+    <PackageReference Include="NSwag.MSBuild" Version="$(nswagmsbuild)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Reactive" Version="$(systemreactive)" />
+    <PackageReference Include="System.Reactive.Linq" Version="$(systemreactivelinq)" />
   </ItemGroup>
+
+  <Target Name="CreateServicesFromControllers" BeforeTargets="PreBuildEvent">
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Core30) openapi2csclient /Input:..\Esquio.UI.Api\swagger.json /Output:.\Services\EsquioClient.cs /Namespace:Esquio.UI.Client.Services /ClassName:EsquioClient /ClientBaseClass:Esquio.UI.Client.Services.ApiClientBase /GenerateClientInterfaces:true /ConfigurationClass:Esquio.UI.Client.Services.ApiConfiguration /UseHttpClientCreationMethod:true /InjectHttpClient:false /UseHttpRequestMessageCreationMethod:true /DateType:System.DateTime /DateTimeType:System.DateTime /UseBaseUrl:false /OperationGenerationMode:SingleClientFromOperationId /referencepaths:%USERPROFILE%\\.nuget\\packages" />
+    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Core30) openapi2csclient /Input:..\Esquio.UI.Api\swagger.json /Output:.\Services\EsquioClient.cs /Namespace:Esquio.UI.Client.Services /ClassName:EsquioClient /ClientBaseClass:Esquio.UI.Client.Services.ApiClientBase /GenerateClientInterfaces:true /ConfigurationClass:Esquio.UI.Client.Services.ApiConfiguration /UseHttpClientCreationMethod:true /InjectHttpClient:false /UseHttpRequestMessageCreationMethod:true /DateType:System.DateTime /DateTimeType:System.DateTime /UseBaseUrl:false /OperationGenerationMode:SingleClientFromOperationId /referencepaths:$HOME/.nuget/packages" />
+  </Target>
 
 </Project>

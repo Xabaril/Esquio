@@ -1,18 +1,49 @@
-﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <RedirectToLogin />
-                </NotAuthorized>
-            </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</CascadingAuthenticationState>
+﻿@inject IEventBus bus
+@implements IDisposable
 
+<div class="@(showModal ? "modal-open" : "")">
+    <CascadingAuthenticationState>
+        <Router AppAssembly="@typeof(Program).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        <RedirectToLogin />
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+            </Found>
+            <NotFound>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p>Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </CascadingAuthenticationState>
+</div>
+@if (showModal)
+{
+<div class="modal-backdrop fade show"></div>
+}
 
+@code {
+    public IDisposable subscription;
+    private static bool showModal = false;
+
+    protected override void OnInitialized()
+    {
+        subscription = bus.Subscribe((@event) =>
+        {
+            showModal = @event.Type switch
+            {
+                EventType.ModalOpenEvent => true,
+                EventType.ModalCloseEvent => false,
+                _ => showModal
+            };
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        subscription?.Dispose();
+    }
+}

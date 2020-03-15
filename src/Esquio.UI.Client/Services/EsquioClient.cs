@@ -10,33 +10,280 @@
 #pragma warning disable 1573 // Disable "CS1573 Parameter '...' has no matching param tag in the XML comment for ...
 #pragma warning disable 1591 // Disable "CS1591 Missing XML comment for publicly visible type or member ..."
 
-namespace Esquio.CliTool.Internal
+namespace Esquio.UI.Client.Services
 {
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class EsquioClient 
+    public partial interface IEsquioClient
     {
-        private string _baseUrl = "";
-        private System.Net.Http.HttpClient _httpClient;
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListApiKeyResponse> ApiKeys_ListAsync(int? pageIndex, int? pageCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListApiKeyResponse> ApiKeys_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ApiKeys_AddAsync(AddApiKeyRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ApiKeys_AddAsync(AddApiKeyRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsApiKeyResponse> ApiKeys_GetAsync(string name);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsApiKeyResponse> ApiKeys_GetAsync(string name, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ApiKeys_DeleteAsync(string name);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ApiKeys_DeleteAsync(string name, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_AddAsync(string productName, AddFeatureRequest addfeatureRequest);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_AddAsync(string productName, AddFeatureRequest addfeatureRequest, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListFeatureResponse> Features_ListAsync(string productNamePath, int? pageIndex, int? pageCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListFeatureResponse> Features_ListAsync(string productNamePath, int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_UpdateAsync(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_UpdateAsync(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_DeleteAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_DeleteAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsFeatureResponse> Features_GetAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsFeatureResponse> Features_GetAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_RolloutAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_RolloutAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_RollbackAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_RollbackAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_ArchiveAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Features_ArchiveAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListProductResponse> Products_ListAsync(int? pageIndex, int? pageCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListProductResponse> Products_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_AddAsync(AddProductRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_AddAsync(AddProductRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsProductResponse> Products_GetAsync(string productName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsProductResponse> Products_GetAsync(string productName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_UpdateAsync(string productName, UpdateProductRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_UpdateAsync(string productName, UpdateProductRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_DeleteAsync(string productName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_DeleteAsync(string productName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_AddRingAsync(string productName, AddRingRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_AddRingAsync(string productName, AddRingRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_DeleteRingAsync(string productName, string ringName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Products_DeleteRingAsync(string productName, string ringName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsStoreResponse> Store_GetAsync(DetailsStoreRequest request, string ring);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsStoreResponse> Store_GetAsync(DetailsStoreRequest request, string ring, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDetail>> Tags_ListAsync(string productName, string featureName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDetail>> Tags_ListAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Tags_UntagAsync(string productName, string featureName, string tag);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Tags_UntagAsync(string productName, string featureName, string tag, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Tags_TagAsync(string productName, string featureName, AddTagRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Tags_TagAsync(string productName, string featureName, AddTagRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsToggleResponse> Toggles_DetailsAsync(string productName, string featureName, string toggleType);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsToggleResponse> Toggles_DetailsAsync(string productName, string featureName, string toggleType, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_DeleteAsync(string productName, string featureName, string toggleType);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_DeleteAsync(string productName, string featureName, string toggleType, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RevealToggleResponse> Toggles_RevealAsync(string toggleType);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RevealToggleResponse> Toggles_RevealAsync(string toggleType, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<KnownTypesToggleResponse> Toggles_KnownTypesAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<KnownTypesToggleResponse> Toggles_KnownTypesAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_AddParameterAsync(AddParameterToggleRequest parameterToggleRequest);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_AddParameterAsync(AddParameterToggleRequest parameterToggleRequest, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_AddAsync(AddToggleRequest postToggleRequest);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Toggles_AddAsync(AddToggleRequest postToggleRequest, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MyResponse> Users_MyAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MyResponse> Users_MyAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListUsersResponse> Users_ListAsync(int? pageIndex, int? pageCount);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListUsersResponse> Users_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_AddAsync(AddPermissionRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_AddAsync(AddPermissionRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_UpdateAsync(UpdatePermissionRequest request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_UpdateAsync(UpdatePermissionRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsUsersResponse> Users_DetailsAsync(string subjectId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<DetailsUsersResponse> Users_DetailsAsync(string subjectId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_DeleteAsync(string subjectId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task Users_DeleteAsync(string subjectId, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class EsquioClient : Esquio.UI.Client.Services.ApiClientBase, IEsquioClient
+    {
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public EsquioClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public EsquioClient(Esquio.UI.Client.Services.ApiConfiguration configuration) : base(configuration)
         {
-            BaseUrl = baseUrl; 
-            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });
-        }
-    
-        public string BaseUrl 
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
     
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -57,7 +304,7 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/audit?");
+            urlBuilder_.Append("api/audit?");
             if (pageIndex != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -72,10 +319,10 @@ namespace Esquio.CliTool.Internal
             }
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -127,6 +374,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -141,7 +390,7 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<ListApiKeyResponse> ApiKeys_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ApiKeys?");
+            urlBuilder_.Append("api/ApiKeys?");
             if (pageIndex != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -152,10 +401,10 @@ namespace Esquio.CliTool.Internal
             }
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -207,6 +456,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -221,12 +472,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task ApiKeys_AddAsync(AddApiKeyRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ApiKeys");
+            urlBuilder_.Append("api/ApiKeys");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -283,6 +534,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -300,13 +553,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("name");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ApiKeys/{name}");
+            urlBuilder_.Append("api/ApiKeys/{name}");
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -364,6 +617,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -381,13 +636,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("name");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ApiKeys/{name}");
+            urlBuilder_.Append("api/ApiKeys/{name}");
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -435,6 +690,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -452,13 +709,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features");
+            urlBuilder_.Append("api/products/{productName}/features");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(addfeatureRequest, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -515,6 +772,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -532,7 +791,7 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productNamePath");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features?");
+            urlBuilder_.Append("api/products/{productName}/features?");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productNamePath, System.Globalization.CultureInfo.InvariantCulture)));
             if (pageIndex != null) 
             {
@@ -544,10 +803,10 @@ namespace Esquio.CliTool.Internal
             }
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -599,6 +858,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -619,14 +880,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(updateFeatureRequest, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -683,6 +944,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -703,14 +966,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -758,6 +1021,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -778,14 +1043,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -843,6 +1108,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -863,14 +1130,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/rollout");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/rollout");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -925,6 +1192,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -945,14 +1214,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/rollback");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/rollback");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -1007,6 +1276,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1027,14 +1298,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/archive");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/archive");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -1089,6 +1360,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1103,7 +1376,7 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<ListProductResponse> Products_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products?");
+            urlBuilder_.Append("api/Products?");
             if (pageIndex != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1114,10 +1387,10 @@ namespace Esquio.CliTool.Internal
             }
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -1169,6 +1442,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1183,12 +1458,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task Products_AddAsync(AddProductRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products");
+            urlBuilder_.Append("api/Products");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -1239,6 +1514,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1256,13 +1533,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}");
+            urlBuilder_.Append("api/Products/{productName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -1320,6 +1597,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1337,13 +1616,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}");
+            urlBuilder_.Append("api/Products/{productName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -1394,6 +1673,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1411,13 +1692,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}");
+            urlBuilder_.Append("api/Products/{productName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -1465,6 +1746,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1482,13 +1765,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("productName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}/ring");
+            urlBuilder_.Append("api/Products/{productName}/ring");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -1539,6 +1822,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1559,14 +1844,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("ringName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}/ring/{ringName}");
+            urlBuilder_.Append("api/Products/{productName}/ring/{ringName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{ringName}", System.Uri.EscapeDataString(ConvertToString(ringName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -1614,6 +1899,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1631,15 +1918,15 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("request");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Store/product/feature?");
+            urlBuilder_.Append("api/Store/product/feature?");
             urlBuilder_.Replace("{request}", System.Uri.EscapeDataString(ConvertToString(request, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("ring") + "=").Append(System.Uri.EscapeDataString(ring != null ? ConvertToString(ring, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -1691,6 +1978,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1711,14 +2000,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/tags");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/tags");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -1770,6 +2059,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1793,15 +2084,15 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("tag");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/tags/untag/{tag}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/tags/untag/{tag}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{tag}", System.Uri.EscapeDataString(ConvertToString(tag, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -1849,6 +2140,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1869,14 +2162,14 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/tags/tag");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/tags/tag");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -1927,6 +2220,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -1950,15 +2245,15 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("toggleType");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/toggles/{toggleType}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/toggles/{toggleType}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toggleType}", System.Uri.EscapeDataString(ConvertToString(toggleType, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2016,6 +2311,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2039,15 +2336,15 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("toggleType");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/toggles/{toggleType}");
+            urlBuilder_.Append("api/products/{productName}/features/{featureName}/toggles/{toggleType}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toggleType}", System.Uri.EscapeDataString(ConvertToString(toggleType, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -2095,6 +2392,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2112,13 +2411,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("toggleType");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/toggles/parameters/{toggleType}");
+            urlBuilder_.Append("api/toggles/parameters/{toggleType}");
             urlBuilder_.Replace("{toggleType}", System.Uri.EscapeDataString(ConvertToString(toggleType, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2170,6 +2469,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2184,12 +2485,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<KnownTypesToggleResponse> Toggles_KnownTypesAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/toggles/types");
+            urlBuilder_.Append("api/toggles/types");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2241,6 +2542,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2255,12 +2558,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task Toggles_AddParameterAsync(AddParameterToggleRequest parameterToggleRequest, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/toggles/parameters");
+            urlBuilder_.Append("api/toggles/parameters");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(parameterToggleRequest, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2317,6 +2620,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2331,12 +2636,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task Toggles_AddAsync(AddToggleRequest postToggleRequest, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/toggles");
+            urlBuilder_.Append("api/toggles");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(postToggleRequest, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2393,6 +2698,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2407,12 +2714,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<MyResponse> Users_MyAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/my");
+            urlBuilder_.Append("api/Users/my");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2470,6 +2777,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2484,7 +2793,7 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task<ListUsersResponse> Users_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users?");
+            urlBuilder_.Append("api/Users?");
             if (pageIndex != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2495,10 +2804,10 @@ namespace Esquio.CliTool.Internal
             }
             urlBuilder_.Length--;
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2550,6 +2859,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2564,12 +2875,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task Users_AddAsync(AddPermissionRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users");
+            urlBuilder_.Append("api/Users");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2620,6 +2931,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2634,12 +2947,12 @@ namespace Esquio.CliTool.Internal
         public async System.Threading.Tasks.Task Users_UpdateAsync(UpdatePermissionRequest request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users");
+            urlBuilder_.Append("api/Users");
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2690,6 +3003,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2707,13 +3022,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("subjectId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/{subjectId}");
+            urlBuilder_.Append("api/Users/{subjectId}");
             urlBuilder_.Replace("{subjectId}", System.Uri.EscapeDataString(ConvertToString(subjectId, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -2765,6 +3080,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2782,13 +3099,13 @@ namespace Esquio.CliTool.Internal
                 throw new System.ArgumentNullException("subjectId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/{subjectid}");
+            urlBuilder_.Append("api/Users/{subjectid}");
             urlBuilder_.Replace("{subjectId}", System.Uri.EscapeDataString(ConvertToString(subjectId, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
     
@@ -2836,6 +3153,8 @@ namespace Esquio.CliTool.Internal
             }
             finally
             {
+                if (client_ != null)
+                    client_.Dispose();
             }
         }
     
@@ -2994,7 +3313,7 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("validTo", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset ValidTo { get; set; }
+        public System.DateTime ValidTo { get; set; }
     
     
     }
@@ -3010,7 +3329,7 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("validTo", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset ValidTo { get; set; }
+        public System.DateTime ValidTo { get; set; }
     
     
     }
@@ -3034,7 +3353,7 @@ namespace Esquio.CliTool.Internal
         public string ActAs { get; set; }
     
         [Newtonsoft.Json.JsonProperty("validTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? ValidTo { get; set; }
+        public System.DateTime? ValidTo { get; set; }
     
     
     }
