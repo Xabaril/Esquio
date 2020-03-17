@@ -8,13 +8,15 @@ namespace Esquio.UI.Api.Shared.Models.Features.Add
         public AddFeatureRequestValidator()
         {
             this.RuleFor(f => f.Name)
-                .MaximumLength(200)
                 .NotNull()
+                .MinimumLength(5)
+                .MaximumLength(200)
                 .Matches(Constants.Constraints.NamesRegularExpression);
 
             this.RuleFor(f => f.Description)
-                .MaximumLength(2000)
-                .NotNull();
+                .NotNull()
+                .MinimumLength(5)
+                .MaximumLength(2000);
         }
     }
 }

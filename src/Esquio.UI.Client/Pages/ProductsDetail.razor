@@ -18,7 +18,7 @@
         </div>
         <div class="row mb-2">
             <PageTitle Title="Features"
-                       Subtitle="Show the collection of features on current product.">
+                       Subtitle="Show the collection of active features on current product.">
                 <Icon>
                     <i class="fas fa-magic"></i>
                 </Icon>
@@ -103,7 +103,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <PageTitle Title="Rings"
-                       Subtitle="Defined Rings on current product.">
+                       Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
                 <Icon>
                     <i class="fas fa-ring"></i>
                 </Icon>
@@ -229,26 +229,37 @@
             new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
             new BreadcrumbItemViewModel { Title = ProductName, Active = true },
         };
-
     }
 
     private void InitFeatureModel()
     {
         newFeatureFormInvalid = true;
 
-        if (newFeatureEditContext != null)
-        {
-            newFeatureEditContext.OnFieldChanged -= OnNewFeatureFieldChanged;
-        }
-
         newFeatureModel = new AddFeatureRequest();
         newFeatureEditContext = new EditContext(newFeatureModel);
-        newFeatureEditContext.OnFieldChanged += OnNewFeatureFieldChanged;
+        newFeatureEditContext.OnValidationStateChanged += OnAddFeatureValidationChanged;
     }
 
-    private void OnNewFeatureFieldChanged(object sender, FieldChangedEventArgs args)
+    private void OpenNewFeatureModal()
     {
-        newFeatureFormInvalid = !newFeatureEditContext.Validate();
+        InitFeatureModel();
+        showNewFeatureModal = true;
+
+        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
+
+    }
+
+    private void CloseNewFeatureModal()
+    {
+        showNewFeatureModal = false;
+        newFeatureEditContext.OnValidationStateChanged -= OnAddFeatureValidationChanged;
+
+        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
+    }
+
+    private void OnAddFeatureValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        newFeatureFormInvalid = !newFeatureEditContext.IsValid();
         StateHasChanged();
     }
 
@@ -303,38 +314,36 @@
         await featuresTable.OnDelete();
     }
 
-    private void OpenNewFeatureModal()
-    {
-        showNewFeatureModal = true;
-        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
-
-    }
-
-    private void CloseNewFeatureModal()
-    {
-        showNewFeatureModal = false;
-        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
-    }
-
-
     private void InitRingModel()
     {
         newRingFormInvalid = true;
 
-        if (newRingEditContext != null)
-        {
-            newRingEditContext.OnFieldChanged += OnNewRingFieldChanged;
-        }
-
         newRingModel = new AddRingRequest();
         newRingEditContext = new EditContext(newRingModel);
-        newRingEditContext.OnFieldChanged += OnNewRingFieldChanged;
+        newRingEditContext.OnValidationStateChanged += OnAddRingValidationChanged;
+
     }
 
-    private void OnNewRingFieldChanged(object sender, FieldChangedEventArgs args)
+    private void OnAddRingValidationChanged(object sender, ValidationStateChangedEventArgs args)
     {
-        newRingFormInvalid = !newRingEditContext.Validate();
+        newRingFormInvalid = !newRingEditContext.IsValid();
         StateHasChanged();
+    }
+
+    private void OpenNewRingModal()
+    {
+        showNewRingModal = true;
+        InitRingModel();
+
+        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
+    }
+
+    private void CloseNewRingModal()
+    {
+        showNewRingModal = false;
+        newRingEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
+
+        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
     }
 
     private Task<DetailsProductResponse> RingsLoader()
@@ -358,17 +367,5 @@
 
         CloseNewRingModal();
         InitRingModel();
-    }
-
-    private void OpenNewRingModal()
-    {
-        showNewRingModal = true;
-        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
-    }
-
-    private void CloseNewRingModal()
-    {
-        showNewRingModal = false;
-        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
     }
 }

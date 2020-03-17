@@ -27,12 +27,25 @@ namespace Esquio.UI.Client.Components.Validation
             return editContext;
         }
 
+        public static bool IsValid(this EditContext editContext)
+        {
+            if (editContext == null)
+            {
+                throw new ArgumentNullException(nameof(editContext));
+            }
+
+            return !editContext
+                .GetValidationMessages()
+                .Any();
+        }
+
         private static void ValidateModel(EditContext editContext, ValidationMessageStore messages)
         {
             var validator = GetValidatorForModel(editContext.Model);
             var validationResults = validator.Validate(editContext.Model);
 
             messages.Clear();
+
             foreach (var validationResult in validationResults.Errors)
             {
                 messages.Add(editContext.Field(validationResult.PropertyName), validationResult.ErrorMessage);

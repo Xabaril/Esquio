@@ -101,7 +101,7 @@
         InitModel();
 
         breadcrumb = new List<BreadcrumbItemViewModel>()
-{
+        {
             new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
             new BreadcrumbItemViewModel { Title = "Products", Active = true }
         };
@@ -111,25 +111,37 @@
     {
         formInvalid = true;
 
-        if (editContext != null)
-        {
-            editContext.OnFieldChanged -= OnFieldChanged;
-        }
-
         model = new AddProductRequest();
         editContext = new EditContext(model);
-        editContext.OnFieldChanged += OnFieldChanged;
+        editContext.OnValidationStateChanged += OnAddProductValidationChanged;
+    }
+       
+
+    private void OnAddProductValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalid = !editContext.IsValid();
+        StateHasChanged();
+    }
+
+    private void OpenModal()
+    {
+        InitModel();
+        showModal = true;
+
+        esquioState.IsApplicationShowingWindowModal(showModal);
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+        editContext.OnValidationStateChanged -= OnAddProductValidationChanged;
+
+        esquioState.IsApplicationShowingWindowModal(showModal);
     }
 
     private Task<PaginatedResult<ListProductResponseDetail>> Loader(int pageIndex, int pageCount)
     {
         return esquioHttpClient.GetProductsList(pageIndex, pageCount);
-    }
-
-    private void OnFieldChanged(object sender, FieldChangedEventArgs args)
-    {
-        formInvalid = !editContext.Validate();
-        StateHasChanged();
     }
 
     private async Task AddProduct()
@@ -145,18 +157,5 @@
     {
         await esquioHttpClient.DeleteProduct(productName);
         await table.OnDelete();
-    }
-
-    private void OpenModal()
-    {
-        showModal = true;
-        esquioState.IsApplicationShowingWindowModal(showModal);
-
-    }
-
-    private void CloseModal()
-    {
-        showModal = false;
-        esquioState.IsApplicationShowingWindowModal(showModal);
     }
 }

@@ -15,7 +15,7 @@ namespace Esquio.UI.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
+            
             //add services
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddOidcAuthentication(options =>

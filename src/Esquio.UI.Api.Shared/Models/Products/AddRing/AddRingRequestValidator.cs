@@ -8,7 +8,7 @@ namespace Esquio.UI.Api.Shared.Models.Products.AddRing
         public AddRingRequestValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty()
+                .NotNull()
                 .MinimumLength(5)
                 .MaximumLength(200)
                 .Matches(Constants.Constraints.NamesRegularExpression);
