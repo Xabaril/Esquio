@@ -1,5 +1,7 @@
 ﻿@page "/authentication/{action}"
 @inject IAccessTokenProvider AuthenticationService
+@inject IEsquioClient Client
+@inject EsquioState State
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -40,7 +42,7 @@
 
             if (my != null)
             {
-                //TODO: guardar en local storage y usarlo para mostrar menus
+                State.SetPolicy(my);
             }
             else
             {
@@ -55,24 +57,13 @@
 
     async Task<MyResponse> GetCurrentUserProfile(AccessToken token)
     {
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
-        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
-
         try
         {
-            return await httpClient.GetJsonAsync<MyResponse>("api/users/my");
+            return await Client.Users_MyAsync();
         }
         catch (Exception)
         {
             return null;
         }
-    }
-
-    public class MyResponse
-    {
-        public bool IsAuthorized { get; set; }
-
-        public string ActAs { get; set; }
     }
 }

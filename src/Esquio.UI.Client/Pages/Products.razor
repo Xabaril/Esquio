@@ -1,60 +1,68 @@
 ﻿@page "/products"
 @attribute [Authorize]
 @inherits ContainerComponentBase
-@inject EsquioState  state
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            @*<div class="col-sm-6">
-                    <Breadcrumb Items="breadcrumb" />
-            </div>*@
-            <PageTitle Title="Products"
-                       Subtitle="Show the Esquio Products in the store.">
-                <Icon>
-                    <i class="fas fa-box-open"></i>
-                </Icon>
-                <Actions>
-                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
-                        New Product
-                    </button>
-                </Actions>
-            </PageTitle>
-        </div>
-    </div>
-</section>
+@inject EsquioState State
 
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <Table Loader="Loader"
-                       Total="@(items => items.Total)"
-                       Count="@(items => items.Count)"
-                       @ref="table">
-                    <TableHeader>
-                        <th class="table-col-4">Name</th>
-                        <th>Description</th>
-                        <th class="table-col-2"></th>
-                    </TableHeader>
-                    <TableBody Context="products">
-                        @foreach (var product in products.Result)
-                        {
-                            <tr @onclick="@(e => NavigateTo($"products/{product.Name}"))">
-                                <td>@product.Name</td>
-                                <td>@product.Description</td>
-                                <td class="table-component__action">
-                                    <i class="far fa-trash-alt"
-                                       @onclick="@(() => Delete(product.Name))"
-                                       @onclick:stopPropagation></i>
-                                </td>
-                            </tr>
-                        }
-                    </TableBody>
-                </Table>
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Products"
+                            Subtitle="Show the Esquio Products in the store.">
+                    <Icon>
+                        <i class="fas fa-box-open"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Create" Over="PolicySubject.Product">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
+                                New Product
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <Table Loader="Loader"
+                            Total="@(items => items.Total)"
+                            Count="@(items => items.Count)"
+                            SkeletonColumns="skeletonColumns"
+                            SkeletonActions="skeletonActions"
+                            @ref="table">
+                        <TableHeader>
+                            <th class="table-col-4">Name</th>
+                            <th>Description</th>
+                            <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Product">
+                                <th class="table-col-2"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="products">
+                            @foreach (var product in products.Result)
+                            {
+                                <tr @onclick="@(e => NavigateTo($"products/{product.Name}"))">
+                                    <td>@product.Name</td>
+                                    <td>@product.Description</td>
+                                    <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            <Button Title="Delete"
+                                                    Icon="far fa-trash-alt"
+                                                    OnClick="@(() => Delete(product.Name))" />
+                                        </td>
+                                    </Permission>
+                                </tr>
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
 
 <Modal Title="New Product" Show="showModal" OnClose="CloseModal">
     <ModalBody>
@@ -85,35 +93,33 @@
 </Modal>
 
 @code {
-    private bool showModal = false;
-
+    private bool showModal;
     private bool formInvalid;
+    private int skeletonColumns = 2;
+    private int skeletonActions = 0;
     private ProductViewModel model;
     private EditContext editContext;
-
     private Table<ListProductResponse> table;
-
-    private IEnumerable<BreadcrumbItemViewModel> breadcrumb = new List<BreadcrumbItemViewModel>()
-    {
-        new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
-        new BreadcrumbItemViewModel { Title = "Products", Active = true }
-    };
 
     protected override void OnInitialized()
     {
         InitModel();
 
-        breadcrumb = new List<BreadcrumbItemViewModel>()
-        {
+        State.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
-            new BreadcrumbItemViewModel { Title = "Products", Active = true }
-        };
+            new BreadcrumbItemViewModel { Title = "Products", Active = true });
+
+        if (State.Policy.Can(PolicyAction.Delete, PolicySubject.Product))
+        {
+            skeletonColumns += 1;
+            skeletonActions += 1;
+        }
     }
 
     private void InitModel()
     {
         formInvalid = true;
-        
+
         if (editContext != null)
         {
             editContext.OnFieldChanged -= OnFieldChanged;
@@ -154,7 +160,7 @@
     {
         showModal = true;
 
-        state.IsApplicationShowingWindowModal(showModal);
+        State.IsApplicationShowingWindowModal(showModal);
         
     }
 
@@ -162,6 +168,6 @@
     {
         showModal = false;
 
-        state.IsApplicationShowingWindowModal(showModal);
+        State.IsApplicationShowingWindowModal(showModal);
     }
 }

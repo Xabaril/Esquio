@@ -37,10 +37,11 @@ namespace Esquio.UI.Client
                  return new EsquioClient(new ApiConfiguration(httpClient, tokenService));
              });
 
+            builder.Services.AddScoped<ILocalStorage, LocalStorage>();
+            builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
             builder.Services.AddScoped<EsquioState>();
 
-            await builder.Build()
-                .RunAsync();
+            await builder.Build().RunAsync();
         }
     }
 }

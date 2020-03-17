@@ -1,0 +1,13 @@
+﻿@inject EsquioState State
+@inject ILocalStorage LocalStorage
+
+@ChildContent
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        State.Hydrate();
+    }
+}

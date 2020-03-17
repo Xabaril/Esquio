@@ -1,19 +1,32 @@
-﻿<ol class="breadcrumb float-sm-right">
-    @foreach (var item in Items)
+﻿@implements IDisposable
+@inject EsquioState State
+
+<ol class="breadcrumb float-sm-right">
+    @foreach (var item in State.Breadcrumb)
     {
-    <li class="breadcrumb-item@( item.Active ? " active": "" )">
-        @if (string.IsNullOrEmpty(item.Link))
-        {
-            @item.Title
-        }
-        else
-        {
-            <NavLink href="@item.Link" class="brand-link">@item.Title</NavLink>
-        }
+        <li class="breadcrumb-item@( item.Active ? " active": "" )">
+            @if (string.IsNullOrEmpty(item.Link) || item.Disabled)
+            {
+                @item.Title
+            }
+            else
+            {
+                <NavLink href="@item.Link">@item.Title</NavLink>
+            }
         </li>
     }
 </ol>
 
 @code {
-    [Parameter] public IEnumerable<BreadcrumbItemViewModel> Items { get; set; }
+    protected override void OnInitialized()
+    {
+        State.OnBreadcrumbChange += OnOnBreadcrumbChange;
+    }
+
+    public void Dispose()
+    {
+        State.OnBreadcrumbChange -= OnOnBreadcrumbChange;
+    }
+
+    private void OnOnBreadcrumbChange() => StateHasChanged();
 }

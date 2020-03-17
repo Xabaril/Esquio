@@ -1,150 +1,158 @@
-﻿@page "/products/{productName}"
+@page "/products/{productName}"
 @attribute [Authorize]
 @inherits ContainerComponentBase
-@inject EsquioState state
+@inject EsquioState State
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="bottom-spacing">@ProductName</h1>
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="bottom-spacing">@ProductName</h1>
+                </div>
             </div>
-            @*<div class="col-sm-6">
-                    <Breadcrumb Items="breadcrumb" />
-                </div>*@
+            <div class="row mb-2">
+                <PageTitle Title="Features"
+                            Subtitle="Show the collection of features on current product.">
+                    <Icon>
+                        <i class="fas fa-magic"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Create" Over="PolicySubject.Feature">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewFeatureModal">
+                                New Feature
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
         </div>
-        <div class="row mb-2">
-            <PageTitle Title="Features"
-                       Subtitle="Show the collection of features on current product.">
-                <Icon>
-                    <i class="fas fa-magic"></i>
-                </Icon>
-                <Actions>
-                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewFeatureModal">
-                        New Feature
-                    </button>
-                </Actions>
-            </PageTitle>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <Table Loader="FeatureLoader"
-                       Total="@(items => items.Total)"
-                       Count="@(items => items.Count)"
-                       @ref="featuresTable">
-                    <TableHeader>
-                        <th class="table-col-4">Name</th>
-                        <th>Description</th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                    </TableHeader>
-                    <TableBody Context="features">
-                        @foreach (var feature in features.Result)
-                        {
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <Table Loader="FeatureLoader"
+                            Total="@(items => items.Total)"
+                            Count="@(items => items.Count)"
+                            SkeletonColumns="featureSkeletonColumns"
+                            SkeletonActions="featureSkeletonActions"
+                            @ref="featuresTable">
+                        <TableHeader>
+                            <th class="table-col-4">Name</th>
+                            <th>Description</th>
+                            <Permission Requires="PolicyAction.Update" Over="PolicySubject.Feature">
+                                <th class="table-col-1"></th>
+                                <th class="table-col-1"></th>
+                                <th class="table-col-1"></th>
+                            </Permission>
+                            <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Feature">
+                                <th class="table-col-1"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="features">
+                            @foreach (var feature in features.Result)
+                            {
+                                <tr>
+                                    <td>@feature.Name</td>
+                                    <td>@feature.Description</td>
+                                    <Permission Requires="PolicyAction.Update" Over="PolicySubject.Feature">
+                                        <td class="table-component__action">
+                                            <Switch Title="Enable/Disable"
+                                                    Checked="@feature.Enabled"
+                                                    OnChange="@(() => ToggleFeature(feature))" />
+                                        </td>
+                                        <td class="table-component__action">
+                                            <Button Title="Rollout"
+                                                    Icon="fas fa-upload"
+                                                    OnClick="@(() => RolloutFeature(feature.Name))" />
+                                        </td>
+                                        <td class="table-component__action">
+                                            <Button Title="Rolloff"
+                                                    Icon="fas fa-download"
+                                                    OnClick="@(() => RolloffFeature(feature.Name))" />
+                                        </td>
+                                    </Permission>
+                                    <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Feature">
+                                        <td class="table-component__action">
+                                            <Button Title="Delete"
+                                                    Icon="far fa-trash-alt"
+                                                    OnClick="@(() => DeleteFeature(feature.Name))" />
+                                        </td>
+                                    </Permission>
+                                </tr>
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Rings"
+                            Subtitle="Defined Rings on current product.">
+                    <Icon>
+                        <i class="fas fa-ring"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Create" Over="PolicySubject.Ring">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
+                                New Ring
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <SingleTable Loader="RingLoader" @ref="ringTable">
+                        <TableHeader>
+                            <th class="table-col-4">Name</th>
+                            <th></th>
+                            <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Ring">
+                                <th class="table-col-1"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="response">
+                            @foreach (var ring in response.Rings)
+                            {
                             <tr>
-                                <td>@feature.Name</td>
-                                <td>@feature.Description</td>
-                                <td>
-                                    <div class="switch-container">
-                                        <input type="checkbox"
-                                               id="switch-@feature.Name"
-                                               checked="@feature.Enabled"
-                                               @onchange="@(() => ToggleFeature(feature))" />
-                                        <label title="Enable/Disable" for="switch-@feature.Name"></label>
-                                    </div>
+                                <td colspan="2">
+                                    @ring.RingName
+                                    @if (ring.Default)
+                                    {
+                                    <span class="badge badge-info">default ring</span>
+                                    }
                                 </td>
-                                <td class="table-component__action">
-                                    <i title="Rollout"
-                                       class="fas fa-upload"
-                                       @onclick="@(() => RolloutFeature(feature.Name))"
-                                       @onclick:stopPropagation>
-                                    </i>
-                                </td>
-                                <td class="table-component__action">
-                                    <i title="Rolloff"
-                                       class="fas fa-download"
-                                       @onclick="@(() => RolloffFeature(feature.Name))"
-                                       @onclick:stopPropagation>
-                                    </i>
-                                </td>
-                                <td class="table-component__action">
-                                    <i title="Delete"
-                                       class="far fa-trash-alt"
-                                       @onclick="@(() => DeleteFeature(feature.Name))"
-                                       @onclick:stopPropagation>
-                                    </i>
-                                </td>
+                                <Permission Requires="PolicyAction.Delete" Over="PolicySubject.Ring">
+                                    <td class="table-component__action">
+                                        @if (!ring.Default)
+                                        {
+                                        <Button Title="Delete"
+                                                Icon="far fa-trash-alt"
+                                                OnClick="@(() => DeleteRing(ring.RingName))" />
+                                        }
+                                    </td>
+                                </Permission>
                             </tr>
-                        }
-                    </TableBody>
-                </Table>
+                            }
+                        </TableBody>
+                    </SingleTable>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</PageTransition>
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <PageTitle Title="Rings"
-                       Subtitle="Defined Rings on current product.">
-                <Icon>
-                    <i class="fas fa-ring"></i>
-                </Icon>
-                <Actions>
-                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
-                        New Ring
-                    </button>
-                </Actions>
-            </PageTitle>
-        </div>
-    </div>
-</section>
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <SingleTable Loader="RingLoader" @ref="ringTable">
-                    <TableHeader>
-                        <th class="table-col-4">Name</th>
-                        <th></th>
-                        <th class="table-col-1"></th>
-                    </TableHeader>
-                    <TableBody Context="response">
-                        @foreach (var ring in response.Rings)
-                        {
-                            <tr>
-                                <td>@ring.RingName</td>
-                                @if (ring.Default)
-                                {
-                                    <td><span class="right badge badge-info">default ring</span></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                                <td class="table-component__action">
-                                @if (!ring.Default)
-                                {
-                                    <i title="Delete" class="far fa-trash-alt"></i>
-                                }
-                                </td>
-                            </tr>
-                        }
-                    </TableBody>
-                </SingleTable>
-            </div>
-        </div>
-    </div>
-</section>
 
 <Modal Title="New Feature" Show="showNewFeatureModal" OnClose="CloseNewFeatureModal">
     <ModalBody>
@@ -176,8 +184,8 @@
             <ValidationSummary />
 
             <div class="form-group">
-                <label for="feature-name">Name</label>
-                <InputText id="feature-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
+                <label for="ring-name">Name</label>
+                <InputText id="ring-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
             </div>
         </EditForm>
     </ModalBody>
@@ -188,12 +196,13 @@
 </Modal>
 
 @code {
-
     [Parameter] public string ProductName { get; set; }
 
     //Feature form parameters
     private bool showNewFeatureModal = false;
     private bool newFeatureFormInvalid = true;
+    private int featureSkeletonColumns = 2;
+    private int featureSkeletonActions = 0;
     private FeatureViewModel newFeatureModel;
     private EditContext newFeatureEditContext;
     private Table<ListFeatureResponse> featuresTable;
@@ -205,19 +214,27 @@
     private EditContext newRingEditContext;
     private SingleTable<DetailsRingResponse> ringTable;
 
-    private List<BreadcrumbItemViewModel> breadcrumb;
-
     protected override void OnInitialized()
     {
         InitFeatureModel();
         InitRingModel();
 
-        breadcrumb = new List<BreadcrumbItemViewModel>()
-        {
+        State.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
             new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
-            new BreadcrumbItemViewModel { Title = ProductName, Active = true },
-        };
+            new BreadcrumbItemViewModel { Title = ProductName, Active = true });
+
+        if (State.Policy.Can(PolicyAction.Update, PolicySubject.Feature))
+        {
+            featureSkeletonColumns += 3;
+            featureSkeletonActions += 3;
+        }
+
+        if (State.Policy.Can(PolicyAction.Delete, PolicySubject.Feature))
+        {
+            featureSkeletonColumns += 1;
+            featureSkeletonActions += 1;
+        }
     }
 
     private void InitFeatureModel()
@@ -292,14 +309,14 @@
     private void OpenNewFeatureModal()
     {
         showNewFeatureModal = true;
-        state.IsApplicationShowingWindowModal(showNewFeatureModal);
+        State.IsApplicationShowingWindowModal(showNewFeatureModal);
 
     }
 
     private void CloseNewFeatureModal()
     {
         showNewFeatureModal = false;
-        state.IsApplicationShowingWindowModal(showNewFeatureModal);
+        State.IsApplicationShowingWindowModal(showNewFeatureModal);
     }
 
     private void InitRingModel()
@@ -329,7 +346,6 @@
 
     private async Task AddNewRing()
     {
-        Console.WriteLine("Add Ring");
         await Client.Products_AddRingAsync(ProductName, newRingModel.ToRequest());
         await ringTable.OnAdd();
 
@@ -337,15 +353,21 @@
         InitRingModel();
     }
 
+    private async Task DeleteRing(string ringName)
+    {
+        await Client.Products_DeleteRingAsync(ProductName, ringName);
+        await ringTable.OnDelete();
+    }
+
     private void OpenNewRingModal()
     {
         showNewRingModal = true;
-        state.IsApplicationShowingWindowModal(showNewRingModal);
+        State.IsApplicationShowingWindowModal(showNewRingModal);
     }
 
     private void CloseNewRingModal()
     {
         showNewRingModal = false;
-        state.IsApplicationShowingWindowModal(showNewRingModal);
+        State.IsApplicationShowingWindowModal(showNewRingModal);
     }
 }

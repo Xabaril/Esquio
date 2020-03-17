@@ -1,0 +1,15 @@
+﻿<div class="switch-container">
+    <input type="checkbox"
+           id="switch-@id"
+           checked="@Checked"
+           @onchange="OnChange" />
+    <label title="@Title" for="switch-@id"></label>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public bool Checked { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    private Guid id = Guid.NewGuid();
+}
