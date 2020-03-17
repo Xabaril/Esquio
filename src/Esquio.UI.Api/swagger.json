@@ -281,7 +281,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListFeatureResponse"
+              "$ref": "#/definitions/PaginatedResultOfListFeatureResponseDetail"
             }
           },
           "500": {
@@ -577,7 +577,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListProductResponse"
+              "$ref": "#/definitions/PaginatedResultOfListProductResponseDetail"
             }
           },
           "500": {
@@ -718,12 +718,12 @@
         }
       }
     },
-    "/api/Products/{productName}/ring": {
-      "get": {
+    "/api/Products/{productName}/ring/{ringName}": {
+      "delete": {
         "tags": [
           "Products"
         ],
-        "operationId": "Products_GetProductRings",
+        "operationId": "Products_DeleteRing",
         "parameters": [
           {
             "type": "string",
@@ -731,17 +731,17 @@
             "in": "path",
             "required": true,
             "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ringName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/DetailsRingResponse"
-            }
-          },
-          "404": {
+          "204": {
             "description": ""
           },
           "500": {
@@ -752,7 +752,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Products/{productName}/ring": {
       "post": {
         "tags": [
           "Products"
@@ -778,42 +780,6 @@
         ],
         "responses": {
           "201": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Products/{productName}/ring/{ringName}": {
-      "delete": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_DeleteRing",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "productName",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          },
-          {
-            "type": "string",
-            "name": "ringName",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
             "description": ""
           },
           "500": {
@@ -1641,7 +1607,7 @@
         }
       }
     },
-    "ListFeatureResponse": {
+    "PaginatedResultOfListFeatureResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1661,15 +1627,15 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ListFlagResponseDetail"
+            "$ref": "#/definitions/ListFeatureResponseDetail"
           }
         }
       }
     },
-    "ListFlagResponseDetail": {
+    "ListFeatureResponseDetail": {
       "type": "object",
       "required": [
         "enabled"
@@ -1686,7 +1652,7 @@
         }
       }
     },
-    "ListProductResponse": {
+    "PaginatedResultOfListProductResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1706,7 +1672,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ListProductResponseDetail"
@@ -1733,6 +1699,26 @@
         },
         "description": {
           "type": "string"
+        },
+        "rings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RingResponseDetail"
+          }
+        }
+      }
+    },
+    "RingResponseDetail": {
+      "type": "object",
+      "required": [
+        "default"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
         }
       }
     },
@@ -1758,34 +1744,6 @@
         },
         "description": {
           "type": "string"
-        }
-      }
-    },
-    "DetailsRingResponse": {
-      "type": "object",
-      "properties": {
-        "productName": {
-          "type": "string"
-        },
-        "rings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DetailsRingResponseDetail"
-          }
-        }
-      }
-    },
-    "DetailsRingResponseDetail": {
-      "type": "object",
-      "required": [
-        "default"
-      ],
-      "properties": {
-        "ringName": {
-          "type": "string"
-        },
-        "default": {
-          "type": "boolean"
         }
       }
     },

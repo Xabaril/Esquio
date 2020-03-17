@@ -1,12 +1,13 @@
-﻿using Esquio.UI.Api.Scenarios.Flags.Add;
-using Esquio.UI.Api.Scenarios.Flags.Archive;
-using Esquio.UI.Api.Scenarios.Flags.Delete;
-using Esquio.UI.Api.Scenarios.Flags.Details;
-using Esquio.UI.Api.Scenarios.Flags.List;
-using Esquio.UI.Api.Scenarios.Flags.Rollback;
-using Esquio.UI.Api.Scenarios.Flags.Rollout;
-using Esquio.UI.Api.Scenarios.Flags.Update;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Features.Add;
+using Esquio.UI.Api.Shared.Models.Features.Archive;
+using Esquio.UI.Api.Shared.Models.Features.Delete;
+using Esquio.UI.Api.Shared.Models.Features.Details;
+using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.Rollback;
+using Esquio.UI.Api.Shared.Models.Features.Rollout;
+using Esquio.UI.Api.Shared.Models.Features.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -155,9 +156,9 @@ namespace Esquio.UI.Api.Scenarios.Flags
         [HttpGet]
         [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features")]
-        [ProducesResponseType(typeof(ListFeatureResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<ListFeatureResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListFeatureResponse>> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListFeatureResponseDetail>>> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
 

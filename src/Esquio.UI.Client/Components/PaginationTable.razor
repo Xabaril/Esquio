@@ -1,0 +1,164 @@
+﻿@typeparam TResponse
+@inject NavigationManager Navigation
+
+@if (items is null)
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <ul class="pagination pagination-sm float-right skeleton">
+                    <li>
+                        <div class="line"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <table class="table table-hover table-component">
+                <thead>
+                    @TableHeader
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < SkeletonRows; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < SkeletonColumns - SkeletonActions; j++)
+                            {
+                                <td>
+                                    <div class="line"></div>
+                                </td>
+                            }
+                            @for (int k = 0; k < SkeletonActions; k++)
+                            {
+                                <td>
+                                    <div class="action"></div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <ul class="pagination pagination-sm float-right">
+                    <li class="page-item@(currentPage  == 0 ? " disabled": "")">
+                        <a class="page-link"
+                           href="#"
+                           @onclick="()=>Load()"
+                           @onclick:preventDefault>
+                            «
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        // See: https://github.com/dotnet/aspnetcore/issues/16809
+                        var index = i - 1;
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="#"
+                               @onclick="@(() => Load(index))"
+                               @onclick:preventDefault>
+                                @i
+                            </a>
+                        </li>
+                    }
+                    <li class="page-item@(totalPages == currentPage + 1 ? " disabled": "")">
+                        <a class="page-link"
+                           href="#"
+                           @onclick="()=>Load(totalPages-1)"
+                           @onclick:preventDefault>
+                            »
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <table class="table table-hover table-component">
+                <thead>
+                    <tr>
+                        @TableHeader
+                    </tr>
+                </thead>
+                <tbody>
+                    @TableBody(items)
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+
+@code {
+
+    //Set Skeleton parameters ( or use by default )
+
+    [Parameter] public int SkeletonRows { get; set; } = 3;
+    [Parameter] public int SkeletonColumns { get; set; } = 3;
+    [Parameter] public int SkeletonActions { get; set; } = 1;
+
+    //Loader parameters
+
+    [Parameter] public Func<int, int, Task<PaginatedResult<TResponse>>> Loader { get; set; }
+    [Parameter] public RenderFragment TableHeader { get; set; }
+    [Parameter] public RenderFragment<PaginatedResult<TResponse>> TableBody { get; set; }
+
+    private PaginatedResult<TResponse> items;
+
+    //pagination
+    private int totalPages = 0;
+    private int currentPage = 0;
+
+    private const int MAX_ITEMS_IN_PAGE = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (Loader == null) throw new ArgumentNullException($"The {nameof(Loader)} parameter is required.");
+
+        await Load();
+    }
+
+    public async Task OnAdd()
+    {
+        if (items.Count == MAX_ITEMS_IN_PAGE)
+        {
+            await Load(currentPage + 1);
+        }
+        else
+        {
+            await Load(currentPage);
+        }
+    }
+
+    public async Task OnDelete()
+    {
+        await Load(currentPage);
+
+        if (items.Count == 0 && currentPage > 0)
+        {
+            await Load(currentPage - 1);
+        }
+    }
+
+    public Task Reload()
+    {
+        return Load(currentPage);
+    }
+
+    private async Task Load(int page = 0)
+    {
+        currentPage = page;
+        items = await Loader(currentPage, MAX_ITEMS_IN_PAGE);
+        totalPages = (items.Total + MAX_ITEMS_IN_PAGE - 1) / MAX_ITEMS_IN_PAGE;
+    }
+}

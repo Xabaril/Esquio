@@ -933,7 +933,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponse>();
+                .ReadAs<ListFeatureResponseDetail>();
 
             content.Total
                 .Should().Be(2);
@@ -996,7 +996,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponse>();
+                .ReadAs<ListFeatureResponseDetail>();
 
             content.Total
                 .Should().Be(1);
@@ -1054,7 +1054,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponse>();
+                .ReadAs<ListFeatureResponseDetail>();
 
             content.Total
                 .Should().Be(2);
@@ -1112,7 +1112,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponse>();
+                .ReadAs<ListFeatureResponseDetail>();
 
             content.Total
                 .Should().Be(2);
@@ -1216,7 +1216,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponse>();
+                .ReadAs<ListFeatureResponseDetail>();
 
             content.Total
                 .Should().Be(2);

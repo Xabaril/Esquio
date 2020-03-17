@@ -1,4 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Products.List;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Scenarios.Products.List
 {
-    public class ListProductRequestHandler : IRequestHandler<ListProductRequest, ListProductResponse>
+    public class ListProductRequestHandler : IRequestHandler<ListProductRequest, PaginatedResult<ListProductResponseDetail>>
     {
         private readonly StoreDbContext _storeDbContext;
 
@@ -16,7 +18,7 @@ namespace Esquio.UI.Api.Scenarios.Products.List
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
-        public async Task<ListProductResponse> Handle(ListProductRequest request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<ListProductResponseDetail>> Handle(ListProductRequest request, CancellationToken cancellationToken)
         {
             var total = await _storeDbContext
                 .Products
@@ -28,12 +30,12 @@ namespace Esquio.UI.Api.Scenarios.Products.List
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
 
-            return new ListProductResponse()
+            return new PaginatedResult<ListProductResponseDetail>()
             {
                 Count = products.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = products.Select(p => new ListProductResponseDetail
+                Items = products.Select(p => new ListProductResponseDetail
                 {
                     Name = p.Name,
                     Description = p.Description

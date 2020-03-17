@@ -1,8 +1,8 @@
-﻿using Esquio.UI.Api.Scenarios.Products.Add;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Infrastructure.Behaviors;
 using Esquio.UI.Api.Infrastructure.Routes;
 using Esquio.UI.Api.Infrastructure.Serialization;
+using Esquio.UI.Api.Shared.Models.Products.Add;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;

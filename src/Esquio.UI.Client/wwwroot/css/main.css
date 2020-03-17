@@ -33,6 +33,12 @@
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }*/
 
+/* Navbar */
+
+.navbar {
+    padding-right: 1.45rem;
+}
+
 .nav-link.active {
     background-color: rgba(255,255,255,.3) !important;
 }
@@ -181,6 +187,10 @@ ul.pagination.skeleton > li {
 
 .table-component .table-col-2 {
     width: 10%;
+}
+
+.table-component .badge {
+    margin-left: 1rem;
 }
 
 .table-component .table-col-4 {

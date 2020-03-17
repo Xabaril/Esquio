@@ -1,12 +1,12 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
-using Esquio.UI.Api.Scenarios.Products.Add;
-using Esquio.UI.Api.Scenarios.Products.AddRing;
-using Esquio.UI.Api.Scenarios.Products.Delete;
-using Esquio.UI.Api.Scenarios.Products.DeleteRing;
-using Esquio.UI.Api.Scenarios.Products.Details;
-using Esquio.UI.Api.Scenarios.Products.DetailsRing;
-using Esquio.UI.Api.Scenarios.Products.List;
-using Esquio.UI.Api.Scenarios.Products.Update;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Products.Add;
+using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.Delete;
+using Esquio.UI.Api.Shared.Models.Products.DeleteRing;
+using Esquio.UI.Api.Shared.Models.Products.Details;
+using Esquio.UI.Api.Shared.Models.Products.List;
+using Esquio.UI.Api.Shared.Models.Products.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,9 +33,9 @@ namespace Esquio.UI.Api.Scenarios.Products
         [HttpGet]
         [Route("")]
         [Authorize(Policies.Reader)]
-        [ProducesResponseType(typeof(ListProductResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<ListProductResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListProductResponse>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListProductResponseDetail>>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
@@ -100,27 +100,6 @@ namespace Esquio.UI.Api.Scenarios.Products
             await _mediator.Send(request, cancellationToken);
 
             return NoContent();
-        }
-
-        [HttpGet]
-        [Authorize(Policies.Reader)]
-        [Route("{productName:slug}/ring")]
-        [ProducesResponseType(typeof(DetailsRingResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DetailsRingResponse>> GetProductRings(string productName, CancellationToken cancellationToken = default)
-        {
-            var rings = await _mediator.Send(new DetailsRingRequest
-            { 
-                ProductName = productName 
-            }, cancellationToken);
-
-            if (rings != null)
-            {
-                return Ok(rings);
-            }
-
-            return NotFound();
         }
 
         [HttpDelete]

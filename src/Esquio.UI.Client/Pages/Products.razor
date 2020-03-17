@@ -1,13 +1,13 @@
 ﻿@page "/products"
 @attribute [Authorize]
-@inherits ContainerComponentBase
-@inject EsquioState  state
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            @*<div class="col-sm-6">
-                    <Breadcrumb Items="breadcrumb" />
-            </div>*@
             <PageTitle Title="Products"
                        Subtitle="Show the Esquio Products in the store.">
                 <Icon>
@@ -27,19 +27,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <Table Loader="Loader"
-                       Total="@(items => items.Total)"
-                       Count="@(items => items.Count)"
-                       @ref="table">
+                <PaginationTable Loader="Loader" @ref="table">
                     <TableHeader>
                         <th class="table-col-4">Name</th>
                         <th>Description</th>
                         <th class="table-col-2"></th>
                     </TableHeader>
                     <TableBody Context="products">
-                        @foreach (var product in products.Result)
+                        @foreach (var product in products.Items)
                         {
-                            <tr @onclick="@(e => NavigateTo($"products/{product.Name}"))">
+                            <tr @onclick="@(e => navigation.NavigateTo($"products/{product.Name}"))">
                                 <td>@product.Name</td>
                                 <td>@product.Description</td>
                                 <td class="table-component__action">
@@ -50,7 +47,7 @@
                             </tr>
                         }
                     </TableBody>
-                </Table>
+                </PaginationTable>
             </div>
         </div>
     </div>
@@ -59,7 +56,7 @@
 <Modal Title="New Product" Show="showModal" OnClose="CloseModal">
     <ModalBody>
         <EditForm EditContext="@editContext">
-            <DataAnnotationsValidator />
+            <FluentValidationValidator />
             <ValidationSummary />
 
             <div class="form-group">
@@ -88,10 +85,10 @@
     private bool showModal = false;
 
     private bool formInvalid;
-    private ProductViewModel model;
+    private AddProductRequest model;
     private EditContext editContext;
 
-    private Table<ListProductResponse> table;
+    private PaginationTable<ListProductResponseDetail> table;
 
     private IEnumerable<BreadcrumbItemViewModel> breadcrumb = new List<BreadcrumbItemViewModel>()
     {
@@ -104,7 +101,7 @@
         InitModel();
 
         breadcrumb = new List<BreadcrumbItemViewModel>()
-        {
+{
             new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
             new BreadcrumbItemViewModel { Title = "Products", Active = true }
         };
@@ -113,20 +110,20 @@
     private void InitModel()
     {
         formInvalid = true;
-        
+
         if (editContext != null)
         {
             editContext.OnFieldChanged -= OnFieldChanged;
         }
 
-        model = new ProductViewModel();
+        model = new AddProductRequest();
         editContext = new EditContext(model);
         editContext.OnFieldChanged += OnFieldChanged;
     }
 
-    private Task<ListProductResponse> Loader(int pageIndex, int pageCount)
+    private Task<PaginatedResult<ListProductResponseDetail>> Loader(int pageIndex, int pageCount)
     {
-        return Client.Products_ListAsync(pageIndex, pageCount);
+        return esquioHttpClient.GetProductsList(pageIndex, pageCount);
     }
 
     private void OnFieldChanged(object sender, FieldChangedEventArgs args)
@@ -137,7 +134,7 @@
 
     private async Task AddProduct()
     {
-        await Client.Products_AddAsync(model.ToRequest());
+        await esquioHttpClient.AddProduct(model);
         await table.OnAdd();
 
         CloseModal();
@@ -146,22 +143,20 @@
 
     private async Task Delete(string productName)
     {
-        await Client.Products_DeleteAsync(productName);
+        await esquioHttpClient.DeleteProduct(productName);
         await table.OnDelete();
     }
 
     private void OpenModal()
     {
         showModal = true;
+        esquioState.IsApplicationShowingWindowModal(showModal);
 
-        state.IsApplicationShowingWindowModal(showModal);
-        
     }
 
     private void CloseModal()
     {
         showModal = false;
-
-        state.IsApplicationShowingWindowModal(showModal);
+        esquioState.IsApplicationShowingWindowModal(showModal);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Products.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Details
         {
             var product = await _storeDbContext
                .Products
+               .Include(p=>p.Rings)
                .Where(f => f.Name == request.ProductName)
                .SingleOrDefaultAsync(cancellationToken);
 
@@ -29,7 +31,12 @@ namespace Esquio.UI.Api.Scenarios.Products.Details
                 return new DetailsProductResponse()
                 {
                     Name = product.Name,
-                    Description = product.Description
+                    Description = product.Description,
+                    Rings = product.Rings.Select(r=>new RingResponseDetail()
+                    {
+                        Name = r.Name,
+                        Default = r.ByDefault
+                    })
                 };
             }
 
