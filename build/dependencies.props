@@ -68,6 +68,7 @@
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
+    <serilogsinksbrowserconsole>1.0.0-dev-00012</serilogsinksbrowserconsole>
 
     <hellangmiddlewareproblemdetails>4.4.0</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>8.0.0</mediatrextensionsmicrosoftdependencyinjection>
