@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
   </ItemGroup>
 
-  <!--<Target Name="CreateServicesFromControllers" BeforeTargets="PreBuildEvent">
-    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Core30) openapi2csclient /Input:..\Esquio.UI.Api\swagger.json /Output:.\Services\EsquioClient.cs /Namespace:Esquio.UI.Client.Services /ClassName:EsquioClient /ClientBaseClass:Esquio.UI.Client.Services.ApiClientBase /GenerateClientInterfaces:true /ConfigurationClass:Esquio.UI.Client.Services.ApiConfiguration /UseHttpClientCreationMethod:true /InjectHttpClient:false /UseHttpRequestMessageCreationMethod:true /DateType:System.DateTime /DateTimeType:System.DateTime /UseBaseUrl:false /OperationGenerationMode:SingleClientFromOperationId /referencepaths:%USERPROFILE%\\.nuget\\packages" />
-    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Core30) openapi2csclient /Input:..\Esquio.UI.Api\swagger.json /Output:.\Services\EsquioClient.cs /Namespace:Esquio.UI.Client.Services /ClassName:EsquioClient /ClientBaseClass:Esquio.UI.Client.Services.ApiClientBase /GenerateClientInterfaces:true /ConfigurationClass:Esquio.UI.Client.Services.ApiConfiguration /UseHttpClientCreationMethod:true /InjectHttpClient:false /UseHttpRequestMessageCreationMethod:true /DateType:System.DateTime /DateTimeType:System.DateTime /UseBaseUrl:false /OperationGenerationMode:SingleClientFromOperationId /referencepaths:$HOME/.nuget/packages" />
-  </Target>-->
-
 </Project>

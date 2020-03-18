@@ -6,156 +6,152 @@
 @inject EsquioState  esquioState
 @inject NavigationManager navigation
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="bottom-spacing">@ProductName</h1>
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="bottom-spacing">@ProductName</h1>
+                </div>
             </div>
-            @*<div class="col-sm-6">
-                    <Breadcrumb Items="breadcrumb" />
-                </div>*@
-        </div>
-        <div class="row mb-2">
-            <PageTitle Title="Features"
-                       Subtitle="Show the collection of active features on current product.">
-                <Icon>
-                    <i class="fas fa-magic"></i>
-                </Icon>
-                <Actions>
-                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewFeatureModal">
-                        New Feature
-                    </button>
-                </Actions>
-            </PageTitle>
-        </div>
-    </div>
-</section>
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <PaginationTable Loader="FeatureLoader"
-                       @ref="featuresTable">
-                    <TableHeader>
-                        <th class="table-col-4">Name</th>
-                        <th>Description</th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                        <th class="table-col-1"></th>
-                    </TableHeader>
-                    <TableBody Context="features">
-                        @foreach (var feature in features.Items)
-                        {
-                        <tr>
-                            <td>@feature.Name</td>
-                            <td>@feature.Description</td>
-                            <td>
-                                <div class="switch-container">
-                                    <input type="checkbox"
-                                           id="switch-@feature.Name"
-                                           checked="@feature.Enabled"
-                                           @onchange="@(() => ToggleFeature(feature))" />
-                                    <label title="Enable/Disable" for="switch-@feature.Name"></label>
-                                </div>
-                            </td>
-                            <td class="table-component__action">
-                                <i title="Rollout"
-                                   class="fas fa-upload"
-                                   @onclick="@(() => RolloutFeature(feature.Name))"
-                                   @onclick:stopPropagation>
-                                </i>
-                            </td>
-                            <td class="table-component__action">
-                                <i title="Rolloff"
-                                   class="fas fa-download"
-                                   @onclick="@(() => RolloffFeature(feature.Name))"
-                                   @onclick:stopPropagation>
-                                </i>
-                            </td>
-                            <td class="table-component__action">
-                                <i title="Archive"
-                                   class="fas fa-archive"
-                                   @onclick="@(() => ArchiveFeature(feature.Name))"
-                                   @onclick:stopPropagation>
-                                </i>
-                            </td>
-                            <td class="table-component__action">
-                                <i title="Delete"
-                                   class="far fa-trash-alt"
-                                   @onclick="@(() => DeleteFeature(feature.Name))"
-                                   @onclick:stopPropagation>
-                                </i>
-                            </td>
-                        </tr>
-                        }
-                    </TableBody>
-                </PaginationTable>
+            <div class="row mb-2">
+                <PageTitle Title="Features"
+                            Subtitle="Show the collection of active features on current product.">
+                    <Icon>
+                        <i class="fas fa-magic"></i>
+                    </Icon>
+                    <Actions>
+                        <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewFeatureModal">
+                            New Feature
+                        </button>
+                    </Actions>
+                </PageTitle>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <PageTitle Title="Rings"
-                       Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
-                <Icon>
-                    <i class="fas fa-ring"></i>
-                </Icon>
-                <Actions>
-                    <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
-                        New Ring
-                    </button>
-                </Actions>
-            </PageTitle>
-        </div>
-    </div>
-</section>
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <SingleTable Loader="RingsLoader" @ref="ringTable">
-                    <TableHeader>
-                        <th class="table-col-4">Name</th>
-                        <th></th>
-                        <th class="table-col-1"></th>
-                    </TableHeader>
-                    <TableBody Context="response">
-                        @foreach (var ring in response.Rings)
-                        {
-                            <tr>
-                                <td>@ring.Name</td>
-                                @if (ring.Default)
-                                {
-                                    <td><span class="right badge badge-info">default ring</span></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                                <td class="table-component__action">
-                                    @if (!ring.Default)
-                                    {
-                                        <i title="Delete" class="far fa-trash-alt" 
-                                           @onclick="@(() => DeleteRing(ring.Name))"
-                                           @onclick:stopPropagation></i>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </TableBody>
-                </SingleTable>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginationTable Loader="FeatureLoader" @ref="featuresTable">
+                        <TableHeader>
+                            <th class="table-col-4">Name</th>
+                            <th>Description</th>
+                            <th class="table-col-1"></th>
+                            <th class="table-col-1"></th>
+                            <th class="table-col-1"></th>
+                            <th class="table-col-1"></th>
+                            <th class="table-col-1"></th>
+                        </TableHeader>
+                        <TableBody Context="features">
+                            @foreach (var feature in features.Items)
+                            {
+                                <tr>
+                                    <td>@feature.Name</td>
+                                    <td>@feature.Description</td>
+                                    <td>
+                                        <div class="switch-container">
+                                            <input type="checkbox"
+                                                    id="switch-@feature.Name"
+                                                    checked="@feature.Enabled"
+                                                    @onchange="@(() => ToggleFeature(feature))" />
+                                            <label title="Enable/Disable" for="switch-@feature.Name"></label>
+                                        </div>
+                                    </td>
+                                    <td class="table-component__action">
+                                        <i title="Rollout"
+                                            class="fas fa-upload"
+                                            @onclick="@(() => RolloutFeature(feature.Name))"
+                                            @onclick:stopPropagation>
+                                        </i>
+                                    </td>
+                                    <td class="table-component__action">
+                                        <i title="Rolloff"
+                                            class="fas fa-download"
+                                            @onclick="@(() => RolloffFeature(feature.Name))"
+                                            @onclick:stopPropagation>
+                                        </i>
+                                    </td>
+                                    <td class="table-component__action">
+                                        <i title="Archive"
+                                            class="fas fa-archive"
+                                            @onclick="@(() => ArchiveFeature(feature.Name))"
+                                            @onclick:stopPropagation>
+                                        </i>
+                                    </td>
+                                    <td class="table-component__action">
+                                        <i title="Delete"
+                                            class="far fa-trash-alt"
+                                            @onclick="@(() => DeleteFeature(feature.Name))"
+                                            @onclick:stopPropagation>
+                                        </i>
+                                    </td>
+                                </tr>
+                            }
+                        </TableBody>
+                    </PaginationTable>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Rings"
+                            Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
+                    <Icon>
+                        <i class="fas fa-ring"></i>
+                    </Icon>
+                    <Actions>
+                        <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
+                            New Ring
+                        </button>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <SingleTable Loader="RingsLoader" @ref="ringTable">
+                        <TableHeader>
+                            <th class="table-col-4">Name</th>
+                            <th></th>
+                            <th class="table-col-1"></th>
+                        </TableHeader>
+                        <TableBody Context="response">
+                            @foreach (var ring in response.Rings)
+                            {
+                                <tr>
+                                    <td colspan="2">
+                                        @ring.Name
+                                        @if (ring.Default)
+                                        {
+                                            <span class="badge badge-info">default ring</span>
+                                        }
+                                    </td>
+                                    <td class="table-component__action">
+                                        @if (!ring.Default)
+                                        {
+                                            <i title="Delete" class="far fa-trash-alt"
+                                                @onclick="@(() => DeleteRing(ring.Name))"
+                                                @onclick:stopPropagation></i>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </TableBody>
+                    </SingleTable>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
 
 <Modal Title="New Feature" Show="showNewFeatureModal" OnClose="CloseNewFeatureModal">
     <ModalBody>
@@ -187,8 +183,8 @@
             <ValidationSummary />
 
             <div class="form-group">
-                <label for="feature-name">Name</label>
-                <InputText id="feature-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
+                <label for="ring-name">Name</label>
+                <InputText id="ring-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
             </div>
         </EditForm>
     </ModalBody>
@@ -216,19 +212,15 @@
     private EditContext newRingEditContext;
     private SingleTable<DetailsProductResponse> ringTable;
 
-    private List<BreadcrumbItemViewModel> breadcrumb;
-
     protected override void OnInitialized()
     {
         InitFeatureModel();
         InitRingModel();
 
-        breadcrumb = new List<BreadcrumbItemViewModel>()
-        {
+        esquioState.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
             new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
-            new BreadcrumbItemViewModel { Title = ProductName, Active = true },
-        };
+            new BreadcrumbItemViewModel { Title = ProductName, Active = true });
     }
 
     private void InitFeatureModel()
