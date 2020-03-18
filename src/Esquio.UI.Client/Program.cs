@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,10 +14,26 @@ namespace Esquio.UI.Client
     {
         public static async Task Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+               .MinimumLevel.Debug()
+               .WriteTo.BrowserConsole()
+               .CreateLogger();
+
+            try
+            {
+                await ConfigureHost(args).Build().RunAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An exception is throwed when creating the WASM host!");
+            }
+        }
+
+        static WebAssemblyHostBuilder ConfigureHost(string[] args)
+        {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-            
-            //add services
+
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddOidcAuthentication(options =>
             {
@@ -27,20 +44,19 @@ namespace Esquio.UI.Client
             });
 
             builder.Services.AddTransient<IEsquioHttpClient, EsquioHttpClient>(sp =>
-             {
-                 var navigationManager = sp.GetRequiredService<NavigationManager>();
-                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
+            {
+                var navigationManager = sp.GetRequiredService<NavigationManager>();
+                var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
 
-                 var httpClient = new HttpClient();
-                 httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
+                var httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
 
-                 return new EsquioHttpClient(httpClient, tokenService);
-             });
+                return new EsquioHttpClient(httpClient, tokenService);
+            });
 
             builder.Services.AddScoped<EsquioState>();
 
-            await builder.Build()
-                .RunAsync();
+            return builder;
         }
     }
 }
