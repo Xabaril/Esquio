@@ -8,6 +8,7 @@ using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -50,6 +51,12 @@ namespace Esquio.UI.Client.Services
     public class EsquioHttpClient
         : IEsquioHttpClient
     {
+        const string API_VERSION_HEADER_NAME = "x-api-version";
+        const string API_VERSION_HEADER_VALUE = "3.0";
+        const string DEFAULT_CONTENT_TYPE = "application/json";
+
+
+
         private readonly HttpClient _httpClient;
         private readonly IAccessTokenProvider _accessTokenProvider;
 
@@ -62,7 +69,7 @@ namespace Esquio.UI.Client.Services
         public async Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
         {
             var urlBuilder = new StringBuilder();
-            urlBuilder.Append("api/products?");
+            urlBuilder.Append($"api/products?");
 
             if (pageIndex != null)
             {
@@ -79,26 +86,26 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    try
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
 
                         return JsonConvert.DeserializeObject<PaginatedResult<ListProductResponseDetail>>(
                             content, new JsonSerializerSettings());
                     }
-                    catch (JsonException exception)
-                    {
-                        //TODO: que hacemos aqui
-                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, "An exception is throwed when trying to get the products list from server.!");
                 }
 
-                //TODO: que hacemos aqui?
                 return null;
             }
         }
@@ -109,25 +116,26 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/products/{productName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    try
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
 
-                        return JsonConvert.DeserializeObject<DetailsProductResponse>(content, new JsonSerializerSettings());
-                    }
-                    catch (JsonException exception)
-                    {
-                        //TODO: que hacemos aqui
+                        return JsonConvert.DeserializeObject<DetailsProductResponse>(
+                            content, new JsonSerializerSettings());
                     }
                 }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the product {productName} from the server.!");
+                }
 
-                //TODO: que hacemos aqui?
                 return null;
             }
         }
@@ -137,17 +145,25 @@ namespace Esquio.UI.Client.Services
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri("api/products", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.RequestUri = new Uri($"api/products", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
                 var content = JsonConvert.SerializeObject(addProductRequest);
-                request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
+                request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
                 }
 
                 return false;
@@ -160,14 +176,23 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
                 }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete product {productName}.!");
+                }
+
                 return false;
             }
         }
@@ -178,16 +203,24 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products/{productName}/ring", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var content = JsonConvert.SerializeObject(addRingRequest);
-                request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
-
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var content = JsonConvert.SerializeObject(addRingRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add {addRingRequest} to product {productName}. !");
                 }
 
                 return false;
@@ -200,13 +233,21 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete ring {ringName} on product {productName}.!");
                 }
 
                 return false;
@@ -233,24 +274,25 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    try
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         return JsonConvert.DeserializeObject<PaginatedResult<ListFeatureResponseDetail>>(
                             content, new JsonSerializerSettings());
                     }
-                    catch (JsonException exception)
-                    {
-                        //TODO: que hacemos aqui
-                    }
                 }
-                //TODO: que hacemos aqui?
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get feature list on product {productName}.!");
+                }
+
                 return null;
             }
         }
@@ -260,16 +302,24 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var content = JsonConvert.SerializeObject(updateFeatureRequest);
-                request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
-
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var content = JsonConvert.SerializeObject(updateFeatureRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to toggle feature {featureName} on product {productName} with data {updateFeatureRequest}.!");
                 }
 
                 return false;
@@ -281,13 +331,21 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to rolled out feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -299,13 +357,21 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to rolled back feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -317,13 +383,22 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/archive", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to archive feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -335,16 +410,24 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products/{productName}/features", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var content = JsonConvert.SerializeObject(addFeatureRequest);
-                request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
-
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var content = JsonConvert.SerializeObject(addFeatureRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add new  feature {addFeatureRequest} on product {productName}.!");
                 }
 
                 return false;
@@ -356,13 +439,21 @@ namespace Esquio.UI.Client.Services
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
-                var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return true;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete feature {featureName} on product {productName}.!");
                 }
                 return false;
             }
