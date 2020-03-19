@@ -237,8 +237,7 @@
         InitFeatureModel();
         showNewFeatureModal = true;
 
-        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
-
+        esquioState.SetWindowModal(showNewFeatureModal);
     }
 
     private void CloseNewFeatureModal()
@@ -246,7 +245,7 @@
         showNewFeatureModal = false;
         newFeatureEditContext.OnValidationStateChanged -= OnAddFeatureValidationChanged;
 
-        esquioState.IsApplicationShowingWindowModal(showNewFeatureModal);
+        esquioState.SetWindowModal(showNewFeatureModal);
     }
 
     private void OnAddFeatureValidationChanged(object sender, ValidationStateChangedEventArgs args)
@@ -327,7 +326,7 @@
         showNewRingModal = true;
         InitRingModel();
 
-        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewRingModal);
     }
 
     private void CloseNewRingModal()
@@ -335,7 +334,7 @@
         showNewRingModal = false;
         newRingEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
 
-        esquioState.IsApplicationShowingWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewRingModal);
     }
 
     private Task<DetailsProductResponse> RingsLoader()

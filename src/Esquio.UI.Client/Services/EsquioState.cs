@@ -7,13 +7,20 @@ namespace Esquio.UI.Client.Services
 {
     public class EsquioState
     {
-        public bool WindowModalIsActive { get; set; } = false;
-        public IEnumerable<BreadcrumbItemViewModel> Breadcrumb { get; private set; } = Enumerable.Empty<BreadcrumbItemViewModel>();
+        public bool WindowModalIsActive { get; private set; }
+
+        public IEnumerable<BreadcrumbItemViewModel> Breadcrumb { get; private set; }
 
         public event Action OnWindowModalActiveChange;
         public event Action OnBreadcrumbChange;
 
-        public void IsApplicationShowingWindowModal(bool showModal)
+        public EsquioState()
+        {
+            WindowModalIsActive = false;
+            Breadcrumb = Enumerable.Empty<BreadcrumbItemViewModel>();
+        }
+
+        public void SetWindowModal(bool showModal)
         {
             WindowModalIsActive = showModal;
 
