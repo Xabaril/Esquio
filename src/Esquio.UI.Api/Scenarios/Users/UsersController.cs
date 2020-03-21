@@ -1,10 +1,10 @@
-﻿using Esquio.UI.Api.Scenarios.Users.Add;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Scenarios.Users.Add;
 using Esquio.UI.Api.Scenarios.Users.Delete;
 using Esquio.UI.Api.Scenarios.Users.Details;
 using Esquio.UI.Api.Scenarios.Users.List;
-using Esquio.UI.Api.Scenarios.Users.My;
 using Esquio.UI.Api.Scenarios.Users.Update;
-using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models.Users.My;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

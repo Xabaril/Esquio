@@ -1,19 +1,20 @@
 ﻿using Esquio.UI.Api;
-using Esquio.UI.Api.Infrastructure.Data.DbContexts;
-using Esquio.UI.Api.Infrastructure.Data.Options;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services) =>
+        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services, IWebHostEnvironment environment) =>
             services
                 .AddProblemDetails(setup =>
                 {
+                    setup.IncludeExceptionDetails = _ => environment.IsDevelopment();
                     setup.Map<InvalidOperationException>(exception =>
                     {
                         return new ProblemDetails()

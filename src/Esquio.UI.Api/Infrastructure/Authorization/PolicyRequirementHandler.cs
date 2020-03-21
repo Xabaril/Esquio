@@ -1,6 +1,6 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
-using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

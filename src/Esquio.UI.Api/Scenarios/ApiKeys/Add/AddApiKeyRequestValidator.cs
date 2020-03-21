@@ -1,4 +1,4 @@
-﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
+﻿using Esquio.UI.Api.Shared.Infrastructure.Data.Entities;
 using FluentValidation;
 using System;
 

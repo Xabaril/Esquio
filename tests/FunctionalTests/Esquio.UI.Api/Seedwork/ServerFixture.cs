@@ -43,6 +43,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         private void InitializeTestServer()
         {
             _host = new HostBuilder()
+                .UseEnvironment("Development")
                 .ConfigureWebHost(builder =>
                 {
                     builder
@@ -102,14 +103,16 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
     class TestStartup
     {
         private IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public TestStartup(IConfiguration configuration)
+        public TestStartup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _configuration = configuration;
+            _environment = environment;
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            EsquioUIApiConfiguration.ConfigureServices(services)
+            EsquioUIApiConfiguration.ConfigureServices(services, _environment)
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddAuthorization()
                 .AddAuthentication(setup =>

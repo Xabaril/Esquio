@@ -2,23 +2,27 @@
 using Esquio.UI.Api.Infrastructure.Behaviors;
 using Esquio.UI.Api.Infrastructure.Routes;
 using Esquio.UI.Api.Infrastructure.Serialization;
+using Esquio.UI.Api.Scenarios.ApiKeys.Add;
 using Esquio.UI.Api.Shared.Models.Products.Add;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Esquio.UI.Api
 {
     public static class EsquioUIApiConfiguration
     {
-        public static IServiceCollection ConfigureServices(IServiceCollection services)
+        public static IServiceCollection ConfigureServices(IServiceCollection services, IWebHostEnvironment environment)
         {
             return services
                 .AddAuthorization(setup =>
@@ -30,7 +34,7 @@ namespace Esquio.UI.Api
                 .AddScoped<IAuthorizationHandler, PolicyRequirementHandler>()
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
-                .AddCustomProblemDetails()
+                .AddCustomProblemDetails(environment)
                 .AddApiVersioning(setup =>
                 {
                     setup.DefaultApiVersion = new ApiVersion(3, 0);
@@ -44,7 +48,11 @@ namespace Esquio.UI.Api
                 .AddVersionedApiExplorer()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
-                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductRequestValidator).Assembly))
+                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssemblies(new List<Assembly>
+                    {
+                        typeof(AddApiKeyRequestValidator).Assembly,
+                        typeof(AddProductRequestValidator).Assembly
+                    }))
                     .AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.Converters.Add(new NumberToStringConverter());

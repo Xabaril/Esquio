@@ -1,7 +1,7 @@
-﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
-using Esquio.UI.Api.Scenarios.ApiKeys.Add;
+﻿using Esquio.UI.Api.Scenarios.ApiKeys.Add;
 using Esquio.UI.Api.Scenarios.ApiKeys.Details;
 using Esquio.UI.Api.Scenarios.ApiKeys.List;
+using Esquio.UI.Api.Shared.Infrastructure.Data.Entities;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

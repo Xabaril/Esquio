@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Infrastructure.Data.Options;
+using Esquio.UI.Api.Shared.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

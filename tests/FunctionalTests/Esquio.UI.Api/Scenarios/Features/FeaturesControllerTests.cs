@@ -1,7 +1,8 @@
-﻿using Esquio.UI.Api.Scenarios.Flags.Add;
-using Esquio.UI.Api.Scenarios.Flags.Details;
-using Esquio.UI.Api.Scenarios.Flags.List;
-using Esquio.UI.Api.Scenarios.Flags.Update;
+﻿using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Features.Add;
+using Esquio.UI.Api.Shared.Models.Features.Details;
+using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -933,7 +934,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponseDetail>();
+                .ReadAs<PaginatedResult<ListFeatureResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -944,11 +945,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .First().Name
                 .Should().BeEquivalentTo(feature1.Name);
 
-            content.Result
+            content.Items
                 .Last().Name
                 .Should().BeEquivalentTo(feature2.Name);
         }
@@ -996,7 +997,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponseDetail>();
+                .ReadAs<PaginatedResult<ListFeatureResponseDetail>>();
 
             content.Total
                 .Should().Be(1);
@@ -1007,7 +1008,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .First().Name
                 .Should().BeEquivalentTo(feature1.Name);
         }
@@ -1054,7 +1055,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponseDetail>();
+                .ReadAs<PaginatedResult<ListFeatureResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -1065,7 +1066,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.PageIndex
                 .Should().Be(1);
 
-            content.Result
+            content.Items
                 .Single().Name
                 .Should().BeEquivalentTo(feature2.Name);
         }
@@ -1112,7 +1113,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponseDetail>();
+                .ReadAs<PaginatedResult<ListFeatureResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -1123,19 +1124,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(2);
 
-            content.Result
+            content.Items
                 .First()
                 .Name.Should().BeEquivalentTo(feature1.Name);
 
-            content.Result
+            content.Items
                .First()
                .Description.Should().BeEquivalentTo(feature1.Description);
 
-            content.Result
+            content.Items
                .First()
                .Enabled.Should().Be(feature1.Enabled);
         }
@@ -1216,7 +1217,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListFeatureResponseDetail>();
+                .ReadAs<PaginatedResult<ListFeatureResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -1227,7 +1228,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.PageIndex
                 .Should().Be(10);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(0);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Esquio.UI.Api.Shared.Infrastructure.Data.Entities;
 
 namespace Esquio.UI.Api.Infrastructure.Data.Entities
 {
@@ -11,15 +11,6 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
         public SubjectType Kind { get; set; }
 
         public ApplicationRole ApplicationRole { get; set; }
-    }
-
-    [Flags]
-    public enum ApplicationRole
-        : short
-    {
-        Reader = 1,
-        Contributor = 2,
-        Management = 3
     }
 
     public enum SubjectType

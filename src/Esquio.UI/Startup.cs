@@ -4,6 +4,7 @@ using Esquio.UI.Infrastructure.OpenApi;
 using Esquio.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +17,14 @@ namespace Esquio.UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -55,7 +58,7 @@ namespace Esquio.UI
                     };
                 });
 
-            EsquioUIApiConfiguration.ConfigureServices(services)
+            EsquioUIApiConfiguration.ConfigureServices(services, Environment)
                 .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]);
 
         }

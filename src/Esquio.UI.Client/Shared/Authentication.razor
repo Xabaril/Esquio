@@ -1,8 +1,8 @@
 ﻿@page "/authentication/{action}"
-@inject IAccessTokenProvider AuthenticationService
 
-@inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
+@inject IAccessTokenProvider authenticationService
+@inject NavigationManager navigation
+@inject EsquioState esquioState
 
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed">
@@ -17,7 +17,7 @@
         {
             await EvaluateAuthorization(notAllowed: () =>
              {
-                 Navigation.NavigateTo("Forbidden");
+                 navigation.NavigateTo("Forbidden");
              });
         }
     }
@@ -32,7 +32,7 @@
 
     async Task EvaluateAuthorization(Action notAllowed)
     {
-        var tokenResult = await AuthenticationService.RequestAccessToken();
+        var tokenResult = await authenticationService.RequestAccessToken();
 
         if (tokenResult.TryGetToken(out AccessToken accessToken))
         {
@@ -40,7 +40,7 @@
 
             if (my != null)
             {
-                //TODO: guardar en local storage y usarlo para mostrar menus
+                esquioState.SetPolicy(my);
             }
             else
             {
@@ -49,14 +49,14 @@
         }
         else
         {
-            Navigation.NavigateTo(tokenResult.RedirectUrl);
+            navigation.NavigateTo(tokenResult.RedirectUrl);
         }
     }
 
     async Task<MyResponse> GetCurrentUserProfile(AccessToken token)
     {
         var httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+        httpClient.BaseAddress = new Uri(navigation.BaseUri);
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
 
         try
@@ -67,12 +67,5 @@
         {
             return null;
         }
-    }
-
-    public class MyResponse
-    {
-        public bool IsAuthorized { get; set; }
-
-        public string ActAs { get; set; }
     }
 }
