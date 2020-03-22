@@ -1,0 +1,9 @@
+﻿<i title="@Title" class="@Icon"
+   @onclick="OnClick"
+   @onclick:stopPropagation></i>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Icon { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+}

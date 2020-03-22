@@ -1,10 +1,10 @@
 ﻿using Esquio;
-using Esquio.UI.Api;
-using Esquio.UI.Api.Scenarios.Products.Add;
-using Esquio.UI.Api.Scenarios.Products.AddRing;
-using Esquio.UI.Api.Scenarios.Products.Details;
-using Esquio.UI.Api.Scenarios.Products.List;
-using Esquio.UI.Api.Scenarios.Products.Update;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Products.Add;
+using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.Details;
+using Esquio.UI.Api.Shared.Models.Products.List;
+using Esquio.UI.Api.Shared.Models.Products.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -373,7 +373,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListProductResponse>();
+                .ReadAs<PaginatedResult<ListProductResponseDetail>>();
 
             content.Total
                 .Should().Be(1);
@@ -384,7 +384,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .First().Name
                 .Should().BeEquivalentTo(product.Name);
 
@@ -422,7 +422,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListProductResponse>();
+                .ReadAs<PaginatedResult<ListProductResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -433,7 +433,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             content.PageIndex
                 .Should().Be(1);
 
-            content.Result
+            content.Items
                 .Single().Name
                 .Should().BeEquivalentTo(product2.Name);
         }
@@ -459,7 +459,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListProductResponse>();
+                .ReadAs<PaginatedResult<ListProductResponseDetail>>();
 
             content.Total
                 .Should().Be(0);
@@ -470,7 +470,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(0);
         }
@@ -518,7 +518,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListProductResponse>();
+                .ReadAs<PaginatedResult<ListProductResponseDetail>>();
 
             content.Total
                 .Should().Be(1);
@@ -529,7 +529,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             content.PageIndex
                 .Should().Be(10);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(0);
         }

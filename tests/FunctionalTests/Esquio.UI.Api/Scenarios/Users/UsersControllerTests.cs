@@ -4,6 +4,7 @@ using Esquio.UI.Api.Scenarios.Users.Details;
 using Esquio.UI.Api.Scenarios.Users.List;
 using Esquio.UI.Api.Scenarios.Users.My;
 using Esquio.UI.Api.Scenarios.Users.Update;
+using Esquio.UI.Api.Shared.Models.Users.My;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

@@ -1,5 +1,7 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Users.My;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,7 @@ namespace Esquio.UI.Api.Scenarios.Users.My
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<MyRequestHandler> _logger;
 
-        public MyRequestHandler(StoreDbContext storeDbContext,ILogger<MyRequestHandler> logger)
+        public MyRequestHandler(StoreDbContext storeDbContext, ILogger<MyRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -29,7 +31,11 @@ namespace Esquio.UI.Api.Scenarios.Users.My
 
             if (permission != null)
             {
-                return MyResponse.With(permission.ApplicationRole);
+                return new MyResponse()
+                {
+                    ActAs = Enum.GetName(typeof(ApplicationRole), permission.ApplicationRole),
+                    IsAuthorized = true,
+                };
             }
 
             Log.MyIsNotAuthorized(_logger, request.SubjectId);
