@@ -1,0 +1,12 @@
+﻿@inject EsquioState esquioState
+
+@ChildContent
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        esquioState.ReloadState();
+    }
+}

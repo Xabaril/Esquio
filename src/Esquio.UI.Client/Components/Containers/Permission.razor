@@ -1,0 +1,19 @@
+﻿@inject EsquioState esquioState
+
+@if (hasPermission)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public PolicyAction Requires { get; set; }
+    [Parameter] public PolicySubject Over { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private bool hasPermission = false;
+
+    protected override void OnInitialized()
+    {
+        hasPermission = esquioState.Policy.Can(Requires, Over);
+    }
+}

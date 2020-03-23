@@ -25,7 +25,13 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
                         ApplicationRole = ApplicationRole.Management
                     };
 
-                    context.Permissions.AddRange(aliceIdSvrPermission);
+                    var bobIdSvrPermission = new PermissionEntity()
+                    {
+                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "11",
+                        ApplicationRole = ApplicationRole.Reader
+                    };
+
+                    context.Permissions.AddRange(aliceIdSvrPermission, bobIdSvrPermission);
 
                     context.SaveChanges();
                 }

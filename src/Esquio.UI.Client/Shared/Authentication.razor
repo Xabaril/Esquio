@@ -4,6 +4,9 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
+@inject IPolicyBuilder policyBuilder;
+@inject EsquioState state;
+
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed">
 </RemoteAuthenticatorView>
@@ -16,9 +19,9 @@
         if (RemoteAuthenticationActions.IsAction(RemoteAuthenticationActions.LogIn, Action))
         {
             await EvaluateAuthorization(notAllowed: () =>
-             {
-                 Navigation.NavigateTo("Forbidden");
-             });
+            {
+                Navigation.NavigateTo("Forbidden");
+            });
         }
     }
 
@@ -40,7 +43,13 @@
 
             if (my != null)
             {
-                //TODO: guardar en local storage y usarlo para mostrar menus
+                Log.Warning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
+
+                var policy = policyBuilder.Build(my);
+
+                state.ClearState();
+
+                state.SetPolicy(policy);
             }
             else
             {
@@ -67,12 +76,5 @@
         {
             return null;
         }
-    }
-
-    public class MyResponse
-    {
-        public bool IsAuthorized { get; set; }
-
-        public string ActAs { get; set; }
     }
 }

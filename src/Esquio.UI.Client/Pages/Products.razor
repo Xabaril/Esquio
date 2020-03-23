@@ -9,15 +9,16 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <PageTitle Title="Products"
-                            Subtitle="Show the Esquio Products in the store.">
+                <PageTitle Title="Products" Subtitle="Show the Esquio Products in the store.">
                     <Icon>
                         <i class="fas fa-box-open"></i>
                     </Icon>
                     <Actions>
-                        <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
-                            New Product
-                        </button>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
+                                New Product
+                            </button>
+                        </Permission>
                     </Actions>
                 </PageTitle>
             </div>
@@ -28,11 +29,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <PaginationTable Loader="Loader" @ref="table">
+                    <PaginatedTable Loader="Loader"
+                                    @ref="table">
                         <TableHeader>
                             <th class="table-col-4">Name</th>
                             <th>Description</th>
-                            <th class="table-col-2"></th>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                <th class="table-col-2"></th>
+                            </Permission>
                         </TableHeader>
                         <TableBody Context="products">
                             @foreach (var product in products.Items)
@@ -40,15 +44,17 @@
                                 <tr @onclick="@(e => navigation.NavigateTo($"products/{product.Name}"))">
                                     <td>@product.Name</td>
                                     <td>@product.Description</td>
-                                    <td class="table-component__action">
-                                        <i class="far fa-trash-alt"
-                                            @onclick="@(() => Delete(product.Name))"
-                                            @onclick:stopPropagation></i>
-                                    </td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            <Button Title="Delete"
+                                                    Icon="far fa-trash-alt"
+                                                    OnClick="@(() => Delete(product.Name))" />
+                                        </td>
+                                    </Permission>
                                 </tr>
                             }
                         </TableBody>
-                    </PaginationTable>
+                    </PaginatedTable>
                 </div>
             </div>
         </div>
@@ -85,12 +91,12 @@
 
 @code {
     private bool showModal = false;
-
+  
     private bool formInvalid;
     private AddProductRequest model;
     private EditContext editContext;
 
-    private PaginationTable<ListProductResponseDetail> table;
+    private PaginatedTable<ListProductResponseDetail> table;
 
     protected override void OnInitialized()
     {

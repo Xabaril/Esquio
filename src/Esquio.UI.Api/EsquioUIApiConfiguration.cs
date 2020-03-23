@@ -44,7 +44,11 @@ namespace Esquio.UI.Api
                 .AddVersionedApiExplorer()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
-                    .AddFluentValidation(setup => setup.RegisterValidatorsFromAssembly(typeof(AddProductRequestValidator).Assembly))
+                    .AddFluentValidation(setup => 
+                    {
+                        setup.RegisterValidatorsFromAssembly(typeof(AddProductRequestValidator).Assembly);
+                        setup.RegisterValidatorsFromAssembly(typeof(EsquioUIApiConfiguration).Assembly);
+                    })
                     .AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.Converters.Add(new NumberToStringConverter());
