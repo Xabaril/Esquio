@@ -1,0 +1,261 @@
+﻿@page "/apikeys"
+@attribute [Authorize]
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+
+@inject NavigationManager navigation
+
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Users" Subtitle="Show the current active users on Esquio.">
+                    <Icon>
+                        <i class="fas fa-users"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModalNewPermission">
+                                New User
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginatedTable Loader="Loader"
+                                    @ref="table">
+                        <TableHeader>
+                            <th class="table-col-4">Identity Provider Subject</th>
+                            <th>Acting As</th>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <th class="table-col-1"></th>
+                            </Permission>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <th class="table-col-1"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="users">
+                            @foreach (var user in users.Items)
+                            {
+                            <tr @ondblclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
+                                <td>@user.SubjectId</td>
+                                <td>@user.ActAs</td>
+                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                    <td class="table-component__action">
+                                        @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                        {
+                                            <Button Title="Update"
+                                                    Icon="fas fa-edit"
+                                                    OnClick="@(() => OpenModalUpdatePermission(user.SubjectId,user.ActAs))" />
+                                        }
+                                    </td>
+                                </Permission>
+                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                    <td class="table-component__action">
+                                        @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                        {
+                                            <Button Title="Delete"
+                                                    Icon="far fa-trash-alt"
+                                                    OnClick="@(() => Delete(user.SubjectId))" />
+                                        }
+                                    </td>
+                                </Permission>
+                            </tr>
+                            }
+                        </TableBody>
+                    </PaginatedTable>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<Modal Title="New User Permission" Show="showModalNewPermission" OnClose="CloseModalNewPermission">
+    <ModalBody>
+        <EditForm EditContext="@editContextNewPermission">
+            <FluentValidationValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="subject-id">Subject</label>
+                <InputText id="subject-id" class="form-control" @bind-Value="newPermission.SubjectId" placeholder="Enter subject provider identifier" />
+            </div>
+
+            <div class="form-group">
+                <label for="subject-actas">Act as</label>
+                <InputSelect class="form-control" @bind-Value="newPermission.ActAs">
+                    <option selected disabled hidden>Acting as</option>
+                    <option value="Reader">Reader</option>
+                    <option value="Contributor">Contributor</option>
+                    <option value="Management">Management</option>
+                </InputSelect>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModalNewPermission" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalidNewPermission">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+<Modal Title="Update User Permission" Show="showModalUpdatePermission" OnClose="CloseModalUpdatePermission">
+    <ModalBody>
+        <EditForm EditContext="@editContextUpdatePermission">
+            <FluentValidationValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="subject-id">Subject</label>
+                <InputText id="subject-id" class="form-control" @bind-Value="updatePermission.SubjectId" placeholder="Enter subject provider identifier" />
+            </div>
+
+            <div class="form-group">
+                <label for="subject-actas">Act as</label>
+                <InputSelect class="form-control" @bind-Value="updatePermission.ActAs">
+                    <option selected disabled hidden>Acting as</option>
+                    <option value="Reader">Reader</option>
+                    <option value="Contributor">Contributor</option>
+                    <option value="Management">Management</option>
+                </InputSelect>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModalUpdatePermission" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="Update" disabled="@formInvalidUpdatePermission">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+
+    //add modal
+    private bool showModalNewPermission = false;
+    private bool formInvalidNewPermission;
+    private AddPermissionRequest newPermission;
+    private EditContext editContextNewPermission;
+
+    //update modal
+    private bool showModalUpdatePermission = false;
+    private bool formInvalidUpdatePermission;
+    private UpdatePermissionRequest updatePermission;
+    private EditContext editContextUpdatePermission;
+
+    private PaginatedTable<ListUsersResponseDetail> table;
+
+    protected override void OnInitialized()
+    {
+        InitModelNewPermission();
+        InitModelUpdatePermission();
+
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+            new BreadcrumbItemViewModel { Title = "Users", Active = true });
+    }
+
+    private void InitModelNewPermission()
+    {
+        formInvalidNewPermission = true;
+
+        newPermission = new AddPermissionRequest();
+
+        editContextNewPermission = new EditContext(newPermission);
+        editContextNewPermission.OnValidationStateChanged += OnAddPermissionValidationChanged;
+    }
+
+    private void OnAddPermissionValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalidNewPermission = !editContextNewPermission.IsValid();
+        StateHasChanged();
+    }
+
+
+    private void OpenModalNewPermission()
+    {
+        InitModelNewPermission();
+        showModalNewPermission = true;
+
+        esquioState.SetWindowModal(showModalNewPermission);
+    }
+
+    private void CloseModalNewPermission()
+    {
+        showModalNewPermission = false;
+        editContextNewPermission.OnValidationStateChanged -= OnAddPermissionValidationChanged;
+
+        esquioState.SetWindowModal(showModalNewPermission);
+    }
+
+    private void InitModelUpdatePermission(string subjectId = null, string actAs = null)
+    {
+        formInvalidUpdatePermission = true;
+
+        updatePermission = new UpdatePermissionRequest()
+        {
+            SubjectId = subjectId,
+            ActAs = actAs
+        };
+
+        editContextUpdatePermission = new EditContext(updatePermission);
+        editContextUpdatePermission.OnValidationStateChanged += OnUpdatePermissionValidationChanged;
+    }
+
+    private void OnUpdatePermissionValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalidUpdatePermission = !editContextUpdatePermission.IsValid();
+        StateHasChanged();
+    }
+
+    private void OpenModalUpdatePermission(string subjectId, string actAs)
+    {
+        InitModelUpdatePermission(subjectId, actAs);
+        showModalUpdatePermission = true;
+
+        esquioState.SetWindowModal(showModalUpdatePermission);
+    }
+
+    private void CloseModalUpdatePermission()
+    {
+        showModalUpdatePermission = false;
+        editContextUpdatePermission.OnValidationStateChanged -= OnUpdatePermissionValidationChanged;
+
+        esquioState.SetWindowModal(showModalUpdatePermission);
+    }
+
+    private Task<PaginatedResult<ListUsersResponseDetail>> Loader(int pageIndex, int pageCount)
+    {
+        return esquioHttpClient.GetUserList(pageIndex, pageCount);
+    }
+
+    private async Task Add()
+    {
+        await esquioHttpClient.AddUserPermission(newPermission);
+        await table.OnAdd();
+
+        CloseModalNewPermission();
+        InitModelNewPermission();
+    }
+
+    private async Task Delete(string subjectId)
+    {
+        await esquioHttpClient.DeleteUserPermission(subjectId);
+        await table.OnDelete();
+    }
+
+    private async Task Update()
+    {
+        await esquioHttpClient.UpdateUserPermission(updatePermission);
+        await table.OnAdd();
+
+        CloseModalUpdatePermission();
+        InitModelUpdatePermission();
+    }
+}

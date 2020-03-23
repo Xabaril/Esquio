@@ -39,11 +39,28 @@
                             <p>Products</p>
                         </NavLink>
                     </li>
-                    <li class="nav-item">
-                        <NavLink href="/users" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Users</p>
-                        </NavLink>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-shield-alt"></i>
+                            <p>
+                                Permissions
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: block;">
+                            <li class="nav-item">
+                                <NavLink href="/users" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Users</p>
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink href="/apikeus" class="nav-link">
+                                    <i class="nav-icon fas fa-key"></i>
+                                    <p>Api Keys</p>
+                                </NavLink>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
