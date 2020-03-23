@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Scenarios.Users.Details
+namespace Esquio.UI.Api.Shared.Models.Users.Details
 {
     public class DetailsUsersRequest
         : IRequest<DetailsUsersResponse>

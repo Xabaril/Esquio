@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Scenarios.Users.Delete
+namespace Esquio.UI.Api.Shared.Models.Users.Delete
 {
     public class DeleteUsersRequest
         :IRequest

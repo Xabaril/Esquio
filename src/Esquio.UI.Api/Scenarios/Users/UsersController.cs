@@ -1,10 +1,11 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
-using Esquio.UI.Api.Scenarios.Users.Add;
-using Esquio.UI.Api.Scenarios.Users.Delete;
-using Esquio.UI.Api.Scenarios.Users.Details;
-using Esquio.UI.Api.Scenarios.Users.List;
-using Esquio.UI.Api.Scenarios.Users.Update;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Users.Add;
+using Esquio.UI.Api.Shared.Models.Users.Delete;
+using Esquio.UI.Api.Shared.Models.Users.Details;
+using Esquio.UI.Api.Shared.Models.Users.List;
 using Esquio.UI.Api.Shared.Models.Users.My;
+using Esquio.UI.Api.Shared.Models.Users.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -53,9 +54,9 @@ namespace Esquio.UI.Api.Scenarios.Users
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
-        [ProducesResponseType(typeof(ListUsersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<ListUsersResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListUsersResponse>> List([FromQuery]ListUsersRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListUsersResponseDetail>>> List([FromQuery]ListUsersRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);
 

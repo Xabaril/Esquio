@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System;
 
-namespace Esquio.UI.Api.Scenarios.Users.List
+namespace Esquio.UI.Api.Shared.Models.Users.List
 {
     public class ListUsersRequestValidator
          : AbstractValidator<ListUsersRequest>

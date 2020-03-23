@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Scenarios.Users.Delete
+namespace Esquio.UI.Api.Shared.Models.Users.Delete
 {
     public class DeleteUsersRequestValidator
          : AbstractValidator<DeleteUsersRequest>

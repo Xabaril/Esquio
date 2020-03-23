@@ -40,7 +40,7 @@ namespace Esquio.UI.Client.Services
             {
                 policy.Allow(PolicyAction.Read, _defaultSubjects);
             }
-            else if (actAs == ActAs.Contributor || actAs == ActAs.Management)
+            else if (actAs == ActAs.Contributor)
             {
                 policy.Allow(PolicyAction.Read, _defaultSubjects);
                 policy.Allow(PolicyAction.Modify, _defaultSubjects);

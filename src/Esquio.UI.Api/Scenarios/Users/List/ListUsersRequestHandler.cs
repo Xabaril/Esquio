@@ -1,4 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Users.List;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Users.List
 {
     public class ListUsersRequestHandler
-        : IRequestHandler<ListUsersRequest, ListUsersResponse>
+        : IRequestHandler<ListUsersRequest, PaginatedResult<ListUsersResponseDetail>>
     {
         private readonly StoreDbContext _storeDbContext;
 
@@ -18,7 +20,7 @@ namespace Esquio.UI.Api.Scenarios.Users.List
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
 
-        public async Task<ListUsersResponse> Handle(ListUsersRequest request, CancellationToken cancellationToken = default)
+        public async Task<PaginatedResult<ListUsersResponseDetail>> Handle(ListUsersRequest request, CancellationToken cancellationToken = default)
         {
             var total = await _storeDbContext.Permissions
                 .CountAsync(cancellationToken);
@@ -33,12 +35,12 @@ namespace Esquio.UI.Api.Scenarios.Users.List
                     ActAs = u.ApplicationRole.ToString(),
                 }).ToListAsync(cancellationToken);
 
-            return new ListUsersResponse()
+            return new PaginatedResult<ListUsersResponseDetail>()
             {
                 Total = total,
                 PageIndex = request.PageIndex,
                 Count = userPermissions.Count,
-                Result = userPermissions
+                Items = userPermissions
             };
         }
     }

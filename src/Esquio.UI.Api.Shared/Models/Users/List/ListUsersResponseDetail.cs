@@ -1,6 +1,6 @@
-﻿namespace Esquio.UI.Api.Scenarios.Users.Details
+﻿namespace Esquio.UI.Api.Shared.Models.Users.List
 {
-    public class DetailsUsersResponse
+    public class ListUsersResponseDetail
     {
         public string SubjectId { get; set; }
 

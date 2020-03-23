@@ -1244,7 +1244,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListUsersResponse"
+              "$ref": "#/definitions/PaginatedResultOfListUsersResponseDetail"
             }
           },
           "500": {
@@ -1977,7 +1977,7 @@
         }
       }
     },
-    "ListUsersResponse": {
+    "PaginatedResultOfListUsersResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1997,7 +1997,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ListUsersResponseDetail"

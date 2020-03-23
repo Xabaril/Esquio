@@ -58,7 +58,6 @@ namespace Esquio.UI.Client
             builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
 
-
             return builder;
         }
     }

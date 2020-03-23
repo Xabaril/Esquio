@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Scenarios.Users.Add
+namespace Esquio.UI.Api.Shared.Models.Users.Add
 {
     public class AddPermissionRequest
         : IRequest

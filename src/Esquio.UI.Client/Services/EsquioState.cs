@@ -41,6 +41,14 @@ namespace Esquio.UI.Client.Services
             }
         }
 
+        public LoggedUserViewModel LoggedUser
+        {
+            get
+            {
+                return _localContext.LoggedUser;
+            }
+        }
+
         public EsquioState(IPolicyBuilder policyBuilder, ILocalStorage storage)
         {
             this._policyBuilder = policyBuilder;
@@ -52,6 +60,15 @@ namespace Esquio.UI.Client.Services
             _ = policy ?? throw new ArgumentNullException(nameof(policy));
 
             _localContext.Policy = policy;
+
+            PersistState();
+        }
+
+        public void SetLoggedUser(LoggedUserViewModel loggedUser)
+        {
+            _ = loggedUser ?? throw new ArgumentNullException(nameof(loggedUser));
+
+            _localContext.LoggedUser = loggedUser;
 
             PersistState();
         }
@@ -103,6 +120,8 @@ namespace Esquio.UI.Client.Services
             public Policy Policy { get; set; }
 
             public bool WindowModalIsActive { get; set; }
+
+            public LoggedUserViewModel LoggedUser { get; set; }
 
             public IEnumerable<BreadcrumbItemViewModel> Breadcrumb { get; set; }
         }

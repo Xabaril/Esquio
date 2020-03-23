@@ -1,14 +1,15 @@
 ﻿@page "/authentication/{action}"
 @inject IAccessTokenProvider AuthenticationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
 @inject IPolicyBuilder policyBuilder;
-@inject EsquioState state;
+@inject EsquioState esquioState;
+@inject HttpClient http
 
-
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed">
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed" OnLogOutSucceeded="OnUserLogedout">
 </RemoteAuthenticatorView>
 
 @code{
@@ -25,56 +26,49 @@
         }
     }
 
-    async Task IsUserAllowed(RemoteAuthenticationState state)
+    async Task IsUserAllowed(RemoteAuthenticationState authenticationState)
     {
         await EvaluateAuthorization(notAllowed: () =>
-         {
-             state.ReturnUrl = "Forbidden";
-         });
+        {
+            authenticationState.ReturnUrl = "Forbidden";
+        });
+    }
+
+    void OnUserLogedout(RemoteAuthenticationState authenticationState)
+    {
+        esquioState.ClearState();
     }
 
     async Task EvaluateAuthorization(Action notAllowed)
     {
-        var tokenResult = await AuthenticationService.RequestAccessToken();
+        //TODO: EsquioHttpClient can't be resolved directly, there is a open bug on blazor with this!
 
-        if (tokenResult.TryGetToken(out AccessToken accessToken))
+        var esquioHttpClient = new EsquioHttpClient(http, AuthenticationService);
+        var my = await esquioHttpClient.GetMy();
+
+        if (my != null)
         {
-            var my = await GetCurrentUserProfile(accessToken);
+            Log.Warning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
 
-            if (my != null)
+            var authenticationState =  await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            var loggedUser = new LoggedUserViewModel()
             {
-                Log.Warning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
+                UserName = authenticationState.User.Identity.Name,
+                SubjectId = authenticationState.User.FindFirst("sub").Value
+            };
 
-                var policy = policyBuilder.Build(my);
+            var policy = policyBuilder.Build(my);
 
-                state.ClearState();
-
-                state.SetPolicy(policy);
-            }
-            else
-            {
-                notAllowed();
-            }
+            esquioState.ClearState();
+            esquioState.SetLoggedUser(loggedUser);
+            esquioState.SetPolicy(policy);
         }
         else
         {
-            Navigation.NavigateTo(tokenResult.RedirectUrl);
-        }
-    }
+            Log.Warning("User is not allowed to use Esquio App because subject is not configured.");
 
-    async Task<MyResponse> GetCurrentUserProfile(AccessToken token)
-    {
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
-        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
-
-        try
-        {
-            return await httpClient.GetJsonAsync<MyResponse>("api/users/my");
-        }
-        catch (Exception)
-        {
-            return null;
+            notAllowed();
         }
     }
 }

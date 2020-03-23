@@ -6,7 +6,10 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
-using Microsoft.AspNetCore.Components;
+using Esquio.UI.Api.Shared.Models.Users.Add;
+using Esquio.UI.Api.Shared.Models.Users.Details;
+using Esquio.UI.Api.Shared.Models.Users.List;
+using Esquio.UI.Api.Shared.Models.Users.My;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
@@ -23,30 +26,26 @@ namespace Esquio.UI.Client.Services
     public interface IEsquioHttpClient
     {
         Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
-
         Task<DetailsProductResponse> GetProduct(string productName, CancellationToken cancellationToken = default);
-
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
-
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
 
         Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default);
-
         Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default);
-
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
-
         Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
-
         Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default);
-
         Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default);
-
         Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default);
-
         Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default);
-
         Task<bool> DeleteFeature(string productName, string featureName, CancellationToken cancellationToken = default);
+
+        Task<MyResponse> GetMy(CancellationToken cancellationToken = default);
+        Task<PaginatedResult<ListUsersResponseDetail>> GetUserList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
+        Task<DetailsUsersResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default);
+        Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default);
+        Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default);
+
     }
 
     public class EsquioHttpClient
@@ -458,6 +457,166 @@ namespace Esquio.UI.Client.Services
             }
         }
 
+        public async Task<MyResponse> GetMy(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri("api/users/my", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<MyResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the logged user.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<PaginatedResult<ListUsersResponseDetail>> GetUserList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
+        {
+            var urlBuilder = new StringBuilder();
+            urlBuilder.Append($"api/users?");
+
+            if (pageIndex != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageCount != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+
+            urlBuilder.Length--;
+
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<PaginatedResult<ListUsersResponseDetail>>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get users permission list.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/users", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var content = JsonConvert.SerializeObject(addPermissionRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
+                }
+                
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri($"api/users/{subjectId}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete permission for subject {subjectId}.!");
+                }
+
+                return false;
+            }
+        }
+
+        public async Task<DetailsUsersResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/users/{subjectId}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<DetailsUsersResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the logged user.!");
+                }
+
+                return null;
+            }
+        }
+
         private async Task<HttpRequestMessage> CreateHttpRequestMessageAsync()
         {
             var msg = new HttpRequestMessage();
@@ -481,7 +640,7 @@ namespace Esquio.UI.Client.Services
 
                 if (tokenResult.Status == AccessTokenResultStatus.Success)
                 {
-                    Log.Information("Token result is valid and we can reuse it.");
+                    Log.Debug("Token result is valid and we can reuse it.");
 
                     if (tokenResult.TryGetToken(out AccessToken token))
                     {

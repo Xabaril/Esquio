@@ -1,0 +1,167 @@
+﻿@page "/users"
+@attribute [Authorize]
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+
+@inject NavigationManager navigation
+
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Users" Subtitle="Show the current active users on Esquio.">
+                    <Icon>
+                        <i class="fas fa-box-open"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
+                                New User
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginatedTable Loader="Loader"
+                                    @ref="table">
+                        <TableHeader>
+                            <th class="table-col-4">Identity Provider Subject</th>
+                            <th>Acting As</th>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <th class="table-col-2"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="users">
+                            @foreach (var user in users.Items)
+                            {
+                                <tr @onclick="@(e => navigation.NavigateTo($"users/{user.SubjectId}"))">
+                                    <td>@user.SubjectId</td>
+                                    <td>@user.ActAs</td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                            {
+                                                <Button Title="Delete"
+                                                        Icon="far fa-trash-alt"
+                                                        OnClick="@(() => Delete(user.SubjectId))" />
+                                            }
+                                        </td>
+                                    </Permission>
+                                </tr>
+                            }
+                        </TableBody>
+                    </PaginatedTable>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<Modal Title="New Product" Show="showModal" OnClose="CloseModal">
+    <ModalBody>
+        <EditForm EditContext="@editContext">
+            <FluentValidationValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="subject-id">Subject</label>
+                <InputText id="subject-id" class="form-control" @bind-Value="model.SubjectId" placeholder="Enter subject provider identifier" />
+            </div>
+
+            <div class="form-group">
+                <label for="subject-actas">Act as</label>
+                <InputSelect class="form-control" @bind-Value="model.ActAs">
+                    <option selected disabled hidden>Acting as</option>
+                    <option value="Reader">Reader</option>
+                    <option value="Contributor">Contributor</option>
+                    <option value="Management">Management</option>
+                </InputSelect>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalid">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+    private bool showModal = false;
+
+    private bool formInvalid;
+    private AddPermissionRequest model;
+    private EditContext editContext;
+
+    private PaginatedTable<ListUsersResponseDetail> table;
+
+    protected override void OnInitialized()
+    {
+        InitModel();
+
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+            new BreadcrumbItemViewModel { Title = "Users", Active = true });
+    }
+
+    private void InitModel()
+    {
+        formInvalid = true;
+
+        model = new AddPermissionRequest();
+
+        editContext = new EditContext(model);
+        editContext.OnValidationStateChanged += OnAddPermissionValidationChanged;
+    }
+
+    private void OnAddPermissionValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalid = !editContext.IsValid();
+        StateHasChanged();
+    }
+
+    private void OpenModal()
+    {
+        InitModel();
+        showModal = true;
+
+        esquioState.SetWindowModal(showModal);
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+        editContext.OnValidationStateChanged -= OnAddPermissionValidationChanged;
+
+        esquioState.SetWindowModal(showModal);
+    }
+
+    private Task<PaginatedResult<ListUsersResponseDetail>> Loader(int pageIndex, int pageCount)
+    {
+        return esquioHttpClient.GetUserList(pageIndex, pageCount);
+    }
+
+    private async Task Add()
+    {
+        await esquioHttpClient.AddUserPermission(model);
+        await table.OnAdd();
+
+        CloseModal();
+        InitModel();
+    }
+
+    private async Task Delete(string subjectId)
+    {
+        await esquioHttpClient.DeleteUserPermission(subjectId);
+
+        await table.OnDelete();
+    }
+}

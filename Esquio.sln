@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Client", "src\Esq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Host", "src\Esquio.UI.Host\Esquio.UI.Host.csproj", "{294262AD-350C-4DE0-AEA3-0660A699DB66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.UI.Api.Shared", "src\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj", "{910C41D1-107C-4629-BFCC-F14AE6E8AB2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.UI.Api.Shared", "src\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj", "{910C41D1-107C-4629-BFCC-F14AE6E8AB2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,123 @@
+﻿@page "/users/{SubjectId}"
+@attribute [Authorize]
+
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
+<PageTransition>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="@SubjectId"
+                           Subtitle="Active Esquio User">
+                    <Icon>
+                        <i class="fas fa-ring"></i>
+                    </Icon>
+                    <Actions>
+                        @if (esquioState.LoggedUser.SubjectId != SubjectId)
+                        {
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <button type="button" class="btn btn-danger btn-shadow" @onclick="DeleteUserPermission">
+                                    Delete User
+                                </button>
+                                &nbsp;
+                            </Permission>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <button type="button" class="btn btn-primary btn-shadow" @onclick="DeleteUserPermission">
+                                    Update
+                                </button>
+                                &nbsp;
+                            </Permission>
+                        }
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <EditForm EditContext="@editContext">
+                    <FluentValidationValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label for="subject-id">Subject</label>
+                        <InputText id="subject-id" class="form-control" @bind-Value="model.SubjectId" placeholder="Enter subject provider identifier" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject-actas">Act as</label>
+                        <InputSelect class="form-control" @bind-Value="model.ActAs">
+                            <option selected disabled hidden>Acting as</option>
+                            <option value="Reader">Reader</option>
+                            <option value="Contributor">Contributor</option>
+                            <option value="Management">Management</option>
+                        </InputSelect>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+
+    [Parameter] public string SubjectId { get; set; }
+    private bool formInvalid = true;
+    private UpdatePermissionRequest model;
+    private EditContext editContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        InitModel();
+
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Users", Link = "users" },
+            new BreadcrumbItemViewModel { Title = SubjectId, Active = true });
+
+        await GetUserDetails();
+    }
+
+    private void InitModel()
+    {
+        model = new UpdatePermissionRequest();
+
+        editContext = new EditContext(model);
+        editContext.OnValidationStateChanged += OnUpdatePermissionRequestValidationChanged;
+    }
+
+
+    private void OnUpdatePermissionRequestValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalid = !editContext.IsValid();
+        StateHasChanged();
+    }
+
+    private async Task GetUserDetails()
+    {
+        var userDetails = await esquioHttpClient.GetUserDetails(SubjectId);
+
+        model.SubjectId = userDetails.SubjectId;
+        model.ActAs = userDetails.ActAs;
+    }
+
+    private async Task DeleteUserPermission()
+    {
+        await esquioHttpClient.DeleteUserPermission(SubjectId);
+
+        navigation.NavigateTo("/users");
+    }
+
+    private async Task UpdateUserPermission()
+    {
+        navigation.NavigateTo("/users");
+    }
+}
