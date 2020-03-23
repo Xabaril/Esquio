@@ -6,6 +6,7 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
@@ -54,8 +55,6 @@ namespace Esquio.UI.Client.Services
         const string API_VERSION_HEADER_NAME = "x-api-version";
         const string API_VERSION_HEADER_VALUE = "3.0";
         const string DEFAULT_CONTENT_TYPE = "application/json";
-
-
 
         private readonly HttpClient _httpClient;
         private readonly IAccessTokenProvider _accessTokenProvider;
@@ -482,10 +481,18 @@ namespace Esquio.UI.Client.Services
 
                 if (tokenResult.Status == AccessTokenResultStatus.Success)
                 {
+                    Log.Information("Token result is valid and we can reuse it.");
+
                     if (tokenResult.TryGetToken(out AccessToken token))
                     {
+                        Log.Debug($"Recovered token is {token.Value}");
+
                         return token;
                     }
+                }
+                else
+                {
+                    Log.Warning("Token is expired, need to get a new one");
                 }
             }
 
