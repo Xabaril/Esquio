@@ -10,6 +10,7 @@ using Esquio.UI.Api.Shared.Models.Users.Add;
 using Esquio.UI.Api.Shared.Models.Users.Details;
 using Esquio.UI.Api.Shared.Models.Users.List;
 using Esquio.UI.Api.Shared.Models.Users.My;
+using Esquio.UI.Api.Shared.Models.Users.Update;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
@@ -45,6 +46,7 @@ namespace Esquio.UI.Client.Services
         Task<DetailsUsersResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default);
+        Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default);
 
     }
 
@@ -556,6 +558,36 @@ namespace Esquio.UI.Client.Services
                     Log.Error(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
                 }
                 
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Put;
+                request.RequestUri = new Uri($"api/users", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var content = JsonConvert.SerializeObject(updatePermissionRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
+                }
+
                 return false;
             }
         }

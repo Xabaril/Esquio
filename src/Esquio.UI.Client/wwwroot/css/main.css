@@ -49,10 +49,11 @@
 .fa-power-off,
 .fa-upload,
 .fa-download,
-.fa-archive
-{
+.fa-edit,
+.fa-archive {
     color: #d0d0d0;
 }
+
 
     .fa-trash-alt:hover,
     .fa-power-off:hover {
@@ -62,6 +63,7 @@
 
     .fa-upload:hover,
     .fa-download:hover,
+    .fa-edit:hover,
     .fa-archive:hover {
         color: #20b2aa;
     }
@@ -87,26 +89,26 @@
     margin-bottom: 0;
 }
 
-.switch-container label:after {
-    content: '';
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 25px;
-    height: 10px;
-    background: #fff;
-    border-radius: 90px;
-    transition: 0.3s;
-}
+    .switch-container label:after {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 25px;
+        height: 10px;
+        background: #fff;
+        border-radius: 90px;
+        transition: 0.3s;
+    }
 
 .switch-container input:checked + label {
     background-color: #20b2aa;
 }
 
-.switch-container input:checked + label:after {
-    left: calc(100% - 5px);
-    transform: translateX(-100%);
-}
+    .switch-container input:checked + label:after {
+        left: calc(100% - 5px);
+        transform: translateX(-100%);
+    }
 
 .switch-container label:active:after {
     width: 30px;
@@ -159,47 +161,47 @@ ul.pagination.skeleton {
     min-width: 100px;
 }
 
-ul.pagination.skeleton > li {
-    width: 100%
-}
+    ul.pagination.skeleton > li {
+        width: 100%
+    }
 
 /* Table Component */
 .table-component {
     font-size: 1.2rem;
 }
 
-.table-component > tbody > tr > td {
-    vertical-align: middle;
-}
-
-.table-component tr {
-    cursor: pointer;
-}
-
-.table-component td.table-component__action {
-    text-align: center;
-}
-
-    .table-component td.table-component__action i.far,
-    .table-component td.table-component__action i.fas {
-        font-size: 1.7rem;
+    .table-component > tbody > tr > td {
+        vertical-align: middle;
     }
 
-.table-component .table-col-1 {
-    width: 5%;
-}
+    .table-component tr {
+        cursor: pointer;
+    }
 
-.table-component .table-col-2 {
-    width: 10%;
-}
+    .table-component td.table-component__action {
+        text-align: center;
+    }
 
-.table-component .badge {
-    margin-left: 1rem;
-}
+        .table-component td.table-component__action i.far,
+        .table-component td.table-component__action i.fas {
+            font-size: 1.7rem;
+        }
 
-.table-component .table-col-4 {
-    width: 20%;
-}
+    .table-component .table-col-1 {
+        width: 5%;
+    }
+
+    .table-component .table-col-2 {
+        width: 10%;
+    }
+
+    .table-component .badge {
+        margin-left: 1rem;
+    }
+
+    .table-component .table-col-4 {
+        width: 20%;
+    }
 
 /* Page Title Component */
 
@@ -207,25 +209,25 @@ ul.pagination.skeleton > li {
     width: 100%;
 }
 
-.page-title .page-title-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
+    .page-title .page-title-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
 
-.page-title .page-title-heading {
-    font-size: 1.25rem;
-    font-weight: 400;
-    display: flex;
-    align-content: center;
-    align-items: center;
-}
+    .page-title .page-title-heading {
+        font-size: 1.25rem;
+        font-weight: 400;
+        display: flex;
+        align-content: center;
+        align-items: center;
+    }
 
-.page-title .page-title-subheading {
-    padding: 3px 0 0;
-    font-size: .94rem;
-    opacity: .6;
-}
+    .page-title .page-title-subheading {
+        padding: 3px 0 0;
+        font-size: .94rem;
+        opacity: .6;
+    }
 
     .page-title .page-title-icon {
         font-size: 2rem;
@@ -241,14 +243,15 @@ ul.pagination.skeleton > li {
         height: 60px;
         color: #888888;
     }
+
         .page-title .page-title-icon i {
             margin: auto;
         }
 
-.page-title .page-title-actions {
-    margin-left: auto;
-    display: flex;
-}
+    .page-title .page-title-actions {
+        margin-left: auto;
+        display: flex;
+    }
 
 /* Buttons */
 .btn-primary {
