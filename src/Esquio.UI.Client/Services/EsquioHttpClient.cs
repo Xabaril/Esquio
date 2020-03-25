@@ -1,19 +1,18 @@
 ﻿using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
-using Esquio.UI.Api.Shared.Models.ApiKeys.Delete;
 using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.List;
 using Esquio.UI.Api.Shared.Models.Features.Update;
+using Esquio.UI.Api.Shared.Models.Permissions.Add;
+using Esquio.UI.Api.Shared.Models.Permissions.Details;
+using Esquio.UI.Api.Shared.Models.Permissions.List;
+using Esquio.UI.Api.Shared.Models.Permissions.My;
+using Esquio.UI.Api.Shared.Models.Permissions.Update;
 using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
-using Esquio.UI.Api.Shared.Models.Users.Add;
-using Esquio.UI.Api.Shared.Models.Users.Details;
-using Esquio.UI.Api.Shared.Models.Users.List;
-using Esquio.UI.Api.Shared.Models.Users.My;
-using Esquio.UI.Api.Shared.Models.Users.Update;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
@@ -46,7 +45,7 @@ namespace Esquio.UI.Client.Services
 
         Task<MyResponse> GetMy(CancellationToken cancellationToken = default);
         Task<PaginatedResult<ListUsersResponseDetail>> GetUserList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
-        Task<DetailsUsersResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default);
+        Task<DetailsPermissionResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default);
@@ -471,7 +470,7 @@ namespace Esquio.UI.Client.Services
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Get;
-                request.RequestUri = new Uri("api/users/my", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri("api/permissions/my", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -499,7 +498,7 @@ namespace Esquio.UI.Client.Services
         public async Task<PaginatedResult<ListUsersResponseDetail>> GetUserList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
         {
             var urlBuilder = new StringBuilder();
-            urlBuilder.Append($"api/users?");
+            urlBuilder.Append($"api/permissions?");
 
             if (pageIndex != null)
             {
@@ -544,7 +543,7 @@ namespace Esquio.UI.Client.Services
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri($"api/users", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/permissions", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -574,7 +573,7 @@ namespace Esquio.UI.Client.Services
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/users", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/permissions", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -604,7 +603,7 @@ namespace Esquio.UI.Client.Services
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Delete;
-                request.RequestUri = new Uri($"api/users/{subjectId}", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/permissions/{subjectId}", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -626,12 +625,12 @@ namespace Esquio.UI.Client.Services
             }
         }
 
-        public async Task<DetailsUsersResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default)
+        public async Task<DetailsPermissionResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default)
         {
             using (var request = await CreateHttpRequestMessageAsync())
             {
                 request.Method = HttpMethod.Get;
-                request.RequestUri = new Uri($"api/users/{subjectId}", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/permissions/{subjectId}", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -643,7 +642,7 @@ namespace Esquio.UI.Client.Services
                     {
                         var content = await response.Content.ReadAsStringAsync();
 
-                        return JsonConvert.DeserializeObject<DetailsUsersResponse>(
+                        return JsonConvert.DeserializeObject<DetailsPermissionResponse>(
                             content, new JsonSerializerSettings());
                     }
                 }

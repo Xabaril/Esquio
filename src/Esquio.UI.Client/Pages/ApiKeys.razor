@@ -182,7 +182,7 @@
         await table.OnDelete();
     }
 
-    private async Task Clear()
+    private void Clear()
     {
         newApiKeyResponse = null;
         StateHasChanged();

@@ -550,6 +550,193 @@
         }
       }
     },
+    "/api/Permissions/my": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_My",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/MyResponse"
+            }
+          },
+          "403": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedResultOfListUsersResponseDetail"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Add",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddPermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Update",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions/{subjectId}": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Details",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsPermissionResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions/{subjectid}": {
+      "delete": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
     "/api/Products": {
       "get": {
         "tags": [
@@ -1189,193 +1376,6 @@
           }
         }
       }
-    },
-    "/api/Users/my": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_My",
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/MyResponse"
-            }
-          },
-          "403": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_List",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "pageIndex",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          },
-          {
-            "type": "integer",
-            "name": "pageCount",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/PaginatedResultOfListUsersResponseDetail"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Add",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AddPermissionRequest"
-            },
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Update",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdatePermissionRequest"
-            },
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/{subjectId}": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Details",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "subjectId",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/DetailsUsersResponse"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/{subjectid}": {
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Delete",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "subjectId",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -1649,6 +1649,92 @@
         },
         "enabled": {
           "type": "boolean"
+        }
+      }
+    },
+    "MyResponse": {
+      "type": "object",
+      "required": [
+        "isAuthorized"
+      ],
+      "properties": {
+        "isAuthorized": {
+          "type": "boolean"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedResultOfListUsersResponseDetail": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListUsersResponseDetail"
+          }
+        }
+      }
+    },
+    "ListUsersResponseDetail": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsPermissionResponse": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "AddPermissionRequest": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdatePermissionRequest": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
         }
       }
     },
@@ -1959,92 +2045,6 @@
           "type": "string"
         },
         "type": {
-          "type": "string"
-        }
-      }
-    },
-    "MyResponse": {
-      "type": "object",
-      "required": [
-        "isAuthorized"
-      ],
-      "properties": {
-        "isAuthorized": {
-          "type": "boolean"
-        },
-        "actAs": {
-          "type": "string"
-        }
-      }
-    },
-    "PaginatedResultOfListUsersResponseDetail": {
-      "type": "object",
-      "required": [
-        "total",
-        "pageIndex",
-        "count"
-      ],
-      "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "pageIndex": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ListUsersResponseDetail"
-          }
-        }
-      }
-    },
-    "ListUsersResponseDetail": {
-      "type": "object",
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "actAs": {
-          "type": "string"
-        }
-      }
-    },
-    "DetailsUsersResponse": {
-      "type": "object",
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "actAs": {
-          "type": "string"
-        }
-      }
-    },
-    "AddPermissionRequest": {
-      "type": "object",
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "actAs": {
-          "type": "string"
-        }
-      }
-    },
-    "UpdatePermissionRequest": {
-      "type": "object",
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "actAs": {
           "type": "string"
         }
       }

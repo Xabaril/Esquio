@@ -1,5 +1,4 @@
-﻿using Esquio.UI.Api.Shared.Models.Users.My;
-using Serilog;
+﻿using Esquio.UI.Api.Shared.Models.Permissions.My;
 
 namespace Esquio.UI.Client.Services
 {

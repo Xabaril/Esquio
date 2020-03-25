@@ -172,31 +172,31 @@
                 }
             }
 
-            public static class Users
+            public static class Permissions
             {
                 public static string My()
                 {
-                    return $"api/users/my?api-version=3.0";
+                    return $"api/permissions/my?api-version=3.0";
                 }
 
                 public static string List(int pageIndex = 0, int pageCount = 1)
                 {
-                    return $"api/users?pageIndex={pageIndex}&pageCount={pageCount}&api-version=3.0";
+                    return $"api/permissions?pageIndex={pageIndex}&pageCount={pageCount}&api-version=3.0";
                 }
 
                 public static string Add()
                 {
-                    return $"api/users?api-version=3.0";
+                    return $"api/permissions?api-version=3.0";
                 }
 
                 public static string Delete(string subjectId)
                 {
-                    return $"api/users/{subjectId}?api-version=3.0";
+                    return $"api/permissions/{subjectId}?api-version=3.0";
                 }
 
                 public static string Details(string subjectId)
                 {
-                    return $"api/users/{subjectId}?api-version=3.0";
+                    return $"api/permissions/{subjectId}?api-version=3.0";
                 }
             }
         }
