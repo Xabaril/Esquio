@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Esquio.UI.Api.Scenarios.ApiKeys.Details
+namespace Esquio.UI.Api.Shared.Models.ApiKeys.Details
 {
     public class DetailsApiKeyResponse
     {

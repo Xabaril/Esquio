@@ -85,7 +85,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListApiKeyResponse"
+              "$ref": "#/definitions/PaginatedResultOfListApiKeyResponseDetail"
             }
           },
           "500": {
@@ -1421,7 +1421,7 @@
         }
       }
     },
-    "ListApiKeyResponse": {
+    "PaginatedResultOfListApiKeyResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1441,7 +1441,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ListApiKeyResponseDetail"

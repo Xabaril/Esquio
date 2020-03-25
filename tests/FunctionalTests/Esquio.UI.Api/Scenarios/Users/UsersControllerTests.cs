@@ -4,7 +4,12 @@ using Esquio.UI.Api.Scenarios.Users.Details;
 using Esquio.UI.Api.Scenarios.Users.List;
 using Esquio.UI.Api.Scenarios.Users.My;
 using Esquio.UI.Api.Scenarios.Users.Update;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Users.Add;
+using Esquio.UI.Api.Shared.Models.Users.Details;
+using Esquio.UI.Api.Shared.Models.Users.List;
 using Esquio.UI.Api.Shared.Models.Users.My;
+using Esquio.UI.Api.Shared.Models.Users.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -407,19 +412,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListUsersResponse>();
+                .ReadAs<PaginatedResult<ListUsersResponseDetail>>();
 
             content.Should()
                 .NotBeNull();
 
-            content.Result
+            content.Items
                 .Count.Should().Be(1);
 
-            content.Result
+            content.Items
                 .First()
                 .SubjectId.Should().Be(IdentityBuilder.DEFAULT_NAME);
 
-            content.Result
+            content.Items
                .First()
                .ActAs.Should().BeEquivalentTo(nameof(ApplicationRole.Management));
         }
@@ -445,19 +450,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListUsersResponse>();
+                .ReadAs<PaginatedResult<ListUsersResponseDetail>>();
 
             content.Should()
                 .NotBeNull();
 
-            content.Result
+            content.Items
                 .Count.Should().Be(1);
 
-            content.Result
+            content.Items
                 .First()
                 .SubjectId.Should().Be(IdentityBuilder.DEFAULT_NAME);
 
-            content.Result
+            content.Items
                .First()
                .ActAs.Should().BeEquivalentTo(nameof(ApplicationRole.Management));
         }

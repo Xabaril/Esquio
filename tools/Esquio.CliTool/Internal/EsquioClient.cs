@@ -133,14 +133,14 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ListApiKeyResponse> ApiKeys_ListAsync(int? pageIndex, int? pageCount)
+        public System.Threading.Tasks.Task<PaginatedResultOfListApiKeyResponseDetail> ApiKeys_ListAsync(int? pageIndex, int? pageCount)
         {
             return ApiKeys_ListAsync(pageIndex, pageCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ListApiKeyResponse> ApiKeys_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PaginatedResultOfListApiKeyResponseDetail> ApiKeys_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ApiKeys?");
@@ -182,7 +182,7 @@ namespace Esquio.CliTool.Internal
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ListApiKeyResponse>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PaginatedResultOfListApiKeyResponseDetail>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -198,7 +198,7 @@ namespace Esquio.CliTool.Internal
                             throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(ListApiKeyResponse);
+                        return default(PaginatedResultOfListApiKeyResponseDetail);
                     }
                     finally
                     {
@@ -2476,14 +2476,14 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ListUsersResponse> Users_ListAsync(int? pageIndex, int? pageCount)
+        public System.Threading.Tasks.Task<PaginatedResultOfListUsersResponseDetail> Users_ListAsync(int? pageIndex, int? pageCount)
         {
             return Users_ListAsync(pageIndex, pageCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ListUsersResponse> Users_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PaginatedResultOfListUsersResponseDetail> Users_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users?");
@@ -2525,7 +2525,7 @@ namespace Esquio.CliTool.Internal
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ListUsersResponse>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PaginatedResultOfListUsersResponseDetail>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -2541,7 +2541,7 @@ namespace Esquio.CliTool.Internal
                             throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(ListUsersResponse);
+                        return default(PaginatedResultOfListUsersResponseDetail);
                     }
                     finally
                     {
@@ -2971,7 +2971,7 @@ namespace Esquio.CliTool.Internal
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class ListApiKeyResponse 
+    public partial class PaginatedResultOfListApiKeyResponseDetail 
     {
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
         public int Total { get; set; }
@@ -2982,8 +2982,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("count", Required = Newtonsoft.Json.Required.Always)]
         public int Count { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<ListApiKeyResponseDetail> Result { get; set; }
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ListApiKeyResponseDetail> Items { get; set; }
     
     
     }
@@ -3456,7 +3456,7 @@ namespace Esquio.CliTool.Internal
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class ListUsersResponse 
+    public partial class PaginatedResultOfListUsersResponseDetail 
     {
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
         public int Total { get; set; }
@@ -3467,8 +3467,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("count", Required = Newtonsoft.Json.Required.Always)]
         public int Count { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<ListUsersResponseDetail> Result { get; set; }
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ListUsersResponseDetail> Items { get; set; }
     
     
     }

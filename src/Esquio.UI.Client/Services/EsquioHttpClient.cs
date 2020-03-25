@@ -1,4 +1,7 @@
 ﻿using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Delete;
+using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.List;
 using Esquio.UI.Api.Shared.Models.Features.Update;
@@ -47,6 +50,10 @@ namespace Esquio.UI.Client.Services
         Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default);
+
+        Task<PaginatedResult<ListApiKeyResponseDetail>> GetApiKeyList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
+        Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default);
+        Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default);
 
     }
 
@@ -646,6 +653,112 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return null;
+            }
+        }
+
+        public async Task<PaginatedResult<ListApiKeyResponseDetail>> GetApiKeyList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
+        {
+            var urlBuilder = new StringBuilder();
+            urlBuilder.Append($"api/apikeys?");
+
+            if (pageIndex != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageCount != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+
+            urlBuilder.Length--;
+
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<PaginatedResult<ListApiKeyResponseDetail>>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get api keys.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/apikeys", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var content = JsonConvert.SerializeObject(addApiKeyRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        var responseContent = await response.Content
+                            .ReadAsStringAsync();
+                        
+                        return JsonConvert.DeserializeObject<AddApiKeyResponse>(responseContent);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add new api key {addApiKeyRequest.Name}.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri($"api/apikeys/{apiKeyName}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete api key {apiKeyName}.!");
+                }
+
+                return false;
             }
         }
 

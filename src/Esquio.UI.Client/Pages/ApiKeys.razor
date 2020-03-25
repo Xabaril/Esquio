@@ -11,20 +11,30 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <PageTitle Title="Users" Subtitle="Show the current active users on Esquio.">
+                <PageTitle Title="ApiKeys" Subtitle="Show the current Api Keys on Esquio.">
                     <Icon>
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-key"></i>
                     </Icon>
                     <Actions>
                         <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
-                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModalNewPermission">
-                                New User
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModalNewApiKey">
+                                New Api Key
                             </button>
                         </Permission>
                     </Actions>
                 </PageTitle>
             </div>
         </div>
+
+        @if (newApiKeyResponse != null)
+        {
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-check"></i><strong>@newApiKeyResponse.Key</strong></h5>
+                A new API key has been created. Make sure to copy your new API key now. You will not be able to do so again!
+            </div>
+        }
+
     </section>
 
     <section class="content">
@@ -34,42 +44,26 @@
                     <PaginatedTable Loader="Loader"
                                     @ref="table">
                         <TableHeader>
-                            <th class="table-col-4">Identity Provider Subject</th>
-                            <th>Acting As</th>
-                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
-                                <th class="table-col-1"></th>
-                            </Permission>
+                            <th class="table-col-4">Api Key Name</th>
+                            <th>Valid To</th>
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
                                 <th class="table-col-1"></th>
                             </Permission>
                         </TableHeader>
-                        <TableBody Context="users">
-                            @foreach (var user in users.Items)
+                        <TableBody Context="apiKeys">
+                            @foreach (var item in apiKeys.Items)
                             {
-                            <tr @ondblclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
-                                <td>@user.SubjectId</td>
-                                <td>@user.ActAs</td>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                    <td class="table-component__action">
-                                        @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
-                                        {
-                                            <Button Title="Update"
-                                                    Icon="fas fa-edit"
-                                                    OnClick="@(() => OpenModalUpdatePermission(user.SubjectId,user.ActAs))" />
-                                        }
-                                    </td>
-                                </Permission>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                    <td class="table-component__action">
-                                        @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
-                                        {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.ValidTo</td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
                                             <Button Title="Delete"
                                                     Icon="far fa-trash-alt"
-                                                    OnClick="@(() => Delete(user.SubjectId))" />
-                                        }
-                                    </td>
-                                </Permission>
-                            </tr>
+                                                    OnClick="@(() => Delete(item.Name))" />
+                                        </td>
+                                    </Permission>
+                                </tr>
                             }
                         </TableBody>
                     </PaginatedTable>
@@ -79,20 +73,24 @@
     </section>
 </PageTransition>
 
-<Modal Title="New User Permission" Show="showModalNewPermission" OnClose="CloseModalNewPermission">
+<Modal Title="New Api Key" Show="showModalNewApiKey" OnClose="CloseModalNewApiKey">
     <ModalBody>
-        <EditForm EditContext="@editContextNewPermission">
+        <EditForm EditContext="@editContextNewApiKey">
             <FluentValidationValidator />
             <ValidationSummary />
+            <div class="form-group">
+                <label for="subject-id">Name</label>
+                <InputText id="subject-id" class="form-control" @bind-Value="newApiKey.Name" placeholder="Enter the application key name, this will be unique." />
+            </div>
 
             <div class="form-group">
-                <label for="subject-id">Subject</label>
-                <InputText id="subject-id" class="form-control" @bind-Value="newPermission.SubjectId" placeholder="Enter subject provider identifier" />
+                <label for="subject-actas">ValidTo</label>
+                <InputDate type="date" class="form-control form-control-sm col-4" format-value="yyyy-MM-dd" @bind-Value="@newApiKey.ValidTo" placeholder="Enter ApiKey expiration time"></InputDate>
             </div>
 
             <div class="form-group">
                 <label for="subject-actas">Act as</label>
-                <InputSelect class="form-control" @bind-Value="newPermission.ActAs">
+                <InputSelect class="form-control" @bind-Value="newApiKey.ActAs">
                     <option selected disabled hidden>Acting as</option>
                     <option value="Reader">Reader</option>
                     <option value="Contributor">Contributor</option>
@@ -102,160 +100,91 @@
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseModalNewPermission" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalidNewPermission">Save changes</button>
-    </ModalFooter>
-</Modal>
-
-<Modal Title="Update User Permission" Show="showModalUpdatePermission" OnClose="CloseModalUpdatePermission">
-    <ModalBody>
-        <EditForm EditContext="@editContextUpdatePermission">
-            <FluentValidationValidator />
-            <ValidationSummary />
-
-            <div class="form-group">
-                <label for="subject-id">Subject</label>
-                <InputText id="subject-id" class="form-control" @bind-Value="updatePermission.SubjectId" placeholder="Enter subject provider identifier" />
-            </div>
-
-            <div class="form-group">
-                <label for="subject-actas">Act as</label>
-                <InputSelect class="form-control" @bind-Value="updatePermission.ActAs">
-                    <option selected disabled hidden>Acting as</option>
-                    <option value="Reader">Reader</option>
-                    <option value="Contributor">Contributor</option>
-                    <option value="Management">Management</option>
-                </InputSelect>
-            </div>
-        </EditForm>
-    </ModalBody>
-    <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseModalUpdatePermission" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="Update" disabled="@formInvalidUpdatePermission">Save changes</button>
+        <button type="button" class="btn btn-default" @onclick="CloseModalNewApiKey" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalidNewApiKey">Save changes</button>
     </ModalFooter>
 </Modal>
 
 @code {
 
     //add modal
-    private bool showModalNewPermission = false;
-    private bool formInvalidNewPermission;
-    private AddPermissionRequest newPermission;
-    private EditContext editContextNewPermission;
+    private bool showModalNewApiKey = false;
+    private bool formInvalidNewApiKey;
+    private AddApiKeyRequest newApiKey;
+    private EditContext editContextNewApiKey;
 
-    //update modal
-    private bool showModalUpdatePermission = false;
-    private bool formInvalidUpdatePermission;
-    private UpdatePermissionRequest updatePermission;
-    private EditContext editContextUpdatePermission;
+    private PaginatedTable<ListApiKeyResponseDetail> table;
 
-    private PaginatedTable<ListUsersResponseDetail> table;
+    private AddApiKeyResponse newApiKeyResponse;
 
     protected override void OnInitialized()
     {
-        InitModelNewPermission();
-        InitModelUpdatePermission();
+        InitModelNewApiKeys();
+
 
         esquioState.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
-            new BreadcrumbItemViewModel { Title = "Users", Active = true });
+            new BreadcrumbItemViewModel { Title = "ApiKeys", Active = true });
     }
 
-    private void InitModelNewPermission()
+    private void InitModelNewApiKeys()
     {
-        formInvalidNewPermission = true;
+        formInvalidNewApiKey = true;
 
-        newPermission = new AddPermissionRequest();
-
-        editContextNewPermission = new EditContext(newPermission);
-        editContextNewPermission.OnValidationStateChanged += OnAddPermissionValidationChanged;
-    }
-
-    private void OnAddPermissionValidationChanged(object sender, ValidationStateChangedEventArgs args)
-    {
-        formInvalidNewPermission = !editContextNewPermission.IsValid();
-        StateHasChanged();
-    }
-
-
-    private void OpenModalNewPermission()
-    {
-        InitModelNewPermission();
-        showModalNewPermission = true;
-
-        esquioState.SetWindowModal(showModalNewPermission);
-    }
-
-    private void CloseModalNewPermission()
-    {
-        showModalNewPermission = false;
-        editContextNewPermission.OnValidationStateChanged -= OnAddPermissionValidationChanged;
-
-        esquioState.SetWindowModal(showModalNewPermission);
-    }
-
-    private void InitModelUpdatePermission(string subjectId = null, string actAs = null)
-    {
-        formInvalidUpdatePermission = true;
-
-        updatePermission = new UpdatePermissionRequest()
+        newApiKey = new AddApiKeyRequest()
         {
-            SubjectId = subjectId,
-            ActAs = actAs
+            ValidTo = null,//DateTime.UtcNow
         };
 
-        editContextUpdatePermission = new EditContext(updatePermission);
-        editContextUpdatePermission.OnValidationStateChanged += OnUpdatePermissionValidationChanged;
+        editContextNewApiKey = new EditContext(newApiKey);
+        editContextNewApiKey.OnValidationStateChanged += OnAddApiKeysValidationChanged;
     }
 
-    private void OnUpdatePermissionValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    private void OnAddApiKeysValidationChanged(object sender, ValidationStateChangedEventArgs args)
     {
-        formInvalidUpdatePermission = !editContextUpdatePermission.IsValid();
+        formInvalidNewApiKey = !editContextNewApiKey.IsValid();
         StateHasChanged();
     }
 
-    private void OpenModalUpdatePermission(string subjectId, string actAs)
+    private void OpenModalNewApiKey()
     {
-        InitModelUpdatePermission(subjectId, actAs);
-        showModalUpdatePermission = true;
+        InitModelNewApiKeys();
+        showModalNewApiKey = true;
 
-        esquioState.SetWindowModal(showModalUpdatePermission);
+        esquioState.SetWindowModal(showModalNewApiKey);
     }
 
-    private void CloseModalUpdatePermission()
+    private void CloseModalNewApiKey()
     {
-        showModalUpdatePermission = false;
-        editContextUpdatePermission.OnValidationStateChanged -= OnUpdatePermissionValidationChanged;
+        showModalNewApiKey = false;
+        editContextNewApiKey.OnValidationStateChanged -= OnAddApiKeysValidationChanged;
 
-        esquioState.SetWindowModal(showModalUpdatePermission);
+        esquioState.SetWindowModal(showModalNewApiKey);
     }
 
-    private Task<PaginatedResult<ListUsersResponseDetail>> Loader(int pageIndex, int pageCount)
+    private Task<PaginatedResult<ListApiKeyResponseDetail>> Loader(int pageIndex, int pageCount)
     {
-        return esquioHttpClient.GetUserList(pageIndex, pageCount);
+        return esquioHttpClient.GetApiKeyList(pageIndex, pageCount);
     }
 
     private async Task Add()
     {
-        await esquioHttpClient.AddUserPermission(newPermission);
+        newApiKeyResponse = await esquioHttpClient.AddNewApiKey(newApiKey);
         await table.OnAdd();
 
-        CloseModalNewPermission();
-        InitModelNewPermission();
+        CloseModalNewApiKey();
+        InitModelNewApiKeys();
     }
 
-    private async Task Delete(string subjectId)
+    private async Task Delete(string apiKey)
     {
-        await esquioHttpClient.DeleteUserPermission(subjectId);
+        await esquioHttpClient.DeleteApiKey(apiKey);
         await table.OnDelete();
     }
 
-    private async Task Update()
+    private async Task Clear()
     {
-        await esquioHttpClient.UpdateUserPermission(updatePermission);
-        await table.OnAdd();
-
-        CloseModalUpdatePermission();
-        InitModelUpdatePermission();
+        newApiKeyResponse = null;
+        StateHasChanged();
     }
 }

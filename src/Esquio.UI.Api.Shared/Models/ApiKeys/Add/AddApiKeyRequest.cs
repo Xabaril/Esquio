@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System;
 
-namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
+namespace Esquio.UI.Api.Shared.Models.ApiKeys.Add
 {
     public class AddApiKeyRequest : IRequest<AddApiKeyResponse>
     {

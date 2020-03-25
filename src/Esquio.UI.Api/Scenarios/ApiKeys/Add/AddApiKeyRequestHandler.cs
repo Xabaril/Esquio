@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

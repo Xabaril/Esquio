@@ -1,8 +1,9 @@
-﻿using Esquio.UI.Api.Scenarios.ApiKeys.Add;
-using Esquio.UI.Api.Scenarios.ApiKeys.Details;
-using Esquio.UI.Api.Scenarios.ApiKeys.List;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Scenarios.Flags.Delete;
-using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Details;
+using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,9 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
-        [ProducesResponseType(typeof(ListApiKeyResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<ListApiKeyResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListApiKeyResponse>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListApiKeyResponseDetail>>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(request, cancellationToken);
 

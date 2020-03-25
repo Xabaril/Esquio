@@ -47,7 +47,16 @@
                             @foreach (var user in users.Items)
                             {
                             <tr @ondblclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
-                                <td>@user.SubjectId</td>
+                                <td>
+                                    @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                    {
+                                        @user.SubjectId;
+                                    }
+                                    else
+                                    {
+                                        @("You");
+                                    }
+                                </td>
                                 <td>@user.ActAs</td>
                                 <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
                                     <td class="table-component__action">

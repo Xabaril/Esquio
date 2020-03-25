@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.Users.List;
 using MediatR;
@@ -27,6 +28,7 @@ namespace Esquio.UI.Api.Scenarios.Users.List
 
             var userPermissions = await _storeDbContext
                 .Permissions
+                .Where(p=>p.Kind == SubjectType.User)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .Select(u => new ListUsersResponseDetail()
