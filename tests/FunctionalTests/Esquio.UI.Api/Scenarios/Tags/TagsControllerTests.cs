@@ -1,5 +1,5 @@
-﻿using Esquio.UI.Api.Scenarios.Tags.Add;
-using Esquio.UI.Api.Scenarios.Tags.List;
+﻿using Esquio.UI.Api.Shared.Models.Tags.Add;
+using Esquio.UI.Api.Shared.Models.Tags.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -163,7 +163,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
         [Fact]
         [ResetDatabase]
-        public async Task allow_to_tag_features()
+        public async Task allow_to_tag_features_with_default_color()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -201,6 +201,91 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status200OK);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task allow_to_tag_features_with_specified_color()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var tag = "tag";
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle1 = Builders.Toggle()
+                .WithType("toggle")
+                .Build();
+
+            feature.Toggles.Add(toggle1);
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var request = new AddTagRequest(tag,"#FF0022");
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+        }
+
+
+        [Fact]
+        [ResetDatabase]
+        public async Task response_bad_request_when_add_tag_features_with_bad_formatted_color()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var tag = "tag";
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle1 = Builders.Toggle()
+                .WithType("toggle")
+                .Build();
+
+            feature.Toggles.Add(toggle1);
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var request = new AddTagRequest(tag, "#nonvalid");
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
         }
 
         [Fact]

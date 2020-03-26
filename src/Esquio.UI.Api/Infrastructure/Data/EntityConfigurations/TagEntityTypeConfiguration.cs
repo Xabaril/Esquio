@@ -26,6 +26,11 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                 .IsRequired()
                 .HasMaxLength(200);
 
+            builder.Property(p => p.HexColor)
+                .HasDefaultValue("#FF0000")
+                .HasMaxLength(7)
+                .IsRequired(false);
+
             builder.HasIndex(p => p.Name)
                 .IsUnique();
         }

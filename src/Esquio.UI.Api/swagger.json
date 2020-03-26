@@ -1881,6 +1881,9 @@
       "properties": {
         "name": {
           "type": "string"
+        },
+        "color": {
+          "type": "string"
         }
       }
     },
@@ -1888,6 +1891,9 @@
       "type": "object",
       "properties": {
         "tag": {
+          "type": "string"
+        },
+        "hexColor": {
           "type": "string"
         }
       }

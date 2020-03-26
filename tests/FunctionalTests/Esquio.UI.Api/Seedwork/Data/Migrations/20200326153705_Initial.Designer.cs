@@ -10,14 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200131084402_Initial")]
+    [Migration("20200326153705_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasDefaultSchema("dbo")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -173,25 +174,22 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("ManagementPermission")
+                    b.Property<string>("ApplicationRole")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Reader");
 
-                    b.Property<bool>("ReadPermission")
+                    b.Property<string>("Kind")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("User");
 
                     b.Property<string>("SubjectId")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
-
-                    b.Property<bool>("WritePermission")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -258,6 +256,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("HexColor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(7)")
+                        .HasMaxLength(7)
+                        .HasDefaultValue("#FF0000");
 
                     b.Property<string>("Name")
                         .IsRequired()

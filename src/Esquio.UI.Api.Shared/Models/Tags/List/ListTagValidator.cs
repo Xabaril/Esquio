@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Scenarios.Tags.List
+namespace Esquio.UI.Api.Shared.Models.Tags.List
 {
     public class ListTagValidator 
         : AbstractValidator<ListTagRequest>

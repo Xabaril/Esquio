@@ -255,6 +255,12 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("HexColor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(7)")
+                        .HasMaxLength(7)
+                        .HasDefaultValue("#FF0000");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")

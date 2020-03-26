@@ -16,7 +16,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -254,6 +254,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("HexColor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(7)")
+                        .HasMaxLength(7)
+                        .HasDefaultValue("#FF0000");
 
                     b.Property<string>("Name")
                         .IsRequired()

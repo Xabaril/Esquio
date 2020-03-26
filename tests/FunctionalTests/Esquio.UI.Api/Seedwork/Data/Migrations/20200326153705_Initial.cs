@@ -7,8 +7,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "dbo");
+
             migrationBuilder.CreateTable(
                 name: "ApiKeys",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -24,6 +28,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "History",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -42,14 +47,14 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubjectId = table.Column<string>(maxLength: 200, nullable: false),
-                    ReadPermission = table.Column<bool>(nullable: false, defaultValue: false),
-                    WritePermission = table.Column<bool>(nullable: false, defaultValue: false),
-                    ManagementPermission = table.Column<bool>(nullable: false, defaultValue: false)
+                    Kind = table.Column<string>(nullable: false, defaultValue: "User"),
+                    ApplicationRole = table.Column<string>(nullable: false, defaultValue: "Reader")
                 },
                 constraints: table =>
                 {
@@ -58,6 +63,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Products",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -72,11 +78,13 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tags",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 200, nullable: false)
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    HexColor = table.Column<string>(maxLength: 7, nullable: true, defaultValue: "#FF0000")
                 },
                 constraints: table =>
                 {
@@ -85,6 +93,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Features",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -101,6 +110,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Features_Products_ProductEntityId",
                         column: x => x.ProductEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -108,6 +118,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Rings",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -122,6 +133,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Rings_Products_ProductEntityId",
                         column: x => x.ProductEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -129,6 +141,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "FeatureTags",
+                schema: "dbo",
                 columns: table => new
                 {
                     FeatureEntityId = table.Column<int>(nullable: false),
@@ -140,12 +153,14 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     table.ForeignKey(
                         name: "FK_FeatureTags_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FeatureTags_Tags_TagEntityId",
                         column: x => x.TagEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -153,6 +168,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Toggles",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -167,6 +183,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Toggles_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -174,6 +191,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Parameters",
+                schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -190,6 +208,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Parameters_Toggles_ToggleEntityId",
                         column: x => x.ToggleEntityId,
+                        principalSchema: "dbo",
                         principalTable: "Toggles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,56 +216,66 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiKeys_Key",
+                schema: "dbo",
                 table: "ApiKeys",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiKeys_Name",
+                schema: "dbo",
                 table: "ApiKeys",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Features_ProductEntityId",
+                schema: "dbo",
                 table: "Features",
                 column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeatureTags_TagEntityId",
+                schema: "dbo",
                 table: "FeatureTags",
                 column: "TagEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Parameters_ToggleEntityId",
+                schema: "dbo",
                 table: "Parameters",
                 column: "ToggleEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Permissions_SubjectId",
+                schema: "dbo",
                 table: "Permissions",
                 column: "SubjectId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
+                schema: "dbo",
                 table: "Products",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rings_ProductEntityId",
+                schema: "dbo",
                 table: "Rings",
                 column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Name",
+                schema: "dbo",
                 table: "Tags",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Toggles_FeatureEntityId",
+                schema: "dbo",
                 table: "Toggles",
                 column: "FeatureEntityId");
         }
@@ -254,34 +283,44 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApiKeys");
+                name: "ApiKeys",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "FeatureTags");
+                name: "FeatureTags",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "History");
+                name: "History",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Parameters");
+                name: "Parameters",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "Permissions",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Rings");
+                name: "Rings",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Tags",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Toggles");
+                name: "Toggles",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Features");
+                name: "Features",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Products",
+                schema: "dbo");
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Esquio.UI.Api.Scenarios.Tags.Add;
-using Esquio.UI.Api.Scenarios.Tags.Delete;
-using Esquio.UI.Api.Scenarios.Tags.List;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models.Tags.Add;
+using Esquio.UI.Api.Shared.Models.Tags.Delete;
+using Esquio.UI.Api.Shared.Models.Tags.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +27,7 @@ namespace Esquio.UI.Api.Scenarios.Tags
         [HttpGet]
         [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags")]
-        [ProducesResponseType(typeof(List<TagResponseDetail>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<TagResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TagResponseDetail>>> List(string productName, string featureName, CancellationToken cancellationToken = default)
         {

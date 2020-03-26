@@ -83,7 +83,8 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 200, nullable: false)
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    HexColor = table.Column<string>(maxLength: 7, nullable: true, defaultValue: "#FF0000")
                 },
                 constraints: table =>
                 {

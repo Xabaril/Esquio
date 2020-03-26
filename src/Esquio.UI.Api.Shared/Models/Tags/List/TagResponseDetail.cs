@@ -1,4 +1,4 @@
-﻿namespace Esquio.UI.Api.Scenarios.Tags.List
+﻿namespace Esquio.UI.Api.Shared.Models.Tags.List
 {
     public class TagResponseDetail
     {
@@ -10,5 +10,7 @@
         }
 
         public string Name { get; set; }
+
+        public string Color { get; set; }
     }
 }
