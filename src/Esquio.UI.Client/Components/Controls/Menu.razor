@@ -1,0 +1,28 @@
+﻿<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <li class="nav-item">
+        <NavLink href="/products" class="nav-link">
+            <i class="nav-icon fas fa-box-open"></i>
+            <p>Products</p>
+        </NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink href="/users" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Users</p>
+        </NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink href="/apikeys" class="nav-link">
+            <i class="nav-icon fas fa-key"></i>
+            <p>Api Keys</p>
+        </NavLink>
+    </li>
+</ul>
+@code {
+    [Parameter] public string Title { get; set; }
+
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+}

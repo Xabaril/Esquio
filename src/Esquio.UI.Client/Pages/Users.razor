@@ -11,7 +11,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <PageTitle Title="Users" Subtitle="Show the current active users on Esquio.">
+                <PageTitle Title="Users Permissions" Subtitle="Show configured user permissions on Esquio.">
                     <Icon>
                         <i class="fas fa-users"></i>
                     </Icon>
@@ -34,7 +34,7 @@
                     <PaginatedTable Loader="Loader"
                                     @ref="table">
                         <TableHeader>
-                            <th class="table-col-4">Identity Provider Subject</th>
+                            <th class="table-col-6">Identity Provider Subject</th>
                             <th>Acting As</th>
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
                                 <th class="table-col-1"></th>
