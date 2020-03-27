@@ -5,9 +5,9 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
-@inject IPolicyBuilder policyBuilder;
-@inject EsquioState esquioState;
-@inject HttpClient http
+@inject IPolicyBuilder policyBuilder
+@inject EsquioState esquioState
+@inject IEsquioHttpClient esquioHttpClient
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed" OnLogOutSucceeded="OnUserLogedout">
 </RemoteAuthenticatorView>
@@ -41,9 +41,6 @@
 
     async Task EvaluateAuthorization(Action notAllowed)
     {
-        //TODO: EsquioHttpClient can't be resolved directly, there is a open bug on blazor with this!
-
-        var esquioHttpClient = new EsquioHttpClient(http, AuthenticationService);
         var my = await esquioHttpClient.GetMy();
 
         if (my != null)
