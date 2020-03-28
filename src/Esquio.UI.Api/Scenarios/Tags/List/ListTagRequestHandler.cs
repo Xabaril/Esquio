@@ -34,7 +34,7 @@ namespace Esquio.UI.Api.Scenarios.Tags.List
             if (feature != null)
             {
                 return feature.FeatureTags
-                    .Select(ft => new TagResponseDetail(ft.TagEntity.Name))
+                    .Select(ft => new TagResponseDetail(ft.TagEntity.Name, ft.TagEntity.HexColor))
                     .ToList();
             }
 

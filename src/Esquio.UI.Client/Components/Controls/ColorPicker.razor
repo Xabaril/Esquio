@@ -1,0 +1,50 @@
+﻿<div class="color-picker">
+    @foreach (var color in colors)
+    {
+        <label class="color" style="background-color: @color;@(selectedColor == color ? $" box-shadow: {color} 0px 0px 4px;": "")">
+            <input type="radio"
+                   name="@color"
+                   checked="@(selectedColor == color)"
+                   @onchange="@(() => SetColor(color))" />
+        </label>
+    }
+</div>
+
+@code {
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+
+    private string selectedColor;
+    private string[] colors = new[]
+    {
+        "#FF4647",
+        "#FF5DB3",
+        "#BB31D1",
+        "#673AB6",
+        "#465BCD",
+        "#00A2E1",
+        "#1CB7FD",
+        "#00CCFF",
+        "#00BBD3",
+        "#009BA7",
+        "#4CAE50",
+        "#8BC24A",
+        "#CCDB39",
+        "#F6E44B",
+        "#FEC007",
+        "#FF8200",
+        "#FE5722",
+        "#795548",
+        "#000000"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SetColor(colors[0]);
+    }
+
+    private Task SetColor(string color)
+    {
+        selectedColor = color;
+        return OnChange.InvokeAsync(color);
+    }
+}

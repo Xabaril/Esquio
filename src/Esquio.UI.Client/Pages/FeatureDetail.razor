@@ -1,0 +1,135 @@
+﻿@page "/products/{productName}/{featureName}"
+@attribute [Authorize]
+
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+
+    <PageTransition>
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <h1>@FeatureName</h1>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-9">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <PageTitle Title="Toggles"
+                                           Subtitle="Show the collection of active toggles on current feature.">
+                                    <Icon>
+                                        <i class="fas fa-magic"></i>
+                                    </Icon>
+                                    <Actions>
+                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                            <button type="button" class="btn btn-primary btn-shadow">
+                                                New Toggle
+                                            </button>
+                                        </Permission>
+                                    </Actions>
+                                </PageTitle>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <SingleTable Loader="TogglesLoader" @ref="togglesTable">
+                                    <TableHeader>
+                                        <th class="table-col-4">Name</th>
+                                        <th></th>
+                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                            <th class="table-col-1"></th>
+                                        </Permission>
+                                    </TableHeader>
+                                    <TableBody Context="response">
+                                        @foreach (var toggle in response.Toggles)
+                                        {
+                                            <tr>
+                                                <td colspan="2">
+                                                    @toggle.FriendlyName
+                                                </td>
+                                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                                    <td class="table-component__action">
+                                                        <Button Title="Delete"
+                                                                Icon="far fa-trash-alt"
+                                                                OnClick="@(() => DeleteToggle(toggle.Type))" />
+                                                    </td>
+                                                </Permission>
+                                            </tr>
+                                        }
+                                    </TableBody>
+                                </SingleTable>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-3">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <aside>
+                                    <Tags Subtitle="Show the collection of active tags on current feature."
+                                            TagsLoader="TagsLoader"
+                                            OnAdd="AddTag"
+                                            OnDelete="DeleteTag" />
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </PageTransition>
+
+@code {
+    [Parameter] public string ProductName { get; set; }
+    [Parameter] public string FeatureName { get; set; }
+
+    private SingleTable<DetailsFeatureResponse> togglesTable;
+
+    protected override void OnInitialized()
+    {
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
+            new BreadcrumbItemViewModel { Title = ProductName, Link = $"products/{ProductName}" },
+            new BreadcrumbItemViewModel { Title = FeatureName, Active = true });
+    }
+
+    private Task<DetailsFeatureResponse> TogglesLoader()
+    {
+        return esquioHttpClient.GetFeatureDetails(ProductName, FeatureName);
+    }
+
+    private async Task DeleteToggle(string toggleType)
+    {
+        await esquioHttpClient.DeleteToggle(ProductName, FeatureName, toggleType);
+        await togglesTable.OnDelete();
+    }
+
+    private Task<IEnumerable<TagResponseDetail>> TagsLoader()
+    {
+        return esquioHttpClient.GetTagsList(ProductName, FeatureName);
+    }
+
+    private async Task AddTag(AddTagRequest addTagRequest)
+    {
+        await esquioHttpClient.AddTag(ProductName, FeatureName, addTagRequest);
+    }
+
+    private async Task DeleteTag(DeleteTagRequest deleteTagRequest)
+    {
+        await esquioHttpClient.DeleteTag(ProductName, FeatureName, deleteTagRequest.Tag);
+    }
+}

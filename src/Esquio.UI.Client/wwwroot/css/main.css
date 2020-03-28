@@ -166,6 +166,7 @@ ul.pagination.skeleton {
     }
 
 /* Table Component */
+
 .table-component {
     font-size: 1.2rem;
 }
@@ -212,7 +213,7 @@ ul.pagination.skeleton {
     .page-title .page-title-wrapper {
         position: relative;
         display: flex;
-        align-items: center;
+        align-items: start;
     }
 
     .page-title .page-title-heading {
@@ -254,6 +255,7 @@ ul.pagination.skeleton {
     }
 
 /* Buttons */
+
 .btn-primary {
     background-color: #20b2aa;
     border: none;
@@ -270,6 +272,7 @@ ul.pagination.skeleton {
 
 
 /* Spacing */
+
 .bottom-spacing {
     margin-bottom: 1rem !important;
 }
@@ -287,6 +290,7 @@ ul.pagination.skeleton {
 }
 
 /* Page transitions */
+
 .fade-in {
     opacity: 1;
     animation-name: fadeInOpacity;
@@ -307,3 +311,56 @@ ul.pagination.skeleton {
         right: 0px;
     }
 }
+
+/* Layout */
+
+.content-header .col-sm-12 {
+    padding: 0;
+}
+
+/* ColorPicker Component */
+
+.color-picker input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.color-picker label.color {
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+/* Tag List Component */
+
+.tag-list {
+    padding-left: 0;
+}
+
+    .tag-list li {
+        padding: 0.3rem 0.7rem;
+        width: 100%;
+        position: relative;
+        outline: none;
+        float: left;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        color: #fff;
+        list-style: none;
+        font-weight: bold;
+        line-height: 2rem;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,.03), 0 0.9375rem 1.40625rem rgba(4,9,20,.03), 0 0.25rem 0.53125rem rgba(4,9,20,.05), 0 0.125rem 0.1875rem rgba(4,9,20,.03);
+    }
+
+        .tag-list li i, .tag-list li i:hover {
+            float: right;
+            color: #fff;
+            line-height: 2rem;
+        }

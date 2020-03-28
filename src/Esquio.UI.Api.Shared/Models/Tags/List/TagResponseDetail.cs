@@ -4,9 +4,10 @@
     {
         protected TagResponseDetail() { }
 
-        public TagResponseDetail(string name)
+        public TagResponseDetail(string name, string color)
         {
             Name = name;
+            Color = color;
         }
 
         public string Name { get; set; }

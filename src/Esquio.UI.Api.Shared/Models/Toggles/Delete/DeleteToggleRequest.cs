@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Scenarios.Toggles.Delete
+namespace Esquio.UI.Api.Shared.Models.Toggles.Delete
 {
     public class DeleteToggleRequest : IRequest
     {

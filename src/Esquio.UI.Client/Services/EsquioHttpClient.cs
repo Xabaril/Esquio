@@ -2,6 +2,7 @@
 using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
 using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
+using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
 using Esquio.UI.Api.Shared.Models.Features.Update;
 using Esquio.UI.Api.Shared.Models.Permissions.Add;
@@ -13,10 +14,13 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
+using Esquio.UI.Api.Shared.Models.Tags.Add;
+using Esquio.UI.Api.Shared.Models.Tags.List;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -54,6 +58,13 @@ namespace Esquio.UI.Client.Services
         Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default);
 
+        Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
+
+        Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default);
+        Task<bool> AddTag(string productName, string featureName, AddTagRequest addTagRequest, CancellationToken cancellationToken = default);
+        Task<bool> DeleteTag(string productName, string featureName, string tag, CancellationToken cancellationToken = default);
     }
 
     public class EsquioHttpClient
@@ -755,6 +766,149 @@ namespace Esquio.UI.Client.Services
                 catch (Exception exception)
                 {
                     Log.Error(exception, $"An exception is throwed when trying to delete api key {apiKeyName}.!");
+                }
+
+                return false;
+            }
+        }
+
+        public async Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<DetailsFeatureResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
+                }
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<IEnumerable<TagResponseDetail>>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the tags list on feature {featureName} on product {productName} from server.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> AddTag(string productName, string featureName, AddTagRequest addTagRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags/tag", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                var content = JsonConvert.SerializeObject(addTagRequest);
+                request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add tag {addTagRequest}.!");
+                }
+
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteTag(string productName, string featureName, string tag, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags/untag/{tag}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete tag {productName}.!");
                 }
 
                 return false;
