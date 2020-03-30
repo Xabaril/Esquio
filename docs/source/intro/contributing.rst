@@ -92,7 +92,8 @@ Attribution
 ^^^^^^^^^^^
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
+available at `version <http://contributor-covenant.org/version/1/4>`_
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+`homepage <http://contributor-covenant.org>`_
+
+`version <http://contributor-covenant.org/version/1/4>`_
