@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\plugins\jsonview\" />
+  </ItemGroup>
+
 </Project>

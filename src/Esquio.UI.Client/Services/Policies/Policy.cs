@@ -9,9 +9,9 @@ namespace Esquio.UI.Client.Services
         Feature,
         Toggle,
         Ring,
-        Token,
         Permission,
-        ApiKeys
+        ApiKeys,
+        Audit
     }
 
     public enum PolicyAction

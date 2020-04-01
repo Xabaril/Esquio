@@ -26,6 +26,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Update
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f=>f.ProductEntity) //-> this is only needed for "history"
                 .Where(p => p.Name == request.CurrentName && p.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 

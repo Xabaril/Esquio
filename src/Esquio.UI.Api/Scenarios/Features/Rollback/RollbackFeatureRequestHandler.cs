@@ -26,6 +26,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f => f.ProductEntity) //-> this is only needed for "history"
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(cancellationToken);

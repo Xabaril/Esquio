@@ -23,9 +23,9 @@ namespace Esquio.UI.Client.Services
             PolicySubject.Feature,
             PolicySubject.Toggle,
             PolicySubject.Ring,
-            PolicySubject.Token,
             PolicySubject.Permission,
-            PolicySubject.ApiKeys
+            PolicySubject.ApiKeys,
+            PolicySubject.Audit
         };
 
 

@@ -32,12 +32,6 @@
             "in": "query",
             "format": "int32",
             "x-nullable": false
-          },
-          {
-            "type": "string",
-            "name": "productName",
-            "in": "query",
-            "x-nullable": true
           }
         ],
         "responses": {

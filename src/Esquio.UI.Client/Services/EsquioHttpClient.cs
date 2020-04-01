@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
 using Esquio.UI.Api.Shared.Models.ApiKeys.List;
+using Esquio.UI.Api.Shared.Models.Audit.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
@@ -65,6 +66,9 @@ namespace Esquio.UI.Client.Services
         Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> AddTag(string productName, string featureName, AddTagRequest addTagRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteTag(string productName, string featureName, string tag, CancellationToken cancellationToken = default);
+
+        Task<PaginatedResult<ListAuditResponseDetail>> GetAuditList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
+
     }
 
     public class EsquioHttpClient
@@ -912,6 +916,50 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return false;
+            }
+        }
+
+        public async Task<PaginatedResult<ListAuditResponseDetail>> GetAuditList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
+        {
+            var urlBuilder = new StringBuilder();
+            urlBuilder.Append($"api/audit?");
+
+            if (pageIndex != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pageCount != null)
+            {
+                urlBuilder.Append(Uri.EscapeDataString("pageCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+
+            urlBuilder.Length--;
+
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<PaginatedResult<ListAuditResponseDetail>>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get audit information!.");
+                }
+
+                return null;
             }
         }
 

@@ -1,4 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Audit.List;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.UI.Api.Features.Audit.List
 {
-    public class ListAuditRequestHandler : IRequestHandler<ListAuditRequest, ListAuditResponse>
+    public class ListAuditRequestHandler : IRequestHandler<ListAuditRequest, PaginatedResult<ListAuditResponseDetail>>
     {
         private readonly StoreDbContext _storeDbContext;
 
@@ -16,7 +18,7 @@ namespace Esquio.UI.Api.Features.Audit.List
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
-        public async Task<ListAuditResponse> Handle(ListAuditRequest request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<ListAuditResponseDetail>> Handle(ListAuditRequest request, CancellationToken cancellationToken)
         {
             var total = await _storeDbContext
                 .History
@@ -28,12 +30,12 @@ namespace Esquio.UI.Api.Features.Audit.List
                 .OrderByDescending(h=>h.CreatedAt)
                 .ToListAsync(cancellationToken);
 
-            return new ListAuditResponse()
+            return new PaginatedResult<ListAuditResponseDetail>()
             {
                 Count = history.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = history.Select(h => new ListAuditResponseDetail
+                Items = history.Select(h => new ListAuditResponseDetail
                 {
                     CreatedAt = h.CreatedAt,
                     Action = h.Action,

@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Features.Audit.List
+namespace Esquio.UI.Api.Shared.Models.Audit.List
 {
-    public class ListAuditResponse
-    {
-        public int Total { get; set; }
-
-        public int PageIndex { get; set; }
-
-        public int Count { get; set; }
-
-        public List<ListAuditResponseDetail> Result { get; set; }
-    }
 
     public class ListAuditResponseDetail
     {
