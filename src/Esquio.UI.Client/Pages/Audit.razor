@@ -35,27 +35,13 @@
                         <TableBody Context="audit">
                             @foreach (var item in audit.Items)
                             {
-                                <tr>
-                                    <td>@item.CreatedAt</td>
-                                    <td>@item.ProductName</td>
-                                    <td>@item.FeatureName</td>
-                                    @switch (item.Action)
-                                    {
-                                        case "Added FeatureEntity":
-                                            <td>Added Feature</td>
-                                            break;
-                                        case "Modified FeatureEntity":
-                                            <td>Modified Feature</td>
-                                            break;
-                                        case "Deleted FeatureEntity":
-                                            <td>Deleted Feature</td>
-                                            break;
-                                        default:
-                                            <td>Pendiente</td>
-                                            break;
-                                    }
-                                    <td class="text-center" @onclick="()=>ShowChangeSet(item.OldValues,item.NewValues)" @onclick:stopPropagation><i class="far fa-eye"></i></td>
-                                </tr>
+                            <tr>
+                                <td>@item.CreatedAt</td>
+                                <td>@item.ProductName</td>
+                                <td>@item.FeatureName</td>
+                                <td>@item.Action</td>
+                                <td class="text-center" @onclick="()=>ShowChangeSet(item.OldValues,item.NewValues)" @onclick:stopPropagation><i class="far fa-eye"></i></td>
+                            </tr>
                             }
                         </TableBody>
                     </PaginatedTable>

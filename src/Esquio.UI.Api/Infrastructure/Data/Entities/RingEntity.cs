@@ -2,7 +2,7 @@
 
 namespace Esquio.UI.Api.Infrastructure.Data.Entities
 {
-    public sealed class RingEntity
+    public sealed class RingEntity : IAuditable
     {
         public int Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public int ProductEntityId { get; set; }
 
-        public ProductEntity Product { get; set; }
+        public ProductEntity ProductEntity { get; set; }
 
         public RingEntity(int productEntityId, string name, bool byDefault = false)
         {

@@ -85,12 +85,13 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
                 else
                 {
                     var historyEntity = new HistoryEntity();
+                    var entityName = entry.Entity.GetType().Name.Replace("Entity", "");
 
                     historyEntity.Action = entry.State switch
                     {
-                        EntityState.Deleted => $"{nameof(EntityState.Deleted)} {entry.Entity.GetType().Name}",
-                        EntityState.Added => $"{nameof(EntityState.Added)} {entry.Entity.GetType().Name}",
-                        EntityState.Modified => $"{nameof(EntityState.Modified)} {entry.Entity.GetType().Name}",
+                        EntityState.Deleted => $"{nameof(EntityState.Deleted)} {entityName}",
+                        EntityState.Added => $"{nameof(EntityState.Added)} {entityName}",
+                        EntityState.Modified => $"{nameof(EntityState.Modified)} {entityName}",
                         _ => UNKNOWN,
                     };
 
@@ -147,7 +148,15 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
             //related data (product) name exist, else a unknown result
             //is set on history.
 
-            if (entry.Entity is FeatureEntity feature)
+            if (entry.Entity is ProductEntity product)
+            {
+                return product?.Name ?? UNKNOWN;
+            }
+            else if (entry.Entity is RingEntity ring)
+            {
+                return ring.ProductEntity?.Name ?? UNKNOWN;
+            }
+            else if (entry.Entity is FeatureEntity feature)
             {
                 return feature.ProductEntity?.Name ?? UNKNOWN;
             }

@@ -94,11 +94,11 @@
                 }
             }
 
-            public static class Store
+            public static class Configuration
             {
                 public static string Get(string productName, string featureName, string ringName)
                 {
-                    return $"api/store/product/{productName}/feature/{featureName}?ring={ringName}&api-version=3.0";
+                    return $"api/configuration/product/{productName}/feature/{featureName}?ring={ringName}&api-version=3.0";
                 }
             }
 

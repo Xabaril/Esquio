@@ -973,12 +973,12 @@
         }
       }
     },
-    "/api/Store/product/feature": {
+    "/api/Configuration/product/feature": {
       "get": {
         "tags": [
-          "Store"
+          "Configuration"
         ],
-        "operationId": "Store_Get",
+        "operationId": "Configuration_Get",
         "parameters": [
           {
             "type": "object",
@@ -986,7 +986,7 @@
             "in": "path",
             "required": true,
             "x-schema": {
-              "$ref": "#/definitions/DetailsStoreRequest"
+              "$ref": "#/definitions/DetailsConfigurationRequest"
             },
             "x-nullable": false
           },
@@ -1010,7 +1010,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/DetailsStoreResponse"
+              "$ref": "#/definitions/DetailsConfigurationResponse"
             }
           }
         }
@@ -1835,7 +1835,7 @@
         }
       }
     },
-    "DetailsStoreResponse": {
+    "DetailsConfigurationResponse": {
       "type": "object",
       "required": [
         "enabled"
@@ -1856,7 +1856,7 @@
         }
       }
     },
-    "DetailsStoreRequest": {
+    "DetailsConfigurationRequest": {
       "type": "object",
       "properties": {
         "productName": {

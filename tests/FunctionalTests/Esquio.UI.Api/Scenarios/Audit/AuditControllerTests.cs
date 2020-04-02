@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Api.Features.Audit.List;
+﻿using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Audit.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -100,11 +101,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListAuditResponse>();
+                .ReadAs<PaginatedResult<ListAuditResponseDetail>>();
 
             content.PageIndex.Should().Be(0);
-            content.Count.Should().Be(2);
-            content.Total.Should().Be(2); //add feature already add new history also
+            content.Count.Should().Be(3);
+            content.Total.Should().Be(3); //add feature already add new history also and product a ring
         }
         [Fact]
         [ResetDatabase]
@@ -159,11 +160,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListAuditResponse>();
+                .ReadAs<PaginatedResult<ListAuditResponseDetail>>();
 
             content.PageIndex.Should().Be(1);
             content.Count.Should().Be(1);
-            content.Total.Should().Be(3); //add feature already add new history also
+            content.Total.Should().Be(4); //add feature already add new history also
         }
     }
 }

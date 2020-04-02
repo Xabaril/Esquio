@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace Esquio.UI.Api.Infrastructure.Data.Entities
 {
     public sealed class ProductEntity
+        :IAuditable
     {
         public int Id { get; set; }
 

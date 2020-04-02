@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using System.Collections.Generic;
 
-namespace Esquio.UI.Api.Scenarios.Store.Details
+namespace Esquio.UI.Api.Shared.Models.Configuration.Details
 {
-    public class DetailsStoreRequest
-        : IRequest<DetailsStoreResponse>
+    public class DetailsConfigurationRequest
+        : IRequest<DetailsConfigurationResponse>
     {
         public string ProductName { get; set; }
 
@@ -13,7 +13,7 @@ namespace Esquio.UI.Api.Scenarios.Store.Details
         public string RingName { get; set; }
     }
 
-    public class DetailsStoreResponse
+    public class DetailsConfigurationResponse
     {
         public string FeatureName { get; set; }
 

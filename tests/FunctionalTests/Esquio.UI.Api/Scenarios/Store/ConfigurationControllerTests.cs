@@ -1,5 +1,5 @@
 ﻿using Esquio;
-using Esquio.UI.Api.Scenarios.Store.Details;
+using Esquio.UI.Api.Shared.Models.Configuration.Details;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -27,7 +27,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_unauthorized_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Store.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
               .GetAsync();
 
             response.StatusCode
@@ -84,7 +84,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Store.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -93,7 +93,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<DetailsStoreResponse>();
+                .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
                 .Should().BeTrue();
@@ -170,7 +170,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Store.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -179,7 +179,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<DetailsStoreResponse>();
+                .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
                 .Should().BeTrue();
@@ -272,7 +272,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Store.Get(productName: "fooproduct", featureName: "barfeature", ringName: productionRing.Name))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: productionRing.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -281,7 +281,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<DetailsStoreResponse>();
+                .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
                 .Should().BeTrue();

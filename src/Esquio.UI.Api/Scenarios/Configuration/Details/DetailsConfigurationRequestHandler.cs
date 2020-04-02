@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Configuration.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,21 +11,21 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Scenarios.Store.Details
+namespace Esquio.UI.Api.Scenarios.Configuration.Details
 {
-    public class DetailsStoreRequestHandler
-        : IRequestHandler<DetailsStoreRequest, DetailsStoreResponse>
+    public class DetailsConfigurationRequestHandler
+        : IRequestHandler<DetailsConfigurationRequest, DetailsConfigurationResponse>
     {
         private readonly StoreDbContext _storeDbContext;
-        private readonly ILogger<DetailsStoreRequestHandler> _logger;
+        private readonly ILogger<DetailsConfigurationRequestHandler> _logger;
 
-        public DetailsStoreRequestHandler(StoreDbContext storeDbContext, ILogger<DetailsStoreRequestHandler> logger)
+        public DetailsConfigurationRequestHandler(StoreDbContext storeDbContext, ILogger<DetailsConfigurationRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<DetailsStoreResponse> Handle(DetailsStoreRequest request, CancellationToken cancellationToken)
+        public async Task<DetailsConfigurationResponse> Handle(DetailsConfigurationRequest request, CancellationToken cancellationToken)
         {
             var featureEntity = await _storeDbContext
                .Features
@@ -44,9 +45,9 @@ namespace Esquio.UI.Api.Scenarios.Store.Details
             }
         }
 
-        private DetailsStoreResponse CreateResponse(FeatureEntity featureEntity, string ringName)
+        private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string ringName)
         {
-            var feature = new DetailsStoreResponse
+            var feature = new DetailsConfigurationResponse
             {
                 FeatureName = featureEntity.Name,
                 Enabled = featureEntity.Enabled

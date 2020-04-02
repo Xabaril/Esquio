@@ -84,7 +84,7 @@ namespace Esquio.Distributed.Store
                 .CreateClient(EsquioConstants.ESQUIO);
 
             var response = await httpClient
-                .GetAsync($"api/store/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
+                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
@@ -106,6 +106,6 @@ namespace Esquio.Distributed.Store
     internal static class CacheKeyCreator
     {
         public static string GetCacheKey(string productName, string featureName, string ringName)
-            => $"esquio:products:{productName}:rings:{ringName}:features:{featureName}";
+            => $"esquio:product:{productName}:ring:{ringName}:feature:{featureName}";
     }
 }

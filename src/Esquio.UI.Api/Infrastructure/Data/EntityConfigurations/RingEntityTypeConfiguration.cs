@@ -30,7 +30,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                 .IsRequired()
                 .HasDefaultValueSql("0");
 
-            builder.HasOne(r => r.Product)
+            builder.HasOne(r => r.ProductEntity)
                 .WithMany(p => p.Rings)
                 .HasForeignKey(r => r.ProductEntityId);
         }

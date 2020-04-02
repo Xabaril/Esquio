@@ -49,14 +49,14 @@ namespace Esquio.CliTool.Internal
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName)
+        public System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount)
         {
-            return Audit_ListAsync(pageIndex, pageCount, productName, System.Threading.CancellationToken.None);
+            return Audit_ListAsync(pageIndex, pageCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, string productName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ListAuditRequest> Audit_ListAsync(int? pageIndex, int? pageCount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/audit?");
@@ -67,10 +67,6 @@ namespace Esquio.CliTool.Internal
             if (pageCount != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (productName != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("productName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -2063,20 +2059,20 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DetailsStoreResponse> Store_GetAsync(DetailsStoreRequest request, string ring)
+        public System.Threading.Tasks.Task<DetailsConfigurationResponse> Configuration_GetAsync(DetailsConfigurationRequest request, string ring)
         {
-            return Store_GetAsync(request, ring, System.Threading.CancellationToken.None);
+            return Configuration_GetAsync(request, ring, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DetailsStoreResponse> Store_GetAsync(DetailsStoreRequest request, string ring, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DetailsConfigurationResponse> Configuration_GetAsync(DetailsConfigurationRequest request, string ring, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Store/product/feature?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Configuration/product/feature?");
             urlBuilder_.Replace("{request}", System.Uri.EscapeDataString(ConvertToString(request, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("ring") + "=").Append(System.Uri.EscapeDataString(ring != null ? ConvertToString(ring, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
@@ -2115,7 +2111,7 @@ namespace Esquio.CliTool.Internal
                         else
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<DetailsStoreResponse>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<DetailsConfigurationResponse>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -2125,7 +2121,7 @@ namespace Esquio.CliTool.Internal
                             throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(DetailsStoreResponse);
+                        return default(DetailsConfigurationResponse);
                     }
                     finally
                     {
@@ -3324,7 +3320,7 @@ namespace Esquio.CliTool.Internal
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class DetailsStoreResponse 
+    public partial class DetailsConfigurationResponse 
     {
         [Newtonsoft.Json.JsonProperty("featureName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FeatureName { get; set; }
@@ -3339,7 +3335,7 @@ namespace Esquio.CliTool.Internal
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class DetailsStoreRequest 
+    public partial class DetailsConfigurationRequest 
     {
         [Newtonsoft.Json.JsonProperty("productName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProductName { get; set; }

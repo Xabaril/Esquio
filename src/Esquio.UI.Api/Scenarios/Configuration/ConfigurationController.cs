@@ -1,5 +1,4 @@
-﻿using Esquio.UI.Api.Infrastructure.Authorization;
-using Esquio.UI.Api.Scenarios.Store.Details;
+﻿using Esquio.UI.Api.Shared.Models.Configuration.Details;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +13,12 @@ namespace Esquio.UI.Api.Scenarios.Store
     [ApiVersion("3.0")]
     [Route("api/[controller]")]
     [ApiController]
-    public class StoreController
+    public class ConfigurationController
          : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public StoreController(IMediator mediator)
+        public ConfigurationController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
@@ -27,13 +26,12 @@ namespace Esquio.UI.Api.Scenarios.Store
         [HttpGet]
         [Route("product/{productName}/feature/{featureName}")]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(typeof(DetailsStoreResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<DetailsStoreResponse>> Get([FromRoute]DetailsStoreRequest request, [FromQuery] string ring, CancellationToken cancellationToken = default)
+        [ProducesResponseType(typeof(DetailsConfigurationResponse), StatusCodes.Status200OK)]
+        public async Task<ActionResult<DetailsConfigurationResponse>> Get([FromRoute]DetailsConfigurationRequest request, [FromQuery] string ring, CancellationToken cancellationToken = default)
         {
             request.RingName = ring;
 
-            var feature = await _mediator
-                .Send(request, cancellationToken);
+            var feature = await _mediator.Send(request, cancellationToken);
 
             if (feature != null)
             {
