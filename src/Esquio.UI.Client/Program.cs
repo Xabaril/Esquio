@@ -15,7 +15,7 @@ namespace Esquio.UI.Client
         public static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-               .MinimumLevel.Debug()
+               .MinimumLevel.Warning()
                .WriteTo.BrowserConsole()
                .CreateLogger();
 

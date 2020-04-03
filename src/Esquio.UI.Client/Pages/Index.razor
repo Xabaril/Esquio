@@ -1,88 +1,125 @@
 ﻿@page "/"
 @attribute [Authorize]
-@inject EsquioState State
-
+@inject EsquioState state
+@inject IEsquioHttpClient esquioHttpClient;
 <PageTransition>
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Dashboard</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="content-header">
-        <div class="container-fluid">
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box">
-                        <span style="background-color:#20b2aa !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-box-open"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Products</span>
-                            <span class="info-box-number">
-                                12
-                            </span>
+                <section class="col-md-12">
+                    <!-- Default box -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Esquio UI</h3>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span style="background-color:#f08080 !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-magic"></i></span>
+                        <div class="card-body" style="display: block;">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-6 order-1 order-md-2">
+                                    <h3 class="text-primary">Esquio V3</h3>
+                                    <p class="text-muted">
+                                        Esquio is a <a href="https://martinfowler.com/articles/feature-toggles.html">Feature Toggles (aka Feature Flags) </a> and A/B testing framework for
+                                        .NET Core 3.X. Feature Toogle is a powerful technique that allows developers to deliver new functionality to users withouth changing code.
+                                        Provides an alternative to to mantain multiples branches (aka feature branches), so any feature can be tested even before it is completed and ready for the release.
+                                        We can release a version of our product with not production ready features. These non production ready features are hidden (toggled) for the broader set of users but
+                                        can be enabled to any subset of testing or internal users we want them to try the features.We can use feature toogling to enable or disable features during run time.
+                                    </p>
 
-                        <div class="info-box-content">
-                            <span class="info-box-text">Features</span>
-                            <span class="info-box-number">24</span>
+                                    <p class="text-muted">
+                                        Esquio is built with the possibility of use it not only in ASP.NET Core 3.X in mind, but making it possible to use also in other .NET Core 3.X projects like workers, webjobs, classlibraries, ... almost any kind of .NET Core 3.0 project.
+                                        For the Esquio team, this is not only about using a library, but using a full Feature Toggles framework for all of our projects, and as a delivery mechanism.
+                                        We believe Feature Toggling is, somekind, a way of delivering software, making it a first class citizen in your DevOps processes, therefore we are working hard towards integrating it, via extension and pipelines tasks, with Azure DevOps,
+                                        so you can use Esquio Toggles directly in your releases and delivery flows. Having a full toggle delivery experience.
+                                    </p>
+
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="https://esquio.readthedocs.io/en/latest/" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i>&nbsp;Esquio documentation.</a>
+                                        </li>
+                                        <li>
+                                            <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i>&nbsp;xabarilcoding@outlook.com</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://twitter.com/xabarilcoding" class="btn-link text-secondary"><i class="fab fa-twitch"></i>&nbsp;@@xabarilcoding</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://github.com/xabaril/esquio" class="btn-link text-secondary"><i class="fab fa-github"></i>&nbsp;Repository</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://github.com/xabaril/esquio/issues" class="btn-link text-secondary"><i class="fab fa-github-alt"></i>&nbsp;Fill a new Issue</a>
+                                        </li>
+                                    </ul>
+                                    <h5 class="mt-5 text-muted">Latest Public Release</h5>
+                                    <div class="post">
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm" src="@latestRelease.author.avatar_url" alt="@latestRelease.author.login">
+                                            <span class="username">
+                                                <a href="@latestRelease.html_url">@latestRelease.name  by @latestRelease.author.login</a>
+                                            </span>
+                                            <span class="description">@latestRelease.published_at.</span>
+                                        </div>
+                                        <!-- /.user-block -->
+                                        <p>
+                                            @latestRelease.body
+                                        </p>
+
+                                        @if (latestRelease.draft)
+                                        {
+                                            <p>
+                                                <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i>Draft</a>
+                                            </p>
+                                        }
+                                        <p>
+                                            <a href="#" class="link-black text-sm"><i class="fas fa-code-branch mr-1"></i>Branch @latestRelease.target_commitish</a>
+                                        </p>
+                                        <p>
+                                            <a href="#" class="link-black text-sm"><i class="fas fa-code-branch mr-1"></i>Tag @latestRelease.tag_name</a>
+                                        </p>
+                                        <p>
+                                            <a href="@latestRelease.tarball_url" class="link-black text-sm"><i class="fas fa-link mr-1"></i>Download Zip</a>
+                                        </p>
+                                        <p>
+                                            <a href="@latestRelease.zipball_url" class="link-black text-sm"><i class="fas fa-link mr-1"></i>Download Tar</a>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.info-box-content -->
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <!-- fix for small devices only -->
-                <div class="clearfix hidden-md-up"></div>
+                    <!-- /.card -->
 
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span style="background-color:#ff7f50 !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-ring"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Rings</span>
-                            <span class="info-box-number">6</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span style="background-color:#c09dff !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-toggle-on"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Toggles</span>
-                            <span class="info-box-number">48</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
+                </section>
             </div>
         </div><!-- /.container-fluid -->
     </div>
 </PageTransition>
 
 @code {
-    protected override void OnInitialized()
+
+    DetailsReleaseResponse latestRelease;
+
+    protected override async Task OnInitializedAsync()
     {
-        State.SetBreadcrumb(
+        latestRelease = new DetailsReleaseResponse()
+        {
+            author = new DetailsReleaseResponseAuthor()
+        };
+
+        state.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
             new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
+
+        await LoadReleases();
+    }
+
+    private async Task LoadReleases()
+    {
+        var releases = await esquioHttpClient.GetLatestReleases();
+
+        if (releases != null && releases.Any())
+        {
+            latestRelease = releases.First();
+        }
     }
 }

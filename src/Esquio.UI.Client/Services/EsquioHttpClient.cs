@@ -6,6 +6,7 @@ using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
 using Esquio.UI.Api.Shared.Models.Features.Update;
+using Esquio.UI.Api.Shared.Models.GitHub.Release;
 using Esquio.UI.Api.Shared.Models.Permissions.Add;
 using Esquio.UI.Api.Shared.Models.Permissions.Details;
 using Esquio.UI.Api.Shared.Models.Permissions.List;
@@ -69,6 +70,7 @@ namespace Esquio.UI.Client.Services
 
         Task<PaginatedResult<ListAuditResponseDetail>> GetAuditList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
 
+        Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default);
     }
 
     public class EsquioHttpClient
@@ -578,7 +580,7 @@ namespace Esquio.UI.Client.Services
                 {
                     Log.Error(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
                 }
-                
+
                 return false;
             }
         }
@@ -735,7 +737,7 @@ namespace Esquio.UI.Client.Services
 
                         var responseContent = await response.Content
                             .ReadAsStringAsync();
-                        
+
                         return JsonConvert.DeserializeObject<AddApiKeyResponse>(responseContent);
                     }
                 }
@@ -957,6 +959,36 @@ namespace Esquio.UI.Client.Services
                 catch (Exception exception)
                 {
                     Log.Error(exception, $"An exception is throwed when trying to get audit information!.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri("https://api.github.com/repos/xabaril/esquio/releases");
+                request.Headers.Clear(); // remove default auth bearer because this is not internal http request!
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<List<DetailsReleaseResponse>>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get github release information!.");
                 }
 
                 return null;
