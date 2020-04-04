@@ -46,6 +46,24 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Metrics",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(nullable: true),
+                    FeatureName = table.Column<string>(nullable: true),
+                    RingName = table.Column<string>(nullable: true),
+                    Kind = table.Column<string>(nullable: true),
+                    DateTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Metrics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Permissions",
                 schema: "dbo",
                 columns: table => new
@@ -292,6 +310,10 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "History",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Metrics",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

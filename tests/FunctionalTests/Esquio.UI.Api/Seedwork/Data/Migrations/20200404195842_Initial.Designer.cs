@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200326153705_Initial")]
+    [Migration("20200404195842_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,33 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("History");
+                });
+
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.MetricEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeatureName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kind")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Metrics");
                 });
 
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.ParameterEntity", b =>
@@ -336,7 +363,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", b =>
                 {
-                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "Product")
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
                         .WithMany("Rings")
                         .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
