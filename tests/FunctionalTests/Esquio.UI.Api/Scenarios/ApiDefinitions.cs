@@ -172,6 +172,14 @@
                 }
             }
 
+            public static class Statistics
+            {
+                public static string Configuration()
+                {
+                    return $"api/statistics/configuration?api-version=3.0";
+                }
+            }
+
             public static class Permissions
             {
                 public static string My()

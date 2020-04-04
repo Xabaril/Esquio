@@ -34,14 +34,17 @@ namespace Esquio.UI.Client.Services
 {
     public interface IEsquioHttpClient
     {
+        //->products
         Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsProductResponse> GetProduct(string productName, CancellationToken cancellationToken = default);
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
-
         Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default);
+
+        //->features
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
+        Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
         Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default);
@@ -49,27 +52,30 @@ namespace Esquio.UI.Client.Services
         Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteFeature(string productName, string featureName, CancellationToken cancellationToken = default);
 
+        //->permissions
         Task<MyResponse> GetMy(CancellationToken cancellationToken = default);
         Task<PaginatedResult<ListUsersResponseDetail>> GetUserList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsPermissionResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default);
         Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default);
-
         Task<PaginatedResult<ListApiKeyResponseDetail>> GetApiKeyList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default);
 
-        Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
-
+        
+        //->toogles
         Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default);
 
+        //->tags
         Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> AddTag(string productName, string featureName, AddTagRequest addTagRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteTag(string productName, string featureName, string tag, CancellationToken cancellationToken = default);
 
+        //->audit
         Task<PaginatedResult<ListAuditResponseDetail>> GetAuditList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
 
+        //->misc
         Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default);
     }
 
@@ -319,6 +325,37 @@ namespace Esquio.UI.Client.Services
                 return null;
             }
         }
+
+        public async Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<DetailsFeatureResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
+                }
+
+                return null;
+            }
+        }
+
         public async Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
         {
             using (var request = await CreateHttpRequestMessageAsync())
@@ -775,36 +812,6 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return false;
-            }
-        }
-
-        public async Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default)
-        {
-            using (var request = await CreateHttpRequestMessageAsync())
-            {
-                request.Method = HttpMethod.Get;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
-                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
-
-                try
-                {
-                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var content = await response.Content.ReadAsStringAsync();
-
-                        return JsonConvert.DeserializeObject<DetailsFeatureResponse>(
-                            content, new JsonSerializerSettings());
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
-                }
-
-                return null;
             }
         }
 
