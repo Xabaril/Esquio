@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Infrastructure.Behaviors;
+using Esquio.UI.Api.Infrastructure.Metrics;
 using Esquio.UI.Api.Infrastructure.Routes;
 using Esquio.UI.Api.Infrastructure.Serialization;
 using Esquio.UI.Api.Shared.Models.Products.Add;
@@ -28,6 +29,7 @@ namespace Esquio.UI.Api
                     setup.AddPolicy(Policies.Management, builder => builder.AddRequirements(new PolicyRequirement(Policies.Management)));
                 })
                 .AddScoped<IAuthorizationHandler, PolicyRequirementHandler>()
+                .AddSingleton<EsquioMetricsClient>()
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
                 .AddCustomProblemDetails()

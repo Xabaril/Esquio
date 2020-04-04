@@ -132,6 +132,33 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.ToTable("History");
                 });
 
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.MetricEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeatureName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kind")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Metrics");
+                });
+
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.ParameterEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -334,7 +361,7 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", b =>
                 {
-                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "Product")
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
                         .WithMany("Rings")
                         .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Cascade)

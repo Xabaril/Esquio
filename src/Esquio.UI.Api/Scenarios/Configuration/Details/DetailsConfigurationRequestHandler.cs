@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Infrastructure.Metrics;
 using Esquio.UI.Api.Shared.Models.Configuration.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +18,14 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
         : IRequestHandler<DetailsConfigurationRequest, DetailsConfigurationResponse>
     {
         private readonly StoreDbContext _storeDbContext;
-        private readonly ILogger<DetailsConfigurationRequestHandler> _logger;
+        private readonly ILogger<DetailsConfigurationRequestHandler> _logger = null;
+        private readonly EsquioMetricsClient _metricsClient;
 
-        public DetailsConfigurationRequestHandler(StoreDbContext storeDbContext, ILogger<DetailsConfigurationRequestHandler> logger)
+        public DetailsConfigurationRequestHandler(StoreDbContext storeDbContext, ILogger<DetailsConfigurationRequestHandler> logger, EsquioMetricsClient metricsClient = null)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _metricsClient = metricsClient;
         }
 
         public async Task<DetailsConfigurationResponse> Handle(DetailsConfigurationRequest request, CancellationToken cancellationToken)
@@ -34,15 +37,26 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                    .ThenInclude(t => t.Parameters)
                .SingleOrDefaultAsync(cancellationToken);
 
+            DetailsConfigurationResponse response = null;
+            ConfigurationRequestMetric metric = null;
+
             if (featureEntity != null)
             {
-                return CreateResponse(featureEntity, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                metric = ConfigurationRequestMetric.FromSuccess(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                response = CreateResponse(featureEntity, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
             }
             else
             {
+                metric = ConfigurationRequestMetric.FromNotFound(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
                 Log.FeatureNotExist(_logger, request.FeatureName);
-                return null;
             }
+
+            if (_metricsClient != null)
+            {
+                _metricsClient.Add(metric);
+            }
+
+            return response;
         }
 
         private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string ringName)
@@ -87,7 +101,7 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                     {
                         foreach (var item in selectedRingParameters)
                         {
-                            if ( parameters.ContainsKey(item.Name))
+                            if (parameters.ContainsKey(item.Name))
                             {
                                 parameters[item.Name] = item.Value;
                             }

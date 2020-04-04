@@ -1,4 +1,5 @@
 using Esquio.UI.Api;
+using Esquio.UI.Api.Infrastructure.HostedService;
 using Esquio.UI.Api.Infrastructure.Services;
 using Esquio.UI.Host.Infrastructure.OpenApi;
 using Esquio.UI.Host.Infrastructure.Services;
@@ -65,12 +66,13 @@ namespace Esquio.UI.Host
                 });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"]);
+                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"])
+                .AddHostedService<EsquioMetricsConsumer>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersion)
         {
-         
+
             app.UseResponseCompression();
 
             if (env.IsDevelopment())

@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
     <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Infrastructure\Data\Migrations\" />
-  </ItemGroup>
   </Project>

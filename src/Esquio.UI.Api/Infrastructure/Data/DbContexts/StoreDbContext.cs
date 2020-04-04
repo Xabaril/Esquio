@@ -35,6 +35,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
         public DbSet<RingEntity> Rings { get; set; }
+        public DbSet<MetricEntity> Metrics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

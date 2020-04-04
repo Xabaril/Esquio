@@ -69,8 +69,8 @@ namespace WebApp
                 // for distributed store use .AddDistributedStore(setup=>{})
                 .AddDistributedStore(setup =>
                 {
-                    setup.UseBaseAddress("http://localhost:32449")
-                         .UseApiKey("[SET-YOUR-API-KEY]")
+                    setup.UseBaseAddress("https://localhost:44359/")
+                         .UseApiKey("YidiM+k0HlQh5b6jBC8TA3IffNkBknKMypUdyxA7GhY=")
                          .UseCache(enabled: false);
                 })
                 .AddAspNetCoreDefaultServices()
