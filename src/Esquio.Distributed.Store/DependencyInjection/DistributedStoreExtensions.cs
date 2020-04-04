@@ -36,6 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                      httpclient.BaseAddress = options.Value.BaseAddress;
                      httpclient.DefaultRequestHeaders.Add(XAPIKEYHEADERNAME, options.Value.ApiKey);
+                     httpclient.Timeout = options.Value.Timeout;
 
                  }).Services
                 .AddDistributedMemoryCache()

@@ -51,11 +51,24 @@ namespace Esquio.Distributed.Store.DependencyInjection
         /// <summary>
         /// Configure Esquio api key.
         /// </summary>
-        /// <param name="uri">The Esquio store api key to be used.</param>
+        /// <param name="apiKey">The Esquio store api key to be used.</param>
         /// <returns>The same configuration to be chained.</returns>
         public DistributedStoreOptions UseApiKey(string apiKey)
         {
             ApiKey = apiKey;
+            return this;
+        }
+
+
+        internal TimeSpan Timeout = TimeSpan.FromSeconds(100); 
+        /// <summary>
+        /// Configure Esquio api key.
+        /// </summary>
+        /// <param name="timeout">The maximiun time than distributed store wait for server response.</param>
+        /// <returns>The same configuration to be chained.</returns>
+        public DistributedStoreOptions SetTimeout(TimeSpan timeout)
+        {
+            Timeout = timeout;
             return this;
         }
     }

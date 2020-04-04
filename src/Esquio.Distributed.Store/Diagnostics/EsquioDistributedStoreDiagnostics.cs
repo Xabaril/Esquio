@@ -11,6 +11,7 @@ namespace Esquio.Distributed.Store.Diagnostics
         public EsquioDistributedStoreDiagnostics(ILoggerFactory loggerFactory)
         {
             _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
             _logger = loggerFactory.CreateLogger("Esquio.Distributed.Store");
         }
 

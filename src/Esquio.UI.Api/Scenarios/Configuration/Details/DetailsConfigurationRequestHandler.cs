@@ -42,12 +42,16 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
 
             if (featureEntity != null)
             {
-                metric = ConfigurationRequestMetric.FromSuccess(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                metric = ConfigurationRequestMetric
+                    .FromSuccess(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+
                 response = CreateResponse(featureEntity, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
             }
             else
             {
-                metric = ConfigurationRequestMetric.FromNotFound(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                metric = ConfigurationRequestMetric
+                    .FromNotFound(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+
                 Log.FeatureNotExist(_logger, request.FeatureName);
             }
 
