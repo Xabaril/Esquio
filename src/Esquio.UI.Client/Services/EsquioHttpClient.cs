@@ -16,6 +16,8 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
+using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
+using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Tags.Add;
 using Esquio.UI.Api.Shared.Models.Tags.List;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -74,6 +76,10 @@ namespace Esquio.UI.Client.Services
 
         //->audit
         Task<PaginatedResult<ListAuditResponseDetail>> GetAuditList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
+
+        //->statistics
+        Task<ConfigurationStatisticsResponse> GetConfigurationStatistics(CancellationToken cancellationToken = default);
+        Task<SuccessStatisticResponse> GetSuccessStatistics(CancellationToken cancellationToken = default);
 
         //->misc
         Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default);
@@ -996,6 +1002,65 @@ namespace Esquio.UI.Client.Services
                 catch (Exception exception)
                 {
                     Log.Error(exception, $"An exception is throwed when trying to get github release information!.");
+                }
+
+                return null;
+            }
+        }
+
+
+        public async Task<ConfigurationStatisticsResponse> GetConfigurationStatistics(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri("api/statistics/configuration",UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<ConfigurationStatisticsResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<SuccessStatisticResponse> GetSuccessStatistics(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri("api/statistics/success", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<SuccessStatisticResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
                 }
 
                 return null;

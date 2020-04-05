@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
+using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -6,7 +7,6 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -24,7 +24,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
         [Fact]
         [ResetDatabase]
-        public async Task response_unauthorized_when_user_is_not_authenticated()
+        public async Task get_configuration_statistics_response_unauthorized_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
               .CreateRequest(ApiDefinitions.V3.Statistics.Configuration())
@@ -37,7 +37,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
         [Fact]
         [ResetDatabase]
-        public async Task response_configuration_statistics_when_success()
+        public async Task get_configuration_statistics_response_configuration_statistics_when_success()
         {
             var permission = Builders.Permission()
               .WithReaderPermission()
@@ -94,6 +94,47 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             statistics.TotalToggles
                 .Should().Be(1);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_success_statistics_response_unauthorized_when_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Statistics.Success())
+              .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_success_statistics_response_configuration_statistics_when_success()
+        {
+            var permission = Builders.Permission()
+              .WithReaderPermission()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Statistics.Success())
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var statistics = await response.Content
+                .ReadAs<SuccessStatisticResponse>();
+
+            statistics.PercentageSuccess
+                .Should().Be(0);
         }
     }
 }

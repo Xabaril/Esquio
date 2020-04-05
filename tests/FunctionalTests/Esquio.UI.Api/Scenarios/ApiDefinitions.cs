@@ -178,6 +178,10 @@
                 {
                     return $"api/statistics/configuration?api-version=3.0";
                 }
+                public static string Success()
+                {
+                    return $"api/statistics/success?api-version=3.0";
+                }
             }
 
             public static class Permissions

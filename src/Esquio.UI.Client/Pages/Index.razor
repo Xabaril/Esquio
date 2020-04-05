@@ -1,6 +1,7 @@
 ﻿@page "/"
 @attribute [Authorize]
 @inject EsquioState State
+@inject IEsquioHttpClient esquioHttpClient
 
 <PageTransition>
     <div class="content-header">
@@ -23,7 +24,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Products</span>
                             <span class="info-box-number">
-                                12
+                                @_configurationStatisticsResponse.TotalProducts
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -37,7 +38,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Features</span>
-                            <span class="info-box-number">24</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalFeatures</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -53,7 +54,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Rings</span>
-                            <span class="info-box-number">6</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalRings</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -66,7 +67,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Toggles</span>
-                            <span class="info-box-number">48</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalToggles</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -79,10 +80,26 @@
 </PageTransition>
 
 @code {
-    protected override void OnInitialized()
+
+    private ConfigurationStatisticsResponse _configurationStatisticsResponse
+        = new ConfigurationStatisticsResponse();
+
+    protected override async Task OnInitializedAsync()
     {
         State.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
             new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
+
+        await LoadConfigurationStatistics();
+    }
+
+    private async Task LoadConfigurationStatistics()
+    {
+        var response = await esquioHttpClient.GetConfigurationStatistics();
+
+        if (response != null)
+        {
+            _configurationStatisticsResponse = response;
+        }
     }
 }
