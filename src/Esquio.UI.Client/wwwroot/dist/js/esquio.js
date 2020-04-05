@@ -67,4 +67,31 @@
             });
         };
     }
+
+    if (!window.drawTopFeaturesChart) {
+        window.drawTopFeaturesChart = function (id, labels,data) {
+            var donutChartCanvas = $(`#${id}`).get(0).getContext('2d');
+            
+            var donutData = {
+                labels: labels,
+                datasets: [
+                    {
+                        data: data,
+                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc'],
+                    }
+                ]
+            };
+
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true
+            };
+
+            var donutChart = new Chart(donutChartCanvas, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions
+            });
+        };
+    }
 })();

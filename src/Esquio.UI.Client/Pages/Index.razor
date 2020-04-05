@@ -89,6 +89,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Features over last 24h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="donutTopFeatures" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </div>
@@ -106,8 +117,8 @@
             new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
 
         await LoadConfigurationStatistics();
-
         await LoadSucessStatistics();
+        await LoadTopFeaturesStatistics();
     }
 
     private async Task LoadConfigurationStatistics()
@@ -127,6 +138,26 @@
         if (response != null)
         {
             await jsRuntime.InvokeVoidAsync("drawSuccessChart", "pieSuccess", response.PercentageSuccess);
+        }
+    }
+
+    private async Task LoadTopFeaturesStatistics()
+    {
+        var response = await esquioHttpClient.GetTopFeaturesStatistics();
+
+        if (response != null)
+        {
+            var features = response
+                .TopFeaturesDetails
+                .Select(f => f.FeatureName)
+                .ToArray();
+
+            var requests = response
+                .TopFeaturesDetails
+                .Select(f => f.Requests)
+                .ToArray();
+
+            await jsRuntime.InvokeVoidAsync("drawTopFeaturesChart", "donutTopFeatures", features, requests);
         }
     }
 }

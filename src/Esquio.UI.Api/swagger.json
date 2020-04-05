@@ -1007,6 +1007,23 @@
         }
       }
     },
+    "/api/Statistics/top": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetTopFeaturesStatistics",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
     "/api/Configuration/product/feature": {
       "get": {
         "tags": [
