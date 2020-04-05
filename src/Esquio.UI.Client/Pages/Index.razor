@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @inject EsquioState State
 @inject IEsquioHttpClient esquioHttpClient
+@inject IJSRuntime jsRuntime
 
 <PageTransition>
     <div class="content-header">
@@ -75,6 +76,20 @@
                 </div>
                 <!-- /.col -->
             </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Client Success request over last 24h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieSuccess" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div><!-- /.container-fluid -->
     </div>
 </PageTransition>
@@ -91,6 +106,8 @@
             new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
 
         await LoadConfigurationStatistics();
+
+        await LoadSucessStatistics();
     }
 
     private async Task LoadConfigurationStatistics()
@@ -100,6 +117,16 @@
         if (response != null)
         {
             _configurationStatisticsResponse = response;
+        }
+    }
+
+    private async Task LoadSucessStatistics()
+    {
+        var response = await esquioHttpClient.GetSuccessStatistics();
+
+        if (response != null)
+        {
+            await jsRuntime.InvokeVoidAsync("drawSuccessChart", "pieSuccess", response.PercentageSuccess);
         }
     }
 }

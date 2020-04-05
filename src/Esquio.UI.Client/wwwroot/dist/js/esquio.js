@@ -38,4 +38,33 @@
             }
         };
     }
+
+    if (!window.drawSuccessChart) {
+        window.drawSuccessChart = function (id, sucessPercentage) {
+            var pieChartCanvas = $(`#${id}`).get(0).getContext('2d');
+            var data = {
+                labels: [
+                    'Success',
+                    'NotFound'
+                ],
+                datasets: [
+                    {
+                        data: [sucessPercentage, (100 - sucessPercentage)],
+                        backgroundColor: ['#00a65a','#f56954']
+                    }
+                ]
+            };
+            var pieOptions = {
+                maintainAspectRatio: false,
+                responsive: true
+            };
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            var pieChart = new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: data,
+                options: pieOptions
+            });
+        };
+    }
 })();
