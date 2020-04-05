@@ -4,7 +4,8 @@
 @inject IEsquioHttpClient esquioHttpClient
 @inject EsquioState  esquioState
 
-@inject NavigationManager navigation
+@inject IJSRuntime jsRuntime;
+@*@inject NavigationManager navigation*@
 
 
 <PageTransition>
@@ -31,7 +32,8 @@
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h5><i class="icon fas fa-check"></i><strong>@newApiKeyResponse.Key</strong></h5>
-                A new API key has been created. Make sure to copy your new API key now. You will not be able to do so again!
+                A new API key has been created, make sure to copy your new API key now. You will not be able to do so again!
+                &nbsp;Copy to clipboard  <span title="Copy to Clipboard"><i class="far fa-clipboard" aria-hidden="true"  @onclick="CopyToClipboard"></i></span>
             </div>
         }
 
@@ -112,7 +114,6 @@
     private bool formInvalidNewApiKey;
     private AddApiKeyRequest newApiKey;
     private EditContext editContextNewApiKey;
-
     private PaginatedTable<ListApiKeyResponseDetail> table;
 
     private AddApiKeyResponse newApiKeyResponse;
@@ -186,5 +187,10 @@
     {
         newApiKeyResponse = null;
         StateHasChanged();
+    }
+
+    private async Task CopyToClipboard()
+    {
+        await jsRuntime.InvokeAsync<string>("copyToClipboard", newApiKeyResponse.Key);
     }
 }
