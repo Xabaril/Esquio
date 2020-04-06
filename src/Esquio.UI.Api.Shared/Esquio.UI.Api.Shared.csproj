@@ -8,10 +8,6 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Stats\" />
-  </ItemGroup>
   
   
 
