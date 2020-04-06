@@ -1024,6 +1024,23 @@
         }
       }
     },
+    "/api/Statistics/plot": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetPlotStatistics",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
     "/api/Configuration/product/feature": {
       "get": {
         "tags": [

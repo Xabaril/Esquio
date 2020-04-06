@@ -94,4 +94,62 @@
             });
         };
     }
+
+    if (!window.drawPlotChart) {
+        window.drawPlotChart = function (id, labels, data) {
+            var lineChartCanvas = $(`#${id}`).get(0).getContext('2d');
+
+            var areaChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit:'hour'
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+            var areaChartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Accumulated Requests',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: data
+                    }
+                ]
+            };
+
+            var lineChartOptions = jQuery.extend(true, {}, areaChartOptions);
+            var lineChartData = jQuery.extend(true, {}, areaChartData);
+            lineChartData.datasets[0].fill = false;
+            lineChartOptions.datasetFill = false;
+
+            var lineChart = new Chart(lineChartCanvas, {
+                type: 'line',
+                data: lineChartData,
+                options: lineChartOptions
+            });
+        };
+    }
 })();

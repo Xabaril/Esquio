@@ -17,6 +17,7 @@ using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
+using Esquio.UI.Api.Shared.Models.Statistics.Plot;
 using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Statistics.TopFeatures;
 using Esquio.UI.Api.Shared.Models.Tags.Add;
@@ -82,6 +83,7 @@ namespace Esquio.UI.Client.Services
         Task<ConfigurationStatisticsResponse> GetConfigurationStatistics(CancellationToken cancellationToken = default);
         Task<SuccessStatisticResponse> GetSuccessStatistics(CancellationToken cancellationToken = default);
         Task<TopFeaturesStatisticsResponse> GetTopFeaturesStatistics(CancellationToken cancellationToken = default);
+        Task<PlotStatisticsResponse> GetPlotStatistics(CancellationToken cancellationToken = default);
 
         //->misc
         Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default);
@@ -1086,6 +1088,35 @@ namespace Esquio.UI.Client.Services
                         var content = await response.Content.ReadAsStringAsync();
 
                         return JsonConvert.DeserializeObject<TopFeaturesStatisticsResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<PlotStatisticsResponse> GetPlotStatistics(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri("api/statistics/plot", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<PlotStatisticsResponse>(
                             content, new JsonSerializerSettings());
                     }
                 }

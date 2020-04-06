@@ -76,7 +76,6 @@
                 </div>
                 <!-- /.col -->
             </div>
-
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-6">
                     <div class="card card-info">
@@ -101,6 +100,19 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Client Configuration Requests over latest 12h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="plotRequests" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div><!-- /.container-fluid -->
     </div>
 </PageTransition>
@@ -119,6 +131,7 @@
         await LoadConfigurationStatistics();
         await LoadSucessStatistics();
         await LoadTopFeaturesStatistics();
+        await LoadPlotStatistics();
     }
 
     private async Task LoadConfigurationStatistics()
@@ -158,6 +171,26 @@
                 .ToArray();
 
             await jsRuntime.InvokeVoidAsync("drawTopFeaturesChart", "donutTopFeatures", features, requests);
+        }
+    }
+
+    private async Task LoadPlotStatistics()
+    {
+        var response = await esquioHttpClient.GetPlotStatistics();
+
+        if (response != null)
+        {
+            var labels = response
+                .Points
+                .Select(f => f.Date)
+                .ToArray();
+
+            var values = response
+                .Points
+                .Select(f => f.Value)
+                .ToArray();
+
+            await jsRuntime.InvokeVoidAsync("drawPlotChart", "plotRequests", labels, values);
         }
     }
 }

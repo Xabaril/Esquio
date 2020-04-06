@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
+using Esquio.UI.Api.Shared.Models.Statistics.Plot;
 using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Statistics.TopFeatures;
 using MediatR;
@@ -50,6 +51,16 @@ namespace Esquio.UI.Api.Scenarios.Statistics
         public async Task<IActionResult> GetTopFeaturesStatistics(CancellationToken cancellationToken = default)
         {
             var statistics = await _mediator.Send(new TopFeaturesStatisticsRequest(), cancellationToken);
+
+            return Ok(statistics);
+        }
+
+        [HttpGet()]
+        [Route("plot")]
+        [Authorize(Policies.Reader)]
+        public async Task<IActionResult> GetPlotStatistics(CancellationToken cancellationToken = default)
+        {
+            var statistics = await _mediator.Send(new PlotStatisticsRequest(), cancellationToken);
 
             return Ok(statistics);
         }
