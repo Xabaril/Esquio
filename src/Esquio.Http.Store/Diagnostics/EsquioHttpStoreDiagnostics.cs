@@ -25,6 +25,11 @@ namespace Esquio.Http.Store.Diagnostics
             Log.FindFeatureFromCache(_logger, cacheEntry);
         }
 
+        public void FeatureExistOnCache(string cacheEntry)
+        {
+            Log.FeatureExistOnCache(_logger, cacheEntry);
+        }
+
         public void GetFeatureFromStore(string featureName, string productName, string ringName)
         {
             Log.FindFeatureFromStore(_logger, featureName, productName, ringName);
