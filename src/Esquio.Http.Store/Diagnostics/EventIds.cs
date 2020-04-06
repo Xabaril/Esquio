@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Esquio.Distributed.Store.Diagnostics
+namespace Esquio.Http.Store.Diagnostics
 {
     internal static class EventIds
     {

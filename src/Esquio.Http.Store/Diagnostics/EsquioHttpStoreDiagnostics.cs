@@ -2,17 +2,17 @@
 using System;
 using System.Net;
 
-namespace Esquio.Distributed.Store.Diagnostics
+namespace Esquio.Http.Store.Diagnostics
 {
-    internal class EsquioDistributedStoreDiagnostics
+    internal class EsquioHttpStoreDiagnostics
     {
         private readonly ILogger _logger;
 
-        public EsquioDistributedStoreDiagnostics(ILoggerFactory loggerFactory)
+        public EsquioHttpStoreDiagnostics(ILoggerFactory loggerFactory)
         {
             _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
-            _logger = loggerFactory.CreateLogger("Esquio.Distributed.Store");
+            _logger = loggerFactory.CreateLogger("Esquio.Http.Store");
         }
 
         public void FindFeature(string featureName, string productName, string ringName)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebApp.Services;
 
 namespace WebApp
@@ -67,11 +68,11 @@ namespace WebApp
                 })
                 // for local store use .AddConfigurationStore(Configuration)
                 // for distributed store use .AddDistributedStore(setup=>{})
-                .AddDistributedStore(setup =>
+                .AddHttpStore(setup =>
                 {
                     setup.UseBaseAddress("https://localhost:44359/")
-                         .UseApiKey("YidiM+k0HlQh5b6jBC8TA3IffNkBknKMypUdyxA7GhY=")
-                         .UseCache(enabled: false);
+                         .UseApiKey("3dnqXKQujR+d/VV2Fb4OGvb80kJyetAuV17OceNhmdk=")
+                         .UseCache(enabled: false, slidingExpiration: TimeSpan.FromSeconds(10));
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddApplicationInsightProcessor();

@@ -26,7 +26,7 @@
     <esquioentityframeworkstore>3.0.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>3.0.0$(VersionSuffix)</esquiominiprofiler>
     <esquiocli>3.0.0$(VersionSuffix)</esquiocli>
-    <esquiodistributedstore>3.0.0$(VersionSuffix)</esquiodistributedstore>
+    <esquiohttpstore>3.0.0$(VersionSuffix)</esquiohttpstore>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">

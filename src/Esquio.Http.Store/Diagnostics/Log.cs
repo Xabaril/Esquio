@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
-namespace Esquio.Distributed.Store.Diagnostics
+namespace Esquio.Http.Store.Diagnostics
 {
     static class Log
     {
@@ -39,7 +39,7 @@ namespace Esquio.Distributed.Store.Diagnostics
         private static readonly Action<ILogger, string, string, string, Exception> _findFeature = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             EventIds.FindFeature,
-            "Distributed store trying to find feature with name {featureName} for product {productName}({ringName}).");
+            "Http store trying to find feature with name {featureName} for product {productName}({ringName}).");
 
         private static readonly Action<ILogger, string, Exception> _findFeatureFromCache = LoggerMessage.Define<string>(
            LogLevel.Information,
@@ -59,7 +59,7 @@ namespace Esquio.Distributed.Store.Diagnostics
         private static readonly Action<ILogger, string, int, Exception> _storeRequestFailed = LoggerMessage.Define<string, int>(
           LogLevel.Error,
           EventIds.StoreRequestFailed,
-          "Request GET to distributed store {request} throw with status code {statusCode}.");
+          "Request GET to Http store {request} throw with status code {statusCode}.");
 
         private static readonly Action<ILogger, Exception> _distributedStoreIsNotConfigured = LoggerMessage.Define(
           LogLevel.Error,

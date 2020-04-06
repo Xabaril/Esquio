@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\src\Esquio.AspNetCore.ApplicationInsightProcessor\Esquio.AspNetCore.ApplicationInsightProcessor.csproj" />
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
-    <ProjectReference Include="..\..\src\Esquio.Distributed.Store\Esquio.Distributed.Store.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.Http.Store\Esquio.Http.Store.csproj" />
     <ProjectReference Include="..\..\tools\Esquio.MiniProfiler\Esquio.MiniProfiler.csproj" />
   </ItemGroup>
 

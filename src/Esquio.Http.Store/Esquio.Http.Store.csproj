@@ -6,7 +6,7 @@
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Distributed store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Store;Distributed Store</PackageTags>
-    <Version>$(esquiodistributedstore)</Version>
+    <Version>$(esquiohttpstore)</Version>
     <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
     <Company>$(Company)</Company>
     <Authors>$(Authors)</Authors>

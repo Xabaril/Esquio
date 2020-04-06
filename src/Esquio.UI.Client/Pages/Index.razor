@@ -122,12 +122,19 @@
     private ConfigurationStatisticsResponse _configurationStatisticsResponse
         = new ConfigurationStatisticsResponse();
 
+
     protected override async Task OnInitializedAsync()
     {
         State.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
             new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
 
+        await Load();
+
+    }
+
+    private async Task Load(object state = null)
+    {
         await LoadConfigurationStatistics();
         await LoadSucessStatistics();
         await LoadTopFeaturesStatistics();
