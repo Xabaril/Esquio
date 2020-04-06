@@ -30,7 +30,8 @@ namespace Esquio.UI.Api.Scenarios.Statistics.TopFeatures
                 command.CommandText =
 @$"SELECT TOP 5 FeatureName as {nameof(TopFeaturesDetailsStatisticsResponse.FeatureName)},count(*) as {nameof(TopFeaturesDetailsStatisticsResponse.Requests)}
 FROM [dbo].[Metrics] WHERE DateTime > DATEADD(HOUR, -24,[DateTime])
-GROUP BY FeatureName";
+GROUP BY FeatureName
+ORDER BY COUNT(*) desc";
 
                 command.CommandType = CommandType.Text;
 
