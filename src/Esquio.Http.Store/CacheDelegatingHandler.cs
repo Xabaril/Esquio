@@ -27,41 +27,34 @@ namespace Esquio.Http.Store
         }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
         {
-            if (request.Method == HttpMethod.Get || request.Method == HttpMethod.Head)
+            var key = CacheKeyCreator
+                .FromUri(request.RequestUri);
+
+            _diagnostics.GetFeatureFromCache(key);
+
+            var featureConfiguration = await _cache
+                .GetStringAsync(key, cancellationToken);
+
+            if (featureConfiguration != null)
             {
-                var cacheKey = CacheKeyCreator.FromUri(request.RequestUri);
+                _diagnostics.FeatureExistOnCache(key);
+            }
+            else
+            {
+                var response = await base.SendAsync(request, cancellationToken);
+                featureConfiguration = await response.Content.ReadAsStringAsync();
 
-                _diagnostics.GetFeatureFromCache(cacheKey);
-
-                var featureConfiguration = await _cache
-                    .GetStringAsync(cacheKey, cancellationToken);
-
-                if (featureConfiguration != null)
+                await _cache.SetStringAsync(key, featureConfiguration, new DistributedCacheEntryOptions()
                 {
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent(featureConfiguration)
-                    };
-                }
-                else
-                {
-                    var response = await base.SendAsync(request, cancellationToken);
-                    var content = await response.Content.ReadAsStringAsync();
-
-                    await _cache.SetStringAsync(cacheKey, content, new DistributedCacheEntryOptions()
-                    {
-                        AbsoluteExpirationRelativeToNow = _options.AbsoluteExpirationRelativeToNow,
-                        SlidingExpiration = _options.SlidingExpiration
-                    }, cancellationToken);
-
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent(content)
-                    };
-                }
+                    AbsoluteExpirationRelativeToNow = _options.AbsoluteExpirationRelativeToNow,
+                    SlidingExpiration = _options.SlidingExpiration
+                }, cancellationToken);
             }
 
-            return await base.SendAsync(request, cancellationToken);
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(featureConfiguration)
+            };
         }
     }
 

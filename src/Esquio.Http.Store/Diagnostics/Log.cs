@@ -10,10 +10,19 @@ namespace Esquio.Http.Store.Diagnostics
             _findFeature(logger, featureName, productName, ringName, null);
         }
 
-
         public static void FindFeatureFromCache(ILogger logger, string cacheEntry)
         {
             _findFeatureFromCache(logger, cacheEntry, null);
+        }
+
+        public static void FeatureExistOnCache(ILogger logger, string cacheEntry)
+        {
+            _featureExistOnCache(logger, cacheEntry, null);
+        }
+
+        public static void FeatureDoesNotExistOnCache(ILogger logger, string cacheEntry)
+        {
+            _featureDoesNotExistOnCache(logger, cacheEntry, null);
         }
 
         public static void FindFeatureFromStore(ILogger logger, string featureName, string productName, string ringName)
@@ -45,6 +54,16 @@ namespace Esquio.Http.Store.Diagnostics
            LogLevel.Information,
            EventIds.FindFeatureFromCache,
            "Finding feature from configured cache using entry {cacheEntry}.");
+
+        private static readonly Action<ILogger, string, Exception> _featureExistOnCache = LoggerMessage.Define<string>(
+           LogLevel.Debug,
+           EventIds.FeatureExistOnCache,
+           "Feature with cache key {cacheEntry} exist on cache and is used.");
+
+        private static readonly Action<ILogger, string, Exception> _featureDoesNotExistOnCache = LoggerMessage.Define<string>(
+           LogLevel.Debug,
+           EventIds.FeatureDoesNotExistOnCache,
+           "Feature with cache key {cacheEntry} does not exist on cache.");
 
         private static readonly Action<ILogger, string, string, string, Exception> _findFeatureFromStore = LoggerMessage.Define<string, string, string>(
           LogLevel.Information,
