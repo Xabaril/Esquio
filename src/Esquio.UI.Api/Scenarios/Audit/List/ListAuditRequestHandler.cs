@@ -25,9 +25,9 @@ namespace Esquio.UI.Api.Features.Audit.List
                 .CountAsync(cancellationToken);
 
             var history = await _storeDbContext.History
+                .OrderByDescending(h => h.CreatedAt)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
-                .OrderByDescending(h=>h.CreatedAt)
                 .ToListAsync(cancellationToken);
 
             return new PaginatedResult<ListAuditResponseDetail>()

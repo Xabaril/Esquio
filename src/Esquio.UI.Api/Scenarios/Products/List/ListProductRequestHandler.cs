@@ -26,6 +26,7 @@ namespace Esquio.UI.Api.Scenarios.Products.List
 
             var products = await _storeDbContext
                 .Products
+                .OrderBy(p=>p.Name)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);

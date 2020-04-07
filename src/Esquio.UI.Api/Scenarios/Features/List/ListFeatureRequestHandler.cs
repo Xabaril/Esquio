@@ -28,6 +28,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.List
             var features = await _storeDbContext
                 .Features
                 .Where(f => f.ProductEntity.Name == request.ProductName && !f.Archived)
+                .OrderBy(f => f.Name)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);

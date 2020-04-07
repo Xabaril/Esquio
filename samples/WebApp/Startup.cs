@@ -71,7 +71,7 @@ namespace WebApp
                 .AddHttpStore(setup =>
                 {
                     setup.UseBaseAddress("https://localhost:44359/")
-                         .UseApiKey("a3Cb/zU2lj69q19ni5Jcc5n2eO3fh790Sdzvu0RB+pU=")
+                         .UseApiKey("UVzh8CCrbSxdYWbtAwX0l0FNS/klvYQ/X6Co5ZlIODM=")
                          .UseCache(enabled: false, slidingExpiration: TimeSpan.FromSeconds(10));
                 })
                 .AddAspNetCoreDefaultServices()

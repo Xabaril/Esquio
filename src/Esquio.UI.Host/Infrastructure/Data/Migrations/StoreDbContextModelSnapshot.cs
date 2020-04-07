@@ -156,6 +156,8 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DateTime");
+
                     b.ToTable("Metrics");
                 });
 

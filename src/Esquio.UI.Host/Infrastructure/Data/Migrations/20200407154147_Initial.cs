@@ -259,6 +259,12 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                 column: "TagEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Metrics_DateTime",
+                schema: "dbo",
+                table: "Metrics",
+                column: "DateTime");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parameters_ToggleEntityId",
                 schema: "dbo",
                 table: "Parameters",

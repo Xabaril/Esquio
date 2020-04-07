@@ -28,6 +28,7 @@ namespace Esquio.UI.Api.Scenarios.ApiKeys.List
             var apiKeys = await _storeDbContext
                 .ApiKeys
                 .Where(key => key.ValidTo >= DateTime.UtcNow)
+                .OrderBy(key => key.Name)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
