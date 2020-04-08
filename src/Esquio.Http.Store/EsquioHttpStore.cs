@@ -44,9 +44,7 @@ namespace Esquio.Http.Store
 
             if (response.IsSuccessStatusCode)
             {
-                return await response
-                    .Content
-                    .ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync();
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -55,7 +53,7 @@ namespace Esquio.Http.Store
             }
 
             _diagnostics.StoreRequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
-            throw new InvalidOperationException("Distributed store response is not success status code.");
+            throw new InvalidOperationException("Http store response is not success status code.");
         }
     }
 }
