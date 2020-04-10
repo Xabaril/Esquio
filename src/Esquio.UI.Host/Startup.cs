@@ -40,6 +40,7 @@ namespace Esquio.UI.Host
 
             services
                  .AddSwaggerGen()
+                 .AddApplicationInsightsTelemetry()
                  .AddAuthentication(options =>
                  {
                      options.DefaultScheme = "secured";

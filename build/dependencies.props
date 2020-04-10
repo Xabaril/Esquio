@@ -64,10 +64,12 @@
     <microsoftentityframeworkcorerelational>3.1.2</microsoftentityframeworkcorerelational>
     <microsoftentityframeworkcoresqlserver>3.1.2</microsoftentityframeworkcoresqlserver>
     <microsoftentityframeworkcoredesign>3.1.2</microsoftentityframeworkcoredesign>
+    <microsoftapplicationinsightsaspnetcore>2.13.1</microsoftapplicationinsightsaspnetcore>
 
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
+    <serilogsinksapplicationinsights>3.1.0</serilogsinksapplicationinsights>
     <serilogsinksbrowserconsole>1.0.0-dev-00012</serilogsinksbrowserconsole>
 
     <hellangmiddlewareproblemdetails>4.4.0</hellangmiddlewareproblemdetails>
