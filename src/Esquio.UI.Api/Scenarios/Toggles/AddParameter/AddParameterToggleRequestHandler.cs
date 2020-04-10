@@ -26,6 +26,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f=>f.ProductEntity)  //-> this is only needed for "history"
                 .Include(f => f.Toggles)
                     .ThenInclude(t => t.Parameters)
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)

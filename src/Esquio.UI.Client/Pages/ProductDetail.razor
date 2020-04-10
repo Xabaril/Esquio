@@ -56,7 +56,7 @@
                         <TableBody Context="features">
                             @foreach (var feature in features.Items)
                             {
-                            <tr @onclick="@(e => navigation.NavigateTo($"products/{ProductName}/{feature.Name}"))">
+                            <tr @ondblclick="@(e => navigation.NavigateTo($"products/{ProductName}/{feature.Name}"))">
                                 <td>@feature.Name</td>
                                 <td>@feature.Description</td>
                                 <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">

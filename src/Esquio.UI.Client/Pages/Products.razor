@@ -34,16 +34,26 @@
                         <TableHeader>
                             <th class="table-col-4">Name</th>
                             <th>Description</th>
+                            <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
+                                <th class="table-col-1"></th>
+                            </Permission>
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                <th class="table-col-2"></th>
+                                <th class="table-col-1"></th>
                             </Permission>
                         </TableHeader>
                         <TableBody Context="products">
                             @foreach (var product in products.Items)
                             {
-                                <tr @onclick="@(e => navigation.NavigateTo($"products/{product.Name}"))">
+                                <tr @ondblclick="@(e => navigation.NavigateTo($"products/{product.Name}"))">
                                     <td>@product.Name</td>
                                     <td>@product.Description</td>
+                                    <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            <Button Title="Modify"
+                                                    Icon="fas fa-edit"
+                                                    OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
+                                        </td>
+                                    </Permission>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
                                         <td class="table-component__action">
                                             <Button Title="Delete"
@@ -91,7 +101,7 @@
 
 @code {
     private bool showModal = false;
-  
+
     private bool formInvalid;
     private AddProductRequest model;
     private EditContext editContext;
