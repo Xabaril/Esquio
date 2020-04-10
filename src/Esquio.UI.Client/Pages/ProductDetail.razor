@@ -37,6 +37,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <PaginatedTable Loader="FeatureLoader"
+                                    SkeletonColumns="7"
+                                    SkeletonActions="5"
                                     @ref="featuresTable">
                         <TableHeader>
                             <th class="table-col-4">Name</th>

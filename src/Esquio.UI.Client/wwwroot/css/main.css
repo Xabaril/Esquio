@@ -1,4 +1,78 @@
-﻿.brand-link {
+﻿/* General */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+input:disabled + label.clickable {
+    cursor: not-allowed;
+}
+
+pre {
+    border-radius: 0.3rem;
+    background-color: #f0f0f0;
+}
+
+label + p.description {
+    font-size: 0.8rem;
+    color: #969696;
+}
+
+/* Overrides */
+a {
+    color: #20b2aa;
+}
+
+    a:hover {
+        color: #167974;
+    }
+
+    a.nav-link.active {
+        color: #6c757d
+    }
+
+.v-center {
+    display: flex;
+    align-items: center;
+}
+
+/* Card Overrides*/
+.card-primary.card-outline {
+    border-top: 3px solid #20b2aa;
+}
+
+@media (max-width: 991.98px) {
+    .card-body {
+        overflow-x: scroll;
+    }
+}
+
+/* Form Overrides */
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: normal;
+}
+
+.custom-control-label::before {
+    top: .35rem;
+}
+
+.custom-control-label::after {
+    top: .35rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: #20b2aa;
+    background-color: #20b2aa;
+}
+
+.brand-link {
     display: flex;
     justify-content: center;
     margin-top: 0.5rem;
@@ -40,10 +114,6 @@
 }
 
 /* Actions */
-
-.fa-power-off {
-    font-size: 1.2rem;
-}
 
 .fa-trash-alt,
 .fa-power-off,
@@ -167,42 +237,38 @@ ul.pagination.skeleton {
 
 /* Table Component */
 
-.table-component {
-    font-size: 1.2rem;
+.table-component > tbody > tr > td {
+    vertical-align: middle;
 }
 
-    .table-component > tbody > tr > td {
-        vertical-align: middle;
+.table-component tr {
+    cursor: pointer;
+}
+
+.table-component td.table-component__action {
+    text-align: center;
+}
+
+    .table-component td.table-component__action i.far,
+    .table-component td.table-component__action i.fas {
+        font-size: 1.7rem;
     }
 
-    .table-component tr {
-        cursor: pointer;
-    }
+.table-component .table-col-1 {
+    width: 5%;
+}
 
-    .table-component td.table-component__action {
-        text-align: center;
-    }
+.table-component .table-col-2 {
+    width: 10%;
+}
 
-        .table-component td.table-component__action i.far,
-        .table-component td.table-component__action i.fas {
-            font-size: 1.7rem;
-        }
+.table-component .badge {
+    margin-left: 1rem;
+}
 
-    .table-component .table-col-1 {
-        width: 5%;
-    }
-
-    .table-component .table-col-2 {
-        width: 10%;
-    }
-
-    .table-component .badge {
-        margin-left: 1rem;
-    }
-
-    .table-component .table-col-4 {
-        width: 20%;
-    }
+.table-component .table-col-4 {
+    width: 20%;
+}
 
 /* Page Title Component */
 
@@ -231,7 +297,7 @@ ul.pagination.skeleton {
     }
 
     .page-title .page-title-icon {
-        font-size: 2rem;
+        font-size: 1.7rem;
         display: flex;
         align-items: center;
         align-content: center;
@@ -242,6 +308,8 @@ ul.pagination.skeleton {
         border-radius: .25rem;
         width: 60px;
         height: 60px;
+        min-width: 60px;
+        min-height: 60px;
         color: #888888;
     }
 
@@ -254,9 +322,15 @@ ul.pagination.skeleton {
         display: flex;
     }
 
+@media (max-width: 991.98px) {
+    .page-title .page-title-icon {
+        font-size: 1.5rem;
+    }
+}
+
 /* Buttons */
 
-.btn-primary {
+.btn-primary, .btn-primary:disabled {
     background-color: #20b2aa;
     border: none;
 }
@@ -269,6 +343,7 @@ ul.pagination.skeleton {
     .btn-primary.btn-shadow {
         box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,.03), 0 0.9375rem 1.40625rem rgba(4,9,20,.03), 0 0.25rem 0.53125rem rgba(4,9,20,.05), 0 0.125rem 0.1875rem rgba(4,9,20,.03);
     }
+
 
 
 /* Spacing */
@@ -364,3 +439,117 @@ ul.pagination.skeleton {
             color: #fff;
             line-height: 2rem;
         }
+
+/* Arrows */
+.right-arrow {
+    display: inline;
+    position: relative;
+}
+
+    .right-arrow::before {
+        content: url(../dist/img/arrow.png);
+        display: inline-block;
+        transform: scale(0.4);
+        position: absolute;
+        top: 0px;
+        left: 80px;
+    }
+
+@media (max-width: 991.98px) {
+    .right-arrow::before {
+        transform: scale(0.4) rotate(90deg);
+        top: -100px;
+    }
+}
+
+/* Toggle Detail Component */
+
+.toggle-detail .placeholder {
+    margin: auto;
+    top: -35px;
+}
+
+@media (max-width: 991.98px) {
+    .toggle-detail .placeholder {
+        margin: auto;
+        top: 60px;
+    }
+}
+
+.toggle-detail .card {
+    min-height: 20rem;
+}
+
+/* Tags Input Component */
+.bootstrap-tagsinput {
+    box-shadow: none;
+    display: block;
+    overflow-x: auto;
+    padding: 6px;
+}
+
+    .bootstrap-tagsinput .tag {
+        background-color: #20b2aa;
+        border-radius: 4px;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,.03), 0 0.9375rem 1.40625rem rgba(4,9,20,.03), 0 0.25rem 0.53125rem rgba(4,9,20,.05), 0 0.125rem 0.1875rem rgba(4,9,20,.03);
+        padding: 0.2rem 0.4rem;
+        margin: 0.2rem 0;
+        display: inline-block;
+    }
+
+        .bootstrap-tagsinput .tag [data-role=remove]:after {
+            content: "\f2ed";
+            cursor: pointer;
+            padding: 0 2px;
+            display: inline-block;
+            font-family: "Font Awesome 5 Free";
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .bootstrap-tagsinput .tag [data-role=remove]:hover,
+        .bootstrap-tagsinput .tag [data-role=remove]:hover:active {
+            box-shadow: none;
+        }
+
+/* Percentage Input Component */
+.irs--flat {
+    margin-top: 2rem;
+}
+
+    .irs--flat .irs-from,
+    .irs--flat .irs-to,
+    .irs--flat .irs-single,
+    .irs--flat .irs-min,
+    .irs--flat .irs-max {
+        padding: 0.4rem;
+    }
+
+    .irs--flat .irs-from,
+    .irs--flat .irs-to,
+    .irs--flat .irs-single,
+    .irs--flat .irs-bar,
+    .irs--flat .irs-handle > i:first-child,
+    .irs--flat .irs-handle:hover > i:first-child {
+        background-color: #20b2aa;
+    }
+
+    .irs--flat .irs-from:before,
+    .irs--flat .irs-to:before,
+    .irs--flat .irs-single:before {
+        border-top-color: #20b2aa;
+    }
+
+.irs-from,
+.irs-to,
+.irs-single {
+    top: -25px;
+}
+
+.irs--flat .irs-min,
+.irs--flat .irs-max {
+    top: -25px;
+}

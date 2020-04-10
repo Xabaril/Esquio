@@ -6,6 +6,7 @@
             $(identifier).jsonView(json, { collapsed: true });
         };
     }
+
     if (!window.copyToClipboard) {
         window.copyToClipboard = function (text) {
             if (!navigator.clipboard) {
@@ -150,6 +151,64 @@
                 data: lineChartData,
                 options: lineChartOptions
             });
+        };
+    }
+
+    if (!window.initTagsInput) {
+        window.initTagsInput = function (id) {
+            $(id).tagsinput('refresh');
+            $(id).on('itemAdded itemRemoved', function () {
+                $(id).val($(id).val().replace(/,/g, ';'));
+                $(id).get(0).dispatchEvent(new Event('change'));
+            });
+        };
+    }
+
+    if (!window.reloadTagsInput) {
+        window.reloadTagsInput = function (id, tags) {
+            $(id).tagsinput('removeAll');
+            for (let tag of tags) {
+                $(id).tagsinput('add', tag);
+            }
+        };
+    }
+
+    if (!window.initDateTimePicker) {
+        window.initDateTimePicker = function (id) {
+            $(id).datetimepicker({
+                locale: window.navigator.userLanguage || window.navigator.language,
+                icons: {
+                    time: "far fa-clock",
+                    date: "far fa-calendar-alt",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+            });
+            $(id).on("change.datetimepicker", function () {
+                $(id).children("input[type=text]").get(0).dispatchEvent(new Event('change'));
+            });
+        };
+    }
+
+    if (!window.initRangeSlider) {
+        window.initRangeSlider = function (id, from) {
+            $(id).ionRangeSlider({
+                min: 0,
+                max: 100,
+                from: from,
+                prettify: function (n) {
+                    return `On: ${n}% users<br />Off: ${100 - n}% users`;
+                },
+                onChange: function () {
+                    $(id).get(0).dispatchEvent(new Event('change'));
+                }
+            });
+        };
+    }
+
+    if (!window.reloadRangeSlider) {
+        window.reloadRangeSlider = function (id, from) {
+            $(id).data("ionRangeSlider").update({ from });
         };
     }
 })();

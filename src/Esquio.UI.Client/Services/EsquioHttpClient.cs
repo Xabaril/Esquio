@@ -22,6 +22,11 @@ using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Statistics.TopFeatures;
 using Esquio.UI.Api.Shared.Models.Tags.Add;
 using Esquio.UI.Api.Shared.Models.Tags.List;
+using Esquio.UI.Api.Shared.Models.Toggles.Add;
+using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
+using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
@@ -67,9 +72,13 @@ namespace Esquio.UI.Client.Services
         Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default);
 
-        
-        //->toogles
+        //->toggles
+        Task<KnownTypesToggleResponse> GetToggleKnownTypes(CancellationToken cancellationToken = default);
+        Task<RevealToggleResponse> RevealToggle(string toggleType, CancellationToken cancellationToken = default);
+        Task<bool> AddToggle(AddToggleRequest addToggleRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default);
+        Task<DetailsToggleResponse> GetToggleDetails(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default);
+        Task<bool> AddToggleParameter(AddParameterToggleRequest addParameterToggleRequest, CancellationToken cancellationToken = default);
 
         //->tags
         Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default);
@@ -825,32 +834,6 @@ namespace Esquio.UI.Client.Services
             }
         }
 
-        public async Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
-        {
-            using (var request = await CreateHttpRequestMessageAsync())
-            {
-                request.Method = HttpMethod.Delete;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
-                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
-
-                try
-                {
-                    var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
-                }
-                return false;
-            }
-        }
-
         public async Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = await CreateHttpRequestMessageAsync())
@@ -979,6 +962,182 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return null;
+            }
+        }
+
+        public async Task<KnownTypesToggleResponse> GetToggleKnownTypes(CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/toggles/types", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<KnownTypesToggleResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<RevealToggleResponse> RevealToggle(string toggleType, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/toggles/parameters/{toggleType}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<RevealToggleResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> AddToggle(AddToggleRequest addToggleRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/toggles", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                var content = JsonConvert.SerializeObject(addToggleRequest);
+                request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add toggle {addToggleRequest}.!");
+                }
+
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
+                }
+                return false;
+            }
+        }
+
+        public async Task<DetailsToggleResponse> GetToggleDetails(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<DetailsToggleResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to get the toggle {toggleType} details!.");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> AddToggleParameter(AddParameterToggleRequest addParameterToggleRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = await CreateHttpRequestMessageAsync())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/toggles/parameters", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                var content = JsonConvert.SerializeObject(addParameterToggleRequest);
+                request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to add toggle parameter {addParameterToggleRequest}.!");
+                }
+
+                return false;
             }
         }
 

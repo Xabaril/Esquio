@@ -1,10 +1,10 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
-using Esquio.UI.Api.Scenarios.Toggles.AddParameter;
-using Esquio.UI.Api.Scenarios.Toggles.Details;
-using Esquio.UI.Api.Scenarios.Toggles.KnownTypes;
-using Esquio.UI.Api.Scenarios.Toggles.Reveal;
 using Esquio.UI.Api.Shared.Models.Toggles.Add;
+using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
 using Esquio.UI.Api.Shared.Models.Toggles.Delete;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
+using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

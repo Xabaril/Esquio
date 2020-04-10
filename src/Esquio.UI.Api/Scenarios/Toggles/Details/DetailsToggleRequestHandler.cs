@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -44,7 +45,8 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Details
                         Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
                         {
                             Name = parameter.Name,
-                            Value = parameter.Value
+                            Value = parameter.Value,
+                            RingName = parameter.RingName
                         }).ToList()
                     };
                 }

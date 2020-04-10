@@ -1,0 +1,36 @@
+﻿@inject IEsquioHttpClient esquioHttpClient
+
+@if (rings != null)
+{
+    <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
+        @foreach (var ring in rings)
+        {
+            @if (ring.Default)
+            {
+                <option value="@ring.Name" selected>
+                    @($"{ring.Name} (default ring)")
+                </option>
+            }
+            else
+            {
+                <option value="@ring.Name">
+                    @ring.Name
+                </option>
+            }
+        }
+    </select>
+}
+
+@code {
+    [Parameter] public string ProductName { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+
+    private IEnumerable<RingResponseDetail> rings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var product = await esquioHttpClient.GetProduct(ProductName);
+        rings = product.Rings;
+        await OnChange.InvokeAsync(rings.Single(r => r.Default).Name);
+    }
+}

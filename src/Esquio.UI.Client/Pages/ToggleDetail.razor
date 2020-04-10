@@ -1,0 +1,258 @@
+﻿@page "/products/{productName}/{featureName}/toggles/add"
+@attribute [Authorize]
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
+@using ExcludedToggle = Esquio.UI.Api.Shared.Models.Features.Details.ToggleDetail
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Toggle Detail"
+                           Subtitle="Show the collection of available toggles.">
+                    <Icon>
+                        <i class="fas fa-toggle-on"></i>
+                    </Icon>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+    <section class="content toggle-detail">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+                    <div class="card card-primary card-outline card-tabs">
+                        <div class="card-header p-0 pt-1 border-bottom-0">
+                            <ul class="nav nav-tabs" id="toggle-types-tab" role="tablist">
+                                @if (assemblies != null)
+                                {
+                                    @foreach (var assembly in assemblies)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link@(assembly == selectedAssembly ? " active" : "")"
+                                               id="@assembly-tab"
+                                               data-toggle="pill"
+                                               href="#@assembly"
+                                               role="tab"
+                                               aria-controls="@assembly"
+                                               aria-selected="@(assembly == selectedAssembly ? "true" : "false")"
+                                               @onclick="@(() => SelectAssembly(assembly))">
+                                                @assembly
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="toggle-types-tabContent">
+                                @if (assemblies == null)
+                                {
+                                <div class="tab-pane fade active show" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-12 mb-4">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-4">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-4">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                else
+                                {
+                                    @foreach (var assembly in assemblies)
+                                    {
+                                        <div class="tab-pane fade@(assembly == selectedAssembly ? " active show" : "")" id="@assembly" role="tabpanel" aria-labelledby="@assembly-tab">
+                                            <div class="form-group">
+                                                @foreach (var toggle in GetAssemblyToggles(assembly))
+                                                {
+                                                    <div class="custom-control custom-radio" @onclick="@(() => SelectToggle(@toggle.Type))">
+                                                        <input class="custom-control-input noselect"
+                                                               type="radio"
+                                                               id="@toggle.Type"
+                                                               name="@toggle.Type"
+                                                               checked="@(selectedToggle != null && selectedToggle.Type.Equals(@toggle.Type))"
+                                                               disabled="@isExcludedToggle(@toggle.Type)">
+                                                        <label for="@toggle.Type" class="custom-control-label noselect clickable">@toggle.FriendlyName</label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (selectedToggle == null)
+                {
+                    <div class="col-md-12 col-lg-6 text-center v-center">
+                        <h3 class="right-arrow placeholder">Start by selecting a toggle!</h3>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                @selectedToggle.FriendlyName
+                                <button type="button" class="btn btn-primary btn-shadow float-right" @onclick="AddToggle">
+                                    Add Toggle
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                @if (revealedToggle != null)
+                                {
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Ring</label>
+                                        <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+                                    </div>
+                                    <fieldset>
+                                        @foreach (var parameter in revealedToggle.Parameters)
+                                        {
+                                            <ToggleParameter Parameter="MapParameter(parameter)"
+                                                             OnParameterChange="OnParameterChange" />
+                                        }
+                                    </fieldset>
+                                </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+@code {
+    [Parameter] public string ProductName { get; set; }
+    [Parameter] public string FeatureName { get; set; }
+
+    private string selectedRing;
+    private string selectedAssembly;
+    private IEnumerable<string> assemblies;
+    private KnownTypesToggleResponse knownTypes;
+    private RevealToggleResponse revealedToggle;
+    private IEnumerable<ExcludedToggle> excludedToggles;
+    private KnownTypesToggleDetailResponse selectedToggle;
+    private IDictionary<string, AddToggleRequestDetailParameter> parameters;
+
+    protected override async Task OnInitializedAsync()
+    {
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
+            new BreadcrumbItemViewModel { Title = ProductName, Link = $"products/{ProductName}" },
+            new BreadcrumbItemViewModel { Title = FeatureName, Link = $"products/{ProductName}/{FeatureName}" },
+            new BreadcrumbItemViewModel { Title = "New Toggle" });
+
+        knownTypes = await GetToggleKnownTypes();
+        excludedToggles = await GetExcludedToggles();
+
+        assemblies = knownTypes
+            .Toggles
+            .Select(t => t.Assembly)
+            .Distinct()
+            .OrderBy(a => a);
+
+        SelectAssembly(assemblies.First());
+
+        ResetState();
+    }
+
+    private void ResetState()
+    {
+        parameters = new Dictionary<string, AddToggleRequestDetailParameter>();
+    }
+
+    private IEnumerable<KnownTypesToggleDetailResponse> GetAssemblyToggles(string assembly)
+        => knownTypes.Toggles.Where(t => t.Assembly == assembly);
+
+    private void SelectAssembly(string assembly)
+    {
+        selectedAssembly = assembly;
+    }
+
+    private async Task SelectToggle(string toggleType)
+    {
+        if (isExcludedToggle(toggleType) || selectedToggle != null && selectedToggle.Type == toggleType) return;
+
+        selectedToggle = knownTypes.Toggles.Find(t => t.Type == toggleType);
+        revealedToggle = null;
+        revealedToggle = await esquioHttpClient.RevealToggle(selectedToggle.Type);
+
+        ResetState();
+    }
+
+    private Task<KnownTypesToggleResponse> GetToggleKnownTypes()
+    {
+        return esquioHttpClient.GetToggleKnownTypes();
+    }
+
+    private async Task<IEnumerable<ExcludedToggle>> GetExcludedToggles()
+    {
+        var feature = await esquioHttpClient.GetFeatureDetails(ProductName, FeatureName);
+        return feature.Toggles;
+    }
+
+    private bool isExcludedToggle(string type) => excludedToggles.Any(t => t.Type == type);
+
+    private void OnParameterChange(ToggleParameterViewModel parameter)
+    {
+        if (parameters.ContainsKey(parameter.Name))
+        {
+            parameters[parameter.Name].Value = parameter.Value;
+        }
+        else
+        {
+            parameters.Add(parameter.Name, new AddToggleRequestDetailParameter
+            {
+                Name = parameter.Name,
+                Type = parameter.ClrType,
+                Value = parameter.Value
+            });
+        }
+    }
+
+    private async Task AddToggle()
+    {
+        var result = await esquioHttpClient.AddToggle(new AddToggleRequest
+        {
+            ProductName = ProductName,
+            FeatureName = FeatureName,
+            RingName = selectedRing,
+            ToggleType = selectedToggle.Type,
+            Parameters = parameters.Values.ToList()
+        });
+
+        if (result)
+        {
+            navigation.NavigateTo($"products/{ProductName}/{FeatureName}");
+        }
+        else
+        {
+            // TODO: error notification.
+        }
+    }
+
+    private ToggleParameterViewModel MapParameter(RevealToggleParameterResponse parameter)
+        => new ToggleParameterViewModel(parameter.Name, parameter.ClrType, description: parameter.Description);
+
+    private void OnRingChange(string ring)
+    {
+        selectedRing = ring;
+    }
+}

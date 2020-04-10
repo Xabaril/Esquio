@@ -32,6 +32,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <PaginatedTable Loader="Loader"
+                                    SkeletonColumns="4"
+                                    SkeletonActions="2"
                                     @ref="table">
                         <TableHeader>
                             <th class="table-col-6">Identity Provider Subject</th>

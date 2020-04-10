@@ -1991,6 +1991,9 @@
         },
         "value": {
           "type": "string"
+        },
+        "ringName": {
+          "type": "string"
         }
       }
     },

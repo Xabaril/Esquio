@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using MediatR;
 using System;
 using System.Collections.Generic;

@@ -1,11 +1,11 @@
 ﻿using Esquio;
 using Esquio.AspNetCore.Toggles;
 using Esquio.Toggles;
-using Esquio.UI.Api.Scenarios.Toggles.AddParameter;
-using Esquio.UI.Api.Scenarios.Toggles.Details;
-using Esquio.UI.Api.Scenarios.Toggles.KnownTypes;
-using Esquio.UI.Api.Scenarios.Toggles.Reveal;
 using Esquio.UI.Api.Shared.Models.Toggles.Add;
+using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
+using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;

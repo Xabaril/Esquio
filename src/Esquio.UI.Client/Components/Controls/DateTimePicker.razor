@@ -1,0 +1,35 @@
+﻿@inject IJSRuntime jsRuntime
+
+<div class="form-group">
+    <label for="@id">@Label</label>
+    <p class="description">@Description</p>
+    <div class="input-group date" id="@id" data-target-input="nearest">
+        <input type="text"
+                class="form-control datetimepicker-input"
+                data-target="#@id"
+                value="@Value"
+                @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
+        <div class="input-group-append" data-target="#@id" data-toggle="datetimepicker">
+            <div class="input-group-text">
+                <i class="far fa-calendar-alt"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Description { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+
+    private Guid id = Guid.NewGuid();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync($"initDateTimePicker", $"#{id}");
+        }
+    }
+}

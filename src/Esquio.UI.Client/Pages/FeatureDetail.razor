@@ -5,98 +5,143 @@
 @inject IEsquioHttpClient esquioHttpClient
 @inject EsquioState  esquioState
 
-    <PageTransition>
-        <div class="row">
-            <div class="col-sm-12">
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <h1>@FeatureName</h1>
-                    </div>
-                </section>
-            </div>
+<PageTransition>
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <h1>@FeatureName</h1>
+                </div>
+            </section>
         </div>
-        <div class="row mb-2">
-            <div class="col-sm-9">
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <PageTitle Title="Toggles"
-                                           Subtitle="Show the collection of active toggles on current feature.">
-                                    <Icon>
-                                        <i class="fas fa-magic"></i>
-                                    </Icon>
-                                    <Actions>
-                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+    </div>
+    <div class="row mb-2">
+        <div class="col-md-12 col-lg-9">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                            <PageTitle Title="Toggles"
+                                       Subtitle="Show the collection of active toggles on current feature.">
+                                <Icon>
+                                    <i class="fas fa-toggle-on"></i>
+                                </Icon>
+                                <Actions>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                        <NavLink href="@($"/products/{ProductName}/{FeatureName}/toggles/add")">
                                             <button type="button" class="btn btn-primary btn-shadow">
                                                 New Toggle
                                             </button>
-                                        </Permission>
-                                    </Actions>
-                                </PageTitle>
-                            </div>
+                                        </NavLink>
+                                    </Permission>
+                                </Actions>
+                            </PageTitle>
                         </div>
                     </div>
-                </section>
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <SingleTable Loader="TogglesLoader" @ref="togglesTable">
-                                    <TableHeader>
-                                        <th class="table-col-4">Name</th>
-                                        <th></th>
-                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
-                                            <th class="table-col-1"></th>
-                                        </Permission>
-                                    </TableHeader>
-                                    <TableBody Context="response">
-                                        @foreach (var toggle in response.Toggles)
-                                        {
-                                            <tr>
-                                                <td colspan="2">
-                                                    @toggle.FriendlyName
+                </div>
+            </section>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <SingleTable Loader="TogglesLoader" @ref="togglesTable" SkeletonColumns="4" SkeletonActions="2">
+                                <TableHeader>
+                                    <th class="table-col-4">Name</th>
+                                    <th></th>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                        <th class="table-col-1"></th>
+                                        <th class="table-col-1"></th>
+                                    </Permission>
+                                </TableHeader>
+                                <TableBody Context="response">
+                                    @foreach (var toggle in response.Toggles)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                @toggle.FriendlyName
+                                            </td>
+                                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                                <td class="table-component__action">
+                                                    <Button Title="Edit"
+                                                            Icon="far fa-edit"
+                                                            OnClick="@(() => EditToggle(toggle.Type))" />
                                                 </td>
-                                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
-                                                    <td class="table-component__action">
-                                                        <Button Title="Delete"
-                                                                Icon="far fa-trash-alt"
-                                                                OnClick="@(() => DeleteToggle(toggle.Type))" />
-                                                    </td>
-                                                </Permission>
-                                            </tr>
-                                        }
-                                    </TableBody>
-                                </SingleTable>
-                            </div>
+                                                <td class="table-component__action">
+                                                    <Button Title="Delete"
+                                                            Icon="far fa-trash-alt"
+                                                            OnClick="@(() => DeleteToggle(toggle.Type))" />
+                                                </td>
+                                            </Permission>
+                                        </tr>
+                                    }
+                                </TableBody>
+                            </SingleTable>
                         </div>
                     </div>
-                </section>
-            </div>
-            <div class="col-sm-3">
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <aside>
-                                    <Tags Subtitle="Show the collection of active tags on current feature."
-                                            TagsLoader="TagsLoader"
-                                            OnAdd="AddTag"
-                                            OnDelete="DeleteTag" />
-                                </aside>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
-    </PageTransition>
+        <div class="col-md-12 col-lg-3">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                            <aside>
+                                <Tags Subtitle="Show the collection of active tags on current feature."
+                                      TagsLoader="TagsLoader"
+                                      OnAdd="AddTag"
+                                      OnDelete="DeleteTag" />
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</PageTransition>
+
+@if (editToggle != default)
+{
+<Modal Title="@editToggle.FriendlyName" Show="showEditToggleModal" OnClose="CloseModal">
+    <ModalBody>
+        <form role="form">
+            <div class="form-group">
+                <label>Ring</label>
+                <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+            </div>
+            @if (editRing != default)
+            {
+                <fieldset @key="editRing">
+                    @foreach (var parameter in ringToggleParameters)
+                    {
+                        <ToggleParameter Parameter="parameter" OnParameterChange="OnParameterChange" />
+                    }
+                </fieldset>
+            }
+        </form>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="AddToggleParameters">Save changes</button>
+    </ModalFooter>
+</Modal>
+}
 
 @code {
     [Parameter] public string ProductName { get; set; }
     [Parameter] public string FeatureName { get; set; }
 
+
     private SingleTable<DetailsFeatureResponse> togglesTable;
+
+    //Edit toggle parameters
+    private bool showEditToggleModal = false;
+    private DetailsToggleResponse editToggle;
+    private string editRing;
+    private string defaultRing;
+    private IEnumerable<ToggleParameterViewModel> editToggleParameters;
+    private IEnumerable<ToggleParameterViewModel> ringToggleParameters;
+    private IDictionary<string, AddParameterToggleRequest> editedToggleParameters;
 
     protected override void OnInitialized()
     {
@@ -105,6 +150,17 @@
             new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
             new BreadcrumbItemViewModel { Title = ProductName, Link = $"products/{ProductName}" },
             new BreadcrumbItemViewModel { Title = FeatureName, Active = true });
+
+        ResetState();
+    }
+
+    private void ResetState()
+    {
+        editRing = default;
+        defaultRing = default;
+        editToggle = default;
+        ringToggleParameters = new List<ToggleParameterViewModel>();
+        editedToggleParameters = new Dictionary<string, AddParameterToggleRequest>();
     }
 
     private Task<DetailsFeatureResponse> TogglesLoader()
@@ -131,5 +187,127 @@
     private async Task DeleteTag(DeleteTagRequest deleteTagRequest)
     {
         await esquioHttpClient.DeleteTag(ProductName, FeatureName, deleteTagRequest.Tag);
+    }
+
+    private async Task EditToggle(string toggleType)
+    {
+        var details = esquioHttpClient.GetToggleDetails(ProductName, FeatureName, toggleType);
+        var reveal = esquioHttpClient.RevealToggle(toggleType);
+
+        await Task.WhenAll(details, reveal);
+
+        editToggle = details.Result;
+
+        editToggleParameters = details
+            .Result
+            .Parameters
+            .Select(parameter => (parameter, reveal.Result.Parameters.Find(p => p.Name.Equals(parameter.Name))))
+            .Select((source, index) =>
+            {
+                var (parameter, reveal) = source;
+                return new ToggleParameterViewModel(
+                    parameter.Name,
+                    reveal.ClrType,
+                    parameter.Value,
+                    parameter.RingName,
+                    index,
+                    reveal.Description);
+            });
+
+        OpenModal();
+    }
+
+    private IEnumerable<ToggleParameterViewModel> GetParametersByRing(string ringName)
+    {
+        var @default = editToggleParameters.Where(t => t.RingName == defaultRing).OrderBy(p => p.Order);
+        var parameters = editToggleParameters.Where(t => t.RingName == ringName).OrderBy(p => p.Order);
+
+        if (!parameters.Any())
+        {
+            foreach (var item in @default)
+            {
+                OnParameterChange(item);
+            }
+        }
+
+        return parameters.Any() ? parameters : @default;
+    }
+
+    private void OpenModal()
+    {
+        showEditToggleModal = true;
+        esquioState.SetWindowModal(showEditToggleModal);
+    }
+
+    private void CloseModal()
+    {
+        showEditToggleModal = false;
+        esquioState.SetWindowModal(showEditToggleModal);
+        ResetState();
+    }
+
+    private void OnRingChange(string ring)
+    {
+        editRing = ring;
+        if (defaultRing == default) defaultRing = ring;
+        ringToggleParameters = GetParametersByRing(ring);
+    }
+
+    private ToggleParameterViewModel GetDefaultParameter(string name)
+        => editToggleParameters.Single(p => p.RingName == defaultRing && p.Name == name);
+
+    private void OnParameterChange(ToggleParameterViewModel parameter)
+    {
+        // Fallback to default in cleared parameters.
+        if (parameter.IsEmpty) parameter = GetDefaultParameter(parameter.Name);
+
+        if (editedToggleParameters.ContainsKey(parameter.Name))
+        {
+            editedToggleParameters[parameter.Name].Value = parameter.Value;
+            editedToggleParameters[parameter.Name].RingName = editRing;
+        }
+        else
+        {
+            editedToggleParameters.Add(parameter.Name, new AddParameterToggleRequest
+            {
+                ProductName = ProductName,
+                FeatureName = FeatureName,
+                RingName = editRing,
+                ToggleType = editToggle.Type,
+                Name = parameter.Name,
+                Value = parameter.Value
+            });
+        }
+    }
+
+    private async Task AddToggleParameters()
+    {
+        if (!editedToggleParameters.Any())
+        {
+            CloseModal();
+            return;
+        }
+
+        var tasks = new List<Task<bool>>();
+
+        foreach (var parameter in editedToggleParameters)
+        {
+            tasks.Add(esquioHttpClient.AddToggleParameter(parameter.Value));
+        }
+
+        await Task.WhenAll(tasks);
+
+        var result = tasks.Select(t => t.Result).Aggregate((a, b) => a && b);
+
+        CloseModal();
+
+        if (result)
+        {
+            // TODO: success notification.
+        }
+        else
+        {
+            // TODO: error notification.
+        }
     }
 }
