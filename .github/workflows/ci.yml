@@ -1,4 +1,4 @@
-name: Esquio Continous Integration
+name: Esquio Continous Integration (master)
 on: 
   pull_request:
     branches: 

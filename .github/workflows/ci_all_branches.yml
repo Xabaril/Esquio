@@ -1,0 +1,28 @@
+name: Esquio Continous Integration (all branches)
+on: push
+jobs:
+  build:
+    env:
+      BUILD_CONFIG: Release
+    name: Build
+    runs-on: ubuntu-latest
+    services:
+      sql-server:
+        image: microsoft/mssql-server-linux
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: Password12!
+        ports:
+        - 5433:1433
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.0.0
+      with:
+        version: 3.1.201
+    - name: dotnet build
+      run: dotnet build Esquio.sln -c $BUILD_CONFIG
+    - name: dotnet test [UnitTests]
+      run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet test [FunctionalTests]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
