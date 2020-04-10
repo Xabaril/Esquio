@@ -435,7 +435,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
             content.Items
                 .Single().Name
-                .Should().BeEquivalentTo(product2.Name);
+                .Should().BeEquivalentTo(product1.Name);
         }
 
         [Fact]
