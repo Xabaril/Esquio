@@ -1,0 +1,11 @@
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.vscode
+**/[Bb]in
+**/[Oo]bj
+**/.toolstarget
+**/node_modules/
+tests/
