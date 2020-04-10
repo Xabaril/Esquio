@@ -12,9 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.0.0
+      uses: actions/setup-dotnet@v1
       with:
-        version: 3.1.201
+        dotnet-version: 3.1.201
     - name: dotnet build
       run: dotnet build ./src/Esquio.UI.Host/Esquio.UI.Host.csproj -c $BUILD_CONFIG
   docker:
