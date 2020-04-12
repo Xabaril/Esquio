@@ -39,7 +39,7 @@
     <ProjectReference Include="..\..\src\Esquio.Http.Store\Esquio.Http.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
     <ProjectReference Include="..\..\src\Esquio.UI.Api\Esquio.UI.Api.csproj" />
-    <ProjectReference Include="..\..\src\Esquio.UI\Esquio.UI.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.UI.Host\Esquio.UI.Host.csproj" />
   </ItemGroup>
 
   <ItemGroup>

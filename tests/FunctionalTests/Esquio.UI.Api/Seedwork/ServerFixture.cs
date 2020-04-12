@@ -3,7 +3,7 @@ using Acheve.TestHost;
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Services;
-using Esquio.UI.Infrastructure.Services;
+using Esquio.UI.Host.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
