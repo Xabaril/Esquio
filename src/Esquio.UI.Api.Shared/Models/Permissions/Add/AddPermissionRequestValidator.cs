@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System;
 
 namespace Esquio.UI.Api.Shared.Models.Permissions.Add
 {
@@ -11,9 +12,13 @@ namespace Esquio.UI.Api.Shared.Models.Permissions.Add
                 .NotNull()
                 .NotEmpty();
 
-            //TODO
-            //this.RuleFor(p => p.ActAs)
-            //    .IsEnumName(typeof(ApplicationRole), caseSensitive: false);
+            this.RuleFor(ar => ar.ActAs)
+                .Must(value =>
+                value.Equals("Reader", StringComparison.InvariantCultureIgnoreCase) 
+                ||
+                value.Equals("Contributor", StringComparison.InvariantCultureIgnoreCase)
+                ||
+                value.Equals("Management", StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

@@ -19,9 +19,14 @@ namespace Esquio.UI.Api.Shared.Models.ApiKeys.Add
                 .GreaterThan(DateTime.UtcNow)
                 .When(a => a.ValidTo != null);
 
-            //TODO: add validation here
-            //RuleFor(x => x.ActAs)
-            //    .IsEnumName(typeof(ApplicationRole), caseSensitive: false);
+            this.RuleFor(ar => ar.ActAs)
+               .Must(value =>
+               value.Equals("Reader", StringComparison.InvariantCultureIgnoreCase)
+               ||
+               value.Equals("Contributor", StringComparison.InvariantCultureIgnoreCase)
+               ||
+               value.Equals("Management", StringComparison.InvariantCultureIgnoreCase));
+
         }
     }
 }

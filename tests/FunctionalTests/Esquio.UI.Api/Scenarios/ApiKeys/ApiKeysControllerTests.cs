@@ -397,31 +397,29 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         [ResetDatabase]
         public async Task add_response_badrequest_if_actas_is_not_enum_valid()
         {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
 
-            //TODO: fix test when validation is performed
+            await _fixture.Given
+                .AddPermission(permission);
 
-            //var permission = Builders.Permission()
-            //    .WithManagementPermission()
-            //    .Build();
+            var addApiKeyRequest = new AddApiKeyRequest()
+            {
+                Name = new string('c', 100),
+                ActAs = "NewRole"
+            };
 
-            //await _fixture.Given
-            //    .AddPermission(permission);
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addApiKeyRequest);
 
-            //var addApiKeyRequest = new AddApiKeyRequest()
-            //{
-            //    Name = new string('c', 100),
-            //    ActAs = "NewRole"
-            //};
-
-            //var response = await _fixture.TestServer
-            //      .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
-            //      .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-            //      .PostAsJsonAsync(addApiKeyRequest);
-
-            //response.StatusCode
-            //    .Should()
-            //    .Be(StatusCodes.Status400BadRequest);
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
         }
+
         [Fact]
         [ResetDatabase]
         public async Task add_response_forbidden_when_user_is_not_authorized()
@@ -514,6 +512,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var addApiKeyRequest = new AddApiKeyRequest()
             {
                 Name = "apikey#1",
+                ActAs = "Reader",
+                ValidTo = DateTime.UtcNow.AddYears(1)
             };
 
             var response = await _fixture.TestServer
@@ -620,7 +620,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .Build();
 
             await _fixture.Given
-                .AddPermission(apikeyPermission,permission);
+                .AddPermission(apikeyPermission, permission);
 
             var response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(apiKey.Name))
