@@ -19,13 +19,13 @@ namespace Esquio.Http.Store
         private readonly HttpStoreOptions _options;
         private readonly EsquioHttpStoreDiagnostics _diagnostics;
 
-        public EsquioHttpStore(IHttpClientFactory httpClientFactory, IDistributedCache cache, IOptions<HttpStoreOptions> options, EsquioHttpStoreDiagnostics diagnostics)
+        public EsquioHttpStore(IHttpClientFactory httpClientFactory, IOptions<HttpStoreOptions> options, EsquioHttpStoreDiagnostics diagnostics, IDistributedCache cache = null)
         {
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _ = options ?? throw new ArgumentNullException(nameof(options));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
 
+            _cache = cache;
             _options = options.Value;
         }
 
@@ -45,43 +45,74 @@ namespace Esquio.Http.Store
 
         private async Task<string> GetFeatureConfiguration(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
         {
-            var key = CacheKeyCreator
-                .GetCacheKey(productName, featureName, ringName, "3.0");
-
-            var featureConfiguration = await _cache
-               .GetStringAsync(key, cancellationToken);
-
-            if (featureConfiguration == null)
+            if (_options.CacheEnabled)
             {
-                var httpClient = _httpClientFactory
-                    .CreateClient(EsquioConstants.ESQUIO);
-
-                var response = await httpClient
-                    .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                if (_cache == null)
                 {
-                    featureConfiguration = await response.Content.ReadAsStringAsync();
-
-                    await _cache.SetStringAsync(key, featureConfiguration, new DistributedCacheEntryOptions()
-                    {
-                        AbsoluteExpirationRelativeToNow = _options.AbsoluteExpirationRelativeToNow,
-                        SlidingExpiration = _options.SlidingExpiration
-                    }, cancellationToken);
+                    _diagnostics.DistributedCacheIsNotConfigured();
+                    throw new InvalidOperationException("HttpStore is configured with CacheEnabled = true but IDistributedCache is not registered.");
                 }
-                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+
+                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, ringName, "3.0");
+
+                var featureConfiguration = await _cache.GetStringAsync(cacheKey, cancellationToken);
+
+                _diagnostics.GetFeatureFromCache(cacheKey);
+
+                if (featureConfiguration != null)
                 {
-                    _diagnostics.FeatureNotExist(featureName, productName, ringName);
-                    return null;
+                    _diagnostics.FeatureExistOnCache(cacheKey);
+
+                    return featureConfiguration;
                 }
                 else
                 {
-                    _diagnostics.StoreRequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
-                    throw new InvalidOperationException("Http store response is not success status code.");
+                    _diagnostics.FeatureNotExist(featureName, productName, ringName);
+
+                    featureConfiguration = await GetFeatureFromServer(productName, featureName, ringName, cancellationToken);
+
+                    if (featureConfiguration != null)
+                    {
+                        await _cache.SetStringAsync(cacheKey, featureConfiguration, new DistributedCacheEntryOptions()
+                        {
+                            SlidingExpiration = _options.SlidingExpiration,
+                            AbsoluteExpirationRelativeToNow = _options.AbsoluteExpirationRelativeToNow
+                        });
+                    }
+
+                    return featureConfiguration;
                 }
             }
+            else
+            {
+                return await GetFeatureFromServer(productName, featureName, ringName, cancellationToken);
+            }
+        }
 
-            return featureConfiguration;
+        private async Task<string> GetFeatureFromServer(string productName, string featureName, string ringName, CancellationToken cancellationToken = default)
+        {
+            _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
+
+            var httpClient = _httpClientFactory
+                   .CreateClient(EsquioConstants.ESQUIO);
+
+            var response = await httpClient
+                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                _diagnostics.FeatureNotExist(featureName, productName, ringName);
+                return null;
+            }
+            else
+            {
+                _diagnostics.StoreRequestFailed(response.RequestMessage.RequestUri, response.StatusCode);
+                throw new InvalidOperationException("Http store response is not success status code.");
+            }
         }
     }
 
