@@ -48,7 +48,7 @@
                         <TableBody Context="users">
                             @foreach (var user in users.Items)
                             {
-                            <tr @ondblclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
+                            <tr @onclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
                                 <td>
                                     @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
                                     {

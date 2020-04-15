@@ -219,19 +219,18 @@
           "201": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -278,12 +277,15 @@
               "$ref": "#/definitions/PaginatedResultOfListFeatureResponseDetail"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -323,19 +325,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -364,12 +365,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -405,12 +412,15 @@
           "404": {
             "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -441,19 +451,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -484,19 +493,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -527,19 +535,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -761,12 +768,15 @@
               "$ref": "#/definitions/PaginatedResultOfListProductResponseDetail"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -790,12 +800,18 @@
           "201": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -826,12 +842,15 @@
           "404": {
             "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -862,12 +881,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -889,12 +914,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -925,12 +956,11 @@
           "204": {
             "description": ""
           },
+          "403": {
+            "description": ""
+          },
           "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
+            "description": ""
           }
         }
       }
@@ -963,12 +993,18 @@
           "201": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -980,12 +1016,8 @@
         ],
         "operationId": "Statistics_GetConfigurationStatistics",
         "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
+          "500": {
+            "description": ""
           }
         }
       }
@@ -997,12 +1029,8 @@
         ],
         "operationId": "Statistics_GetSuccessStatistics",
         "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1014,12 +1042,8 @@
         ],
         "operationId": "Statistics_GetTopFeaturesStatistics",
         "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1031,12 +1055,8 @@
         ],
         "operationId": "Statistics_GetPlotStatistics",
         "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1117,12 +1137,15 @@
               }
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1160,12 +1183,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1205,12 +1234,18 @@
           "200": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1252,15 +1287,15 @@
               "$ref": "#/definitions/DetailsToggleResponse"
             }
           },
-          "404": {
-            "description": ""
-          },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -1296,12 +1331,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1329,12 +1370,15 @@
               "$ref": "#/definitions/RevealToggleResponse"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1353,12 +1397,15 @@
               "$ref": "#/definitions/KnownTypesToggleResponse"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1384,19 +1431,18 @@
           "201": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1422,19 +1468,18 @@
           "201": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }

@@ -17,6 +17,7 @@ namespace Esquio.CliTool.Command
             return 1;
         }
 
+        [Command("set")]
         private class SetCommand
         {
             [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
@@ -27,6 +28,10 @@ namespace Esquio.CliTool.Command
             [Required]
             public string FeatureName { get; set; }
 
+            [Option("--ring-name <RING-NAME>", Description = "The parameter value.")]
+            [Required]
+            public string RingName { get; set; }
+
             [Option("--toggle-type <TOGGLE-TYPE>", Description = "The toggle type.")]
             [Required]
             public string ToggleType { get; set; }
@@ -36,6 +41,7 @@ namespace Esquio.CliTool.Command
             public string ParameterName { get; set; }
 
             [Option("--value <VALUE>", Description = "The parameter value.")]
+            [Required]
             public string ParameterValue { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
@@ -56,7 +62,8 @@ namespace Esquio.CliTool.Command
                         FeatureName = FeatureName,
                         ToggleType = ToggleType,
                         Name = ParameterName,
-                        Value = ParameterValue
+                        Value = ParameterValue,
+                        RingName = RingName
                     });
 
                 console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.", Constants.SuccessColor);

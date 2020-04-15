@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             setup.Invoke(options);
 
             builder.Services
-                .Configure<HttpStoreOptions>(setup=>
+                .Configure<HttpStoreOptions>(setup =>
                 {
                     setup.BaseAddress = options.BaseAddress;
                     setup.ApiKey = options.ApiKey;
@@ -50,12 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
                      httpclient.Timeout = options.Value.Timeout;
 
                  })
-                .AddHttpMessageHandler<CacheDelegatingHandler>(options.CacheEnabled)
                 .Services
                 .AddDistributedMemoryCache()
                 .AddScoped<IRuntimeFeatureStore, EsquioHttpStore>()
-                .AddSingleton<EsquioHttpStoreDiagnostics>()
-                .AddSingleton<CacheDelegatingHandler>();
+                .AddSingleton<EsquioHttpStoreDiagnostics>();
 
             return builder;
         }

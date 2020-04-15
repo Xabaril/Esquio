@@ -25,7 +25,6 @@ namespace Esquio.UI.Api.Scenarios.Products.Delete
         {
             var product = await _storeDbContext
                 .Products
-
                 .Where(p => p.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 

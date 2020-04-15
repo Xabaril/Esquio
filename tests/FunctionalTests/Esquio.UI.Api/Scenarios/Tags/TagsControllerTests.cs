@@ -200,7 +200,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
 
@@ -335,7 +335,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

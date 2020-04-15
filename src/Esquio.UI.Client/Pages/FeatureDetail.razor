@@ -56,7 +56,7 @@
                                 <TableBody Context="response">
                                     @foreach (var toggle in response.Toggles)
                                     {
-                                        <tr @ondblclick="@(() => EditToggle(toggle.Type))">
+                                        <tr @onclick="@(() => EditToggle(toggle.Type))">
                                             <td colspan="2">
                                                 @toggle.FriendlyName
                                             </td>
