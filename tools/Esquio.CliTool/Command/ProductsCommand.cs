@@ -9,6 +9,7 @@ namespace Esquio.CliTool.Command
 {
     [Command(Constants.ProductsCommandName, Description = Constants.ProductsDescriptionCommandName),
         Subcommand(typeof(AddCommand)),
+        Subcommand(typeof(AddRingCommand)),
         Subcommand(typeof(RemoveCommand)),
         Subcommand(typeof(ListCommand))]
     internal class ProductsCommand
@@ -20,6 +21,7 @@ namespace Esquio.CliTool.Command
             return 1;
         }
 
+        [Command("add")]
         private class AddCommand
         {
             [Option("--name <NAME>", Description = "The name of product to be added.")]
@@ -54,6 +56,40 @@ namespace Esquio.CliTool.Command
             }
         }
 
+        [Command("addring")]
+        private class AddRingCommand
+        {
+            [Option("--product-name <PRODUCT-NAME>", Description = "The name of product to be added.")]
+            [Required]
+            public string ProductName { get; set; }
+
+            [Option("--ring <RING>", Description = "The ring name to be added on  product.")]
+            [Required]
+            public string Ring { get; set; }
+
+            [Option(Constants.UriParameter, Description = Constants.UriDescription)]
+            public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
+
+            [Option(Constants.ApiKeyParameter, Description = Constants.ApiKeyDescription)]
+            public string ApiKey { get; set; } = Environment.GetEnvironmentVariable(Constants.ApiKeyEnvironmentVariable);
+
+            private async Task<int> OnExecute(IConsole console)
+            {
+                var client = EsquioClientFactory.Instance
+                    .Create(Uri, ApiKey);
+
+                await client.Products_AddRingAsync(ProductName,new AddRingRequest
+                {
+                    Name = Ring
+                });
+
+                console.WriteLine($"The ring {Ring} was added succesfully on product {ProductName}.", Constants.SuccessColor);
+
+                return 0;
+            }
+        }
+
+        [Command("remove")]
         private class RemoveCommand
         {
             [Option("--name <NAME>", Description = "The name of product to delete.")]
@@ -96,6 +132,7 @@ namespace Esquio.CliTool.Command
             }
         }
 
+        [Command("list")]
         private class ListCommand
         {
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]

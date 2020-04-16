@@ -34,7 +34,8 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Route("")]
         [Authorize(Policies.Reader)]
         [ProducesResponseType(typeof(PaginatedResult<ListProductResponseDetail>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PaginatedResult<ListProductResponseDetail>>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
@@ -47,7 +48,8 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Route("{productName:slug}")]
         [ProducesResponseType(typeof(DetailsProductResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsProductResponse>> Get(string productName, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(new DetailsProductRequest { ProductName = productName }, cancellationToken);
@@ -63,7 +65,9 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Authorize(Policies.Contributor)]
         [Route("")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add(AddProductRequest request, CancellationToken cancellationToken = default)
         {
             var product = await _mediator.Send(request, cancellationToken);
@@ -75,7 +79,9 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(string productName, UpdateProductRequest request, CancellationToken cancellationToken = default)
         {
             request.CurrentName = productName;
@@ -89,7 +95,9 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(string productName, CancellationToken cancellationToken = default)
         {
             var request = new DeleteProductRequest()
@@ -106,7 +114,8 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteRing(string productName, string ringName, CancellationToken cancellationToken = default)
         {
             var request = new DeleteRingRequest()
@@ -124,7 +133,9 @@ namespace Esquio.UI.Api.Scenarios.Products
         [Authorize(Policies.Contributor)]
         [Route("{productName:slug:minlength(5):maxlength(200)}/ring")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddRing(string productName, AddRingRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;

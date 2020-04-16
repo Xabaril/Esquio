@@ -73,38 +73,35 @@ namespace Esquio.UI.Host
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersion)
         {
+            EsquioUIApiConfiguration.Configure(app,
+                preConfigure: appBuilder =>
+                 {
+                     appBuilder.UseResponseCompression();
 
-            app.UseResponseCompression();
+                     if (env.IsDevelopment())
+                     {
+                         appBuilder.UseDeveloperExceptionPage();
+                     }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+                     return appBuilder.UseDefaultFiles()
+                     .UseStaticFiles();
+                 },
+                postConfigure: appBuilder =>
+                 {
+                     return appBuilder.UseAuthentication()
+                     .UseAuthorization()
+                     .UseBlazorFrameworkFiles()
+                     .UseSwagger()
+                     .UseSwaggerUI(setup =>
+                     {
+                         setup.EnableDeepLinking();
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseBlazorFrameworkFiles();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(setup =>
-            {
-                setup.EnableDeepLinking();
-
-                foreach (var description in apiVersion.ApiVersionDescriptions)
-                {
-                    setup.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
-                }
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
-            });
+                         foreach (var description in apiVersion.ApiVersionDescriptions)
+                         {
+                             setup.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+                         }
+                     });
+                 });
         }
     }
 }

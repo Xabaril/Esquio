@@ -77,6 +77,8 @@ namespace Esquio.UI.Api
                     endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                    endpoints.MapFallbackToFile("index.html");
                 });
         }
     }

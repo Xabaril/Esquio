@@ -9,7 +9,7 @@ namespace Esquio.CliTool.Internal
 
         public const string CommandName = "dotnet-esquio";
 
-        public const string CurrentVersion = "2.0";
+        public const string CurrentVersion = "3.0";
 
         public const string ProductsCommandName = "products";
         public const string ProductsDescriptionCommandName = "Manage Esquio products using Esquio UI HTTP API";
@@ -50,7 +50,8 @@ namespace Esquio.CliTool.Internal
         public const ConsoleColor SuccessColor = ConsoleColor.Green;
 
         public const string NotFoundErrorMessage = "Command execution result is Not Found, please ensure resource exist and you configure ESQUIO HTTP URI.";
-        public const string UnauthorizedErrorMessage = "Command execution result is Forbidden, please ensure that your api key is a valid api key in configured Esquio UI HTTP API.";
+        public const string UnauthorizedErrorMessage = "Command execution result is Unauthorized, please ensure that your api key is a valid api key in configured Esquio UI HTTP API.";
+        public const string ForbiddenErrorMessage = "Command execution result is Forbidden, please ensure that your api key is allowed to perform this action on  Esquio UI HTTP API.";
         public const string BadRquestErrorMessage = "Command execution result is BadRequest, please check validation result:";
         public const string InternalErrorMessage = "Uncaught exception from server.";
 

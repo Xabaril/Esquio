@@ -5,6 +5,7 @@ using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Statistics.TopFeatures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -28,6 +29,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics
         [HttpGet()]
         [Route("configuration")]
         [Authorize(Policies.Reader)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetConfigurationStatistics(CancellationToken cancellationToken = default)
         {
             var statistics = await _mediator.Send(new ConfigurationStatisticsRequest(), cancellationToken);
@@ -38,6 +40,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics
         [HttpGet()]
         [Route("success")]
         [Authorize(Policies.Reader)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSuccessStatistics(CancellationToken cancellationToken = default)
         {
             var statistics = await _mediator.Send(new SuccessStatisticsRequest(), cancellationToken);
@@ -48,6 +51,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics
         [HttpGet()]
         [Route("top")]
         [Authorize(Policies.Reader)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetTopFeaturesStatistics(CancellationToken cancellationToken = default)
         {
             var statistics = await _mediator.Send(new TopFeaturesStatisticsRequest(), cancellationToken);
@@ -58,6 +62,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics
         [HttpGet()]
         [Route("plot")]
         [Authorize(Policies.Reader)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPlotStatistics(CancellationToken cancellationToken = default)
         {
             var statistics = await _mediator.Send(new PlotStatisticsRequest(), cancellationToken);
