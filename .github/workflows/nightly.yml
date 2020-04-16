@@ -48,7 +48,7 @@ jobs:
           for f in ./artifacts/*.nupkg
           do
             echo "Publishing $f"
-            curl --silent --show-error --fail -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
+            curl --silent --show-error --fail -X PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
             if [ $? -eq 0 ]
             then
               echo "successfully pushed $f"
