@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             return View(match);
         }
 
-        [FeatureFilter(Names = Flags.MinutesRealTime)]
+        [FeatureFilter(Name = Flags.MinutesRealTime)]
         [ActionName("Detail")]
         public IActionResult DetailWhenFlagsIsActive(int id)
         {

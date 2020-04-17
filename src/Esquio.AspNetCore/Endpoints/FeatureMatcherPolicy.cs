@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +15,6 @@ namespace Esquio.AspNetCore.Endpoints
     internal class FeatureMatcherPolicy
         : MatcherPolicy, IEndpointSelectorPolicy, IEndpointComparerPolicy
     {
-        private static char[] split_characters = new char[] { ',' };
-
         private readonly EsquioAspNetCoreDiagnostics _diagnostics;
 
         public FeatureMatcherPolicy(EsquioAspNetCoreDiagnostics diagnostics)
@@ -76,27 +73,20 @@ namespace Esquio.AspNetCore.Endpoints
                 {
                     foreach (var metadata in allMetadata)
                     {
-                        _diagnostics.FeatureMatcherPolicyEvaluatingFeatures(endpoint.DisplayName, metadata.Names);
-
                         var featureService = httpContext
                             .RequestServices
                             .GetService<IFeatureService>();
 
-                        var tokenizer = new StringTokenizer(metadata.Names, split_characters);
+                        _diagnostics.FeatureMatcherPolicyEvaluatingFeatures(endpoint.DisplayName, metadata.Name);
 
-                        foreach (var token in tokenizer)
+                        if (!String.IsNullOrWhiteSpace(metadata.Name))
                         {
-                            var featureName = token.Trim();
-
-                            if (featureName.HasValue && featureName.Length > 0)
+                            if (!await featureService.IsEnabledAsync(metadata.Name.Trim()))
                             {
-                                if (!await featureService.IsEnabledAsync(featureName.Value))
-                                {
-                                    _diagnostics.FeatureMatcherPolicyEndpointIsNotValid(endpoint.DisplayName);
+                                _diagnostics.FeatureMatcherPolicyEndpointIsNotValid(endpoint.DisplayName);
 
-                                    valid = false & valid;
-                                    break;
-                                }
+                                valid = false & valid;
+                                break;
                             }
                         }
                     }

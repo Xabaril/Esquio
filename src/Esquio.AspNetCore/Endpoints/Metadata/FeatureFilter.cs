@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Esquio.AspNetCore.Endpoints.Metadata
 {
@@ -12,25 +13,19 @@ namespace Esquio.AspNetCore.Endpoints.Metadata
     public class FeatureFilter
        : Attribute, IFeatureFilterMetadata
     {
-        internal FeatureFilter(string names, string productName = null)
+        internal FeatureFilter(string name)
         {
-            Names = names ?? throw new ArgumentNullException(nameof(names));
-            ProductName = productName;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public FeatureFilter() { }
 
         /// <summary>
-        /// A coma separated list of features names to be evaluated.
+        /// The feature name to be evaluated.
         /// </summary>
         /// <remarks>
         /// The feature name are compared case insensitively with the name on the store.
         /// </remarks>
-        public string Names { get; set; }
-
-        /// <summary>
-        /// The product name when the features are configured. If null a default product is used.
-        /// </summary>
-        public string ProductName { get; set; }
+        public string Name { get; set; }
     }
 }
