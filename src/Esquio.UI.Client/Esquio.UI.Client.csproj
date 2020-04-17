@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(blazor)" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="$(blazor)" />
+    <PackageReference Include="System.Net.Http.Json" Version="$(blazorhttpclient)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(blazor)" />
     

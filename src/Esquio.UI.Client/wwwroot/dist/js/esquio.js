@@ -119,6 +119,9 @@
                     yAxes: [{
                         gridLines: {
                             display: false
+                        },
+                        ticks: {
+                            min: 0
                         }
                     }]
                 }

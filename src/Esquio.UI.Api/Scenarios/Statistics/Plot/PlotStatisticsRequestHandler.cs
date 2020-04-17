@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Plot
                 command.CommandText =
 @$"
 DECLARE @END DATETIME2  = GETDATE();
-DECLARE @START DATETIME2 = DATEADD(HOUR, -12, @END);
+DECLARE @START DATETIME2 = DATEADD(HOUR, -24, @END);
 WITH CTE_Dates AS
 (
     SELECT @START AS cte_date
