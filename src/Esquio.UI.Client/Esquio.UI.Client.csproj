@@ -21,8 +21,5 @@
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\plugins\jsonview\" />
-  </ItemGroup>
 
 </Project>
