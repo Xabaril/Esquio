@@ -32,5 +32,12 @@
         public string Description { get; set; }
 
         public bool IsEmpty => string.IsNullOrEmpty(Value);
+
+        public ToggleParameterViewModel ShallowCopy(string value)
+        {
+            var copy = (ToggleParameterViewModel)this.MemberwiseClone();
+            copy.Value = value;
+            return copy;
+        }
     }
 }

@@ -63,13 +63,15 @@
                                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
                                                 <td class="table-component__action">
                                                     <Button Title="Edit"
-                                                            Icon="far fa-edit"
-                                                            OnClick="@(() => EditToggle(toggle.Type))" />
+                                                        Icon="far fa-edit"
+                                                        OnClick="@(() => EditToggle(toggle.Type))" />
                                                 </td>
                                                 <td class="table-component__action">
-                                                    <Button Title="Delete"
-                                                            Icon="far fa-trash-alt"
-                                                            OnClick="@(() => DeleteToggle(toggle.Type))" />
+                                                    <ConfirmableAction Title="Delete"
+                                                        Icon="far fa-trash-alt"
+                                                        OnConfirm="@(() => DeleteToggle(toggle.Type))"
+                                                        ConfirmTitle="Delete Toggle"
+                                                        ConfirmDescription="@($"Are you sure you want to delete the '{toggle.FriendlyName}' toggle?")"/>
                                                 </td>
                                             </Permission>
                                         </tr>

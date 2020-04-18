@@ -9,8 +9,7 @@
                    class="form-control"
                    value="@Parameter.Value"
                    @onchange="@(@event => OnChange(
-                                    Parameter.Name,
-                                    Parameter.ClrType,
+                                    Parameter,
                                     @event.Value.ToString()))" />
         </div>
         break;
@@ -19,8 +18,7 @@
                    Description="@Parameter.Description"
                    Value="@Parameter.Value"
                    OnChange="@(value => OnChange(
-                                Parameter.Name,
-                                Parameter.ClrType,
+                                Parameter,
                                 value))" />
         break;
     case EsquioConstants.DATE_PARAMETER_TYPE:
@@ -28,8 +26,7 @@
                         Description="@Parameter.Description"
                         Value="@Parameter.Value"
                         OnChange="@(value => OnChange(
-                                    Parameter.Name,
-                                    Parameter.ClrType,
+                                    Parameter,
                                     value))" />
         break;
     case EsquioConstants.PERCENTAGE_PARAMETER_TYPE:
@@ -39,8 +36,7 @@
                                  ? 0
                                  : Int32.Parse(Parameter.Value))"
                          OnChange="@(value => OnChange(
-                                        Parameter.Name,
-                                        Parameter.ClrType,
+                                        Parameter,
                                         value))" />
         break;
     default:
@@ -55,8 +51,8 @@
 
     private string FormatPascalCase(string input) => pascalCaseRegex.Replace(input, " ");
 
-    private void OnChange(string name, string type, string value)
+    private void OnChange(ToggleParameterViewModel parameter, string value)
     {
-        OnParameterChange.InvokeAsync(new ToggleParameterViewModel(name, type, value));
+        OnParameterChange.InvokeAsync(parameter.ShallowCopy(value));
     }
 }

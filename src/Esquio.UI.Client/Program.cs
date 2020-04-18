@@ -55,6 +55,7 @@ namespace Esquio.UI.Client
             });
 
             builder.Services.AddScoped<EsquioState>();
+            builder.Services.AddScoped<ConfirmState>();
             builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
 

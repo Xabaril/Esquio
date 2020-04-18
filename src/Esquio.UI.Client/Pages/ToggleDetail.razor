@@ -120,9 +120,9 @@
                                         <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
                                     </div>
                                     <fieldset>
-                                        @foreach (var parameter in revealedToggle.Parameters)
+                                        @for (int index = 0; index < revealedToggle.Parameters.Count; index++)
                                         {
-                                            <ToggleParameter Parameter="MapParameter(parameter)"
+                                            <ToggleParameter Parameter="MapParameter(index, revealedToggle.Parameters.ElementAt(index))"
                                                              OnParameterChange="OnParameterChange" />
                                         }
                                     </fieldset>
@@ -148,7 +148,7 @@
     private RevealToggleResponse revealedToggle;
     private IEnumerable<ExcludedToggle> excludedToggles;
     private KnownTypesToggleDetailResponse selectedToggle;
-    private IDictionary<string, AddToggleRequestDetailParameter> parameters;
+    private IDictionary<string, ToggleParameterViewModel> parameters;
 
     protected override async Task OnInitializedAsync()
     {
@@ -175,7 +175,7 @@
 
     private void ResetState()
     {
-        parameters = new Dictionary<string, AddToggleRequestDetailParameter>();
+        parameters = new Dictionary<string, ToggleParameterViewModel>();
     }
 
     private IEnumerable<KnownTypesToggleDetailResponse> GetAssemblyToggles(string assembly)
@@ -214,16 +214,11 @@
     {
         if (parameters.ContainsKey(parameter.Name))
         {
-            parameters[parameter.Name].Value = parameter.Value;
+            parameters[parameter.Name] = parameter;
         }
         else
         {
-            parameters.Add(parameter.Name, new AddToggleRequestDetailParameter
-            {
-                Name = parameter.Name,
-                Type = parameter.ClrType,
-                Value = parameter.Value
-            });
+            parameters.Add(parameter.Name, parameter);
         }
     }
 
@@ -235,7 +230,16 @@
             FeatureName = FeatureName,
             RingName = selectedRing,
             ToggleType = selectedToggle.Type,
-            Parameters = parameters.Values.ToList()
+            Parameters = parameters
+                .Values
+                .OrderBy(parameter => parameter.Order)
+                .Select(parameter => new AddToggleRequestDetailParameter
+                {
+                    Name = parameter.Name,
+                    Type = parameter.ClrType,
+                    Value = parameter.Value
+                })
+                .ToList()
         });
 
         if (result)
@@ -248,8 +252,8 @@
         }
     }
 
-    private ToggleParameterViewModel MapParameter(RevealToggleParameterResponse parameter)
-        => new ToggleParameterViewModel(parameter.Name, parameter.ClrType, description: parameter.Description);
+    private ToggleParameterViewModel MapParameter(int order, RevealToggleParameterResponse parameter)
+        => new ToggleParameterViewModel(parameter.Name, parameter.ClrType, description: parameter.Description, order: order);
 
     private void OnRingChange(string ring)
     {

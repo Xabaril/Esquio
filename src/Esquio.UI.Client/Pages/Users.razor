@@ -74,9 +74,11 @@
                                     <td class="table-component__action">
                                         @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
                                         {
-                                            <Button Title="Delete"
-                                                    Icon="far fa-trash-alt"
-                                                    OnClick="@(() => Delete(user.SubjectId))" />
+                                            <ConfirmableAction Title="Delete"
+                                                Icon="far fa-trash-alt"
+                                                OnConfirm="@(() => Delete(user.SubjectId))"
+                                                ConfirmTitle="Delete User"
+                                                ConfirmDescription="@($"Are you sure you want to delete the '{user.SubjectId}' user?")" />
                                         }
                                     </td>
                                 </Permission>

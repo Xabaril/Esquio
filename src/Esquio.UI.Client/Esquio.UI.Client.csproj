@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(blazor)" />
     
+    <PackageReference Include="BuildBundlerMinifier" Version="$(buildbundlerminifier)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
     <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="$(serilogsinksbrowserconsole)" />
   </ItemGroup>

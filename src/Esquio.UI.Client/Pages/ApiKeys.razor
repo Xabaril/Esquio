@@ -64,9 +64,11 @@
                                     <td>@item.ValidTo</td>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
                                         <td class="table-component__action">
-                                            <Button Title="Delete"
-                                                    Icon="far fa-trash-alt"
-                                                    OnClick="@(() => Delete(item.Name))" />
+                                            <ConfirmableAction Title="Delete"
+                                                Icon="far fa-trash-alt"
+                                                OnConfirm="@(() => Delete(item.Name))"
+                                                ConfirmTitle="Delete Api Key"
+                                                ConfirmDescription="@($"Are you sure you want to delete the '{item.Name}' api key?")" />
                                         </td>
                                     </Permission>
                                 </tr>

@@ -50,15 +50,17 @@
                                     <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
                                         <td class="table-component__action">
                                             <Button Title="Modify"
-                                                    Icon="fas fa-edit"
-                                                    OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
+                                                Icon="fas fa-edit"
+                                                OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
                                         </td>
                                     </Permission>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
                                         <td class="table-component__action">
-                                            <Button Title="Delete"
-                                                    Icon="far fa-trash-alt"
-                                                    OnClick="@(() => Delete(product.Name))" />
+                                            <ConfirmableAction Title="Delete"
+                                                Icon="far fa-trash-alt"
+                                                OnConfirm="@(() => Delete(product.Name))"
+                                                ConfirmTitle="Delete Product"
+                                                ConfirmDescription="@($"Are you sure you want to delete the '{product.Name}' product?")" />
                                         </td>
                                     </Permission>
                                 </tr>

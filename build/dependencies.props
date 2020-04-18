@@ -39,6 +39,7 @@
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.3.0</nswagmsbuild>
     <swashbuckleaspnetcore>5.3.1</swashbuckleaspnetcore>
+    <buildbundlerminifier>3.2.447</buildbundlerminifier>
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 

@@ -68,26 +68,34 @@
                                         </Switch>
                                     </td>
                                     <td class="table-component__action">
-                                        <Button Title="Rollout"
-                                                Icon="fas fa-upload"
-                                                OnClick="@(() => RolloutFeature(feature.Name))" />
+                                        <ConfirmableAction Title="Rollout"
+                                            Icon="fas fa-upload"
+                                            OnConfirm="@(() => RolloutFeature(feature.Name))"
+                                            ConfirmTitle="Rollout Feature"
+                                            ConfirmDescription="@($"Are you sure you want to rollout the '{feature.Name}' feature?")" />
                                     </td>
                                     <td class="table-component__action">
-                                        <Button Title="Rolloff"
-                                                Icon="fas fa-download"
-                                                OnClick="@(() => RolloffFeature(feature.Name))" />
+                                        <ConfirmableAction Title="Rolloff"
+                                            Icon="fas fa-download"
+                                            OnConfirm="@(() => RolloffFeature(feature.Name))"
+                                            ConfirmTitle="Rolloff Feature"
+                                            ConfirmDescription="@($"Are you sure you want to rolloff the '{feature.Name}' feature?")" />
                                     </td>
                                     <td class="table-component__action">
-                                        <Button Title="Archive"
-                                                Icon="fas fa-archive"
-                                                OnClick="@(() => ArchiveFeature(feature.Name))" />
+                                        <ConfirmableAction Title="Archive"
+                                            Icon="fas fa-archive"
+                                            OnConfirm="@(() => ArchiveFeature(feature.Name))"
+                                            ConfirmTitle="Archive Feature"
+                                            ConfirmDescription="@($"Are you sure you want to archive the '{feature.Name}' feature?")" />
                                     </td>
                                 </Permission>
                                 <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
                                     <td class="table-component__action">
-                                        <Button Title="Delete"
-                                                Icon="far fa-trash-alt"
-                                                OnClick="@(() => DeleteFeature(feature.Name))" />
+                                        <ConfirmableAction Title="Delete"
+                                            Icon="far fa-trash-alt"
+                                            OnConfirm="@(() => DeleteFeature(feature.Name))"
+                                            ConfirmTitle="Delete Feature"
+                                            ConfirmDescription="@($"Are you sure you want to delete the '{feature.Name}' feature?")" />
                                     </td>
                                 </Permission>
                             </tr>
@@ -146,9 +154,11 @@
                                     <td class="table-component__action">
                                         @if (!ring.Default)
                                         {
-                                            <Button Title="Delete"
-                                                    Icon="far fa-trash-alt"
-                                                    OnClick="@(() => DeleteRing(ring.Name))" />
+                                            <ConfirmableAction Title="Delete"
+                                                Icon="far fa-trash-alt"
+                                                OnConfirm="@(() => DeleteRing(ring.Name))"
+                                                ConfirmTitle="Delete Ring"
+                                                ConfirmDescription="@($"Are you sure you want to delete the '{ring.Name}' ring?")" />
                                         }
                                     </td>
                                 </Permission>
