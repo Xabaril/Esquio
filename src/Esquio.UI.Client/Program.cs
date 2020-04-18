@@ -34,7 +34,7 @@ namespace Esquio.UI.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddOidcAuthentication(options =>
             {
                 options.ProviderOptions.Authority = "https://demo.identityserver.io";
@@ -43,13 +43,10 @@ namespace Esquio.UI.Client
                 options.ProviderOptions.ResponseType = "code";
             });
 
-            builder.Services.AddTransient<IEsquioHttpClient, EsquioHttpClient>(sp =>
+            builder.Services.AddSingleton<IEsquioHttpClient, EsquioHttpClient>(sp =>
             {
-                var navigationManager = sp.GetRequiredService<NavigationManager>();
                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
-
-                var httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
+                var httpClient = sp.GetRequiredService<HttpClient>();
 
                 return new EsquioHttpClient(httpClient, tokenService);
             });

@@ -119,6 +119,9 @@
                     yAxes: [{
                         gridLines: {
                             display: false
+                        },
+                        ticks: {
+                            min: 0
                         }
                     }]
                 }
@@ -176,7 +179,7 @@
     if (!window.initDateTimePicker) {
         window.initDateTimePicker = function (id) {
             $(id).datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: window.navigator.userLanguage || window.navigator.language,
                 icons: {
                     time: "far fa-clock",
                     date: "far fa-calendar-alt",

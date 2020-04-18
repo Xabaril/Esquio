@@ -82,7 +82,7 @@ namespace UnitTests.Seedwork
     public class ScenariosController : Controller
     {
         [ActionName("MultipleEndpointsWithFeatureSample1")]
-        [FeatureFilter(ProductName = "default", Names = "Sample1")]
+        [FeatureFilter(Name = "Sample1")]
         public IActionResult Sample1()
         {
             return Content("enabled");
@@ -95,7 +95,7 @@ namespace UnitTests.Seedwork
         }
 
         [ActionName("MultipleEndpointsWithFeatureSample2")]
-        [FeatureFilter(ProductName = "default", Names = "Sample2")]
+        [FeatureFilter(Name = "Sample2")]
         public IActionResult Sample2()
         {
             return Content("Enabled");
@@ -107,25 +107,27 @@ namespace UnitTests.Seedwork
         }
 
 
-        [FeatureFilter(Names = "Sample1")]
+        [FeatureFilter(Name = "Sample1")]
         public IActionResult SingleEndPointWithFeatureActive()
         {
             return Content("Enabled");
         }
 
-        [FeatureFilter(Names = "Sample1,Sample1")]
+        [FeatureFilter(Name = "Sample1")]
+        [FeatureFilter(Name = "Sample1")]
         public IActionResult SingleEndPointWithMultipleFeatureActive()
         {
             return Content("Enabled");
         }
 
-        [FeatureFilter(Names = "Sample1,Sample2")]
+        [FeatureFilter(Name = "Sample1")]
+        [FeatureFilter(Name = "Sample2")]
         public IActionResult SingleEndPointWithOneFeatureDisabled()
         {
             return Ok();
         }
 
-        [FeatureFilter(Names = "Sample2")]
+        [FeatureFilter(Name = "Sample2")]
         public IActionResult SingleEndPointWithFeatureDisabled()
         {
             return Ok();
