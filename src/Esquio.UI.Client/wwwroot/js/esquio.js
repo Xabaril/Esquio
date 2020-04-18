@@ -51,7 +51,7 @@
                 datasets: [
                     {
                         data: [sucessPercentage, (100 - sucessPercentage)],
-                        backgroundColor: ['#00a65a','#f56954']
+                        backgroundColor: ['#00a65a', '#f56954']
                     }
                 ]
             };
@@ -70,9 +70,9 @@
     }
 
     if (!window.drawTopFeaturesChart) {
-        window.drawTopFeaturesChart = function (id, labels,data) {
+        window.drawTopFeaturesChart = function (id, labels, data) {
             var donutChartCanvas = $(`#${id}`).get(0).getContext('2d');
-            
+
             var donutData = {
                 labels: labels,
                 datasets: [
@@ -110,7 +110,7 @@
                     xAxes: [{
                         type: 'time',
                         time: {
-                            unit:'hour'
+                            unit: 'hour'
                         },
                         gridLines: {
                             display: false
@@ -179,7 +179,7 @@
     if (!window.initDateTimePicker) {
         window.initDateTimePicker = function (id) {
             $(id).datetimepicker({
-                locale: window.navigator.userLanguage || window.navigator.language,
+                format: 'YYYY-MM-DD HH:mm:ss',
                 icons: {
                     time: "far fa-clock",
                     date: "far fa-calendar-alt",
