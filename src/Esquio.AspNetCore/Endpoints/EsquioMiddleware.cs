@@ -2,10 +2,8 @@
 using Esquio.AspNetCore.Diagnostics;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
 using System.Threading;
@@ -23,7 +21,6 @@ namespace Esquio.AspNetCore.Endpoints
         };
 
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
-        const string PRODUCTNAME_QUERY_PARAMETER_NAME = "productName";
         const string DEFAULT_MIME_TYPE = MediaTypeNames.Application.Json;
 
         private readonly RequestDelegate _next;
@@ -32,10 +29,9 @@ namespace Esquio.AspNetCore.Endpoints
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
-        public async Task Invoke(HttpContext context, IFeatureService featureService, IOptions<EsquioOptions> options, EsquioAspNetCoreDiagnostics diagnostics)
+        public async Task Invoke(HttpContext context, IFeatureService featureService, EsquioAspNetCoreDiagnostics diagnostics)
         {
             var evaluationsResponse = new List<EvaluationResponse>();
-            var esquioOptions = options.Value;
 
             var names = context.Request
                 .Query[FEATURENAME_QUERY_PARAMETER_NAME];

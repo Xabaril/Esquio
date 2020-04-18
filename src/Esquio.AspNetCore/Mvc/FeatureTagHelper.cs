@@ -22,7 +22,6 @@ namespace Esquio.AspNetCore.Mvc
         private const string FEATURE_NAME_ATTRIBUTE = "names";
         private const string INCLUDE_NAME_ATTRIBUTE = "include";
         private const string EXCLUDE_NAME_ATTRIBUTE = "exclude";
-        private const string PRODUCT_NAME_ATTRIBUTE = "product";
 
         private static readonly char[] FeatureSeparator = new[] { ',' };
 
