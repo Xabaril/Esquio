@@ -27,6 +27,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Delete
             var toggle = await _storeDbContext
                 .Toggles
                 .Include(t => t.FeatureEntity)
+                .ThenInclude(t=>t.ProductEntity) // only for history works!
                 .Include(t => t.Parameters)
                 .Where(t => t.FeatureEntity.Name == request.FeatureName && t.FeatureEntity.ProductEntity.Name == request.ProductName && t.Type == request.ToggleType)
                 .SingleOrDefaultAsync(cancellationToken);
