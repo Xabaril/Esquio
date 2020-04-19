@@ -15,6 +15,11 @@ input:disabled + label.clickable {
     cursor: not-allowed;
 }
 
+select.form-control:disabled {
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+}
+
 pre {
     border-radius: 0.3rem;
     background-color: #f0f0f0;
@@ -515,6 +520,23 @@ ul.pagination.skeleton {
             box-shadow: none;
         }
 
+    .bootstrap-tagsinput.disabled {
+        background-color: #f0f0f0;
+        cursor: not-allowed;
+    }
+
+        .bootstrap-tagsinput.disabled input {
+            display: none;
+        }
+
+        .bootstrap-tagsinput.disabled .tag span[data-role="remove"] {
+            display: none;
+        }
+
+        .bootstrap-tagsinput.disabled .tag {
+            background-color: #ccc;
+        }
+
 /* Percentage Input Component */
 .irs--flat {
     margin-top: 2rem;
@@ -552,4 +574,15 @@ ul.pagination.skeleton {
 .irs--flat .irs-min,
 .irs--flat .irs-max {
     top: -25px;
+}
+
+.irs-disable-mask {
+    top: -30px;
+    height: 175%;
+    cursor: not-allowed;
+}
+
+/* DateTime Picker Component */
+.datetimepicker-input:disabled + .input-group-append {
+    cursor: not-allowed;
 }

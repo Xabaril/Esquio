@@ -8,6 +8,7 @@
                    id="@Parameter.Name"
                    class="form-control"
                    value="@Parameter.Value"
+                   disabled="@(HasPermission == false)"
                    @onchange="@(@event => OnChange(
                                     Parameter,
                                     @event.Value.ToString()))" />
@@ -46,6 +47,7 @@
 @code {
     [Parameter] public ToggleParameterViewModel Parameter { get; set; }
     [Parameter] public EventCallback<ToggleParameterViewModel> OnParameterChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
     private Regex pascalCaseRegex = new Regex(@"(?<=[A-Za-z])(?=[A-Z][a-z])|(?<=[a-z0-9])(?=[0-9]?[A-Z])", RegexOptions.Compiled);
 

@@ -1,6 +1,12 @@
 ﻿@inject EsquioState esquioState
 
-@if (hasPermission)
+@if (Cascading)
+{
+    <CascadingValue Value="@hasPermission" Name="HasPermission">
+        @ChildContent
+    </CascadingValue>
+}
+else if (hasPermission)
 {
     @ChildContent
 }
@@ -9,6 +15,7 @@
     [Parameter] public PolicyAction Requires { get; set; }
     [Parameter] public PolicySubject Over { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool Cascading { get; set; }
 
     private bool hasPermission = false;
 

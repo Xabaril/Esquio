@@ -1,5 +1,4 @@
 ﻿using Esquio.UI.Client.Services;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,6 +54,7 @@ namespace Esquio.UI.Client
             builder.Services.AddScoped<ConfirmState>();
             builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
+            builder.Services.AddScoped<INotifications, Notifications>();
 
             return builder;
         }

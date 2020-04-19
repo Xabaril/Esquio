@@ -23,12 +23,15 @@
             <ul class="tag-list">
                 @foreach (var tag in tags)
                 {
-                    <li style="background-color: @tag.Color;">
-                        @tag.Name
-                        <Button Title="Delete"
-                                Icon="far fa-trash-alt"
-                                OnClick="@(() => DeleteTag(tag.Name))" />
-                    </li>
+                <li style="background-color: @tag.Color;">
+                    @tag.Name
+                    @if (HasPermission != false)
+                    {
+                        <IconButton Title="Delete"
+                                    Icon="far fa-trash-alt"
+                                    OnClick="@(() => DeleteTag(tag.Name))" />
+                    }
+                </li>
                 }
             </ul>
         }
@@ -50,12 +53,13 @@
                 <InputText id="tag-display-name"
                            class="form-control"
                            @bind-Value="newTagModel.Tag"
-                           placeholder="Tag name" />
+                           placeholder="Tag name"
+                           disabled="@(HasPermission == false)" />
                 <div class="input-group-append">
                     <button type="button"
                             class="btn btn-primary btn-shadow"
                             @onclick="AddTag"
-                            disabled="@newTagFormInvalid">
+                            disabled="@(HasPermission == false || newTagFormInvalid)">
                         Add
                     </button>
                 </div>
@@ -70,6 +74,7 @@
     [Parameter] public Func<Task<IEnumerable<TagResponseDetail>>> TagsLoader { get; set; }
     [Parameter] public EventCallback<AddTagRequest> OnAdd { get; set; }
     [Parameter] public EventCallback<DeleteTagRequest> OnDelete { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
     private bool newTagFormInvalid = true;
     private AddTagRequest newTagModel;

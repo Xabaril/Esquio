@@ -3,6 +3,7 @@
 
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
 @inject EsquioState  esquioState
 
 <PageTransition>
@@ -62,16 +63,16 @@
                                             </td>
                                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
                                                 <td class="table-component__action">
-                                                    <Button Title="Edit"
-                                                        Icon="far fa-edit"
-                                                        OnClick="@(() => EditToggle(toggle.Type))" />
+                                                    <IconButton Title="Edit"
+                                                                Icon="far fa-edit"
+                                                                OnClick="@(() => EditToggle(toggle.Type))" />
                                                 </td>
                                                 <td class="table-component__action">
                                                     <ConfirmableAction Title="Delete"
-                                                        Icon="far fa-trash-alt"
-                                                        OnConfirm="@(() => DeleteToggle(toggle.Type))"
-                                                        ConfirmTitle="Delete Toggle"
-                                                        ConfirmDescription="@($"Are you sure you want to delete the '{toggle.FriendlyName}' toggle?")"/>
+                                                                       Icon="far fa-trash-alt"
+                                                                       OnConfirm="@(() => DeleteToggle(toggle.Type))"
+                                                                       ConfirmTitle="Delete Toggle"
+                                                                       ConfirmDescription="@($"Are you sure you want to delete the '{toggle.FriendlyName}' toggle?")" />
                                                 </td>
                                             </Permission>
                                         </tr>
@@ -89,10 +90,12 @@
                     <div class="row mb-2">
                         <div class="col-sm-12">
                             <aside>
-                                <Tags Subtitle="Show the collection of active tags on current feature."
-                                      TagsLoader="TagsLoader"
-                                      OnAdd="AddTag"
-                                      OnDelete="DeleteTag" />
+                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle" Cascading="true">
+                                    <Tags Subtitle="Show the collection of active tags on current feature."
+                                          TagsLoader="TagsLoader"
+                                          OnAdd="AddTag"
+                                          OnDelete="DeleteTag" />
+                                </Permission>
                             </aside>
                         </div>
                     </div>
@@ -104,29 +107,31 @@
 
 @if (editToggle != default)
 {
-<Modal Title="@editToggle.FriendlyName" Show="showEditToggleModal" OnClose="CloseModal">
-    <ModalBody>
-        <form role="form">
-            <div class="form-group">
-                <label>Ring</label>
-                <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
-            </div>
-            @if (editRing != default)
-            {
-                <fieldset @key="editRing">
-                    @foreach (var parameter in ringToggleParameters)
+    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle" Cascading="true">
+        <Modal Title="@editToggle.FriendlyName" Show="showEditToggleModal" OnClose="CloseModal">
+            <ModalBody>
+                <form role="form">
+                    <div class="form-group">
+                        <label>Ring</label>
+                        <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+                    </div>
+                    @if (editRing != default)
                     {
-                        <ToggleParameter Parameter="parameter" OnParameterChange="OnParameterChange" />
+                        <fieldset @key="editRing">
+                            @foreach (var parameter in ringToggleParameters)
+                            {
+                                <ToggleParameter Parameter="parameter" OnParameterChange="OnParameterChange" />
+                            }
+                        </fieldset>
                     }
-                </fieldset>
-            }
-        </form>
-    </ModalBody>
-    <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="AddToggleParameters">Save changes</button>
-    </ModalFooter>
-</Modal>
+                </form>
+            </ModalBody>
+            <ModalFooter>
+                <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+                <Button OnClick="AddToggleParameters">Save changes</Button>
+            </ModalFooter>
+        </Modal>
+    </Permission>
 }
 
 @code {
@@ -305,11 +310,11 @@
 
         if (result)
         {
-            // TODO: success notification.
+            notifications.Success("Update Toggle", "Toggle successfully updated!");
         }
         else
         {
-            // TODO: error notification.
+            notifications.Error("Update Toggle", "Error updating the toggle");
         }
     }
 }

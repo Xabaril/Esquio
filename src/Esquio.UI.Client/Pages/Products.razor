@@ -49,7 +49,7 @@
                                     <td>@product.Description</td>
                                     <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
                                         <td class="table-component__action">
-                                            <Button Title="Modify"
+                                            <IconButton Title="Modify"
                                                 Icon="fas fa-edit"
                                                 OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
                                         </td>

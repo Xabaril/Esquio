@@ -7,6 +7,7 @@
                    id="@id"
                    data-role="tagsinput"
                    value="@Value"
+                   disabled="@(HasPermission == false)"
                    @onchange="OnValueChange" />
         </div>
         <div class="form-group">
@@ -20,6 +21,7 @@
     [Parameter] public string Description { get; set; }
     [Parameter] public string Value { get; set; }
     [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
     private Guid id = Guid.NewGuid();
     private string previousValue;
@@ -40,7 +42,7 @@
         if (firstRender)
         {
             previousValue = Value;
-            await jsRuntime.InvokeVoidAsync($"initTagsInput", $"#{id}");
+            await jsRuntime.InvokeVoidAsync($"initTagsInput", $"#{id}", HasPermission == false ? "disabled" : string.Empty);
         }
         else if (previousValue != Value)
         {

@@ -2,28 +2,52 @@
 
 @if (rings != null)
 {
-    <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
-        @foreach (var ring in rings)
-        {
-            @if (ring.Default)
+    @if (HasPermission == false)
+    {
+        <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))" disabled>
+            @foreach (var ring in rings)
             {
-                <option value="@ring.Name" selected>
-                    @($"{ring.Name} (default ring)")
-                </option>
+                @if (ring.Default)
+                {
+                    <option value="@ring.Name" selected>
+                        @($"{ring.Name} (default ring)")
+                    </option>
+                }
+                else
+                {
+                    <option value="@ring.Name">
+                        @ring.Name
+                    </option>
+                }
             }
-            else
+        </select>
+    }
+    else
+    {
+        <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
+            @foreach (var ring in rings)
             {
-                <option value="@ring.Name">
-                    @ring.Name
-                </option>
+                @if (ring.Default)
+                {
+                    <option value="@ring.Name" selected>
+                        @($"{ring.Name} (default ring)")
+                    </option>
+                }
+                else
+                {
+                    <option value="@ring.Name">
+                        @ring.Name
+                    </option>
+                }
             }
-        }
-    </select>
+        </select>
+    }
 }
 
 @code {
     [Parameter] public string ProductName { get; set; }
     [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
     private IEnumerable<RingResponseDetail> rings;
 

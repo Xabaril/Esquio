@@ -8,6 +8,7 @@
                 class="form-control datetimepicker-input"
                 data-target="#@id"
                 value="@Value"
+                disabled="@(HasPermission == false)"
                 @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
         <div class="input-group-append" data-target="#@id" data-toggle="datetimepicker">
             <div class="input-group-text">
@@ -22,6 +23,7 @@
     [Parameter] public string Description { get; set; }
     [Parameter] public string Value { get; set; }
     [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
     private Guid id = Guid.NewGuid();
 

@@ -2,6 +2,7 @@
 @attribute [Authorize]
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
 @inject EsquioState  esquioState
 @inject NavigationManager navigation
 
@@ -51,23 +52,23 @@
                             <div class="tab-content" id="toggle-types-tabContent">
                                 @if (assemblies == null)
                                 {
-                                <div class="tab-pane fade active show" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-12 mb-4">
-                                            <div class="line"></div>
+                                    <div class="tab-pane fade active show" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-12 mb-4">
+                                                <div class="line"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 mb-4">
+                                                <div class="line"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 mb-4">
+                                                <div class="line"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12 mb-4">
-                                            <div class="line"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 mb-4">
-                                            <div class="line"></div>
-                                        </div>
-                                    </div>
-                                </div>
                                 }
                                 else
                                 {
@@ -114,19 +115,19 @@
                             <div class="card-body">
                                 @if (revealedToggle != null)
                                 {
-                                <form role="form">
-                                    <div class="form-group">
-                                        <label>Ring</label>
-                                        <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
-                                    </div>
-                                    <fieldset>
-                                        @for (int index = 0; index < revealedToggle.Parameters.Count; index++)
-                                        {
-                                            <ToggleParameter Parameter="MapParameter(index, revealedToggle.Parameters.ElementAt(index))"
-                                                             OnParameterChange="OnParameterChange" />
-                                        }
-                                    </fieldset>
-                                </form>
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Ring</label>
+                                            <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+                                        </div>
+                                        <fieldset>
+                                            @for (int index = 0; index < revealedToggle.Parameters.Count; index++)
+                                            {
+                                                <ToggleParameter Parameter="MapParameter(index, revealedToggle.Parameters.ElementAt(index))"
+                                                                 OnParameterChange="OnParameterChange" />
+                                            }
+                                        </fieldset>
+                                    </form>
                                 }
                             </div>
                         </div>
@@ -245,10 +246,11 @@
         if (result)
         {
             navigation.NavigateTo($"products/{ProductName}/{FeatureName}");
+            notifications.Success("Create Toggle", "Toggle successfully created!");
         }
         else
         {
-            // TODO: error notification.
+            notifications.Error("Create Toggle", "Error creating the toggle");
         }
     }
 

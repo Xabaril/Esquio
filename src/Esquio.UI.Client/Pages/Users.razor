@@ -64,7 +64,7 @@
                                     <td class="table-component__action">
                                         @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
                                         {
-                                            <Button Title="Update"
+                                            <IconButton Title="Update"
                                                     Icon="fas fa-edit"
                                                     OnClick="@(() => OpenModalUpdatePermission(user.SubjectId,user.ActAs))" />
                                         }
