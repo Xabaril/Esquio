@@ -70,8 +70,8 @@ namespace WebApp
                 // for distributed store use .AddDistributedStore(setup=>{})
                 .AddHttpStore(setup =>
                 {
-                    setup.UseBaseAddress("https://localhost:44359/")
-                         .UseApiKey("jET7pdYZ03gpVxNzXco2jaP/cPdYHN4JV5iQXYXHguU=")
+                    setup.UseBaseAddress(Configuration["EsquioHttpStore:BaseAddress"])
+                         .UseApiKey(Configuration["EsquioHttpStore:ApiKey"])
                          .UseCache(enabled: true, slidingExpiration: TimeSpan.FromSeconds(10));
                 })
                 .AddAspNetCoreDefaultServices()

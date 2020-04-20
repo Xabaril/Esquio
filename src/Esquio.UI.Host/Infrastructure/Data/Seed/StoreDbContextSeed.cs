@@ -17,7 +17,11 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
             {
                 if (!context.Permissions.Any())
                 {
+                    const string DEFAULT_API_KEY = "ZgZ9/qcwJGe/Utefuym5YS/84mE8/9x7kIrx2V/aIxc=";
                     var configuration = sp.GetRequiredService<IConfiguration>();
+
+                    context.ApiKeys.Add(
+                        new ApiKeyEntity("demo", DEFAULT_API_KEY, DateTime.UtcNow.AddYears(1)));
 
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
@@ -31,10 +35,18 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
                         ApplicationRole = ApplicationRole.Reader
                     };
 
+                    var apiKeyPermission = new PermissionEntity()
+                    {
+                        SubjectId = DEFAULT_API_KEY,
+                        ApplicationRole = ApplicationRole.Reader
+                    };
+
                     context.Permissions.AddRange(aliceIdSvrPermission, bobIdSvrPermission);
 
                     context.SaveChanges();
                 }
+
+                
             };
         }
     }

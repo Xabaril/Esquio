@@ -4,7 +4,6 @@ services:
         image: app
         container_name: app
         depends_on: 
-            - sqlserver
             - ui
         ports:
             - 8060:80
@@ -12,7 +11,8 @@ services:
             context: ..
             dockerfile: build/DemoDockerfile
         environment:
-            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!            
+            - EsquioHttpStore__BaseAddress=http://ui:80
+            - EsquioHttpStore__ApiKey=ZgZ9/qcwJGe/Utefuym5YS/84mE8/9x7kIrx2V/aIxc=
     ui:
         image: ui
         container_name: ui
@@ -24,7 +24,7 @@ services:
             context: ..
             dockerfile: build/UIDockerfile
         environment:
-            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!            
+            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
             - Security__Jwt__ClientId=interactive.public

@@ -6,6 +6,8 @@ WORKDIR /src
 COPY ./Directory.Build.props ./Directory.Build.props
 COPY ./build ./build
 COPY ./src ./src
+COPY ./demos ./demos
+COPY ./tools ./tools
 WORKDIR /src/demos/WebApp
 RUN dotnet build -c Release -o /app
 FROM build AS publish
