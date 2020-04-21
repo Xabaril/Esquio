@@ -47,7 +47,7 @@ namespace Esquio.UI.Client
             {
                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
                 var httpClient = sp.GetRequiredService<HttpClient>();
-                httpClient.PostAsJsonAsync
+                
                 return new EsquioHttpClient(httpClient, tokenService);
             });
 

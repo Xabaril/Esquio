@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Esquio.Blazor.WebAssembly\Esquio.Blazor.WebAssembly.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
