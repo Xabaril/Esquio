@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -20,7 +22,7 @@ namespace Esquio.Blazor.WebAssembly
         private readonly IOptions<BlazorFeatureServiceOptions> _options;
         private readonly ILogger<BlazorFeatureServiceClient> _logger;
 
-        public BlazorFeatureServiceClient(HttpClient httpClient, IOptions<BlazorFeatureServiceOptions> options,  ILogger<BlazorFeatureServiceClient> logger)
+        public BlazorFeatureServiceClient(HttpClient httpClient, IOptions<BlazorFeatureServiceOptions> options, ILogger<BlazorFeatureServiceClient> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -34,14 +36,25 @@ namespace Esquio.Blazor.WebAssembly
                 var endpoint = _options?.Value.Endpoint ?? "Esquio";
 
                 var response = await _httpClient
-                    .GetFromJsonAsync<EvaluationResponse>($"/{endpoint}?featureName={featureName}");
+                    .GetFromJsonAsync<IEnumerable<EvaluationResponse>>($"{endpoint}?featureName={featureName}");
 
-                return response.Enabled;
+                if (response != null && response.Any())
+                {
+                    var evaluation = response
+                        .Where(f => f.Name.Equals(featureName, StringComparison.InvariantCultureIgnoreCase))
+                        .SingleOrDefault();
+
+                    if ( evaluation != null)
+                    {
+                        return evaluation.Enabled;
+                    }
+                }
+
+                return false;
             }
             catch (Exception exception)
             {
                 _logger.LogError("Blazor feature service client throw with error", exception);
-
                 return false;
             }
         }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <RazorLangVersion>$(RazorLangVersion)</RazorLangVersion>
     <RootNamespace>Esquio.Blazor.WebAssembly</RootNamespace>
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
