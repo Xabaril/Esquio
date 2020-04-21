@@ -63,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{669FB673
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "demos\WebApp\WebApp.csproj", "{8BDB0606-1DD2-4206-A63C-58DD1259D2DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.Blazor.WebAssembly", "src\Esquio.Blazor.WebAssembly\Esquio.Blazor.WebAssembly.csproj", "{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{8BDB0606-1DD2-4206-A63C-58DD1259D2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BDB0606-1DD2-4206-A63C-58DD1259D2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BDB0606-1DD2-4206-A63C-58DD1259D2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +185,7 @@ Global
 		{5E03D4F3-F2F2-4E02-96D6-839CFA0766D6} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{148ECEB4-FF99-4DBD-B364-751FDD6C090D} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{8BDB0606-1DD2-4206-A63C-58DD1259D2DF} = {669FB673-7855-4B59-9625-132124AB65A4}
+		{DAABA1D5-4B9C-46D5-8B36-6D0B3DFBA818} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}

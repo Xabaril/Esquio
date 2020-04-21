@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Esquio.UI.Client
@@ -46,7 +47,7 @@ namespace Esquio.UI.Client
             {
                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
                 var httpClient = sp.GetRequiredService<HttpClient>();
-
+                httpClient.PostAsJsonAsync
                 return new EsquioHttpClient(httpClient, tokenService);
             });
 
