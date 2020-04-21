@@ -66,13 +66,11 @@ namespace WebApp
                     //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
                     //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
                 })
-                // for local store use .AddConfigurationStore(Configuration)
-                // for distributed store use .AddDistributedStore(setup=>{})
                 .AddHttpStore(setup =>
                 {
                     setup.UseBaseAddress(Configuration["EsquioHttpStore:BaseAddress"])
                          .UseApiKey(Configuration["EsquioHttpStore:ApiKey"])
-                         .UseCache(enabled: true, slidingExpiration: TimeSpan.FromSeconds(10));
+                         .UseCache(enabled: true, absoluteExpirationRelativeToNow: TimeSpan.FromSeconds(10));
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddApplicationInsightProcessor();
