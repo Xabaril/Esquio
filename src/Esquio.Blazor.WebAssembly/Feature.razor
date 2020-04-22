@@ -22,6 +22,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        //TODO: add new state for OnInitializing
+        //- Initalizing
+
+        //- 
+        
         _isEnabled = await featureServiceClient.IsEnabledAsync(Name);
+
+        //- Enable o disabled
     }
 }

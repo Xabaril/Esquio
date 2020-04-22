@@ -45,6 +45,8 @@ namespace Esquio.UI.Client
 
             builder.Services.AddSingleton<IEsquioHttpClient, EsquioHttpClient>(sp =>
             {
+                //TODO: Check preview 5 with new message handler instead IAcccessTokenProvider
+
                 var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
                 var httpClient = sp.GetRequiredService<HttpClient>();
                 
