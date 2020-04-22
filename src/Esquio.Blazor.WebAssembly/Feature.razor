@@ -3,32 +3,36 @@
 
 @inject Esquio.Blazor.WebAssembly.IBlazorFeatureServiceClient featureServiceClient
 
-@if (_isEnabled)
+@if (_isLoading)
 {
-    @Enabled
+    @Loading
 }
 else
 {
-    @Disabled
+    if (_featureEnabled)
+    {
+        @Enabled
+    }
+    else
+    {
+        @Disabled
+    }
 }
 
 @code {
 
     [Parameter] public RenderFragment Enabled { get; set; }
     [Parameter] public RenderFragment Disabled { get; set; }
+    [Parameter] public RenderFragment Loading { get; set; }
+
     [Parameter] public string Name { get; set; }
 
-    private bool _isEnabled;
+    private bool _isLoading = true;
+    private bool _featureEnabled = false;
 
     protected override async Task OnInitializedAsync()
     {
-        //TODO: add new state for OnInitializing
-        //- Initalizing
-
-        //- 
-        
-        _isEnabled = await featureServiceClient.IsEnabledAsync(Name);
-
-        //- Enable o disabled
+        _featureEnabled = await featureServiceClient.IsEnabledAsync(Name);
+        _isLoading = false;
     }
 }
