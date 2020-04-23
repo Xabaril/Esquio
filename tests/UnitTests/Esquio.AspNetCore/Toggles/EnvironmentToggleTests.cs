@@ -1,6 +1,6 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
-using Esquio.Toggles;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ namespace UnitTests.Esquio.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new EnvironmentToggle(null);
+                new HostEnvironmentToggle(null);
             });
         }
 
@@ -29,7 +29,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_not_active_if_current_environment_is_null()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
+                .Toggle<HostEnvironmentToggle>()
                 .AddOneParameter(Environments, $"{Development}:{Production}")
                 .Build();
 
@@ -38,9 +38,9 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => null);
+            var hostEnvironment = new FakeHostEnvironment(null);
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -54,8 +54,8 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_not_active_if_parameter_value_is_null()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
-                .AddOneParameter("Environments","Production")
+                .Toggle<HostEnvironmentToggle>()
+                .AddOneParameter(Environments, Development)
                 .Build();
 
             var feature = Build
@@ -63,10 +63,9 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
+            var hostEnvironment = new FakeHostEnvironment(null);
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -80,7 +79,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_not_active_if_current_environment_is_not_configured()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
+                .Toggle<HostEnvironmentToggle>()
                 .AddOneParameter(Environments, Production)
                 .Build();
 
@@ -89,9 +88,9 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => Development);
+            var hostEnvironment = new FakeHostEnvironment(Development);
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -105,7 +104,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_active_if_current_environment_is_configured()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
+                .Toggle<HostEnvironmentToggle>()
                 .AddOneParameter(Environments, Development)
                 .Build();
 
@@ -113,10 +112,10 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "development");
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var hostEnvironment = new FakeHostEnvironment(Development);
+
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -130,7 +129,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_active_if_current_environment_is_configured_with_different_case()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
+                .Toggle<HostEnvironmentToggle>()
                 .AddOneParameter(Environments, Development)
                 .Build();
 
@@ -138,10 +137,10 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var hostEnvironment = new FakeHostEnvironment("DeVeLoPmEnT");
+
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -155,7 +154,7 @@ namespace UnitTests.Esquio.Toggles
         public async Task be_active_if_current_environment_is_configured_in_a_list()
         {
             var toggle = Build
-                .Toggle<EnvironmentToggle>()
+                .Toggle<HostEnvironmentToggle>()
                 .AddOneParameter(Environments, $"{Development};{Production}")
                 .Build();
 
@@ -163,10 +162,10 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var environmentNameProvider = new DelegatedEnvironmentNameProviderService(() => "DeVeLoPmEnT");
 
-            var active = await new EnvironmentToggle(environmentNameProvider).IsActiveAsync(
+            var hostEnvironment = new FakeHostEnvironment("Development");
+
+            var active = await new HostEnvironmentToggle(hostEnvironment).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,

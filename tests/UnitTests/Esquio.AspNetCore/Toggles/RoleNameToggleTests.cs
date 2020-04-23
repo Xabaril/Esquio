@@ -1,13 +1,16 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
-using Esquio.Toggles;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UnitTests.Builders;
 using UnitTests.Seedwork;
 using Xunit;
-namespace UnitTests.Esquio.Toggles
+
+namespace UnitTests.Esquio.AspNetCore.Toggles
 {
     public class rolename_toggle_should
     {
@@ -35,9 +38,14 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => null);
+            var context = new DefaultHttpContext();
 
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity());
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -47,31 +55,7 @@ namespace UnitTests.Esquio.Toggles
             active.Should().BeFalse();
         }
 
-        [Fact]
-        public async Task be_not_active_if_parameter_is_not_configured()
-        {
-            var toggle = Build
-                .Toggle<RoleNameToggle>()
-                .AddOneParameter("Roles","SomeRole")
-                .Build();
-
-            var feature = Build
-                .Feature(Constants.FeatureName)
-                .AddOne(toggle)
-                .Build();
-
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => "role1");
-
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
-               ToggleExecutionContext.FromToggle(
-                   feature.Name,
-                   EsquioConstants.DEFAULT_PRODUCT_NAME,
-                   EsquioConstants.DEFAULT_RING_NAME,
-                   toggle));
-
-            active.Should().BeFalse();
-        }
-
+       
         [Fact]
         public async Task be_not_active_if_role_is_not_contained_on_roles_parameters_value()
         {
@@ -85,9 +69,14 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => "user");
+            var context = new DefaultHttpContext();
 
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultRoleClaimType, "userole") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
                            ToggleExecutionContext.FromToggle(
                                feature.Name,
                                EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -109,10 +98,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => "admin");
 
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultRoleClaimType, "admin") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -134,10 +128,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => "AdMiN");
 
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultRoleClaimType, "AdMiN") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -159,10 +158,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var roleNameProvider = new DelegatedRoleNameProviderService(() => "user");
 
-            var active = await new RoleNameToggle(roleNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultRoleClaimType, "admin") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,

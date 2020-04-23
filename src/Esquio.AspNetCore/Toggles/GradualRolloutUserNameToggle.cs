@@ -1,12 +1,11 @@
 ﻿using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.Toggles
+namespace Esquio.AspNetCore.Toggles
 {
-
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on the current User name and how this name is assigned to a specific partition using the 
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the current user name into a specific
@@ -20,31 +19,28 @@ namespace Esquio.Toggles
         internal const string Percentage = nameof(Percentage);
         internal const int Partitions = 100;
 
-        private readonly IUserNameProviderService _userNameProviderService;
         private readonly IValuePartitioner _partitioner;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Create a new instance of <see cref="GradualRolloutUserNameToggle"/> toggle.
         /// </summary>
         /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
-        /// <param name="userNameProviderService">The <see cref="IUserNameProviderService"/> service to be used.</param>
-        public GradualRolloutUserNameToggle(
-            IValuePartitioner partitioner,
-            IUserNameProviderService userNameProviderService)
+        /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
+        public GradualRolloutUserNameToggle(IValuePartitioner partitioner, IHttpContextAccessor httpContextAccessor)
         {
             _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
-            _userNameProviderService = userNameProviderService ?? throw new System.ArgumentNullException(nameof(userNameProviderService));
+            _httpContextAccessor = httpContextAccessor ?? throw new System.ArgumentNullException(nameof(httpContextAccessor));
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
                 if (percentage > 0)
                 {
-                    var currentUserName = await _userNameProviderService
-                        .GetCurrentUserNameAsync();
+                    var currentUserName = GetCurrentUserName();
 
                     if (currentUserName != null)
                     {
@@ -53,13 +49,31 @@ namespace Esquio.Toggles
 
                         var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + currentUserName, partitions: 100);
 
-                        return assignedPartition <= percentage;
+                        return Task.FromResult(assignedPartition <= percentage);
                     }
                 }
             }
 
-            return false;
+            return Task.FromResult(false);
+        }
+
+        private string GetCurrentUserName()
+        {
+            //TODO: buscarlo por la claim seleccionada 
+
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            if (httpContext != null)
+            {
+                var userName = httpContext
+                    .User?
+                    .Identity?
+                    .Name;
+
+                return userName;
+            }
+
+            throw new InvalidOperationException($"HttpContext is null and {nameof(UserNameToggle)} can't recover the current User name for this provider.");
         }
     }
 }
-

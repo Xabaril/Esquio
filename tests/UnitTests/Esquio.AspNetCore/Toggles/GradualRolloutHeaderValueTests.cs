@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnitTests.Builders;
+using UnitTests.Seedwork;
 using Xunit;
 
 namespace UnitTests.Esquio.AspNetCore.Toggles
@@ -19,7 +20,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var accessor = new FakeHttpContextAccesor();
+                var accessor = new FakeHttpContextAccessor();
                 var partitioner = new DefaultValuePartitioner();
 
                 new GradualRolloutHeaderValueToggle(null, accessor);
@@ -56,7 +57,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -111,7 +112,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -142,7 +143,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutHeaderValue = new GradualRolloutHeaderValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutHeaderValue.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -153,19 +154,6 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             active.Should()
                 .BeFalse();
-        }
-
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
         }
     }
 }

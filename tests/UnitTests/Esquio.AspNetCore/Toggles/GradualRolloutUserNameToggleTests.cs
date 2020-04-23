@@ -1,14 +1,16 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
-using Esquio.Toggles;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UnitTests.Builders;
 using UnitTests.Seedwork;
 using Xunit;
 
-namespace UnitTests.Esquio.Toggles
+namespace UnitTests.Esquio.AspNetCore.Toggles
 {
     public class gradualrollout_toggle_should
     {
@@ -27,11 +29,16 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "User1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new GradualRolloutUserNameToggle(partitioner: null, userNameProvider);
+                new GradualRolloutUserNameToggle(partitioner: null, contextAccessor);
             });
         }
 
@@ -52,7 +59,7 @@ namespace UnitTests.Esquio.Toggles
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new GradualRolloutUserNameToggle(partitioner, userNameProviderService: null);
+                new GradualRolloutUserNameToggle(partitioner, httpContextAccessor: null);
             });
         }
 
@@ -69,10 +76,16 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "User1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
             var partitioner = new DefaultValuePartitioner();
 
-            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+            var active = await new GradualRolloutUserNameToggle(partitioner, contextAccessor).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -94,11 +107,17 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
+
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "User1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
             var partitioner = new DefaultValuePartitioner();
 
-            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+            var active = await new GradualRolloutUserNameToggle(partitioner, contextAccessor).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -133,10 +152,16 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var userNameProvider = new DelegatedUserNameProviderService(() => username);
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, username) }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
             var partitioner = new DefaultValuePartitioner();
 
-            var active = await new GradualRolloutUserNameToggle(partitioner, userNameProvider).IsActiveAsync(
+            var active = await new GradualRolloutUserNameToggle(partitioner, contextAccessor).IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
                     feature.Name,
                     EsquioConstants.DEFAULT_PRODUCT_NAME,

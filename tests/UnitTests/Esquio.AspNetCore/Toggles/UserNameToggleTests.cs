@@ -1,14 +1,16 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
-using Esquio.Toggles;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UnitTests.Builders;
 using UnitTests.Seedwork;
 using Xunit;
 
-namespace UnitTests.Esquio.Toggles
+namespace UnitTests.Esquio.AspNetCore.Toggles
 {
     public class username_toggle_should
     {
@@ -38,17 +40,21 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user2")
+                .AddOneParameter(Users, "user")
                 .Build();
 
             var feature = Build
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => null);
 
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity());
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+           
+            var active = await new UserNameToggle(contextAccessor).IsActiveAsync(
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -58,30 +64,7 @@ namespace UnitTests.Esquio.Toggles
             active.Should().BeFalse();
         }
 
-        [Fact]
-        public async Task be_not_active_if_parameter_is_not_configured()
-        {
-            var toggle = Build
-                .Toggle<UserNameToggle>()
-                .AddOneParameter("Users","SomeUser")
-                .Build();
-
-            var feature = Build
-                .Feature(Constants.FeatureName)
-                .AddOne(toggle)
-                .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => "User1");
-
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
-               ToggleExecutionContext.FromToggle(
-                   feature.Name,
-                   EsquioConstants.DEFAULT_PRODUCT_NAME,
-                   EsquioConstants.DEFAULT_RING_NAME,
-                   toggle));
-
-            active.Should().BeFalse();
-        }
+      
 
         [Fact]
         public async Task be_not_active_if_user_is_not_contained_on_users_parameters_value()
@@ -95,10 +78,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => "user2");
 
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "user2") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new UserNameToggle(contextAccessor).IsActiveAsync(
               ToggleExecutionContext.FromToggle(
                   feature.Name,
                   EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -120,10 +108,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
 
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "user1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new UserNameToggle(contextAccessor).IsActiveAsync(
               ToggleExecutionContext.FromToggle(
                   feature.Name,
                   EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -145,10 +138,15 @@ namespace UnitTests.Esquio.Toggles
                 .Feature(Constants.FeatureName)
                 .AddOne(toggle)
                 .Build();
-            
-            var userNameProvider = new DelegatedUserNameProviderService(() => "UsEr1");
 
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "UsEr1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new UserNameToggle(contextAccessor).IsActiveAsync(
               ToggleExecutionContext.FromToggle(
                   feature.Name,
                   EsquioConstants.DEFAULT_PRODUCT_NAME,
@@ -171,9 +169,14 @@ namespace UnitTests.Esquio.Toggles
                 .AddOne(toggle)
                 .Build();
 
-            var userNameProvider = new DelegatedUserNameProviderService(() => "user1");
+            var context = new DefaultHttpContext();
 
-            var active = await new UserNameToggle(userNameProvider).IsActiveAsync(
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultNameClaimType, "user1") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new UserNameToggle(contextAccessor).IsActiveAsync(
               ToggleExecutionContext.FromToggle(
                   feature.Name,
                   EsquioConstants.DEFAULT_PRODUCT_NAME,

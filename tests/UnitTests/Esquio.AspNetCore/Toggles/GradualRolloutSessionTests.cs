@@ -4,9 +4,6 @@ using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Builders;
 using UnitTests.Seedwork;
@@ -21,7 +18,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var accessor = new FakeHttpContextAccesor();
+                var accessor = new FakeHttpContextAccessor();
 
                 new GradualRolloutSessionToggle(null, accessor);
             });
@@ -56,7 +53,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -111,7 +108,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -142,7 +139,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutSession.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -172,7 +169,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
@@ -185,65 +182,5 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             });
         }
 
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
-        }
-        private class FakeSession
-            : ISession
-        {
-            string _sessionId;
-
-            public FakeSession(string sessionId)
-            {
-                _sessionId = sessionId;
-            }
-
-            public FakeSession()
-            {
-                _sessionId = Guid.NewGuid().ToString();
-            }
-            public string Id => _sessionId;
-
-            public bool IsAvailable => true;
-
-            public IEnumerable<string> Keys => Enumerable.Empty<string>();
-
-            public void Clear()
-            {
-            }
-
-            public Task CommitAsync(CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            public Task LoadAsync(CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            public void Remove(string key)
-            {
-            }
-
-            public void Set(string key, byte[] value)
-            {
-            }
-
-            public bool TryGetValue(string key, out byte[] value)
-            {
-                value = default;
-                return false;
-            }
-        }
     }
 }

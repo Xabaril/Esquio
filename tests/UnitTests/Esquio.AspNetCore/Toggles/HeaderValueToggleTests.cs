@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using UnitTests.Builders;
+using UnitTests.Seedwork;
 using Xunit;
 
 namespace UnitTests.Esquio.AspNetCore.Toggles
@@ -38,7 +39,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Request.Headers.Add("Accept", "application/json");
 
-            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccesor(context));
+            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccessor(context));
 
             var active = await headerValueToggle.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -68,7 +69,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Request.Headers.Add("Accept", "application/json");
 
-            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccesor(context));
+            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccessor(context));
 
             var active = await headerValueToggle.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -79,18 +80,6 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             active.Should()
                 .BeFalse();
-        }
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
         }
     }
 }

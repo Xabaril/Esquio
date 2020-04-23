@@ -19,7 +19,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var accessor = new FakeHttpContextAccesor();
+                var accessor = new FakeHttpContextAccessor();
 
                 new GradualRolloutClaimValueToggle(null, accessor);
             });
@@ -57,7 +57,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var store = new DelegatedValueFeatureStore((_, __,___) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -112,7 +112,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(
                  ToggleExecutionContext.FromToggle(
@@ -145,7 +145,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
             var active = await gradualRolloutClaimValue.IsActiveAsync(
                 ToggleExecutionContext.FromToggle(
@@ -156,19 +156,6 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             active.Should()
                 .BeFalse();
-        }
-
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
         }
     }
 }

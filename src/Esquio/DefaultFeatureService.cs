@@ -3,7 +3,6 @@ using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -134,7 +133,6 @@ namespace Esquio
             }
 
             _diagnostics.EndFeatureEvaluation(correlationId, featureName, productName, ringName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
-
             return enabled;
         }
     }
