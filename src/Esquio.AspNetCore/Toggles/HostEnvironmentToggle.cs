@@ -30,7 +30,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         ///  <inheritdoc />
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             string environments = context.Data[Environments]?.ToString();
 
@@ -39,10 +39,10 @@ namespace Esquio.AspNetCore.Toggles
                 var tokenizer = new StringTokenizer(environments, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
                 var isActive = tokenizer.Contains(_hostEnvironment.EnvironmentName, StringSegmentComparer.OrdinalIgnoreCase);
 
-                return Task.FromResult(isActive);
+                return new ValueTask<bool>(isActive);
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

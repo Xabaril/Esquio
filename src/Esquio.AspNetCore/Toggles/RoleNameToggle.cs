@@ -31,7 +31,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         /// <inheritdoc/>
-        public  Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public  ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             var currentRole = GetCurrentRole();
 
@@ -44,11 +44,11 @@ namespace Esquio.AspNetCore.Toggles
                     var tokenizer = new StringTokenizer(activeRoles, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
                     var isActive = tokenizer.Contains(currentRole, StringSegmentComparer.OrdinalIgnoreCase);
 
-                    return Task.FromResult(isActive);
+                    return new ValueTask<bool>(isActive);
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
 
         private string GetCurrentRole()

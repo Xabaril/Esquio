@@ -44,9 +44,9 @@ namespace FunctionalTests.Esquio.Configuration.Store
     class FakeToggle 
         : IToggle
     {
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Esquio.AspNetCore.Toggles
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
         ///<inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             string claimType = context.Data[ClaimType]?.ToString();
             string allowedValues = context.Data[ClaimValues]?.ToString();
@@ -53,12 +53,12 @@ namespace Esquio.AspNetCore.Toggles
                         var active = tokenizer.Contains(
                             value, StringSegmentComparer.OrdinalIgnoreCase);
 
-                        return Task.FromResult(active);
+                        return new ValueTask<bool>(active);
                     }
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

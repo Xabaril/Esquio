@@ -34,7 +34,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         ///<inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             string headerName = context.Data[HeaderName]?.ToString();
             string allowedValues = context.Data[HeaderValues]?.ToString();
@@ -52,11 +52,11 @@ namespace Esquio.AspNetCore.Toggles
                     var tokenizer = new StringTokenizer(allowedValues, SPLIT_SEPARATOR);
                     var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
 
-                    return Task.FromResult(active);
+                    return new ValueTask<bool>(active);
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

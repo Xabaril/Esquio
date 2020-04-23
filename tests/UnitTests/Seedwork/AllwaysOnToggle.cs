@@ -7,9 +7,9 @@ namespace UnitTests.Seedwork
     public class AllwaysOnToggle
         : IToggle
     {
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(true);
+            return new ValueTask<bool>(true);
         }
     }
 }

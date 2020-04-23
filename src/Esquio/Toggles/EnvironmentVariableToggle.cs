@@ -19,7 +19,7 @@ namespace Esquio.Toggles
         private const string EnvironmentVariable = nameof(EnvironmentVariable);
         private const string Values = nameof(Values);
 
-        public Task<bool> IsActiveAsync(ToggleExecutionContext  context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext  context, CancellationToken cancellationToken = default)
         {
             string environmentVariable = context.Data[EnvironmentVariable]?.ToString();
             string validValues = context.Data[Values]?.ToString();
@@ -32,10 +32,10 @@ namespace Esquio.Toggles
                 var tokenizer = new StringTokenizer(validValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
                 var active = tokenizer.Contains(environmentVariableValue, StringSegmentComparer.OrdinalIgnoreCase);
 
-                return Task.FromResult(active);
+                return new ValueTask<bool>(active);
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

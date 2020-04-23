@@ -114,7 +114,7 @@ namespace Esquio
 
                     if (toggleInstance != null)
                     {
-                        active = await toggleInstance?.IsActiveAsync(
+                        active = await toggleInstance.IsActiveAsync(
                             ToggleExecutionContext.FromToggle(featureName, productName, ringName, toggle),
                             cancellationToken);
                     }

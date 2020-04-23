@@ -204,7 +204,7 @@ namespace UnitTests.Esquio
         private class ThrowInvalidOperationExceptionToggle
             : IToggle
         {
-            public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+            public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
             {
                 throw new InvalidOperationException("throw exception");
             }

@@ -27,10 +27,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </remarks>
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
+            //register diagnostics
+            builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();
+
+            //register mandatory asp.net core services
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IScopedEvaluationSession, AspNetScopedEvaluationSession>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
-            builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();
+            
+
+            //register aspnet core toggles
+            builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
 
             return builder;
         }

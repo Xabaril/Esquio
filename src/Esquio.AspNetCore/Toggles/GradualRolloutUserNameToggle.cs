@@ -34,7 +34,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         /// <inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
@@ -49,12 +49,12 @@ namespace Esquio.AspNetCore.Toggles
 
                         var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + currentUserName, partitions: 100);
 
-                        return Task.FromResult(assignedPartition <= percentage);
+                        return new ValueTask<bool>(assignedPartition <= percentage);
                     }
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
 
         private string GetCurrentUserName()

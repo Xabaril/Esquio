@@ -22,7 +22,7 @@ namespace Esquio.Toggles
         internal const string To = nameof(To);
 
         /// <inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             var parseExactFormats = new string[] { DEFAULT_FORMAT_DATE, SINGLE_DIGIT_FORMAT_DATE };
 
@@ -42,10 +42,10 @@ namespace Esquio.Toggles
 
             if (now > fromDate && now < toDate)
             {
-                return Task.FromResult(true);
+                return new ValueTask<bool>(true);
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }
