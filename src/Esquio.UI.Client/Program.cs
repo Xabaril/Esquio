@@ -1,6 +1,7 @@
 ﻿using Esquio.UI.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
@@ -34,16 +35,19 @@ namespace Esquio.UI.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddOidcAuthentication(options =>
             {
-                options.ProviderOptions.Authority = "https://demo.identityserver.io";
-                options.ProviderOptions.ClientId = "interactive.public";
-                options.ProviderOptions.DefaultScopes.Add("api");
-                options.ProviderOptions.ResponseType = "code";
+                builder.Configuration.Bind("Security", options.ProviderOptions);
+
+                var audience = builder.Configuration
+                    .GetValue<string>("Security:Audience");
+
+                options.ProviderOptions.DefaultScopes.Add(audience);
             });
 
-            builder.Services.AddSingleton<IEsquioHttpClient, EsquioHttpClient>(sp =>
+            builder.Services.AddTransient<IEsquioHttpClient, EsquioHttpClient>(sp =>
             {
                 //TODO: Check preview 5 with new message handler instead IAcccessTokenProvider
 

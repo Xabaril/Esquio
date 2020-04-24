@@ -36,7 +36,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
-    <blazor>3.2.0-preview4.20210.8</blazor>
+    <blazor>3.2.0-preview5.20216.8</blazor>
     <blazorhttpclient>3.2.0-preview5.20210.3</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.3.0</nswagmsbuild>
