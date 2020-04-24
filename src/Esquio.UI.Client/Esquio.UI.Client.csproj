@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(blazor)" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.3" />
     <PackageReference Include="System.Net.Http.Json" Version="$(blazorhttpclient)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(blazor)" />
@@ -20,6 +21,12 @@
     <ProjectReference Include="..\Esquio.Blazor.WebAssembly\Esquio.Blazor.WebAssembly.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 

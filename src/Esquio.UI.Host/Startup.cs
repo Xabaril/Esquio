@@ -1,11 +1,13 @@
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.HostedService;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Host.Infrastructure.Middleware;
 using Esquio.UI.Host.Infrastructure.OpenApi;
 using Esquio.UI.Host.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -13,8 +15,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Linq;
 using System.Net.Mime;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Esquio.UI.Host
 {
@@ -49,7 +54,7 @@ namespace Esquio.UI.Host
                 .AddApiKey()
                 .AddJwtBearer(options =>
                 {
-                    Configuration.Bind("Security:Jwt", options);
+                    Configuration.Bind("Security:OpenId", options);
                 })
                 .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
                 {
@@ -76,15 +81,15 @@ namespace Esquio.UI.Host
             EsquioUIApiConfiguration.Configure(app,
                 preConfigure: appBuilder =>
                  {
+                     appBuilder.UseMiddleware<BlazorClientConfigurationMiddleware>();
                      appBuilder.UseResponseCompression();
-
+                     
                      if (env.IsDevelopment())
                      {
                          appBuilder.UseDeveloperExceptionPage();
                      }
 
-                     return appBuilder.UseDefaultFiles()
-                     .UseStaticFiles();
+                     return appBuilder.UseDefaultFiles().UseStaticFiles();
                  },
                 postConfigure: appBuilder =>
                  {
@@ -104,4 +109,6 @@ namespace Esquio.UI.Host
                  });
         }
     }
+
+    
 }

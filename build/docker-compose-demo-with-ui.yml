@@ -27,10 +27,11 @@ services:
             - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
-            - Security__Jwt__ClientId=interactive.public
-            - Security__Jwt__Audience=api
-            - Security__Jwt__Authority=https://demo.identityserver.io/
-            - Security__Jwt__RequireHttpsMetadata=true
+            - Security__OpenId__ClientId=interactive.public
+            - Security__OpenId__Audience=api
+            - Security__OpenId__Authority=https://demo.identityserver.io/
+            - Security__OpenId__ResponseType=code
+            - Security__OpenId__RequireHttpsMetadata=true
     sqlserver:
         image: microsoft/mssql-server-linux
         restart: always

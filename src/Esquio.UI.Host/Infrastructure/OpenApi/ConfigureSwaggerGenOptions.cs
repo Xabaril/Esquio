@@ -39,10 +39,10 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{_configuration["Security:Jwt:Authority"]}/connect/authorize"),
+                        AuthorizationUrl = new Uri($"{_configuration["Security:OpenId:Authority"]}/connect/authorize"),
                         Scopes = new Dictionary<string, string>
                         {
-                            {_configuration["Security:Jwt:Audience"] , "Esquio UI HTTP Api"}
+                            {_configuration["Security:OpenId:Audience"] , "Esquio UI HTTP Api"}
                         }
                     },
                 },

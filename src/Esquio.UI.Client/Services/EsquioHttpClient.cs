@@ -106,12 +106,10 @@ namespace Esquio.UI.Client.Services
         const string DEFAULT_CONTENT_TYPE = "application/json";
 
         private readonly HttpClient _httpClient;
-        private readonly IAccessTokenProvider _accessTokenProvider;
 
-        public EsquioHttpClient(HttpClient httpClient, IAccessTokenProvider accessTokenProvider)
+        public EsquioHttpClient(HttpClient httpClient) 
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _accessTokenProvider = accessTokenProvider ?? throw new ArgumentNullException(nameof(accessTokenProvider));
         }
 
         public async Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
@@ -130,7 +128,7 @@ namespace Esquio.UI.Client.Services
 
             urlBuilder.Length--;
 
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
@@ -160,7 +158,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<DetailsProductResponse> GetProduct(string productName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/products/{productName}", UriKind.RelativeOrAbsolute);
@@ -190,7 +188,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products", UriKind.RelativeOrAbsolute);
@@ -220,7 +218,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}", UriKind.RelativeOrAbsolute);
@@ -247,7 +245,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products/{productName}/ring", UriKind.RelativeOrAbsolute);
@@ -277,7 +275,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}", UriKind.RelativeOrAbsolute);
@@ -318,7 +316,7 @@ namespace Esquio.UI.Client.Services
 
             urlBuilder.Length--;
 
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
@@ -347,7 +345,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
@@ -377,7 +375,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
@@ -406,7 +404,7 @@ namespace Esquio.UI.Client.Services
         }
         public async Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
@@ -432,7 +430,7 @@ namespace Esquio.UI.Client.Services
         }
         public async Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
@@ -458,7 +456,7 @@ namespace Esquio.UI.Client.Services
         }
         public async Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/archive", UriKind.RelativeOrAbsolute);
@@ -485,7 +483,7 @@ namespace Esquio.UI.Client.Services
         }
         public async Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products/{productName}/features", UriKind.RelativeOrAbsolute);
@@ -514,7 +512,7 @@ namespace Esquio.UI.Client.Services
         }
         public async Task<bool> DeleteFeature(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
@@ -540,7 +538,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<MyResponse> GetMy(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("api/permissions/my", UriKind.RelativeOrAbsolute);
@@ -584,7 +582,7 @@ namespace Esquio.UI.Client.Services
 
             urlBuilder.Length--;
 
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
@@ -613,7 +611,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddUserPermission(AddPermissionRequest addPermissionRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/permissions", UriKind.RelativeOrAbsolute);
@@ -643,7 +641,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> UpdateUserPermission(UpdatePermissionRequest updatePermissionRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
                 request.RequestUri = new Uri($"api/permissions", UriKind.RelativeOrAbsolute);
@@ -673,7 +671,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteUserPermission(string subjectId, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/permissions/{subjectId}", UriKind.RelativeOrAbsolute);
@@ -700,7 +698,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<DetailsPermissionResponse> GetUserDetails(string subjectId, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/permissions/{subjectId}", UriKind.RelativeOrAbsolute);
@@ -744,7 +742,7 @@ namespace Esquio.UI.Client.Services
 
             urlBuilder.Length--;
 
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
@@ -774,7 +772,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<AddApiKeyResponse> AddNewApiKey(AddApiKeyRequest addApiKeyRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/apikeys", UriKind.RelativeOrAbsolute);
@@ -808,7 +806,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteApiKey(string apiKeyName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/apikeys/{apiKeyName}", UriKind.RelativeOrAbsolute);
@@ -836,7 +834,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<IEnumerable<TagResponseDetail>> GetTagsList(string productName, string featureName, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags", UriKind.RelativeOrAbsolute);
@@ -866,7 +864,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddTag(string productName, string featureName, AddTagRequest addTagRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags/tag", UriKind.RelativeOrAbsolute);
@@ -896,7 +894,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteTag(string productName, string featureName, string tag, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/tags/untag/{tag}", UriKind.RelativeOrAbsolute);
@@ -937,7 +935,7 @@ namespace Esquio.UI.Client.Services
 
             urlBuilder.Length--;
 
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(urlBuilder.ToString(), UriKind.RelativeOrAbsolute);
@@ -967,7 +965,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<KnownTypesToggleResponse> GetToggleKnownTypes(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/toggles/types", UriKind.RelativeOrAbsolute);
@@ -997,7 +995,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<RevealToggleResponse> RevealToggle(string toggleType, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/toggles/parameters/{toggleType}", UriKind.RelativeOrAbsolute);
@@ -1027,7 +1025,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddToggle(AddToggleRequest addToggleRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/toggles", UriKind.RelativeOrAbsolute);
@@ -1057,7 +1055,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> DeleteToggle(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
@@ -1083,7 +1081,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<DetailsToggleResponse> GetToggleDetails(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/toggles/{toggleType}", UriKind.RelativeOrAbsolute);
@@ -1113,7 +1111,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<bool> AddToggleParameter(AddParameterToggleRequest addParameterToggleRequest, CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri($"api/toggles/parameters", UriKind.RelativeOrAbsolute);
@@ -1143,7 +1141,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<List<DetailsReleaseResponse>> GetLatestReleases(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("https://api.github.com/repos/xabaril/esquio/releases");
@@ -1174,7 +1172,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<ConfigurationStatisticsResponse> GetConfigurationStatistics(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("api/statistics/configuration",UriKind.RelativeOrAbsolute);
@@ -1203,7 +1201,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<SuccessStatisticResponse> GetSuccessStatistics(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("api/statistics/success", UriKind.RelativeOrAbsolute);
@@ -1232,7 +1230,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<TopFeaturesStatisticsResponse> GetTopFeaturesStatistics(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("api/statistics/top", UriKind.RelativeOrAbsolute);
@@ -1261,7 +1259,7 @@ namespace Esquio.UI.Client.Services
 
         public async Task<PlotStatisticsResponse> GetPlotStatistics(CancellationToken cancellationToken = default)
         {
-            using (var request = await CreateHttpRequestMessageAsync())
+            using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri("api/statistics/plot", UriKind.RelativeOrAbsolute);
@@ -1286,47 +1284,6 @@ namespace Esquio.UI.Client.Services
 
                 return null;
             }
-        }
-
-        private async Task<HttpRequestMessage> CreateHttpRequestMessageAsync()
-        {
-            var msg = new HttpRequestMessage();
-            var token = await GetTokenAsync();
-
-            if (token != null)
-            {
-                msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
-            }
-
-            return msg;
-        }
-
-        private async Task<AccessToken> GetTokenAsync()
-        {
-            const string AUTHORIZATION_HEADER_NAME = "Authorization";
-
-            if (!_httpClient.DefaultRequestHeaders.TryGetValues(AUTHORIZATION_HEADER_NAME, out _))
-            {
-                var tokenResult = await _accessTokenProvider.RequestAccessToken();
-
-                if (tokenResult.Status == AccessTokenResultStatus.Success)
-                {
-                    Log.Debug("Token result is valid and we can reuse it.");
-
-                    if (tokenResult.TryGetToken(out AccessToken token))
-                    {
-                        Log.Debug($"Recovered token is {token.Value}");
-
-                        return token;
-                    }
-                }
-                else
-                {
-                    Log.Warning("Token is expired, need to get a new one");
-                }
-            }
-
-            return null;
         }
 
         string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
