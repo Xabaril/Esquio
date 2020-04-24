@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 3.1.201
     - name: dotnet build
-      run: dotnet build ./src/Esquio.UI.Host/Esquio.UI.Host.csproj -c $BUILD_CONFIG
+      run: dotnet build ./demos/WebApp/WebApp.csproj -c $BUILD_CONFIG
   docker:
     env:
       TAG: 3.0.${{ github.run_id }}
