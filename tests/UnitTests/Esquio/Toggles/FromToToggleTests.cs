@@ -5,7 +5,6 @@ using FluentAssertions;
 using System;
 using System.Threading.Tasks;
 using UnitTests.Builders;
-using UnitTests.Seedwork;
 using Xunit;
 namespace UnitTests.Esquio.Toggles
 {

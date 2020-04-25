@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Esquio.AspNetCore.Endpoints.Metadata
+﻿namespace Esquio.AspNetCore.Endpoints.Metadata
 {
     internal interface IFeatureFilterMetadata
     {

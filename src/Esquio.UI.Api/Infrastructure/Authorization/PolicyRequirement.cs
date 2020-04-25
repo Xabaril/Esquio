@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Security.Claims;
 
 namespace Esquio.UI.Api.Infrastructure.Authorization
 {

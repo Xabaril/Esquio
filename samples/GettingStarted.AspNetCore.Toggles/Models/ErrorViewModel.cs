@@ -1,5 +1,3 @@
-using System;
-
 namespace GettingStarted.AspNetCore.Toggles.Models
 {
     public class ErrorViewModel

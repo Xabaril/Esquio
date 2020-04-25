@@ -2,14 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on the current Role name and if this is contained in configured Roles property.
     /// </summary>
@@ -19,7 +16,8 @@ namespace Esquio.AspNetCore.Toggles
        : IToggle
     {
         internal const string Roles = nameof(Roles);
-
+        private const bool Active = true;
+        private const bool Inactive = false;
         private readonly IHttpContextAccessor _httpContextAccessor;
         /// <summary>
         /// Create a new instance of <see cref="RoleNameToggle"/>.
@@ -31,46 +29,31 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         /// <inheritdoc/>
-        public  ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var currentRole = GetCurrentRole();
+            var roles = context.Data[Roles]?.ToString();
 
-            if (currentRole != null)
+            if (roles is null)
             {
-                string activeRoles = context.Data[Roles]?.ToString();
+                return new ValueTask<bool>(false);
+            }
 
-                if (activeRoles != null)
+            var tokenizer = new StringTokenizer(roles, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+
+            foreach (var role in tokenizer)
+            {
+                var isActive = _httpContextAccessor
+                    .HttpContext?
+                    .User?
+                    .IsInRole(role.Value);
+
+                if (isActive.HasValue && isActive.Value)
                 {
-                    var tokenizer = new StringTokenizer(activeRoles, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
-                    var isActive = tokenizer.Contains(currentRole, StringSegmentComparer.OrdinalIgnoreCase);
-
-                    return new ValueTask<bool>(isActive);
+                    return new ValueTask<bool>(Active);
                 }
             }
 
-            return new ValueTask<bool>(false);
-        }
-
-        private string GetCurrentRole()
-        {
-            var httpContext = _httpContextAccessor.HttpContext;
-
-            if (httpContext != null)
-            {
-                var roleClaimType = ClaimsIdentity.DefaultRoleClaimType;
-                var roleName = default(string);
-
-                var roleClaim = httpContext.User?
-                    .FindFirst(roleClaimType);
-
-                if (roleClaim != null)
-                {
-                    roleName = roleClaim.Value;
-                }
-
-                return roleName;
-            }
-            throw new InvalidOperationException($"HttpContext is null and {nameof(RoleNameToggle)} can't recover the current Role name for this provider.");
+            return new ValueTask<bool>(Inactive);
         }
     }
 }

@@ -27,7 +27,6 @@ using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
 using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
 using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
 using System;
