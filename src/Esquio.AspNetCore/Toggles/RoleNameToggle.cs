@@ -16,8 +16,7 @@ namespace Esquio.AspNetCore.Toggles
        : IToggle
     {
         internal const string Roles = nameof(Roles);
-        private const bool Active = true;
-        private const bool Inactive = false;
+       
         private readonly IHttpContextAccessor _httpContextAccessor;
         /// <summary>
         /// Create a new instance of <see cref="RoleNameToggle"/>.
@@ -49,11 +48,11 @@ namespace Esquio.AspNetCore.Toggles
 
                 if (isActive.HasValue && isActive.Value)
                 {
-                    return new ValueTask<bool>(Active);
+                    return new ValueTask<bool>(true);
                 }
             }
 
-            return new ValueTask<bool>(Inactive);
+            return new ValueTask<bool>(false);
         }
     }
 }
