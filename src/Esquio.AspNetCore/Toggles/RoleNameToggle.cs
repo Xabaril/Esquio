@@ -16,8 +16,8 @@ namespace Esquio.AspNetCore.Toggles
        : IToggle
     {
         internal const string Roles = nameof(Roles);
-       
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Create a new instance of <see cref="RoleNameToggle"/>.
         /// </summary>
