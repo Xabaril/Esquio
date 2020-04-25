@@ -21,6 +21,10 @@ namespace WebApp.Controllers
         {
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
+            if (new Random().Next(0, 2) == 0)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, "earlyadopters"));
+            }
 
             var principal = new ClaimsPrincipal(identity);
 

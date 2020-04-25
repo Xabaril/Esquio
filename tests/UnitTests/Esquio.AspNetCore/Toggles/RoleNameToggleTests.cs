@@ -117,7 +117,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
-        public async Task be_active_if_role_is_equal_non_sensitive_to_roles_parameters_value()
+        public async Task be_not_active_if_role_is_not_equal_case_sensitive_to_roles_parameters_value()
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
@@ -143,7 +143,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                    EsquioConstants.DEFAULT_RING_NAME,
                    toggle));
 
-            active.Should().BeTrue();
+            active.Should().BeFalse();
         }
 
         [Fact]
@@ -163,6 +163,37 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim(ClaimsIdentity.DefaultRoleClaimType, "admin") }, "cookies"));
+
+            var contextAccessor = new FakeHttpContextAccessor(context);
+
+            var active = await new RoleNameToggle(contextAccessor).IsActiveAsync(
+               ToggleExecutionContext.FromToggle(
+                   feature.Name,
+                   EsquioConstants.DEFAULT_PRODUCT_NAME,
+                   EsquioConstants.DEFAULT_RING_NAME,
+                   toggle));
+
+            active.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task be_active_when_role_type_is_different_from_default_role_type()
+        {
+            var toggle = Build
+                .Toggle<RoleNameToggle>()
+                .AddOneParameter(Roles, "admin")
+                .Build();
+
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+
+            var context = new DefaultHttpContext();
+
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new Claim[] { new Claim("role", "admin") }, "cookies", nameType: "name", roleType: "role" ));
 
             var contextAccessor = new FakeHttpContextAccessor(context);
 
