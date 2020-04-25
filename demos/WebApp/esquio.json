@@ -14,7 +14,7 @@
             "Enabled": true,
             "Toggles": [
               {
-                "Type": "Esquio.Toggles.GradualRolloutUserNameToggle",
+                "Type": "Esquio.AspNetCore.Toggles.GradualRolloutUserNameToggle, Esquio.AspNetCore",
                 "Parameters": {
                   "Percentage": 92
                 }
@@ -43,7 +43,7 @@
             "Enabled": true,
             "Toggles": [
               {
-                "Type": "Esquio.Toggles.UserNameToggle",
+                "Type": "Esquio.AspNetCore.Toggles.UserNameToggle, Esquio.AspNetCore",
                 "Parameters": {
                   "Users": "betauser;beta"
                 }
@@ -55,9 +55,9 @@
             "Enabled": true,
             "Toggles": [
               {
-                "Type": "Esquio.Toggles.UserNameToggle",
+                "Type": "Esquio.AspNetCore.Toggles.RoleNameToggle, Esquio.AspNetCore",
                 "Parameters": {
-                  "Users": "alphauser;alpha"
+                  "Roles": "alphausers;earlyadopters"
                 }
               }
             ]
