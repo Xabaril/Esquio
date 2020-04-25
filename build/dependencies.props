@@ -67,7 +67,7 @@
     <microsoftentityframeworkcorerelational>3.1.3</microsoftentityframeworkcorerelational>
     <microsoftentityframeworkcoresqlserver>3.1.3</microsoftentityframeworkcoresqlserver>
     <microsoftentityframeworkcoredesign>3.1.3</microsoftentityframeworkcoredesign>
-    <microsoftapplicationinsightsaspnetcore>2.13.1</microsoftapplicationinsightsaspnetcore>
+    <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
 
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
