@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Esquio.UI.Api.Shared.Models.Permissions.My
+﻿namespace Esquio.UI.Api.Shared.Models.Permissions.My
 {
     public class MyResponse
     {

@@ -1,7 +1,4 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
-using Esquio.UI.Api.Scenarios.ApiKeys.Add;
-using Esquio.UI.Api.Scenarios.ApiKeys.Details;
-using Esquio.UI.Api.Scenarios.ApiKeys.List;
 using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
 using Esquio.UI.Api.Shared.Models.ApiKeys.Details;

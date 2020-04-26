@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //register mandatory asp.net core services
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<IScopedEvaluationSession, AspNetScopedEvaluationSession>();
+            builder.Services.AddScoped<IScopedEvaluationHolder, HttpContextScopedEvaluationHolder>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
             
 

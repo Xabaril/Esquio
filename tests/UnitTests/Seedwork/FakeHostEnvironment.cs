@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace UnitTests.Seedwork
 {

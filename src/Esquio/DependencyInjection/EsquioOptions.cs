@@ -69,16 +69,16 @@ namespace Esquio.DependencyInjection
             return this;
         }
 
-        internal bool EvaluationSessionEnabled { get; set; } = true;
+        internal bool ScopedEvaluationEnabled { get; set; } = true;
 
         /// <summary>
-        /// Configure if <see cref="IScopedEvaluationSession"/> is used on <see cref="IFeatureService"/> evaluation process.
+        /// Configure if <see cref="IScopedEvaluationHolder"/> is used on <see cref="IFeatureService"/> evaluation process.
         /// </summary>
-        /// <param name="useSession">True if evaluation session is used, else False.</param>
+        /// <param name="useScopedEvaluation">True if evaluation session is used, else False.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public EsquioOptions UseEvalationSession(bool useSession = true)
+        public EsquioOptions UseScopedEvaluation(bool useScopedEvaluation = true)
         {
-            EvaluationSessionEnabled = useSession;
+            ScopedEvaluationEnabled = useScopedEvaluation;
             return this;
         }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace GettingStarted.AspNetCore.Mvc.Models
 {
     public class ErrorViewModel
