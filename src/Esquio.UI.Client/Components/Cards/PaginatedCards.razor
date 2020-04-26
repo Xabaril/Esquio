@@ -1,18 +1,29 @@
 ﻿@typeparam TResponse
 
-<div class="row">
-    <div class="col-12">
-        <Pagination CurrentPage="@currentPage"
-                    TotalPages="@totalPages"
-                    OnFirst="() => Load()"
-                    OnLast="() => Load(totalPages-1)"
-                    OnPage="(page) => Load(page)" />
+@if (result != null && result.Items.Any())
+{
+    <div class="row">
+        <div class="col-12">
+            <Pagination CurrentPage="@currentPage"
+                        TotalPages="@totalPages"
+                        OnFirst="() => Load()"
+                        OnLast="() => Load(totalPages-1)"
+                        OnPage="(page) => Load(page)" />
+        </div>
     </div>
-</div>
+}
 
 @if (result == null)
 {
     <SkeletonCards />
+}
+else if (!result.Items.Any())
+{
+    <div class="row">
+        <div class="col-12 text-right">
+            <h3 class="top-left-arrow">Start by adding a product!</h3>
+        </div>
+    </div>
 }
 else
 {

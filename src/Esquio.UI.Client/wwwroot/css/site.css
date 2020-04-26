@@ -450,8 +450,8 @@ ul.pagination.skeleton {
         }
 
 /* Arrows */
-.right-arrow {
-    display: inline;
+.right-arrow, .top-left-arrow {
+    display: inline-block;
     position: relative;
 }
 
@@ -464,10 +464,35 @@ ul.pagination.skeleton {
         left: 80px;
     }
 
+.top-left-arrow {
+    margin-right: 100px;
+}
+
+    .top-left-arrow:after {
+        content: url(../dist/img/arrow.png);
+        display: inline-block;
+        transform: rotateZ(-90deg) rotateY(180deg) scale(0.4);
+        position: absolute;
+        top: -65px;
+        right: -100px;
+    }
+
 @media (max-width: 991.98px) {
-    .right-arrow::before {
+    .right-arrow-container {
+        min-height: 120px;
+        display: block;
+        align-items: normal;
+    }
+
+    .right-arrow:before {
         transform: scale(0.4) rotate(90deg);
         top: -100px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .top-left-arrow {
+        margin-right: 80px;
     }
 }
 
