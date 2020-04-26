@@ -39,9 +39,10 @@ namespace Esquio.AspNetCore.Providers
             if ( _evaluationResults.ContainsKey(featureName))
             {
                 enabled = _evaluationResults[featureName];
+                return Task.FromResult(true);
             }
 
-            return Task.FromResult(enabled);
+            return Task.FromResult(false);
         }
     }
 }
