@@ -1,7 +1,5 @@
 ﻿using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Serilog;
 using System;
 
 namespace Esquio.UI.Client.Services
@@ -43,7 +41,7 @@ namespace Esquio.UI.Client.Services
 
             var data = _jsInProcessRuntime.Invoke<string>("localStorage.getItem", key);
 
-            if (string.IsNullOrWhiteSpace(data))
+            if (!data.HasValue())
             {
                 return default(T);
             }

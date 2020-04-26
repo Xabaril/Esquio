@@ -1,20 +1,4 @@
 ﻿/* General */
-.noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-input:disabled + label.clickable {
-    cursor: not-allowed;
-}
-
 select.form-control:disabled {
     cursor: not-allowed;
     background-color: #f0f0f0;
@@ -28,6 +12,15 @@ pre {
 label + p.description {
     font-size: 0.8rem;
     color: #969696;
+}
+
+h1 {
+    min-height: 36px;
+    max-height: 36px;
+}
+
+.fc-reset {
+    color: initial;
 }
 
 /* Overrides */
@@ -49,8 +42,18 @@ a {
 }
 
 /* Card Overrides*/
-.card-primary.card-outline {
+.card-primary.card-outline, .card-info.card-outline {
     border-top: 3px solid #20b2aa;
+}
+
+.card-header {
+    cursor: default;
+}
+
+.card-footer i {
+    font-size: 1.3rem;
+    margin-left: 0.5rem;
+    display: inline-block;
 }
 
 @media (max-width: 991.98px) {
@@ -125,21 +128,22 @@ label:not(.form-check-label):not(.custom-file-label) {
 .fa-upload,
 .fa-download,
 .fa-edit,
-.fa-archive {
+.fa-archive,
+.fa-eye {
     color: #d0d0d0;
+    cursor: pointer;
 }
-
 
     .fa-trash-alt:hover,
     .fa-power-off:hover {
         color: #f08080;
-        cursor: pointer;
     }
 
     .fa-upload:hover,
     .fa-download:hover,
     .fa-edit:hover,
-    .fa-archive:hover {
+    .fa-archive:hover,
+    .fa-eye:hover {
         color: #20b2aa;
     }
 
@@ -481,8 +485,9 @@ ul.pagination.skeleton {
     }
 }
 
-.toggle-detail .card {
-    min-height: 20rem;
+.toggle-detail .card-header {
+    min-height: 60px;
+    max-height: 60px;
 }
 
 /* Tags Input Component */
@@ -585,4 +590,104 @@ ul.pagination.skeleton {
 /* DateTime Picker Component */
 .datetimepicker-input:disabled + .input-group-append {
     cursor: not-allowed;
+}
+
+/* Cards Component */
+.cards .card-body {
+    min-height: 170px;
+    max-height: 170px;
+}
+
+/* Editable Component */
+.editable-click, a.editable-click, a.editable-click:hover {
+    text-decoration: none;
+    border-bottom: none;
+    color: initial;
+}
+
+.editable-unsaved {
+    font-weight: initial;
+}
+
+.editable-container.editable-inline,
+.editable-container.editable-inline div,
+.editable-container.editable-inline textarea {
+    width: 100%;
+}
+
+.editable-error-block.help-block {
+    font-size: 0.8rem;
+    color: tomato;
+}
+
+.editable-clear-x {
+    display: none !important;
+}
+
+.editableform-loading {
+    display: none !important;
+}
+
+    /* Editable Heading */
+
+    .editableform .control-group {
+        line-height: initial;
+    }
+
+    h1 .editable-container.editable-inline {
+        vertical-align: inherit;
+    }
+
+    h1 .editable-input input {
+        background-color: transparent !important;
+        border: none;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0 !important;
+        color: inherit !important;
+        line-height: inherit !important;
+        height: inherit !important;
+        width: inherit !important;
+    }
+
+    h1 .form-inline .form-control {
+        vertical-align: inherit;
+    }
+
+    h1 .editable-input {
+        position: relative;
+        top: -1px;
+    }
+
+    h1 a[data-type] {
+        position: relative;
+    }
+
+    h1 .editable:hover:after {
+        font-family: "Font Awesome 5 Free";
+        content: "\f304";
+        display: inline-block;
+        font-weight: 900;
+        position: absolute;
+        right: -2rem;
+        top: 0.5rem;
+        font-size: 1.2rem;
+        color: #888888;
+    }
+
+/* Empty Page */
+
+.empty-page {
+    -ms-flex-align: center;
+    align-items: center;
+    background: #e9ecef;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100vh;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background-color: #343a40;
+    color: #ffffff;
 }

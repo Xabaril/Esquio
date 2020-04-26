@@ -1,0 +1,71 @@
+﻿@if (TotalPages == 0)
+{
+    <ul class="pagination pagination-sm float-right">
+        <li class="page-item">
+            <a class="page-link"
+               href="#"
+               disabled>
+                «
+            </a>
+        </li>
+        <li class="page-item">
+            <div class="page-link">
+                <div class="action"
+                     style="width: 20px; height: 20px; margin: auto;">
+                </div>
+            </div>
+        </li>
+        <li class="page-item">
+            <a class="page-link"
+               href="#"
+               disabled>
+                »
+            </a>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="pagination pagination-sm float-right">
+        <li class="page-item@(CurrentPage == 0 ? " disabled" : "")">
+            <a class="page-link"
+               href="#"
+               @onclick="OnFirst"
+               @onclick:preventDefault>
+                «
+            </a>
+        </li>
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            // See: https://github.com/dotnet/aspnetcore/issues/16809
+            var index = i - 1;
+            <li class="page-item">
+                <a class="page-link"
+                   href="#"
+                   @onclick="@(() => OnPageClick(index))"
+                   @onclick:preventDefault>
+                    @i
+                </a>
+            </li>
+        }
+        <li class="page-item@(TotalPages == CurrentPage + 1 ? " disabled" : "")">
+            <a class="page-link"
+               href="#"
+               @onclick="OnLast"
+               @onclick:preventDefault>
+                »
+            </a>
+        </li>
+    </ul>
+}
+
+
+@code {
+    [Parameter] public int CurrentPage { get; set; }
+    [Parameter] public int TotalPages { get; set; }
+    [Parameter] public EventCallback OnFirst { get; set; }
+    [Parameter] public EventCallback OnLast { get; set; }
+    [Parameter] public EventCallback<int> OnPage { get; set; }
+
+    private Task OnPageClick(int page) => OnPage.InvokeAsync(page);
+}

@@ -1,0 +1,41 @@
+﻿@inject IJSRuntime jsRuntime
+
+@if (HasPermission == false)
+{
+    @Value
+}
+else
+{
+    <a href="#" id="@id" data-type="@Type.ToString().ToLower()" title="Click to edit">@Value</a>
+    <input id="@($"{id}-hidden")" type="hidden" value="@Value" @onchange="OnValueChange" />
+}
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EditableType Type { get; set; } = EditableType.Text;
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string EmptyText { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+
+    private Guid id = Guid.NewGuid();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && HasPermission == true)
+        {
+            await jsRuntime.InvokeVoidAsync($"initEditable", $"#{id}", Required, EmptyText);
+        }
+    }
+
+    private Task OnValueChange(ChangeEventArgs @event)
+    {
+        return OnChange.InvokeAsync(@event.Value.ToString());
+    }
+
+    public enum EditableType
+    {
+        Text,
+        TextArea
+    }
+}

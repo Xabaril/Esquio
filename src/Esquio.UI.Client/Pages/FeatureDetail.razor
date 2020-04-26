@@ -1,5 +1,6 @@
 ﻿@page "/products/{productName}/{featureName}"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
 
 
 @inject IEsquioHttpClient esquioHttpClient
@@ -55,6 +56,15 @@
                                     </Permission>
                                 </TableHeader>
                                 <TableBody Context="response">
+                                    @if (!response.Toggles.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="4"
+                                                style="text-align: center;">
+                                                No items to list
+                                            </td>
+                                        </tr>
+                                    }
                                     @foreach (var toggle in response.Toggles)
                                     {
                                         <tr @onclick="@(() => EditToggle(toggle.Type))">
@@ -177,8 +187,17 @@
 
     private async Task DeleteToggle(string toggleType)
     {
-        await esquioHttpClient.DeleteToggle(ProductName, FeatureName, toggleType);
+        var result = await esquioHttpClient.DeleteToggle(ProductName, FeatureName, toggleType);
         await togglesTable.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Toggle", "Toggle successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Toggle", "Error deleting the toggle");
+        }
     }
 
     private Task<IEnumerable<TagResponseDetail>> TagsLoader()
@@ -188,12 +207,30 @@
 
     private async Task AddTag(AddTagRequest addTagRequest)
     {
-        await esquioHttpClient.AddTag(ProductName, FeatureName, addTagRequest);
+        var result = await esquioHttpClient.AddTag(ProductName, FeatureName, addTagRequest);
+
+        if (result)
+        {
+            notifications.Success("Add Tag", "Tag successfully added!");
+        }
+        else
+        {
+            notifications.Error("Add Tag", "Error adding the tag");
+        }
     }
 
     private async Task DeleteTag(DeleteTagRequest deleteTagRequest)
     {
-        await esquioHttpClient.DeleteTag(ProductName, FeatureName, deleteTagRequest.Tag);
+        var result = await esquioHttpClient.DeleteTag(ProductName, FeatureName, deleteTagRequest.Tag);
+
+        if (result)
+        {
+            notifications.Success("Delete Tag", "Tag successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Tag", "Error deleting the tag");
+        }
     }
 
     private async Task EditToggle(string toggleType)

@@ -1,5 +1,7 @@
 ﻿@page "/"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
+
 @inject EsquioState State
 @inject IEsquioHttpClient esquioHttpClient
 @inject IJSRuntime jsRuntime

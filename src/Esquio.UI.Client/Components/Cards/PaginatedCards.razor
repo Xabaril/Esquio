@@ -1,0 +1,87 @@
+﻿@typeparam TResponse
+
+<div class="row">
+    <div class="col-12">
+        <Pagination CurrentPage="@currentPage"
+                    TotalPages="@totalPages"
+                    OnFirst="() => Load()"
+                    OnLast="() => Load(totalPages-1)"
+                    OnPage="(page) => Load(page)" />
+    </div>
+</div>
+
+@if (result == null)
+{
+    <SkeletonCards />
+}
+else
+{
+    <div class="row cards">
+        @foreach (var item in result.Items)
+        {
+            <div class="col-sm-3">
+                <div class="card card-outline card-info">
+                    <div class="card-header" style="display: inline-flex;">
+                        <h3 class="card-title text-truncate">@CardTitle(item)</h3>
+                    </div>
+                    <div class="card-body" data-simplebar>
+                        @CardBody(item)
+                    </div>
+                    <div class="card-footer text-right">
+                        @CardFooter(item)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    [Parameter] public Func<int, int, Task<PaginatedResult<TResponse>>> Loader { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardTitle { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardBody { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardFooter { get; set; }
+
+    private int totalPages = 0;
+    private int currentPage = 0;
+    private const int MAX_ITEMS_IN_PAGE = 10;
+    private PaginatedResult<TResponse> result;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (Loader == null) throw new ArgumentNullException($"The {nameof(Loader)} parameter is required.");
+
+        await Load();
+    }
+
+    public async Task OnAdd()
+    {
+        if (result.Count == MAX_ITEMS_IN_PAGE)
+        {
+            await Load(currentPage + 1);
+        }
+        else
+        {
+            await Load(currentPage);
+        }
+    }
+
+    public async Task OnDelete()
+    {
+        await Load(currentPage);
+
+        if (result.Count == 0 && currentPage > 0)
+        {
+            await Load(currentPage - 1);
+        }
+    }
+
+    private async Task Load(int page = 0)
+    {
+        currentPage = page;
+        result = await Loader(currentPage, MAX_ITEMS_IN_PAGE);
+        totalPages = (result.Total + MAX_ITEMS_IN_PAGE - 1) / MAX_ITEMS_IN_PAGE;
+    }
+}

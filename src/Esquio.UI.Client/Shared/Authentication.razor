@@ -21,7 +21,7 @@
         {
             await EvaluateAuthorization(notAllowed: () =>
             {
-                Navigation.NavigateTo("Forbidden");
+                Navigation.NavigateTo("forbidden");
             });
         }
     }
@@ -30,7 +30,7 @@
     {
         await EvaluateAuthorization(notAllowed: () =>
         {
-            authenticationState.ReturnUrl = "Forbidden";
+            authenticationState.ReturnUrl = "forbidden";
         });
     }
 
@@ -52,7 +52,8 @@
             var loggedUser = new LoggedUserViewModel()
             {
                 UserName = authenticationState.User.Identity.Name,
-                SubjectId = authenticationState.User.FindFirst("sub").Value
+                SubjectId = authenticationState.User.FindFirst("sub").Value,
+                ActAs = my.ActAs
             };
 
             var policy = policyBuilder.Build(my);

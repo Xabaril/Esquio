@@ -16,6 +16,7 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddRing;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
+using Esquio.UI.Api.Shared.Models.Products.Update;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
 using Esquio.UI.Api.Shared.Models.Statistics.Plot;
 using Esquio.UI.Api.Shared.Models.Statistics.Success;
@@ -27,7 +28,6 @@ using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
 using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
 using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -47,6 +47,7 @@ namespace Esquio.UI.Client.Services
         Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsProductResponse> GetProduct(string productName, CancellationToken cancellationToken = default);
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
+        Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
         Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default);
@@ -210,6 +211,36 @@ namespace Esquio.UI.Client.Services
                 catch (Exception exception)
                 {
                     Log.Error(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
+                }
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Put;
+                request.RequestUri = new Uri($"api/products/{productName}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                var content = JsonConvert.SerializeObject(updateProductRequest);
+                request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to update product {updateProductRequest}.!");
                 }
 
                 return false;
@@ -559,7 +590,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the logged user.!");
+                    Log.Error(exception, $"An exception is throwed when trying to get the logged user!");
                 }
 
                 return null;

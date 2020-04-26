@@ -1,12 +1,11 @@
 ﻿@page "/apikeys"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Management)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject IJSRuntime jsRuntime
+@inject INotifications notifications
 @inject EsquioState  esquioState
-
-@inject IJSRuntime jsRuntime;
-@*@inject NavigationManager navigation*@
-
 
 <PageTransition>
     <section class="content-header">
@@ -65,10 +64,10 @@
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
                                         <td class="table-component__action">
                                             <ConfirmableAction Title="Delete"
-                                                Icon="far fa-trash-alt"
-                                                OnConfirm="@(() => Delete(item.Name))"
-                                                ConfirmTitle="Delete Api Key"
-                                                ConfirmDescription="@($"Are you sure you want to delete the '{item.Name}' api key?")" />
+                                                               Icon="far fa-trash-alt"
+                                                               OnConfirm="@(() => Delete(item.Name))"
+                                                               ConfirmTitle="Delete Api Key"
+                                                               ConfirmDescription="@($"Are you sure you want to delete the '{item.Name}' api key?")" />
                                         </td>
                                     </Permission>
                                 </tr>
@@ -176,17 +175,34 @@
 
     private async Task Add()
     {
-        newApiKeyResponse = await esquioHttpClient.AddNewApiKey(newApiKey);
-        await table.OnAdd();
+        try
+        {
+            newApiKeyResponse = await esquioHttpClient.AddNewApiKey(newApiKey);
+            await table.OnAdd();
 
-        CloseModalNewApiKey();
-        InitModelNewApiKeys();
+            CloseModalNewApiKey();
+            InitModelNewApiKeys();
+        }
+        catch (Exception ex)
+        {
+            notifications.Error("Add Api Key", "Error adding the api key");
+            throw ex;
+        }
     }
 
     private async Task Delete(string apiKey)
     {
-        await esquioHttpClient.DeleteApiKey(apiKey);
+        var result = await esquioHttpClient.DeleteApiKey(apiKey);
         await table.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Api Key", "Api key successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Api Key", "Error deleting the api key");
+        }
     }
 
     private void Clear()

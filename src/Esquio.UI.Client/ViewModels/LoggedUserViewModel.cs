@@ -5,5 +5,7 @@
         public string UserName { get; set; }
 
         public string SubjectId { get; set; }
+
+        public string ActAs { get; set; }
     }
 }

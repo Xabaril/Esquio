@@ -216,4 +216,35 @@
             $(id).data("ionRangeSlider").update({ from });
         };
     }
+
+    if (!window.initEditable) {
+        $.fn.editable.defaults.mode = 'inline';
+        window.initEditable = function (id, required, emptyText) {
+            $(id).editable({
+                showbuttons: false,
+                highlight: '#a0d0d0',
+                onblur: "submit",
+                emptytext: emptyText,
+                clear: false,
+                success: function (response, newValue) {
+                    $(id + "-hidden").val(newValue);
+                    $(id + "-hidden").get(0).dispatchEvent(new Event('change'));
+                },
+                validate: function (value) {
+                    if (required && !$.trim(value)) {
+                        return 'This field is required';
+                    }
+                }
+            });
+            $(id).on('shown', function (e, editable) {
+                editable.input.$input.attr("spellcheck", "false");
+            });
+        };
+    }
+
+    if (!window.historyReplaceState) {
+        window.historyReplaceState = function (segment) {
+            window.history.replaceState(window.history.state, document.title, window.location.href.replace(/\/[^\/]*$/, `/${segment}`));
+        };
+    }
 })();

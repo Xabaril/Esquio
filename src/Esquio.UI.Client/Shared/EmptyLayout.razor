@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<div class="empty-page">
+    <main>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <img src="dist/img/esquio-logo.png" alt="Esquio Logo" class="brand-image" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                @Body
+            </div>
+        </div>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a class="col-12 btn btn-primary btn-shadow mt-4" href="authentication/login">Log in</a>
+                    </div>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+    </main>
+</div>

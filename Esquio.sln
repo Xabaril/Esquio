@@ -67,11 +67,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esquio.Blazor.WebAssembly",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.AspNetCore.ClientEndpoint", "samples\GettingStarted.AspNetCore.ClientEndpoint\GettingStarted.AspNetCore.ClientEndpoint.csproj", "{4FAF88EC-9E97-4A48-A8B3-2115728844D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.Blazor.WebAssembly.Server", "samples\GettingStarted.Blazor.WebAssembly\Server\GettingStarted.Blazor.WebAssembly.Server.csproj", "{DF99BED3-0721-4162-BDDA-4671757EB77F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.Blazor.WebAssembly.Server", "samples\GettingStarted.Blazor.WebAssembly\Server\GettingStarted.Blazor.WebAssembly.Server.csproj", "{DF99BED3-0721-4162-BDDA-4671757EB77F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.Blazor.WebAssembly.Client", "samples\GettingStarted.Blazor.WebAssembly\Client\GettingStarted.Blazor.WebAssembly.Client.csproj", "{29A26548-D80D-4CE0-A4DE-A5F842CF24AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.Blazor.WebAssembly.Client", "samples\GettingStarted.Blazor.WebAssembly\Client\GettingStarted.Blazor.WebAssembly.Client.csproj", "{29A26548-D80D-4CE0-A4DE-A5F842CF24AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.Blazor.WebAssembly.Shared", "samples\GettingStarted.Blazor.WebAssembly.Shared\GettingStarted.Blazor.WebAssembly.Shared.csproj", "{C398E2E1-3000-4FD2-8624-6963C8ECEA3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.Blazor.WebAssembly.Shared", "samples\GettingStarted.Blazor.WebAssembly.Shared\GettingStarted.Blazor.WebAssembly.Shared.csproj", "{C398E2E1-3000-4FD2-8624-6963C8ECEA3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
