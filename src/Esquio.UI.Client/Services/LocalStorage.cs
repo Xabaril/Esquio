@@ -41,7 +41,7 @@ namespace Esquio.UI.Client.Services
 
             var data = _jsInProcessRuntime.Invoke<string>("localStorage.getItem", key);
 
-            if (string.IsNullOrWhiteSpace(data))
+            if (!data.HasValue())
             {
                 return default(T);
             }

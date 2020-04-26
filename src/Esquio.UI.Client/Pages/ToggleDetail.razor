@@ -1,5 +1,6 @@
 ﻿@page "/products/{productName}/{featureName}/toggles/add"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Contributor)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
 @inject INotifications notifications
@@ -25,12 +26,30 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-6">
+                    <div class="row mb-4">
+                        <div class="col-9">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Search for a toggle..."
+                                   @bind-value="ToggleSearch"
+                                   @bind-value:event="oninput" />
+                        </div>
+                        <div class="col-3">
+                            <button type="button"
+                                    class="btn btn-primary btn-shadow"
+                                    style="width: 100%;"
+                                    disabled="@(!ToggleSearch.HasValue())"
+                                    @onclick="@(() => { ToggleSearch = null;  })">
+                                    Clear
+                            </button>
+                        </div>
+                    </div>
                     <div class="card card-primary card-outline card-tabs">
                         <div class="card-header p-0 pt-1 border-bottom-0">
                             <ul class="nav nav-tabs" id="toggle-types-tab" role="tablist">
                                 @if (assemblies != null)
                                 {
-                                    @foreach (var assembly in assemblies)
+                                    @foreach (var assembly in FilterAssemblies(assemblies))
                                     {
                                         <li class="nav-item">
                                             <a class="nav-link@(assembly == selectedAssembly ? " active" : "")"
@@ -53,41 +72,46 @@
                                 @if (assemblies == null)
                                 {
                                     <div class="tab-pane fade active show" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-12 mb-4">
-                                                <div class="line"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 mb-4">
-                                                <div class="line"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 mb-4">
-                                                <div class="line"></div>
-                                            </div>
-                                        </div>
+                                        <SkeletonCards Cols="3" />
                                     </div>
                                 }
                                 else
                                 {
-                                    @foreach (var assembly in assemblies)
+                                    @foreach (var assembly in FilterAssemblies(assemblies))
                                     {
-                                        <div class="tab-pane fade@(assembly == selectedAssembly ? " active show" : "")" id="@assembly" role="tabpanel" aria-labelledby="@assembly-tab">
+                                        <div class="tab-pane fade@(assembly == selectedAssembly ? " active show" : "")"
+                                             id="@assembly"
+                                             role="tabpanel"
+                                             aria-labelledby="@assembly-tab">
                                             <div class="form-group">
-                                                @foreach (var toggle in GetAssemblyToggles(assembly))
-                                                {
-                                                    <div class="custom-control custom-radio" @onclick="@(() => SelectToggle(@toggle.Type))">
-                                                        <input class="custom-control-input noselect"
-                                                               type="radio"
-                                                               id="@toggle.Type"
-                                                               name="@toggle.Type"
-                                                               checked="@(selectedToggle != null && selectedToggle.Type.Equals(@toggle.Type))"
-                                                               disabled="@isExcludedToggle(@toggle.Type)">
-                                                        <label for="@toggle.Type" class="custom-control-label noselect clickable">@toggle.FriendlyName</label>
-                                                    </div>
-                                                }
+                                                <SingleCards Items="GetAssemblyToggles(assembly)">
+                                                    <CardTitle Context="toggle">
+                                                        @toggle.FriendlyName
+                                                    </CardTitle>
+                                                    <CardBody Context="toggle">
+                                                        @toggle.Description
+                                                    </CardBody>
+                                                    <CardFooter Context="toggle">
+                                                        <button type="button"
+                                                                class="btn btn-primary"
+                                                                style="width: 100%;"
+                                                                disabled="@(isExcludedToggle(@toggle.Type) || isSelectedToggle(@toggle.Type))"
+                                                                @onclick="@(() => SelectToggle(@toggle.Type))">
+                                                                    @if (isExcludedToggle(@toggle.Type))
+                                                                    {
+                                                                        <span>Not Available</span>
+                                                                    }
+                                                                    else if (isSelectedToggle(@toggle.Type))
+                                                                    {
+                                                                        <span>Selected</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>Select</span>
+                                                                    }
+                                                        </button>
+                                                    </CardFooter>
+                                                </SingleCards>
                                             </div>
                                         </div>
                                     }
@@ -98,7 +122,7 @@
                 </div>
                 @if (selectedToggle == null)
                 {
-                    <div class="col-md-12 col-lg-6 text-center v-center">
+                    <div class="col-md-12 col-lg-6 text-center v-center right-arrow-container">
                         <h3 class="right-arrow placeholder">Start by selecting a toggle!</h3>
                     </div>
                 }
@@ -151,6 +175,8 @@
     private KnownTypesToggleDetailResponse selectedToggle;
     private IDictionary<string, ToggleParameterViewModel> parameters;
 
+    private string ToggleSearch { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         esquioState.SetBreadcrumb(
@@ -179,8 +205,19 @@
         parameters = new Dictionary<string, ToggleParameterViewModel>();
     }
 
+    private IEnumerable<string> FilterAssemblies(IEnumerable<string> assemblies)
+        => assemblies.Where(assembly => !ToggleSearch.HasValue() || GetAssemblyToggles(assembly).Any());
+
     private IEnumerable<KnownTypesToggleDetailResponse> GetAssemblyToggles(string assembly)
-        => knownTypes.Toggles.Where(t => t.Assembly == assembly);
+    {
+        var toggles = knownTypes.Toggles.Where(t => t.Assembly == assembly);
+
+        return !ToggleSearch.HasValue()
+            ? toggles
+            : toggles.Where(t =>
+                t.FriendlyName.ToLower().Contains(ToggleSearch.ToLower()) ||
+                t.Description.ToLower().Contains(ToggleSearch.ToLower()));
+    }
 
     private void SelectAssembly(string assembly)
     {
@@ -210,6 +247,8 @@
     }
 
     private bool isExcludedToggle(string type) => excludedToggles.Any(t => t.Type == type);
+
+    private bool isSelectedToggle(string type) => selectedToggle != null && selectedToggle.Type.Equals(type);
 
     private void OnParameterChange(ToggleParameterViewModel parameter)
     {

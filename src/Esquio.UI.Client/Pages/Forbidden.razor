@@ -1,5 +1,29 @@
-﻿@page "/Forbidden"
-@layout MainLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+﻿@page "/forbidden"
+@attribute [Authorize]
+@layout EmptyLayout
 
-<h1>Forbidden</h1>
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="text-center mb-4" style="font-family: monospace;">
+            403 Forbidden
+        </h3>
+        <AuthorizeView>
+            <Authorized>
+                <a class="col-12 btn btn-primary btn-shadow" href="#" @onclick="BeginSignOut">
+                    Get me out of here! <i class="fas fa-running"></i>
+                </a>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
+@code{
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

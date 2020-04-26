@@ -1,5 +1,6 @@
 ﻿@page "/audit"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Management)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
 @inject EsquioState  esquioState
@@ -35,13 +36,13 @@
                         <TableBody Context="audit">
                             @foreach (var item in audit.Items)
                             {
-                            <tr>
-                                <td>@item.CreatedAt</td>
-                                <td>@item.ProductName</td>
-                                <td>@item.FeatureName</td>
-                                <td>@item.Action</td>
-                                <td class="text-center" @onclick="()=>ShowChangeSet(item.OldValues,item.NewValues)" @onclick:stopPropagation><i class="far fa-eye"></i></td>
-                            </tr>
+                                <tr>
+                                    <td>@item.CreatedAt</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.FeatureName</td>
+                                    <td>@item.Action</td>
+                                    <td class="text-center" @onclick="()=>ShowChangeSet(item.OldValues,item.NewValues)" @onclick:stopPropagation><i class="far fa-eye"></i></td>
+                                </tr>
                             }
                         </TableBody>
                     </PaginatedTable>
@@ -58,8 +59,8 @@
                 <div class="col-md-12">
                     <table class="table table-hover table-component">
                         <thead>
-                            <th>Before</th>
-                            <th>After</th>
+                        <th>Before</th>
+                        <th>After</th>
                         </thead>
                         <tbody>
                             <tr>

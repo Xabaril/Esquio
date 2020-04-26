@@ -1,4 +1,6 @@
-﻿using Esquio.UI.Client.Services;
+﻿using Esquio.UI.Client.Infrastructure.Authorization;
+using Esquio.UI.Client.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,11 +48,19 @@ namespace Esquio.UI.Client
                 options.ProviderOptions.DefaultScopes.Add(audience);
             });
 
+            builder.Services.AddAuthorizationCore(options =>
+            {
+                options.AddPolicy(Policies.Reader, builder => builder.AddRequirements(new PolicyRequirement(Policies.Reader)));
+                options.AddPolicy(Policies.Contributor, builder => builder.AddRequirements(new PolicyRequirement(Policies.Contributor)));
+                options.AddPolicy(Policies.Management, builder => builder.AddRequirements(new PolicyRequirement(Policies.Management)));
+            });
+
             builder.Services.AddScoped<EsquioState>();
             builder.Services.AddScoped<ConfirmState>();
             builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
             builder.Services.AddScoped<INotifications, Notifications>();
+            builder.Services.AddScoped<IAuthorizationHandler, PolicyRequirementHandler>();
 
             return builder;
         }

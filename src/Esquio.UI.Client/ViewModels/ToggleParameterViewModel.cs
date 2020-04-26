@@ -1,4 +1,6 @@
-﻿namespace Esquio.UI.Client.ViewModels
+﻿using System;
+
+namespace Esquio.UI.Client.ViewModels
 {
     public class ToggleParameterViewModel
     {
@@ -31,7 +33,7 @@
 
         public string Description { get; set; }
 
-        public bool IsEmpty => string.IsNullOrEmpty(Value);
+        public bool IsEmpty => !Value.HasValue();
 
         public ToggleParameterViewModel ShallowCopy(string value)
         {

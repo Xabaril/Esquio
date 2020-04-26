@@ -19,8 +19,25 @@ else if (hasPermission)
 
     private bool hasPermission = false;
 
+    public void Dispose()
+    {
+        esquioState.OnPolicyChange -= OnPolicyChange;
+    }
+
     protected override void OnInitialized()
     {
-        hasPermission = esquioState.Policy.Can(Requires, Over);
+        EvaluatePermission();
+        esquioState.OnPolicyChange += OnPolicyChange;
+    }
+
+    private void OnPolicyChange()
+    {
+        EvaluatePermission();
+        StateHasChanged();
+    }
+
+    private void EvaluatePermission()
+    {
+        hasPermission = esquioState.Policy?.Can(Requires, Over) ?? false;
     }
 }

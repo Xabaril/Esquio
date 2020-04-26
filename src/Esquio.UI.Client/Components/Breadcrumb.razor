@@ -5,7 +5,7 @@
     @foreach (var item in State.Breadcrumb)
     {
         <li class="breadcrumb-item@( item.Active ? " active": "" )">
-            @if (string.IsNullOrEmpty(item.Link) || item.Disabled)
+            @if (!item.Link.HasValue() || item.Disabled)
             {
                 @item.Title
             }

@@ -1,7 +1,9 @@
 ﻿@page "/products"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
 @inject EsquioState  esquioState
 @inject NavigationManager navigation
 
@@ -29,44 +31,31 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <PaginatedTable Loader="Loader"
-                                    @ref="table">
-                        <TableHeader>
-                            <th class="table-col-4">Name</th>
-                            <th>Description</th>
-                            <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
-                                <th class="table-col-1"></th>
+                    <PaginatedCards Loader="Loader" @ref="cards">
+                        <CardTitle Context="product">
+                            @product.Name
+                        </CardTitle>
+                        <CardBody Context="product">
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
+                                <Editable Value="@product.Description"
+                                          Type="Editable.EditableType.TextArea"
+                                          EmptyText="Add a product description"
+                                          OnChange="@((description) => Update(product.Name, product.Name, description))" />
                             </Permission>
+                        </CardBody>
+                        <CardFooter Context="product">
+                            <IconButton Title="Detail"
+                                        Icon="far fa-eye"
+                                        OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                <th class="table-col-1"></th>
+                                <ConfirmableAction Title="Delete"
+                                                   Icon="far fa-trash-alt"
+                                                   OnConfirm="@(() => Delete(product.Name))"
+                                                   ConfirmTitle="Delete Product"
+                                                   ConfirmDescription="@($"Are you sure you want to delete the '{product.Name}' product?")" />
                             </Permission>
-                        </TableHeader>
-                        <TableBody Context="products">
-                            @foreach (var product in products.Items)
-                            {
-                                <tr @onclick="@(e => navigation.NavigateTo($"products/{product.Name}"))">
-                                    <td>@product.Name</td>
-                                    <td>@product.Description</td>
-                                    <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
-                                        <td class="table-component__action">
-                                            <IconButton Title="Modify"
-                                                Icon="fas fa-edit"
-                                                OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
-                                        </td>
-                                    </Permission>
-                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                        <td class="table-component__action">
-                                            <ConfirmableAction Title="Delete"
-                                                Icon="far fa-trash-alt"
-                                                OnConfirm="@(() => Delete(product.Name))"
-                                                ConfirmTitle="Delete Product"
-                                                ConfirmDescription="@($"Are you sure you want to delete the '{product.Name}' product?")" />
-                                        </td>
-                                    </Permission>
-                                </tr>
-                            }
-                        </TableBody>
-                    </PaginatedTable>
+                        </CardFooter>
+                    </PaginatedCards>
                 </div>
             </div>
         </div>
@@ -108,7 +97,7 @@
     private AddProductRequest model;
     private EditContext editContext;
 
-    private PaginatedTable<ListProductResponseDetail> table;
+    private PaginatedCards<ListProductResponseDetail> cards;
 
     protected override void OnInitialized()
     {
@@ -158,16 +147,54 @@
 
     private async Task AddProduct()
     {
-        await esquioHttpClient.AddProduct(model);
-        await table.OnAdd();
+        var result = await esquioHttpClient.AddProduct(model);
+        await cards.OnAdd();
 
         CloseModal();
         InitModel();
+
+        if (result)
+        {
+            notifications.Success("Create Product", "Product successfully created!");
+        }
+        else
+        {
+            notifications.Error("Create Product", "Error creating the product");
+        }
+    }
+
+    private async Task Update(string productName, string name, string description)
+    {
+        var result = await esquioHttpClient.UpdateProduct(
+        productName,
+        new UpdateProductRequest
+        {
+            Name = name,
+            Description = description
+        });
+
+        if (result)
+        {
+            notifications.Success("Update Product", "Product successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update Product", "Error updating the product");
+        }
     }
 
     private async Task Delete(string productName)
     {
-        await esquioHttpClient.DeleteProduct(productName);
-        await table.OnDelete();
+        var result = await esquioHttpClient.DeleteProduct(productName);
+        await cards.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Product", "Product successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Product", "Error deleting the product");
+        }
     }
 }

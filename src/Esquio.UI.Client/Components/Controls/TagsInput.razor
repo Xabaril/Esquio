@@ -34,7 +34,7 @@
 
     protected override void OnParametersSet()
     {
-        Value = string.IsNullOrEmpty(Value) ? Value : Value.Replace(';', ',');
+        Value = Value.HasValue() ? Value.Replace(';', ',') : Value;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
