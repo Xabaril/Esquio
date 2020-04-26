@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "Toggle that is active depending on request country location.", FriendlyName = "On Country")]
+    [DesignType(Description = "Toggle that is active depending on request country location. Ip Geolocation is performed using https://ip2c.org free location database." , FriendlyName = "On Country")]
     [DesignTypeParameter(ParameterName = Countries, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of allowed countries delimited by ';' character.")]
     public class Ip2CountryToggle
     {
