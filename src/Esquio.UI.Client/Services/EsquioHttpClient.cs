@@ -60,6 +60,7 @@ namespace Esquio.UI.Client.Services
         Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default);
+        Task<bool> UpdateFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteFeature(string productName, string featureName, CancellationToken cancellationToken = default);
 
         //->permissions
@@ -541,6 +542,37 @@ namespace Esquio.UI.Client.Services
                 return false;
             }
         }
+
+        public async Task<bool> UpdateFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Put;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var content = JsonConvert.SerializeObject(updateFeatureRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE); ;
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception, $"An exception is throwed when trying to update feature {updateFeatureRequest} on product {productName}!");
+                }
+
+                return false;
+            }
+        }
+
         public async Task<bool> DeleteFeature(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())

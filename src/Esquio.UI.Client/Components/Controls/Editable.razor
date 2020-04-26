@@ -6,8 +6,16 @@
 }
 else
 {
-    <a href="#" id="@id" data-type="@Type.ToString().ToLower()" title="Click to edit">@Value</a>
-    <input id="@($"{id}-hidden")" type="hidden" value="@Value" @onchange="OnValueChange" />
+    <a href="#"
+       id="@id"
+       data-type="@Type.ToString().ToLower()"
+       title="Click to edit"
+       @onclick:preventDefault
+       @onclick:stopPropagation>@Value</a>
+    <input id="@($"{id}-hidden")"
+           type="hidden"
+           value="@Value"
+           @onchange="OnValueChange" />
 }
 
 @code {

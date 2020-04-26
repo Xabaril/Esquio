@@ -17,7 +17,7 @@
                         <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
                             <Editable Value="@ProductName"
                                       Required="true"
-                                      OnChange="@((name) => UpdateProduct(ProductName, name, string.Empty))" />
+                                      OnChange="@((name) => UpdateProduct(name))" />
                         </Permission>
                     </h1>
                 </div>
@@ -66,7 +66,13 @@
                             {
                                 <tr @onclick="@(e => navigation.NavigateTo($"products/{ProductName}/{feature.Name}"))">
                                     <td>@feature.Name</td>
-                                    <td>@feature.Description</td>
+                                    <td>
+                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature" Cascading="true">
+                                            <Editable Value="@feature.Description"
+                                                      EmptyText="Add a feature description"
+                                                      OnChange="@((description) => UpdateFeature(feature.Name, description))" />
+                                        </Permission>
+                                    </td>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
                                         <td>
                                             <Switch Title="Enable/Disable"
@@ -459,14 +465,16 @@
         }
     }
 
-    private async Task UpdateProduct(string productName, string name, string description)
+    private async Task UpdateProduct(string name)
     {
+        var product = await esquioHttpClient.GetProduct(ProductName);
+
         var result = await esquioHttpClient.UpdateProduct(
-        productName,
+        ProductName,
         new UpdateProductRequest
         {
             Name = name,
-            Description = description
+            Description = product.Description
         });
 
         // Sync product name parameter
@@ -488,6 +496,30 @@
         else
         {
             notifications.Error("Update Product", "Error updating the product");
+        }
+    }
+
+    private async Task UpdateFeature(string featureName, string featureDescription)
+    {
+        var feature = await esquioHttpClient.GetFeatureDetails(ProductName, featureName);
+
+        var result = await esquioHttpClient.UpdateFeature(
+        ProductName,
+        featureName,
+        new UpdateFeatureRequest
+        {
+            Name = featureName,
+            Description = featureDescription,
+            Enabled = feature.Enabled
+        });
+
+        if (result)
+        {
+            notifications.Success("Update Feature", "Feature successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update Feature", "Error updating the feature");
         }
     }
 }
