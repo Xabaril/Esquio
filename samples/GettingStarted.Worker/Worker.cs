@@ -10,8 +10,8 @@ namespace Worker
 {
     public class Worker : BackgroundService
     {
-        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<Worker> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
 
         public Worker(IServiceScopeFactory scopeFactory,ILogger<Worker> logger)
         {

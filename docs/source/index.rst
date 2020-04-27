@@ -29,6 +29,7 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
 
    started/netcore
    started/aspnetcore
+   started/worker
    started/azuredevopstasks
 
 .. toctree::
