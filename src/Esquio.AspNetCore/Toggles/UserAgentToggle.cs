@@ -33,7 +33,7 @@ namespace Esquio.AspNetCore.Toggles
 
                 foreach (var segment in tokenizer)
                 {
-                    if (segment.Value.IndexOf(currentBrowser, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    if (currentBrowser.IndexOf(segment.Value, StringComparison.InvariantCultureIgnoreCase) >= 0)
                     {
                         return new ValueTask<bool>(true);
                     }
