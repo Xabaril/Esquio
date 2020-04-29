@@ -511,9 +511,13 @@ ul.pagination.skeleton {
 }
 
 .toggle-detail .card-header {
-    min-height: 60px;
-    max-height: 60px;
+    min-height: 80px;
+    max-height: 80px;
 }
+
+    .toggle-detail .card-header .badge {
+        background-color: #459fff !important;
+    }
 
 /* Tags Input Component */
 .bootstrap-tagsinput {
