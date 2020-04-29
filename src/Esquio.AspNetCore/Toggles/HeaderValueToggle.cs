@@ -12,8 +12,8 @@ namespace Esquio.AspNetCore.Toggles
     /// A binary <see cref="IToggle"/> that is active depending on the header value specified on HeaderName property.
     /// </summary>
     [DesignType(Description = "The request header exists and its value its in the list.", FriendlyName = "Http Header value")]
-    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name to introspect and  check value.")]
-    [DesignTypeParameter(ParameterName = HeaderValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The header value to check, multiple items separated by ';'.")]
+    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name.")]
+    [DesignTypeParameter(ParameterName = HeaderValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The header values to activate this toggle separated by ';' character.")]
     public class HeaderValueToggle
         : IToggle
     {

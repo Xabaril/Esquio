@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "The hostname of the client instance is in the list.", FriendlyName = "Host Name")]
-    [DesignTypeParameter(ParameterName = HostNames, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of host names delimited by ';' character.")]
+    [DesignType(Description = "The hostname of the client instance is in the list.", FriendlyName = "Host name")]
+    [DesignTypeParameter(ParameterName = HostNames, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The request connection hostnames values to activate this toggle separated by ';' character.")]
     public class HostNameToggle : IToggle
     {
         public const string HostNames = nameof(HostNames);

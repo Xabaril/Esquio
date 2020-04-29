@@ -834,7 +834,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .Should()
                .ContainEquivalentOf(new ToggleDetail
                {
-                   FriendlyName = "By Environment Variable",
+                   FriendlyName = "Environment Variable",
                    Type = toggle2.Type,
                    Parameters = new List<ParameterDetail>()
                });

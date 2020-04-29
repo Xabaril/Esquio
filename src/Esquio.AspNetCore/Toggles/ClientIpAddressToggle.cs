@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "The client IP address is in the list.", FriendlyName = "Client IP")]
-    [DesignTypeParameter(ParameterName = IpAddresses, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of IP addresses delimited by ';' character.")]
+    [DesignType(Description = "The client IP address is in the list.", FriendlyName = "Client IP Address")]
+    [DesignTypeParameter(ParameterName = IpAddresses, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The IP addresses to activate this toggle separated by ';' character.")]
     public class ClientIpAddressToggle : IToggle
     {
         public const string IpAddresses = nameof(IpAddresses);
