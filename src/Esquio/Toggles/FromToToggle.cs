@@ -9,9 +9,9 @@ namespace Esquio.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on current UTC date time.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on current UTC date.", FriendlyName = "Between dates")]
-    [DesignTypeParameter(ParameterName = From, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The from date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
-    [DesignTypeParameter(ParameterName = To, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The to date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
+    [DesignType(Description = "Current UTC date falls within the interval.", FriendlyName = "Between dates")]
+    [DesignTypeParameter(ParameterName = From, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The interval start (yyyy-MM-dd HH:mm:ss) when this toggle is activated.")]
+    [DesignTypeParameter(ParameterName = To, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The interval end (yyyy-MM-dd HH:mm:ss) when this toggle is activated.")]
     public class FromToToggle
         : IToggle
     {

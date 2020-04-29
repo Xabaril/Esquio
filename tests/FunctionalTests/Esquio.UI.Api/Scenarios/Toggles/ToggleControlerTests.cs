@@ -646,7 +646,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
               .Where(t => t.Type == (typeof(FromToToggle).ShorthandAssemblyQualifiedName()))
               .Select(t => t.Description)
               .Single()
-              .Should().BeEquivalentTo("Toggle that is active depending on current UTC date.");
+              .Should().BeEquivalentTo("Current UTC date falls within the interval.");
 
             content.Toggles
                 .Where(t => t.Type == (typeof(FromToToggle).ShorthandAssemblyQualifiedName()))
@@ -658,7 +658,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Where(t => t.Type == (typeof(ClaimValueToggle).ShorthandAssemblyQualifiedName()))
                 .Select(t => t.Description)
                 .Single()
-                .Should().BeEquivalentTo("Toggle that is active depending on the current claims of authenticated users.");
+                .Should().BeEquivalentTo("The identity claim of the current user exists and its value is in the list.");
         }
 
         [Fact]

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "Toggle that is active depending on request user agent browser information.", FriendlyName = "On Browser")]
-    [DesignTypeParameter(ParameterName = Browsers, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of browser names delimited by ';' character.")]
+    [DesignType(Description = "The request user agent browser is in the list.", FriendlyName = "Browser")]
+    [DesignTypeParameter(ParameterName = Browsers, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The user agents to activate this toggle separated by ';' character.")]
     public class UserAgentToggle
         : IToggle
     {

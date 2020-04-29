@@ -11,9 +11,9 @@ namespace Esquio.AspNetCore.Toggles
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the claim vaulue into a specific
     /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the bucket name created with the value of specified claim.", FriendlyName = "Gradual Rollout by Identity Claim value")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
-    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type used to get value to rollout.")]
+    [DesignType(Description = "The claim exists and its value falls within the percentage created by Esquio Partitioner.", FriendlyName = "Partial rollout by Identity Claim value")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activates this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The identity claim type used whom value is used by Esquio Partitioner.")]
     public class GradualRolloutClaimValueToggle
         : IToggle
     {

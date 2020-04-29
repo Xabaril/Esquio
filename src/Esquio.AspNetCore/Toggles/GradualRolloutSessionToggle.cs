@@ -11,8 +11,8 @@ namespace Esquio.AspNetCore.Toggles
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the session id into a specific
     /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the session identifier bucket and the percentage selected.", FriendlyName = "Gradual Rollout by Http Session Id")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activate this toggle. Percentage from 0 to 100.")]
+    [DesignType(Description = "The session identifier falls within percentage created by Esquio Partitioner.", FriendlyName = "Partial rollout by Http Session Id")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of sessions that activates this toggle. Percentage from 0 to 100.")]
     public class GradualRolloutSessionToggle
         : IToggle
     {

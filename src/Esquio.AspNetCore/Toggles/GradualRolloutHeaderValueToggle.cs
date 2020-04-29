@@ -13,9 +13,9 @@ namespace Esquio.AspNetCore.Toggles
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the header vaulue into a specific
     /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the bucket name created with current request header name/value pair.", FriendlyName = "Gradual rollout by Http Header value")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
-    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The name of the header to get the value and create partitions buckets over this.")]
+    [DesignType(Description = "The request header exists and its value falls within percentage created by Esquio Partitioner.", FriendlyName = "Partial rollout by Http Header value")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activates this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name used whom value is used by Esquio Partitioner.")]
     public class GradualRolloutHeaderValueToggle
         : IToggle
     {

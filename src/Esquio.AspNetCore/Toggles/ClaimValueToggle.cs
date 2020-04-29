@@ -11,9 +11,9 @@ namespace Esquio.AspNetCore.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on the current value for the specified claim on ClaimType property.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the current claims of authenticated users.", FriendlyName = "Identity Claim Value")]
-    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type used to check value.")]
-    [DesignTypeParameter(ParameterName = ClaimValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The claim value to check, multiple items separated by ';'.")]
+    [DesignType(Description = "The identity claim of the current user exists and its value is in the list.", FriendlyName = "Identity Claim Value")]
+    [DesignTypeParameter(ParameterName = ClaimType, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The claim type name.")]
+    [DesignTypeParameter(ParameterName = ClaimValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The claim values to activate this toggle separated by ';' character.")]
     public class ClaimValueToggle
         : IToggle
     {
