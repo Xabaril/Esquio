@@ -11,7 +11,7 @@ namespace Esquio.AspNetCore.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on current Environment value.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on host execution environment value.", FriendlyName = "On Environment")]
+    [DesignType(Description = "The host execution environment and its value is in the list.", FriendlyName = "On Environment")]
     [DesignTypeParameter(ParameterName = Environments, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The collection of environments to activate this toggle separated by ';' character")]
     public class HostEnvironmentToggle
         : IToggle

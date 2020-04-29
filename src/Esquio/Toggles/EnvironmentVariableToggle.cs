@@ -10,7 +10,7 @@ namespace Esquio.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on current Environment value.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on value of specified environment variable.", FriendlyName = "By Environment Variable")]
+    [DesignType(Description = "The value of the environment variable is in the list.", FriendlyName = "By Environment Variable")]
     [DesignTypeParameter(ParameterName = EnvironmentVariable, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The environment variable name to observe.")]
     [DesignTypeParameter(ParameterName = Values, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The collection environment variable valid values to activate this toggle separated by ';' character.")]
     public class EnvironmentVariableToggle

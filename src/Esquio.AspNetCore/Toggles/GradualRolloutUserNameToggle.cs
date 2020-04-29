@@ -11,7 +11,7 @@ namespace Esquio.AspNetCore.Toggles
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the current user name into a specific
     /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the bucket name created with user name value and the rollout percentage.", FriendlyName = "Gradual rollout by UserName")]
+    [DesignType(Description = "The current user name falls within the percentage.", FriendlyName = "Gradual rollout by UserName")]
     [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
     public class GradualRolloutUserNameToggle
         : IToggle

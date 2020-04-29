@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "The client IP address toggle activates a feature if is included on ip addresses defined in the IP list.", FriendlyName = "Client IP")]
+    [DesignType(Description = "The client IP address is in the list.", FriendlyName = "Client IP")]
     [DesignTypeParameter(ParameterName = IpAddresses, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of IP addresses delimited by ';' character.")]
     public class ClientIpAddressToggle : IToggle
     {

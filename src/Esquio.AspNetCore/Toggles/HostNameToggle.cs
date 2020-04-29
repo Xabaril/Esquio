@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
-    [DesignType(Description = "The hostname toggle activates a feature for client instances with a hostName in the hostNames list.", FriendlyName = "Host Name")]
+    [DesignType(Description = "The hostname of the client instance is in the list.", FriendlyName = "Host Name")]
     [DesignTypeParameter(ParameterName = HostNames, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "Collection of host names delimited by ';' character.")]
     public class HostNameToggle : IToggle
     {
