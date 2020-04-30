@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -52,15 +53,22 @@ namespace Esquio.AspNetCore.Toggles
                 var user = _httpContextAccessor.HttpContext.User;
                 if (user != null && user.Identity.IsAuthenticated)
                 {
-                    var value = user.FindFirst(claimType)?
-                        .Value;
 
-                    if (value != null)
+                    var claimValues = user.Claims
+                        .Where(claim => claim.Type == claimType)
+                        .Select(claim => claim.Value);
+
+                    foreach (var item in claimValues)
                     {
-                        var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+                        if (item != null)
+                        {
+                            var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
 
-                        return tokenizer.Contains(
-                            value, StringSegmentComparer.OrdinalIgnoreCase);
+                            if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
+                            {
+                                return true;
+                            }
+                        }
                     }
                 }
             }

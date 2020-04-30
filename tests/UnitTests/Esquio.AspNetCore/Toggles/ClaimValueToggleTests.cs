@@ -60,6 +60,39 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
+        public async Task be_active_when_claim_type_and_value_are_successfully_configured_and_user_have_many_claim_of_the_same_type()
+        {
+            var toggle = Build
+                .Toggle<ClaimValueToggle>()
+                .AddOneParameter("ClaimType", "some_claim_type")
+                .AddOneParameter("ClaimValues", "three")
+                .Build();
+
+            var feature = Build
+                .Feature(Constants.FeatureName)
+                .AddOne(toggle)
+                .Build();
+
+            var context = new DefaultHttpContext();
+            context.User = new ClaimsPrincipal(
+                new ClaimsIdentity(new Claim[] 
+                { 
+                    new Claim("some_claim_type", "one"),
+                    new Claim("some_claim_type", "two"),
+                    new Claim("some_claim_type", "three")
+                }, "cookies"));
+
+            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var claimValueToggle = new ClaimValueToggle(store, new FakeHttpContextAccesor(context));
+
+            var active = await claimValueToggle.IsActiveAsync(Constants.FeatureName);
+
+            active.Should()
+                .BeTrue();
+        }
+
+
+        [Fact]
         public async Task be_not_active_when_claim_type_and_value_are_successfully_configured()
         {
             var toggle = Build
