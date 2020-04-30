@@ -43,6 +43,8 @@ namespace Esquio.AspNetCore.Toggles
                 var user = _httpContextAccessor.HttpContext.User;
                 if (user != null && user.Identity.IsAuthenticated)
                 {
+                    var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+
                     var claimValues = user.Claims
                         .Where(claim => claim.Type == claimType)
                         .Select(claim => claim.Value);
@@ -51,15 +53,12 @@ namespace Esquio.AspNetCore.Toggles
                     {
                         if (item != null)
                         {
-                            var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
                             var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
-
                             return new ValueTask<bool>(active);
                         }
                     }
                 }
             }
-
             return new ValueTask<bool>(false);
         }
     }
