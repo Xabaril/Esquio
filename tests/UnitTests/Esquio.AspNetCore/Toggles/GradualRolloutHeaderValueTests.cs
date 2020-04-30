@@ -43,8 +43,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutHeaderValueToggle>()
-                .AddOneParameter("HeaderName", "header-name")
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("HeaderName", "header-name")
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -98,8 +98,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var toggle = Build
                .Toggle<GradualRolloutHeaderValueToggle>()
-               .AddOneParameter("HeaderName", "header-name")
-               .AddOneParameter("Percentage", percentage)
+               .AddParameter("HeaderName", "header-name")
+               .AddParameter("Percentage", percentage)
                .Build();
 
             var feature = Build
@@ -129,8 +129,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutHeaderValueToggle>()
-                .AddOneParameter("HeaderName", "header-name")
-                .AddOneParameter("Percentage", 0)
+                .AddParameter("HeaderName", "header-name")
+                .AddParameter("Percentage", 0)
                 .Build();
 
             var feature = Build

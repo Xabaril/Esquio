@@ -30,7 +30,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "role1")
+                .AddParameter(Roles, "role1")
                 .Build();
 
             var feature = Build
@@ -61,7 +61,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "admin")
+                .AddParameter(Roles, "admin")
                 .Build();
 
             var feature = Build
@@ -91,7 +91,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "admin")
+                .AddParameter(Roles, "admin")
                 .Build();
 
             var feature = Build
@@ -121,7 +121,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "admin")
+                .AddParameter(Roles, "admin")
                 .Build();
 
             var feature = Build
@@ -151,7 +151,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "admin;user")
+                .AddParameter(Roles, "admin;user")
                 .Build();
 
             var feature = Build
@@ -181,7 +181,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<RoleNameToggle>()
-                .AddOneParameter(Roles, "admin")
+                .AddParameter(Roles, "admin")
                 .Build();
 
             var feature = Build

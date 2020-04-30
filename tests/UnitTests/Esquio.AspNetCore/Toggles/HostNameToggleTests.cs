@@ -29,7 +29,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HostNameToggle>()
-                .AddOneParameter(HostNames, "localhost")
+                .AddParameter(HostNames, "localhost")
                 .Build();
 
             var feature = Build
@@ -56,7 +56,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HostNameToggle>()
-                .AddOneParameter(HostNames, "sourcecodehost")
+                .AddParameter(HostNames, "sourcecodehost")
                 .Build();
 
             var feature = Build
@@ -84,7 +84,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HostNameToggle>()
-                .AddOneParameter(HostNames, "localhost")
+                .AddParameter(HostNames, "localhost")
                 .Build();
 
             var feature = Build

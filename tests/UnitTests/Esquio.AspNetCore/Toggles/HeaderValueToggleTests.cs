@@ -27,8 +27,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HeaderValueToggle>()
-                .AddOneParameter("HeaderName", "Accept")
-                .AddOneParameter("HeaderValues", "application/json")
+                .AddParameter("HeaderName", "Accept")
+                .AddParameter("HeaderValues", "application/json")
                 .Build();
 
             var feature = Build
@@ -57,8 +57,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HeaderValueToggle>()
-                .AddOneParameter("HeaderName", "Accept")
-                .AddOneParameter("HeaderValues", "text/xml")
+                .AddParameter("HeaderName", "Accept")
+                .AddParameter("HeaderValues", "text/xml")
                 .Build();
 
             var feature = Build

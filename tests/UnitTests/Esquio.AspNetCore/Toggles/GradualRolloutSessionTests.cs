@@ -40,7 +40,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -95,7 +95,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var toggle = Build
                .Toggle<GradualRolloutSessionToggle>()
-               .AddOneParameter("Percentage", percentage)
+               .AddParameter("Percentage", percentage)
                .Build();
 
             var feature = Build
@@ -126,7 +126,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 0)
+                .AddParameter("Percentage", 0)
                 .Build();
 
             var feature = Build
@@ -157,7 +157,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build

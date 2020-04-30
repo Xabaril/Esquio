@@ -30,7 +30,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, $"{Development}:{Production}")
+                .AddParameter(Environments, $"{Development}:{Production}")
                 .Build();
 
             var feature = Build
@@ -55,7 +55,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, Development)
+                .AddParameter(Environments, Development)
                 .Build();
 
             var feature = Build
@@ -80,7 +80,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, Production)
+                .AddParameter(Environments, Production)
                 .Build();
 
             var feature = Build
@@ -105,7 +105,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, Development)
+                .AddParameter(Environments, Development)
                 .Build();
 
             var feature = Build
@@ -130,7 +130,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, Development)
+                .AddParameter(Environments, Development)
                 .Build();
 
             var feature = Build
@@ -155,7 +155,7 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<HostEnvironmentToggle>()
-                .AddOneParameter(Environments, $"{Development};{Production}")
+                .AddParameter(Environments, $"{Development};{Production}")
                 .Build();
 
             var feature = Build

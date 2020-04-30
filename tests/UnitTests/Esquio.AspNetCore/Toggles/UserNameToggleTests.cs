@@ -21,7 +21,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user1;user2")
+                .AddParameter(Users, "user1;user2")
                 .Build();
 
             var feature = Build
@@ -40,7 +40,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user")
+                .AddParameter(Users, "user")
                 .Build();
 
             var feature = Build
@@ -71,7 +71,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user1")
+                .AddParameter(Users, "user1")
                 .Build();
 
             var feature = Build
@@ -101,7 +101,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user1")
+                .AddParameter(Users, "user1")
                 .Build();
 
             var feature = Build
@@ -131,7 +131,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user1")
+                .AddParameter(Users, "user1")
                 .Build();
 
             var feature = Build
@@ -161,7 +161,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<UserNameToggle>()
-                .AddOneParameter(Users, "user1;user2")
+                .AddParameter(Users, "user1;user2")
                 .Build();
 
             var feature = Build

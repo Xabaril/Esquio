@@ -30,7 +30,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<ServerIpAddressToggle>()
-                .AddOneParameter(IpAddresses, "127.0.0.1;127.0.0.2")
+                .AddParameter(IpAddresses, "127.0.0.1;127.0.0.2")
                 .Build();
 
             var feature = Build
@@ -59,7 +59,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<ServerIpAddressToggle>()
-                .AddOneParameter(IpAddresses, "127.0.0.1;127.0.0.2")
+                .AddParameter(IpAddresses, "127.0.0.1;127.0.0.2")
                 .Build();
 
             var feature = Build
@@ -88,7 +88,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                .Toggle<ServerIpAddressToggle>()
-               .AddOneParameter(IpAddresses, "127.0.0.1;127.0.0.2")
+               .AddParameter(IpAddresses, "127.0.0.1;127.0.0.2")
                .Build();
 
             var feature = Build

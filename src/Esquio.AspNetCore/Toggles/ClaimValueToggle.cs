@@ -43,17 +43,19 @@ namespace Esquio.AspNetCore.Toggles
                 var user = _httpContextAccessor.HttpContext.User;
                 if (user != null && user.Identity.IsAuthenticated)
                 {
-                    var value = user.FindFirst(claimType)?
-                        .Value;
+                    var claimValues = user.Claims
+                        .Where(claim => claim.Type == claimType)
+                        .Select(claim => claim.Value);
 
-                    if (value != null)
+                    foreach (var item in claimValues)
                     {
-                        var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+                        if (item != null)
+                        {
+                            var tokenizer = new StringTokenizer(allowedValues, EsquioConstants.DEFAULT_SPLIT_SEPARATOR);
+                            var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
 
-                        var active = tokenizer.Contains(
-                            value, StringSegmentComparer.OrdinalIgnoreCase);
-
-                        return new ValueTask<bool>(active);
+                            return new ValueTask<bool>(active);
+                        }
                     }
                 }
             }

@@ -41,8 +41,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -97,8 +97,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", percentage)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", percentage)
                 .Build();
 
             var feature = Build
@@ -130,8 +130,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", 0)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", 0)
                 .Build();
 
             var feature = Build

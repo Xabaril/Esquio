@@ -19,8 +19,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<FromToToggle>()
-                .AddOneParameter(From, DateTime.UtcNow.AddMonths(-1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
-                .AddOneParameter(To, DateTime.UtcNow.AddMonths(-1).AddDays(10).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
+                .AddParameter(From, DateTime.UtcNow.AddMonths(-1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
+                .AddParameter(To, DateTime.UtcNow.AddMonths(-1).AddDays(10).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
                 .Build();
 
             var feature = Build
@@ -43,8 +43,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<FromToToggle>()
-                .AddOneParameter(From, DateTime.UtcNow.AddMonths(-1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
-                .AddOneParameter(To, DateTime.UtcNow.AddMonths(1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
+                .AddParameter(From, DateTime.UtcNow.AddMonths(-1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
+                .AddParameter(To, DateTime.UtcNow.AddMonths(1).ToString(FromToToggle.DEFAULT_FORMAT_DATE))
                 .Build();
 
             var feature = Build
@@ -73,8 +73,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<FromToToggle>()
-                .AddOneParameter(From, fromDate)
-                .AddOneParameter(To, toDate)
+                .AddParameter(From, fromDate)
+                .AddParameter(To, toDate)
                 .Build();
 
             var feature = Build

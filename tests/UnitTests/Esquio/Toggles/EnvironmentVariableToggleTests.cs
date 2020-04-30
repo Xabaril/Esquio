@@ -20,8 +20,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<EnvironmentVariableToggle>()
-                .AddOneParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
-                .AddOneParameter(Values, "Production")
+                .AddParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
+                .AddParameter(Values, "Production")
                 .Build();
 
             var feature = Build
@@ -44,8 +44,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                 .Toggle<EnvironmentVariableToggle>()
-                .AddOneParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
-                .AddOneParameter(Values, "Production")
+                .AddParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
+                .AddParameter(Values, "Production")
                 .Build();
 
             var feature = Build
@@ -70,8 +70,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                  .Toggle<EnvironmentVariableToggle>()
-                 .AddOneParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
-                 .AddOneParameter(Values, "pRoDuCtIoN")
+                 .AddParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
+                 .AddParameter(Values, "pRoDuCtIoN")
                  .Build();
 
             var feature = Build
@@ -98,8 +98,8 @@ namespace UnitTests.Esquio.Toggles
         {
             var toggle = Build
                   .Toggle<EnvironmentVariableToggle>()
-                  .AddOneParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
-                  .AddOneParameter(Values, "Production;Development;Testing")
+                  .AddParameter(EnvironmentVariable, "ASPNETCORE_ENVIRONMENT")
+                  .AddParameter(Values, "Production;Development;Testing")
                   .Build();
 
             var feature = Build
