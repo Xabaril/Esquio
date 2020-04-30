@@ -13,6 +13,7 @@ namespace Esquio.AspNetCore.Toggles
     [DesignType(Description = "The request country is in the list (Ip geolocation through https://ip2c.org service).", FriendlyName = "Country")]
     [DesignTypeParameter(ParameterName = Countries, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The request country values (two letters, ISO 3166) to activate this toggle separated by ';' character.")]
     public class Ip2CountryToggle
+       : IToggle
     {
         private const string Countries = nameof(Countries);
 
