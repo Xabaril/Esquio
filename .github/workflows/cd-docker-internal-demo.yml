@@ -1,4 +1,4 @@
-name: Esquio Demo Continous Deployment
+name: Esquio Internal Demo Continous Deployment
 on: 
   push:
     tags:       
