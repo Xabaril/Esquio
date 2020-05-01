@@ -17,8 +17,8 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: ${{ env.REGISTRY }}/${{ env.ACR_REPO }}
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.ESQUIO_DOCKER_USERNAME }}
+        password: ${{ secrets.ESQUIO_DOCKER_PASSWORD }}
         registry: ${{ env.REGISTRY }}
         dockerfile: ./build/DemoDockerfile
         tags: "latest,${{ env.TAG }}"
