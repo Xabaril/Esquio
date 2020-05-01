@@ -31,6 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();
 
             //register mandatory asp.net core services
+            builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IScopedEvaluationHolder, HttpContextScopedEvaluationHolder>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
