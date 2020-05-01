@@ -8,8 +8,19 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddEsquioClient(this IServiceCollection services, Action<BlazorFeatureServiceOptions> configure)
         {
+            _ = services ?? throw new ArgumentNullException(nameof(services));
+
             return services
                 .Configure(configure)
+                .AddSingleton<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
+        }
+
+        public static IServiceCollection AddEsquioClient(this IServiceCollection services)
+        {
+            _ = services ?? throw new ArgumentNullException(nameof(services));
+
+            return services
+                .Configure<BlazorFeatureServiceOptions>(_ => { })
                 .AddSingleton<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
         }
     }

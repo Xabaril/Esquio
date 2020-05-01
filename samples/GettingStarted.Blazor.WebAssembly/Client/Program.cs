@@ -14,11 +14,7 @@ namespace GettingStarted.Blazor.WebAssembly.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            builder.Services.AddEsquioClient(options =>
-            {
-                options.Endpoint = "Esquio"; // this is default endpoint
-            });
+            builder.Services.AddEsquioClient(); //add esquio client endpoint to asp.net core host app
 
             await builder.Build().RunAsync();
         }
