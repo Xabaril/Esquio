@@ -7,7 +7,7 @@
     <Description>Esquio components and services for Blazor Wasm.For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Blazor;WebAssembly</PackageTags>
     <Version>$(esquioblazorwasm)</Version>
-    <PackageId>Esquio</PackageId>
+    <PackageId>Esquio.Blazor.WebAssembly</PackageId>
     <PackageVersion>$(esquioblazorwasm)</PackageVersion>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
