@@ -1,0 +1,43 @@
+﻿@inject ConfirmState  confirmState
+@implements IDisposable
+
+<Modal Title="@confirmState.ConfirmModalTitle" Show="confirmState.ConfirmModalIsActive" OnClose="OnClose">
+    <ModalBody>
+        <p>@confirmState.ConfirmModalDescription</p>
+    </ModalBody>
+    <ModalFooter>
+        <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                @onclick="OnClose"
+                @onclick:stopPropagation>
+            Cancel
+        </button>
+        <button
+                type="button"
+                class="btn btn-primary"
+                @onclick="OnConfirm"
+                @onclick:stopPropagation>
+            Confirm
+        </button>
+    </ModalFooter>
+</Modal>
+
+@code {
+    public void Dispose()
+    {
+        confirmState.OnConfirmModalActiveChange -= OnConfirmModalActiveChange;
+    }
+
+    protected override void OnInitialized()
+    {
+        confirmState.OnConfirmModalActiveChange += OnConfirmModalActiveChange;
+    }
+
+    private void OnConfirmModalActiveChange() => StateHasChanged();
+
+    private void OnClose() => confirmState.Cancel();
+
+    private void OnConfirm() => confirmState.Confirm();
+}

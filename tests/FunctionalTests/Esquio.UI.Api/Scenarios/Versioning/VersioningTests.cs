@@ -24,15 +24,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_header_version_if_client_specify_booth()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V2.Users.My())
-                 .AddHeader("X-API-VERSION", "3.0")
+                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .AddHeader("X-API-VERSION", "X.X")
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -46,15 +46,15 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_header_version()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V2.Users.My())
-                 .AddHeader("X-API-VERSION", "2.0")
+                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .AddHeader("X-API-VERSION", "3.0")
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -68,14 +68,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
         public async Task use_querystring_version()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest("api/users/my")
+                 .CreateRequest("api/permissions/my")
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 

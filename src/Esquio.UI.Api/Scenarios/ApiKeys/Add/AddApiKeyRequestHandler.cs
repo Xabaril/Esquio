@@ -1,6 +1,7 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.ApiKeys.Add
+namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 {
     public class AddAddApiKeyRequestHandler : IRequestHandler<AddApiKeyRequest, AddApiKeyResponse>
     {
@@ -33,18 +34,32 @@ namespace Esquio.UI.Api.Features.ApiKeys.Add
 
             if (existing == null)
             {
-                var apiKey = new ApiKeyEntity(
-                    request.Name,
-                    ApiKeyGenerator.CreateApiKey(),
-                    request.ValidTo ?? DateTime.UtcNow.AddYears(1));
+                var key = ApiKeyGenerator.CreateApiKey();
 
-                _storeDbContext.Add(apiKey);
+                var apiKey = new ApiKeyEntity(
+                    name: request.Name,
+                    key: key,
+                    validTo: request.ValidTo ?? DateTime.UtcNow.AddYears(1));
+
+                var apiKeyPermissions = new PermissionEntity()
+                {
+                    SubjectId = key,
+                    Kind = SubjectType.Application,
+                    ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true)
+                };
+
+                _storeDbContext
+                   .Add(apiKeyPermissions);
+
+                _storeDbContext
+                    .Add(apiKey);
+
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return new AddApiKeyResponse()
                 {
                     Name = apiKey.Name,
-                    Key = apiKey.Key
+                    Key = key
                 };
             }
 

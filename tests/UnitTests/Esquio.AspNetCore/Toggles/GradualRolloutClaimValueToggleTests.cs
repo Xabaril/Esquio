@@ -1,4 +1,5 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
 using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -18,22 +19,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
-                var accessor = new FakeHttpContextAccesor();
+                var accessor = new FakeHttpContextAccessor();
 
-                new GradualRolloutClaimValueToggle(null, store, accessor);
-            });
-        }
-
-        [Fact]
-        public void throw_if_store_service_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var accessor = new FakeHttpContextAccesor();
-                var partitioner = new DefaultValuePartitioner();
-
-                new GradualRolloutClaimValueToggle(partitioner, null, accessor);
+                new GradualRolloutClaimValueToggle(null, accessor);
             });
         }
 
@@ -42,10 +30,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
            {
-               var store = new DelegatedValueFeatureStore((_, __) => null);
                var partitioner = new DefaultValuePartitioner();
 
-               new GradualRolloutClaimValueToggle(partitioner, store, null);
+               new GradualRolloutClaimValueToggle(partitioner, null);
            });
         }
 
@@ -54,8 +41,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -67,12 +54,17 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
+            var store = new DelegatedValueFeatureStore((_, __,___) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutClaimValue.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -105,8 +97,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", percentage)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", percentage)
                 .Build();
 
             var feature = Build
@@ -118,12 +110,16 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", claim_value) }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutClaimValue.IsActiveAsync(
+                 ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -134,8 +130,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutClaimValueToggle>()
-                .AddOneParameter("ClaimType", "some_claim_type")
-                .AddOneParameter("Percentage", 0)
+                .AddParameter("ClaimType", "some_claim_type")
+                .AddParameter("Percentage", 0)
                 .Build();
 
             var feature = Build
@@ -147,28 +143,19 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             context.User = new ClaimsPrincipal(
                 new ClaimsIdentity(new Claim[] { new Claim("some_claim_type", "some_claim_value") }, "cookies"));
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutClaimValue = new GradualRolloutClaimValueToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutClaimValue.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutClaimValue.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeFalse();
-        }
-
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
         }
     }
 }

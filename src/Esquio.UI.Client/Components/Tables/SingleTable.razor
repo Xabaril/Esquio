@@ -1,0 +1,107 @@
+﻿@typeparam TResponse
+@inject NavigationManager Navigation
+
+@if (items is null)
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <ul class="pagination pagination-sm float-right skeleton">
+                    <li>
+                        <div class="line"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <table class="table table-hover table-component">
+                <thead>
+                    @TableHeader
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < SkeletonRows; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < SkeletonColumns - SkeletonActions; j++)
+                            {
+                                <td>
+                                    <div class="line"></div>
+                                </td>
+                            }
+                            @for (int k = 0; k < SkeletonActions; k++)
+                            {
+                                <td>
+                                    <div class="action"></div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover table-component">
+                <thead>
+                    <tr>
+                        @TableHeader
+                    </tr>
+                </thead>
+                <tbody>
+                    @TableBody(items)
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+
+@code {
+
+    //Set Skeleton parameters ( or use by default )
+
+    [Parameter] public int SkeletonRows { get; set; } = 3;
+    [Parameter] public int SkeletonColumns { get; set; } = 3;
+    [Parameter] public int SkeletonActions { get; set; } = 1;
+
+    //Loader parameters
+
+    [Parameter] public Func<Task<TResponse>> Loader { get; set; }
+    [Parameter] public RenderFragment TableHeader { get; set; }
+    [Parameter] public RenderFragment<TResponse> TableBody { get; set; }
+
+    private TResponse items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Loader == null) throw new ArgumentNullException($"The {nameof(Loader)} parameter is required.");
+
+        await Load();
+    }
+
+    public async Task OnAdd()
+    {
+        await Load();
+    }
+
+    public async Task OnDelete()
+    {
+        await Load();
+    }
+
+    public Task Reload()
+    {
+        return Load();
+    }
+
+    private async Task Load(int page = 0)
+    {
+        items = await Loader();
+    }
+}

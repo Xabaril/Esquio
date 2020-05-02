@@ -9,9 +9,9 @@ namespace Esquio.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on current UTC date time.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on current UTC date.", FriendlyName = "Between dates")]
-    [DesignTypeParameter(ParameterName = From, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The from date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
-    [DesignTypeParameter(ParameterName = To, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The to date (yyyy-MM-dd HH:mm:ss) interval when this toggle is activated.")]
+    [DesignType(Description = "Current UTC date falls within the interval.", FriendlyName = "Between dates")]
+    [DesignTypeParameter(ParameterName = From, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The interval start (yyyy-MM-dd HH:mm:ss) when this toggle is activated.")]
+    [DesignTypeParameter(ParameterName = To, ParameterType = EsquioConstants.DATE_PARAMETER_TYPE, ParameterDescription = "The interval end (yyyy-MM-dd HH:mm:ss) when this toggle is activated.")]
     public class FromToToggle
         : IToggle
     {
@@ -21,39 +21,31 @@ namespace Esquio.Toggles
         internal const string From = nameof(From);
         internal const string To = nameof(To);
 
-        private readonly IRuntimeFeatureStore _featureStore;
-
-        /// <summary>
-        /// Create a new instance of <see cref="FromToToggle"/>.
-        /// </summary>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
-        public FromToToggle(IRuntimeFeatureStore featureStore)
-        {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
-        }
-
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, cancellationToken);
-
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
             var parseExactFormats = new string[] { DEFAULT_FORMAT_DATE, SINGLE_DIGIT_FORMAT_DATE };
 
-            var fromDate = DateTime.ParseExact(data.From.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            var toDate = DateTime.ParseExact(data.To.ToString(), parseExactFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var fromDate = DateTime.ParseExact(
+                context.Data[From].ToString(), 
+                parseExactFormats, 
+                CultureInfo.InvariantCulture, 
+                DateTimeStyles.AssumeUniversal);
+
+            var toDate = DateTime.ParseExact(
+                context.Data[To].ToString(), 
+                parseExactFormats,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal);
 
             var now = DateTime.UtcNow;
 
             if (now > fromDate && now < toDate)
             {
-                return true;
+                return new ValueTask<bool>(true);
             }
 
-            return false;
+            return new ValueTask<bool>(false);
         }
     }
 }

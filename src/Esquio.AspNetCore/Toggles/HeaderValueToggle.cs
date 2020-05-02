@@ -11,9 +11,9 @@ namespace Esquio.AspNetCore.Toggles
     /// <summary>
     /// A binary <see cref="IToggle"/> that is active depending on the header value specified on HeaderName property.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on some header value.", FriendlyName = "Http Header value")]
-    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name to introspect and  check value.")]
-    [DesignTypeParameter(ParameterName = HeaderValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The header value to check, multiple items separated by ';'.")]
+    [DesignType(Description = "The request header exists and its value its in the list.", FriendlyName = "Http Header value")]
+    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name.")]
+    [DesignTypeParameter(ParameterName = HeaderValues, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The header values to activate this toggle separated by ';' character.")]
     public class HeaderValueToggle
         : IToggle
     {
@@ -23,28 +23,21 @@ namespace Esquio.AspNetCore.Toggles
         private static char[] SPLIT_SEPARATOR = new char[] { ';' };
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRuntimeFeatureStore _featureStore;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
-        public HeaderValueToggle(IRuntimeFeatureStore featureStore, IHttpContextAccessor httpContextAccessor)
+        public HeaderValueToggle(IHttpContextAccessor httpContextAccessor)
         {
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         ///<inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
-
-            string headerName = data.HeaderName?.ToString();
-            string allowedValues = data.HeaderValues?.ToString();
+            string headerName = context.Data[HeaderName]?.ToString();
+            string allowedValues = context.Data[HeaderValues]?.ToString();
 
             if (headerName != null
                 &&
@@ -58,14 +51,13 @@ namespace Esquio.AspNetCore.Toggles
 
                 foreach (var item in values)
                 {
-                    if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
+                    var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
+
+                    return new ValueTask<bool>(active);
                 }
             }
 
-            return false;
+            return new ValueTask<bool>(false);
         }
     }
 }

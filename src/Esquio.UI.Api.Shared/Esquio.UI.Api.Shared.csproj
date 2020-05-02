@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="$(fluentvalidationaspnetcore)" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
+  </ItemGroup>
+  
+</Project>

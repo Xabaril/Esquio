@@ -11,7 +11,7 @@ namespace Esquio.Model
     /// </summary>
     public class Toggle
     {
-        private readonly List<Parameter> _parameters = new List<Parameter>();
+        private readonly Dictionary<string, object> _parameters = new Dictionary<string, object>();
 
         /// <summary>
         /// Create a new instance.
@@ -36,7 +36,7 @@ namespace Esquio.Model
             var data = new ExpandoObject();
             var dataDictionary = (IDictionary<string, object>)data;
 
-            foreach(var item in _parameters.ToDictionary(k=>k.Name,k=>k.Value))
+            foreach (var item in _parameters)
             {
                 dataDictionary.Add(item);
             }
@@ -50,12 +50,22 @@ namespace Esquio.Model
         /// <param name="parameters">The enumerable collection of parameteres to be added.</param>
         public void AddParameters(IEnumerable<Parameter> parameters)
         {
-            _parameters.AddRange(parameters);
+            foreach (var item in parameters)
+            {
+                if (_parameters.ContainsKey(item.Name))
+                {
+                    _parameters[item.Name] = item.Value;
+                }
+                else
+                {
+                    _parameters.Add(item.Name, item.Value);
+                }
+            }
         }
-        
+
         internal IEnumerable<Parameter> GetParameters()
         {
-            return _parameters;
+            return _parameters.Select(p => new Parameter(p.Key, p.Value));
         }
     }
 }

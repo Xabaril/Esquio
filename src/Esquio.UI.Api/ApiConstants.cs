@@ -1,11 +1,18 @@
-﻿namespace Esquio.UI.Api
+﻿using System.Security.Claims;
+
+namespace Esquio.UI.Api
 {
     static class ApiConstants
     {
         public static string ApiVersionHeaderName = "X-Api-Version";
+        public static string ApiKeyHeaderName = "X-Api-Key";
+        public static string SubjectNameIdentifier = ClaimTypes.NameIdentifier;
+
         public static class Constraints
         {
             public const string NamesRegularExpression = "^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$";
+
+            public const string HexColorRegularExpression = "^#{1}[0-9A-Fa-f]{6}$";
         }
         public static class Pagination
         {

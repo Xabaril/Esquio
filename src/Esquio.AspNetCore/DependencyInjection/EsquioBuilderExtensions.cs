@@ -1,5 +1,4 @@
 ﻿using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
 using Esquio.AspNetCore.Diagnostics;
 using Esquio.AspNetCore.Endpoints;
 using Esquio.AspNetCore.Providers;
@@ -28,17 +27,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </remarks>
         public static IEsquioBuilder AddAspNetCoreDefaultServices(this IEsquioBuilder builder)
         {
-            builder.Services.AddHttpContextAccessor();
-
-            builder.Services.AddScoped<IUserNameProviderService, AspNetCoreUserNameProviderService>();
-            builder.Services.AddScoped<IRoleNameProviderService, AspNetCoreRoleNameProviderService>();
-            builder.Services.AddSingleton<IEnvironmentNameProviderService, AspNetEnvironmentNameProviderService>();
-
-            builder.Services.AddScoped<IScopedEvaluationSession, AspNetScopedEvaluationSession>();
-            
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
-
+            //register diagnostics
             builder.Services.AddSingleton<EsquioAspNetCoreDiagnostics>();
+
+            //register mandatory asp.net core services
+            builder.Services.AddHttpClient();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IScopedEvaluationHolder, HttpContextScopedEvaluationHolder>();
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
+            
+
+            //register aspnet core toggles
+            builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
 
             builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
 

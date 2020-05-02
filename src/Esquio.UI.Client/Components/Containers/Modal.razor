@@ -1,0 +1,26 @@
+﻿<div class="modal fade@(Show ? " show": "")" id="modal-lg" style="@(Show ? "display: block;": "display: none;")" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Title</h4>
+                <button type="button" class="close" @onclick="OnClose" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @ModalBody
+            </div>
+            <div class="modal-footer justify-content-between">
+                @ModalFooter
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment ModalBody { get; set; }
+    [Parameter] public RenderFragment ModalFooter { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClose { get; set; }
+}

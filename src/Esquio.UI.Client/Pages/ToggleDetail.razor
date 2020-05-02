@@ -1,0 +1,280 @@
+﻿@page "/products/{productName}/{featureName}/toggles/add"
+@attribute [Authorize(Policies.Contributor)]
+@layout MainLayout
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
+@using ExcludedToggle = Esquio.UI.Api.Shared.Models.Features.Details.ToggleDetail
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Toggle Detail"
+                           Subtitle="Show the collection of available toggles.">
+                    <Icon>
+                        <i class="fas fa-toggle-on"></i>
+                    </Icon>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+    <section class="content toggle-detail">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    @if (knownTypes == null)
+                    {
+                        <div class="row mb-4">
+                            <div class="col-9">
+                                <div class="line"></div>
+                            </div>
+                            <div class="col-3">
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                        <SkeletonCards />
+                    }
+                    else if (!knownTypes.Toggles.Any())
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card card-default text-center mx-auto mt-4">
+                                    <div class="card-body">
+                                        <span>No items to list</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row mb-4">
+                            <div class="col-9">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Search for a toggle..."
+                                       @bind-value="ToggleSearch"
+                                       @bind-value:event="oninput" />
+                            </div>
+                            <div class="col-3">
+                                <button type="button"
+                                        class="btn btn-primary btn-shadow"
+                                        style="width: 100%;"
+                                        disabled="@(!ToggleSearch.HasValue())"
+                                        @onclick="@(() => { ToggleSearch = null;  })">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                        <SingleCards Items="GetAssembliesToggles()">
+                            <CardTitle Context="toggle">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        @toggle.FriendlyName
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="badge bg-primary">@toggle.Assembly</span>
+                                    </div>
+                                </div>
+                            </CardTitle>
+                            <CardBody Context="toggle">
+                                @toggle.Description
+                            </CardBody>
+                            <CardFooter Context="toggle">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        style="width: 100%;"
+                                        disabled="@(isExcludedToggle(@toggle.Type) || isSelectedToggle(@toggle.Type))"
+                                        @onclick="@(() => SelectToggle(@toggle.Type))">
+                                        @if (isExcludedToggle(@toggle.Type))
+                                        {
+                                            <span>Not Available</span>
+                                        }
+                                        else if (isSelectedToggle(@toggle.Type))
+                                        {
+                                            <span>Selected</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Select</span>
+                                        }
+                                </button>
+                            </CardFooter>
+                        </SingleCards>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+@if (revealedToggle != null && selectedToggle != null)
+{
+    <Modal Title="@selectedToggle.FriendlyName" Show="showAddToggleModal" OnClose="CloseModal">
+        <ModalBody>
+            <form role="form">
+                <div class="form-group">
+                    <label>Ring</label>
+                    <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+                </div>
+                <fieldset>
+                    @for (int index = 0; index < revealedToggle.Parameters.Count; index++)
+                    {
+                        <ToggleParameter Parameter="MapParameter(index, revealedToggle.Parameters.ElementAt(index))"
+                                         OnParameterChange="OnParameterChange" />
+                    }
+                </fieldset>
+            </form>
+        </ModalBody>
+        <ModalFooter>
+            <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+            <Button OnClick="AddToggle">Add Toggle</Button>
+        </ModalFooter>
+    </Modal>
+}
+
+@code {
+    [Parameter] public string ProductName { get; set; }
+    [Parameter] public string FeatureName { get; set; }
+
+    private string selectedRing;
+    private string selectedAssembly;
+    private bool showAddToggleModal = false;
+    private KnownTypesToggleResponse knownTypes;
+    private RevealToggleResponse revealedToggle;
+    private IEnumerable<ExcludedToggle> excludedToggles;
+    private KnownTypesToggleDetailResponse selectedToggle;
+    private IDictionary<string, ToggleParameterViewModel> parameters;
+
+    private string ToggleSearch { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
+            new BreadcrumbItemViewModel { Title = ProductName, Link = $"products/{ProductName}" },
+            new BreadcrumbItemViewModel { Title = FeatureName, Link = $"products/{ProductName}/{FeatureName}" },
+            new BreadcrumbItemViewModel { Title = "New Toggle" });
+
+        knownTypes = await GetToggleKnownTypes();
+        excludedToggles = await GetExcludedToggles();
+
+        ResetState();
+    }
+
+    private void ResetState()
+    {
+        parameters = new Dictionary<string, ToggleParameterViewModel>();
+    }
+
+    private IEnumerable<KnownTypesToggleDetailResponse> GetAssembliesToggles()
+    {
+        var toggles = !ToggleSearch.HasValue()
+            ? knownTypes.Toggles
+            : knownTypes.Toggles.Where(t =>
+                t.FriendlyName.ToLower().Contains(ToggleSearch.ToLower()) ||
+                t.Description.ToLower().Contains(ToggleSearch.ToLower()));
+
+        return toggles.OrderBy(t => t.Assembly);
+    }
+
+    private async Task SelectToggle(string toggleType)
+    {
+        if (isExcludedToggle(toggleType) || selectedToggle != null && selectedToggle.Type == toggleType) return;
+
+        selectedToggle = knownTypes.Toggles.Find(t => t.Type == toggleType);
+        revealedToggle = null;
+        revealedToggle = await esquioHttpClient.RevealToggle(selectedToggle.Type);
+
+        ResetState();
+        OpenModal();
+    }
+
+    private Task<KnownTypesToggleResponse> GetToggleKnownTypes()
+    {
+        return esquioHttpClient.GetToggleKnownTypes();
+    }
+
+    private async Task<IEnumerable<ExcludedToggle>> GetExcludedToggles()
+    {
+        var feature = await esquioHttpClient.GetFeatureDetails(ProductName, FeatureName);
+        return feature.Toggles;
+    }
+
+    private bool isExcludedToggle(string type) => excludedToggles.Any(t => t.Type == type);
+
+    private bool isSelectedToggle(string type) => selectedToggle != null && selectedToggle.Type.Equals(type);
+
+    private void OnParameterChange(ToggleParameterViewModel parameter)
+    {
+        if (parameters.ContainsKey(parameter.Name))
+        {
+            parameters[parameter.Name] = parameter;
+        }
+        else
+        {
+            parameters.Add(parameter.Name, parameter);
+        }
+    }
+
+    private async Task AddToggle()
+    {
+        var result = await esquioHttpClient.AddToggle(new AddToggleRequest
+        {
+            ProductName = ProductName,
+            FeatureName = FeatureName,
+            RingName = selectedRing,
+            ToggleType = selectedToggle.Type,
+            Parameters = parameters
+                .Values
+                .OrderBy(parameter => parameter.Order)
+                .Select(parameter => new AddToggleRequestDetailParameter
+                {
+                    Name = parameter.Name,
+                    Type = parameter.ClrType,
+                    Value = parameter.Value
+                })
+                .ToList()
+        });
+
+        CloseModal();
+
+        if (result)
+        {
+            navigation.NavigateTo($"products/{ProductName}/{FeatureName}");
+            notifications.Success("Create Toggle", "Toggle successfully created!");
+        }
+        else
+        {
+            notifications.Error("Create Toggle", "Error creating the toggle");
+        }
+    }
+
+    private ToggleParameterViewModel MapParameter(int order, RevealToggleParameterResponse parameter)
+        => new ToggleParameterViewModel(parameter.Name, parameter.ClrType, description: parameter.Description, order: order);
+
+    private void OnRingChange(string ring)
+    {
+        selectedRing = ring;
+    }
+
+    private void OpenModal()
+    {
+        showAddToggleModal = true;
+        esquioState.SetWindowModal(showAddToggleModal);
+    }
+
+    private void CloseModal()
+    {
+        showAddToggleModal = false;
+        esquioState.SetWindowModal(showAddToggleModal);
+        selectedToggle = null;
+    }
+}

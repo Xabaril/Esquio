@@ -1,0 +1,60 @@
+﻿@inject IJSRuntime jsRuntime
+    <fieldset>
+        <div class="form-group">
+            <label for="@id">@Label</label>
+            <p class="description">@Description</p>
+            <input type="text"
+                   id="@id"
+                   data-role="tagsinput"
+                   value="@Value"
+                   disabled="@(HasPermission == false)"
+                   @onchange="OnValueChange" />
+        </div>
+        <div class="form-group">
+            <label>Preview</label>
+            <pre>@preview</pre>
+        </div>
+    </fieldset>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Description { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+
+    private Guid id = Guid.NewGuid();
+    private string previousValue;
+    private string preview;
+
+    protected override void OnInitialized()
+    {
+        preview = Value;
+    }
+
+    protected override void OnParametersSet()
+    {
+        Value = Value.HasValue() ? Value.Replace(';', ',') : Value;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            previousValue = Value;
+            await jsRuntime.InvokeVoidAsync($"initTagsInput", $"#{id}", HasPermission == false ? "disabled" : string.Empty);
+        }
+        else if (previousValue != Value)
+        {
+            previousValue = Value;
+            await jsRuntime.InvokeVoidAsync($"reloadTagsInput", $"#{id}", Value.Split(','));
+        }
+    }
+
+    private Task OnValueChange(ChangeEventArgs @event)
+    {
+        var value = @event.Value.ToString();
+        preview = value;
+        return OnChange.InvokeAsync(value);
+    }
+}

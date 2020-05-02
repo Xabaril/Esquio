@@ -27,6 +27,8 @@ namespace Esquio.EntityFrameworkCore.Store.EntityConfigurations
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);
+
+            builder.HasAlternateKey(p => new { p.Name, p.RingName, p.ToggleEntityId });
         }
     }
 }

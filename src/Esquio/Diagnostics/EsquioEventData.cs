@@ -23,16 +23,22 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
         /// <param name="feature">The feature name.</param>
         /// <param name="product">The product name.</param>
-        public FeatureEvaluatingEventData(Guid correlationId, string feature, string productName)
+        public FeatureEvaluatingEventData(Guid correlationId, string feature, string productName, string ringName)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = productName;
+            Ring = ringName;
         }
     }
 
@@ -57,16 +63,22 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// Create a new instance of <see cref="FeatureNotFoundEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
         /// <param name="feature">The feature name.</param>
         /// <param name="product">The product name.</param>
-        public FeatureNotFoundEventData(Guid correlationId, string feature, string productName)
+        public FeatureNotFoundEventData(Guid correlationId, string feature, string productName, string ringName)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = productName;
+            Ring = ringName;
         }
     }
 
@@ -91,6 +103,11 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name.
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// Feature evaluation exception.
         /// </summary>
         public Exception Exception { get; private set; }
@@ -102,11 +119,12 @@ namespace Esquio.Diagnostics
         /// <param name="feature">The feature name.</param>
         /// <param name="product">The product name.</param>
         /// <param name="exception">Evaluation exception.</param>
-        public FeatureThrowEventData(Guid correlationId, string feature, string product, Exception exception)
+        public FeatureThrowEventData(Guid correlationId, string feature, string product, string ring, Exception exception)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = product;
+            Ring = ring;
             Exception = exception;
         }
     }
@@ -132,6 +150,11 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name.
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// If feature evaluation result is enabled.
         /// </summary>
         public bool Enabled { get; private set; }
@@ -149,11 +172,12 @@ namespace Esquio.Diagnostics
         /// <param name="product">The product name.</param>
         /// <param name="enabled">Evaluation result.</param>
         /// <param name="elapsed">Evaluation elapsed time.</param>
-        public FeatureEvaluatedEventData(Guid correlationId, string feature, string product, bool enabled, long elapsed)
+        public FeatureEvaluatedEventData(Guid correlationId, string feature, string product, string ringName, bool enabled, long elapsed)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = product;
+            Ring = ringName;
             Enabled = enabled;
             Elapsed = elapsed;
         }
@@ -180,6 +204,11 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name.
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// The toggle type executed.
         /// </summary>
         public string ToggleType { get; set; }
@@ -191,11 +220,12 @@ namespace Esquio.Diagnostics
         /// <param name="feature">The feature name.</param>
         /// <param name="product">The product name.</param>
         /// <param name="toggleType">The toggle type executed.</param>
-        public ToggleEvaluatingEventData(Guid correlationId, string feature, string productName, string toggleType)
+        public ToggleEvaluatingEventData(Guid correlationId, string feature, string productName, string ringName, string toggleType)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = productName;
+            Ring = ringName;
             ToggleType = toggleType;
         }
     }
@@ -221,6 +251,11 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
+        /// The ring name.
+        /// </summary>
+        public string Ring { get; private set; }
+
+        /// <summary>
         /// The toggle type executed.
         /// </summary>
         public string ToggleType { get; set; }
@@ -238,11 +273,12 @@ namespace Esquio.Diagnostics
         /// <param name="product">The product name.</param>
         /// <param name="toggleType">The toggle type executed.</param>
         /// <param name="active"`>The activation toggle state.</param>
-        public ToggleEvaluatedEventData(Guid correlationId, string feature, string productName, string toggleType, bool active)
+        public ToggleEvaluatedEventData(Guid correlationId, string feature, string productName, string ringName, string toggleType, bool active)
         {
             CorrelationId = correlationId;
             Feature = feature;
             Product = productName;
+            Ring = ringName;
             ToggleType = toggleType;
             Active = active;
         }

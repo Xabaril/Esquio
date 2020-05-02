@@ -1,0 +1,51 @@
+name: Esquio Continous Integration (master)
+on: 
+  pull_request:
+    branches: 
+      - master
+  push:
+    branches: 
+      - master
+jobs:
+  build:
+    env:
+      BUILD_CONFIG: Release
+    name: Build
+    runs-on: ubuntu-latest
+    services:
+      sql-server:
+        image: microsoft/mssql-server-linux
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: Password12!
+        ports:
+        - 5433:1433
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+    - name: dotnet build
+      run: dotnet build Esquio.sln -c $BUILD_CONFIG
+    - name: dotnet test [UnitTests]
+      run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet test [FunctionalTests]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet pack [Esquio]
+      run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.AspNetCore]
+      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.AspNetCore.ApplicationInsightProcessor]
+      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Configuration.Store]
+      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Http.Store]
+      run: dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Blazor.WebAssembly]
+      run: dotnet pack ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.MiniProfiler]
+      run: dotnet pack ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Cli]
+      run: dotnet pack ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
+    

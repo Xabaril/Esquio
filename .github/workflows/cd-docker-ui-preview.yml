@@ -1,0 +1,24 @@
+name: Esquio UI Preview Continous Deployment
+on: 
+  push:
+    tags:       
+      - ui-preview-*  # Push events to release-* 
+env:
+  TAG: 3.0.${{ github.run_id }}-preview
+  IMAGE_NAME: esquioui
+  ESQUIO_REPO: xabarilcoding
+jobs:  
+  docker_build_publish:    
+    needs: build
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ${{ env.ESQUIO_REPO }}/${{ env.IMAGE_NAME }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: ./build/UIDockerfile
+        tags: "${{ env.TAG }}"

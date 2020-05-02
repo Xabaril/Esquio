@@ -1,0 +1,68 @@
+﻿@inject EsquioState state
+@implements IDisposable
+
+<div class="@(state.WindowModalIsActive ? "modal-open" : "")">
+    <CascadingAuthenticationState>
+        <Router AppAssembly="@typeof(Program).Assembly">
+            <Found Context="routeData">
+                <LocalStorage>
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(EmptyLayout)">
+                        <NotAuthorized>
+                            <RedirectTo Route="forbidden" Exclude="/" />
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                </LocalStorage>
+            </Found>
+            <NotFound>
+                <AuthorizeView>
+                    <Authorized>
+                        <LayoutView Layout="@typeof(MainLayout)">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-default text-center mx-auto mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                404 Not Found
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Sorry, there's nothing at this address.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </LayoutView>
+                    </Authorized>
+                    <NotAuthorized>
+                        <RedirectTo Route="/" />
+                    </NotAuthorized>
+                </AuthorizeView>
+            </NotFound>
+        </Router>
+    </CascadingAuthenticationState>
+</div>
+
+@if (state.WindowModalIsActive)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+<ConfirmModal />
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        state.OnWindowModalActiveChange += WindowModalActiveChange;
+    }
+
+    private void WindowModalActiveChange()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        state.OnWindowModalActiveChange -= WindowModalActiveChange;
+    }
+}

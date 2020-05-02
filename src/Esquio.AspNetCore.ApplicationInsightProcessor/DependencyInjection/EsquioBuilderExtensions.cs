@@ -17,7 +17,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
         public static IEsquioBuilder AddApplicationInsightProcessor(this IEsquioBuilder builder)
         {
-            builder.Services.AddApplicationInsightsTelemetryProcessor<EsquioAspNetScopedEvaluationSessionProcessor>();
+            builder.Services
+                .AddApplicationInsightsTelemetry()
+                .AddApplicationInsightsTelemetryProcessor<EsquioAspNetScopedEvaluationSessionProcessor>();
 
             return builder;
         }

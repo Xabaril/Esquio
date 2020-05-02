@@ -11,7 +11,7 @@ namespace UnitTests.Builders
             _toggle = new Toggle(type);
         }
 
-        public ToggleBuilder AddOneParameter(string name, object value)
+        public ToggleBuilder AddParameter(string name, object value)
         {
             _toggle.AddParameters(new Parameter[]
             {

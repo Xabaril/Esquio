@@ -1,8 +1,9 @@
-﻿using Esquio.UI.Api.Features.ApiKeys.Add;
-using Esquio.UI.Api.Features.ApiKeys.Details;
-using Esquio.UI.Api.Features.ApiKeys.List;
-using Esquio.UI.Api.Features.Flags.Delete;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Scenarios.Flags.Delete;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Details;
+using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.ApiKeys
+namespace Esquio.UI.Api.Scenarios.ApiKeys
 {
     [Authorize()]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     [Route("api/[controller]")]
     public class ApiKeysController : ControllerBase
@@ -29,9 +30,9 @@ namespace Esquio.UI.Api.Features.ApiKeys
         [HttpGet]
         [Authorize(Policies.Management)]
         [Route("")]
-        [ProducesResponseType(typeof(ListApiKeyResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<ListApiKeyResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListApiKeyResponse>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListApiKeyResponseDetail>>> List([FromQuery]ListApiKeyRequest request, CancellationToken cancellationToken = default)
         {
             var apiKeys = await _mediator.Send(request, cancellationToken);
 
@@ -66,7 +67,7 @@ namespace Esquio.UI.Api.Features.ApiKeys
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Created($"api/apikeys/{request.Name}?api-version=2.0", response);
+            return Created($"api/apikeys/{request.Name}?api-version=3.0", response);
         }
 
         [HttpDelete]

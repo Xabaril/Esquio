@@ -1,5 +1,5 @@
-﻿using Esquio.UI.Api.Features.Tags.Add;
-using Esquio.UI.Api.Features.Tags.List;
+﻿using Esquio.UI.Api.Shared.Models.Tags.Add;
+using Esquio.UI.Api.Shared.Models.Tags.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -27,7 +27,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task not_allow_to_untag_features_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Untag(productName: "fooproduct", featureName: "barfeature", tag: "peformance"))
+              .CreateRequest(ApiDefinitions.V3.Tags.Untag(productName: "fooproduct", featureName: "barfeature", tag: "peformance"))
               .DeleteAsync();
 
             response.StatusCode
@@ -40,7 +40,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task allow_to_untag_features()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
+              .WithManagementPermission()
               .Build();
 
             await _fixture.Given
@@ -72,7 +72,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Untag(product.Name, feature.Name, tag.Name))
+              .CreateRequest(ApiDefinitions.V3.Tags.Untag(product.Name, feature.Name, tag.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -86,7 +86,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task not_allow_untag_a_feature_when_it_has_not_been_previously_tagged_with_the_tag()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -110,7 +110,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Untag(product.Name, feature.Name, tag: "performance"))
+              .CreateRequest(ApiDefinitions.V3.Tags.Untag(product.Name, feature.Name, tag: "performance"))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .DeleteAsync();
 
@@ -124,9 +124,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task tag_feature_response_forbidden_if_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithWritePermission(false)
-              .Build();
+                .WithReaderPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -142,8 +141,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .Build();
 
             var toggle1 = Builders.Toggle()
-              .WithType("toggle")
-              .Build();
+                .WithType("toggle")
+                .Build();
 
             feature.Toggles.Add(toggle1);
             product.Features.Add(feature);
@@ -153,9 +152,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Tag(product.Name, feature.Name))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PostAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
 
             response.StatusCode
                 .Should()
@@ -164,11 +163,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
 
         [Fact]
         [ResetDatabase]
-        public async Task allow_to_tag_features()
+        public async Task allow_to_tag_features_with_default_color()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -184,8 +183,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .Build();
 
             var toggle1 = Builders.Toggle()
-              .WithType("toggle")
-              .Build();
+                .WithType("toggle")
+                .Build();
 
             feature.Toggles.Add(toggle1);
             product.Features.Add(feature);
@@ -195,13 +194,98 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Tag(product.Name, feature.Name))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PostAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task allow_to_tag_features_with_specified_color()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var tag = "tag";
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle1 = Builders.Toggle()
+                .WithType("toggle")
+                .Build();
+
+            feature.Toggles.Add(toggle1);
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var request = new AddTagRequest(tag,"#FF0022");
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status204NoContent);
+        }
+
+
+        [Fact]
+        [ResetDatabase]
+        public async Task response_bad_request_when_add_tag_features_with_bad_formatted_color()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var tag = "tag";
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var toggle1 = Builders.Toggle()
+                .WithType("toggle")
+                .Build();
+
+            feature.Toggles.Add(toggle1);
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var request = new AddTagRequest(tag, "#nonvalid");
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
         }
 
         [Fact]
@@ -209,8 +293,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task allow_to_tag_features_with_existing_tags()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -224,12 +308,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
                 .Build();
 
             var feature2 = Builders.Feature()
-               .WithName("barfeaturetwo")
-               .Build();
+                .WithName("barfeaturetwo")
+                .Build();
 
             var tag = Builders.Tag()
-               .WithName("performance")
-               .Build();
+                .WithName("performance")
+                .Build();
 
             var featureTag = Builders.FeatureTag()
                 .WithFeature(feature1)
@@ -245,13 +329,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest("performance");
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Tag(product.Name, feature2.Name))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PostAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature2.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -259,7 +343,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task not_allow_to_tag_features_when_feature_does_not_exists()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -269,9 +353,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Tag(productName: "fooproduct", featureName: "barfeature"))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PostAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(productName: "fooproduct", featureName: "barfeature"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
 
             response.StatusCode
                 .Should()
@@ -283,7 +367,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task not_allow_to_tag_features_when_it_has_been_previously_tagged_with_the_same_tag()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -292,6 +376,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var product = Builders.Product()
                 .WithName("fooproduct")
                 .Build();
+
             var feature = Builders.Feature()
                 .WithName("barfeature")
                 .Build();
@@ -317,9 +402,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var request = new AddTagRequest(tag.Name);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.Tag(product.Name, feature.Name))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PostAsJsonAsync(request);
+                .CreateRequest(ApiDefinitions.V3.Tags.Tag(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(request);
 
             response.StatusCode
                 .Should()
@@ -331,8 +416,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         public async Task get_back_the_list_of_tags_of_a_feature()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -340,12 +425,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             var product = Builders.Product()
                 .WithName("fooproduct")
                 .Build();
+
             var feature = Builders.Feature()
                 .WithName("barfeature")
                 .Build();
+
             var toggle1 = Builders.Toggle()
-              .WithType("toggle")
-              .Build();
+                .WithType("toggle")
+                .Build();
 
             var tagPerformance = Builders.Tag()
                 .WithName("performance")
@@ -373,9 +460,9 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.List(product.Name, feature.Name))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .GetAsync();
+                .CreateRequest(ApiDefinitions.V3.Tags.List(product.Name, feature.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .GetAsync();
 
             response.StatusCode
                 .Should()
@@ -390,23 +477,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Tags
         [ResetDatabase]
         public async Task get_response_forbidden_if_user_is_unauthorized()
         {
-            var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .WithReadPermission(false)
-              .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V2.Tags.List(productName: "fooproduct", featureName: "barfeature"))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .GetAsync();
+                .CreateRequest(ApiDefinitions.V3.Tags.List(productName: "fooproduct", featureName: "barfeature"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .GetAsync();
 
             response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status403Forbidden);
-
         }
     }
 }

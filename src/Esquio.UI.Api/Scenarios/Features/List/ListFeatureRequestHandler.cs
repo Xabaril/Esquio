@@ -1,4 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
+﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Features.List;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,9 +8,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.List
+namespace Esquio.UI.Api.Scenarios.Flags.List
 {
-    public class ListFeatureRequestHandler : IRequestHandler<ListFeatureRequest, ListFeatureResponse>
+    public class ListFeatureRequestHandler : IRequestHandler<ListFeatureRequest, PaginatedResult<ListFeatureResponseDetail>>
     {
         private readonly StoreDbContext _storeDbContext;
 
@@ -16,26 +18,27 @@ namespace Esquio.UI.Api.Features.Flags.List
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
         }
-        public async Task<ListFeatureResponse> Handle(ListFeatureRequest request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<ListFeatureResponseDetail>> Handle(ListFeatureRequest request, CancellationToken cancellationToken)
         {
             var total = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntity.Name == request.ProductName)
+                .Where(f => f.ProductEntity.Name == request.ProductName && !f.Archived)
                 .CountAsync(cancellationToken);
 
             var features = await _storeDbContext
                 .Features
-                .Where(f => f.ProductEntity.Name == request.ProductName)
+                .Where(f => f.ProductEntity.Name == request.ProductName && !f.Archived)
+                .OrderBy(f => f.Name)
                 .Skip(request.PageIndex * request.PageCount)
                 .Take(request.PageCount)
                 .ToListAsync(cancellationToken);
 
-            return new ListFeatureResponse()
+            return new PaginatedResult<ListFeatureResponseDetail>()
             {
                 Count = features.Count,
                 Total = total,
                 PageIndex = request.PageIndex,
-                Result = features.Select(f => new ListFlagResponseDetail
+                Items = features.Select(f => new ListFeatureResponseDetail
                 {
                     Enabled = f.Enabled,
                     Description = f.Description,

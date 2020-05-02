@@ -1,0 +1,68 @@
+name: Esquio Continous Deployment
+on: 
+  push:
+    tags:       
+      - preview-*  # Push events to release-* 
+jobs:
+  build:
+    env:
+      BUILD_CONFIG: Release
+      VERSION_SUFFIX: -preview${{ github.run_id }}
+    name: Build
+    runs-on: ubuntu-latest
+    services:
+      sql-server:
+        image: microsoft/mssql-server-linux
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: Password12!
+        ports:
+        - 5433:1433
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+    - name: dotnet build
+      run: dotnet build Esquio.sln -c $BUILD_CONFIG
+    - name: dotnet test [UnitTests]
+      run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet test [FunctionalTests]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet pack [Esquio]
+      run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.AspNetCore]
+      run: dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.AspNetCore.ApplicationInsightProcessor]
+      run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.Configuration.Store]
+      run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.Http.Store]
+      run: dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.Blazor.WebAssembly]
+      run: dotnet pack ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.MiniProfiler]
+      run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.Cli]
+      run: dotnet pack  ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: setup nuget
+      uses: NuGet/setup-nuget@v1.0.2
+      with:
+        nuget-version: latest
+    - name: Publish Esquio AspNetCore nuget
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Esquio nuget
+      run: dotnet nuget push ./artifacts/Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Application Insights nuget
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Http Store  nuget
+      run: dotnet nuget push ./artifacts/Esquio.Http.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Configuration Store nuget
+      run: dotnet nuget push ./artifacts/Esquio.Configuration.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Blazor WebAssembly nuget
+      run: dotnet nuget push ./artifacts/Esquio.Blazor.WebAssembly.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish MiniProfiler nuget
+      run: dotnet nuget push ./artifacts/Esquio.MiniProfiler.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Cli nuget
+      run: dotnet nuget push ./artifacts/Esquio.Cli.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate

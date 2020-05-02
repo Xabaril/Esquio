@@ -1,4 +1,6 @@
-﻿using Esquio.AspNetCore.Toggles;
+﻿using Esquio;
+using Esquio.Abstractions;
+using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -12,22 +14,11 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
     public class headervalue_toggle_tests
     {
         [Fact]
-        public void throw_if_store_service_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var accessor = new FakeHttpContextAccesor();
-                new HeaderValueToggle(null, accessor);
-            });
-        }
-
-        [Fact]
         public void throw_if_httpcontextaccessor_is_null()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
-                new HeaderValueToggle(store, null);
+                new HeaderValueToggle(null);
             });
         }
 
@@ -36,8 +27,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HeaderValueToggle>()
-                .AddOneParameter("HeaderName", "Accept")
-                .AddOneParameter("HeaderValues", "application/json")
+                .AddParameter("HeaderName", "Accept")
+                .AddParameter("HeaderValues", "application/json")
                 .Build();
 
             var feature = Build
@@ -48,10 +39,14 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Request.Headers.Add("Accept", "application/json");
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var headerValueToggle = new HeaderValueToggle(store, new FakeHttpContextAccesor(context));
+            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccessor(context));
 
-            var active = await headerValueToggle.IsActiveAsync(Constants.FeatureName);
+            var active = await headerValueToggle.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -62,8 +57,8 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<HeaderValueToggle>()
-                .AddOneParameter("HeaderName", "Accept")
-                .AddOneParameter("HeaderValues", "text/xml")
+                .AddParameter("HeaderName", "Accept")
+                .AddParameter("HeaderValues", "text/xml")
                 .Build();
 
             var feature = Build
@@ -74,25 +69,17 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Request.Headers.Add("Accept", "application/json");
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
-            var headerValueToggle = new HeaderValueToggle(store, new FakeHttpContextAccesor(context));
+            var headerValueToggle = new HeaderValueToggle(new FakeHttpContextAccessor(context));
 
-            var active = await headerValueToggle.IsActiveAsync(Constants.FeatureName);
+            var active = await headerValueToggle.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeFalse();
-        }
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
         }
     }
 }

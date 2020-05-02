@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
-using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Features.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Details
+namespace Esquio.UI.Api.Scenarios.Flags.Details
 {
     public class DetailsFeatureRequestHandler : IRequestHandler<DetailsFeatureRequest, DetailsFeatureResponse>
     {

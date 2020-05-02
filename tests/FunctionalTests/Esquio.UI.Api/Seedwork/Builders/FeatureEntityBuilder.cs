@@ -1,4 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
@@ -7,12 +7,19 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
         private int _productId = 1;
         private string _name = "feature-name";
         private bool _enabled = true;
+        private bool _archived = false;
 
         public FeatureEntityBuilder WithEnabled(bool enabled = false)
         {
             _enabled = enabled;
             return this;
         }
+        public FeatureEntityBuilder WithArchived(bool archived = false)
+        {
+            _archived = archived;
+            return this;
+        }
+
         public FeatureEntityBuilder WithName(string name)
         {
             _name = name;
@@ -27,7 +34,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 
         public FeatureEntity Build()
         {
-            return new FeatureEntity(_productId, _name, _enabled);
+            return new FeatureEntity(_productId, _name, _enabled, _archived);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     static class Policies
     {
-        public const string Read = nameof(Read);
-        public const string Write = nameof(Write);
+        public const string Reader = nameof(Reader);
+        public const string Contributor = nameof(Contributor);
         public const string Management = nameof(Management);
     }
 }

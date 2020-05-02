@@ -19,6 +19,7 @@ namespace Esquio.CliTool.Command
             return 1;
         }
 
+        [Command("list")]
         private class ListCommand
         {
             [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]
@@ -48,6 +49,7 @@ namespace Esquio.CliTool.Command
             }
         }
 
+        [Command("get")]
         private class GetCommand
         {
             [Option("--product-name <PRODUCT-NAME>", Description = "The product name.")]

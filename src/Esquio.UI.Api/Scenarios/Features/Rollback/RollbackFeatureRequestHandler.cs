@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Features.Rollback;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Rollback
+namespace Esquio.UI.Api.Scenarios.Flags.Rollback
 {
     internal class RollbackFeatureRequestHandler
         : IRequestHandler<RollbackFeatureRequest>
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Flags.Rollback
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f => f.ProductEntity) //-> this is only needed for "history"
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(cancellationToken);

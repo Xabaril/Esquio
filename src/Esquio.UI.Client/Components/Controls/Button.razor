@@ -1,0 +1,8 @@
+﻿<button type="button" class="@ClassName" @onclick="OnClick" disabled="@(HasPermission == false)">@ChildContent</button>
+
+@code {
+    [Parameter] public string ClassName { get; set; } = "btn btn-primary";
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+}

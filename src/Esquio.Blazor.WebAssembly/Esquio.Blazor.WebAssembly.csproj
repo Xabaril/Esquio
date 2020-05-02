@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+    <RazorLangVersion>$(RazorLangVersion)</RazorLangVersion>
+    <RootNamespace>Esquio.Blazor.WebAssembly</RootNamespace>
+    <Description>Esquio components and services for Blazor Wasm.For more information see http://github.com/Xabaril/Esquio </Description>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Blazor;WebAssembly</PackageTags>
+    <Version>$(esquioblazorwasm)</Version>
+    <PackageId>Esquio</PackageId>
+    <PackageVersion>$(esquioblazorwasm)</PackageVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(blazor)" />
+    <PackageReference Include="System.Net.Http.Json" Version="$(blazorhttpclient)" />
+  </ItemGroup>
+
+</Project>

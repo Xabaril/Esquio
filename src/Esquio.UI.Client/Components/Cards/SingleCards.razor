@@ -1,0 +1,35 @@
+﻿@typeparam TResponse
+
+@if (Items == null || Items.Count() == 0)
+{
+    <SkeletonCards Cols="3" />
+}
+else
+{
+    <div class="row cards">
+        @foreach (var item in Items)
+        {
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header" data-simplebar>
+                        <h3 class="card-title">@CardTitle(item)</h3>
+                    </div>
+                    <div class="card-body" data-simplebar>
+                        @CardBody(item)
+                    </div>
+                    <div class="card-footer text-right">
+                        @CardFooter(item)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    [Parameter] public IEnumerable<TResponse> Items { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardTitle { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardBody { get; set; }
+    [Parameter] public RenderFragment<TResponse> CardFooter { get; set; }
+}

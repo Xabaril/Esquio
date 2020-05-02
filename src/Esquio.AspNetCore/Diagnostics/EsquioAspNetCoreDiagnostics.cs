@@ -18,9 +18,9 @@ namespace Esquio.AspNetCore.Diagnostics
             Log.FeatureMatcherPolicyCanBeAppliedToEndpoint(_logger, endpointDisplayName);
         }
 
-        public void FeatureMatcherPolicyEvaluatingFeatures(string endpointDisplayName, string names, string productName)
+        public void FeatureMatcherPolicyEvaluatingFeatures(string endpointDisplayName, string names)
         {
-            Log.FeatureMatcherPolicyEvaluatingFeatures(_logger, endpointDisplayName, names, productName);
+            Log.FeatureMatcherPolicyEvaluatingFeatures(_logger, endpointDisplayName, names);
         }
         public void FeatureMatcherPolicyEndpointIsNotValid(string endpointDisplayName)
         {
@@ -37,24 +37,24 @@ namespace Esquio.AspNetCore.Diagnostics
             Log.FeatureMatcherPolicyExecutingFallbackEndpoint(_logger, requestPath);
         }
 
-        public void FeatureTagHelperBegin(string featureName, string productName)
+        public void FeatureTagHelperBegin(string featureName)
         {
-            Log.FeatureTagHelperBegin(_logger, featureName, productName);
+            Log.FeatureTagHelperBegin(_logger, featureName);
         }
 
-        public void FeatureTagHelperClearContent(string featureName, string productName)
+        public void FeatureTagHelperClearContent(string featureName)
         {
-            Log.FeatureTagHelperClearContent(_logger, featureName, productName);
+            Log.FeatureTagHelperClearContent(_logger, featureName);
         }
 
-        public void EsquioMiddlewareThrow(string featureName, string productName, Exception exception)
+        public void EsquioMiddlewareThrow(string featureName, Exception exception)
         {
-            Log.EsquioMiddlewareThrow(_logger, featureName, productName, exception);
+            Log.EsquioMiddlewareThrow(_logger, featureName, exception);
         }
 
-        public void EsquioMiddlewareEvaluatingFeature(string featureName, string productName)
+        public void EsquioMiddlewareEvaluatingFeature(string featureName)
         {
-            Log.EsquioMiddlewareEvaluatingFeature(_logger, featureName, productName);
+            Log.EsquioMiddlewareEvaluatingFeature(_logger, featureName);
         }
 
         public void EsquioMiddlewareSuccess()

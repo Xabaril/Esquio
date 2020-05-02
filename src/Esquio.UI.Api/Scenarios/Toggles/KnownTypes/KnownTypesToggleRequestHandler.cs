@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.KnownTypes
+namespace Esquio.UI.Api.Scenarios.Toggles.KnownTypes
 {
     public class KnownTypesToggleRequestHandler : IRequestHandler<KnownTypesToggleRequest, KnownTypesToggleResponse>
     {

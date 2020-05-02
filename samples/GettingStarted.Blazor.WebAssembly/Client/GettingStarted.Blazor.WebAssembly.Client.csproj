@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+    <RazorLangVersion>$(RazorLangVersion)</RazorLangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(blazor)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(blazor)" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="$(blazorhttpclient)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Esquio.Blazor.WebAssembly\Esquio.Blazor.WebAssembly.csproj" />
+    <ProjectReference Include="..\..\GettingStarted.Blazor.WebAssembly.Shared\GettingStarted.Blazor.WebAssembly.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

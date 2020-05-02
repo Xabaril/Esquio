@@ -1,9 +1,9 @@
 ﻿using Acheve.AspNetCore.TestHost.Security;
 using Acheve.TestHost;
-using Esquio.EntityFrameworkCore.Store;
 using Esquio.UI.Api;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Services;
-using Esquio.UI.Infrastructure.Services;
+using Esquio.UI.Host.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Respawn;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -113,10 +114,25 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 .AddAuthorization()
                 .AddAuthentication(setup =>
                 {
-                    setup.DefaultAuthenticateScheme = TestServerDefaults.AuthenticationScheme;
-                    setup.DefaultChallengeScheme = TestServerDefaults.AuthenticationScheme;
+                    setup.DefaultAuthenticateScheme = "secured";
+                    setup.DefaultChallengeScheme = "secured"; 
                 })
+                .AddApiKey()
                 .AddTestServer()
+                .AddPolicyScheme("secured", "Authorization TestServer or ApiKey", options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        var apiKey = context.Request.Headers["X-Api-Key"].FirstOrDefault();
+
+                        if (apiKey != null)
+                        {
+                            return ApiKeyAuthenticationDefaults.ApiKeyScheme;
+                        }
+
+                        return TestServerDefaults.AuthenticationScheme; ;
+                    };
+                })
                 .Services
                 .AddDbContext<StoreDbContext>(setup =>
                 {

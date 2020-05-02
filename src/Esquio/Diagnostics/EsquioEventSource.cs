@@ -65,7 +65,7 @@ namespace Esquio.Diagnostics
                 DisplayName = "Toggle Executions Throws",
                 DisplayRateTimeScale = new TimeSpan(0, 0, 1)
             };
-         
+
             _featureDynamicCounters = new ConcurrentDictionary<string, EventCounter>();
         }
 
@@ -83,14 +83,14 @@ namespace Esquio.Diagnostics
         }
 
         [Event(3, Level = EventLevel.Error)]
-        public void FeatureEvaluationThrow(string featureName, string productName, string error)
+        public void FeatureEvaluationThrow(string featureName, string productName, string ringName, string error)
         {
             Interlocked.Increment(ref _perSecondFeatureThrows);
-            WriteEvent(3, featureName, productName, error);
+            WriteEvent(3, featureName, productName, ringName, error);
         }
 
         [Event(4, Level = EventLevel.Informational)]
-        public void FeatureEvaluated(string featureName, string productName, long elapsedMilliseconds)
+        public void FeatureEvaluated(string featureName, string productName, string ringName, long elapsedMilliseconds)
         {
             Interlocked.Increment(ref _perSecondFeatureEvaluations);
 
@@ -111,14 +111,14 @@ namespace Esquio.Diagnostics
                 counter?.WriteMetric(elapsedMilliseconds);
             }
 
-            WriteEvent(4, featureName, productName, elapsedMilliseconds);
+            WriteEvent(4, featureName, productName, ringName, elapsedMilliseconds);
         }
 
         [Event(5, Level = EventLevel.Error)]
-        public void FeatureEvaluationNotFound(string featureName, string productName)
+        public void FeatureEvaluationNotFound(string featureName, string productName, string ringName)
         {
             Interlocked.Increment(ref _perSecondFeatureNotFound);
-            WriteEvent(5, featureName, productName);
+            WriteEvent(5, featureName, productName, ringName);
         }
 
 
@@ -135,10 +135,10 @@ namespace Esquio.Diagnostics
         }
 
         [Event(12, Level = EventLevel.Informational)]
-        public void ToggleEvaluated(string featureName, string productName, string toggle, long elapsedMilliseconds)
+        public void ToggleEvaluated(string featureName, string productName, string ringName, string toggle, long elapsedMilliseconds)
         {
             Interlocked.Increment(ref _perSecondToggleEvaluations);
-            WriteEvent(12, featureName, productName, toggle, elapsedMilliseconds);
+            WriteEvent(12, featureName, productName, ringName, toggle, elapsedMilliseconds);
         }
 
         [Event(20, Level = EventLevel.Informational)]
@@ -148,9 +148,9 @@ namespace Esquio.Diagnostics
         }
 
         [Event(21, Level = EventLevel.Informational)]
-        public void ToggleActivationStop()
+        public void ToggleActivationStop(string toggleTypeName)
         {
-            WriteEvent(21);
+            WriteEvent(21, toggleTypeName);
         }
 
         [Event(22, Level = EventLevel.Error)]

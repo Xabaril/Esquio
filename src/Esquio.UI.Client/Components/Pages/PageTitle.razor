@@ -1,0 +1,25 @@
+﻿<div class="page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                @Icon
+            </div>
+            <div>
+                @Title
+                <div class="page-title-subheading">
+                    @Subtitle
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            @Actions
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment Icon { get; set; }
+    [Parameter] public RenderFragment Actions { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Subtitle { get; set; }
+}

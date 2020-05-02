@@ -22,12 +22,26 @@ namespace Esquio.DependencyInjection
         /// override default product name configured on <see cref="EsquioConstants.DEFAULT_PRODUCT_NAME"/>
         /// </summary>
         /// <param name="productName">The product name to be used when the "Product" parameter is not stablished.</param>
-        /// <returns></returns>
+        /// <returns>The same configuration to be chained.</returns>
         public EsquioOptions ConfigureDefaultProductName(string productName)
         {
             DefaultProductName = productName ?? throw new ArgumentNullException(nameof(productName));
             return this;
         }
+
+        internal string DefaultRingName = EsquioConstants.DEFAULT_RING_NAME;
+
+        /// <summary>
+        /// Configure default ring name to be used
+        /// </summary>
+        /// <param name="ringName">The ring name to be used.</param>
+        /// <returns></returns>
+        public EsquioOptions ConfigureDefaultRingName(string ringName)
+        {
+            DefaultRingName = ringName ?? throw new ArgumentNullException(nameof(ringName));
+            return this;
+        }
+
 
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
 
@@ -55,16 +69,16 @@ namespace Esquio.DependencyInjection
             return this;
         }
 
-        internal bool EvaluationSessionEnabled { get; set; } = true;
+        internal bool ScopedEvaluationEnabled { get; set; } = true;
 
         /// <summary>
-        /// Configure if <see cref="IScopedEvaluationSession"/> is used on <see cref="IFeatureService"/> evaluation process.
+        /// Configure if <see cref="IScopedEvaluationHolder"/> is used on <see cref="IFeatureService"/> evaluation process.
         /// </summary>
-        /// <param name="useSession">True if evaluation session is used, else False.</param>
+        /// <param name="useScopedEvaluation">True if evaluation session is used, else False.</param>
         /// <returns>The same configuration to be chained.</returns>
-        public EsquioOptions UseEvalationSession(bool useSession = true)
+        public EsquioOptions UseScopedEvaluation(bool useScopedEvaluation = true)
         {
-            EvaluationSessionEnabled = useSession;
+            ScopedEvaluationEnabled = useScopedEvaluation;
             return this;
         }
 

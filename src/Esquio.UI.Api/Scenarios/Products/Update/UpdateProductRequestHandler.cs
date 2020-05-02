@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Products.Update;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.Update
+namespace Esquio.UI.Api.Scenarios.Products.Update
 {
     public class UpdateProductRequestHandler : IRequestHandler<UpdateProductRequest>
     {

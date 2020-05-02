@@ -1,18 +1,20 @@
 Getting started with Esquio in ASP.NET Core
 ============================================
 
-In this article, we are going to see how easy it is to use Esquio in your ASP.NET Core application using the NuGet packages provided by Xabaril.
+In this article, we are going to watch an incremental sample to show how to use to use Esquio in your ASP.NET Core application.
 
-> In `samples/WebApp <https://github.com/Xabaril/Esquio/tree/master/samples/WebApp>`_ you'll find a complete Esquio example in ASP.NET Core.
-
-Setup
+Intro
 ^^^^^
 
-To install Esquio open a console window and type the following command using the .NET Core CLI::
+> In `samples/GettingStarted.AspNetCore.Intro <https://github.com/Xabaril/Esquio/tree/master/samples/GettingStarted.AspNetCore.Intro>`_ you'll find this example in ASP.NET Core.
 
-        dotnet add package Esquio.Configuration.Store
+First, create a new project empty::
+
+        dotnet new web -n GettingStarted.AspNetCore.Intro
+
+Install ``Esquio.AspNetCore`` package, typing the following command using the .NET Core CLI::
+
         dotnet add package Esquio.AspNetCore
-
 
 or using Powershell or Package Manager::
 
@@ -25,13 +27,55 @@ In the **ConfigureServices** method of Startup.cs, register the Esquio services:
 
         services
           .AddEsquio()
-          .AddAspNetCoreDefaultServices()
-          .AddConfigurationStore(Configuration, "Esquio");
+          .AddAspNetCoreDefaultServices();
 
-``AddEsquio`` and ``AddAspNetCoreDefaultServices`` methods allows you to register the set of services that Esquio needs to works. The ``AddConfigurationStore`` method registers the configuration store to use, in this case, based on the default configuration system of `ASP.NET Core <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.2>`_
+``AddEsquio`` registers the default services for Esquio
+``AddAspNetCoreDefaultServices`` register the default ASP.NET Core services for Esquio (i.e. claims or environment services)
+
+
+Setting ConfigurationStore
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Let's start using our ``appsettings.json`` to configurate Esquio. We don't recommend this store for production, only for small projects or for testing purposes.
+
+Install ``Esquio.AspNetCore`` package, typing the following command using the .NET Core CLI::
+
+        dotnet add package Esquio.Configuration.Store
+
+or using Powershell or Package Manager::
+
+        Install-Package Esquio.Configuration.Store
+
+or install via NuGet.
+
+And register the specific service for this store::
+
+    public class Startup
+    {
+        IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services
+                .AddEsquio()
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(_configuration);
+        }
+
+``AddConfigurationStore`` method registers the configuration store to use, in this case, based on the default configuration system of `ASP.NET Core <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.2>`_
+
+So, let's open our ``appsettings.json`` file. To help us in this task, we can use the Esquio schema, selecting it on the ``Schema`` options:
+
+.. image:: ../images/esquioschema.png
 
 Add the content below to your ``appsettings.json`` file::
 
+```json
         {
           "Esquio": {
             "Products": [
@@ -39,7 +83,7 @@ Add the content below to your ``appsettings.json`` file::
                 "Name": "default",
                 "Features": [
                   {
-                    "Name": "Colored",
+                    "Name": "HiddenGem",
                     "Enabled": true,
                     "Toggles": []
                   }
@@ -48,6 +92,120 @@ Add the content below to your ``appsettings.json`` file::
             ]
           }
         }
+```
+
+By default, ``Esquio`` will be the root element. However, you could change it on adding the configurationStore::
+
+                .AddConfigurationStore(_configuration, key: "MyNewCustomRoot");
+
+With this configuration, we are defining a new ``feature`` named ``HiddenGem``, initially set to enabled, but with no toggle on it.
+
+In order to test it, let's use the current endpoint already defined on the method ``Configure`` on the class ``Startup``. We can attach feature metadata to an endpoint using the route mappings configuration fluent API ``RequireFeature`` method::
+
+```csharp
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello World!");
+                }).RequireFeature("HiddenGem");
+            });
+```
+
+This method will filter if the endpoint can be executed depending on feature(s) state. If the configured feature is enabled this endpoint is executed, if not, by default a NotFound result is obtained.
+
+So, if we run the project with this configuration, we will reach this endpoint:
+
+.. image:: ../images/tutorial-intro-success.png
+
+However, let's modify the configuration file again, setting ``Enabled`` property to false, and refresh the browser::
+
+```json
+                "Features": [
+                  {
+                    "Name": "HiddenGem",
+                    "Enabled": false,
+                    "Toggles": []
+                  }
+                ]
+```
+
+.. image:: ../images/tutorial-intro-notfound.png
+
+
+Exploring more options
+^^^^^^^^^^^^^^^^^^^^^^
+
+> In `samples/GettingStarted.AspNetCore.IntroOptions <https://github.com/Xabaril/Esquio/tree/master/samples/GettingStarted.AspNetCore.IntroOptions>`_ you'll find this example in ASP.NET Core.
+
+Let's explore some configuration options that ``Esquio`` provides us.
+
+We can configurate what would be the result of evaluating a feature that cannot be found or whom evaluation returns an error.
+
+So, let's back again to the ``ConfigureServices`` and set the behaviour of `NotFound` and `OnError` to `SetDisable`. This is the value by default, so for the moment these configuration doesn't change anything. Add also a new fallback endpoint to verify if the fallback is executed or not::
+
+```csharp
+            services
+                .AddEsquio(options =>
+                {
+                    options.ConfigureNotFoundBehavior(NotFoundBehavior.SetDisabled);
+                    options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
+                })
+                .AddEndpointFallback(new RequestDelegate(async context =>
+                {
+                    await context.Response.WriteAsync("Hello World! , the feature is disabled and endpoint fallback is executed!");
+                }))
+```
+
+On `Configure` method, let's modify the endpoint to call to require a feature that has not been configured (`NotExistingFeature` instead of `HiddenGem`)::
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello World!");
+                }).RequireFeature("NonExistingFeature");
+            });
+
+> You can specify many features separated by comma, so you can restrict access to the endpoints if a feature or a group features are enabled or not.
+
+If you launch again the project, you will get the fallback message:
+
+.. image:: ../images/tutorial-intro-fallback.png
+
+We could also use any already defined fallback actions, instead of creating the request delegate directly. In this case, on fallback we want to be redirected to Google page::
+
+```csharp
+                .AddEsquio(options =>
+                {
+                    options.ConfigureNotFoundBehavior(NotFoundBehavior.SetDisabled);
+                    options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
+                })
+                .AddEndpointFallback(EndpointFallbackAction.RedirectTo("https://www.google.com"))
+```
+
+In case we would like ``Esquio`` to evaluate as enabled a feature that doesn't exist, we can change `NotFound` behaviour::
+
+```csharp
+            services
+                .AddEsquio(options =>
+                {
+                    options.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled);
+                    options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
+                })
+```
+
+If we run the project, we get again our normal endpoint:
+
+.. image:: ../images/tutorial-intro-success.png
+
+
+
+
+
+
+
+
 
 ASP.NET Core Web Apps
 ^^^^^^^^^^^^^^^^^^^^^^^

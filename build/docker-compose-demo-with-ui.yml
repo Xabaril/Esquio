@@ -1,0 +1,43 @@
+version: '3'
+services:
+    app:
+        image: app
+        container_name: app
+        depends_on: 
+            - ui
+        ports:
+            - 8060:80
+        build:
+            context: ..
+            dockerfile: build/DemoDockerfile
+        environment:
+            - EsquioHttpStore__BaseAddress=http://ui:80
+            - EsquioHttpStore__ApiKey=ZgZ9/qcwJGe/Utefuym5YS/84mE8/9x7kIrx2V/aIxc=
+    ui:
+        image: ui
+        container_name: ui
+        depends_on: 
+            - sqlserver
+        ports:
+            - 8090:80
+        build:
+            context: ..
+            dockerfile: build/UIDockerfile
+        environment:
+            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - Serilog__MinimumLevel=Information
+            - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
+            - Security__OpenId__ClientId=interactive.public
+            - Security__OpenId__Audience=api
+            - Security__OpenId__Authority=https://demo.identityserver.io/
+            - Security__OpenId__ResponseType=code
+            - Security__OpenId__RequireHttpsMetadata=true
+    sqlserver:
+        image: microsoft/mssql-server-linux
+        restart: always
+        ports:
+            - 5433:1433
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=Password12!
+   

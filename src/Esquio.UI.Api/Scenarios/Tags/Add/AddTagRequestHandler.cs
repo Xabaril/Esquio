@@ -1,6 +1,7 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Tags.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags.Add
+namespace Esquio.UI.Api.Scenarios.Tags.Add
 {
     public class AddTagRequestHandler : IRequestHandler<AddTagRequest>
     {
@@ -37,7 +38,7 @@ namespace Esquio.UI.Api.Features.Tags.Add
 
                 if (tag == null)
                 {
-                    tag = new TagEntity(request.Tag);
+                    tag = new TagEntity(request.Tag,request.HexColor);
                 }
 
                 var featureTag = new FeatureTagEntity()
@@ -52,7 +53,7 @@ namespace Esquio.UI.Api.Features.Tags.Add
                 if ( !alreadyExist )
                 {
                     await _dbContext.FeatureTagEntities
-                    .AddAsync(featureTag);
+                        .AddAsync(featureTag);
 
                     await _dbContext.SaveChangesAsync(cancellationToken);
 

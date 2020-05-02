@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Toggles.Delete;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Delete
+namespace Esquio.UI.Api.Scenarios.Toggles.Delete
 {
     public class DeleteToggleRequestHandler : IRequestHandler<DeleteToggleRequest>
     {
@@ -26,6 +27,7 @@ namespace Esquio.UI.Api.Features.Toggles.Delete
             var toggle = await _storeDbContext
                 .Toggles
                 .Include(t => t.FeatureEntity)
+                .ThenInclude(t=>t.ProductEntity) // only for history works!
                 .Include(t => t.Parameters)
                 .Where(t => t.FeatureEntity.Name == request.FeatureName && t.FeatureEntity.ProductEntity.Name == request.ProductName && t.Type == request.ToggleType)
                 .SingleOrDefaultAsync(cancellationToken);

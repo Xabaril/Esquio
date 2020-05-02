@@ -1,6 +1,8 @@
-﻿using Esquio.UI.Api.Features.ApiKeys.Add;
-using Esquio.UI.Api.Features.ApiKeys.Details;
-using Esquio.UI.Api.Features.ApiKeys.List;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Add;
+using Esquio.UI.Api.Shared.Models.ApiKeys.Details;
+using Esquio.UI.Api.Shared.Models.ApiKeys.List;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
@@ -28,7 +30,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.ApiKeys.Get(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(name: "fooname"))
                 .GetAsync();
 
             response.StatusCode
@@ -42,14 +44,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task get_response_notfound_when_apikeyid_does_not_exist()
         {
             var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.ApiKeys.Get(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(name: "fooname"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -62,23 +64,32 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         [ResetDatabase]
         public async Task get_response_apikey_when_exist()
         {
-            var permission = Builders.Permission()
-              .WithAllPrivilegesForDefaultIdentity()
-              .Build();
+            var apiKeyValue = "barkey";
+            var apiKeyName = "fooname";
+
+            var requesterPermission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            var apiKeyPermission = Builders.Permission()
+                .WithManagementPermission()
+                .WithNameIdentifier(apiKeyValue)
+                .Build();
 
             await _fixture.Given
-                .AddPermission(permission);
+                .AddPermission(requesterPermission, apiKeyPermission);
 
             var apiKey = Builders.ApiKey()
-               .WithName("fooname")
-               .Withkey("barkey")
+               .WithName(apiKeyName)
+               .Withkey(apiKeyValue)
+               .WithValidTo(DateTime.UtcNow.AddYears(1))
                .Build();
 
             await _fixture.Given
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.ApiKeys.Get(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -87,7 +98,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
 
             content.Name
                 .Should()
-                .BeEquivalentTo("fooname");
+                .BeEquivalentTo(apiKeyName);
 
             response.StatusCode
                 .Should()
@@ -98,8 +109,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task get_response_forbidden_when_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithManagementPermission(false)
+                .WithReaderPermission()
                 .Build();
 
             await _fixture.Given
@@ -114,7 +124,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V2.ApiKeys.Get(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -128,7 +138,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task list_response_ok_and_use_default_skip_take_values()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -150,7 +160,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -159,7 +169,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListApiKeyResponse>();
+                .ReadAs<PaginatedResult<ListApiKeyResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -170,11 +180,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .First().Name
                 .Should().BeEquivalentTo("apikey#1");
 
-            content.Result
+            content.Items
                 .Last().Name
                 .Should().BeEquivalentTo("apikey#2");
         }
@@ -184,7 +194,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task list_response_ok_and_use_specific_skip_take_values()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -206,7 +216,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.List(pageIndex: 1, pageCount: 1))
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List(pageIndex: 1, pageCount: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -219,7 +229,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListApiKeyResponse>();
+                .ReadAs<PaginatedResult<ListApiKeyResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -230,7 +240,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             content.PageIndex
                 .Should().Be(1);
 
-            content.Result
+            content.Items
                 .Single().Name
                 .Should().BeEquivalentTo("apikey#2");
         }
@@ -239,14 +249,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task list_response_ok_when_no_data()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -255,7 +265,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListApiKeyResponse>();
+                .ReadAs<PaginatedResult<ListApiKeyResponseDetail>>();
 
             content.Total
                 .Should().Be(0);
@@ -266,7 +276,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             content.PageIndex
                 .Should().Be(0);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(0);
         }
@@ -275,15 +285,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task list_response_forbidden_when_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
-               .WithManagementPermission(false)
+               .WithReaderPermission()
                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -296,7 +305,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task list_response_ok_when_no_page_data()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -318,7 +327,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.List(pageIndex: 10, pageCount: 10))
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List(pageIndex: 10, pageCount: 10))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -327,7 +336,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .Be(StatusCodes.Status200OK);
 
             var content = await response.Content
-                .ReadAs<ListApiKeyResponse>();
+                .ReadAs<PaginatedResult<ListApiKeyResponseDetail>>();
 
             content.Total
                 .Should().Be(2);
@@ -338,7 +347,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             content.PageIndex
                 .Should().Be(10);
 
-            content.Result
+            content.Items
                 .Count
                 .Should().Be(0);
         }
@@ -347,7 +356,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .PostAsync();
 
             response.StatusCode
@@ -360,7 +369,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_badrequest_if_name_is_greater_than_200()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -368,11 +377,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
 
             var addApiKeyRequest = new AddApiKeyRequest()
             {
-                Name = new string('c', 201)
+                Name = new string('c', 201),
+                ActAs = nameof(ApplicationRole.Reader)
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -382,11 +392,37 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         }
         [Fact]
         [ResetDatabase]
+        public async Task add_response_badrequest_if_actas_is_not_enum_valid()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var addApiKeyRequest = new AddApiKeyRequest()
+            {
+                Name = new string('c', 100),
+                ActAs = "NewRole"
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(addApiKeyRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
         public async Task add_response_forbidden_when_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
-                .WithManagementPermission(false)
+                .WithReaderPermission()
                 .Build();
 
             await _fixture.Given
@@ -399,7 +435,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -413,7 +449,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_ok_and_use_default_validTo_if_is_not_specified()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
             await _fixture.Given
@@ -421,11 +457,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
 
             var addApiKeyRequest = new AddApiKeyRequest()
             {
-                Name = "fooname"
+                Name = "fooname",
+                ActAs = nameof(ApplicationRole.Reader)
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -450,7 +487,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_badrequest_if_apikey_with_the_same_name_already_exist()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -472,10 +509,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var addApiKeyRequest = new AddApiKeyRequest()
             {
                 Name = "apikey#1",
+                ActAs = "Reader",
+                ValidTo = DateTime.UtcNow.AddYears(1)
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -488,7 +527,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_created_when_create_new_apikey()
         {
             var permission = Builders.Permission()
-                .WithAllPrivilegesForDefaultIdentity()
+                .WithManagementPermission()
                 .Build();
 
             await _fixture.Given
@@ -497,11 +536,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             var addApiKeyRequest = new AddApiKeyRequest()
             {
                 Name = "fookey",
+                ActAs = nameof(ApplicationRole.Reader),
                 ValidTo = DateTime.UtcNow.AddYears(2),
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -525,8 +565,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Delete(name: "fooname"))
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(name: "fooname"))
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -538,16 +578,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task delete_response_bad_request_if_api_key_does_not_exist()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
-               .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Delete(name:"fooname"))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(name: "fooname"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -559,24 +599,30 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task delete_response_no_content_when_apikey_is_removed()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
+               .WithManagementPermission()
                .Build();
 
-            await _fixture.Given
-                .AddPermission(permission);
-
             var apiKey = Builders.ApiKey()
-             .WithName("fooname")
-             .Withkey("barkey")
-             .Build();
+                .WithName("fooname")
+                .Withkey("barkey")
+                .Build();
 
             await _fixture.Given
                 .AddApiKey(apiKey);
 
+            var apikeyPermission = Builders.Permission()
+                .WithManagementPermission()
+                .WithNameIdentifier("barkey")
+                .WithSubjectType(SubjectType.Application)
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(apikeyPermission, permission);
+
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Delete(apiKey.Name))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(apiKey.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()
@@ -588,25 +634,24 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task delete_response_forbidden_when_user_is_not_authorized()
         {
             var permission = Builders.Permission()
-               .WithAllPrivilegesForDefaultIdentity()
-               .WithManagementPermission(false)
-               .Build();
+                .WithReaderPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
             var apiKey = Builders.ApiKey()
-             .WithName("fooname")
-             .Withkey("barkey")
-             .Build();
+                .WithName("fooname")
+                .Withkey("barkey")
+                .Build();
 
             await _fixture.Given
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V2.ApiKeys.Delete(apiKey.Name))
-                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .DeleteAsync();
+                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(apiKey.Name))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
 
             response.StatusCode
                 .Should()

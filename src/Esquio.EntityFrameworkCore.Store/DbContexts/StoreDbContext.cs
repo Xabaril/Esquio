@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace Esquio.EntityFrameworkCore.Store
 {
     public class StoreDbContext : DbContext
     {
+        const string UNKNOWN = nameof(UNKNOWN);
+
         private readonly StoreOptions storeOptions;
 
         public StoreDbContext(DbContextOptions<StoreDbContext> options) : this(options, new StoreOptions()) { }
@@ -30,6 +33,7 @@ namespace Esquio.EntityFrameworkCore.Store
         public DbSet<ApiKeyEntity> ApiKeys { get; set; }
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
+        public DbSet<RingEntity> Rings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,11 +45,11 @@ namespace Esquio.EntityFrameworkCore.Store
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             //get history entries and save current changes
-            var entries = GetHistoriEntriesBeforeSave();
+            var historyEntities = GetHistoryEntityBeforeSave();
             var changes = base.SaveChanges(acceptAllChangesOnSuccess);
 
             //set new values for history entries and save it
-            AddHistorieEntriesAfterSave(entries);
+            AddHistoryEntityAfterSave(historyEntities);
             base.SaveChanges(acceptAllChangesOnSuccess);
 
             return changes;
@@ -54,141 +58,184 @@ namespace Esquio.EntityFrameworkCore.Store
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             //get history entries and save current changes
-            var entries = GetHistoriEntriesBeforeSave();
+            var historyEntities = GetHistoryEntityBeforeSave();
             var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
             //set new values for history entries and save it
-            AddHistorieEntriesAfterSave(entries);
-            await base.SaveChangesAsync(acceptAllChangesOnSuccess,cancellationToken);
+            AddHistoryEntityAfterSave(historyEntities);
+            await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
             return changes;
         }
 
-        private List<HistoryEntry> GetHistoriEntriesBeforeSave()
+        private IEnumerable<HistoryEntity> GetHistoryEntityBeforeSave()
         {
             ChangeTracker.DetectChanges();
 
-            var historyEntries = new List<HistoryEntry>();
+            var historyEntities = new List<HistoryEntity>();
 
             foreach (var entry in ChangeTracker.Entries<IAuditable>())
             {
-                var historyEntry = new HistoryEntry(entry);
-
                 if (entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
                 {
                     continue;
                 }
-
-                foreach (var property in entry.Properties)
+                else
                 {
-                    var propertyName = property.Metadata.Name;
+                    var historyEntity = new HistoryEntity();
 
-                    if (property.Metadata.IsForeignKey())
+                    historyEntity.Action = entry.State switch
                     {
-                        continue;
-                    }
+                        EntityState.Deleted => $"{nameof(EntityState.Deleted)} {entry.Entity.GetType().Name}",
+                        EntityState.Added => $"{nameof(EntityState.Added)} {entry.Entity.GetType().Name}",
+                        EntityState.Modified => $"{nameof(EntityState.Modified)} {entry.Entity.GetType().Name}",
+                        _ => UNKNOWN,
+                    };
 
-                    if (property.IsTemporary)
-                    {
-                        historyEntry.TemporaryProperties.Add(property);
-                        continue;
-                    }
+                    historyEntity.CreatedAt = DateTime.UtcNow;
+                    historyEntity.FeatureName = GetFeatureNameFromEntry(entry);
+                    historyEntity.ProductName = GetProductNameFromEntry(entry);
+                    historyEntity.OldValues = GetOldValues(entry);
+                    historyEntity.NewValues = GetNewValues(entry);
 
-                    if (property.Metadata.IsPrimaryKey())
-                    {
-                        historyEntry.KeyValues[propertyName] = property.CurrentValue;
-                        continue;
-                    }
-
-                    switch (entry.State)
-                    {
-                        case EntityState.Deleted:
-                            historyEntry.OldValues[propertyName] = property.OriginalValue;
-                            break;
-                        case EntityState.Modified:
-                            if (property.IsModified)
-                            {
-                                historyEntry.OldValues[propertyName] = property.OriginalValue;
-                                historyEntry.NewValues[propertyName] = property.CurrentValue;
-                            }
-                            break;
-                        case EntityState.Added:
-                            historyEntry.NewValues[propertyName] = property.CurrentValue;
-                            break;
-                        default:
-                            break;
-                    }
+                    historyEntities.Add(historyEntity);
                 }
-
-                historyEntries.Add(historyEntry);
             }
 
-            return historyEntries;
+            return historyEntities;
         }
 
-        private void AddHistorieEntriesAfterSave(List<HistoryEntry> historyEntries)
+        private void AddHistoryEntityAfterSave(IEnumerable<HistoryEntity> historyEntities)
         {
-            foreach (var historyEntry in historyEntries)
+            if (historyEntities != null
+                &&
+                historyEntities.Any())
             {
-                foreach (var property in historyEntry.TemporaryProperties)
-                {
-                    if (property.Metadata.IsPrimaryKey())
-                    {
-                        historyEntry.KeyValues[property.Metadata.Name] = property.CurrentValue;
-                    }
-                    else
-                    {
-                        historyEntry.NewValues[property.Metadata.Name] = property.CurrentValue;
-                    }
-                }
-
-                History.Add(historyEntry.To(ChangeTracker));
+                History.AddRange(historyEntities);
             }
         }
 
-        private class HistoryEntry
+        private string GetFeatureNameFromEntry(EntityEntry entry)
         {
-            public HistoryEntry(EntityEntry entry)
+            //well, get the feature name depends on 
+            //the change tracker state. If the entity(ies) on the current operation load 
+            //related data (feature) name exist, else a unknown result
+            //is set on history.
+
+            if (entry.Entity is FeatureEntity feature)
             {
-                Entry = entry;
+                return feature.Name;
+            }
+            else if (entry.Entity is ToggleEntity toggle)
+            {
+                return toggle.FeatureEntity?.Name ?? UNKNOWN;
+            }
+            else if (entry.Entity is ParameterEntity parameter)
+            {
+                return parameter.ToggleEntity?.FeatureEntity?.Name ?? UNKNOWN;
             }
 
-            public int MyProperty { get; set; }
-            public EntityEntry Entry { get; set; }
-            public List<PropertyEntry> TemporaryProperties { get; set; } = new List<PropertyEntry>();
-            public Dictionary<string, object> KeyValues { get; set; } = new Dictionary<string, object>();
-            public Dictionary<string, object> OldValues { get; set; } = new Dictionary<string, object>();
-            public Dictionary<string, object> NewValues { get; set; } = new Dictionary<string, object>();
+            return default;
+        }
 
-            public HistoryEntity To(ChangeTracker changeTracker)
+        private string GetProductNameFromEntry(EntityEntry entry)
+        {
+            //well, get the product name depends on 
+            //the change tracker state. If the entity(ies) on the current operation load 
+            //related data (product) name exist, else a unknown result
+            //is set on history.
+
+            if (entry.Entity is FeatureEntity feature)
             {
-                return new HistoryEntity
-                {
-                    FeatureId = GetFeatureId(changeTracker),
-                    CreatedAt = DateTime.UtcNow,
-                    KeyValues = KeyValues.Count > 0 ? JsonSerializer.Serialize(KeyValues) : null,
-                    NewValues = NewValues.Count > 0 ? JsonSerializer.Serialize(NewValues) : null,
-                    OldValues = NewValues.Count > 0 ? JsonSerializer.Serialize(OldValues) : null
-                };
+                return feature.ProductEntity?.Name ?? UNKNOWN;
+            }
+            else if (entry.Entity is ToggleEntity toggle)
+            {
+                return toggle.FeatureEntity?.ProductEntity?.Name ?? UNKNOWN;
+            }
+            else if (entry.Entity is ParameterEntity parameter)
+            {
+                return parameter.ToggleEntity?.FeatureEntity?.ProductEntity?.Name ?? UNKNOWN;
             }
 
-            private int GetFeatureId(ChangeTracker changeTracker)
+
+            return default;
+        }
+
+        private string GetOldValues(EntityEntry entry)
+        {
+            var oldValues = new Dictionary<string, object>();
+
+            foreach (var property in entry.Properties)
             {
-                if (Entry.Entity is FeatureEntity feature)
+                if (property.Metadata.IsForeignKey()
+                    ||
+                    property.IsTemporary
+                    ||
+                    property.Metadata.IsPrimaryKey())
                 {
-                    return feature.Id;
-                }
-                else if (Entry.Entity is ToggleEntity toggle)
-                {
-                    return toggle.FeatureEntityId;
-                }
-                else if (Entry.Entity is ParameterEntity parameter)
-                {
-                    return parameter.ToggleEntity?.FeatureEntityId ?? 0;  
+                    // primary, foreign keys or temporary data is not relevant
+                    // because these id's can be removed and related data loss
+                    continue;
                 }
 
-                throw new Exception("Invalid entity type.");
+                var propertyName = property.Metadata.Name;
+
+                switch (entry.State)
+                {
+                    case EntityState.Deleted:
+                        oldValues[propertyName] = property.OriginalValue;
+                        break;
+                    case EntityState.Modified:
+                        if (property.IsModified)
+                        {
+                            oldValues[propertyName] = property.OriginalValue;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            return oldValues.Any() ? JsonSerializer.Serialize(oldValues) : "{}";
+        }
+
+        private string GetNewValues(EntityEntry entry)
+        {
+            var newValues = new Dictionary<string, object>();
+
+            foreach (var property in entry.Properties)
+            {
+                if (property.Metadata.IsForeignKey()
+                    ||
+                    property.IsTemporary
+                    ||
+                    property.Metadata.IsPrimaryKey())
+                {
+                    // primary, foreign keys or temporary data is not relevant
+                    // because these id's can be removed and related data loss
+                    continue;
+                }
+
+                var propertyName = property.Metadata.Name;
+
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                        if (property.IsModified)
+                        {
+                            newValues[propertyName] = property.CurrentValue;
+                        }
+                        break;
+                    case EntityState.Added:
+                        newValues[propertyName] = property.CurrentValue;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return newValues.Any() ? JsonSerializer.Serialize(newValues) : "{}";
         }
     }
 }

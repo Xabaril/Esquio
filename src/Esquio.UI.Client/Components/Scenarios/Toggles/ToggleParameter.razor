@@ -1,0 +1,60 @@
+﻿@switch (Parameter.ClrType)
+{
+    case EsquioConstants.STRING_PARAMETER_TYPE:
+        <div class="form-group">
+            <label for="@Parameter.Name">@FormatPascalCase(Parameter.Name)</label>
+            <p class="description">@Parameter.Description</p>
+            <input type="text"
+                   id="@Parameter.Name"
+                   class="form-control"
+                   value="@Parameter.Value"
+                   disabled="@(HasPermission == false)"
+                   @onchange="@(@event => OnChange(
+                                    Parameter,
+                                    @event.Value.ToString()))" />
+        </div>
+        break;
+    case EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE:
+        <TagsInput Label="@FormatPascalCase(Parameter.Name)"
+                   Description="@Parameter.Description"
+                   Value="@Parameter.Value"
+                   OnChange="@(value => OnChange(
+                                Parameter,
+                                value))" />
+        break;
+    case EsquioConstants.DATE_PARAMETER_TYPE:
+        <DateTimePicker Label="@FormatPascalCase(Parameter.Name)"
+                        Description="@Parameter.Description"
+                        Value="@Parameter.Value"
+                        OnChange="@(value => OnChange(
+                                    Parameter,
+                                    value))" />
+        break;
+    case EsquioConstants.PERCENTAGE_PARAMETER_TYPE:
+        <PercentageInput Label="@FormatPascalCase(Parameter.Name)"
+                         Description="@Parameter.Description"
+                         From="@(Parameter.Value.HasValue()
+                                 ? Int32.Parse(Parameter.Value)
+                                 : 0)"
+                         OnChange="@(value => OnChange(
+                                        Parameter,
+                                        value))" />
+        break;
+    default:
+        break;
+}
+
+@code {
+    [Parameter] public ToggleParameterViewModel Parameter { get; set; }
+    [Parameter] public EventCallback<ToggleParameterViewModel> OnParameterChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+
+    private Regex pascalCaseRegex = new Regex(@"(?<=[A-Za-z])(?=[A-Z][a-z])|(?<=[a-z0-9])(?=[0-9]?[A-Z])", RegexOptions.Compiled);
+
+    private string FormatPascalCase(string input) => pascalCaseRegex.Replace(input, " ");
+
+    private void OnChange(ToggleParameterViewModel parameter, string value)
+    {
+        OnParameterChange.InvokeAsync(parameter.ShallowCopy(value));
+    }
+}

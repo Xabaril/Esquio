@@ -14,43 +14,43 @@ namespace Esquio.UI.Api.Diagnostics
         {
             _apiKeyNotExist(logger, apiKeyId, null);
         }
-        public static void FeatureNameAlreadyExist(ILogger logger, string featureName)
+        public static void FeatureNameAlreadyExist(ILogger logger, string feature)
         {
-            _featureNameAlreadyExist(logger, featureName, null);
+            _featureNameAlreadyExist(logger, feature, null);
         }
 
-        public static void ProductAlreadyExist(ILogger logger, string productName)
+        public static void ProductAlreadyExist(ILogger logger, string product)
         {
-            _productAlreadyExist(logger, productName, null);
+            _productAlreadyExist(logger, product, null);
         }
 
-        public static void ProductNotExist(ILogger logger, string productId)
+        public static void ProductNotExist(ILogger logger, string product)
         {
-            _productNotExist(logger, productId, null);
+            _productNotExist(logger, product, null);
         }
 
-        public static void FeatureNotExist(ILogger logger, string featureId)
+        public static void FeatureNotExist(ILogger logger, string feature)
         {
-            _featureNotExist(logger, featureId, null);
+            _featureNotExist(logger, feature, null);
         }
 
-        public static void ToggleNotExist(ILogger logger, string toggleId)
+        public static void ToggleNotExist(ILogger logger, string toggle)
         {
-            _toggleNotExist(logger, toggleId, null);
+            _toggleNotExist(logger, toggle, null);
         }
 
-        public static void FeatureTagAlreadyExist(ILogger logger, string featureId, string tag)
+        public static void FeatureTagAlreadyExist(ILogger logger, string feature, string tag)
         {
-            _featureTagAlreadyExist(logger, featureId, tag, null);
+            _featureTagAlreadyExist(logger, feature, tag, null);
         }
-        public static void FeatureTagNotExist(ILogger logger, string featureId, string tag)
+        public static void FeatureTagNotExist(ILogger logger, string feature, string tag)
         {
-            _featureTagNotExist(logger, featureId, tag, null);
+            _featureTagNotExist(logger, feature, tag, null);
         }
 
-        public static void ToggleTypeAlreadyExist(ILogger logger, string toggleType, string featureName)
+        public static void ToggleTypeAlreadyExist(ILogger logger, string toggleType, string feature)
         {
-            _toggleAlreadyExist(logger, toggleType, featureName, null);
+            _toggleAlreadyExist(logger, toggleType, feature, null);
         }
 
         public static void ExecutingCommand(ILogger logger, string commandName)
@@ -79,7 +79,7 @@ namespace Esquio.UI.Api.Diagnostics
 
         public static void SubjectIdAlreadyExist(ILogger logger, string subjectId)
         {
-            _subjectIdAlreadyExist(logger, subjectId,null);
+            _subjectIdAlreadyExist(logger, subjectId, null);
         }
 
         public static void MyIsNotAuthorized(ILogger logger, string subjectId)
@@ -91,6 +91,56 @@ namespace Esquio.UI.Api.Diagnostics
             _subjectIdDoesNotExist(logger, subjectId, null);
         }
 
+        public static void RingAlreadyExist(ILogger logger, string ring, string product)
+        {
+            _ringAlreadyExist(logger, ring, product, null);
+        }
+
+        public static void RingNotExist(ILogger logger, string ring, string product)
+        {
+            _ringNotExist(logger, ring, product, null);
+        }
+
+        public static void CantDeleteDefaultRing(ILogger logger, string ring, string product)
+        {
+            _cantDeleteDefaultRing(logger, ring, product, null);
+        }
+
+        public static void ApiKeyAuthenticationBegin(ILogger logger)
+        {
+            _apiKeyAuthenticationBegin(logger, null);
+        }
+
+        public static void ApiKeyAuthenticationDoesNotExist(ILogger logger)
+        {
+            _apiKeyAuthenticatioDoesNotExist(logger, null);
+        }
+
+        public static void ApiKeyAuthenticationSuccess(ILogger logger)
+        {
+            _apiKeyAuthenticationSucess(logger, null);
+        }
+
+        public static void ApiKeyAuthenticationNotFound(ILogger logger, string apiKey)
+        {
+            _apiKeyAuthenticationNotFound(logger, apiKey, null);
+        }
+
+        public static void ApiKeyAuthenticationFail(ILogger logger, Exception exception)
+        {
+            _apiKeyAuthenticationFail(logger, exception);
+        }
+
+        public static void ApiKeyStoreValidating(ILogger logger)
+        {
+            _apiKeyStoreValidating(logger, null);
+        }
+
+        public static void ApiKeyStoreKeyExist(ILogger logger)
+        {
+            _apiKeyStoreKeyExist(logger, null);
+        }
+        
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
@@ -110,23 +160,23 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, string, Exception> _productNotExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ProductNotExist,
-            "The product with identifier {productId} does not exist in database.");
+            "The product with identifier {product} does not exist in database.");
         private static readonly Action<ILogger, string, Exception> _featureNotExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.FeatureNotExist,
-           "The feature with identifier {featureId} does not exist in database.");
+           "The feature with identifier {feature} does not exist in database.");
         private static readonly Action<ILogger, string, Exception> _toggleNotExist = LoggerMessage.Define<string>(
           LogLevel.Warning,
           EventIds.ToggleNotExist,
-          "The toggle with identifier {toggleId} does not exist in database.");
+          "The toggle with identifier {toggle} does not exist in database.");
         private static readonly Action<ILogger, string, string, Exception> _toggleAlreadyExist = LoggerMessage.Define<string, string>(
            LogLevel.Warning,
            EventIds.ToggleAlreadyExist,
-           "A toggle with type {toggleType} already exist on feature {featureName} and can't be added.");
+           "A toggle with type {toggleType} already exist on feature {feature} and can't be added.");
         private static readonly Action<ILogger, string, string, Exception> _featureTagNotExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.FeatureTagNotExist,
-          "The feature association between feature {featureId} and tag {tag} does not exist.");
+          "The feature association between feature {feature} and tag {tag} does not exist.");
         private static readonly Action<ILogger, string, string, Exception> _featureTagAlreadyExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.FeatureAlreadyExist,
@@ -163,5 +213,46 @@ namespace Esquio.UI.Api.Diagnostics
            LogLevel.Warning,
            EventIds.SubjectIdDoesNotExist,
            "The subject id {subjectId} does not exist on the store.");
+        private static readonly Action<ILogger, string, string, Exception> _ringAlreadyExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.RingAlreadyExist,
+          "The ring with name {ring} already exist for product {product} in the store and can't be created.");
+        private static readonly Action<ILogger, string, string, Exception> _ringNotExist = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.RingNotExist,
+          "The ring with name {ring} does not exist for product {product} in the store.");
+        private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultRing = LoggerMessage.Define<string, string>(
+          LogLevel.Warning,
+          EventIds.CantDeleteDefaultRing,
+          "The ring with name {ring} is default ring for product {product} and can't be deleted.");
+        private static readonly Action<ILogger, Exception> _apiKeyAuthenticationBegin = LoggerMessage.Define(
+            LogLevel.Information,
+            EventIds.ApiKeyAuthenticationBegin,
+            "The ApiKey authentication handler is handling authentication.");
+        private static readonly Action<ILogger, Exception> _apiKeyAuthenticatioDoesNotExist = LoggerMessage.Define(
+            LogLevel.Debug,
+            EventIds.ApiKeyAuthenticationDoesNotExist,
+            "The ApiKey authentication handler result as NoResult because no api key headers can't be used.");
+        private static readonly Action<ILogger, Exception> _apiKeyAuthenticationSucess = LoggerMessage.Define(
+            LogLevel.Information,
+            EventIds.ApiKeyAuthenticationSuccess,
+            "The ApiKey authentication success.");
+        private static readonly Action<ILogger, string, Exception> _apiKeyAuthenticationNotFound = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            EventIds.ApiKeyAuthenticationNotFound,
+            "The ApiKey {apiKey} is not present on valid api key list.");
+        private static readonly Action<ILogger, Exception> _apiKeyAuthenticationFail = LoggerMessage.Define(
+          LogLevel.Error,
+          EventIds.ApiKeyAuthenticationFail,
+          "The ApiKey authentication fail.");
+        private static readonly Action<ILogger, Exception> _apiKeyStoreValidating = LoggerMessage.Define(
+           LogLevel.Debug,
+           EventIds.ApiKeyStoreValidating,
+           "Validating the api key *** on the store.");
+        private static readonly Action<ILogger, Exception> _apiKeyStoreKeyExist = LoggerMessage.Define(
+          LogLevel.Information,
+          EventIds.ApiKeyStoreKeyExist,
+          "The api key *** exist on the store. A new identity is created using this information.");
+
     }
 }

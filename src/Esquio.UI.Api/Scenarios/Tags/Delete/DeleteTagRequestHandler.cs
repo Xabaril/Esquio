@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Tags.Delete;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags.Delete
+namespace Esquio.UI.Api.Scenarios.Tags.Delete
 {
     public class DeleteTagRequestHandler : IRequestHandler<DeleteTagRequest>
     {

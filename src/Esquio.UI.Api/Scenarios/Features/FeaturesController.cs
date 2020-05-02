@@ -1,11 +1,13 @@
-﻿using Esquio.UI.Api.Features.Flags.Add;
-using Esquio.UI.Api.Features.Flags.Delete;
-using Esquio.UI.Api.Features.Flags.Details;
-using Esquio.UI.Api.Features.Flags.List;
-using Esquio.UI.Api.Features.Flags.Rollback;
-using Esquio.UI.Api.Features.Flags.Rollout;
-using Esquio.UI.Api.Features.Flags.Update;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Features.Add;
+using Esquio.UI.Api.Shared.Models.Features.Archive;
+using Esquio.UI.Api.Shared.Models.Features.Delete;
+using Esquio.UI.Api.Shared.Models.Features.Details;
+using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.Rollback;
+using Esquio.UI.Api.Shared.Models.Features.Rollout;
+using Esquio.UI.Api.Shared.Models.Features.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,10 +16,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags
+namespace Esquio.UI.Api.Scenarios.Flags
 {
     [Authorize]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     public class FeaturesController : ControllerBase
     {
@@ -28,27 +30,28 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add(string productName, AddFeatureRequest addfeatureRequest, CancellationToken cancellationToken = default)
         {
             addfeatureRequest.ProductName = productName;
 
             await _mediator.Send(addfeatureRequest, cancellationToken);
 
-            //TODO: fix url created at action
             return Created($"api/v1/products/{addfeatureRequest.ProductName}/features/{addfeatureRequest.Name}", null);
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
         {
             updateFeatureRequest.CurrentName = featureName;
@@ -60,11 +63,12 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Rollout(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new RolloutFeatureRequest()
@@ -79,11 +83,12 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpPut]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Rollback(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new RollbackFeatureRequest()
@@ -97,11 +102,33 @@ namespace Esquio.UI.Api.Features.Flags
             return NoContent();
         }
 
+        [HttpPut]
+        [Authorize(Policies.Contributor)]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/archive")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Archive(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            var request = new ArchiveFeatureRequest()
+            {
+                ProductName = productName,
+                FeatureName = featureName
+            };
+
+            await _mediator.Send(request, cancellationToken);
+
+            return NoContent();
+        }
+
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new DeleteFeatureRequest()
@@ -116,11 +143,12 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(typeof(DetailsFeatureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsFeatureResponse>> Get(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(new DetailsFeatureRequest(productName, featureName), cancellationToken);
@@ -134,11 +162,12 @@ namespace Esquio.UI.Api.Features.Flags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features")]
-        [ProducesResponseType(typeof(ListFeatureResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListFeatureResponse>> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
+        [ProducesResponseType(typeof(PaginatedResult<ListFeatureResponseDetail>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<PaginatedResult<ListFeatureResponseDetail>>> List(string productName, [FromQuery]ListFeatureRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
 

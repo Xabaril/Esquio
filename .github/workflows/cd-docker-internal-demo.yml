@@ -1,0 +1,68 @@
+name: Esquio Internal Demo Continous Deployment
+on: 
+  push:
+    tags:       
+      - internal-demo-release-*  # Push events to release-* 
+env:
+  TAG: 3.0.${{ github.run_id }}
+  REGISTRY: esquio.azurecr.io
+  ACR_REPO_APP: esquiodemointernalapp
+  ACR_REPO_UI: esquiodemointernalui
+jobs:  
+  docker_image_build_publish:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Registry internal demo app
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ${{ env.REGISTRY }}/${{ env.ACR_REPO_APP }}
+        username: ${{ secrets.ESQUIO_DOCKER_USERNAME }}
+        password: ${{ secrets.ESQUIO_DOCKER_PASSWORD }}
+        registry: ${{ env.REGISTRY }}
+        dockerfile: ./build/DemoDockerfile
+        tags: "latest,${{ env.TAG }}"
+
+    - name: Publish to Registry internal demo ui
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ${{ env.REGISTRY }}/${{ env.ACR_REPO_UI }}
+        username: ${{ secrets.ESQUIO_DOCKER_USERNAME }}
+        password: ${{ secrets.ESQUIO_DOCKER_PASSWORD }}
+        registry: ${{ env.REGISTRY }}
+        dockerfile: ./build/UIDockerfile
+        tags: "latest,${{ env.TAG }}"
+
+  docker_azure_deploy:
+    env:
+      APP_NAME: esquiodemointernalapp
+      UI_NAME: esquiodemointernalui
+    needs: docker_image_build_publish
+    name: DockerDeploy
+    runs-on: ubuntu-latest
+    steps:    
+    - uses: azure/login@v1
+      with:
+        creds: '${{ secrets.SPN_ESQUIO }}'
+    - name: Azure App Service Settings demo app
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.APP_NAME }}     
+        app-settings-json: '${{ secrets.APPSETTINGS_ESQUIO_INTERNAL_DEMO_APP }}'
+    - name: Deploy internal demo app
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.APP_NAME }}
+        images: '${{ env.REGISTRY }}/${{ env.ACR_REPO_APP }}:${{ env.TAG }}'
+    - name: Azure App Service Settings ui app
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.UI_NAME }}     
+        app-settings-json: '${{ secrets. APPSETTINGS_ESQUIO_INTERNAL_UI_APP }}'
+    - name: Deploy internal demo ui
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.UI_NAME }}
+        images: '${{ env.REGISTRY }}/${{ env.ACR_REPO_UI }}:${{ env.TAG }}'
+       

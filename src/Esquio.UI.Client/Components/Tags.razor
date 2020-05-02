@@ -1,0 +1,124 @@
+﻿<div class="card">
+    <div class="card-header">
+        <PageTitle Title="@Title"
+                   Subtitle="@Subtitle">
+            <Icon>
+                <i class="fas fa-tag"></i>
+            </Icon>
+        </PageTitle>
+    </div>
+    <div class="card-body">
+        @if (!tagsLoaded)
+        {
+            <div class="line mb-3"></div>
+            <div class="line mb-3"></div>
+            <div class="line mb-3"></div>
+        }
+        else if (!tags.Any())
+        {
+            <p class="text-center">Add some feature tags</p>
+        }
+        else
+        {
+            <ul class="tag-list">
+                @foreach (var tag in tags)
+                {
+                <li style="background-color: @tag.Color;">
+                    @tag.Name
+                    @if (HasPermission != false)
+                    {
+                        <IconButton Title="Delete"
+                                    Icon="far fa-trash-alt"
+                                    OnClick="@(() => DeleteTag(tag.Name))" />
+                    }
+                </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Create tag
+    </div>
+    <div class="card-body">
+        <EditForm EditContext="newTagEditContext">
+            <FluentValidationValidator />
+            <ValidationSummary />
+
+            <ColorPicker OnChange="@(color => newTagModel.HexColor = color)" />
+
+            <div class="input-group mb-3">
+                <InputText id="tag-display-name"
+                           class="form-control"
+                           @bind-Value="newTagModel.Tag"
+                           placeholder="Tag name"
+                           disabled="@(HasPermission == false)" />
+                <div class="input-group-append">
+                    <button type="button"
+                            class="btn btn-primary btn-shadow"
+                            @onclick="AddTag"
+                            disabled="@(HasPermission == false || newTagFormInvalid)">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Tags";
+    [Parameter] public string Subtitle { get; set; }
+    [Parameter] public Func<Task<IEnumerable<TagResponseDetail>>> TagsLoader { get; set; }
+    [Parameter] public EventCallback<AddTagRequest> OnAdd { get; set; }
+    [Parameter] public EventCallback<DeleteTagRequest> OnDelete { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+
+    private bool newTagFormInvalid = true;
+    private AddTagRequest newTagModel;
+    private EditContext newTagEditContext;
+
+    private bool tagsLoaded = false;
+    private IEnumerable<TagResponseDetail> tags = Enumerable.Empty<TagResponseDetail>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        InitTagModel();
+        await LoadTags();
+    }
+
+    private void InitTagModel()
+    {
+        newTagFormInvalid = true;
+        newTagModel = new AddTagRequest(string.Empty);
+        newTagEditContext = new EditContext(newTagModel);
+        newTagEditContext.OnValidationStateChanged += OnAddTagValidationChanged;
+    }
+
+    private void OnAddTagValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        newTagFormInvalid = !newTagEditContext.IsValid();
+        StateHasChanged();
+    }
+
+    private async Task LoadTags()
+    {
+        tags = await TagsLoader();
+        tagsLoaded = true;
+    }
+
+    private async Task AddTag()
+    {
+        await OnAdd.InvokeAsync(newTagModel);
+        InitTagModel();
+        await LoadTags();
+    }
+
+    private async Task DeleteTag(string tag)
+    {
+        await OnDelete.InvokeAsync(new DeleteTagRequest { Tag = tag });
+        await LoadTags();
+    }
+}

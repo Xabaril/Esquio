@@ -13,9 +13,9 @@ namespace Esquio.AspNetCore.Toggles
     /// configured <see cref="IValuePartitioner"/>. This <see cref="IToggle"/> create 100 buckets for partitioner and assign the header vaulue into a specific
     /// bucket. If assigned bucket is less or equal that Percentage property value this toggle is active.
     /// </summary>
-    [DesignType(Description = "Toggle that is active depending on the bucket name created with current request header name/value pair.", FriendlyName = "Gradual rollout by Http Header value")]
-    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activate this toggle. Percentage from 0 to 100.")]
-    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The name of the header to get the value and create partitions buckets over this.")]
+    [DesignType(Description = "The request header exists and its value falls within percentage created by Esquio Partitioner.", FriendlyName = "Partial rollout by Http Header value")]
+    [DesignTypeParameter(ParameterName = Percentage, ParameterType = EsquioConstants.PERCENTAGE_PARAMETER_TYPE, ParameterDescription = "The percentage of users that activates this toggle. Percentage from 0 to 100.")]
+    [DesignTypeParameter(ParameterName = HeaderName, ParameterType = EsquioConstants.STRING_PARAMETER_TYPE, ParameterDescription = "The header name used whom value is used by Esquio Partitioner.")]
     public class GradualRolloutHeaderValueToggle
         : IToggle
     {
@@ -23,35 +23,27 @@ namespace Esquio.AspNetCore.Toggles
         internal const string Percentage = nameof(Percentage);
 
         private readonly IValuePartitioner _partitioner;
-        private readonly IRuntimeFeatureStore _featureStore;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Create a new instance.
         /// </summary>
         /// <param name="partitioner">The <see cref="IValuePartitioner"/> service to be used.</param>
-        /// <param name="featureStore">The <see cref="IRuntimeFeatureStore"/> service to be used.</param>
         /// <param name="httpContextAccessor">The <see cref="IHttpContextAccessor"/> service to be used.</param>
         public GradualRolloutHeaderValueToggle(
             IValuePartitioner partitioner,
-            IRuntimeFeatureStore featureStore,
             IHttpContextAccessor httpContextAccessor)
         {
             _partitioner = partitioner ?? throw new ArgumentNullException(nameof(partitioner));
-            _featureStore = featureStore ?? throw new ArgumentNullException(nameof(featureStore));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsActiveAsync(string featureName, string productName = null, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var feature = await _featureStore.FindFeatureAsync(featureName, productName, cancellationToken);
-            var toggle = feature.GetToggle(this.GetType().FullName);
-            var data = toggle.GetData();
+            string headerName = context.Data[HeaderName].ToString();
 
-            string headerName = data.HeaderName;
-
-            if (Double.TryParse(data.Percentage.ToString(), out double percentage))
+            if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
                 if (percentage > 0d)
                 {
@@ -64,13 +56,15 @@ namespace Esquio.AspNetCore.Toggles
                         // this only apply when header exist, we apply also some entropy to header value.
                         // adding this entropy ensure that not all features with gradual rollout for claim value are enabled/disable at the same time for the same user.
 
-                        var assignedPartition = _partitioner.ResolvePartition(featureName + values.First(), partitions: 100);
-                        return assignedPartition <= percentage;
+                        var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + values.First(), partitions: 100);
+                        var active = assignedPartition <= percentage;
+
+                        return new ValueTask<bool>(active);
                     }
                 }
             }
 
-            return false;
+            return new ValueTask<bool>(false);
         }
     }
 }

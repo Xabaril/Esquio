@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
-using Esquio.EntityFrameworkCore.Store;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Details
+namespace Esquio.UI.Api.Scenarios.Toggles.Details
 {
     public class DetailsToggleRequestHandler : IRequestHandler<DetailsToggleRequest, DetailsToggleResponse>
     {
@@ -44,7 +45,8 @@ namespace Esquio.UI.Api.Features.Toggles.Details
                         Parameters = toggle.Parameters.Select(parameter => new ParameterDetail
                         {
                             Name = parameter.Name,
-                            Value = parameter.Value
+                            Value = parameter.Value,
+                            RingName = parameter.RingName
                         }).ToList()
                     };
                 }

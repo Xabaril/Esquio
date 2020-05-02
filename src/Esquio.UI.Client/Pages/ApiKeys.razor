@@ -1,0 +1,218 @@
+﻿@page "/apikeys"
+@attribute [Authorize(Policies.Management)]
+@layout MainLayout
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject IJSRuntime jsRuntime
+@inject INotifications notifications
+@inject EsquioState  esquioState
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="ApiKeys" Subtitle="Show the current Api Keys on Esquio.">
+                    <Icon>
+                        <i class="fas fa-key"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModalNewApiKey">
+                                New Api Key
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+
+        @if (newApiKeyResponse != null)
+        {
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-check"></i><strong>@newApiKeyResponse.Key</strong></h5>
+                A new API key has been created, make sure to copy your new API key now. You will not be able to do so again!&nbsp;
+                <button type="button" class="btn btn-sm" @onclick="CopyToClipboard">
+                    <svg viewBox="0 0 14 16" version="1.1" width="25" height="25" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path>
+                    </svg>
+                </button>
+            </div>
+        }
+
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginatedTable Loader="Loader"
+                                    @ref="table">
+                        <TableHeader>
+                            <th class="table-col-4">Api Key Name</th>
+                            <th>Valid To</th>
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Permission">
+                                <th class="table-col-1"></th>
+                            </Permission>
+                        </TableHeader>
+                        <TableBody Context="apiKeys">
+                            @foreach (var item in apiKeys.Items)
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.ValidTo</td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            <ConfirmableAction Title="Delete"
+                                                               Icon="far fa-trash-alt"
+                                                               OnConfirm="@(() => Delete(item.Name))"
+                                                               ConfirmTitle="Delete Api Key"
+                                                               ConfirmDescription="@($"Are you sure you want to delete the '{item.Name}' api key?")" />
+                                        </td>
+                                    </Permission>
+                                </tr>
+                            }
+                        </TableBody>
+                    </PaginatedTable>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<Modal Title="New Api Key" Show="showModalNewApiKey" OnClose="CloseModalNewApiKey">
+    <ModalBody>
+        <EditForm EditContext="@editContextNewApiKey">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="subject-id">Name</label>
+                <InputText id="subject-id" class="form-control" @bind-Value="newApiKey.Name" placeholder="Enter the application key name, this will be unique." />
+            </div>
+
+            <div class="form-group">
+                <label for="subject-actas">ValidTo</label>
+                <InputDate type="date" class="form-control form-control-sm col-4" format-value="yyyy-MM-dd" @bind-Value="@newApiKey.ValidTo" placeholder="Enter ApiKey expiration time"></InputDate>
+            </div>
+
+            <div class="form-group">
+                <label for="subject-actas">Act as</label>
+                <InputSelect class="form-control" @bind-Value="newApiKey.ActAs">
+                    <option selected disabled hidden>Acting as</option>
+                    <option value="Reader">Reader</option>
+                    <option value="Contributor">Contributor</option>
+                    <option value="Management">Management</option>
+                </InputSelect>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModalNewApiKey" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="Add" disabled="@formInvalidNewApiKey">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+
+    //add modal
+    private bool showModalNewApiKey = false;
+    private bool formInvalidNewApiKey;
+    private AddApiKeyRequest newApiKey;
+    private EditContext editContextNewApiKey;
+    private PaginatedTable<ListApiKeyResponseDetail> table;
+
+    private AddApiKeyResponse newApiKeyResponse;
+
+    protected override void OnInitialized()
+    {
+        InitModelNewApiKeys();
+
+
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+            new BreadcrumbItemViewModel { Title = "ApiKeys", Active = true });
+    }
+
+    private void InitModelNewApiKeys()
+    {
+        formInvalidNewApiKey = true;
+
+        newApiKey = new AddApiKeyRequest()
+        {
+            ValidTo = null,//DateTime.UtcNow
+        };
+
+        editContextNewApiKey = new EditContext(newApiKey);
+        editContextNewApiKey.OnValidationStateChanged += OnAddApiKeysValidationChanged;
+    }
+
+    private void OnAddApiKeysValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalidNewApiKey = !editContextNewApiKey.IsValid();
+        StateHasChanged();
+    }
+
+    private void OpenModalNewApiKey()
+    {
+        InitModelNewApiKeys();
+        showModalNewApiKey = true;
+
+        esquioState.SetWindowModal(showModalNewApiKey);
+    }
+
+    private void CloseModalNewApiKey()
+    {
+        showModalNewApiKey = false;
+        editContextNewApiKey.OnValidationStateChanged -= OnAddApiKeysValidationChanged;
+
+        esquioState.SetWindowModal(showModalNewApiKey);
+    }
+
+    private Task<PaginatedResult<ListApiKeyResponseDetail>> Loader(int pageIndex, int pageCount)
+    {
+        return esquioHttpClient.GetApiKeyList(pageIndex, pageCount);
+    }
+
+    private async Task Add()
+    {
+        try
+        {
+            newApiKeyResponse = await esquioHttpClient.AddNewApiKey(newApiKey);
+            await table.OnAdd();
+
+            CloseModalNewApiKey();
+            InitModelNewApiKeys();
+        }
+        catch (Exception ex)
+        {
+            notifications.Error("Add Api Key", "Error adding the api key");
+            throw ex;
+        }
+    }
+
+    private async Task Delete(string apiKey)
+    {
+        var result = await esquioHttpClient.DeleteApiKey(apiKey);
+        await table.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Api Key", "Api key successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Api Key", "Error deleting the api key");
+        }
+    }
+
+    private void Clear()
+    {
+        newApiKeyResponse = null;
+        StateHasChanged();
+    }
+
+    private async Task CopyToClipboard()
+    {
+        await jsRuntime.InvokeAsync<string>("copyToClipboard", newApiKeyResponse.Key);
+    }
+}

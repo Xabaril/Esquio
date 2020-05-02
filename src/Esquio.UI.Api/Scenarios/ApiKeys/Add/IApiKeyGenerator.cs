@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Esquio.UI.Api.Features.ApiKeys.Add
+namespace Esquio.UI.Api.Scenarios.ApiKeys.Add
 {
     public interface IApiKeyGenerator
     {

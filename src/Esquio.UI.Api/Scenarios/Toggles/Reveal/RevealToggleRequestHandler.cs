@@ -1,5 +1,6 @@
 ﻿using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Reveal
+namespace Esquio.UI.Api.Scenarios.Toggles.Reveal
 {
     public class RevealToggleRequestHandler : IRequestHandler<RevealToggleRequest, RevealToggleResponse>
     {

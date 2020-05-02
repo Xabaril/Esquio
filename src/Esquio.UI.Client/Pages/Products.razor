@@ -1,0 +1,200 @@
+﻿@page "/products"
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Products" Subtitle="Show the Esquio Products in the store.">
+                    <Icon>
+                        <i class="fas fa-box-open"></i>
+                    </Icon>
+                    <Actions>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
+                                New Product
+                            </button>
+                        </Permission>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginatedCards Loader="Loader" @ref="cards">
+                        <CardTitle Context="product">
+                            @product.Name
+                        </CardTitle>
+                        <CardBody Context="product">
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
+                                <Editable Value="@product.Description"
+                                          Type="Editable.EditableType.TextArea"
+                                          EmptyText="Add a product description"
+                                          OnChange="@((description) => Update(product.Name, product.Name, description))" />
+                            </Permission>
+                        </CardBody>
+                        <CardFooter Context="product">
+                            <IconButton Title="Detail"
+                                        Icon="far fa-eye"
+                                        OnClick="@(e => navigation.NavigateTo($"products/{product.Name}"))" />
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                <ConfirmableAction Title="Delete"
+                                                   Icon="far fa-trash-alt"
+                                                   OnConfirm="@(() => Delete(product.Name))"
+                                                   ConfirmTitle="Delete Product"
+                                                   ConfirmDescription="@($"Are you sure you want to delete the '{product.Name}' product?")" />
+                            </Permission>
+                        </CardFooter>
+                    </PaginatedCards>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<Modal Title="New Product" Show="showModal" OnClose="CloseModal">
+    <ModalBody>
+        <EditForm EditContext="@editContext">
+            <FluentValidationValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="product-name">Name</label>
+                <InputText id="product-name" class="form-control" @bind-Value="model.Name" placeholder="Enter product name" />
+            </div>
+
+            <div class="form-group">
+                <label for="product-description">Description</label>
+                <InputText id="product-description" class="form-control" @bind-Value="model.Description" placeholder="Enter product description" />
+            </div>
+
+            <div class="form-group">
+                <label for="product-default-ring-name">Default Ring Name</label>
+                <InputText id="product-default-ring-name" class="form-control" @bind-Value="model.DefaultRingName" disabled="true" placeholder="Enter product default ring name" />
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="AddProduct" disabled="@formInvalid">Save changes</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+    private bool showModal = false;
+
+    private bool formInvalid;
+    private AddProductRequest model;
+    private EditContext editContext;
+
+    private PaginatedCards<ListProductResponseDetail> cards;
+
+    protected override void OnInitialized()
+    {
+        InitModel();
+
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+            new BreadcrumbItemViewModel { Title = "Products", Active = true });
+    }
+
+    private void InitModel()
+    {
+        formInvalid = true;
+
+        model = new AddProductRequest();
+        editContext = new EditContext(model);
+        editContext.OnValidationStateChanged += OnAddProductValidationChanged;
+    }
+
+
+    private void OnAddProductValidationChanged(object sender, ValidationStateChangedEventArgs args)
+    {
+        formInvalid = !editContext.IsValid();
+        StateHasChanged();
+    }
+
+    private void OpenModal()
+    {
+        InitModel();
+        showModal = true;
+
+        esquioState.SetWindowModal(showModal);
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+        editContext.OnValidationStateChanged -= OnAddProductValidationChanged;
+
+        esquioState.SetWindowModal(showModal);
+    }
+
+    private Task<PaginatedResult<ListProductResponseDetail>> Loader(int pageIndex, int pageCount)
+    {
+        return esquioHttpClient.GetProductsList(pageIndex, pageCount);
+    }
+
+    private async Task AddProduct()
+    {
+        var result = await esquioHttpClient.AddProduct(model);
+        await cards.OnAdd();
+
+        CloseModal();
+        InitModel();
+
+        if (result)
+        {
+            notifications.Success("Create Product", "Product successfully created!");
+        }
+        else
+        {
+            notifications.Error("Create Product", "Error creating the product");
+        }
+    }
+
+    private async Task Update(string productName, string name, string description)
+    {
+        var result = await esquioHttpClient.UpdateProduct(
+        productName,
+        new UpdateProductRequest
+        {
+            Name = name,
+            Description = description
+        });
+
+        if (result)
+        {
+            notifications.Success("Update Product", "Product successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update Product", "Error updating the product");
+        }
+    }
+
+    private async Task Delete(string productName)
+    {
+        var result = await esquioHttpClient.DeleteProduct(productName);
+        await cards.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Product", "Product successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Product", "Error deleting the product");
+        }
+    }
+}

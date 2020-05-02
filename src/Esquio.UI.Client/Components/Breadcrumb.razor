@@ -1,0 +1,32 @@
+﻿@implements IDisposable
+@inject EsquioState State
+
+<ol class="breadcrumb float-sm-right">
+    @foreach (var item in State.Breadcrumb)
+    {
+        <li class="breadcrumb-item@( item.Active ? " active": "" )">
+            @if (!item.Link.HasValue() || item.Disabled)
+            {
+                @item.Title
+            }
+            else
+            {
+                <NavLink href="@item.Link">@item.Title</NavLink>
+            }
+        </li>
+    }
+</ol>
+
+@code {
+    protected override void OnInitialized()
+    {
+        State.OnBreadcrumbChange += OnOnBreadcrumbChange;
+    }
+
+    public void Dispose()
+    {
+        State.OnBreadcrumbChange -= OnOnBreadcrumbChange;
+    }
+
+    private void OnOnBreadcrumbChange() => StateHasChanged();
+}

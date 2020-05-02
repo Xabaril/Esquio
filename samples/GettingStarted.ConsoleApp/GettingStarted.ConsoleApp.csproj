@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjectionabstractions)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(microsoftextensionsloggingconsole)" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
+    <ProjectReference Include="..\..\src\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

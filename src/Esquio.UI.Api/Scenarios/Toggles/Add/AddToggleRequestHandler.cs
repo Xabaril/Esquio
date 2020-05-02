@@ -1,6 +1,7 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Toggles.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles.Add
+namespace Esquio.UI.Api.Scenarios.Toggles.Add
 {
     public class AddToggleRequestHandler : IRequestHandler<AddToggleRequest, int>
     {
@@ -26,6 +27,7 @@ namespace Esquio.UI.Api.Features.Toggles.Add
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f=>f.ProductEntity)  //-> this is only needed for "history"
                 .Include(t => t.Toggles)
                 .Where(t => t.Name == request.FeatureName && t.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
@@ -39,17 +41,40 @@ namespace Esquio.UI.Api.Features.Toggles.Add
                 {
                     var toggle = new ToggleEntity(feature.Id, request.ToggleType);
 
-                    foreach (var item in request.Parameters)
+                    var allowedRings = await _storeDbContext
+                        .Rings
+                        .Where(p => p.ProductEntityId == feature.ProductEntityId)
+                        .ToListAsync();
+
+                    var defaultRing = allowedRings
+                          .Where(r => r.ByDefault)
+                          .SingleOrDefault();
+
+                    var selectedRing = defaultRing;
+
+                    if (!string.IsNullOrEmpty(request.RingName))
                     {
-                        toggle.Parameters.Add(
-                            new ParameterEntity(toggle.Id, item.Name, item.Value));
+                        selectedRing = allowedRings
+                           .Where(r => r.Name == request.RingName)
+                           .SingleOrDefault();
                     }
 
-                    feature.Toggles.Add(toggle);
+                    if (selectedRing != null)
+                    {
+                        foreach (var item in request.Parameters)
+                        {
+                            toggle.AddOrUpdateParameter(selectedRing, defaultRing, item.Name, item.Value);
+                        }
 
-                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+                        feature.Toggles
+                            .Add(toggle);
 
-                    return toggle.Id;
+                        await _storeDbContext.SaveChangesAsync(cancellationToken);
+                        return toggle.Id;
+                    }
+
+                    Log.RingNotExist(_logger, request.RingName, request.ProductName);
+                    throw new InvalidOperationException($"Ring {request.RingName} does not exist for product {request.ProductName}.");
                 }
 
                 Log.ToggleTypeAlreadyExist(_logger, request.ToggleType, feature.Name);

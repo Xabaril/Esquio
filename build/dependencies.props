@@ -2,7 +2,8 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
-    <NetTestSdk>16.4.0</NetTestSdk>
+    <NetTestSdk>16.5.0</NetTestSdk>
+    <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -13,17 +14,22 @@
     <Authors>Xabaril Contributors</Authors>
     <Company>Xabaril</Company>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>2.0.2$(VersionSuffix)</esquio>
-    <esquioaspnetcore>2.0.4$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>2.0.2$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>2.0.2$(VersionSuffix)</esquioconfigurationstore>
-    <esquioentityframeworkstore>2.0.2$(VersionSuffix)</esquioentityframeworkstore>
-    <esquiominiprofiler>2.0.2$(VersionSuffix)</esquiominiprofiler>
-    <esquiocli>2.0.2$(VersionSuffix)</esquiocli>
+    <esquio>3.0.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>3.0.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>3.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>3.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquiodatabasestore>3.0.0$(VersionSuffix)</esquiodatabasestore>
+    <esquioentityframeworkstore>3.0.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>3.0.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>3.0.0$(VersionSuffix)</esquiocli>
+    <esquiohttpstore>3.0.0$(VersionSuffix)</esquiohttpstore>
+    <esquioblazorwasm>3.0.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Contrib Dependencies">
@@ -32,64 +38,71 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
+    <blazor>3.2.0-preview5.20216.8</blazor>
+    <blazorhttpclient>3.2.0-preview5.20210.3</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
-    <nswagmsbuild>13.1.6</nswagmsbuild>
-    <swashbuckleaspnetcore>5.0.0-rc4</swashbuckleaspnetcore>
+    <nswagmsbuild>13.3.0</nswagmsbuild>
+    <swashbuckleaspnetcore>5.3.1</swashbuckleaspnetcore>
+    <buildbundlerminifier>3.2.447</buildbundlerminifier>
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 
     <microsoftcsharp>4.7.0 </microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.7.0</systemdiagnosticsdiagnosticsource>
-    <systemtextjson>4.7.0</systemtextjson>
+    <systemtextjson>4.7.1</systemtextjson>
 
-    <microsoftaspnetcoreauthenticationjwtbearer>3.1.0</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.1.3</microsoftaspnetcoreauthenticationjwtbearer>
     <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.1</microsoftaspnetcoremvcversioningapiexplorerversion>
 
-    <microsoftextensionsdependencyinjectionabstractions>3.1.0</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.1.0</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.1.0</microsoftextensionsoptions>
-    <microsoftextensionsconfigurationabstractions>3.1.0</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsconfigurationbinder>3.1.0</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.1.0</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.1.0</microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.1.0</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.1.0</microsoftextensionsloggingconsole>
-    <microsoftextensionshttp>3.1.0</microsoftextensionshttp>
-    <microsoftentityframeworkcore>3.1.0</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.1.0</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.1.0</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.1.0</microsoftentityframeworkcoredesign>
+    <microsoftextensionsdependencyinjectionabstractions>3.1.3</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.1.3</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.1.3</microsoftextensionsoptions>
+    <microsoftextensionscachingmemory>3.1.3</microsoftextensionscachingmemory>
+    <microsoftextensionsconfigurationabstractions>3.1.3</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsconfigurationbinder>3.1.3</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.1.3</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.1.3</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.1.3</microsoftextensionsloggingabstractions>
+    <microsoftextensionsloggingconsole>3.1.3</microsoftextensionsloggingconsole>
+    <microsoftextensionshttp>3.1.3</microsoftextensionshttp>
+    <microsoftentityframeworkcore>3.1.3</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.1.3</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.1.3</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.1.3</microsoftentityframeworkcoredesign>
+    <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
 
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
+    <serilogsinksapplicationinsights>3.1.0</serilogsinksapplicationinsights>
+    <serilogsinksbrowserconsole>1.0.0-dev-00012</serilogsinksbrowserconsole>
 
-    <hellangmiddlewareproblemdetails>3.1.0</hellangmiddlewareproblemdetails>
-    <mediatrextensionsmicrosoftdependencyinjection>7.0.0</mediatrextensionsmicrosoftdependencyinjection>
-    <fluentvalidationaspnetcore>8.6.0</fluentvalidationaspnetcore>
-    <microsoftapplicationinsights>2.12.0</microsoftapplicationinsights>
-    <microsoftapplicationinsightsaspnetcore>2.12.0</microsoftapplicationinsightsaspnetcore>
+    <hellangmiddlewareproblemdetails>5.0.0</hellangmiddlewareproblemdetails>
+    <mediatrextensionsmicrosoftdependencyinjection>8.0.0</mediatrextensionsmicrosoftdependencyinjection>
+    <fluentvalidationaspnetcore>8.6.2</fluentvalidationaspnetcore>
+    <microsoftapplicationinsights>2.13.1</microsoftapplicationinsights>
+    <microsoftapplicationinsightsaspnetcore>2.13.1</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
-    <mcmastercommandlineutils>2.4.4</mcmastercommandlineutils>
+    <mcmastercommandlineutils>2.6.0</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.1.0</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.1.0</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.1.3</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.1.3</microsoftaspnetcoretesthost>
 
-    <microsoftentityframeworkcoreinmemory>3.1.0</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.1.0</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcoreinmemory>3.1.3</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.1.3</microsoftentityframeworkcoresqlite>
 
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
-    <fluentassertions>5.9.0</fluentassertions>
+    <fluentassertions>5.10.3</fluentassertions>
     <achevetesthost>3.0.0</achevetesthost>
-    <respawn>3.2.0</respawn>
+    <respawn>3.3.0</respawn>
   </PropertyGroup>
 
   <PropertyGroup Label="CLI Tools Versions">

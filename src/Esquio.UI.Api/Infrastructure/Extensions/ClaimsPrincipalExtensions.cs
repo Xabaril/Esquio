@@ -1,18 +1,13 @@
-﻿namespace System.Security.Claims
-{
-    public static class ClaimsPrincipalExtensions
-    {
-        public const string SubjectClaimType = ClaimTypes.NameIdentifier;
-        public const string IssuerClaimType = "iss";
+﻿using Esquio.UI.Api;
 
+namespace System.Security.Claims
+{
+    static class ClaimsPrincipalExtensions
+    {
         public static string GetSubjectId(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue(SubjectClaimType);
-        }
-
-        public static bool IsBearer(this ClaimsPrincipal principal)
-        {
-            return principal.FindFirstValue(IssuerClaimType) != null;
+            return principal
+                .FindFirstValue(ApiConstants.SubjectNameIdentifier);
         }
     }
 }

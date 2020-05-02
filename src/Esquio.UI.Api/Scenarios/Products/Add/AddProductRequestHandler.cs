@@ -1,6 +1,7 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Products.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.Add
+namespace Esquio.UI.Api.Scenarios.Products.Add
 {
     public class AddProductRequestHandler : IRequestHandler<AddProductRequest, string>
     {
@@ -32,9 +33,16 @@ namespace Esquio.UI.Api.Features.Products.Add
             if (existing == null)
             {
                 var product = new ProductEntity(request.Name, request.Description);
+
+                product.Rings.Add(new RingEntity(
+                    productEntityId: product.Id,
+                    name: request.DefaultRingName,
+                    byDefault: true));
+
                 _storeDbContext.Add(product);
 
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
+                await _storeDbContext
+                    .SaveChangesAsync(cancellationToken);
 
                 return product.Name;
             }

@@ -1,5 +1,6 @@
-﻿using Esquio.UI.Api.Features.Audit.List;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models;
+using Esquio.UI.Api.Shared.Models.Audit.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Features.Audit
 {
     [Authorize]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     public class AuditController : ControllerBase
     {
@@ -26,7 +27,7 @@ namespace Esquio.UI.Api.Features.Audit
         [Route("api/audit")]
         [ProducesResponseType(typeof(ListAuditRequest), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ListAuditResponse>> List([FromQuery]ListAuditRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListAuditResponseDetail>>> List([FromQuery]ListAuditRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 

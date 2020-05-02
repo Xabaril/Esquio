@@ -64,5 +64,11 @@ namespace Esquio.EntityFrameworkCore.Store.Options
         /// Get or set default table configuration for Permissions
         /// </summary>
         public TableConfiguration Permissions { get; set; } = new TableConfiguration("Permissions");
+
+        /// <summary>
+        /// Get or set default table configuration for Rings.
+        /// </summary>
+        public TableConfiguration Rings { get; set; } = new TableConfiguration("Rings");
+
     }
 }

@@ -1,0 +1,43 @@
+﻿@inject EsquioState esquioState
+
+@if (Cascading)
+{
+    <CascadingValue Value="@hasPermission" Name="HasPermission">
+        @ChildContent
+    </CascadingValue>
+}
+else if (hasPermission)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public PolicyAction Requires { get; set; }
+    [Parameter] public PolicySubject Over { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool Cascading { get; set; }
+
+    private bool hasPermission = false;
+
+    public void Dispose()
+    {
+        esquioState.OnPolicyChange -= OnPolicyChange;
+    }
+
+    protected override void OnInitialized()
+    {
+        EvaluatePermission();
+        esquioState.OnPolicyChange += OnPolicyChange;
+    }
+
+    private void OnPolicyChange()
+    {
+        EvaluatePermission();
+        StateHasChanged();
+    }
+
+    private void EvaluatePermission()
+    {
+        hasPermission = esquioState.Policy?.Can(Requires, Over) ?? false;
+    }
+}

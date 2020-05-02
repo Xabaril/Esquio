@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="$(blazor)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
+    <ProjectReference Include="..\..\..\src\Esquio\Esquio.csproj" />
+    <ProjectReference Include="..\..\GettingStarted.Blazor.WebAssembly.Shared\GettingStarted.Blazor.WebAssembly.Shared.csproj" />
+    <ProjectReference Include="..\Client\GettingStarted.Blazor.WebAssembly.Client.csproj" />
+  </ItemGroup>
+
+
+</Project>

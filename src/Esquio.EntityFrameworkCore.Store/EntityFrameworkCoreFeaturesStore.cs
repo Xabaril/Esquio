@@ -22,10 +22,11 @@ namespace Esquio.EntityFrameworkCore.Store
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName, CancellationToken cancellationToken = default)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
         {
             _ = featureName ?? throw new ArgumentNullException(nameof(featureName));
             _ = productName ?? throw new ArgumentNullException(nameof(productName));
+            _ = ringName ?? throw new ArgumentNullException(nameof(ringName));
 
             _diagnostics.FindFeature(featureName, productName);
 
@@ -36,21 +37,20 @@ namespace Esquio.EntityFrameworkCore.Store
                     .ThenInclude(t => t.Parameters)
                 .SingleOrDefaultAsync(cancellationToken);
 
+
             if (featureEntity != null)
             {
                 _diagnostics.FeatureExist(featureName, productName);
-
-                return ConvertToFeatureModel(featureEntity);
+                return ConvertToFeature(featureEntity, ringName);
             }
             else
             {
                 _diagnostics.FeatureNotExist(featureName, productName);
-
                 return null;
             }
         }
 
-        private Feature ConvertToFeatureModel(FeatureEntity featureEntity)
+        private Feature ConvertToFeature(FeatureEntity featureEntity, string ringName)
         {
             var feature = new Feature(featureEntity.Name);
 
@@ -67,9 +67,35 @@ namespace Esquio.EntityFrameworkCore.Store
             {
                 var toggle = new Toggle(toggleConfiguration.Type);
 
-                toggle.AddParameters(toggleConfiguration
-                    .Parameters
-                    .Select(p => new Parameter(p.Name, p.Value)));
+                var groupingParameters = toggleConfiguration.Parameters
+                    .GroupBy(g => g.RingName);
+
+                var defaultRingParameters = groupingParameters
+                    .Where(g => g.Key == EsquioConstants.DEFAULT_RING_NAME)
+                    .SingleOrDefault();
+
+                if (defaultRingParameters != null
+                    &&
+                    defaultRingParameters.Any())
+                {
+                    toggle.AddParameters(
+                        defaultRingParameters.Select(p => new Parameter(p.Name, p.Value)));
+                }
+
+                if (ringName != EsquioConstants.DEFAULT_RING_NAME)
+                {
+                    var selectedRingParameters = groupingParameters
+                        .Where(g => g.Key == ringName)
+                        .SingleOrDefault();
+
+                    if (selectedRingParameters != null
+                        &&
+                        selectedRingParameters.Any())
+                    {
+                        toggle.AddParameters(
+                            selectedRingParameters.Select(p => new Parameter(p.Name, p.Value)));
+                    }
+                }
 
                 feature.AddToggle(toggle);
             }

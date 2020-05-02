@@ -1,5 +1,5 @@
 ﻿{
-  "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v13.3.0.0 (NJsonSchema v10.1.11.0 (Newtonsoft.Json v12.0.0.0))",
   "swagger": "2.0",
   "info": {
     "title": "My Title",
@@ -12,6 +12,46 @@
     "application/json"
   ],
   "paths": {
+    "/api/audit": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "operationId": "Audit_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListAuditRequest"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
     "/api/ApiKeys": {
       "get": {
         "tags": [
@@ -39,7 +79,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListApiKeyResponse"
+              "$ref": "#/definitions/PaginatedResultOfListApiKeyResponseDetail"
             }
           },
           "500": {
@@ -151,46 +191,6 @@
         }
       }
     },
-    "/api/audit": {
-      "get": {
-        "tags": [
-          "Audit"
-        ],
-        "operationId": "Audit_List",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "pageIndex",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          },
-          {
-            "type": "integer",
-            "name": "pageCount",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ListAuditRequest"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
     "/api/products/{productName}/features": {
       "post": {
         "tags": [
@@ -219,19 +219,18 @@
           "201": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -275,15 +274,18 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListFeatureResponse"
+              "$ref": "#/definitions/PaginatedResultOfListFeatureResponseDetail"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -323,19 +325,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -364,12 +365,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -405,12 +412,15 @@
           "404": {
             "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -441,19 +451,18 @@
           "204": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -484,12 +493,240 @@
           "204": {
             "description": ""
           },
+          "403": {
+            "description": ""
+          },
           "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
+              "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features/{featureName}/archive": {
+      "put": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_Archive",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Permissions/my": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_My",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/MyResponse"
+            }
+          },
+          "403": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_List",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageCount",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedResultOfListUsersResponseDetail"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Add",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddPermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Update",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePermissionRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions/{subjectId}": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Details",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsPermissionResponse"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        }
+      }
+    },
+    "/api/Permissions/{subjectid}": {
+      "delete": {
+        "tags": [
+          "Permissions"
+        ],
+        "operationId": "Permissions_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "subjectId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
           },
           "500": {
             "x-nullable": false,
@@ -528,15 +765,18 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ListProductResponse"
+              "$ref": "#/definitions/PaginatedResultOfListProductResponseDetail"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -560,12 +800,18 @@
           "201": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -596,12 +842,15 @@
           "404": {
             "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -632,12 +881,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -659,11 +914,191 @@
           "204": {
             "description": ""
           },
+          "403": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Products/{productName}/ring/{ringName}": {
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_DeleteRing",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ringName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Products/{productName}/ring": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_AddRing",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddRingRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Statistics/configuration": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetConfigurationStatistics",
+        "responses": {
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Statistics/success": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetSuccessStatistics",
+        "responses": {
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Statistics/top": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetTopFeaturesStatistics",
+        "responses": {
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Statistics/plot": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "operationId": "Statistics_GetPlotStatistics",
+        "responses": {
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Configuration/product/feature": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_Get",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "path",
+            "required": true,
+            "x-schema": {
+              "$ref": "#/definitions/DetailsConfigurationRequest"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ring",
+            "in": "query",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
           "500": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DetailsConfigurationResponse"
             }
           }
         }
@@ -702,12 +1137,15 @@
               }
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -745,12 +1183,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -790,12 +1234,18 @@
           "200": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -837,15 +1287,15 @@
               "$ref": "#/definitions/DetailsToggleResponse"
             }
           },
-          "404": {
-            "description": ""
-          },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       },
@@ -881,12 +1331,18 @@
           "204": {
             "description": ""
           },
-          "500": {
+          "403": {
+            "description": ""
+          },
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -914,12 +1370,15 @@
               "$ref": "#/definitions/RevealToggleResponse"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -938,12 +1397,15 @@
               "$ref": "#/definitions/KnownTypesToggleResponse"
             }
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -969,19 +1431,18 @@
           "201": {
             "description": ""
           },
-          "400": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
-            }
+          "403": {
+            "description": ""
           },
-          "500": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
               "$ref": "#/definitions/ProblemDetails"
             }
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -1007,252 +1468,38 @@
           "201": {
             "description": ""
           },
+          "403": {
+            "description": ""
+          },
           "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ValidationProblemDetails"
+              "$ref": "#/definitions/ProblemDetails"
             }
           },
           "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/my": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_My",
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/MyResponse"
-            }
-          },
-          "403": {
             "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_List",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "pageIndex",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          },
-          {
-            "type": "integer",
-            "name": "pageCount",
-            "in": "query",
-            "format": "int32",
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ListUsersResponse"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Add",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AddPermissionRequest"
-            },
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Update",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdatePermissionRequest"
-            },
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/{subjectId}": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Details",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "subjectId",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/DetailsUsersResponse"
-            }
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/{subjectid}": {
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Delete",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "subjectId",
-            "in": "path",
-            "required": true,
-            "x-nullable": false
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "500": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
           }
         }
       }
     }
   },
   "definitions": {
-    "ListApiKeyResponse": {
+    "ListAuditRequest": {
       "type": "object",
       "required": [
-        "total",
         "pageIndex",
-        "count"
+        "pageCount"
       ],
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int32"
-        },
         "pageIndex": {
           "type": "integer",
           "format": "int32"
         },
-        "count": {
+        "pageCount": {
           "type": "integer",
           "format": "int32"
-        },
-        "result": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ListApiKeyResponseDetail"
-          }
-        }
-      }
-    },
-    "ListApiKeyResponseDetail": {
-      "type": "object",
-      "required": [
-        "validTo"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "validTo": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
@@ -1281,6 +1528,49 @@
         }
       }
     },
+    "PaginatedResultOfListApiKeyResponseDetail": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListApiKeyResponseDetail"
+          }
+        }
+      }
+    },
+    "ListApiKeyResponseDetail": {
+      "type": "object",
+      "required": [
+        "validTo"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "DetailsApiKeyResponse": {
       "type": "object",
       "required": [
@@ -1288,6 +1578,9 @@
       ],
       "properties": {
         "name": {
+          "type": "string"
+        },
+        "actAs": {
           "type": "string"
         },
         "validTo": {
@@ -1323,33 +1616,20 @@
         "name": {
           "type": "string"
         },
+        "actAs": {
+          "type": "string"
+        },
         "validTo": {
           "type": "string",
           "format": "date-time"
         }
       }
     },
-    "ListAuditRequest": {
-      "type": "object",
-      "required": [
-        "pageIndex",
-        "pageCount"
-      ],
-      "properties": {
-        "pageIndex": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "pageCount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "AddFeatureRequest": {
       "type": "object",
       "required": [
-        "enabled"
+        "enabled",
+        "archived"
       ],
       "properties": {
         "name": {
@@ -1359,6 +1639,9 @@
           "type": "string"
         },
         "enabled": {
+          "type": "boolean"
+        },
+        "archived": {
           "type": "boolean"
         }
       }
@@ -1431,7 +1714,7 @@
         }
       }
     },
-    "ListFeatureResponse": {
+    "PaginatedResultOfListFeatureResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1451,15 +1734,15 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ListFlagResponseDetail"
+            "$ref": "#/definitions/ListFeatureResponseDetail"
           }
         }
       }
     },
-    "ListFlagResponseDetail": {
+    "ListFeatureResponseDetail": {
       "type": "object",
       "required": [
         "enabled"
@@ -1476,7 +1759,21 @@
         }
       }
     },
-    "ListProductResponse": {
+    "MyResponse": {
+      "type": "object",
+      "required": [
+        "isAuthorized"
+      ],
+      "properties": {
+        "isAuthorized": {
+          "type": "boolean"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedResultOfListUsersResponseDetail": {
       "type": "object",
       "required": [
         "total",
@@ -1496,7 +1793,79 @@
           "type": "integer",
           "format": "int32"
         },
-        "result": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListUsersResponseDetail"
+          }
+        }
+      }
+    },
+    "ListUsersResponseDetail": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsPermissionResponse": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "AddPermissionRequest": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdatePermissionRequest": {
+      "type": "object",
+      "properties": {
+        "subjectId": {
+          "type": "string"
+        },
+        "actAs": {
+          "type": "string"
+        }
+      }
+    },
+    "PaginatedResultOfListProductResponseDetail": {
+      "type": "object",
+      "required": [
+        "total",
+        "pageIndex",
+        "count"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ListProductResponseDetail"
@@ -1523,6 +1892,26 @@
         },
         "description": {
           "type": "string"
+        },
+        "rings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RingResponseDetail"
+          }
+        }
+      }
+    },
+    "RingResponseDetail": {
+      "type": "object",
+      "required": [
+        "default"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
         }
       }
     },
@@ -1533,6 +1922,9 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "defaultRingName": {
           "type": "string"
         }
       }
@@ -1548,10 +1940,56 @@
         }
       }
     },
+    "AddRingRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "DetailsConfigurationResponse": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "featureName": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "toggles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      }
+    },
+    "DetailsConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "featureName": {
+          "type": "string"
+        },
+        "ringName": {
+          "type": "string"
+        }
+      }
+    },
     "TagResponseDetail": {
       "type": "object",
       "properties": {
         "name": {
+          "type": "string"
+        },
+        "color": {
           "type": "string"
         }
       }
@@ -1560,6 +1998,9 @@
       "type": "object",
       "properties": {
         "tag": {
+          "type": "string"
+        },
+        "hexColor": {
           "type": "string"
         }
       }
@@ -1594,6 +2035,9 @@
           "type": "string"
         },
         "value": {
+          "type": "string"
+        },
+        "ringName": {
           "type": "string"
         }
       }
@@ -1670,6 +2114,9 @@
         "featureName": {
           "type": "string"
         },
+        "ringName": {
+          "type": "string"
+        },
         "toggleType": {
           "type": "string"
         },
@@ -1688,6 +2135,9 @@
           "type": "string"
         },
         "featureName": {
+          "type": "string"
+        },
+        "ringName": {
           "type": "string"
         },
         "toggleType": {
@@ -1712,145 +2162,6 @@
         },
         "type": {
           "type": "string"
-        }
-      }
-    },
-    "MyResponse": {
-      "type": "object",
-      "required": [
-        "isAuthorized",
-        "readPermission",
-        "writePermission",
-        "managementPermission"
-      ],
-      "properties": {
-        "isAuthorized": {
-          "type": "boolean"
-        },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
-        },
-        "managementPermission": {
-          "type": "boolean"
-        }
-      }
-    },
-    "ListUsersResponse": {
-      "type": "object",
-      "required": [
-        "total",
-        "pageIndex",
-        "count"
-      ],
-      "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "pageIndex": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "result": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ListUsersResponseDetail"
-          }
-        }
-      }
-    },
-    "ListUsersResponseDetail": {
-      "type": "object",
-      "required": [
-        "managementPermission",
-        "readPermission",
-        "writePermission"
-      ],
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "managementPermission": {
-          "type": "boolean"
-        },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
-        }
-      }
-    },
-    "DetailsUsersResponse": {
-      "type": "object",
-      "required": [
-        "managementPermission",
-        "readPermission",
-        "writePermission"
-      ],
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "managementPermission": {
-          "type": "boolean"
-        },
-        "readPermission": {
-          "type": "boolean"
-        },
-        "writePermission": {
-          "type": "boolean"
-        }
-      }
-    },
-    "AddPermissionRequest": {
-      "type": "object",
-      "required": [
-        "read",
-        "write",
-        "manage"
-      ],
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "read": {
-          "type": "boolean"
-        },
-        "write": {
-          "type": "boolean"
-        },
-        "manage": {
-          "type": "boolean"
-        }
-      }
-    },
-    "UpdatePermissionRequest": {
-      "type": "object",
-      "required": [
-        "read",
-        "write",
-        "manage"
-      ],
-      "properties": {
-        "subjectId": {
-          "type": "string"
-        },
-        "read": {
-          "type": "boolean"
-        },
-        "write": {
-          "type": "boolean"
-        },
-        "manage": {
-          "type": "boolean"
         }
       }
     }

@@ -1,10 +1,10 @@
-﻿using Esquio.UI.Api.Features.Toggles.Add;
-using Esquio.UI.Api.Features.Toggles.AddParameter;
-using Esquio.UI.Api.Features.Toggles.Delete;
-using Esquio.UI.Api.Features.Toggles.Details;
-using Esquio.UI.Api.Features.Toggles.KnownTypes;
-using Esquio.UI.Api.Features.Toggles.Reveal;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models.Toggles.Add;
+using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
+using Esquio.UI.Api.Shared.Models.Toggles.Delete;
+using Esquio.UI.Api.Shared.Models.Toggles.Details;
+using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
+using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +13,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Toggles
+namespace Esquio.UI.Api.Scenarios.Toggles
 {
     [Authorize]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     public class TogglesController : ControllerBase
     {
@@ -28,11 +28,11 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(typeof(DetailsToggleResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsToggleResponse>> Details(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
             var request = new DetailsToggleRequest()
@@ -53,10 +53,12 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/toggles/{toggleType}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Delete(string productName, string featureName, string toggleType, CancellationToken cancellationToken = default)
         {
             var request = new DeleteToggleRequest()
@@ -72,10 +74,11 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/toggles/parameters/{toggleType}")]
         [ProducesResponseType(typeof(RevealToggleResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RevealToggleResponse>> Reveal(string toggleType, CancellationToken cancellationToken = default)
         {
             var request = new RevealToggleRequest()
@@ -89,10 +92,11 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/toggles/types")]
         [ProducesResponseType(typeof(KnownTypesToggleResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<KnownTypesToggleResponse>> KnownTypes(CancellationToken cancellationToken = default)
         {
             var toggleList = await _mediator.Send(new KnownTypesToggleRequest(), cancellationToken);
@@ -101,11 +105,12 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/toggles/parameters")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddParameter(AddParameterToggleRequest parameterToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(parameterToggleRequest, cancellationToken);
@@ -115,11 +120,12 @@ namespace Esquio.UI.Api.Features.Toggles
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/toggles")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Add(AddToggleRequest postToggleRequest, CancellationToken cancellationToken = default)
         {
             await _mediator.Send(postToggleRequest, cancellationToken);

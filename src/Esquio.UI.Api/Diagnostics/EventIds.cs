@@ -14,6 +14,9 @@ namespace Esquio.UI.Api.Diagnostics
         public static readonly EventId ToggleNotExist = new EventId(107, nameof(ToggleNotExist));
         public static readonly EventId FeatureTagAlreadyExist = new EventId(108, nameof(FeatureTagAlreadyExist));
         public static readonly EventId FeatureTagNotExist = new EventId(109, nameof(FeatureTagNotExist));
+        public static readonly EventId RingAlreadyExist = new EventId(110, nameof(RingAlreadyExist));
+        public static readonly EventId RingNotExist = new EventId(111, nameof(RingNotExist));
+        public static readonly EventId CantDeleteDefaultRing = new EventId(111, nameof(CantDeleteDefaultRing));
 
         public static readonly EventId ExecutingCommand = new EventId(201, nameof(ExecutingCommand));
         public static readonly EventId ExecutedCommand = new EventId(202, nameof(ExecutedCommand));
@@ -25,5 +28,13 @@ namespace Esquio.UI.Api.Diagnostics
         public static readonly EventId SubjectIdAlreadyExist = new EventId(401, nameof(SubjectIdAlreadyExist));
         public static readonly EventId SubjectIdDoesNotExist = new EventId(402, nameof(SubjectIdDoesNotExist));
         public static readonly EventId MyIsNotAuthorized = new EventId(403, nameof(MyIsNotAuthorized));
+
+        public static readonly EventId ApiKeyAuthenticationBegin = new EventId(500, nameof(ApiKeyAuthenticationBegin));
+        public static readonly EventId ApiKeyAuthenticationSuccess = new EventId(502, nameof(ApiKeyAuthenticationSuccess));
+        public static readonly EventId ApiKeyAuthenticationFail = new EventId(503, nameof(ApiKeyAuthenticationFail));
+        public static readonly EventId ApiKeyAuthenticationNotFound = new EventId(504, nameof(ApiKeyAuthenticationNotFound));
+        public static readonly EventId ApiKeyAuthenticationDoesNotExist = new EventId(505, nameof(ApiKeyAuthenticationDoesNotExist));
+        public static readonly EventId ApiKeyStoreValidating = new EventId(506, nameof(ApiKeyStoreValidating));
+        public static readonly EventId ApiKeyStoreKeyExist = new EventId(506, nameof(ApiKeyStoreKeyExist));
     }
 }

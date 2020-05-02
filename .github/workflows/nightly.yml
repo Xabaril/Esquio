@@ -7,7 +7,6 @@ jobs:
     env:
       BUILD_CONFIG: Release
       VERSION_SUFFIX: -preview${{ github.run_id }}
-
     name: Build
     runs-on: ubuntu-latest
     services:
@@ -21,9 +20,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.4.0
+      uses: actions/setup-dotnet@v1
       with:
-        version: 3.1.102
+        dotnet-version: 3.1.201
     - name: dotnet build
       run: dotnet build Esquio.sln -c $BUILD_CONFIG
     - name: dotnet test [UnitTests]
@@ -38,8 +37,10 @@ jobs:
       run: dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.Configuration.Store]
       run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
-    - name: dotnet pack [Esquio.EntityFrameworkCore.Store]
-      run: dotnet pack ./src/Esquio.EntityFrameworkCore.Store/Esquio.EntityFrameworkCore.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Http.Store]
+      run: dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Blazor.WebAssembly]
+      run: dotnet pack ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.MiniProfiler]
       run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --version-suffix $VERSION_SUFFIX --include-source --include-symbols
     - name: dotnet pack [Esquio.CLi]
@@ -48,6 +49,14 @@ jobs:
       run: |
           for f in ./artifacts/*.nupkg
           do
-            curl -vX PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril
+            echo "Publishing $f"
+            curl --silent --show-error --fail -X PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
+            if [ $? -eq 0 ]
+            then
+              echo "successfully pushed $f"
+            else
+              echo "failed to push $f" >&2
+              exit 1
+            fi
           done
       shell: bash

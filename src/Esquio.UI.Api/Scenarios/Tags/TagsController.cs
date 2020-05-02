@@ -1,7 +1,7 @@
-﻿using Esquio.UI.Api.Features.Tags.Add;
-using Esquio.UI.Api.Features.Tags.Delete;
-using Esquio.UI.Api.Features.Tags.List;
-using Esquio.UI.Api.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Shared.Models.Tags.Add;
+using Esquio.UI.Api.Shared.Models.Tags.Delete;
+using Esquio.UI.Api.Shared.Models.Tags.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +11,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Tags
+namespace Esquio.UI.Api.Scenarios.Tags
 {
     [Authorize]
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [ApiController]
     public class TagsController : ControllerBase
     {
@@ -25,10 +25,11 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpGet]
-        [Authorize(Policies.Read)]
+        [Authorize(Policies.Reader)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags")]
-        [ProducesResponseType(typeof(List<TagResponseDetail>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(IEnumerable<TagResponseDetail>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TagResponseDetail>>> List(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new ListTagRequest()
@@ -43,10 +44,12 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpDelete]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags/untag/{tag:slug}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Untag(string productName, string featureName, string tag, CancellationToken cancellationToken = default)
         {
             var request = new DeleteTagRequest()
@@ -62,10 +65,12 @@ namespace Esquio.UI.Api.Features.Tags
         }
 
         [HttpPost]
-        [Authorize(Policies.Write)]
+        [Authorize(Policies.Contributor)]
         [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/tags/tag")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Tag(string productName, string featureName, AddTagRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
@@ -73,8 +78,7 @@ namespace Esquio.UI.Api.Features.Tags
 
             await _mediator.Send(request, cancellationToken);
 
-            //TODO: fix created at action and set NoContent
-            return Ok();
+            return NoContent();
         }
     }
 }

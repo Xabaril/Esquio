@@ -1,0 +1,205 @@
+﻿@page "/"
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
+
+@inject EsquioState State
+@inject IEsquioHttpClient esquioHttpClient
+@inject IJSRuntime jsRuntime
+
+<PageTransition>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span style="background-color:#20b2aa !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-box-open"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Products</span>
+                            <span class="info-box-number">
+                                @_configurationStatisticsResponse.TotalProducts
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span style="background-color:#f08080 !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-magic"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Features</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalFeatures</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <!-- fix for small devices only -->
+                <div class="clearfix hidden-md-up"></div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span style="background-color:#ff7f50 !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-ring"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Rings</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalRings</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span style="background-color:#c09dff !important;" class="info-box-icon bg-info elevation-1"><i class="fas fa-toggle-on"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Toggles</span>
+                            <span class="info-box-number">@_configurationStatisticsResponse.TotalToggles</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Client Success request over last 24h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieSuccess" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Features over last 24h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="donutTopFeatures" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Client Configuration Requests over latest 24h.</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="plotRequests" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div>
+</PageTransition>
+
+@code {
+
+    private ConfigurationStatisticsResponse _configurationStatisticsResponse
+        = new ConfigurationStatisticsResponse();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        State.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
+            new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
+
+        await Load();
+
+    }
+
+    private async Task Load(object state = null)
+    {
+        await LoadConfigurationStatistics();
+        await LoadSucessStatistics();
+        await LoadTopFeaturesStatistics();
+        await LoadPlotStatistics();
+    }
+
+    private async Task LoadConfigurationStatistics()
+    {
+        var response = await esquioHttpClient.GetConfigurationStatistics();
+
+        if (response != null)
+        {
+            _configurationStatisticsResponse = response;
+        }
+    }
+
+    private async Task LoadSucessStatistics()
+    {
+        var response = await esquioHttpClient.GetSuccessStatistics();
+
+        if (response != null)
+        {
+            await jsRuntime.InvokeVoidAsync("drawSuccessChart", "pieSuccess", response.PercentageSuccess);
+        }
+    }
+
+    private async Task LoadTopFeaturesStatistics()
+    {
+        var response = await esquioHttpClient.GetTopFeaturesStatistics();
+
+        if (response != null)
+        {
+            var features = response
+                .TopFeaturesDetails
+                .Select(f => f.FeatureName)
+                .ToArray();
+
+            var requests = response
+                .TopFeaturesDetails
+                .Select(f => f.Requests)
+                .ToArray();
+
+            await jsRuntime.InvokeVoidAsync("drawTopFeaturesChart", "donutTopFeatures", features, requests);
+        }
+    }
+
+    private async Task LoadPlotStatistics()
+    {
+        var response = await esquioHttpClient.GetPlotStatistics();
+
+        if (response != null)
+        {
+            var labels = response
+                .Points
+                .Select(f => f.Date)
+                .ToArray();
+
+            var values = response
+                .Points
+                .Select(f => f.Value)
+                .ToArray();
+
+            await jsRuntime.InvokeVoidAsync("drawPlotChart", "plotRequests", labels, values);
+        }
+    }
+}

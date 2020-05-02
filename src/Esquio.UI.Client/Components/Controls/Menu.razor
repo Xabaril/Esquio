@@ -1,0 +1,44 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <Permission Requires="PolicyAction.Read" Over="PolicySubject.Product">
+                <li class="nav-item">
+                    <NavLink href="/products" class="nav-link">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p>Products</p>
+                    </NavLink>
+                </li>
+            </Permission>
+            <Permission Requires="PolicyAction.Read" Over="PolicySubject.Permission">
+                <li class="nav-item">
+                    <NavLink href="/users" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Users</p>
+                    </NavLink>
+                </li>
+            </Permission>
+            <Permission Requires="PolicyAction.Read" Over="PolicySubject.ApiKeys">
+                <li class="nav-item">
+                    <NavLink href="/apikeys" class="nav-link">
+                        <i class="nav-icon fas fa-key"></i>
+                        <p>Api Keys</p>
+                    </NavLink>
+                </li>
+            </Permission>
+            <Permission Requires="PolicyAction.Read" Over="PolicySubject.Audit">
+                <li class="nav-item">
+                    <NavLink href="/audit" class="nav-link">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>Audit</p>
+                    </NavLink>
+                </li>
+            </Permission>
+            <li class="nav-item">
+                <NavLink href="/about" class="nav-link">
+                    <i class="nav-icon fas fa-info"></i>
+                    <p>About</p>
+                </NavLink>
+            </li>
+        </ul>
+    </Authorized>
+</AuthorizeView>

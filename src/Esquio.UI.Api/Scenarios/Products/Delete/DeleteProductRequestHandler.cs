@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Products.Delete;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Products.Delete
+namespace Esquio.UI.Api.Scenarios.Products.Delete
 {
     public class DeleteProductRequestHandler : IRequestHandler<DeleteProductRequest>
     {
@@ -24,7 +25,6 @@ namespace Esquio.UI.Api.Features.Products.Delete
         {
             var product = await _storeDbContext
                 .Products
-
                 .Where(p => p.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 

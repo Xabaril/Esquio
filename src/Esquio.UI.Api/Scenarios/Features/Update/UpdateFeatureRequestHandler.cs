@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Features.Update;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Update
+namespace Esquio.UI.Api.Scenarios.Flags.Update
 {
     public class UpdateFeatureRequestHandler : IRequestHandler<UpdateFeatureRequest, string>
     {
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Flags.Update
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f=>f.ProductEntity) //-> this is only needed for "history"
                 .Where(p => p.Name == request.CurrentName && p.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 

@@ -49,5 +49,10 @@
         {
             return new ApiKeyBuilder();
         }
+
+        public static RingEntityBuilder Ring()
+        {
+            return new RingEntityBuilder();
+        }
     }
 }

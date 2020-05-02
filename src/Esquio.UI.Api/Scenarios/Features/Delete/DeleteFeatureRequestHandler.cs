@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Shared.Models.Features.Delete;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Delete
+namespace Esquio.UI.Api.Scenarios.Flags.Delete
 {
     public class DeleteFeatureRequestHandler : IRequestHandler<DeleteFeatureRequest>
     {
@@ -25,6 +26,7 @@ namespace Esquio.UI.Api.Features.Flags.Delete
         {
             var feature = await _storeDbContext
                 .Features
+                .Include(f => f.ProductEntity) //-> this is only needed for "history"
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync(cancellationToken);
 

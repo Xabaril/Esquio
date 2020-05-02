@@ -10,21 +10,18 @@ namespace Microsoft.AspNetCore.Builder
     /// </summary>
     public static class EndpointRouteBuilderExtensions
     {
-        private static char[] split_characters = new char[] { ',' };
-
         /// <summary>
         /// Specify a feature check to the endpoint(s).
         /// </summary>
         /// <typeparam name="TBuilder"><see cref="IEndpointConventionBuilder"/></typeparam>
         /// <param name="builder">The endopoint convention builder.</param>
-        /// <param name="names">A coma separated list of features names to be evaluated.</param>
-        /// <param name="productName">The product name to be checked with the <paramref name="featureName"/> parameter.</param>
+        /// <param name="name">The feature name to be evaluated.</param>
         /// <returns>The original convention builder to be chained.</returns>
-        public static TBuilder RequireFeature<TBuilder>(this TBuilder builder, string names, string productName = null) where TBuilder : IEndpointConventionBuilder
+        public static TBuilder RequireFeature<TBuilder>(this TBuilder builder, string name) where TBuilder : IEndpointConventionBuilder
         {
             builder.Add(endpointbuilder =>
             {
-                var metadata = new FeatureFilter(names, productName);
+                var metadata = new FeatureFilter(name);
 
                 endpointbuilder.Metadata
                     .Add(metadata);

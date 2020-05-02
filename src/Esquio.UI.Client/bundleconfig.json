@@ -1,0 +1,19 @@
+[
+  {
+    "outputFileName": "wwwroot/dist/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/esquio.min.js",
+    "inputFiles": [
+      "wwwroot/js/esquio.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

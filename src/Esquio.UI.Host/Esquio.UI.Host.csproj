@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="$(blazor)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
+
+    <PackageReference Include="Serilog.Extensions.Logging" Version="$(serilogextensionslogging)" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="$(serilogsettingsconfiguration)" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="$(serilogsinksapplicationinsights)" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="$(serilogsinkscoloredconsole)" />
+    
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
+
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="$(SwashbuckleAspNetCore)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
+  </ItemGroup>
+  </Project>

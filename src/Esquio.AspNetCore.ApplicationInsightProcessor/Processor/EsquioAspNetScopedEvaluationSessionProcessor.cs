@@ -4,6 +4,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
@@ -32,25 +33,27 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 
         private void AddEsquioProperties(ITelemetry telemetryItem)
         {
-            if (_httpContextAccessor.HttpContext != null)
+            if (_httpContextAccessor.HttpContext != null && telemetryItem != null)
             {
-                var esquioScopedEvaluationResults = _httpContextAccessor.HttpContext?
+                var evaluation = _httpContextAccessor.HttpContext?
                     .Items
-                    .Where(i => i.Key.ToString().StartsWith(EsquioConstants.ESQUIO));
+                    .Where(k => k.Key.ToString() == EsquioConstants.ESQUIO)
+                    .Select(i => i.Value)
+                    .SingleOrDefault();
 
-                if (esquioScopedEvaluationResults != null)
+                if (evaluation != null)
                 {
-                    ISupportProperties telemetry = telemetryItem as ISupportProperties;
+                    var items = evaluation as Dictionary<string, bool>;
 
-                    if (telemetry != null
-                        &&
-                        esquioScopedEvaluationResults != null)
+                    if (items != null)
                     {
-                        foreach (var (key, value) in esquioScopedEvaluationResults)
+                        ISupportProperties telemetry = telemetryItem as ISupportProperties;
+
+                        foreach (var (key, value) in items)
                         {
                             if (!telemetry.Properties.ContainsKey(key.ToString()))
                             {
-                                telemetry.Properties.Add(key.ToString(), ((ScopedEvaluationResult)value).Enabled.ToString());
+                                telemetry.Properties.Add(key.ToString(), value.ToString());
                             }
                         }
                     }

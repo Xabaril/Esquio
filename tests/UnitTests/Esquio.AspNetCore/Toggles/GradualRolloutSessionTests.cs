@@ -1,11 +1,9 @@
-﻿using Esquio.Abstractions;
+﻿using Esquio;
+using Esquio.Abstractions;
 using Esquio.AspNetCore.Toggles;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using UnitTests.Builders;
 using UnitTests.Seedwork;
@@ -20,10 +18,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
-                var accessor = new FakeHttpContextAccesor();
+                var accessor = new FakeHttpContextAccessor();
 
-                new GradualRolloutSessionToggle(null, store, accessor);
+                new GradualRolloutSessionToggle(null, accessor);
             });
         }
 
@@ -32,10 +29,9 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var store = new DelegatedValueFeatureStore((_, __) => null);
                 var partitioner = new DefaultValuePartitioner();
 
-                new GradualRolloutSessionToggle(partitioner, store, null);
+                new GradualRolloutSessionToggle(partitioner, null);
             });
         }
 
@@ -44,7 +40,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -55,12 +51,16 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Session = new FakeSession();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutSession.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -95,7 +95,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var toggle = Build
                .Toggle<GradualRolloutSessionToggle>()
-               .AddOneParameter("Percentage", percentage)
+               .AddParameter("Percentage", percentage)
                .Build();
 
             var feature = Build
@@ -106,12 +106,16 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Session = new FakeSession(sessionId);
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutSession.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeTrue();
@@ -122,7 +126,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 0)
+                .AddParameter("Percentage", 0)
                 .Build();
 
             var feature = Build
@@ -133,12 +137,16 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             var context = new DefaultHttpContext();
             context.Session = new FakeSession();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
-            var active = await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
+            var active = await gradualRolloutSession.IsActiveAsync(
+                ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
 
             active.Should()
                 .BeFalse();
@@ -149,7 +157,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         {
             var toggle = Build
                 .Toggle<GradualRolloutSessionToggle>()
-                .AddOneParameter("Percentage", 100)
+                .AddParameter("Percentage", 100)
                 .Build();
 
             var feature = Build
@@ -159,76 +167,20 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 
             var context = new DefaultHttpContext();
 
-            var store = new DelegatedValueFeatureStore((_, __) => feature);
             var partitioner = new DefaultValuePartitioner();
 
-            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, store, new FakeHttpContextAccesor(context));
+            var gradualRolloutSession = new GradualRolloutSessionToggle(partitioner, new FakeHttpContextAccessor(context));
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await gradualRolloutSession.IsActiveAsync(Constants.FeatureName);
+                await gradualRolloutSession.IsActiveAsync(
+                    ToggleExecutionContext.FromToggle(
+                    feature.Name,
+                    EsquioConstants.DEFAULT_PRODUCT_NAME,
+                    EsquioConstants.DEFAULT_RING_NAME,
+                    toggle));
             });
         }
 
-        private class FakeHttpContextAccesor
-            : IHttpContextAccessor
-        {
-            public HttpContext HttpContext { get; set; }
-
-            public FakeHttpContextAccesor() { }
-
-            public FakeHttpContextAccesor(HttpContext context)
-            {
-                HttpContext = context;
-            }
-        }
-        private class FakeSession
-            : ISession
-        {
-            string _sessionId;
-
-            public FakeSession(string sessionId)
-            {
-                _sessionId = sessionId;
-            }
-
-            public FakeSession()
-            {
-                _sessionId = Guid.NewGuid().ToString();
-            }
-            public string Id => _sessionId;
-
-            public bool IsAvailable => true;
-
-            public IEnumerable<string> Keys => Enumerable.Empty<string>();
-
-            public void Clear()
-            {
-            }
-
-            public Task CommitAsync(CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            public Task LoadAsync(CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            public void Remove(string key)
-            {
-            }
-
-            public void Set(string key, byte[] value)
-            {
-            }
-
-            public bool TryGetValue(string key, out byte[] value)
-            {
-                value = default;
-                return false;
-            }
-        }
     }
 }

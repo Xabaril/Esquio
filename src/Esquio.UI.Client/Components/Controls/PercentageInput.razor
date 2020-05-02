@@ -1,0 +1,36 @@
+﻿@inject IJSRuntime jsRuntime
+
+<div class="form-group">
+    <label for="@id">@Label</label>
+    <p class="description">@Description</p>
+    <input type="text"
+            id="@id"
+            name="@id"
+            class="js-range-slider"
+            @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))" />
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Description { get; set; }
+    [Parameter] public int From { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+    [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
+
+    private Guid id = Guid.NewGuid();
+    private int previousFrom;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            previousFrom = From;
+            await jsRuntime.InvokeVoidAsync($"initRangeSlider", $"#{id}", From, HasPermission == false);
+        }
+        else if (previousFrom != From)
+        {
+            previousFrom = From;
+            await jsRuntime.InvokeVoidAsync($"reloadRangeSlider", $"#{id}", From);
+        }
+    }
+}

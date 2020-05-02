@@ -1,4 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
@@ -6,7 +6,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private string _newValues;
         private string _oldValues;
-        private int _featureId;
+        private string _featureName;
+        private string _productName;
 
         public HistoryBuilder WithNewValues(string newValues)
         {
@@ -19,9 +20,15 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
-        public HistoryBuilder WithFeatureId(int featureId)
+        public HistoryBuilder WithFeatureName(string featureName)
         {
-            _featureId = featureId;
+            _featureName = featureName;
+            return this;
+        }
+
+        public HistoryBuilder WithProductName(string productName)
+        {
+            _productName = productName;
             return this;
         }
 
@@ -29,7 +36,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
         {
             return new HistoryEntity
             {
-                FeatureId = _featureId,
+                FeatureName = _featureName,
+                ProductName = _productName,
                 NewValues = _newValues,
                 OldValues = _oldValues
             };

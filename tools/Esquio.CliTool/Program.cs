@@ -35,10 +35,15 @@ namespace Esquio.CliTool
                 PhysicalConsole.Singleton.WriteLine(Constants.UnauthorizedErrorMessage, Constants.ErrorColor);
                 return 1;
             }
-            catch (ApiException<ValidationProblemDetails> apiException) //when (apiException.StatusCode == (int)HttpStatusCode.BadRequest)
+            catch (ApiException apiException) when (apiException.StatusCode == (int)HttpStatusCode.Forbidden)
+            {
+                PhysicalConsole.Singleton.WriteLine(Constants.ForbiddenErrorMessage, Constants.ErrorColor);
+                return 1;
+            }
+            catch (ApiException<ProblemDetails> apiException)
             {
                 PhysicalConsole.Singleton.WriteLine(Constants.BadRquestErrorMessage, Constants.ErrorColor);
-                PhysicalConsole.Singleton.WriteLine(apiException.Response, Constants.ErrorColor);
+                PhysicalConsole.Singleton.WriteLine(apiException.Result.Detail, Constants.ErrorColor);
                 return 1;
             }
         }

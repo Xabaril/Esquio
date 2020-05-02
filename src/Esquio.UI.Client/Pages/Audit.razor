@@ -1,0 +1,118 @@
+﻿@page "/audit"
+@attribute [Authorize(Policies.Management)]
+@layout MainLayout
+
+@inject IEsquioHttpClient esquioHttpClient
+@inject EsquioState  esquioState
+@inject NavigationManager navigation
+
+<PageTransition>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <PageTitle Title="Audit" Subtitle="Show the Esquio Audit information.">
+                    <Icon>
+                        <i class="fas fa-box-open"></i>
+                    </Icon>
+                    <Actions>
+                    </Actions>
+                </PageTitle>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginatedTable Loader="Loader" SkeletonColumns="5" @ref="table">
+                        <TableHeader>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Feature</th>
+                            <th>Action</th>
+                            <th></th>
+                        </TableHeader>
+                        <TableBody Context="audit">
+                            @foreach (var item in audit.Items)
+                            {
+                                <tr>
+                                    <td>@item.CreatedAt</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.FeatureName</td>
+                                    <td>@item.Action</td>
+                                    <td class="text-center" @onclick="()=>ShowChangeSet(item.OldValues,item.NewValues)" @onclick:stopPropagation><i class="far fa-eye"></i></td>
+                                </tr>
+                            }
+                        </TableBody>
+                    </PaginatedTable>
+                </div>
+            </div>
+        </div>
+    </section>
+</PageTransition>
+
+<Modal Title="Change Set" Show="showChangeSet" OnClose="CloseModal">
+    <ModalBody>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-component">
+                        <thead>
+                        <th>Before</th>
+                        <th>After</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><Json Content=@oldChangeSet Id="old"></Json></td>
+                                <td><Json Content=@newChangeSet Id="new"></Json></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+    </ModalFooter>
+</Modal>
+
+@code {
+
+    private bool showChangeSet;
+    private string oldChangeSet;
+    private string newChangeSet;
+
+    private PaginatedTable<ListAuditResponseDetail> table;
+
+    protected override void OnInitialized()
+    {
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "/" },
+            new BreadcrumbItemViewModel { Title = "Audit", Active = true });
+    }
+
+    private Task<PaginatedResult<ListAuditResponseDetail>> Loader(int pageIndex, int pageCount)
+    {
+        return esquioHttpClient.GetAuditList(pageIndex, pageCount);
+    }
+
+    private void ShowChangeSet(string old, string @new)
+    {
+        oldChangeSet = old;
+        newChangeSet = @new;
+        showChangeSet = true;
+
+        esquioState.SetWindowModal(showChangeSet);
+    }
+
+    private void CloseModal()
+    {
+        newChangeSet = string.Empty;
+        oldChangeSet = string.Empty;
+        showChangeSet = false;
+
+        esquioState.SetWindowModal(showChangeSet);
+    }
+}

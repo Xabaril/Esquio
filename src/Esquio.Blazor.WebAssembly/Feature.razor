@@ -1,0 +1,38 @@
+﻿@namespace Esquio.Blazor.WebAssembly
+@inherits ComponentBase
+
+@inject Esquio.Blazor.WebAssembly.IBlazorFeatureServiceClient featureServiceClient
+
+@if (_isLoading)
+{
+    @Loading
+}
+else
+{
+    if (_featureEnabled)
+    {
+        @Enabled
+    }
+    else
+    {
+        @Disabled
+    }
+}
+
+@code {
+
+    [Parameter] public RenderFragment Enabled { get; set; }
+    [Parameter] public RenderFragment Disabled { get; set; }
+    [Parameter] public RenderFragment Loading { get; set; }
+
+    [Parameter] public string Name { get; set; }
+
+    private bool _isLoading = true;
+    private bool _featureEnabled = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _featureEnabled = await featureServiceClient.IsEnabledAsync(Name);
+        _isLoading = false;
+    }
+}

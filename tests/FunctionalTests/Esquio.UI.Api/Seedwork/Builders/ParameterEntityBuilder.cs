@@ -1,4 +1,4 @@
-﻿using Esquio.EntityFrameworkCore.Store.Entities;
+﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
@@ -6,8 +6,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private string _name = "Esquio.Toggles.FromToToggle";
         private string _value = string.Empty;
-
-        private int _featureId = 1;
+        private string _ringName;
+        private int _toggleId = 1;
+        
 
         public ParameterEntityBuilder WithName(string name)
         {
@@ -20,10 +21,22 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             _value = value;
             return this;
         }
-      
+
+        public ParameterEntityBuilder WithRingName(string ringName)
+        {
+            _ringName = ringName;
+            return this;
+        }
+        public ParameterEntityBuilder WithToggle(ToggleEntity toggle)
+        {
+            _toggleId = toggle.Id;
+            return this;
+        }
+
+
         public ParameterEntity Build()
         {
-            return new ParameterEntity(_featureId, _name, _value);
+            return new ParameterEntity(_toggleId, _ringName, _name, _value);
         }
     }
 }

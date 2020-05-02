@@ -1,0 +1,34 @@
+﻿@inject ConfirmState  confirmState
+@implements IDisposable
+
+<IconButton Title="@Title" Icon="@Icon" OnClick="OnClick" />
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Icon { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public string ConfirmTitle { get; set; }
+    [Parameter] public string ConfirmDescription { get; set; }
+
+    private Guid actionId = Guid.NewGuid();
+
+    public void Dispose()
+    {
+        confirmState.OnConfirm -= _OnConfirm;
+    }
+
+    protected override void OnInitialized()
+    {
+        confirmState.OnConfirm += _OnConfirm;
+    }
+
+    private void OnClick()
+    {
+        confirmState.ShowConfirmModal(ConfirmTitle, ConfirmDescription, actionId);
+    }
+
+    private void _OnConfirm(Guid actionId)
+    {
+        if (actionId == this.actionId) OnConfirm.InvokeAsync(null);
+    }
+}

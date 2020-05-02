@@ -1,5 +1,6 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Delete
+namespace Esquio.UI.Api.Scenarios.Flags.Delete
 {
     public class DeleteApiKeyRequestHandler : IRequestHandler<DeleteApiKeyRequest>
     {
@@ -30,7 +31,13 @@ namespace Esquio.UI.Api.Features.Flags.Delete
 
             if (apikey != null)
             {
+                var permission = await _storeDbContext.Permissions
+                    .Where(p => p.SubjectId == apikey.Key && p.Kind == SubjectType.Application)
+                    .SingleOrDefaultAsync();
+
+                _storeDbContext.Remove(permission);
                 _storeDbContext.Remove(apikey);
+                
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

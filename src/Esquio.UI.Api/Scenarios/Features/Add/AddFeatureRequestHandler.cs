@@ -1,6 +1,7 @@
-﻿using Esquio.EntityFrameworkCore.Store;
-using Esquio.EntityFrameworkCore.Store.Entities;
-using Esquio.UI.Api.Diagnostics;
+﻿using Esquio.UI.Api.Diagnostics;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
+using Esquio.UI.Api.Shared.Models.Features.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Esquio.UI.Api.Features.Flags.Add
+namespace Esquio.UI.Api.Scenarios.Flags.Add
 {
     public class AddFeatureRequestHandler : IRequestHandler<AddFeatureRequest, string>
     {
@@ -38,7 +39,7 @@ namespace Esquio.UI.Api.Features.Flags.Add
 
                 if (existingFeature == null)
                 {
-                    var feature = new FeatureEntity(product.Id, request.Name, request.Enabled, request.Description);
+                    var feature = new FeatureEntity(product.Id, request.Name, request.Enabled, request.Archived, request.Description);
                     _storeDbContext.Add(feature);
 
                     await _storeDbContext.SaveChangesAsync(cancellationToken);
