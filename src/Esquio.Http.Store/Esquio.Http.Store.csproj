@@ -5,7 +5,7 @@
     <Description>Distributed store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Store;Distributed Store</PackageTags>
     <Version>$(esquiohttpstore)</Version>
-    <PackageId>Esquio.Distributed.Store</PackageId>
+    <PackageId>Esquio.Http.Store</PackageId>
     <PackageVersion>$(esquiodistributedstore)</PackageVersion>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>

@@ -1,4 +1,4 @@
-name: Esquio UI Preview Continous Deployment
+name: Esquio Docker UI Preview Continous Deployment
 on: 
   push:
     tags:       
@@ -9,7 +9,6 @@ env:
   ESQUIO_REPO: xabarilcoding
 jobs:  
   docker_build_publish:    
-    needs: build
     name: Build
     runs-on: ubuntu-latest
     steps:
