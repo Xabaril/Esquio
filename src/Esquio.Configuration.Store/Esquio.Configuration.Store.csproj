@@ -2,18 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
-    <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
-    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>Configuration store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Configuration</PackageTags>
     <Version>$(esquioconfigurationstore)</Version>
-    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
-    <Company>$(Company)</Company>
-    <Authors>$(Authors)</Authors>
     <PackageId>Esquio.Configuration.Store</PackageId>
     <PackageVersion>$(esquioconfigurationstore)</PackageVersion>
-    <PublishRepositoryUrl>$(RepositoryUrl)</PublishRepositoryUrl>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,11 +16,6 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(microsoftextensionsconfigurationbinder)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(microsoftsourcelinkgithub)">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-
   </ItemGroup>
 
   <ItemGroup>

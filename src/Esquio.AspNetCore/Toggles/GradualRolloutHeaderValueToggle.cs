@@ -39,7 +39,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         /// <inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             string headerName = context.Data[HeaderName].ToString();
 
@@ -59,12 +59,12 @@ namespace Esquio.AspNetCore.Toggles
                         var assignedPartition = _partitioner.ResolvePartition(context.FeatureName + values.First(), partitions: 100);
                         var active = assignedPartition <= percentage;
 
-                        return Task.FromResult(active);
+                        return new ValueTask<bool>(active);
                     }
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

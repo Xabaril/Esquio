@@ -1,6 +1,5 @@
 ﻿using Esquio;
 using Esquio.Abstractions;
-using Esquio.Abstractions.Providers;
 using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -33,16 +32,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.OnErrorBehavior = options.OnErrorBehavior;
                 opt.NotFoundBehavior = options.NotFoundBehavior;
                 opt.DefaultProductName = options.DefaultProductName;
-                opt.EvaluationSessionEnabled = options.EvaluationSessionEnabled;
+                opt.ScopedEvaluationEnabled = options.ScopedEvaluationEnabled;
                 opt.DefaultRingName = options.DefaultRingName;
             });
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IScopedEvaluationSession, NoScopedEvaluationSession>();
+            builder.Services.AddScoped<IScopedEvaluationHolder, NoScopedEvaluationHolder>();
 
-            builder.Services.TryAddTransient<IEnvironmentNameProviderService, NoEnvironmentNameProviderService>();
-            builder.Services.TryAddTransient<IUserNameProviderService, NoUserNameProviderService>();
-            builder.Services.TryAddTransient<IRoleNameProviderService, NoRoleNameProviderService>();
             builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
             builder.Services.AddSingleton<EsquioDiagnostics>();

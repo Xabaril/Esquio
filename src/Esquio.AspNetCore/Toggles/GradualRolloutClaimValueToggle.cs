@@ -37,7 +37,7 @@ namespace Esquio.AspNetCore.Toggles
         }
 
         ///<inheritdoc/>
-        public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             if (Double.TryParse(context.Data[Percentage].ToString(), out double percentage))
             {
@@ -63,13 +63,13 @@ namespace Esquio.AspNetCore.Toggles
 
                             var active = assignedPartition <= percentage;
 
-                            return Task.FromResult(active);
+                            return new ValueTask<bool>(active);
                         }
                     }
                 }
             }
 
-            return Task.FromResult(false);
+            return new ValueTask<bool>(false);
         }
     }
 }

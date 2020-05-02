@@ -782,7 +782,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Build();
 
             var toggle2 = Builders.Toggle()
-                .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
+                .WithType("Esquio.Toggles.EnvironmentVariableToggle,Esquio")
                 .Build();
 
             feature.Toggles
@@ -834,7 +834,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .Should()
                .ContainEquivalentOf(new ToggleDetail
                {
-                   FriendlyName = "On Environment",
+                   FriendlyName = "By Environment Variable",
                    Type = toggle2.Type,
                    Parameters = new List<ParameterDetail>()
                });

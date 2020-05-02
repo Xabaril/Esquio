@@ -1,7 +1,10 @@
 ﻿@page "/about"
 @attribute [Authorize]
+@layout MainLayout
+
 @inject EsquioState state
-@inject IEsquioHttpClient esquioHttpClient;
+@inject IEsquioHttpClient esquioHttpClient
+
 <PageTransition>
     <div class="content-header">
         <div class="container-fluid">

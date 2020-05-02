@@ -1,11 +1,12 @@
-﻿using Esquio.UI.Client.Services;
+﻿using Esquio.UI.Client.Infrastructure.Authorization;
+using Esquio.UI.Client.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Esquio.UI.Client
@@ -34,23 +35,24 @@ namespace Esquio.UI.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient<IEsquioHttpClient,EsquioHttpClient>( client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
             builder.Services.AddOidcAuthentication(options =>
             {
-                options.ProviderOptions.Authority = "https://demo.identityserver.io";
-                options.ProviderOptions.ClientId = "interactive.public";
-                options.ProviderOptions.DefaultScopes.Add("api");
-                options.ProviderOptions.ResponseType = "code";
+                builder.Configuration.Bind("Security", options.ProviderOptions);
+
+                var audience = builder.Configuration
+                    .GetValue<string>("Security:Audience");
+
+                options.ProviderOptions.DefaultScopes.Add(audience);
             });
 
-            builder.Services.AddSingleton<IEsquioHttpClient, EsquioHttpClient>(sp =>
+            builder.Services.AddAuthorizationCore(options =>
             {
-                //TODO: Check preview 5 with new message handler instead IAcccessTokenProvider
-
-                var tokenService = sp.GetRequiredService<IAccessTokenProvider>();
-                var httpClient = sp.GetRequiredService<HttpClient>();
-                
-                return new EsquioHttpClient(httpClient, tokenService);
+                options.AddPolicy(Policies.Reader, builder => builder.AddRequirements(new PolicyRequirement(Policies.Reader)));
+                options.AddPolicy(Policies.Contributor, builder => builder.AddRequirements(new PolicyRequirement(Policies.Contributor)));
+                options.AddPolicy(Policies.Management, builder => builder.AddRequirements(new PolicyRequirement(Policies.Management)));
             });
 
             builder.Services.AddScoped<EsquioState>();
@@ -58,6 +60,7 @@ namespace Esquio.UI.Client
             builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<IPolicyBuilder, DefaultPolicyBuilder>();
             builder.Services.AddScoped<INotifications, Notifications>();
+            builder.Services.AddScoped<IAuthorizationHandler, PolicyRequirementHandler>();
 
             return builder;
         }

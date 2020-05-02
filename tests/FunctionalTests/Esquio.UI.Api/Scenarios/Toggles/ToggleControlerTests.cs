@@ -471,17 +471,26 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
+              .WithType("Esquio.Toggles.EnvironmentVariableToggle,Esquio")
               .Build();
 
-            var parameter = Builders.Parameter()
-                .WithName("Environments")
+            var parameterEnvVar = Builders.Parameter()
+                .WithName("EnvironmentVariable")
+                .WithValue("ASPNETCORE_ENVIRONENT")
+                .WithRingName(ring.Name)
+                .Build();
+
+            var parameterValue = Builders.Parameter()
+                .WithName("Values")
                 .WithValue("Development")
                 .WithRingName(ring.Name)
                 .Build();
 
             toggle.Parameters
-                .Add(parameter);
+                .Add(parameterEnvVar);
+
+            toggle.Parameters
+                .Add(parameterValue);
 
             feature.Toggles
                 .Add(toggle);
@@ -493,7 +502,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Toggles.Reveal("Esquio.Toggles.EnvironmentToggle,Esquio"))
+                  .CreateRequest(ApiDefinitions.V3.Toggles.Reveal("Esquio.Toggles.EnvironmentVariableToggle,Esquio"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -506,21 +515,21 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
             content.Type
                 .Should()
-                .BeEquivalentTo("Esquio.Toggles.EnvironmentToggle,Esquio");
+                .BeEquivalentTo("Esquio.Toggles.EnvironmentVariableToggle,Esquio");
 
             content.Parameters
                 .Count
-                .Should().Be(1);
+                .Should().Be(2);
 
             content.Parameters
                 .First()
                 .Name
-                .Should().BeEquivalentTo("Environments");
+                .Should().BeEquivalentTo("EnvironmentVariable");
 
             content.Parameters
                 .First()
                 .ClrType
-                .Should().BeEquivalentTo(EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE);
+                .Should().BeEquivalentTo(EsquioConstants.STRING_PARAMETER_TYPE);
 
             content.Parameters
                 .First()
@@ -688,7 +697,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-                .WithType(typeof(EnvironmentToggle).FullName)
+                .WithType(typeof(HostEnvironmentToggle).FullName)
                 .Build();
 
             feature.Toggles
@@ -704,7 +713,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(HostEnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
             };
 
@@ -764,7 +773,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 RingName = specifiedRing.Name,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(HostEnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
                     new AddToggleRequestDetailParameter()
@@ -822,7 +831,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(HostEnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
                     new AddToggleRequestDetailParameter()
@@ -880,7 +889,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                ToggleType = typeof(EnvironmentToggle).FullName,
+                ToggleType = typeof(HostEnvironmentToggle).FullName,
                 RingName = "nonexisting",
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
@@ -1091,7 +1100,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType(typeof(EnvironmentToggle).FullName)
+              .WithType(typeof(HostEnvironmentToggle).FullName)
               .Build();
 
             feature.Toggles
@@ -1151,7 +1160,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType(typeof(EnvironmentToggle).FullName)
+              .WithType(typeof(HostEnvironmentToggle).FullName)
               .Build();
 
             var parameter = Builders.Parameter()
@@ -1219,7 +1228,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType(typeof(EnvironmentToggle).FullName)
+              .WithType(typeof(HostEnvironmentToggle).FullName)
               .Build();
 
             feature.Toggles
@@ -1284,7 +1293,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var toggle = Builders.Toggle()
-              .WithType(typeof(EnvironmentToggle).FullName)
+              .WithType(typeof(HostEnvironmentToggle).FullName)
               .Build();
 
             var parameter = Builders.Parameter()

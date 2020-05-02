@@ -60,15 +60,14 @@ namespace WebApp
 
             //add and configure esquio
             services
-                .AddEsquio(setup =>
+                .AddEsquio(setup=>
                 {
-                    //esquio constribution toggles on https://github.com/xabaril/esquio.contrib 
-                    //setup.RegisterTogglesFromAssemblyContaining<UserAgentBrowserToggle>();
-                    //setup.RegisterTogglesFromAssemblyContaining<IpApiCountryNameToggle>();
+                    setup.UseScopedEvaluation(useScopedEvaluation: true);
                 })
                 .AddHttpStore(setup =>
                 {
-                    setup.UseBaseAddress(Configuration["EsquioHttpStore:BaseAddress"])
+                    setup
+                         .UseBaseAddress(Configuration["EsquioHttpStore:BaseAddress"])
                          .UseApiKey(Configuration["EsquioHttpStore:ApiKey"])
                          .UseCache(enabled: true, absoluteExpirationRelativeToNow: TimeSpan.FromSeconds(10));
                 })
@@ -90,12 +89,12 @@ namespace WebApp
                 .UseCors()
                 .UseCookiePolicy()
                 .UseStaticFiles()
-                .UseAuthentication()
                 .UseRouting()
+                .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(routes =>
                 {
-                    routes.MapEsquio(pattern: "esquio").RequireFeature("HiddenGem");
+                    routes.MapEsquio().RequireFeature("HiddenGem");
 
                     routes.MapControllerRoute(
                             name: "default",

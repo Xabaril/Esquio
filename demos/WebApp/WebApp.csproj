@@ -13,9 +13,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
     
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="$(miniprofileraspnetcoremvc)" />
-
-    <PackageReference Include="Esquio.Toggles.Http" Version="$(esquiotoggleshttp)" />
-    <PackageReference Include="Esquio.Toggles.GeoLocation" Version="$(esquiotogglesgeolocation)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@ namespace Esquio.UI.Client.Services
 
         public event Action OnWindowModalActiveChange;
         public event Action OnBreadcrumbChange;
+        public event Action OnPolicyChange;
 
         public Policy Policy
         {
@@ -60,6 +61,7 @@ namespace Esquio.UI.Client.Services
             _ = policy ?? throw new ArgumentNullException(nameof(policy));
 
             _localContext.Policy = policy;
+            OnPolicyChange?.Invoke();
 
             PersistState();
         }

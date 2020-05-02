@@ -33,9 +33,9 @@
     case EsquioConstants.PERCENTAGE_PARAMETER_TYPE:
         <PercentageInput Label="@FormatPascalCase(Parameter.Name)"
                          Description="@Parameter.Description"
-                         From="@(string.IsNullOrEmpty(Parameter.Value)
-                                 ? 0
-                                 : Int32.Parse(Parameter.Value))"
+                         From="@(Parameter.Value.HasValue()
+                                 ? Int32.Parse(Parameter.Value)
+                                 : 0)"
                          OnChange="@(value => OnChange(
                                         Parameter,
                                         value))" />

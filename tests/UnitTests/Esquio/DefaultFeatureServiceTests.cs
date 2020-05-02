@@ -169,11 +169,11 @@ namespace UnitTests.Esquio
                 .BeFalse();
         }
 
-        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, IScopedEvaluationSession evaluationSession = null, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
+        private IFeatureService CreateFeatureService(List<Feature> configuredFeatures, IScopedEvaluationHolder evaluationSession = null, OnErrorBehavior onErrorBehavior = OnErrorBehavior.SetDisabled, NotFoundBehavior notFoundBehavior = NotFoundBehavior.SetDisabled)
         {
             var store = new FakeRuntimeStore(configuredFeatures);
             var activator = new FakeToggleActivator();
-            var session = evaluationSession ?? new NoScopedEvaluationSession();
+            var session = evaluationSession ?? new NoScopedEvaluationHolder();
 
             var esquioOptions = new EsquioOptions();
             esquioOptions.ConfigureOnErrorBehavior(onErrorBehavior);
@@ -204,7 +204,7 @@ namespace UnitTests.Esquio
         private class ThrowInvalidOperationExceptionToggle
             : IToggle
         {
-            public Task<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
+            public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
             {
                 throw new InvalidOperationException("throw exception");
             }
@@ -232,38 +232,27 @@ namespace UnitTests.Esquio
         }
 
         private class PersistEvaluationSession
-            : IScopedEvaluationSession
+            : IScopedEvaluationHolder
         {
-            List<ScopedEvaluationResult> _results = new List<ScopedEvaluationResult>();
+            Dictionary<string, bool> _evaluationResults = new Dictionary<string, bool>();
 
-            public Task SetAsync(string featureName, string productName, bool enabled)
+            public Task SetAsync(string featureName, bool enabled)
             {
-                var evaluationResult = _results.Where(er => er.FeatureName == featureName && er.ProductName == productName)
-                    .SingleOrDefault();
-
-                _results.Add(new ScopedEvaluationResult()
+                if (!_evaluationResults.ContainsKey(featureName))
                 {
-                    FeatureName = featureName,
-                    ProductName = productName,
-                    Enabled = enabled
-                });
+                    _evaluationResults.Add(featureName, enabled);
+                }
 
                 return Task.CompletedTask;
             }
 
-            public Task<bool> TryGetAsync(string featureName, string productName, out bool enabled)
+            public Task<bool> TryGetAsync(string featureName, out bool enabled)
             {
-                var evaluationResult = _results.Where(er => er.FeatureName == featureName && er.ProductName == productName)
-                    .SingleOrDefault();
+                enabled = _evaluationResults.ContainsKey(featureName)
+                    &&
+                    _evaluationResults[featureName];
 
-                if (evaluationResult != null)
-                {
-                    enabled = evaluationResult.Enabled;
-                    return Task.FromResult(true);
-                }
-
-                enabled = false;
-                return Task.FromResult(false);
+                return Task.FromResult(enabled);
             }
         }
     }

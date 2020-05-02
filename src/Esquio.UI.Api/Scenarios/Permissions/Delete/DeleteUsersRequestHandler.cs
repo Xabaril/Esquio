@@ -37,6 +37,8 @@ namespace Esquio.UI.Api.Scenarios.Permissions.Delete
                     .Remove(userPermission);
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
+
+                return Unit.Value;
             }
 
             Log.SubjectIdDoesNotExist(_logger, request.SubjectId);

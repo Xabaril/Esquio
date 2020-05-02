@@ -49,7 +49,7 @@ namespace Esquio.UI.Host
                 .AddApiKey()
                 .AddJwtBearer(options =>
                 {
-                    Configuration.Bind("Security:Jwt", options);
+                    Configuration.Bind("Security:OpenId", options);
                 })
                 .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
                 {
@@ -76,15 +76,15 @@ namespace Esquio.UI.Host
             EsquioUIApiConfiguration.Configure(app,
                 preConfigure: appBuilder =>
                  {
+                     appBuilder.AddClientBlazorConfiguration();
                      appBuilder.UseResponseCompression();
-
+                     
                      if (env.IsDevelopment())
                      {
                          appBuilder.UseDeveloperExceptionPage();
                      }
 
-                     return appBuilder.UseDefaultFiles()
-                     .UseStaticFiles();
+                     return appBuilder.UseDefaultFiles().UseStaticFiles();
                  },
                 postConfigure: appBuilder =>
                  {
@@ -104,4 +104,6 @@ namespace Esquio.UI.Host
                  });
         }
     }
+
+    
 }

@@ -7,5 +7,10 @@
     <EnableSourceLink>false</EnableSourceLink>
     <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
   </PropertyGroup>
-  
+  <ItemGroup>
+	 <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(microsoftsourcelinkgithub)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

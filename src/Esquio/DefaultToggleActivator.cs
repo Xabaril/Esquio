@@ -53,10 +53,7 @@ namespace Esquio
         private ConcurrentDictionary<string, Type> _typesCache = new ConcurrentDictionary<string, Type>(new List<KeyValuePair<string, Type>>()
         {
             new KeyValuePair<string, Type>(typeof(FromToToggle).FullName,typeof(FromToToggle)),
-            new KeyValuePair<string, Type>(typeof(EnvironmentToggle).FullName,typeof(EnvironmentToggle)),
-            new KeyValuePair<string, Type>(typeof(RoleNameToggle).FullName,typeof(RoleNameToggle)),
-            new KeyValuePair<string, Type>(typeof(UserNameToggle).FullName,typeof(UserNameToggle)),
-            new KeyValuePair<string, Type>(typeof(GradualRolloutUserNameToggle).FullName,typeof(GradualRolloutUserNameToggle))
+            new KeyValuePair<string, Type>(typeof(EnvironmentVariableToggle).FullName,typeof(EnvironmentVariableToggle))
         });
     }
 }

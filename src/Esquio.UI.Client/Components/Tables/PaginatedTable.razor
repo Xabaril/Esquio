@@ -13,7 +13,6 @@
                 </ul>
             </div>
         </div>
-        <!-- /.card-header -->
         <div class="card-body p-0">
             <table class="table table-hover table-component">
                 <thead>
@@ -40,48 +39,26 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
 }
 else
 {
     <div class="card">
-        <div class="card-header">
-            <div class="card-tools">
-                <ul class="pagination pagination-sm float-right">
-                    <li class="page-item@(currentPage  == 0 ? " disabled": "")">
-                        <a class="page-link"
-                           href="#"
-                           @onclick="()=>Load()"
-                           @onclick:preventDefault>
-                            «
-                        </a>
-                    </li>
-                    @for (int i = 1; i <= totalPages; i++)
+        @if (items.Items.Any())
+        {
+            <div class="card-header">
+                <div class="card-tools">
+                    @if (items.Items.Any())
                     {
-                        // See: https://github.com/dotnet/aspnetcore/issues/16809
-                        var index = i - 1;
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="#"
-                               @onclick="@(() => Load(index))"
-                               @onclick:preventDefault>
-                                @i
-                            </a>
-                        </li>
+                        <Pagination CurrentPage="@currentPage"
+                                    TotalPages="@totalPages"
+                                    OnFirst="() => Load()"
+                                    OnLast="() => Load(totalPages-1)"
+                                    OnPage="(page) => Load(page)" />
                     }
-                    <li class="page-item@(totalPages == currentPage + 1 ? " disabled": "")">
-                        <a class="page-link"
-                           href="#"
-                           @onclick="()=>Load(totalPages-1)"
-                           @onclick:preventDefault>
-                            »
-                        </a>
-                    </li>
-                </ul>
+                </div>
             </div>
-        </div>
-        <!-- /.card-header -->
+        }
         <div class="card-body p-0">
             <table class="table table-hover table-component">
                 <thead>
@@ -90,11 +67,22 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @TableBody(items)
+                    @if (items.Items.Any())
+                    {
+                        @TableBody(items)
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="@(SkeletonColumns + SkeletonActions)"
+                                style="text-align: center;">
+                                No items to list
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
 }
 

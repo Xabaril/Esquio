@@ -39,6 +39,8 @@ jobs:
       run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.Http.Store]
       run: dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
+    - name: dotnet pack [Esquio.Blazor.WebAssembly]
+      run: dotnet pack ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -o ./artifacts -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.MiniProfiler]
       run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --version-suffix $VERSION_SUFFIX --include-source --include-symbols
     - name: dotnet pack [Esquio.CLi]

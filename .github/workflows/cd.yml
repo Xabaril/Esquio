@@ -39,6 +39,8 @@ jobs:
       run: dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.Http.Store]
       run: dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [Esquio.Blazor.WebAssembly]
+      run: dotnet pack  ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.MiniProfiler]
       run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.Cli]
@@ -61,3 +63,5 @@ jobs:
       run: dotnet nuget push ./artifacts/Esquio.MiniProfiler.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Cli nuget
       run: dotnet nuget push ./artifacts/Esquio.Cli.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Blazor WebAssembly nuget
+      run: dotnet nuget push ./artifacts/Esquio.Blazor.WebAssembly.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate

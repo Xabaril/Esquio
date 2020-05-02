@@ -1,0 +1,12 @@
+﻿@inject NavigationManager Navigation
+
+@code {
+    [Parameter] public string Route { get; set; }
+    [Parameter] public string Exclude { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Exclude.HasValue() && Navigation.Uri.EndsWith(Exclude)) return;
+        Navigation.NavigateTo(Route);
+    }
+}

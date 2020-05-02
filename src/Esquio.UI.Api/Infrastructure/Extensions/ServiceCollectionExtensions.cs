@@ -1,6 +1,4 @@
 ﻿using Esquio.UI.Api;
-using Esquio.UI.Api.Infrastructure.Data.DbContexts;
-using Esquio.UI.Api.Infrastructure.Data.Options;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

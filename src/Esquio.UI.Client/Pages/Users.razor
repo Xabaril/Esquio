@@ -1,11 +1,11 @@
 ﻿@page "/users"
-@attribute [Authorize]
+@attribute [Authorize(Policies.Management)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
 @inject EsquioState  esquioState
-
 @inject NavigationManager navigation
-
 
 <PageTransition>
     <section class="content-header">
@@ -48,41 +48,41 @@
                         <TableBody Context="users">
                             @foreach (var user in users.Items)
                             {
-                            <tr @onclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
-                                <td>
-                                    @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
-                                    {
-                                        @user.SubjectId;
-                                    }
-                                    else
-                                    {
-                                        @("You");
-                                    }
-                                </td>
-                                <td>@user.ActAs</td>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                    <td class="table-component__action">
+                                <tr @onclick="@(()=>OpenModalUpdatePermission(user.SubjectId,user.ActAs))" @ondblclick:stopPropagation>
+                                    <td>
                                         @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
                                         {
-                                            <IconButton Title="Update"
-                                                    Icon="fas fa-edit"
-                                                    OnClick="@(() => OpenModalUpdatePermission(user.SubjectId,user.ActAs))" />
+                                            @user.SubjectId;
                                         }
-                                    </td>
-                                </Permission>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                                    <td class="table-component__action">
-                                        @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                        else
                                         {
-                                            <ConfirmableAction Title="Delete"
-                                                Icon="far fa-trash-alt"
-                                                OnConfirm="@(() => Delete(user.SubjectId))"
-                                                ConfirmTitle="Delete User"
-                                                ConfirmDescription="@($"Are you sure you want to delete the '{user.SubjectId}' user?")" />
+                                            @("You");
                                         }
                                     </td>
-                                </Permission>
-                            </tr>
+                                    <td>@user.ActAs</td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                            {
+                                                <IconButton Title="Update"
+                                                            Icon="fas fa-edit"
+                                                            OnClick="@(() => OpenModalUpdatePermission(user.SubjectId,user.ActAs))" />
+                                            }
+                                        </td>
+                                    </Permission>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                                        <td class="table-component__action">
+                                            @if (esquioState.LoggedUser.SubjectId != user.SubjectId)
+                                            {
+                                                <ConfirmableAction Title="Delete"
+                                                                   Icon="far fa-trash-alt"
+                                                                   OnConfirm="@(() => Delete(user.SubjectId))"
+                                                                   ConfirmTitle="Delete User"
+                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{user.SubjectId}' user?")" />
+                                            }
+                                        </td>
+                                    </Permission>
+                                </tr>
                             }
                         </TableBody>
                     </PaginatedTable>
@@ -250,25 +250,52 @@
 
     private async Task Add()
     {
-        await esquioHttpClient.AddUserPermission(newPermission);
+        var result = await esquioHttpClient.AddUserPermission(newPermission);
         await table.OnAdd();
 
         CloseModalNewPermission();
         InitModelNewPermission();
+
+        if (result)
+        {
+            notifications.Success("Add User Permission", "User permission successfully added!");
+        }
+        else
+        {
+            notifications.Error("Add User Permission", "Error adding the user permission");
+        }
     }
 
     private async Task Delete(string subjectId)
     {
-        await esquioHttpClient.DeleteUserPermission(subjectId);
+        var result = await esquioHttpClient.DeleteUserPermission(subjectId);
         await table.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete User Permission", "User permission successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete User Permission", "Error deleting the user permission");
+        }
     }
 
     private async Task Update()
     {
-        await esquioHttpClient.UpdateUserPermission(updatePermission);
+        var result = await esquioHttpClient.UpdateUserPermission(updatePermission);
         await table.OnAdd();
 
         CloseModalUpdatePermission();
         InitModelUpdatePermission();
+
+        if (result)
+        {
+            notifications.Success("Update User Permission", "User permission successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update User Permission", "Error updating the user permission");
+        }
     }
 }

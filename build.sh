@@ -34,4 +34,6 @@ dotnet pack ./src/Esquio.AspNetCore/Esquio.AspNetCore.csproj -c Release -o ./art
 dotnet pack ./src/Esquio.Configuration.Store/Esquio.Configuration.Store.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix
 dotnet pack ./src/Esquio.Http.Store/Esquio.Http.Store.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix
 dotnet pack ./src/Esquio.AspNetCore.ApplicationInsightProcessor/Esquio.AspNetCore.ApplicationInsightProcessor.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix
+dotnet pack ./src/Esquio.Blazor.WebAssembly/Esquio.Blazor.WebAssembly.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix
 dotnet pack ./tools/MiniProfiler.Esquio/MiniProfiler.Esquio.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix
+dotnet pack ./tools/Esquio.Cli/Esquio.Cli.csproj -c Release -o ./artifacts --include-symbols --no-build --version-suffix=$buildSuffix

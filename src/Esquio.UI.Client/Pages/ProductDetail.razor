@@ -1,8 +1,10 @@
 ﻿@page "/products/{productName}"
-@attribute [Authorize]
-
+@attribute [Authorize(Policies.Reader)]
+@layout MainLayout
 
 @inject IEsquioHttpClient esquioHttpClient
+@inject INotifications notifications
+@inject IJSRuntime jsRuntime
 @inject EsquioState  esquioState
 @inject NavigationManager navigation
 
@@ -11,12 +13,18 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="bottom-spacing">@ProductName</h1>
+                    <h1 class="bottom-spacing">
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
+                            <Editable Value="@ProductName"
+                                      Required="true"
+                                      OnChange="@((name) => UpdateProduct(name))" />
+                        </Permission>
+                    </h1>
                 </div>
             </div>
             <div class="row mb-2">
                 <PageTitle Title="Features"
-                            Subtitle="Show the collection of active features on current product.">
+                           Subtitle="Show the collection of active features on current product.">
                     <Icon>
                         <i class="fas fa-magic"></i>
                     </Icon>
@@ -56,49 +64,55 @@
                         <TableBody Context="features">
                             @foreach (var feature in features.Items)
                             {
-                            <tr @onclick="@(e => navigation.NavigateTo($"products/{ProductName}/{feature.Name}"))">
-                                <td>@feature.Name</td>
-                                <td>@feature.Description</td>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                <tr @onclick="@(e => navigation.NavigateTo($"products/{ProductName}/{feature.Name}"))">
+                                    <td>@feature.Name</td>
                                     <td>
-                                        <Switch Title="Enable/Disable"
-                                                Checked="feature.Enabled"
-                                                OnChange="@(() => ToggleFeature(feature))">
+                                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature" Cascading="true">
+                                            <Editable Value="@feature.Description"
+                                                      EmptyText="Add a feature description"
+                                                      OnChange="@((description) => UpdateFeature(feature.Name, description))" />
+                                        </Permission>
+                                    </td>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                        <td>
+                                            <Switch Title="Enable/Disable"
+                                                    Checked="feature.Enabled"
+                                                    OnChange="@(() => ToggleFeature(feature))">
 
-                                        </Switch>
-                                    </td>
-                                    <td class="table-component__action">
-                                        <ConfirmableAction Title="Rollout"
-                                            Icon="fas fa-upload"
-                                            OnConfirm="@(() => RolloutFeature(feature.Name))"
-                                            ConfirmTitle="Rollout Feature"
-                                            ConfirmDescription="@($"Are you sure you want to rollout the '{feature.Name}' feature?")" />
-                                    </td>
-                                    <td class="table-component__action">
-                                        <ConfirmableAction Title="Rolloff"
-                                            Icon="fas fa-download"
-                                            OnConfirm="@(() => RolloffFeature(feature.Name))"
-                                            ConfirmTitle="Rolloff Feature"
-                                            ConfirmDescription="@($"Are you sure you want to rolloff the '{feature.Name}' feature?")" />
-                                    </td>
-                                    <td class="table-component__action">
-                                        <ConfirmableAction Title="Archive"
-                                            Icon="fas fa-archive"
-                                            OnConfirm="@(() => ArchiveFeature(feature.Name))"
-                                            ConfirmTitle="Archive Feature"
-                                            ConfirmDescription="@($"Are you sure you want to archive the '{feature.Name}' feature?")" />
-                                    </td>
-                                </Permission>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
-                                    <td class="table-component__action">
-                                        <ConfirmableAction Title="Delete"
-                                            Icon="far fa-trash-alt"
-                                            OnConfirm="@(() => DeleteFeature(feature.Name))"
-                                            ConfirmTitle="Delete Feature"
-                                            ConfirmDescription="@($"Are you sure you want to delete the '{feature.Name}' feature?")" />
-                                    </td>
-                                </Permission>
-                            </tr>
+                                            </Switch>
+                                        </td>
+                                        <td class="table-component__action">
+                                            <ConfirmableAction Title="Rollout"
+                                                               Icon="fas fa-upload"
+                                                               OnConfirm="@(() => RolloutFeature(feature.Name))"
+                                                               ConfirmTitle="Rollout Feature"
+                                                               ConfirmDescription="@($"Are you sure you want to rollout the '{feature.Name}' feature?")" />
+                                        </td>
+                                        <td class="table-component__action">
+                                            <ConfirmableAction Title="Rolloff"
+                                                               Icon="fas fa-download"
+                                                               OnConfirm="@(() => RolloffFeature(feature.Name))"
+                                                               ConfirmTitle="Rolloff Feature"
+                                                               ConfirmDescription="@($"Are you sure you want to rolloff the '{feature.Name}' feature?")" />
+                                        </td>
+                                        <td class="table-component__action">
+                                            <ConfirmableAction Title="Archive"
+                                                               Icon="fas fa-archive"
+                                                               OnConfirm="@(() => ArchiveFeature(feature.Name))"
+                                                               ConfirmTitle="Archive Feature"
+                                                               ConfirmDescription="@($"Are you sure you want to archive the '{feature.Name}' feature?")" />
+                                        </td>
+                                    </Permission>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                        <td class="table-component__action">
+                                            <ConfirmableAction Title="Delete"
+                                                               Icon="far fa-trash-alt"
+                                                               OnConfirm="@(() => DeleteFeature(feature.Name))"
+                                                               ConfirmTitle="Delete Feature"
+                                                               ConfirmDescription="@($"Are you sure you want to delete the '{feature.Name}' feature?")" />
+                                        </td>
+                                    </Permission>
+                                </tr>
                             }
                         </TableBody>
                     </PaginatedTable>
@@ -111,7 +125,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <PageTitle Title="Rings"
-                            Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
+                           Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
                     <Icon>
                         <i class="fas fa-ring"></i>
                     </Icon>
@@ -142,27 +156,27 @@
                         <TableBody Context="response">
                             @foreach (var ring in response.Rings)
                             {
-                            <tr>
-                                <td colspan="2">
-                                    @ring.Name
-                                    @if (ring.Default)
-                                    {
-                                        <span class="badge badge-info">default ring</span>
-                                    }
-                                </td>
-                                <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
-                                    <td class="table-component__action">
-                                        @if (!ring.Default)
+                                <tr>
+                                    <td colspan="2">
+                                        @ring.Name
+                                        @if (ring.Default)
                                         {
-                                            <ConfirmableAction Title="Delete"
-                                                Icon="far fa-trash-alt"
-                                                OnConfirm="@(() => DeleteRing(ring.Name))"
-                                                ConfirmTitle="Delete Ring"
-                                                ConfirmDescription="@($"Are you sure you want to delete the '{ring.Name}' ring?")" />
+                                            <span class="badge badge-info">default ring</span>
                                         }
                                     </td>
-                                </Permission>
-                            </tr>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                                        <td class="table-component__action">
+                                            @if (!ring.Default)
+                                            {
+                                                <ConfirmableAction Title="Delete"
+                                                                   Icon="far fa-trash-alt"
+                                                                   OnConfirm="@(() => DeleteRing(ring.Name))"
+                                                                   ConfirmTitle="Delete Ring"
+                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{ring.Name}' ring?")" />
+                                            }
+                                        </td>
+                                    </Permission>
+                                </tr>
                             }
                         </TableBody>
                     </SingleTable>
@@ -287,41 +301,95 @@
             Enabled = !feature.Enabled
         };
 
-        await esquioHttpClient.ToggleFeature(ProductName, feature.Name, request);
+        var result = await esquioHttpClient.ToggleFeature(ProductName, feature.Name, request);
         await featuresTable.Reload();
+
+        if (result)
+        {
+            notifications.Success("Toggle Feature", "Feature successfully toggled!");
+        }
+        else
+        {
+            notifications.Error("Toggle Feature", "Error toggling the feature");
+        }
     }
 
     private async Task RolloutFeature(string featureName)
     {
-        await esquioHttpClient.RolloutFeature(ProductName, featureName);
+        var result = await esquioHttpClient.RolloutFeature(ProductName, featureName);
         await featuresTable.Reload();
+
+        if (result)
+        {
+            notifications.Success("Rollout Feature", "Feature successfully rolled-out!");
+        }
+        else
+        {
+            notifications.Error("Rollout Feature", "Error rolling-out the feature");
+        }
     }
 
     private async Task RolloffFeature(string featureName)
     {
-        await esquioHttpClient.RollbackFeature(ProductName, featureName);
+        var result = await esquioHttpClient.RollbackFeature(ProductName, featureName);
         await featuresTable.Reload();
+
+        if (result)
+        {
+            notifications.Success("Rollback Feature", "Feature successfully rolled-back!");
+        }
+        else
+        {
+            notifications.Error("Rollback Feature", "Error rolling-back the feature");
+        }
     }
 
     private async Task ArchiveFeature(string featureName)
     {
-        await esquioHttpClient.ArchiveFeature(ProductName, featureName);
+        var result = await esquioHttpClient.ArchiveFeature(ProductName, featureName);
         await featuresTable.Reload();
+
+        if (result)
+        {
+            notifications.Success("Archive Feature", "Feature successfully archived!");
+        }
+        else
+        {
+            notifications.Error("Archive Feature", "Error archiving the feature");
+        }
     }
 
     private async Task AddFeature()
     {
-        await esquioHttpClient.AddFeature(ProductName, newFeatureModel);
+        var result = await esquioHttpClient.AddFeature(ProductName, newFeatureModel);
         await featuresTable.OnAdd();
 
         CloseNewFeatureModal();
         InitFeatureModel();
+
+        if (result)
+        {
+            notifications.Success("Add Feature", "Feature successfully added!");
+        }
+        else
+        {
+            notifications.Error("Add Feature", "Error adding the feature");
+        }
     }
 
     private async Task DeleteFeature(string featureName)
     {
-        await esquioHttpClient.DeleteFeature(ProductName, featureName);
+        var result = await esquioHttpClient.DeleteFeature(ProductName, featureName);
         await featuresTable.OnDelete();
+
+        if (result)
+        {
+            notifications.Success("Delete Feature", "Feature successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Feature", "Error deleting the feature");
+        }
     }
 
     private void InitRingModel()
@@ -363,19 +431,95 @@
 
     private async Task AddNewRing()
     {
-        await esquioHttpClient.AddProductRing(ProductName, newRingModel);
+        var result = await esquioHttpClient.AddProductRing(ProductName, newRingModel);
         await ringTable.OnAdd();
 
         CloseNewRingModal();
         InitRingModel();
+
+        if (result)
+        {
+            notifications.Success("Add Product Ring", "Product ring successfully added!");
+        }
+        else
+        {
+            notifications.Error("Add Product Ring", "Error adding the product ring");
+        }
     }
 
     private async Task DeleteRing(string ringName)
     {
-        await esquioHttpClient.DeleteProductRing(ProductName, ringName);
+        var result = await esquioHttpClient.DeleteProductRing(ProductName, ringName);
         await ringTable.OnDelete();
 
         CloseNewRingModal();
         InitRingModel();
+
+        if (result)
+        {
+            notifications.Success("Delete Product Ring", "Product ring successfully deleted!");
+        }
+        else
+        {
+            notifications.Error("Delete Product Ring", "Error deleting the product ring");
+        }
+    }
+
+    private async Task UpdateProduct(string name)
+    {
+        var product = await esquioHttpClient.GetProduct(ProductName);
+
+        var result = await esquioHttpClient.UpdateProduct(
+        ProductName,
+        new UpdateProductRequest
+        {
+            Name = name,
+            Description = product.Description
+        });
+
+        // Sync product name parameter
+        ProductName = name;
+
+        // Sync breadcrumb
+        esquioState.SetBreadcrumb(
+            new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
+            new BreadcrumbItemViewModel { Title = "Products", Link = "products" },
+            new BreadcrumbItemViewModel { Title = ProductName, Active = true });
+
+        // Sync browser history
+        await jsRuntime.InvokeVoidAsync("historyReplaceState", ProductName);
+
+        if (result)
+        {
+            notifications.Success("Update Product", "Product successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update Product", "Error updating the product");
+        }
+    }
+
+    private async Task UpdateFeature(string featureName, string featureDescription)
+    {
+        var feature = await esquioHttpClient.GetFeatureDetails(ProductName, featureName);
+
+        var result = await esquioHttpClient.UpdateFeature(
+        ProductName,
+        featureName,
+        new UpdateFeatureRequest
+        {
+            Name = featureName,
+            Description = featureDescription,
+            Enabled = feature.Enabled
+        });
+
+        if (result)
+        {
+            notifications.Success("Update Feature", "Feature successfully updated!");
+        }
+        else
+        {
+            notifications.Error("Update Feature", "Error updating the feature");
+        }
     }
 }

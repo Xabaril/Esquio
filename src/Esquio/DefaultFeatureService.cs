@@ -3,7 +3,6 @@ using Esquio.DependencyInjection;
 using Esquio.Diagnostics;
 using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,14 +13,14 @@ namespace Esquio
     {
         private readonly IRuntimeFeatureStore _featureStore;
         private readonly IToggleTypeActivator _toggleActivator;
-        private readonly IScopedEvaluationSession _session;
+        private readonly IScopedEvaluationHolder _session;
         private readonly EsquioOptions _options;
         private readonly EsquioDiagnostics _diagnostics;
 
         public DefaultFeatureService(
             IRuntimeFeatureStore store,
             IToggleTypeActivator toggleActivator,
-            IScopedEvaluationSession session,
+            IScopedEvaluationHolder session,
             IOptions<EsquioOptions> options,
             EsquioDiagnostics diagnostics)
         {
@@ -40,9 +39,9 @@ namespace Esquio
 
             try
             {
-                if (_options.EvaluationSessionEnabled
+                if (_options.ScopedEvaluationEnabled
                     &&
-                    await _session.TryGetAsync(featureName, productName, out var sessionResult))
+                    await _session.TryGetAsync(featureName, out var sessionResult))
                 {
                     _diagnostics.FeatureEvaluationFromSession(featureName, productName, ringName);
                     enabled = sessionResult;
@@ -53,11 +52,10 @@ namespace Esquio
                     // is not on the session store, evaluate it again!
 
                     enabled = await GetRuntimeEvaluationResult(featureName, productName, ringName, correlationId, cancellationToken);
-
-                    if (_options.EvaluationSessionEnabled)
+                    if (_options.ScopedEvaluationEnabled)
                     {
                         // if session is enabled, set product/feature on the store to be reused
-                        await _session.SetAsync(featureName, productName, enabled);
+                        await _session.SetAsync(featureName, enabled);
                     }
                 }
 
@@ -115,7 +113,7 @@ namespace Esquio
 
                     if (toggleInstance != null)
                     {
-                        active = await toggleInstance?.IsActiveAsync(
+                        active = await toggleInstance.IsActiveAsync(
                             ToggleExecutionContext.FromToggle(featureName, productName, ringName, toggle),
                             cancellationToken);
                     }
@@ -134,7 +132,6 @@ namespace Esquio
             }
 
             _diagnostics.EndFeatureEvaluation(correlationId, featureName, productName, ringName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
-
             return enabled;
         }
     }
