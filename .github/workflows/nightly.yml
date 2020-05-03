@@ -45,12 +45,12 @@ jobs:
       run: dotnet pack  ./tools/Esquio.MiniProfiler/Esquio.MiniProfiler.csproj -c $BUILD_CONFIG --no-build --version-suffix $VERSION_SUFFIX --include-source --include-symbols
     - name: dotnet pack [Esquio.CLi]
       run: dotnet pack  ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --no-build --version-suffix $VERSION_SUFFIX --include-source --include-symbols
-    - name: Publish nuget
+    - name: Publish GitHub Packages
       run: |
           for f in ./artifacts/*.nupkg
           do
             echo "Publishing $f"
-            curl --silent --show-error --fail -X PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
+            curl --silent -X PUT -u "Xabaril:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/Xabaril/
             if [ $? -eq 0 ]
             then
               echo "successfully pushed $f"
