@@ -38,8 +38,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">
-    <blazor>3.2.0-preview5.20216.8</blazor>
-    <blazorhttpclient>3.2.0-preview5.20210.3</blazorhttpclient>
+    <blazor>3.2.0-rc1.20223.4</blazor>
+    <blazorhttpclient>3.2.0-rc1.20217.1</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.3.0</nswagmsbuild>
     <swashbuckleaspnetcore>5.3.1</swashbuckleaspnetcore>
