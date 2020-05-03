@@ -35,14 +35,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.ScopedEvaluationEnabled = options.ScopedEvaluationEnabled;
                 opt.DefaultRingName = options.DefaultRingName;
             });
+
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();
             builder.Services.AddScoped<IToggleTypeActivator, DefaultToggleTypeActivator>();
-            builder.Services.AddScoped<IScopedEvaluationHolder, NoScopedEvaluationHolder>();
 
+            //allow to replace this services and not fix the order
+            builder.Services.TryAddScoped<IScopedEvaluationHolder, NoScopedEvaluationHolder>();
             builder.Services.TryAddSingleton<IValuePartitioner, DefaultValuePartitioner>();
 
             builder.Services.AddSingleton<EsquioDiagnostics>();
-
             builder.Services.AddTogglesFromAssemblies(options.AssembliesToRegister);
 
             return builder;

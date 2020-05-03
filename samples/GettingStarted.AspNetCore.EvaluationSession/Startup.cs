@@ -20,6 +20,10 @@ namespace GettingStarted.AspNetCore.Mvc
             services
                 .AddEsquio(setup=>
                 {
+                    // Use request cache to store feature evaluation results and re-use this results on the scope
+                    // In this sample ( privacy feature is evaluated on _layout.cshtml ( using a taghelper ) and HomeController
+                    // Privacy action with FeatureFilter attribute, when useScopedEvaluation is true, feature evaluation only happens once!
+
                     setup.UseScopedEvaluation(useScopedEvaluation: true);
                 })
                 .AddAspNetCoreDefaultServices()

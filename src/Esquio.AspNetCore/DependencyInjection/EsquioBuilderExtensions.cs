@@ -36,10 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddScoped<IScopedEvaluationHolder, HttpContextScopedEvaluationHolder>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureMatcherPolicy>());
             
-
             //register aspnet core toggles
-            builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
-
             builder.Services.AddTogglesFromAssembly(typeof(EsquioBuilderExtensions).Assembly);
 
             return builder;

@@ -41,8 +41,7 @@ namespace GettingStarted.AspNetCore.Intro
                     await context.Response.WriteAsync("Hello World!");
                 }).RequireFeature("HiddenGem");
 
-                //enable client endpoint, you can use RequireAuthorize
-                // request to /esquio?featureName=HiddenGem to get feature status
+                //enable client endpoint!! request to /esquio?featureName=HiddenGem to get feature status
                 endpoints.MapEsquio();
             });
         }
