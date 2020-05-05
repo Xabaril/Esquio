@@ -39,7 +39,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -108,7 +108,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -168,7 +168,7 @@ namespace FunctionalTests.Esquio.Http.Store
 
             featureModel.IsEnabled
                 .Should()
-                .Be(true);
+                .Be(false);
 
             featureModel.GetToggles()
                 .Count()
@@ -215,7 +215,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -301,7 +301,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -369,7 +369,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();

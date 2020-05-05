@@ -1,8 +1,10 @@
 ﻿using Esquio.Abstractions;
+using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -14,19 +16,19 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
     public class DetailsFeatureRequestHandler : IRequestHandler<DetailsFeatureRequest, DetailsFeatureResponse>
     {
         private readonly StoreDbContext _storeDbContext;
+        private readonly ILogger<DetailsFeatureRequestHandler> _logger;
 
-        public DetailsFeatureRequestHandler(StoreDbContext storeDbContext)
+        public DetailsFeatureRequestHandler(StoreDbContext storeDbContext, ILogger<DetailsFeatureRequestHandler> logger)
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public async Task<DetailsFeatureResponse> Handle(DetailsFeatureRequest request, CancellationToken cancellationToken)
         {
-            //TODO: details not need parameters information we can reduce complexibility here!
-
             var feature = await _storeDbContext
                .Features
                .Where(f => f.ProductEntity.Name == request.ProductName && f.Name == request.FeatureName)
-               .Include(f=>f.FeatureStates)
                .Include(f => f.ProductEntity)
                .Include(f => f.Toggles)
                 .ThenInclude(t=>t.Parameters)
@@ -34,11 +36,6 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
 
             if (feature != null)
             {
-                var rings = await _storeDbContext
-                    .Rings
-                    .Where(r => r.ProductEntityId == feature.ProductEntityId)
-                    .ToListAsync();
-
                 return new DetailsFeatureResponse()
                 {
                     Name = feature.Name,
@@ -62,17 +59,11 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
                             Parameters = parameters
                         };
 
-                    }).ToList(),
-                    States = rings.Select(r=>new FeatureStateDetail()
-                    {
-                        RingName = r.Name,
-                        Enabled = feature.FeatureStates.Where(fs=>fs.RingEntityId==r.Id).SingleOrDefault()?.Enabled ?? false
                     }).ToList()
                 };
             }
 
-            //TODO: add diagnostics here!
-
+            Log.FeatureNotExist(_logger, request.FeatureName);
             return null;
         }
     }

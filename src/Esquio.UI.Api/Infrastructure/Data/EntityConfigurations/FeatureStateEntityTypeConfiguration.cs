@@ -25,7 +25,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
             builder.HasOne(fs => fs.FeatureEntity)
                 .WithMany(f=>f.FeatureStates)
                 .HasForeignKey(fs => fs.FeatureEntityId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(fs => fs.RingEntity)
                 .WithMany()

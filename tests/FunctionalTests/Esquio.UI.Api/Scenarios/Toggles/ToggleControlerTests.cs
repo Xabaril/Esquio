@@ -88,7 +88,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -295,7 +295,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -354,7 +354,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -457,7 +457,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -540,7 +540,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task reveal_response_forbidden_if_user_is_not_authorized()
         {
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -688,7 +688,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .Build();
 
@@ -738,12 +738,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
 
-            var specifiedRing = Builders.Ring()
+            var specifiedRing = Builders.Deployment()
                 .WithName("Production")
                 .WithDefault(false)
                 .Build();
@@ -806,7 +806,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -864,7 +864,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1090,7 +1090,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1150,7 +1150,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1218,7 +1218,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1278,12 +1278,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .WithName("fooproduct")
              .Build();
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
 
-            var selectedRing = Builders.Ring()
+            var selectedRing = Builders.Deployment()
                 .WithName("Production")
                 .WithDefault(false)
                 .Build();

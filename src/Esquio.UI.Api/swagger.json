@@ -425,7 +425,7 @@
         }
       }
     },
-    "/api/products/{productName}/ring/{ringName}/features/{featureName}/rollout": {
+    "/api/products/{productName}/rings/{ringName}/features/{featureName}/rollout": {
       "put": {
         "tags": [
           "Features"
@@ -474,7 +474,7 @@
         }
       }
     },
-    "/api/products/{productName}/ring/{ringName}/features/{featureName}/rollback": {
+    "/api/products/{productName}/rings/{ringName}/features/{featureName}/rollback": {
       "put": {
         "tags": [
           "Features"
@@ -550,6 +550,52 @@
             "description": ""
           },
           "403": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features/{featureName}/state": {
+      "get": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_GetState",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/StateFeatureResponse"
+            }
+          },
+          "404": {
             "description": ""
           },
           "400": {
@@ -1687,12 +1733,6 @@
           "items": {
             "$ref": "#/definitions/ToggleDetail"
           }
-        },
-        "states": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FeatureStateDetail"
-          }
         }
       }
     },
@@ -1724,14 +1764,29 @@
         }
       }
     },
-    "FeatureStateDetail": {
+    "StateFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StateFeatureResponseDetail"
+          }
+        }
+      }
+    },
+    "StateFeatureResponseDetail": {
       "type": "object",
       "required": [
+        "default",
         "enabled"
       ],
       "properties": {
         "ringName": {
           "type": "string"
+        },
+        "default": {
+          "type": "boolean"
         },
         "enabled": {
           "type": "boolean"

@@ -46,7 +46,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -131,7 +131,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
@@ -216,12 +216,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
+            var defaultRing = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .WithDefault(true)
                 .Build();
 
-            var productionRing = Builders.Ring()
+            var productionRing = Builders.Deployment()
                 .WithName("Production")
                 .WithDefault(false)
                 .Build();

@@ -7,6 +7,7 @@ using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
 using Esquio.UI.Api.Shared.Models.Features.Rollback;
 using Esquio.UI.Api.Shared.Models.Features.Rollout;
+using Esquio.UI.Api.Shared.Models.Features.State;
 using Esquio.UI.Api.Shared.Models.Features.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -64,7 +65,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
 
         [HttpPut]
         [Authorize(Policies.Contributor)]
-        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/rings/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -85,7 +86,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
 
         [HttpPut]
         [Authorize(Policies.Contributor)]
-        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/rings/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -154,6 +155,25 @@ namespace Esquio.UI.Api.Scenarios.Flags
         public async Task<ActionResult<DetailsFeatureResponse>> Get(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             var feature = await _mediator.Send(new DetailsFeatureRequest(productName, featureName), cancellationToken);
+
+            if (feature != null)
+            {
+                return Ok(feature);
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet]
+        [Authorize(Policies.Reader)]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/state")]
+        [ProducesResponseType(typeof(StateFeatureResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<StateFeatureResponse>> GetState(string productName, string featureName, CancellationToken cancellationToken = default)
+        {
+            var feature = await _mediator.Send(new StateFeatureRequest(productName, featureName), cancellationToken);
 
             if (feature != null)
             {

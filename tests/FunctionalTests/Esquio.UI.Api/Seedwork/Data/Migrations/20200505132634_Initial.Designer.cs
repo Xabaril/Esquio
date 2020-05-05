@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200404195842_Initial")]
+    [Migration("20200505132634_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -69,11 +69,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
 
-                    b.Property<bool>("Enabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
@@ -87,6 +82,24 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     b.HasIndex("ProductEntityId");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureStateEntity", b =>
+                {
+                    b.Property<int>("FeatureEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RingEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
+                    b.HasKey("FeatureEntityId", "RingEntityId");
+
+                    b.HasIndex("RingEntityId");
+
+                    b.ToTable("FeatureStates");
                 });
 
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureTagEntity", b =>
@@ -158,6 +171,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DateTime");
+
                     b.ToTable("Metrics");
                 });
 
@@ -175,7 +190,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
                     b.Property<string>("RingName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<int>("ToggleEntityId")
                         .HasColumnType("int");
@@ -333,6 +349,21 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
                         .WithMany("Features")
                         .HasForeignKey("ProductEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureStateEntity", b =>
+                {
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureEntity", "FeatureEntity")
+                        .WithMany("FeatureStates")
+                        .HasForeignKey("FeatureEntityId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", "RingEntity")
+                        .WithMany()
+                        .HasForeignKey("RingEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

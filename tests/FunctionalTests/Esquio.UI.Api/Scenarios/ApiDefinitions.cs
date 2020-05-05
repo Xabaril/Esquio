@@ -63,13 +63,13 @@
                 {
                     return $"api/products/{productName}/features/{featureName}?api-version=3.0";
                 }
-                public static string Rollout(string productName, string featureName)
+                public static string Rollout(string productName, string deploymentName, string featureName)
                 {
-                    return $"api/products/{productName}/features/{featureName}/rollout?api-version=3.0";
+                    return $"api/products/{productName}/rings/{deploymentName}/features/{featureName}/rollout?api-version=3.0";
                 }
-                public static string Rollback(string productName, string featureName)
+                public static string Rollback(string productName, string deploymentName,string featureName)
                 {
-                    return $"api/products/{productName}/features/{featureName}/rollback?api-version=3.0";
+                    return $"api/products/{productName}/rings/{deploymentName}/features/{featureName}/rollback?api-version=3.0";
                 }
 
                 public static string Archive(string productName, string featureName)

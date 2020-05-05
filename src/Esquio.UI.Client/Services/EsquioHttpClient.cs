@@ -5,6 +5,7 @@ using Esquio.UI.Api.Shared.Models.Audit.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.State;
 using Esquio.UI.Api.Shared.Models.Features.Update;
 using Esquio.UI.Api.Shared.Models.GitHub.Release;
 using Esquio.UI.Api.Shared.Models.Permissions.Add;
@@ -55,7 +56,7 @@ namespace Esquio.UI.Client.Services
         //->features
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
-        Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
+        Task<StateFeatureResponse> GetFeatureState(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> RolloutFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> RollbackFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default);
@@ -405,41 +406,42 @@ namespace Esquio.UI.Client.Services
             }
         }
 
-        public async Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
+        public async Task<StateFeatureResponse> GetFeatureState(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
-                request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/state", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
                 try
                 {
-                    var content = JsonConvert.SerializeObject(updateFeatureRequest);
-                    request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
-
                     var response = await _httpClient.SendAsync(request, cancellationToken);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return true;
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<StateFeatureResponse>(
+                            content, new JsonSerializerSettings());
                     }
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to toggle feature {featureName} on product {productName} with data {updateFeatureRequest}.!");
+                    Log.Error(exception, $"An exception is throwed when trying to get state of {featureName} on product {productName}.!");
                 }
 
-                return false;
+                return null;
             }
         }
+
         public async Task<bool> RolloutFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/rings/{ringName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -465,7 +467,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/rings/{ringName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 

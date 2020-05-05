@@ -97,11 +97,11 @@
                                 </TableBody>
                             </SingleTable>
 
-                            <SingleTable Loader="TogglesLoader" @ref="statesTable" SkeletonColumns="4" SkeletonActions="2">
+                            <SingleTable Loader="StatesLoader" @ref="statesTable" SkeletonColumns="2" SkeletonActions="1">
                                 <TableHeader>
                                     <th class="table-col-3">Ring State</th>
                                     <th></th>
-                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
                                         <th class="table-col-1"></th>
                                     </Permission>
                                 </TableHeader>
@@ -111,6 +111,10 @@
                                         <tr>
                                             <td colspan="2">
                                                 @state.RingName
+                                                @if (state.Default)
+                                                {
+                                                    <span class="badge badge-info">default ring</span>
+                                                }
                                             </td>
                                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
                                                 <td class="table-component__action">
@@ -185,7 +189,7 @@
 
 
     private SingleTable<DetailsFeatureResponse> togglesTable;
-    private SingleTable<DetailsFeatureResponse> statesTable;
+    private SingleTable<StateFeatureResponse> statesTable;
 
     //Edit toggle parameters
     private bool showEditToggleModal = false;
@@ -219,6 +223,11 @@
     private Task<DetailsFeatureResponse> TogglesLoader()
     {
         return esquioHttpClient.GetFeatureDetails(ProductName, FeatureName);
+    }
+
+    private Task<StateFeatureResponse> StatesLoader()
+    {
+        return esquioHttpClient.GetFeatureState(ProductName, FeatureName);
     }
 
     private async Task DeleteToggle(string toggleType)

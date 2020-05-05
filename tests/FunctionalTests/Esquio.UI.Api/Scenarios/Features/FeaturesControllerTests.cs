@@ -9,6 +9,7 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,7 +140,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
         public async Task rollback_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Features.Rollback(productName: "fooproduct", featureName: "barfeature"))
+                .CreateRequest(ApiDefinitions.V3.Features.Rollback(productName: "fooproduct", deploymentName: "Tests", featureName: "barfeature"))
                 .PutAsync();
 
             response.StatusCode
@@ -162,10 +163,17 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("product")
                 .Build();
 
+            var deployment = Builders.Deployment()
+              .WithName("Tests")
+              .WithDefault(true)
+              .Build();
+
+            product.Rings.Add(deployment);
+
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, featureName: "barfeature"))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, featureName: "barfeature"))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -193,12 +201,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
             product.Features.Add(feature);
+            product.Rings.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -226,12 +240,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+                 .WithName("Tests")
+                 .WithDefault(true)
+                 .Build();
+
             product.Features.Add(feature);
+            product.Rings.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -259,12 +279,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -273,7 +299,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -314,12 +340,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             feature.Toggles
                 .Add(toggle2);
 
+            var deployment = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -346,12 +378,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollback(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -377,7 +415,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
         public async Task rollout_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Features.Rollout(productName: "fooproduct", featureName: "barfeature"))
+                .CreateRequest(ApiDefinitions.V3.Features.Rollout(productName: "fooproduct", deploymentName: "deployment", featureName: "barfeature"))
                 .PutAsync();
 
             response.StatusCode
@@ -400,12 +438,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("fooproduct")
                 .Build();
 
+            var deployment = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
+            product.Rings.Add(deployment);
+
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, featureName: "barfeature"))
-              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-              .PutAsync();
+                .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, featureName: "barfeature"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PutAsync();
 
             response.StatusCode
                 .Should()
@@ -431,13 +476,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+               .WithName("Tests")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
-
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -465,13 +515,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+               .WithName("Tests")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -480,7 +536,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -508,12 +564,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+               .WithName("Tests")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+                .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .PutAsync();
 
@@ -554,13 +616,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithName("barfeature")
                 .Build();
 
+            var deployment = Builders.Deployment()
+               .WithName("Tests")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
-
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -602,12 +669,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             feature.Toggles
                 .Add(toggle2);
 
+            var deployment = Builders.Deployment()
+               .WithName("Tests")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, feature.Name))
+              .CreateRequest(ApiDefinitions.V3.Features.Rollout(product.Name, deployment.Name, feature.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .PutAsync();
 
@@ -663,7 +736,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
-
 
             var response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V3.Features.Delete(product.Name, feature.Name))

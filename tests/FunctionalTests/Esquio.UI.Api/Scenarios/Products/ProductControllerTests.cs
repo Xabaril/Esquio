@@ -155,7 +155,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName("production")
                 .Build();
 
@@ -948,7 +948,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Ring()
+            var ring = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_RING_NAME)
                 .Build();
 
