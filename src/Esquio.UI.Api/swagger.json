@@ -1715,18 +1715,12 @@
     },
     "DetailsFeatureResponse": {
       "type": "object",
-      "required": [
-        "enabled"
-      ],
       "properties": {
         "name": {
           "type": "string"
         },
         "description": {
           "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
         },
         "toggles": {
           "type": "array",

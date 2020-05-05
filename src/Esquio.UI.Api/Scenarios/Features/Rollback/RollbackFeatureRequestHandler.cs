@@ -62,7 +62,6 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
                 return Unit.Value;
             }
 
-            //TODO: Improve this log information
             Log.FeatureNotExist(_logger, request.FeatureName.ToString());
             throw new InvalidOperationException("Operation can't be performed because the combination feature product and ring are not valid on this store.");
         }

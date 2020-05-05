@@ -881,24 +881,28 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Features_RolloutAsync(string productName, string featureName)
+        public System.Threading.Tasks.Task Features_RolloutAsync(string productName, string ringName, string featureName)
         {
-            return Features_RolloutAsync(productName, featureName, System.Threading.CancellationToken.None);
+            return Features_RolloutAsync(productName, ringName, featureName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Features_RolloutAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Features_RolloutAsync(string productName, string ringName, string featureName, System.Threading.CancellationToken cancellationToken)
         {
             if (productName == null)
                 throw new System.ArgumentNullException("productName");
+    
+            if (ringName == null)
+                throw new System.ArgumentNullException("ringName");
     
             if (featureName == null)
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/rollout");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/rings/{ringName}/features/{featureName}/rollout");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ringName}", System.Uri.EscapeDataString(ConvertToString(ringName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -969,24 +973,28 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Features_RollbackAsync(string productName, string featureName)
+        public System.Threading.Tasks.Task Features_RollbackAsync(string productName, string ringName, string featureName)
         {
-            return Features_RollbackAsync(productName, featureName, System.Threading.CancellationToken.None);
+            return Features_RollbackAsync(productName, ringName, featureName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Features_RollbackAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Features_RollbackAsync(string productName, string ringName, string featureName, System.Threading.CancellationToken cancellationToken)
         {
             if (productName == null)
                 throw new System.ArgumentNullException("productName");
+    
+            if (ringName == null)
+                throw new System.ArgumentNullException("ringName");
     
             if (featureName == null)
                 throw new System.ArgumentNullException("featureName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/rollback");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/rings/{ringName}/features/{featureName}/rollback");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ringName}", System.Uri.EscapeDataString(ConvertToString(ringName, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1131,6 +1139,97 @@ namespace Esquio.CliTool.Internal
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<StateFeatureResponse> Features_GetStateAsync(string productName, string featureName)
+        {
+            return Features_GetStateAsync(productName, featureName, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<StateFeatureResponse> Features_GetStateAsync(string productName, string featureName, System.Threading.CancellationToken cancellationToken)
+        {
+            if (productName == null)
+                throw new System.ArgumentNullException("productName");
+    
+            if (featureName == null)
+                throw new System.ArgumentNullException("featureName");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/products/{productName}/features/{featureName}/state");
+            urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{featureName}", System.Uri.EscapeDataString(ConvertToString(featureName, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<StateFeatureResponse>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new ApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(StateFeatureResponse);
                     }
                     finally
                     {
@@ -3480,9 +3579,6 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Always)]
-        public bool Enabled { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("archived", Required = Newtonsoft.Json.Required.Always)]
         public bool Archived { get; set; }
     
@@ -3498,9 +3594,6 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Always)]
-        public bool Enabled { get; set; }
-    
     
     }
     
@@ -3512,9 +3605,6 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Always)]
-        public bool Enabled { get; set; }
     
         [Newtonsoft.Json.JsonProperty("toggles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ToggleDetail> Toggles { get; set; }
@@ -3545,6 +3635,30 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.11.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class StateFeatureResponse 
+    {
+        [Newtonsoft.Json.JsonProperty("states", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<StateFeatureResponseDetail> States { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.11.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class StateFeatureResponseDetail 
+    {
+        [Newtonsoft.Json.JsonProperty("ringName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RingName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("default", Required = Newtonsoft.Json.Required.Always)]
+        public bool Default { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Always)]
+        public bool Enabled { get; set; }
     
     
     }

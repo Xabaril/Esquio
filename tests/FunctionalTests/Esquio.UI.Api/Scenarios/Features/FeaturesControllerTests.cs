@@ -2,6 +2,7 @@
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.State;
 using Esquio.UI.Api.Shared.Models.Features.Update;
 using FluentAssertions;
 using FunctionalTests.Esquio.UI.Api.Seedwork;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -28,7 +30,102 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             _fixture = serverFixture ?? throw new ArgumentNullException(nameof(serverFixture));
         }
 
-        //tODO: add new details tests here!!
+        [Fact]
+        public async Task getstate_response_unauthorized_when_user_request_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Features.GetState(productName: "fooproduct", featureName: "barfeature"))
+                .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task getstate_response_forbidden_when_user_request_is_not_authorized()
+        {
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Features.GetState(product.Name, feature.Name))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task getstate_response_state_for_all_rings()
+        {
+            var permission = Builders.Permission()
+                .WithReaderPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            var feature = Builders.Feature()
+                .WithName("barfeature")
+                .Build();
+
+            var deploymentTests = Builders.Deployment()
+                .WithName("Tests")
+                .WithDefault(true)
+                .Build();
+
+            var deploymentProduction = Builders.Deployment()
+               .WithName("Production")
+               .WithDefault(true)
+               .Build();
+
+            product.Rings.Add(deploymentTests);
+            product.Rings.Add(deploymentProduction);
+            product.Features.Add(feature);
+
+            await _fixture.Given.AddProduct(product);
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Features.GetState(product.Name, feature.Name))
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var states = await response.Content
+                .ReadFromJsonAsync<StateFeatureResponse>();
+
+            states.States
+                .Any().Should().BeTrue();
+
+            states.States
+                .Where(s => s.RingName == "Tests")
+                .Any().Should().BeTrue();
+
+            states.States
+                .Where(s => s.RingName == "Production")
+                .Any().Should().BeTrue();
+        }
 
         [Fact]
         public async Task archive_response_unauthorized_when_user_request_is_not_authenticated()
@@ -398,17 +495,17 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Features.Get(product.Name, feature.Name))
+                .CreateRequest(ApiDefinitions.V3.Features.GetState(product.Name, feature.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
             var details = await response.Content
-                .ReadAs<DetailsFeatureResponse>();
+                .ReadAs<StateFeatureResponse>();
 
-            details.Enabled
+            details.States
+                .FirstOrDefault()
+                .Enabled
                 .Should().BeFalse();
-
-            //TODO: fix this test
         }
 
         [Fact]
@@ -584,17 +681,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Be(StatusCodes.Status204NoContent);
 
             response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Features.Get(product.Name, feature.Name))
+                .CreateRequest(ApiDefinitions.V3.Features.GetState(product.Name, feature.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
             var details = await response.Content
-                .ReadAs<DetailsFeatureResponse>();
+                .ReadAs<StateFeatureResponse>();
 
-            details.Enabled
+            details
+                .States
+                .FirstOrDefault()
+                .Enabled
                 .Should().BeTrue();
-
-            //TODO: fix this test
         }
 
         [Fact]

@@ -96,7 +96,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");
@@ -125,8 +125,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_ok_and_use_default_ring_if_not_specified()
         {
             var permission = Builders.Permission()
-             .WithManagementPermission()
-             .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -182,7 +182,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");
@@ -207,7 +207,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
         [Fact]
         [ResetDatabase]
-        public async Task response_ok_and_use_spcified_ring_if_not_specified()
+        public async Task response_ok_and_use_ring_if_not_specified()
         {
             var permission = Builders.Permission()
              .WithManagementPermission()
@@ -284,7 +284,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");

@@ -84,6 +84,10 @@
                 {
                     return $"api/products/{productName}/features/{featureName}?api-version=3.0";
                 }
+                public static string GetState(string productName, string featureName)
+                {
+                    return $"api/products/{productName}/features/{featureName}/state?api-version=3.0";
+                }
                 public static string List(string productName)
                 {
                     return $"api/products/{productName}/features";

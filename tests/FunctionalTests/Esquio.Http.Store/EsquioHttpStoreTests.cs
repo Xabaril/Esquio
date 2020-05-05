@@ -441,7 +441,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
 
             featureModel.IsEnabled
-                .Should().BeTrue();
+                .Should().BeFalse();
         }
 
 
