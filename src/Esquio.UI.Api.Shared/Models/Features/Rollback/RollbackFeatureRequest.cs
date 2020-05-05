@@ -7,6 +7,8 @@ namespace Esquio.UI.Api.Shared.Models.Features.Rollback
     {
         public string FeatureName { get; set; }
 
+        public string RingName { get; set; }
+
         public string ProductName { get; set; }
     }
 }

@@ -12,7 +12,5 @@ namespace Esquio.UI.Api.Shared.Models.Features.Update
 
         public string Description { get; set; }
 
-        public bool Enabled { get; set; }
-
     }
 }

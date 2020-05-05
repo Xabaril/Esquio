@@ -64,5 +64,8 @@
         /// Get or set default table configuration for Rings.
         /// </summary>
         public TableConfiguration Metrics { get; set; } = new TableConfiguration("Metrics");
+
+
+        public TableConfiguration FeatureState { get; set; } = new TableConfiguration("FeatureStates");
     }
 }

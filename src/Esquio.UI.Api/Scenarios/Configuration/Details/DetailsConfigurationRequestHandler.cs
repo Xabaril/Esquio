@@ -33,6 +33,7 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
             var featureEntity = await _storeDbContext
                .Features
                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
+               .Include(f=> f.FeatureStates)
                .Include(f => f.Toggles)
                    .ThenInclude(t => t.Parameters)
                .SingleOrDefaultAsync(cancellationToken);
@@ -65,10 +66,15 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
 
         private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string ringName)
         {
+            var ringState = featureEntity
+                .FeatureStates
+                .Where(r => r.RingEntity.Name == ringName)
+                .SingleOrDefault();
+
             var feature = new DetailsConfigurationResponse
             {
                 FeatureName = featureEntity.Name,
-                Enabled = featureEntity.Enabled
+                Enabled = ringState?.Enabled ?? false
             };
 
             foreach (var toggleConfiguration in featureEntity.Toggles)

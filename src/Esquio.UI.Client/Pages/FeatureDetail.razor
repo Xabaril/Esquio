@@ -96,6 +96,34 @@
                                     }
                                 </TableBody>
                             </SingleTable>
+
+                            <SingleTable Loader="TogglesLoader" @ref="statesTable" SkeletonColumns="4" SkeletonActions="2">
+                                <TableHeader>
+                                    <th class="table-col-3">Ring State</th>
+                                    <th></th>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Toggle">
+                                        <th class="table-col-1"></th>
+                                    </Permission>
+                                </TableHeader>
+                                <TableBody Context="response">
+                                    @foreach (var state in response.States)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                @state.RingName
+                                            </td>
+                                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                                <td class="table-component__action">
+                                                    <Switch Title="Enable/Disable"
+                                                            Checked="state.Enabled"
+                                                            OnChange="@(() => ToggleState(state.Enabled,state.RingName))">
+                                                    </Switch>
+                                                </td>
+                                            </Permission>
+                                        </tr>
+                                    }
+                                </TableBody>
+                            </SingleTable>
                         </div>
                     </div>
                 </div>
@@ -157,6 +185,7 @@
 
 
     private SingleTable<DetailsFeatureResponse> togglesTable;
+    private SingleTable<DetailsFeatureResponse> statesTable;
 
     //Edit toggle parameters
     private bool showEditToggleModal = false;
@@ -237,6 +266,32 @@
         else
         {
             notifications.Error("Delete Tag", "Error deleting the tag");
+        }
+    }
+
+    private async Task ToggleState(bool state, string ringName)
+    {
+        bool requestSuccess = false;
+
+        if (state)
+        {
+            requestSuccess = await esquioHttpClient.RollbackFeature(ProductName, ringName, FeatureName);
+        }
+        else
+        {
+            requestSuccess = await esquioHttpClient.RolloutFeature(ProductName, ringName, FeatureName);
+
+        }
+
+        await statesTable.Reload();
+
+        if (requestSuccess)
+        {
+            notifications.Success("Toggle State Feature", "Toggle state feature success!.");
+        }
+        else
+        {
+            notifications.Error("Toggle State  Feature", "Error toggling the state of this feature!.");
         }
     }
 
@@ -372,8 +427,7 @@
         new UpdateFeatureRequest
         {
             Name = name,
-            Description = feature.Description,
-            Enabled = feature.Enabled
+            Description = feature.Description
         });
 
         // Sync feature name parameter

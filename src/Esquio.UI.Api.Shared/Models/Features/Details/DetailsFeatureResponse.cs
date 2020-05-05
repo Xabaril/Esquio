@@ -11,6 +11,8 @@ namespace Esquio.UI.Api.Shared.Models.Features.Details
         public bool Enabled { get; set; }
 
         public List<ToggleDetail> Toggles { get; set; }
+
+        public List<FeatureStateDetail> States { get; set; }
     }
 
     public class ToggleDetail
@@ -20,6 +22,13 @@ namespace Esquio.UI.Api.Shared.Models.Features.Details
         public string FriendlyName { get; set; }
 
         public List<ParameterDetail> Parameters { get; set; }
+    }
+
+    public class FeatureStateDetail
+    {
+        public string RingName { get; set; }
+
+        public bool Enabled { get; set; }
     }
 
     public class ParameterDetail

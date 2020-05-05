@@ -425,7 +425,7 @@
         }
       }
     },
-    "/api/products/{productName}/features/{featureName}/rollout": {
+    "/api/products/{productName}/ring/{ringName}/features/{featureName}/rollout": {
       "put": {
         "tags": [
           "Features"
@@ -435,6 +435,13 @@
           {
             "type": "string",
             "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ringName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -467,7 +474,7 @@
         }
       }
     },
-    "/api/products/{productName}/features/{featureName}/rollback": {
+    "/api/products/{productName}/ring/{ringName}/features/{featureName}/rollback": {
       "put": {
         "tags": [
           "Features"
@@ -477,6 +484,13 @@
           {
             "type": "string",
             "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ringName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -1628,7 +1642,6 @@
     "AddFeatureRequest": {
       "type": "object",
       "required": [
-        "enabled",
         "archived"
       ],
       "properties": {
@@ -1638,9 +1651,6 @@
         "description": {
           "type": "string"
         },
-        "enabled": {
-          "type": "boolean"
-        },
         "archived": {
           "type": "boolean"
         }
@@ -1648,18 +1658,12 @@
     },
     "UpdateFeatureRequest": {
       "type": "object",
-      "required": [
-        "enabled"
-      ],
       "properties": {
         "name": {
           "type": "string"
         },
         "description": {
           "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
         }
       }
     },
@@ -1682,6 +1686,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/ToggleDetail"
+          }
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FeatureStateDetail"
           }
         }
       }
@@ -1711,6 +1721,20 @@
         },
         "value": {
           "type": "string"
+        }
+      }
+    },
+    "FeatureStateDetail": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "ringName": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
         }
       }
     },

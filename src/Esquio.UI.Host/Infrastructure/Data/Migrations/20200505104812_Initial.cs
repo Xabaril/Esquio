@@ -119,7 +119,6 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Description = table.Column<string>(maxLength: 2000, nullable: true),
                     ProductEntityId = table.Column<int>(nullable: false),
-                    Enabled = table.Column<bool>(nullable: false, defaultValue: false),
                     Archived = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
@@ -208,6 +207,33 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FeatureStates",
+                schema: "dbo",
+                columns: table => new
+                {
+                    FeatureEntityId = table.Column<int>(nullable: false),
+                    RingEntityId = table.Column<int>(nullable: false),
+                    Enabled = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeatureStates", x => new { x.FeatureEntityId, x.RingEntityId });
+                    table.ForeignKey(
+                        name: "FK_FeatureStates_Features_FeatureEntityId",
+                        column: x => x.FeatureEntityId,
+                        principalSchema: "dbo",
+                        principalTable: "Features",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FeatureStates_Rings_RingEntityId",
+                        column: x => x.RingEntityId,
+                        principalSchema: "dbo",
+                        principalTable: "Rings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Parameters",
                 schema: "dbo",
                 columns: table => new
@@ -217,7 +243,7 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     ToggleEntityId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Value = table.Column<string>(maxLength: 4000, nullable: false),
-                    RingName = table.Column<string>(nullable: false)
+                    RingName = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,6 +277,12 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                 schema: "dbo",
                 table: "Features",
                 column: "ProductEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeatureStates_RingEntityId",
+                schema: "dbo",
+                table: "FeatureStates",
+                column: "RingEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeatureTags_TagEntityId",
@@ -308,6 +340,10 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ApiKeys",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "FeatureStates",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

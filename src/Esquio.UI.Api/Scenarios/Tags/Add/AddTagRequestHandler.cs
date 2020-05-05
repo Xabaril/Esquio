@@ -47,12 +47,12 @@ namespace Esquio.UI.Api.Scenarios.Tags.Add
                     TagEntity = tag
                 };
 
-                var alreadyExist = await _dbContext.FeatureTagEntities
+                var alreadyExist = await _dbContext.FeatureTags
                     .AnyAsync(ft => ft.FeatureEntityId == feature.Id && ft.TagEntityId == tag.Id, cancellationToken);
 
                 if ( !alreadyExist )
                 {
-                    await _dbContext.FeatureTagEntities
+                    await _dbContext.FeatureTags
                         .AddAsync(featureTag);
 
                     await _dbContext.SaveChangesAsync(cancellationToken);

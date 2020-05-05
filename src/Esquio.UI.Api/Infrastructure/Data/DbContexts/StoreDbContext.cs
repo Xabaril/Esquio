@@ -30,7 +30,8 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
         public DbSet<ToggleEntity> Toggles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }
-        public DbSet<FeatureTagEntity> FeatureTagEntities { get; set; }
+        public DbSet<FeatureTagEntity> FeatureTags { get; set; }
+        public DbSet<FeatureStateEntity> FeatureStates { get; set; }
         public DbSet<ApiKeyEntity> ApiKeys { get; set; }
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }

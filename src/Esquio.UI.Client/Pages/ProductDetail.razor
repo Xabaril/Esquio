@@ -73,28 +73,10 @@
                                                       OnChange="@((description) => UpdateFeature(feature.Name, description))" />
                                         </Permission>
                                     </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
-                                        <td>
-                                            <Switch Title="Enable/Disable"
-                                                    Checked="feature.Enabled"
-                                                    OnChange="@(() => ToggleFeature(feature))">
-
-                                            </Switch>
-                                        </td>
-                                        <td class="table-component__action">
-                                            <ConfirmableAction Title="Rollout"
-                                                               Icon="fas fa-upload"
-                                                               OnConfirm="@(() => RolloutFeature(feature.Name))"
-                                                               ConfirmTitle="Rollout Feature"
-                                                               ConfirmDescription="@($"Are you sure you want to rollout the '{feature.Name}' feature?")" />
-                                        </td>
-                                        <td class="table-component__action">
-                                            <ConfirmableAction Title="Rolloff"
-                                                               Icon="fas fa-download"
-                                                               OnConfirm="@(() => RolloffFeature(feature.Name))"
-                                                               ConfirmTitle="Rolloff Feature"
-                                                               ConfirmDescription="@($"Are you sure you want to rolloff the '{feature.Name}' feature?")" />
-                                        </td>
                                         <td class="table-component__action">
                                             <ConfirmableAction Title="Archive"
                                                                Icon="fas fa-archive"
@@ -292,58 +274,6 @@
         return esquioHttpClient.GetProductFeaturesList(ProductName, pageIndex, pageCount);
     }
 
-    private async Task ToggleFeature(ListFeatureResponseDetail feature)
-    {
-        var request = new UpdateFeatureRequest
-        {
-            Name = feature.Name,
-            Description = feature.Description,
-            Enabled = !feature.Enabled
-        };
-
-        var result = await esquioHttpClient.ToggleFeature(ProductName, feature.Name, request);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Toggle Feature", "Feature successfully toggled!");
-        }
-        else
-        {
-            notifications.Error("Toggle Feature", "Error toggling the feature");
-        }
-    }
-
-    private async Task RolloutFeature(string featureName)
-    {
-        var result = await esquioHttpClient.RolloutFeature(ProductName, featureName);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Rollout Feature", "Feature successfully rolled-out!");
-        }
-        else
-        {
-            notifications.Error("Rollout Feature", "Error rolling-out the feature");
-        }
-    }
-
-    private async Task RolloffFeature(string featureName)
-    {
-        var result = await esquioHttpClient.RollbackFeature(ProductName, featureName);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Rollback Feature", "Feature successfully rolled-back!");
-        }
-        else
-        {
-            notifications.Error("Rollback Feature", "Error rolling-back the feature");
-        }
-    }
-
     private async Task ArchiveFeature(string featureName)
     {
         var result = await esquioHttpClient.ArchiveFeature(ProductName, featureName);
@@ -509,8 +439,7 @@
         new UpdateFeatureRequest
         {
             Name = featureName,
-            Description = featureDescription,
-            Enabled = feature.Enabled
+            Description = featureDescription
         });
 
         if (result)

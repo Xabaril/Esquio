@@ -13,25 +13,25 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public int ProductEntityId { get; set; }
 
-        public bool Enabled { get; set; }
-
         public bool Archived { get; set; }
 
         public ProductEntity ProductEntity { get; set; }
 
         public ICollection<FeatureTagEntity> FeatureTags { get; set; }
 
+        public ICollection<FeatureStateEntity> FeatureStates { get; set; }
+
         public ICollection<ToggleEntity> Toggles { get; set; }
 
-        public FeatureEntity(int productEntityId, string name, bool enabled = false, bool archived = false, string description = null)
+        public FeatureEntity(int productEntityId, string name, bool archived = false, string description = null)
         {
             ProductEntityId = productEntityId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Enabled = enabled;
             Archived = archived;
             Description = description;
             Toggles = new List<ToggleEntity>();
             FeatureTags = new List<FeatureTagEntity>();
+            FeatureStates = new List<FeatureStateEntity>();
         }
     }
 }

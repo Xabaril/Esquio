@@ -28,10 +28,6 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                 .IsRequired(false)
                 .HasMaxLength(2000);
 
-            builder.Property(p => p.Enabled)
-                .IsRequired()
-                .HasDefaultValue(false);
-
             builder.Property(p => p.Archived)
                .IsRequired()
                .HasDefaultValue(false);

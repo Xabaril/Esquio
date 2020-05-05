@@ -40,7 +40,6 @@ namespace Esquio.UI.Api.Scenarios.Flags.List
                 PageIndex = request.PageIndex,
                 Items = features.Select(f => new ListFeatureResponseDetail
                 {
-                    Enabled = f.Enabled,
                     Description = f.Description,
                     Name = f.Name
                 }).ToList()

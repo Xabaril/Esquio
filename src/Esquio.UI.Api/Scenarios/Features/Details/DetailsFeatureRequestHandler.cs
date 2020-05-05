@@ -21,9 +21,12 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
         }
         public async Task<DetailsFeatureResponse> Handle(DetailsFeatureRequest request, CancellationToken cancellationToken)
         {
+            //TODO: details not need parameters information we can reduce complexibility here!
+
             var feature = await _storeDbContext
                .Features
                .Where(f => f.ProductEntity.Name == request.ProductName && f.Name == request.FeatureName)
+               .Include(f=>f.FeatureStates)
                .Include(f => f.ProductEntity)
                .Include(f => f.Toggles)
                 .ThenInclude(t=>t.Parameters)
@@ -31,11 +34,15 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
 
             if (feature != null)
             {
+                var rings = await _storeDbContext
+                    .Rings
+                    .Where(r => r.ProductEntityId == feature.ProductEntityId)
+                    .ToListAsync();
+
                 return new DetailsFeatureResponse()
                 {
                     Name = feature.Name,
                     Description = feature.Description,
-                    Enabled = feature.Enabled,
                     Toggles = feature.Toggles.Select(toggle =>
                     {
                         var type = Type.GetType(toggle.Type);
@@ -55,9 +62,16 @@ namespace Esquio.UI.Api.Scenarios.Flags.Details
                             Parameters = parameters
                         };
 
+                    }).ToList(),
+                    States = rings.Select(r=>new FeatureStateDetail()
+                    {
+                        RingName = r.Name,
+                        Enabled = feature.FeatureStates.Where(fs=>fs.RingEntityId==r.Id).SingleOrDefault()?.Enabled ?? false
                     }).ToList()
                 };
             }
+
+            //TODO: add diagnostics here!
 
             return null;
         }

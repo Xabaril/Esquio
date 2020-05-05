@@ -25,6 +25,10 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                .IsRequired()
                .HasMaxLength(200);
 
+            builder.Property(p => p.RingName)
+               .IsRequired()
+               .HasMaxLength(200);
+
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);

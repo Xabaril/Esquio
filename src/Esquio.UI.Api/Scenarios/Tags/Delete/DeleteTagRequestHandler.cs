@@ -24,7 +24,7 @@ namespace Esquio.UI.Api.Scenarios.Tags.Delete
 
         public async Task<Unit> Handle(DeleteTagRequest request, CancellationToken cancellationToken)
         {
-            var featureTag = await _storeDbContext.FeatureTagEntities
+            var featureTag = await _storeDbContext.FeatureTags
                 .Where(ft => ft.FeatureEntity.Name == request.FeatureName && ft.FeatureEntity.ProductEntity.Name == request.ProductName && ft.TagEntity.Name == request.Tag)
                 .SingleOrDefaultAsync(cancellationToken);
 

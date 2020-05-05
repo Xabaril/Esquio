@@ -27,6 +27,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             _fixture = serverFixture ?? throw new ArgumentNullException(nameof(serverFixture));
         }
 
+        //tODO: add new details tests here!!
+
         [Fact]
         public async Task archive_response_unauthorized_when_user_request_is_not_authenticated()
         {
@@ -342,7 +344,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
-                .WithEnabled(true)
                 .Build();
 
             product.Features.Add(feature);
@@ -368,6 +369,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             details.Enabled
                 .Should().BeFalse();
+
+            //TODO: fix this test
         }
 
         [Fact]
@@ -503,7 +506,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
-                .WithEnabled(false)
                 .Build();
 
             product.Features.Add(feature);
@@ -529,6 +531,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             details.Enabled
                 .Should().BeTrue();
+
+            //TODO: fix this test
         }
 
         [Fact]
@@ -548,7 +552,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
-                .WithEnabled(false)
                 .Build();
 
             product.Features.Add(feature);
@@ -816,10 +819,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             content.Description
                 .Should()
                 .BeEquivalentTo(feature.Description);
-
-            content.Enabled
-                .Should()
-                .Be(feature.Enabled);
 
             content.Toggles
                 .Should()
@@ -1136,9 +1135,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .First()
                .Description.Should().BeEquivalentTo(feature1.Description);
 
-            content.Items
-               .First()
-               .Enabled.Should().Be(feature1.Enabled);
         }
         [Fact]
         [ResetDatabase]
@@ -1256,17 +1252,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var updateFlagRequest = new UpdateFeatureRequest()
+            var updateFeatureRequest = new UpdateFeatureRequest()
             {
                 Name = new string('c', 201),
-                Description = "description",
-                Enabled = true,
+                Description = "description"
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Update(productName: "fooproduct", featureName: "barfeature"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsJsonAsync(updateFlagRequest);
+                  .PutAsJsonAsync(updateFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1284,17 +1279,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var updateFlagRequest = new UpdateFeatureRequest()
+            var updateFeatureRequest = new UpdateFeatureRequest()
             {
                 Name = "name",
                 Description = new string('c', 2001),
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Update(productName: "fooproduct", featureName: "barfeature"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsJsonAsync(updateFlagRequest);
+                  .PutAsJsonAsync(updateFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1311,17 +1305,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var updateFlagRequest = new UpdateFeatureRequest()
+            var updateFeatureRequest = new UpdateFeatureRequest()
             {
                 Name = new string('c', 201),
                 Description = "description",
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Update(productName: "fooproduct", featureName: "barfeature"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsJsonAsync(updateFlagRequest);
+                  .PutAsJsonAsync(updateFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1345,7 +1338,6 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
-                .WithEnabled(false)
                 .Build();
 
             product.Features.Add(feature);
@@ -1353,17 +1345,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddProduct(product);
 
-            var updateFlagRequest = new UpdateFeatureRequest()
+            var updateFeatureRequest = new UpdateFeatureRequest()
             {
                 Name = "bar2",
                 Description = "description",
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Update(product.Name, feature.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PutAsJsonAsync(updateFlagRequest);
+                  .PutAsJsonAsync(updateFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1393,17 +1384,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = new string('c', 201),
                 Description = "description",
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(productName: "fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1421,17 +1411,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = "barfeature",
-                Description = new string('c', 2001),
-                Enabled = true,
+                Description = new string('c', 2001)
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(productName: "fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1449,17 +1438,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddPermission(permission);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = new string('c', 201),
                 Description = "description",
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(productName: "fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1491,17 +1479,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddProduct(product);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = feature.Name,
                 Description = "description",
-                Enabled = true,
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1537,17 +1524,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddProduct(product1, product2);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = feature1.Name,
-                Description = "description",
-                Enabled = true,
+                Description = "description"
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(product2.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1572,17 +1558,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddProduct(product);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = "barfeature",
-                Description = "description",
-                Enabled = true,
+                Description = "description"
             };
 
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Features.Add(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(addFlagRequest);
+                  .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()
@@ -1607,17 +1592,16 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
             await _fixture.Given
                 .AddProduct(product);
 
-            var addFlagRequest = new AddFeatureRequest()
+            var addFeatureRequest = new AddFeatureRequest()
             {
                 Name = "barfeature",
-                Description = "description",
-                Enabled = true,
+                Description = "description"
             };
 
             var response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V3.Features.Add(product.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                .PostAsJsonAsync(addFlagRequest);
+                .PostAsJsonAsync(addFeatureRequest);
 
             response.StatusCode
                 .Should()

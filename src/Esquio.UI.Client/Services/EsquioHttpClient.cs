@@ -56,8 +56,8 @@ namespace Esquio.UI.Client.Services
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
-        Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default);
-        Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default);
+        Task<bool> RolloutFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default);
+        Task<bool> RollbackFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default);
         Task<bool> UpdateFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
@@ -109,7 +109,7 @@ namespace Esquio.UI.Client.Services
 
         private readonly HttpClient _httpClient;
 
-        public EsquioHttpClient(HttpClient httpClient) 
+        public EsquioHttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
@@ -434,12 +434,12 @@ namespace Esquio.UI.Client.Services
                 return false;
             }
         }
-        public async Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default)
+        public async Task<bool> RolloutFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -460,12 +460,12 @@ namespace Esquio.UI.Client.Services
                 return false;
             }
         }
-        public async Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default)
+        public async Task<bool> RollbackFeature(string productName, string ringName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -1238,7 +1238,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
-                request.RequestUri = new Uri("api/statistics/configuration",UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri("api/statistics/configuration", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
 
                 try

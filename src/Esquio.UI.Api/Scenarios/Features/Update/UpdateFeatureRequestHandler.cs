@@ -34,7 +34,6 @@ namespace Esquio.UI.Api.Scenarios.Flags.Update
             {
                 feature.Name = request.Name;
                 feature.Description = request.Description;
-                feature.Enabled = request.Enabled;
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
 
