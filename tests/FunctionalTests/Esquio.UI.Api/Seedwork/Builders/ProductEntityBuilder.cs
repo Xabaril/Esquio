@@ -7,7 +7,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
     {
         private string _name;
         private List<FeatureEntity> _features = new List<FeatureEntity>();
-        private List<RingEntity> _rings = new List<RingEntity>();
+        private List<DeploymentEntity> _rings = new List<DeploymentEntity>();
 
         public ProductEntityBuilder WithName(string name)
         {
@@ -21,7 +21,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
-        public ProductEntityBuilder WithRing(RingEntity ringEntity)
+        public ProductEntityBuilder WithRing(DeploymentEntity ringEntity)
         {
             _rings.Add(ringEntity);
             return this;
@@ -38,7 +38,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 
             foreach (var item in _rings)
             {
-                entity.Rings.Add(item);
+                entity.Deployments.Add(item);
             }
 
             return entity;

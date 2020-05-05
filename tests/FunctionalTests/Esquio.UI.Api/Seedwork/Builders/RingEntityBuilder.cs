@@ -26,9 +26,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
-        public RingEntity Build()
+        public DeploymentEntity Build()
         {
-            return new RingEntity(productEntityId: _productId, name: _name, byDefault: _default);
+            return new DeploymentEntity(productEntityId: _productId, name: _name, byDefault: _default);
         }
     }
 }

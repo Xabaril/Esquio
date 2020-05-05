@@ -39,7 +39,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             });
         }
 
-        public async Task AddRing(params RingEntity[] rings)
+        public async Task AddRing(params DeploymentEntity[] rings)
         {
             await _serverFixture.ExecuteDbContextAsync(async db =>
             {

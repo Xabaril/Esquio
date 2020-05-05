@@ -33,7 +33,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
                 .SingleOrDefaultAsync(cancellationToken);
 
             var ring = await _storeDbContext
-                .Rings
+                .Deployments
                 .Include(r => r.ProductEntity)
                 .Where(r => r.Name == request.RingName && r.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync();

@@ -425,7 +425,7 @@
         }
       }
     },
-    "/api/products/{productName}/rings/{ringName}/features/{featureName}/rollout": {
+    "/api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollout": {
       "put": {
         "tags": [
           "Features"
@@ -441,7 +441,7 @@
           },
           {
             "type": "string",
-            "name": "ringName",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -474,7 +474,7 @@
         }
       }
     },
-    "/api/products/{productName}/rings/{ringName}/features/{featureName}/rollback": {
+    "/api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollback": {
       "put": {
         "tags": [
           "Features"
@@ -490,7 +490,7 @@
           },
           {
             "type": "string",
-            "name": "ringName",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -990,12 +990,12 @@
         }
       }
     },
-    "/api/Products/{productName}/ring/{ringName}": {
+    "/api/Products/{productName}/deployment/{ringName}": {
       "delete": {
         "tags": [
           "Products"
         ],
-        "operationId": "Products_DeleteRing",
+        "operationId": "Products_DeleteDeployment",
         "parameters": [
           {
             "type": "string",
@@ -1025,12 +1025,12 @@
         }
       }
     },
-    "/api/Products/{productName}/ring": {
+    "/api/Products/{productName}/deployment": {
       "post": {
         "tags": [
           "Products"
         ],
-        "operationId": "Products_AddRing",
+        "operationId": "Products_AddDeployment",
         "parameters": [
           {
             "type": "string",
@@ -1044,7 +1044,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AddRingRequest"
+              "$ref": "#/definitions/AddDeploymentRequest"
             },
             "x-nullable": true
           }
@@ -2013,7 +2013,7 @@
         }
       }
     },
-    "AddRingRequest": {
+    "AddDeploymentRequest": {
       "type": "object",
       "properties": {
         "name": {
@@ -2187,7 +2187,7 @@
         "featureName": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         },
         "toggleType": {

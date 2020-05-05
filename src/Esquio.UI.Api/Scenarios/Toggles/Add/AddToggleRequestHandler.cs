@@ -42,7 +42,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
                     var toggle = new ToggleEntity(feature.Id, request.ToggleType);
 
                     var allowedRings = await _storeDbContext
-                        .Rings
+                        .Deployments
                         .Where(p => p.ProductEntityId == feature.ProductEntityId)
                         .ToListAsync();
 

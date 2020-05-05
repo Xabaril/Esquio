@@ -91,9 +91,9 @@ namespace Esquio.UI.Api.Diagnostics
             _subjectIdDoesNotExist(logger, subjectId, null);
         }
 
-        public static void RingAlreadyExist(ILogger logger, string ring, string product)
+        public static void DeploymentAlreadyExist(ILogger logger, string ring, string product)
         {
-            _ringAlreadyExist(logger, ring, product, null);
+            _deploymentAlreadyExist(logger, ring, product, null);
         }
 
         public static void RingNotExist(ILogger logger, string ring, string product)
@@ -101,9 +101,9 @@ namespace Esquio.UI.Api.Diagnostics
             _ringNotExist(logger, ring, product, null);
         }
 
-        public static void CantDeleteDefaultRing(ILogger logger, string ring, string product)
+        public static void CantDeleteDefaultDeployment(ILogger logger, string ring, string product)
         {
-            _cantDeleteDefaultRing(logger, ring, product, null);
+            _cantDeleteDefaultDeployment(logger, ring, product, null);
         }
 
         public static void ApiKeyAuthenticationBegin(ILogger logger)
@@ -213,18 +213,18 @@ namespace Esquio.UI.Api.Diagnostics
            LogLevel.Warning,
            EventIds.SubjectIdDoesNotExist,
            "The subject id {subjectId} does not exist on the store.");
-        private static readonly Action<ILogger, string, string, Exception> _ringAlreadyExist = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _deploymentAlreadyExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
-          EventIds.RingAlreadyExist,
-          "The ring with name {ring} already exist for product {product} in the store and can't be created.");
+          EventIds.DeploymentAlreadyExist,
+          "The deployment with name {deployment} already exist for product {product} in the store and can't be created.");
         private static readonly Action<ILogger, string, string, Exception> _ringNotExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
-          EventIds.RingNotExist,
+          EventIds.DeployemtnNotExist,
           "The ring with name {ring} does not exist for product {product} in the store.");
-        private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultRing = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultDeployment = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
-          EventIds.CantDeleteDefaultRing,
-          "The ring with name {ring} is default ring for product {product} and can't be deleted.");
+          EventIds.CantDeleteDefaultDeployment,
+          "The deployment with name {deployment} is default ring for product {product} and can't be deleted.");
         private static readonly Action<ILogger, Exception> _apiKeyAuthenticationBegin = LoggerMessage.Define(
             LogLevel.Information,
             EventIds.ApiKeyAuthenticationBegin,

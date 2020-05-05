@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace Esquio.UI.Api.Shared.Models.Products.AddRing
+namespace Esquio.UI.Api.Shared.Models.Products.AddDeployment
 {
-    public class AddRingRequestValidator
-       : AbstractValidator<AddRingRequest>
+    public class AddDeploymentRequestValidator
+       : AbstractValidator<AddDeploymentRequest>
     {
-        public AddRingRequestValidator()
+        public AddDeploymentRequestValidator()
         {
             RuleFor(x => x.Name)
                 .NotNull()

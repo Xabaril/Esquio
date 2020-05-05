@@ -14,7 +14,7 @@ using Esquio.UI.Api.Shared.Models.Permissions.List;
 using Esquio.UI.Api.Shared.Models.Permissions.My;
 using Esquio.UI.Api.Shared.Models.Permissions.Update;
 using Esquio.UI.Api.Shared.Models.Products.Add;
-using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
@@ -50,8 +50,8 @@ namespace Esquio.UI.Client.Services
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
         Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
-        Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default);
-        Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default);
+        Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addRingRequest, CancellationToken cancellationToken = default);
+        Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default);
 
         //->features
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
@@ -276,18 +276,18 @@ namespace Esquio.UI.Client.Services
             }
         }
 
-        public async Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default)
+        public async Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addDeploymentRequest, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri($"api/products/{productName}/ring", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployment", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
                 try
                 {
-                    var content = JsonConvert.SerializeObject(addRingRequest);
+                    var content = JsonConvert.SerializeObject(addDeploymentRequest);
                     request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
 
                     var response = await _httpClient.SendAsync(request, cancellationToken);
@@ -299,19 +299,19 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add {addRingRequest} to product {productName}. !");
+                    Log.Error(exception, $"An exception is throwed when trying to add {addDeploymentRequest} to product {productName}. !");
                 }
 
                 return false;
             }
         }
 
-        public async Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
-                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployments/{deploymentName}", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -326,7 +326,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete ring {ringName} on product {productName}.!");
+                    Log.Error(exception, $"An exception is throwed when trying to delete deployment {deploymentName} on product {productName}.!");
                 }
 
                 return false;

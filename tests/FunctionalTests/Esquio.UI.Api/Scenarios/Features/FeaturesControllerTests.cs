@@ -10,7 +10,6 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Builders;
 using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,8 +96,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deploymentTests);
-            product.Rings.Add(deploymentProduction);
+            product.Deployments.Add(deploymentTests);
+            product.Deployments.Add(deploymentProduction);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -265,7 +264,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
               .WithDefault(true)
               .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
@@ -304,7 +303,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Build();
 
             product.Features.Add(feature);
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
@@ -343,7 +342,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                  .Build();
 
             product.Features.Add(feature);
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
@@ -381,7 +380,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithDefault(true)
                 .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -442,7 +441,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithDefault(true)
                 .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -480,7 +479,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithDefault(true)
                 .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -540,7 +539,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .WithDefault(true)
                 .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
 
             await _fixture.Given.AddProduct(product);
 
@@ -578,7 +577,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -617,7 +616,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -666,7 +665,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -719,7 +718,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);
@@ -772,7 +771,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                .WithDefault(true)
                .Build();
 
-            product.Rings.Add(deployment);
+            product.Deployments.Add(deployment);
             product.Features.Add(feature);
 
             await _fixture.Given.AddProduct(product);

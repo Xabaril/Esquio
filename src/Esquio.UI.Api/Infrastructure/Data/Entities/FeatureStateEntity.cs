@@ -12,7 +12,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public int RingEntityId { get; set; }
 
-        public RingEntity RingEntity { get; set; }
+        public DeploymentEntity RingEntity { get; set; }
 
         public bool Enabled { get; set; }
     }

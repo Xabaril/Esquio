@@ -65,17 +65,17 @@ namespace Esquio.UI.Api.Scenarios.Flags
 
         [HttpPut]
         [Authorize(Policies.Contributor)]
-        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/rings/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/deployments/{deploymentName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollout")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Rollout(string productName,string ringName, string featureName, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Rollout(string productName,string deploymentName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new RolloutFeatureRequest()
             {
                 ProductName = productName,
-                RingName = ringName,
+                RingName = deploymentName,
                 FeatureName = featureName
             };
 
@@ -86,17 +86,17 @@ namespace Esquio.UI.Api.Scenarios.Flags
 
         [HttpPut]
         [Authorize(Policies.Contributor)]
-        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/rings/{ringName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
+        [Route("api/products/{productName:slug:minlength(5):maxlength(200)}/deployments/{deploymentName:slug:minlength(5):maxlength(200)}/features/{featureName:slug:minlength(5):maxlength(200)}/rollback")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Rollback(string productName, string ringName, string featureName, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Rollback(string productName, string deploymentName, string featureName, CancellationToken cancellationToken = default)
         {
             var request = new RollbackFeatureRequest()
             {
                 ProductName = productName,
-                RingName = ringName,
+                RingName = deploymentName,
                 FeatureName = featureName
             };
 

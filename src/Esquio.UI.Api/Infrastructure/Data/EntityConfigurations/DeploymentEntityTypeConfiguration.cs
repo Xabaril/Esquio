@@ -6,19 +6,19 @@ using System;
 
 namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
 {
-    public class RingEntityTypeConfiguration
-        : IEntityTypeConfiguration<Entities.RingEntity>
+    public class DeploymentEntityTypeConfiguration
+        : IEntityTypeConfiguration<Entities.DeploymentEntity>
     {
         private readonly StoreOptions _storeOptions;
 
-        public RingEntityTypeConfiguration(StoreOptions storeOption)
+        public DeploymentEntityTypeConfiguration(StoreOptions storeOption)
         {
             this._storeOptions = storeOption ?? throw new ArgumentNullException(nameof(storeOption));
         }
 
-        public void Configure(EntityTypeBuilder<RingEntity> builder)
+        public void Configure(EntityTypeBuilder<DeploymentEntity> builder)
         {
-            builder.ToTable(_storeOptions.Rings);
+            builder.ToTable(_storeOptions.Deployments);
 
             builder.HasKey(p => p.Id);
 
@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                 .HasDefaultValueSql("0");
 
             builder.HasOne(r => r.ProductEntity)
-                .WithMany(p => p.Rings)
+                .WithMany(p => p.Deployments)
                 .HasForeignKey(r => r.ProductEntityId);
         }
     }

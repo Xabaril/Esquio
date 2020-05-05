@@ -113,7 +113,7 @@
                     </Icon>
                     <Actions>
                         <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
-                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewDeploymentModal">
                                 New Ring
                             </button>
                         </Permission>
@@ -127,7 +127,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <SingleTable Loader="RingsLoader" @ref="ringTable">
+                    <SingleTable Loader="RingsLoader" @ref="deploymentTable">
                         <TableHeader>
                             <th class="table-col-4">Name</th>
                             <th></th>
@@ -191,21 +191,21 @@
     </ModalFooter>
 </Modal>
 
-<Modal Title="New Ring" Show="showNewRingModal" OnClose="CloseNewRingModal">
+<Modal Title="New Ring" Show="showNewDeploymentModal" OnClose="CloseNewDeploymentModal">
     <ModalBody>
-        <EditForm EditContext="@newRingEditContext">
+        <EditForm EditContext="@newDeploymentEditContext">
             <FluentValidationValidator />
             <ValidationSummary />
 
             <div class="form-group">
                 <label for="ring-name">Name</label>
-                <InputText id="ring-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
+                <InputText id="ring-name" class="form-control" @bind-Value="newDeploymentModel.Name" placeholder="Enter ring name" />
             </div>
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseNewRingModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="AddNewRing" disabled="@newRingFormInvalid">Save changes</button>
+        <button type="button" class="btn btn-default" @onclick="CloseNewDeploymentModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="AddNewDeployment" disabled="@newDeploymentFormInvalid">Save changes</button>
     </ModalFooter>
 </Modal>
 
@@ -221,16 +221,16 @@
     private PaginatedTable<ListFeatureResponseDetail> featuresTable;
 
     //Rings form parameters
-    private bool showNewRingModal = false;
-    private bool newRingFormInvalid = true;
-    private AddRingRequest newRingModel;
-    private EditContext newRingEditContext;
-    private SingleTable<DetailsProductResponse> ringTable;
+    private bool showNewDeploymentModal = false;
+    private bool newDeploymentFormInvalid = true;
+    private AddDeploymentRequest newDeploymentModel;
+    private EditContext newDeploymentEditContext;
+    private SingleTable<DetailsProductResponse> deploymentTable;
 
     protected override void OnInitialized()
     {
         InitFeatureModel();
-        InitRingModel();
+        InitDeploymentModel();
 
         esquioState.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
@@ -322,36 +322,36 @@
         }
     }
 
-    private void InitRingModel()
+    private void InitDeploymentModel()
     {
-        newRingFormInvalid = true;
+        newDeploymentFormInvalid = true;
 
-        newRingModel = new AddRingRequest();
-        newRingEditContext = new EditContext(newRingModel);
-        newRingEditContext.OnValidationStateChanged += OnAddRingValidationChanged;
+        newDeploymentModel = new AddDeploymentRequest();
+        newDeploymentEditContext = new EditContext(newDeploymentModel);
+        newDeploymentEditContext.OnValidationStateChanged += OnAddRingValidationChanged;
 
     }
 
     private void OnAddRingValidationChanged(object sender, ValidationStateChangedEventArgs args)
     {
-        newRingFormInvalid = !newRingEditContext.IsValid();
+        newDeploymentFormInvalid = !newDeploymentEditContext.IsValid();
         StateHasChanged();
     }
 
-    private void OpenNewRingModal()
+    private void OpenNewDeploymentModal()
     {
-        showNewRingModal = true;
-        InitRingModel();
+        showNewDeploymentModal = true;
+        InitDeploymentModel();
 
-        esquioState.SetWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewDeploymentModal);
     }
 
-    private void CloseNewRingModal()
+    private void CloseNewDeploymentModal()
     {
-        showNewRingModal = false;
-        newRingEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
+        showNewDeploymentModal = false;
+        newDeploymentEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
 
-        esquioState.SetWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewDeploymentModal);
     }
 
     private Task<DetailsProductResponse> RingsLoader()
@@ -359,13 +359,13 @@
         return esquioHttpClient.GetProduct(ProductName);
     }
 
-    private async Task AddNewRing()
+    private async Task AddNewDeployment()
     {
-        var result = await esquioHttpClient.AddProductRing(ProductName, newRingModel);
-        await ringTable.OnAdd();
+        var result = await esquioHttpClient.AddProductDeployment(ProductName, newDeploymentModel);
+        await deploymentTable.OnAdd();
 
-        CloseNewRingModal();
-        InitRingModel();
+        CloseNewDeploymentModal();
+        InitDeploymentModel();
 
         if (result)
         {
@@ -377,13 +377,13 @@
         }
     }
 
-    private async Task DeleteRing(string ringName)
+    private async Task DeleteRing(string deploymentName)
     {
-        var result = await esquioHttpClient.DeleteProductRing(ProductName, ringName);
-        await ringTable.OnDelete();
+        var result = await esquioHttpClient.DeleteProductDeployment(ProductName, deploymentName);
+        await deploymentTable.OnDelete();
 
-        CloseNewRingModal();
-        InitRingModel();
+        CloseNewDeploymentModal();
+        InitDeploymentModel();
 
         if (result)
         {

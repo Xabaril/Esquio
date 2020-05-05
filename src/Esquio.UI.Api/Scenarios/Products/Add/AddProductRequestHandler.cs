@@ -34,7 +34,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Add
             {
                 var product = new ProductEntity(request.Name, request.Description);
 
-                product.Rings.Add(new RingEntity(
+                product.Deployments.Add(new DeploymentEntity(
                     productEntityId: product.Id,
                     name: request.DefaultRingName,
                     byDefault: true));

@@ -379,7 +379,7 @@
         if (editedToggleParameters.ContainsKey(parameter.Name))
         {
             editedToggleParameters[parameter.Name].Value = parameter.Value;
-            editedToggleParameters[parameter.Name].RingName = editRing;
+            editedToggleParameters[parameter.Name].DeploymentName = editRing;
         }
         else
         {
@@ -387,7 +387,7 @@
             {
                 ProductName = ProductName,
                 FeatureName = FeatureName,
-                RingName = editRing,
+                DeploymentName = editRing,
                 ToggleType = editToggle.Type,
                 Name = parameter.Name,
                 Value = parameter.Value

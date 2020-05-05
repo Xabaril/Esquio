@@ -48,7 +48,7 @@ namespace FunctionalTests.Esquio.Http.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -117,7 +117,7 @@ namespace FunctionalTests.Esquio.Http.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -224,7 +224,7 @@ namespace FunctionalTests.Esquio.Http.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -310,7 +310,7 @@ namespace FunctionalTests.Esquio.Http.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -378,7 +378,7 @@ namespace FunctionalTests.Esquio.Http.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()

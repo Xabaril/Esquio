@@ -1,9 +1,9 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
 using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.Products.Add;
-using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Delete;
-using Esquio.UI.Api.Shared.Models.Products.DeleteRing;
+using Esquio.UI.Api.Shared.Models.Products.DeleteDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
@@ -112,16 +112,16 @@ namespace Esquio.UI.Api.Scenarios.Products
 
         [HttpDelete]
         [Authorize(Policies.Contributor)]
-        [Route("{productName:slug:minlength(5):maxlength(200)}/ring/{ringName:slug:minlength(5):maxlength(200)}")]
+        [Route("{productName:slug:minlength(5):maxlength(200)}/deployment/{ringName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteRing(string productName, string ringName, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> DeleteDeployment(string productName, string ringName, CancellationToken cancellationToken = default)
         {
-            var request = new DeleteRingRequest()
+            var request = new DeleteDeploymentRequest()
             {
                 ProductName = productName,
-                RingName = ringName
+                DeploymentName = ringName
             };
 
             await _mediator.Send(request, cancellationToken);
@@ -131,12 +131,12 @@ namespace Esquio.UI.Api.Scenarios.Products
 
         [HttpPost]
         [Authorize(Policies.Contributor)]
-        [Route("{productName:slug:minlength(5):maxlength(200)}/ring")]
+        [Route("{productName:slug:minlength(5):maxlength(200)}/deployment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddRing(string productName, AddRingRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> AddDeployment(string productName, AddDeploymentRequest request, CancellationToken cancellationToken = default)
         {
             request.ProductName = productName;
 

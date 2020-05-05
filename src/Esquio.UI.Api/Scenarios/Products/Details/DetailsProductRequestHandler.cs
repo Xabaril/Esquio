@@ -22,7 +22,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Details
         {
             var product = await _storeDbContext
                .Products
-               .Include(p=>p.Rings)
+               .Include(p=>p.Deployments)
                .Where(f => f.Name == request.ProductName)
                .SingleOrDefaultAsync(cancellationToken);
 
@@ -32,7 +32,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Details
                 {
                     Name = product.Name,
                     Description = product.Description,
-                    Rings = product.Rings.Select(r=>new RingResponseDetail()
+                    Rings = product.Deployments.Select(r=>new RingResponseDetail()
                     {
                         Name = r.Name,
                         Default = r.ByDefault

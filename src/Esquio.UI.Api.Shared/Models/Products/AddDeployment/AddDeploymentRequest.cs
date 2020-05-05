@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace Esquio.UI.Api.Shared.Models.Products.AddRing
+namespace Esquio.UI.Api.Shared.Models.Products.AddDeployment
 {
-    public class AddRingRequest : IRequest<Unit>
+    public class AddDeploymentRequest : IRequest<Unit>
     {
         internal string ProductName { get; set; }
         public string Name { get; set; }

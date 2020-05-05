@@ -1,7 +1,7 @@
 ﻿using Esquio;
 using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.Products.Add;
-using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
@@ -159,7 +159,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("production")
                 .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -229,7 +229,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(new AddRingRequest()
+                  .PostAsJsonAsync(new AddDeploymentRequest()
                   {
                       Name = "@#~invalidring@#~"
                   });
@@ -260,7 +260,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(new AddRingRequest()
+                  .PostAsJsonAsync(new AddDeploymentRequest()
                   {
                       Name = "some"
                   });
@@ -291,7 +291,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(new AddRingRequest()
+                  .PostAsJsonAsync(new AddDeploymentRequest()
                   {
                       Name = new string('c', 201)
                   });
@@ -322,7 +322,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var response = await _fixture.TestServer
                   .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                  .PostAsJsonAsync(new AddRingRequest()
+                  .PostAsJsonAsync(new AddDeploymentRequest()
                   {
                       Name = "Production"
                   });
@@ -975,7 +975,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given

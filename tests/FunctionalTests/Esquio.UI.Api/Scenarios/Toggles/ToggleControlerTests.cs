@@ -120,7 +120,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -327,7 +327,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -396,7 +396,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -752,10 +752,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
-            product.Rings
+            product.Deployments
                 .Add(specifiedRing);
 
             var feature = Builders.Feature()
@@ -815,7 +815,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .WithName("fooproduct")
              .Build();
 
-            product.Rings.Add(ring);
+            product.Deployments.Add(ring);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -873,7 +873,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .WithName("fooproduct")
              .Build();
 
-            product.Rings.Add(ring);
+            product.Deployments.Add(ring);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -1109,7 +1109,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -1120,7 +1120,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 ToggleType = toggle.Type,
-                RingName = "nonexisting",
+                DeploymentName = "nonexisting",
                 Name = "Environments",
                 Value = "Development"
             };
@@ -1178,7 +1178,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -1237,7 +1237,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(ring);
 
             await _fixture.Given
@@ -1248,7 +1248,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 ToggleType = toggle.Type,
-                RingName = ring.Name,
+                DeploymentName = ring.Name,
                 Name = "Environments",
                 Value = "Development",
             };
@@ -1311,10 +1311,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             product.Features
                 .Add(feature);
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
-            product.Rings
+            product.Deployments
                 .Add(selectedRing);
 
             await _fixture.Given
@@ -1325,7 +1325,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 ToggleType = toggle.Type,
-                RingName = selectedRing.Name,
+                DeploymentName = selectedRing.Name,
                 Name = "Environments",
                 Value = "Development",
             };

@@ -26,7 +26,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
         {
             var feature = await _storeDbContext
                 .Features
-                .Include(f=>f.ProductEntity)  //-> this is only needed for "history"
+                .Include(f => f.ProductEntity)  //-> this is only needed for "history"
                 .Include(f => f.Toggles)
                     .ThenInclude(t => t.Parameters)
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
@@ -41,7 +41,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
                 if (toggle != null)
                 {
                     var allowedRings = await _storeDbContext
-                        .Rings
+                        .Deployments
                         .Where(p => p.ProductEntityId == feature.ProductEntityId)
                         .ToListAsync();
 
@@ -51,10 +51,10 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 
                     var selectedRing = defaultRing;
 
-                    if (!string.IsNullOrEmpty(request.RingName))
+                    if (!string.IsNullOrEmpty(request.DeploymentName))
                     {
                         selectedRing = allowedRings
-                           .Where(r => r.Name == request.RingName)
+                           .Where(r => r.Name == request.DeploymentName)
                            .SingleOrDefault();
                     }
 
@@ -66,8 +66,8 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
                         return Unit.Value;
                     }
 
-                    Log.RingNotExist(_logger, request.RingName,request.ProductName);
-                    throw new InvalidOperationException($"Ring {request.RingName} does not exist for product {request.ProductName}.");
+                    Log.RingNotExist(_logger, request.DeploymentName, request.ProductName);
+                    throw new InvalidOperationException($"Deployment {request.DeploymentName} does not exist for product {request.ProductName}.");
                 }
 
                 Log.ToggleNotExist(_logger, request.ToggleType);

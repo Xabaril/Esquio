@@ -55,7 +55,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings.Add(defaultRing);
+            product.Deployments.Add(defaultRing);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -140,7 +140,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -230,10 +230,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
-            product.Rings
+            product.Deployments
                 .Add(productionRing);
 
             var feature = Builders.Feature()

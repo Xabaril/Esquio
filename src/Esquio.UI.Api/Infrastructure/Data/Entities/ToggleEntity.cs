@@ -23,7 +23,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             Parameters = new List<ParameterEntity>();
         }
 
-        public void AddOrUpdateParameter(RingEntity currentRing, RingEntity defaultRing, string parameterName, string value)
+        public void AddOrUpdateParameter(DeploymentEntity currentRing, DeploymentEntity defaultRing, string parameterName, string value)
         {
             if (currentRing.ByDefault)
             {
@@ -40,7 +40,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             }
         }
 
-        void AddOrUpdateParameter(RingEntity ring, string parameterName, string value)
+        void AddOrUpdateParameter(DeploymentEntity ring, string parameterName, string value)
         {
             var parameter = this.Parameters
                 .Where(p => p.Name == parameterName && p.RingName == ring.Name)
@@ -58,7 +58,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             }
         }
 
-        bool HasParameter(RingEntity ring, string parameterName)
+        bool HasParameter(DeploymentEntity ring, string parameterName)
         {
             return this.Parameters
                 .Where(p => p.Name == parameterName && p.RingName == ring.Name)

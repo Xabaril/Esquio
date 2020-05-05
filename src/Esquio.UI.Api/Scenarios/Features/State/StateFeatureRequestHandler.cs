@@ -34,7 +34,7 @@ namespace Esquio.UI.Api.Scenarios.Features.State
             if (feature != null)
             {
                 var rings = await _storeDbContext
-                  .Rings
+                  .Deployments
                   .Where(r => r.ProductEntityId == feature.ProductEntityId)
                   .ToListAsync();
 
