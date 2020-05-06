@@ -42,7 +42,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Add
                 _storeDbContext.Add(product);
 
                 await _storeDbContext
-                    .SaveChangesAsync(cancellationToken);
+                .SaveChangesAsync(cancellationToken);
 
                 return product.Name;
             }

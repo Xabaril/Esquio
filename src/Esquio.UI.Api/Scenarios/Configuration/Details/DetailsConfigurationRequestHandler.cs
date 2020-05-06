@@ -34,6 +34,7 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                .Features
                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                .Include(f=> f.FeatureStates)
+                   .ThenInclude(t => t.DeploymentEntity)
                .Include(f => f.Toggles)
                    .ThenInclude(t => t.Parameters)
                .SingleOrDefaultAsync(cancellationToken);
@@ -44,14 +45,14 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
             if (featureEntity != null)
             {
                 metric = ConfigurationRequestMetric
-                    .FromSuccess(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                    .FromSuccess(request.ProductName, request.FeatureName, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
-                response = CreateResponse(featureEntity, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                response = CreateResponse(featureEntity, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
             }
             else
             {
                 metric = ConfigurationRequestMetric
-                    .FromNotFound(request.ProductName, request.FeatureName, request.RingName ?? EsquioConstants.DEFAULT_RING_NAME);
+                    .FromNotFound(request.ProductName, request.FeatureName, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
                 Log.FeatureNotExist(_logger, request.FeatureName);
             }
@@ -64,11 +65,11 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
             return response;
         }
 
-        private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string ringName)
+        private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string deploymentName)
         {
             var ringState = featureEntity
                 .FeatureStates
-                .Where(r => r.RingEntity.Name == ringName)
+                .Where(r => r.DeploymentEntity.Name == deploymentName)
                 .SingleOrDefault();
 
             var feature = new DetailsConfigurationResponse
@@ -86,7 +87,7 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                     .GroupBy(g => g.RingName);
 
                 var defaultRingParameters = groupingParameters
-                    .Where(g => g.Key == EsquioConstants.DEFAULT_RING_NAME)
+                    .Where(g => g.Key == EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                     .SingleOrDefault();
 
                 if (defaultRingParameters != null
@@ -99,10 +100,10 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                     }
                 }
 
-                if (ringName != EsquioConstants.DEFAULT_RING_NAME)
+                if (deploymentName != EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 {
                     var selectedRingParameters = groupingParameters
-                        .Where(g => g.Key == ringName)
+                        .Where(g => g.Key == deploymentName)
                         .SingleOrDefault();
 
                     if (selectedRingParameters != null

@@ -41,7 +41,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
             if (feature != null && ring != null)
             {
                 var currentState = await _storeDbContext.FeatureStates
-                    .Where(fs => fs.FeatureEntityId == feature.Id && fs.RingEntityId == ring.Id)
+                    .Where(fs => fs.FeatureEntityId == feature.Id && fs.DeploymentEntityId == ring.Id)
                     .SingleOrDefaultAsync();
 
                 if (currentState != null)
@@ -52,7 +52,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
                 {
                     _storeDbContext.FeatureStates.Add(new FeatureStateEntity()
                     {
-                        RingEntityId = ring.Id,
+                        DeploymentEntityId = ring.Id,
                         FeatureEntityId = feature.Id,
                         Enabled = false
                     });

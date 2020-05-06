@@ -8,14 +8,14 @@ namespace Esquio.UI.Client.ViewModels
             string name,
             string clrType,
             string value = default,
-            string ringName = default,
+            string deploymentName = default,
             int order = default,
             string description = default)
         {
             Name = name;
             ClrType = clrType;
             Value = value;
-            RingName = ringName;
+            DeploymentName = deploymentName;
             Order = order;
             Description = description;
         }
@@ -27,7 +27,7 @@ namespace Esquio.UI.Client.ViewModels
 
         public string Value { get; set; }
 
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
         public int Order { get; set; }
 

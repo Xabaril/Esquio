@@ -5,6 +5,6 @@
         public int TotalProducts { get; set; }
         public int TotalFeatures { get; set; }
         public int TotalToggles { get; set; }
-        public int TotalRings { get; set; }
+        public int TotalDeployments{ get; set; }
     }
 }

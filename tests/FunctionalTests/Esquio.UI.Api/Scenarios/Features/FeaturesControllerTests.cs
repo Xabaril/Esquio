@@ -118,11 +118,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Features
                 .Any().Should().BeTrue();
 
             states.States
-                .Where(s => s.RingName == "Tests")
+                .Where(s => s.DeploymentName == "Tests")
                 .Any().Should().BeTrue();
 
             states.States
-                .Where(s => s.RingName == "Production")
+                .Where(s => s.DeploymentName == "Production")
                 .Any().Should().BeTrue();
         }
 

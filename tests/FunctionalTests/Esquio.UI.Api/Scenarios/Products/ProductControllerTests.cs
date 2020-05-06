@@ -33,7 +33,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "ringName"))
                 .DeleteAsync();
 
             response.StatusCode
@@ -43,7 +43,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task deletering_response_forbiden_when_user_is_authenticated_but_not_authorized()
+        public async Task deletedeployment_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
             var permission = Builders.Permission()
                 .WithReaderPermission()
@@ -53,7 +53,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("productname", "ringName"))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "ringName"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -64,7 +64,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task deletering_response_badrequest_if_product_does_not_exist()
+        public async Task deletedeployment_response_badrequest_if_product_does_not_exist()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -74,7 +74,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing("fooproduct", "barring"))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("fooproduct", "barring"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -85,35 +85,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task deletering_response_badrequest_if_ring_does_not_exist()
-        {
-            var permission = Builders.Permission()
-                .WithManagementPermission()
-                .Build();
-
-            await _fixture.Given
-                .AddPermission(permission);
-
-            var product = Builders.Product()
-                .WithName("fooproduct")
-                .Build();
-
-            await _fixture.Given
-                .AddProduct(product);
-
-            var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, "barring"))
-                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-                .DeleteAsync();
-
-            response.StatusCode
-                .Should()
-                .Be(StatusCodes.Status400BadRequest);
-        }
-
-        [Fact]
-        [ResetDatabase]
-        public async Task deletering_response_badrequest_if_ring_is_default()
+        public async Task deletedeployment_response_badrequest_if_ring_does_not_exist()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -130,7 +102,35 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, EsquioConstants.DEFAULT_RING_NAME))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, "barring"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .DeleteAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task deletedeployment_response_badrequest_if_ring_is_default()
+        {
+            var permission = Builders.Permission()
+                .WithManagementPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -142,7 +142,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task deletering_response_noconent_when_success()
+        public async Task deletedeployment_response_noconent_when_success()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -166,7 +166,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteRing(product.Name, ring.Name))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, ring.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -176,10 +176,10 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         }
 
         [Fact]
-        public async Task addring_response_unauthorizaed_when_user_is_not_authenticated()
+        public async Task adddeployment_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing("productname"))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment("productname"))
                   .PostAsync();
 
             response.StatusCode
@@ -189,7 +189,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task addring_response_forbiden_when_user_is_authenticated_but_not_authorized()
+        public async Task adddeployment_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
             var permission = Builders.Permission()
                 .WithReaderPermission()
@@ -199,7 +199,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing("productname"))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment("productname"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsync();
 
@@ -210,7 +210,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task addring_response_badrequest_if_ring_name_is_not_valid()
+        public async Task adddeployment_response_badrequest_if_ring_name_is_not_valid()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -227,7 +227,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -258,7 +258,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -272,7 +272,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task addring_response_badrequest_if_ring_name_grether_than_200_characters()
+        public async Task adddeployment_response_badrequest_if_ring_name_grether_than_200_characters()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -289,7 +289,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -303,7 +303,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task addring_response_created_when_success()
+        public async Task adddeployment_response_created_when_success()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()
@@ -320,7 +320,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddRing(product.Name))
+                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -949,7 +949,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Build();
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .Build();
 
             var feature = Builders.Feature()

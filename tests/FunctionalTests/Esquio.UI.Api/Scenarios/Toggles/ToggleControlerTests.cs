@@ -89,7 +89,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -296,7 +296,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -355,7 +355,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -458,7 +458,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -541,7 +541,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         public async Task reveal_response_forbidden_if_user_is_not_authorized()
         {
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -689,7 +689,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .Build();
 
             var feature = Builders.Feature()
@@ -739,7 +739,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -807,7 +807,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -865,7 +865,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .AddPermission(permission);
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -1091,7 +1091,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -1151,7 +1151,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -1219,7 +1219,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Build();
 
             var ring = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -1279,7 +1279,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .Build();
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 

@@ -1140,7 +1140,7 @@
           },
           {
             "type": "string",
-            "name": "ring",
+            "name": "deployment",
             "in": "query",
             "required": true,
             "x-nullable": true
@@ -1776,7 +1776,7 @@
         "enabled"
       ],
       "properties": {
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         },
         "default": {
@@ -1966,15 +1966,15 @@
         "description": {
           "type": "string"
         },
-        "rings": {
+        "deployments": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/RingResponseDetail"
+            "$ref": "#/definitions/DeploymentResponseDetail"
           }
         }
       }
     },
-    "RingResponseDetail": {
+    "DeploymentResponseDetail": {
       "type": "object",
       "required": [
         "default"
@@ -2050,9 +2050,6 @@
         },
         "featureName": {
           "type": "string"
-        },
-        "ringName": {
-          "type": "string"
         }
       }
     },
@@ -2110,7 +2107,7 @@
         "value": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         }
       }

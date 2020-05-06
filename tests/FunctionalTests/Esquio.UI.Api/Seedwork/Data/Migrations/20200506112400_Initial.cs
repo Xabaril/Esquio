@@ -110,6 +110,29 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Deployments",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    ByDefault = table.Column<bool>(nullable: false, defaultValueSql: "0"),
+                    ProductEntityId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deployments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deployments_Products_ProductEntityId",
+                        column: x => x.ProductEntityId,
+                        principalSchema: "dbo",
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Features",
                 schema: "dbo",
                 columns: table => new
@@ -134,26 +157,31 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rings",
+                name: "FeatureStates",
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 200, nullable: false),
-                    ByDefault = table.Column<bool>(nullable: false, defaultValueSql: "0"),
-                    ProductEntityId = table.Column<int>(nullable: false)
+                    FeatureEntityId = table.Column<int>(nullable: false),
+                    DeploymentEntityId = table.Column<int>(nullable: false),
+                    Enabled = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rings", x => x.Id);
+                    table.PrimaryKey("PK_FeatureStates", x => new { x.FeatureEntityId, x.DeploymentEntityId });
                     table.ForeignKey(
-                        name: "FK_Rings_Products_ProductEntityId",
-                        column: x => x.ProductEntityId,
+                        name: "FK_FeatureStates_Deployments_DeploymentEntityId",
+                        column: x => x.DeploymentEntityId,
                         principalSchema: "dbo",
-                        principalTable: "Products",
+                        principalTable: "Deployments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FeatureStates_Features_FeatureEntityId",
+                        column: x => x.FeatureEntityId,
+                        principalSchema: "dbo",
+                        principalTable: "Features",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,34 +235,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeatureStates",
-                schema: "dbo",
-                columns: table => new
-                {
-                    FeatureEntityId = table.Column<int>(nullable: false),
-                    RingEntityId = table.Column<int>(nullable: false),
-                    Enabled = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FeatureStates", x => new { x.FeatureEntityId, x.RingEntityId });
-                    table.ForeignKey(
-                        name: "FK_FeatureStates_Features_FeatureEntityId",
-                        column: x => x.FeatureEntityId,
-                        principalSchema: "dbo",
-                        principalTable: "Features",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FeatureStates_Rings_RingEntityId",
-                        column: x => x.RingEntityId,
-                        principalSchema: "dbo",
-                        principalTable: "Rings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Parameters",
                 schema: "dbo",
                 columns: table => new
@@ -274,16 +274,22 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deployments_ProductEntityId",
+                schema: "dbo",
+                table: "Deployments",
+                column: "ProductEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Features_ProductEntityId",
                 schema: "dbo",
                 table: "Features",
                 column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeatureStates_RingEntityId",
+                name: "IX_FeatureStates_DeploymentEntityId",
                 schema: "dbo",
                 table: "FeatureStates",
-                column: "RingEntityId");
+                column: "DeploymentEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeatureTags_TagEntityId",
@@ -316,12 +322,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 table: "Products",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rings_ProductEntityId",
-                schema: "dbo",
-                table: "Rings",
-                column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Name",
@@ -368,7 +368,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Rings",
+                name: "Deployments",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

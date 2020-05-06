@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Esquio.UI.Host.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200505104812_Initial")]
+    [Migration("20200506111634_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,33 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.ToTable("ApiKeys");
                 });
 
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.DeploymentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("ByDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("0");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("ProductEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductEntityId");
+
+                    b.ToTable("Deployments");
+                });
+
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -89,15 +116,15 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.Property<int>("FeatureEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RingEntityId")
+                    b.Property<int>("DeploymentEntityId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
-                    b.HasKey("FeatureEntityId", "RingEntityId");
+                    b.HasKey("FeatureEntityId", "DeploymentEntityId");
 
-                    b.HasIndex("RingEntityId");
+                    b.HasIndex("DeploymentEntityId");
 
                     b.ToTable("FeatureStates");
                 });
@@ -266,33 +293,6 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("ByDefault")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("0");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<int>("ProductEntityId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductEntityId");
-
-                    b.ToTable("Rings");
-                });
-
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.TagEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -344,6 +344,15 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.ToTable("Toggles");
                 });
 
+            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.DeploymentEntity", b =>
+                {
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
+                        .WithMany("Deployments")
+                        .HasForeignKey("ProductEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureEntity", b =>
                 {
                     b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
@@ -355,16 +364,16 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureStateEntity", b =>
                 {
+                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.DeploymentEntity", "DeploymentEntity")
+                        .WithMany()
+                        .HasForeignKey("DeploymentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.FeatureEntity", "FeatureEntity")
                         .WithMany("FeatureStates")
                         .HasForeignKey("FeatureEntityId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", "RingEntity")
-                        .WithMany()
-                        .HasForeignKey("RingEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
@@ -388,15 +397,6 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ToggleEntity", "ToggleEntity")
                         .WithMany("Parameters")
                         .HasForeignKey("ToggleEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Esquio.UI.Api.Infrastructure.Data.Entities.RingEntity", b =>
-                {
-                    b.HasOne("Esquio.UI.Api.Infrastructure.Data.Entities.ProductEntity", "ProductEntity")
-                        .WithMany("Rings")
-                        .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

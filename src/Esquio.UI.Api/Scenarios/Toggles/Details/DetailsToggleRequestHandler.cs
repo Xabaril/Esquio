@@ -46,7 +46,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Details
                         {
                             Name = parameter.Name,
                             Value = parameter.Value,
-                            RingName = parameter.RingName
+                            DeploymentName = parameter.RingName
                         }).ToList()
                     };
                 }

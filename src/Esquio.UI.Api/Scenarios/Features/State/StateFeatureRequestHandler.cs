@@ -42,9 +42,9 @@ namespace Esquio.UI.Api.Scenarios.Features.State
                 {
                     States = rings.Select(r => new StateFeatureResponseDetail()
                     {
-                        RingName = r.Name,
+                        DeploymentName = r.Name,
                         Default = r.ByDefault,
-                        Enabled = feature.FeatureStates.Where(fs => fs.RingEntityId == r.Id).SingleOrDefault()?.Enabled ?? false
+                        Enabled = feature.FeatureStates.Where(fs => fs.DeploymentEntityId == r.Id).SingleOrDefault()?.Enabled ?? false
                     }).ToList()
                 };
             }

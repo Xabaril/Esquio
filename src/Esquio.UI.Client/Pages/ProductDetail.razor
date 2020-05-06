@@ -106,15 +106,15 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <PageTitle Title="Rings"
-                           Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
+                <PageTitle Title="Deployments"
+                           Subtitle="Defined deployments (tenants / environments) on this product, deployments allow configure different Toggle values for each deployment and test your configurations.">
                     <Icon>
                         <i class="fas fa-ring"></i>
                     </Icon>
                     <Actions>
-                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
                             <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewDeploymentModal">
-                                New Ring
+                                New Deployment
                             </button>
                         </Permission>
                     </Actions>
@@ -127,34 +127,34 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <SingleTable Loader="RingsLoader" @ref="deploymentTable">
+                    <SingleTable Loader="DeploymentsLoader" @ref="deploymentTable">
                         <TableHeader>
                             <th class="table-col-4">Name</th>
                             <th></th>
-                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
                                 <th class="table-col-1"></th>
                             </Permission>
                         </TableHeader>
                         <TableBody Context="response">
-                            @foreach (var ring in response.Rings)
+                            @foreach (var deployment in response.Deployments)
                             {
                                 <tr>
                                     <td colspan="2">
-                                        @ring.Name
-                                        @if (ring.Default)
+                                        @deployment.Name
+                                        @if (deployment.Default)
                                         {
-                                            <span class="badge badge-info">default ring</span>
+                                            <span class="badge badge-info">default deployment</span>
                                         }
                                     </td>
-                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
                                         <td class="table-component__action">
-                                            @if (!ring.Default)
+                                            @if (!deployment.Default)
                                             {
                                                 <ConfirmableAction Title="Delete"
                                                                    Icon="far fa-trash-alt"
-                                                                   OnConfirm="@(() => DeleteRing(ring.Name))"
-                                                                   ConfirmTitle="Delete Ring"
-                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{ring.Name}' ring?")" />
+                                                                   OnConfirm="@(() => DeleteDeployment(deployment.Name))"
+                                                                   ConfirmTitle="Delete Deployment"
+                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{deployment.Name}' deployment?")" />
                                             }
                                         </td>
                                     </Permission>
@@ -191,15 +191,15 @@
     </ModalFooter>
 </Modal>
 
-<Modal Title="New Ring" Show="showNewDeploymentModal" OnClose="CloseNewDeploymentModal">
+<Modal Title="New Deployment" Show="showNewDeploymentModal" OnClose="CloseNewDeploymentModal">
     <ModalBody>
         <EditForm EditContext="@newDeploymentEditContext">
             <FluentValidationValidator />
             <ValidationSummary />
 
             <div class="form-group">
-                <label for="ring-name">Name</label>
-                <InputText id="ring-name" class="form-control" @bind-Value="newDeploymentModel.Name" placeholder="Enter ring name" />
+                <label for="deployment-name">Name</label>
+                <InputText id="deployment-name" class="form-control" @bind-Value="newDeploymentModel.Name" placeholder="Enter deployment name" />
             </div>
         </EditForm>
     </ModalBody>
@@ -354,7 +354,7 @@
         esquioState.SetWindowModal(showNewDeploymentModal);
     }
 
-    private Task<DetailsProductResponse> RingsLoader()
+    private Task<DetailsProductResponse> DeploymentsLoader()
     {
         return esquioHttpClient.GetProduct(ProductName);
     }
@@ -369,15 +369,15 @@
 
         if (result)
         {
-            notifications.Success("Add Product Ring", "Product ring successfully added!");
+            notifications.Success("Add Product Deployment", "Product deployment successfully added!");
         }
         else
         {
-            notifications.Error("Add Product Ring", "Error adding the product ring");
+            notifications.Error("Add Product Deployment", "Error adding the product deplyment");
         }
     }
 
-    private async Task DeleteRing(string deploymentName)
+    private async Task DeleteDeployment(string deploymentName)
     {
         var result = await esquioHttpClient.DeleteProductDeployment(ProductName, deploymentName);
         await deploymentTable.OnDelete();

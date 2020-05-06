@@ -5,7 +5,7 @@
         public static char[] DEFAULT_SPLIT_SEPARATOR = new char[] { ';' };
         public const string ESQUIO = nameof(ESQUIO);
         public const string DEFAULT_PRODUCT_NAME = "default";
-        public const string DEFAULT_RING_NAME = "Tests";
+        public const string DEFAULT_DEPLOYMENT_NAME = "Tests";
 
         // - toggle value types 
         public const string SEMICOLON_LIST_PARAMETER_TYPE = "Esquio.SemicolonList";

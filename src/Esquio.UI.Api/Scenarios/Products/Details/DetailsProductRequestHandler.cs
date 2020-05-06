@@ -32,7 +32,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Details
                 {
                     Name = product.Name,
                     Description = product.Description,
-                    Rings = product.Deployments.Select(r=>new RingResponseDetail()
+                    Deployments = product.Deployments.Select(r=>new DeploymentResponseDetail()
                     {
                         Name = r.Name,
                         Default = r.ByDefault

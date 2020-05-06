@@ -10,7 +10,7 @@ namespace Esquio.UI.Api.Shared.Models.Configuration.Details
 
         public string FeatureName { get; set; }
 
-        public string RingName { get; set; }
+        internal string DeploymentName { get; set; }
     }
 
     public class DetailsConfigurationResponse

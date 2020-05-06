@@ -48,7 +48,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
-                   EsquioConstants.DEFAULT_RING_NAME,
+                   EsquioConstants.DEFAULT_DEPLOYMENT_NAME,
                    toggle));
 
             active.Should().BeFalse();
@@ -77,7 +77,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
-                   EsquioConstants.DEFAULT_RING_NAME,
+                   EsquioConstants.DEFAULT_DEPLOYMENT_NAME,
                    toggle));
 
             active.Should().BeFalse();
@@ -106,7 +106,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                ToggleExecutionContext.FromToggle(
                    feature.Name,
                    EsquioConstants.DEFAULT_PRODUCT_NAME,
-                   EsquioConstants.DEFAULT_RING_NAME,
+                   EsquioConstants.DEFAULT_DEPLOYMENT_NAME,
                    toggle));
 
             active.Should().BeTrue();

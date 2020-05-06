@@ -78,7 +78,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Products_AddRingAsync(ProductName,new AddRingRequest
+                await client.Products_AddDeploymentAsync(ProductName,new AddDeploymentRequest
                 {
                     Name = Ring
                 });

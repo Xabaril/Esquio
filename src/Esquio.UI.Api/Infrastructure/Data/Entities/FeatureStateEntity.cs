@@ -10,9 +10,9 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public FeatureEntity FeatureEntity { get; set; }
 
-        public int RingEntityId { get; set; }
+        public int DeploymentEntityId { get; set; }
 
-        public DeploymentEntity RingEntity { get; set; }
+        public DeploymentEntity DeploymentEntity { get; set; }
 
         public bool Enabled { get; set; }
     }

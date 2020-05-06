@@ -441,7 +441,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/rings/{ringName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployments/{ringName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -467,7 +467,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/rings/{ringName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployments/{ringName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 

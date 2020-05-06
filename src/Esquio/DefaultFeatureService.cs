@@ -34,7 +34,7 @@ namespace Esquio
         {
             var enabled = true;
             var correlationId = Guid.NewGuid();
-            var ringName = _options.DefaultRingName;
+            var ringName = _options.DefaultDeploymentName;
             var productName = _options.DefaultProductName;
 
             try

@@ -40,7 +40,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -91,7 +91,7 @@ namespace FunctionalTests.Esquio.Http.Store
             var store = CreateStore(apiKey: apiKey.Key);
 
             var featureModel = await store
-                .FindFeatureAsync("non-existing", product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync("non-existing", product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.Should()
                 .BeNull();
@@ -109,7 +109,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -160,7 +160,7 @@ namespace FunctionalTests.Esquio.Http.Store
             var store = CreateStore(apiKey: apiKey.Key);
 
             var featureModel = await store
-                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.Name
                 .Should()
@@ -216,7 +216,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -268,7 +268,7 @@ namespace FunctionalTests.Esquio.Http.Store
             var store = CreateCachedStore(cache, apiKey: apiKey.Key, useCache: true);
 
             var featureModel = await store
-                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.Name
                 .Should()
@@ -284,7 +284,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await cache.SetStringAsync(cacheKey, "{\"featureName\":\"barfeature\",\"enabled\":false}");
 
             featureModel = await store
-                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.IsEnabled
                 .Should().BeFalse();
@@ -302,7 +302,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -354,7 +354,7 @@ namespace FunctionalTests.Esquio.Http.Store
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await store.FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                await store.FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
             });
         }
 
@@ -370,7 +370,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .AddPermission(permission);
 
             var defaultRing = Builders.Deployment()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -422,7 +422,7 @@ namespace FunctionalTests.Esquio.Http.Store
             var store = CreateCachedStore(cache, apiKey: apiKey.Key, useCache: false);
 
             var featureModel = await store
-                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.Name
                 .Should()
@@ -438,7 +438,7 @@ namespace FunctionalTests.Esquio.Http.Store
             await cache.SetStringAsync(cacheKey, "{\"featureName\":\"barfeature\",\"enabled\":false}");
 
             featureModel = await store
-                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_RING_NAME);
+                .FindFeatureAsync(feature.Name, product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
 
             featureModel.IsEnabled
                 .Should().BeFalse();

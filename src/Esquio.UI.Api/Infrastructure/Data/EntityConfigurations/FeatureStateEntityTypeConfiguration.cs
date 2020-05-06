@@ -20,16 +20,16 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
         {
             builder.ToTable(_storeOptions.FeatureState);
 
-            builder.HasKey(fs => new { fs.FeatureEntityId, fs.RingEntityId });
+            builder.HasKey(fs => new { fs.FeatureEntityId, fs.DeploymentEntityId });
 
             builder.HasOne(fs => fs.FeatureEntity)
                 .WithMany(f=>f.FeatureStates)
                 .HasForeignKey(fs => fs.FeatureEntityId)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
-            builder.HasOne(fs => fs.RingEntity)
+            builder.HasOne(fs => fs.DeploymentEntity)
                 .WithMany()
-                .HasForeignKey(fs => fs.RingEntityId)
+                .HasForeignKey(fs => fs.DeploymentEntityId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

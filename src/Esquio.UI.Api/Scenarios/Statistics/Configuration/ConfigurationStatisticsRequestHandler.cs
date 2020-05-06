@@ -29,7 +29,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Configuration
                 command.CommandText =
                 @$"SELECT (SELECT COUNT(id) FROM dbo.Products) as {nameof(ConfigurationStatisticsResponse.TotalProducts)}, " +
                     $"(SELECT COUNT(id) FROM dbo.Features) as {nameof(ConfigurationStatisticsResponse.TotalFeatures)}, " +
-                    $"(SELECT COUNT(id) FROM dbo.Rings) AS {nameof(ConfigurationStatisticsResponse.TotalRings)}," +
+                    $"(SELECT COUNT(id) FROM dbo.Deployments) AS {nameof(ConfigurationStatisticsResponse.TotalDeployments)}," +
                     $"(SELECT COUNT(id) FROM dbo.Toggles) AS {nameof(ConfigurationStatisticsResponse.TotalToggles)}";
 
                 command.CommandType = CommandType.Text;
@@ -45,7 +45,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Configuration
                         {
                             TotalProducts = reader.GetInt32(reader.GetOrdinal(nameof(ConfigurationStatisticsResponse.TotalProducts))),
                             TotalFeatures = reader.GetInt32(reader.GetOrdinal(nameof(ConfigurationStatisticsResponse.TotalFeatures))),
-                            TotalRings = reader.GetInt32(reader.GetOrdinal(nameof(ConfigurationStatisticsResponse.TotalRings))),
+                            TotalDeployments = reader.GetInt32(reader.GetOrdinal(nameof(ConfigurationStatisticsResponse.TotalDeployments))),
                             TotalToggles = reader.GetInt32(reader.GetOrdinal(nameof(ConfigurationStatisticsResponse.TotalToggles)))
                         };
 

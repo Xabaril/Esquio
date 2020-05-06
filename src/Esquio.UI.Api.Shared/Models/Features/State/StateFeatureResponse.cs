@@ -8,7 +8,7 @@ namespace Esquio.UI.Api.Shared.Models.Features.State
     }
     public class StateFeatureResponseDetail
     {
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
         public bool Default { get; set; }
 

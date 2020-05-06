@@ -1,22 +1,22 @@
 ﻿@inject IEsquioHttpClient esquioHttpClient
 
-@if (rings != null)
+@if (deployments != null)
 {
     @if (HasPermission == false)
     {
         <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))" disabled>
-            @foreach (var ring in rings)
+            @foreach (var item in deployments)
             {
-                @if (ring.Default)
+                @if (item.Default)
                 {
-                    <option value="@ring.Name" selected>
-                        @($"{ring.Name} (default ring)")
+                    <option value="@item.Name" selected>
+                        @($"{item.Name} (default deployment)")
                     </option>
                 }
                 else
                 {
-                    <option value="@ring.Name">
-                        @ring.Name
+                    <option value="@item.Name">
+                        @item.Name
                     </option>
                 }
             }
@@ -25,18 +25,18 @@
     else
     {
         <select class="form-control" @onchange="@(@event => OnChange.InvokeAsync(@event.Value.ToString()))">
-            @foreach (var ring in rings)
+            @foreach (var item in deployments)
             {
-                @if (ring.Default)
+                @if (item.Default)
                 {
-                    <option value="@ring.Name" selected>
-                        @($"{ring.Name} (default ring)")
+                    <option value="@item.Name" selected>
+                        @($"{item.Name} (default deployment)")
                     </option>
                 }
                 else
                 {
-                    <option value="@ring.Name">
-                        @ring.Name
+                    <option value="@item.Name">
+                        @item.Name
                     </option>
                 }
             }
@@ -49,12 +49,12 @@
     [Parameter] public EventCallback<string> OnChange { get; set; }
     [CascadingParameter(Name = "HasPermission")] bool? HasPermission { get; set; }
 
-    private IEnumerable<RingResponseDetail> rings;
+    private IEnumerable<DeploymentResponseDetail> deployments;
 
     protected override async Task OnInitializedAsync()
     {
         var product = await esquioHttpClient.GetProduct(ProductName);
-        rings = product.Rings;
-        await OnChange.InvokeAsync(rings.Single(r => r.Default).Name);
+        deployments = product.Deployments;
+        await OnChange.InvokeAsync(deployments.Single(r => r.Default).Name);
     }
 }
