@@ -311,7 +311,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
-                request.RequestUri = new Uri($"api/products/{productName}/deployments/{deploymentName}", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployment/{deploymentName}", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
