@@ -1,9 +1,31 @@
-﻿<i title="@Title" class="@Icon"
-   @onclick="OnClick"
-   @onclick:stopPropagation></i>
+﻿@if (Spinner && isLoading)
+{
+    <div class="spinner-border text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+}
+else
+{
+    <i title="@Title" class="@Icon"
+       @onclick="OnIconClick"
+       @onclick:stopPropagation></i>
+}
 
 @code {
     [Parameter] public string Title { get; set; }
     [Parameter] public string Icon { get; set; }
+    [Parameter] public bool Spinner { get; set; }
     [Parameter] public EventCallback OnClick { get; set; }
+
+    private bool isLoading = false;
+
+    public void Reset() => SetLoading(false);
+
+    private void SetLoading(bool value) => isLoading = value;
+
+    private Task OnIconClick(MouseEventArgs arg)
+    {
+        SetLoading(true);
+        return OnClick.InvokeAsync(arg);
+    }
 }
