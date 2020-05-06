@@ -18,8 +18,8 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
         : short
     {
         Reader = 1,
-        Contributor = 2,
-        Management = 3
+        Contributor = 3,
+        Management = 7
     }
 
     public enum SubjectType
