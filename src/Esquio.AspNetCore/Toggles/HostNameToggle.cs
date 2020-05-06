@@ -1,6 +1,5 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading;
@@ -15,7 +14,6 @@ namespace Esquio.AspNetCore.Toggles
         public const string HostNames = nameof(HostNames);
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger<HostNameToggle> _logger;
 
         public HostNameToggle(IHttpContextAccessor contextAccessor)
         {

@@ -41,6 +41,12 @@ a {
     align-items: center;
 }
 
+.spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.5rem;
+}
+
 /* Card Overrides*/
 .card-primary.card-outline, .card-info.card-outline {
     border-top: 3px solid #20b2aa;
