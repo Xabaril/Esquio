@@ -20,9 +20,9 @@ namespace Esquio.Http.Store.Diagnostics
             _featureIsOnCache(logger, cacheEntry, null);
         }
 
-        public static void FindFeatureFromStore(ILogger logger, string featureName, string productName, string ringName)
+        public static void FindFeatureFromStore(ILogger logger, string featureName, string productName, string deploymentName)
         {
-            _findFeatureFromStore(logger, featureName, productName, ringName, null);
+            _findFeatureFromStore(logger, featureName, productName, deploymentName, null);
         }
 
         public static void FeatureNotExist(ILogger logger, string featureName, string productName, string deploymentName)
@@ -68,12 +68,12 @@ namespace Esquio.Http.Store.Diagnostics
         private static readonly Action<ILogger, string, string, string, Exception> _findFeatureFromStore = LoggerMessage.Define<string, string, string>(
           LogLevel.Information,
           EventIds.FindFeatureFromStore,
-          "Finding feature from store with name {featureName} for product {productName}({ringName}).");
+          "Finding feature from store with name {featureName} for product {productName}({deploymentName}).");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotExist,
-            "Feature with name {featureName} for product {productName}({ringName}) does not exist on the store.");
+            "Feature with name {featureName} for product {productName}({deploymentName}) does not exist on the store.");
 
         private static readonly Action<ILogger, string, int, Exception> _storeRequestFailed = LoggerMessage.Define<string, int>(
           LogLevel.Error,

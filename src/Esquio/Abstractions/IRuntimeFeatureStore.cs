@@ -14,10 +14,10 @@ namespace Esquio.Abstractions
         /// </summary>
         /// <param name="featureName">The feature name used to find in the store.</param>
         /// <param name="productName">The product where the feature is configured.</param>
-        /// <param name="ringName">The ring where the feature is configured.</param>
+        /// <param name="deploymentName">The deployment name where the feature is configured.</param>
         /// <param name="cancellationToken"> A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
         /// <returns>The feature data from the store or null if feature does not exist.</returns>
         /// <returns>A <see cref="Task{Feature}"/> that complete when service finished, yielding the Feature with name  <paramref name="featureName"/> or null if feature does not exist.</returns>
-        Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default);
+        Task<Feature> FindFeatureAsync(string featureName, string productName, string deploymentName, CancellationToken cancellationToken = default);
     }
 }

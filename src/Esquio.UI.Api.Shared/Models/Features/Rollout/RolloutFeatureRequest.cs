@@ -7,7 +7,7 @@ namespace Esquio.UI.Api.Shared.Models.Features.Rollout
     {
         public string ProductName { get; set; }
 
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
         public string FeatureName { get; set; }
     }

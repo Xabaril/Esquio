@@ -84,7 +84,7 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                 var parameters = new Dictionary<string, object>();
 
                 var groupingParameters = toggleConfiguration.Parameters
-                    .GroupBy(g => g.RingName);
+                    .GroupBy(g => g.DeploymentName);
 
                 var defaultRingParameters = groupingParameters
                     .Where(g => g.Key == EsquioConstants.DEFAULT_DEPLOYMENT_NAME)

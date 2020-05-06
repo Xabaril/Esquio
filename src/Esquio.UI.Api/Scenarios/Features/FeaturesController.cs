@@ -75,7 +75,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
             var request = new RolloutFeatureRequest()
             {
                 ProductName = productName,
-                RingName = deploymentName,
+                DeploymentName = deploymentName,
                 FeatureName = featureName
             };
 
@@ -96,7 +96,7 @@ namespace Esquio.UI.Api.Scenarios.Flags
             var request = new RollbackFeatureRequest()
             {
                 ProductName = productName,
-                RingName = deploymentName,
+                DeploymentName = deploymentName,
                 FeatureName = featureName
             };
 

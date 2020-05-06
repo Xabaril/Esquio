@@ -153,9 +153,9 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
             {
                 return product?.Name ?? UNKNOWN;
             }
-            else if (entry.Entity is DeploymentEntity ring)
+            else if (entry.Entity is DeploymentEntity deployment)
             {
-                return ring.ProductEntity?.Name ?? UNKNOWN;
+                return deployment.ProductEntity?.Name ?? UNKNOWN;
             }
             else if (entry.Entity is FeatureEntity feature)
             {

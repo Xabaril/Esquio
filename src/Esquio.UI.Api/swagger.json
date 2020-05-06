@@ -990,7 +990,7 @@
         }
       }
     },
-    "/api/Products/{productName}/deployment/{ringName}": {
+    "/api/Products/{productName}/deployment/{deploymentName}": {
       "delete": {
         "tags": [
           "Products"
@@ -1006,7 +1006,7 @@
           },
           {
             "type": "string",
-            "name": "ringName",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -1997,7 +1997,7 @@
         "description": {
           "type": "string"
         },
-        "defaultRingName": {
+        "defaultDeploymentName": {
           "type": "string"
         }
       }
@@ -2207,7 +2207,7 @@
         "featureName": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         },
         "toggleType": {

@@ -2111,25 +2111,25 @@ namespace Esquio.CliTool.Internal
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Products_DeleteDeploymentAsync(string productName, string ringName)
+        public System.Threading.Tasks.Task Products_DeleteDeploymentAsync(string productName, string deploymentName)
         {
-            return Products_DeleteDeploymentAsync(productName, ringName, System.Threading.CancellationToken.None);
+            return Products_DeleteDeploymentAsync(productName, deploymentName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task Products_DeleteDeploymentAsync(string productName, string ringName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Products_DeleteDeploymentAsync(string productName, string deploymentName, System.Threading.CancellationToken cancellationToken)
         {
             if (productName == null)
                 throw new System.ArgumentNullException("productName");
     
-            if (ringName == null)
-                throw new System.ArgumentNullException("ringName");
+            if (deploymentName == null)
+                throw new System.ArgumentNullException("deploymentName");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}/deployment/{ringName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Products/{productName}/deployment/{deploymentName}");
             urlBuilder_.Replace("{productName}", System.Uri.EscapeDataString(ConvertToString(productName, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ringName}", System.Uri.EscapeDataString(ConvertToString(ringName, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{deploymentName}", System.Uri.EscapeDataString(ConvertToString(deploymentName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
             try
@@ -3840,8 +3840,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("defaultRingName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DefaultRingName { get; set; }
+        [Newtonsoft.Json.JsonProperty("defaultDeploymentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultDeploymentName { get; set; }
     
     
     }
@@ -3890,9 +3890,6 @@ namespace Esquio.CliTool.Internal
     
         [Newtonsoft.Json.JsonProperty("featureName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FeatureName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("deploymentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DeploymentName { get; set; }
     
     
     }
@@ -3951,8 +3948,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ringName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string RingName { get; set; }
+        [Newtonsoft.Json.JsonProperty("deploymentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DeploymentName { get; set; }
     
     
     }
@@ -4047,8 +4044,8 @@ namespace Esquio.CliTool.Internal
         [Newtonsoft.Json.JsonProperty("featureName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FeatureName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ringName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string RingName { get; set; }
+        [Newtonsoft.Json.JsonProperty("deploymentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DeploymentName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("toggleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ToggleType { get; set; }

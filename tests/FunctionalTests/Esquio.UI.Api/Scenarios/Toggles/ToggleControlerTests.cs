@@ -88,7 +88,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -108,7 +108,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameter = Builders.Parameter()
                 .WithName("From")
                 .WithValue("01/91/2991")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -121,7 +121,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -295,7 +295,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -315,7 +315,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameter = Builders.Parameter()
                 .WithName("param1")
                 .WithValue("value1")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -328,7 +328,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -354,7 +354,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -378,7 +378,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameter = Builders.Parameter()
                 .WithName("param1")
                 .WithValue("value1")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             togglefoo.Parameters
@@ -397,7 +397,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -457,7 +457,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -477,13 +477,13 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameterEnvVar = Builders.Parameter()
                 .WithName("EnvironmentVariable")
                 .WithValue("ASPNETCORE_ENVIRONENT")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             var parameterValue = Builders.Parameter()
                 .WithName("Values")
                 .WithValue("Development")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -540,7 +540,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
         [ResetDatabase]
         public async Task reveal_response_forbidden_if_user_is_not_authorized()
         {
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -560,7 +560,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameter = Builders.Parameter()
                 .WithName("Environments")
                 .WithValue("Development")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -688,7 +688,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .Build();
 
@@ -729,7 +729,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_created_when_add_new_toggle_with_parameters_using_specified_ring()
+        public async Task add_response_created_when_add_new_toggle_with_parameters_using_specified_deployment()
         {
             var permission = Builders.Permission()
               .WithManagementPermission()
@@ -772,7 +772,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             {
                 ProductName = product.Name,
                 FeatureName = feature.Name,
-                RingName = specifiedRing.Name,
+                DeploymentName = specifiedRing.Name,
                 ToggleType = typeof(HostEnvironmentToggle).FullName,
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
@@ -797,7 +797,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_created_when_add_new_toggle_with_parameters_using_default_ring()
+        public async Task add_response_created_when_add_new_toggle_with_parameters_using_default_deployment()
         {
             var permission = Builders.Permission()
               .WithManagementPermission()
@@ -806,7 +806,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -815,7 +815,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .WithName("fooproduct")
              .Build();
 
-            product.Deployments.Add(ring);
+            product.Deployments.Add(deployment);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -855,7 +855,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
         [Fact]
         [ResetDatabase]
-        public async Task add_response_badrequest_when_add_new_toggle_with_parameters_using_nonexisting_ring()
+        public async Task add_response_badrequest_when_add_new_toggle_with_parameters_using_nonexisting_deployment()
         {
             var permission = Builders.Permission()
               .WithManagementPermission()
@@ -864,7 +864,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             await _fixture.Given
                 .AddPermission(permission);
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -873,7 +873,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
              .WithName("fooproduct")
              .Build();
 
-            product.Deployments.Add(ring);
+            product.Deployments.Add(deployment);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -890,7 +890,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 ToggleType = typeof(HostEnvironmentToggle).FullName,
-                RingName = "nonexisting",
+                DeploymentName = "nonexisting",
                 Parameters = new List<AddToggleRequestDetailParameter>()
                 {
                     new AddToggleRequestDetailParameter()
@@ -1077,7 +1077,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
 
         [Fact]
         [ResetDatabase]
-        public async Task addparameter_response_bad_request_if_ring_is_invalid()
+        public async Task addparameter_response_bad_request_if_deployment_is_invalid()
         {
             var permission = Builders.Permission()
               .WithManagementPermission()
@@ -1090,7 +1090,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1110,7 +1110,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -1150,7 +1150,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1166,7 +1166,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
             var parameter = Builders.Parameter()
                 .WithName("Environments")
                 .WithValue("Development")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -1179,7 +1179,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -1218,7 +1218,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
@@ -1238,7 +1238,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
@@ -1248,7 +1248,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Toggles
                 ProductName = product.Name,
                 FeatureName = feature.Name,
                 ToggleType = toggle.Type,
-                DeploymentName = ring.Name,
+                DeploymentName = deployment.Name,
                 Name = "Environments",
                 Value = "Development",
             };

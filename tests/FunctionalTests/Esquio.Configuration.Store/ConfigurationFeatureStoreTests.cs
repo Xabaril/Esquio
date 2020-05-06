@@ -19,20 +19,20 @@ namespace FunctionalTests.Esquio.Configuration.Store
         [Fact]
         public async Task return_null_when_find_a_non_existing_feature()
         {
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-product-name","ring"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-product-name","deployment"))
                 .Should().BeNull();
 
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", Product,"ring"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", Product, "deployment"))
                 .Should().BeNull();
         }
 
         [Fact]
         public async Task return_feature_if_is_configured()
         {
-            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name", "ring"))
+            (await _fixture.FeatureStore.FindFeatureAsync("non-valid-feature-name", "non-valid-application-name", "deployment"))
                 .Should().BeNull();
 
-            var feature = await _fixture.FeatureStore.FindFeatureAsync("FeatureA", Product, "ring");
+            var feature = await _fixture.FeatureStore.FindFeatureAsync("FeatureA", Product, "deployment");
 
             feature.Should().NotBeNull();
 

@@ -19,9 +19,9 @@ namespace UnitTests.Seedwork
         }
 
 
-        public Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
+        public Task<Feature> FindFeatureAsync(string featureName, string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName,ringName));
+            return Task.FromResult(_getDelegatedFeatureFunc(featureName, productName,deploymentName));
         }
     }
 }

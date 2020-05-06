@@ -32,16 +32,16 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            var ring = await _storeDbContext
+            var deployment = await _storeDbContext
                 .Deployments
                 .Include(r => r.ProductEntity)
-                .Where(r => r.Name == request.RingName && r.ProductEntity.Name == request.ProductName)
+                .Where(r => r.Name == request.DeploymentName && r.ProductEntity.Name == request.ProductName)
                 .SingleOrDefaultAsync();
 
-            if (feature != null && ring != null)
+            if (feature != null && deployment != null)
             {
                 var currentState = await _storeDbContext.FeatureStates
-                    .Where(fs => fs.FeatureEntityId == feature.Id && fs.DeploymentEntityId == ring.Id)
+                    .Where(fs => fs.FeatureEntityId == feature.Id && fs.DeploymentEntityId == deployment.Id)
                     .SingleOrDefaultAsync();
 
                 if (currentState != null)
@@ -52,7 +52,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
                 {
                     _storeDbContext.FeatureStates.Add(new FeatureStateEntity()
                     {
-                        DeploymentEntityId = ring.Id,
+                        DeploymentEntityId = deployment.Id,
                         FeatureEntityId = feature.Id,
                         Enabled = false
                     });
@@ -63,7 +63,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
             }
 
             Log.FeatureNotExist(_logger, request.FeatureName.ToString());
-            throw new InvalidOperationException("Operation can't be performed because the combination feature product and ring are not valid on this store.");
+            throw new InvalidOperationException("Operation can't be performed because the combination feature product and deployment are not valid on this store.");
         }
     }
 }

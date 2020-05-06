@@ -105,7 +105,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
 
             content.PageIndex.Should().Be(0);
             content.Count.Should().Be(3);
-            content.Total.Should().Be(3); //add feature already add new history also and product a ring
+            content.Total.Should().Be(3); //add feature already add new history also and product a deployment
         }
         [Fact]
         [ResetDatabase]

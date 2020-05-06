@@ -28,9 +28,9 @@
                 {
                     return $"api/products/{name}?api-version=3.0";
                 }
-                public static string DeleteDeployment(string productName, string ringName)
+                public static string DeleteDeployment(string productName, string deploymentName)
                 {
-                    return $"api/products/{productName}/deployment/{ringName}?api-version=3.0";
+                    return $"api/products/{productName}/deployment/{deploymentName}?api-version=3.0";
                 }
                 public static string Get(string name)
                 {

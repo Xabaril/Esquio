@@ -2,25 +2,25 @@
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
 {
-    public class RingEntityBuilder
+    public class DeploymentEntityBuilder
     {
         private int _productId = 1;
-        private string _name = "ring-name";
+        private string _name = "deployment-name";
         private bool _default = false;
 
-        public RingEntityBuilder WithName(string name)
+        public DeploymentEntityBuilder WithName(string name)
         {
             _name = name;
             return this;
         }
 
-        public RingEntityBuilder WithProduct(ProductEntity product)
+        public DeploymentEntityBuilder WithProduct(ProductEntity product)
         {
             _productId = product.Id;
             return this;
         }
 
-        public RingEntityBuilder WithDefault(bool @default)
+        public DeploymentEntityBuilder WithDefault(bool @default)
         {
             _default = @default;
             return this;

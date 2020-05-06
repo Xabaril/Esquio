@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200506112400_Initial")]
+    [Migration("20200506163649_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeploymentName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FeatureName")
                         .HasColumnType("nvarchar(max)");
 
@@ -191,9 +194,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RingName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -210,12 +210,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("DeploymentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<string>("RingName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
@@ -230,7 +230,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name", "RingName", "ToggleEntityId");
+                    b.HasAlternateKey("Name", "DeploymentName", "ToggleEntityId");
 
                     b.HasIndex("ToggleEntityId");
 

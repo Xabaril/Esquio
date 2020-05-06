@@ -112,16 +112,16 @@ namespace Esquio.UI.Api.Scenarios.Products
 
         [HttpDelete]
         [Authorize(Policies.Contributor)]
-        [Route("{productName:slug:minlength(5):maxlength(200)}/deployment/{ringName:slug:minlength(5):maxlength(200)}")]
+        [Route("{productName:slug:minlength(5):maxlength(200)}/deployment/{deploymentName:slug:minlength(5):maxlength(200)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteDeployment(string productName, string ringName, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> DeleteDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
             var request = new DeleteDeploymentRequest()
             {
                 ProductName = productName,
-                DeploymentName = ringName
+                DeploymentName = deploymentName
             };
 
             await _mediator.Send(request, cancellationToken);

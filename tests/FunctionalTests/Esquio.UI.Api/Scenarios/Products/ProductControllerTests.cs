@@ -33,7 +33,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletering_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "ringName"))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "deploymentName"))
                 .DeleteAsync();
 
             response.StatusCode
@@ -53,7 +53,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "ringName"))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "deploymentName"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -155,18 +155,18 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName("production")
                 .Build();
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, ring.Name))
+                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, deployment.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -730,7 +730,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             {
                 Name = "fooproduct~#4",
                 Description = "some description",
-                DefaultRingName = "X"
+                DefaultDeploymentName = "X"
             };
 
             var response = await _fixture.TestServer
@@ -948,7 +948,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .WithName("fooproduct")
                 .Build();
 
-            var ring = Builders.Deployment()
+            var deployment = Builders.Deployment()
                 .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .Build();
 
@@ -963,7 +963,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var parameter = Builders.Parameter()
                 .WithName("param1")
                 .WithValue("value1")
-                .WithRingName(ring.Name)
+                .WithRingName(deployment.Name)
                 .Build();
 
             toggle.Parameters
@@ -976,7 +976,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Add(feature);
 
             product.Deployments
-                .Add(ring);
+                .Add(deployment);
 
             await _fixture.Given
                 .AddProduct(product);

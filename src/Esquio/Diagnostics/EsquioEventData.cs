@@ -23,22 +23,23 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name
+        /// The deployment name
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
-        public FeatureEvaluatingEventData(Guid correlationId, string feature, string productName, string ringName)
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymentName">The deployment name.</param>
+        public FeatureEvaluatingEventData(Guid correlationId, string featureName, string productName, string deploymentName)
         {
             CorrelationId = correlationId;
-            Feature = feature;
+            Feature = featureName;
             Product = productName;
-            Ring = ringName;
+            Deployment = deploymentName;
         }
     }
 
@@ -63,22 +64,23 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name
+        /// The deployment name
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// Create a new instance of <see cref="FeatureNotFoundEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
-        public FeatureNotFoundEventData(Guid correlationId, string feature, string productName, string ringName)
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymenName">The deployment name.</param>
+        public FeatureNotFoundEventData(Guid correlationId, string featureName, string productName, string deploymenName)
         {
             CorrelationId = correlationId;
-            Feature = feature;
+            Feature = featureName;
             Product = productName;
-            Ring = ringName;
+            Deployment = deploymenName;
         }
     }
 
@@ -103,9 +105,9 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name.
+        /// The deployment name.
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// Feature evaluation exception.
@@ -116,15 +118,16 @@ namespace Esquio.Diagnostics
         /// Create a new instance of <see cref="FeatureThrowEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymentName">The deployment name.</param>
         /// <param name="exception">Evaluation exception.</param>
-        public FeatureThrowEventData(Guid correlationId, string feature, string product, string ring, Exception exception)
+        public FeatureThrowEventData(Guid correlationId, string featureName, string productName, string deploymentName, Exception exception)
         {
             CorrelationId = correlationId;
-            Feature = feature;
-            Product = product;
-            Ring = ring;
+            Feature = featureName;
+            Product = productName;
+            Deployment = deploymentName;
             Exception = exception;
         }
     }
@@ -150,9 +153,9 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name.
+        /// The deployment name.
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// If feature evaluation result is enabled.
@@ -168,16 +171,17 @@ namespace Esquio.Diagnostics
         /// Create a new instance of <see cref="FeatureEvaluatedEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymentName">The deployment name.</param>
         /// <param name="enabled">Evaluation result.</param>
         /// <param name="elapsed">Evaluation elapsed time.</param>
-        public FeatureEvaluatedEventData(Guid correlationId, string feature, string product, string ringName, bool enabled, long elapsed)
+        public FeatureEvaluatedEventData(Guid correlationId, string featureName, string productName, string deploymentName, bool enabled, long elapsed)
         {
             CorrelationId = correlationId;
-            Feature = feature;
-            Product = product;
-            Ring = ringName;
+            Feature = featureName;
+            Product = productName;
+            Deployment = deploymentName;
             Enabled = enabled;
             Elapsed = elapsed;
         }
@@ -204,9 +208,9 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name.
+        /// The deployment name.
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// The toggle type executed.
@@ -217,15 +221,16 @@ namespace Esquio.Diagnostics
         /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymentName">The deployment name.</param>
         /// <param name="toggleType">The toggle type executed.</param>
-        public ToggleEvaluatingEventData(Guid correlationId, string feature, string productName, string ringName, string toggleType)
+        public ToggleEvaluatingEventData(Guid correlationId, string featureName, string productName, string deploymentName, string toggleType)
         {
             CorrelationId = correlationId;
-            Feature = feature;
+            Feature = featureName;
             Product = productName;
-            Ring = ringName;
+            Deployment = deploymentName;
             ToggleType = toggleType;
         }
     }
@@ -251,9 +256,9 @@ namespace Esquio.Diagnostics
         public string Product { get; private set; }
 
         /// <summary>
-        /// The ring name.
+        /// The deployment name.
         /// </summary>
-        public string Ring { get; private set; }
+        public string Deployment { get; private set; }
 
         /// <summary>
         /// The toggle type executed.
@@ -269,16 +274,17 @@ namespace Esquio.Diagnostics
         /// Create a new instance of <see cref="FeatureEvaluatingEventData"/>
         /// </summary>
         /// <param name="correlationId">The feature evaluation correlation id.</param>
-        /// <param name="feature">The feature name.</param>
-        /// <param name="product">The product name.</param>
+        /// <param name="featureName">The feature name.</param>
+        /// <param name="productName">The product name.</param>
+        /// <param name="deploymentName">The deployment name.</param>
         /// <param name="toggleType">The toggle type executed.</param>
         /// <param name="active"`>The activation toggle state.</param>
-        public ToggleEvaluatedEventData(Guid correlationId, string feature, string productName, string ringName, string toggleType, bool active)
+        public ToggleEvaluatedEventData(Guid correlationId, string featureName, string productName, string deploymentName, string toggleType, bool active)
         {
             CorrelationId = correlationId;
-            Feature = feature;
+            Feature = featureName;
             Product = productName;
-            Ring = ringName;
+            Deployment = deploymentName;
             ToggleType = toggleType;
             Active = active;
         }

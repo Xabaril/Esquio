@@ -91,19 +91,19 @@ namespace Esquio.UI.Api.Diagnostics
             _subjectIdDoesNotExist(logger, subjectId, null);
         }
 
-        public static void DeploymentAlreadyExist(ILogger logger, string ring, string product)
+        public static void DeploymentAlreadyExist(ILogger logger, string deployment, string product)
         {
-            _deploymentAlreadyExist(logger, ring, product, null);
+            _deploymentAlreadyExist(logger, deployment, product, null);
         }
 
-        public static void RingNotExist(ILogger logger, string ring, string product)
+        public static void RingNotExist(ILogger logger, string deployment, string product)
         {
-            _ringNotExist(logger, ring, product, null);
+            _deploymentNotExist(logger, deployment, product, null);
         }
 
-        public static void CantDeleteDefaultDeployment(ILogger logger, string ring, string product)
+        public static void CantDeleteDefaultDeployment(ILogger logger, string deployment, string product)
         {
-            _cantDeleteDefaultDeployment(logger, ring, product, null);
+            _cantDeleteDefaultDeployment(logger, deployment, product, null);
         }
 
         public static void ApiKeyAuthenticationBegin(ILogger logger)
@@ -217,14 +217,14 @@ namespace Esquio.UI.Api.Diagnostics
           LogLevel.Warning,
           EventIds.DeploymentAlreadyExist,
           "The deployment with name {deployment} already exist for product {product} in the store and can't be created.");
-        private static readonly Action<ILogger, string, string, Exception> _ringNotExist = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception> _deploymentNotExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.DeployemtnNotExist,
-          "The ring with name {ring} does not exist for product {product} in the store.");
+          "The deployment with name {deployment} does not exist for product {product} in the store.");
         private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultDeployment = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.CantDeleteDefaultDeployment,
-          "The deployment with name {deployment} is default ring for product {product} and can't be deleted.");
+          "The deployment with name {deployment} is default deployment for product {product} and can't be deleted.");
         private static readonly Action<ILogger, Exception> _apiKeyAuthenticationBegin = LoggerMessage.Define(
             LogLevel.Information,
             EventIds.ApiKeyAuthenticationBegin,

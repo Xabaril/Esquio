@@ -35,9 +35,9 @@ namespace Esquio.Http.Store.Diagnostics
             Log.FeatureIsNotOnCache(_logger, cacheEntry);
         }
 
-        public void GetFeatureFromStore(string featureName, string productName, string ringName)
+        public void GetFeatureFromStore(string featureName, string productName, string deploymentName)
         {
-            Log.FindFeatureFromStore(_logger, featureName, productName, ringName);
+            Log.FindFeatureFromStore(_logger, featureName, productName, deploymentName);
         }
 
 

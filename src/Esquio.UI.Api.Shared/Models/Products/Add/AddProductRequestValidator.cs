@@ -18,7 +18,7 @@ namespace Esquio.UI.Api.Shared.Models.Products.Add
                 .MinimumLength(5)
                 .MaximumLength(2000);
 
-            RuleFor(x => x.DefaultRingName)
+            RuleFor(x => x.DefaultDeploymentName)
                 .NotNull()
                 .MinimumLength(2)
                 .MaximumLength(200);

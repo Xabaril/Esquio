@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Esquio.UI.Host.Infrastructure.Data.Migrations
+namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -54,7 +54,7 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(nullable: true),
                     FeatureName = table.Column<string>(nullable: true),
-                    RingName = table.Column<string>(nullable: true),
+                    DeploymentName = table.Column<string>(nullable: true),
                     Kind = table.Column<string>(nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false)
                 },
@@ -244,12 +244,12 @@ namespace Esquio.UI.Host.Infrastructure.Data.Migrations
                     ToggleEntityId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Value = table.Column<string>(maxLength: 4000, nullable: false),
-                    RingName = table.Column<string>(maxLength: 200, nullable: false)
+                    DeploymentName = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Parameters", x => x.Id);
-                    table.UniqueConstraint("AK_Parameters_Name_RingName_ToggleEntityId", x => new { x.Name, x.RingName, x.ToggleEntityId });
+                    table.UniqueConstraint("AK_Parameters_Name_DeploymentName_ToggleEntityId", x => new { x.Name, x.DeploymentName, x.ToggleEntityId });
                     table.ForeignKey(
                         name: "FK_Parameters_Toggles_ToggleEntityId",
                         column: x => x.ToggleEntityId,
