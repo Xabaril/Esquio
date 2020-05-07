@@ -10,10 +10,6 @@
                    disabled="@(HasPermission == false)"
                    @onchange="OnValueChange" />
         </div>
-        <div class="form-group">
-            <label>Preview</label>
-            <pre>@preview</pre>
-        </div>
     </fieldset>
 
 @code {
@@ -25,12 +21,6 @@
 
     private Guid id = Guid.NewGuid();
     private string previousValue;
-    private string preview;
-
-    protected override void OnInitialized()
-    {
-        preview = Value;
-    }
 
     protected override void OnParametersSet()
     {
@@ -51,10 +41,5 @@
         }
     }
 
-    private Task OnValueChange(ChangeEventArgs @event)
-    {
-        var value = @event.Value.ToString();
-        preview = value;
-        return OnChange.InvokeAsync(value);
-    }
+    private Task OnValueChange(ChangeEventArgs @event) => OnChange.InvokeAsync(@event.Value.ToString());
 }
