@@ -21,7 +21,9 @@ namespace Esquio.UI.Client
         static WebAssemblyHostBuilder ConfigureHost(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
+
+            builder.RootComponents
+                .Add<App>("app");
 
             builder.Logging
                 .SetMinimumLevel(LogLevel.Warning);
