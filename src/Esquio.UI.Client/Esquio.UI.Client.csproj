@@ -13,8 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(blazor)" />
     
     <PackageReference Include="BuildBundlerMinifier" Version="$(buildbundlerminifier)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
-    <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="$(serilogsinksbrowserconsole)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />    
   </ItemGroup>
 
   <ItemGroup>
