@@ -6,7 +6,7 @@ Esquio allows to cache, at scoped level ( the request on ASP.NET Core), the eval
 UseScopedEvaluation
 ^^^^^^^^^^^^^^^
 
-Allow to set the use of scoped evaluation results, on ASP.NET Core the scope is the request and the results are stored on the HTTPContext Items property::
+Allow to set the use of scoped evaluation results, on ASP.NET Core the scope is the request and the results are stored on the HTTP Context Items property::
 
           services.AddEsquio(setup=>
             {
@@ -18,8 +18,8 @@ Customize Scoped Evaluation Holder
 
 You can override the *IScopedEvaluationHolder* and create your own evaluation result holder implementing the interface ::
 
-public interface IScopedEvaluationHolder
-{
-    Task<bool> TryGetAsync(string featureName, out bool enabled);
-    Task SetAsync(string featureName, bool enabled);
-}
+          public interface IScopedEvaluationHolder
+          {
+               Task<bool> TryGetAsync(string featureName, out bool enabled);
+               Task SetAsync(string featureName, bool enabled);
+          }
