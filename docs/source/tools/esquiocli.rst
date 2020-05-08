@@ -7,7 +7,7 @@ To install **Esquio.CLI** open a console window and type the following command u
 
         dotnet tool install -g Esquio.Cli
 
-.. image:: ../images/miniprofiler.png
+.. image:: ../images/esquiocli.png
 
 ::
 
@@ -30,3 +30,8 @@ Commands:
     *Manage Esquio toggles using Esquio UI HTTP API*
 
 Run 'dotnet-esquio [command] --help' for more information about a command.
+
+All the commands allow to specify the *uri* and the *api key* to connect with Esquio UI, if don't want to specify this parameters in all calls, *Esquio CLI* allow read this values form the ESQUIO_URI and ESQUI_API_KEY environment variables.::
+
+        $env:ESQUIO_URI="https://[esquio_uri]"
+        $env:ESQUIO_API_KEY="[my-api-key]"
