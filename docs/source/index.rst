@@ -39,6 +39,7 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
 
    options/behaviors
    options/defaults
+   options/scopedevaluation
 
 .. toctree::
    :maxdepth: 3
