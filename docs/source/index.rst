@@ -31,6 +31,7 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
    started/aspnetcore
    started/worker
    started/azuredevopstasks
+   started/diagnostics
 
 .. toctree::
    :maxdepth: 3
