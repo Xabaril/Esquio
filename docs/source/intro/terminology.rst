@@ -23,10 +23,15 @@ Parameter
 
 Parameters are variables that toggles need in their validation process.
 
+Deployment
+^^^^^^^^^
+
+Deployments are the different environments or tenants where you deploy a Product.
+
 Store
 ^^^^^
 
 A mechanisim to allow you to store persistent the Esquio's object model such us products, features, toggles, parameters. Esquio provides out of the box two stores:
 
     * ASP.NET Core JSON Configuration Provider.
-    * Entity Framework Core. 
+    * Http Provider to use with Esquio UI. 

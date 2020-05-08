@@ -35,9 +35,10 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
 .. toctree::
    :maxdepth: 3
    :hidden:
-   :caption: Feature documentation
+   :caption: Esquio Options
 
-   feature/behaviors
+   options/behaviors
+   options/defaults
 
 .. toctree::
    :maxdepth: 3
