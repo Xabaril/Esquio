@@ -11,10 +11,10 @@ To install **Esquio.CLI** open a console window and type the following command u
 
 ::
 
-Usage: dotnet-esquio [options] [command]
+ Usage: dotnet-esquio [options] [command]
 
-Options:
-  -?|-h|--help  Show help information
+ Options:
+   -?|-h|--help  Show help information
 
 Commands:
   **features**  

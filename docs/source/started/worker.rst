@@ -1,5 +1,5 @@
 Getting started with Esquio in .NET Core Worker
-========================================
+===============================================
 
 In this article, we are going to see how easy it is to use Esquio in your .NET Core worket using the NuGet packages provided by Xabaril.
 
@@ -79,10 +79,10 @@ Let's consume this feature. In the ``Worker.cs``, create a new property ``scopeF
 
 Import the ``DependencyInjection`` extension namespace::
 
-using Microsoft.Extensions.DependencyInjection;
+ using Microsoft.Extensions.DependencyInjection;
 
 
-Change the method ``ExecuteAsync`` for creating a new context and require a ``IFeatureService`` ::
+Change the method ``ExecuteAsync`` for creating a new context and require a ``IFeatureService``::
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -97,7 +97,7 @@ Change the method ``ExecuteAsync`` for creating a new context and require a ``IF
 
 Import the ``Esquio.Abstractions`` namespace for resolving ``IFeatureService``::
 
-using Esquio.Abstractions;
+ using Esquio.Abstractions;
 
 
 Using this service, you can implement the logic to show a different message on the console according with the feature in several ways.
@@ -165,5 +165,3 @@ To enable the feature, change the ``appsettings.json``::
 Test again the app:
 
 .. image:: ../images/worker-enabled.png
-
-

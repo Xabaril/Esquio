@@ -52,6 +52,13 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
 .. toctree::
    :maxdepth: 3
    :hidden:
+   :caption: Stores
+
+   stores/configuration
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
    :caption: Tools
 
    tools/esquiocli

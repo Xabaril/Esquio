@@ -1,16 +1,16 @@
 Extensibility
 =============
 
-Esquio provides lot of toggles Out-of-the-box but sometimes is not enough. Therefore extensibility is a key quality attribute of any experience delivery architecture. Esquio does not aim to solve every problem but rather provides an extensible parts that enables you to adapt it to your needs.
+Esquio provides lots of toggles out-of-the-box, but sometimes that is not enough. Here, extensibility becomes a key quality attribute. If Esquio does not solve your problem, it can provide you an extensible part that would enable you to adapt it to your needs.
 
-All major components have interfaces which are extensible. Following the inversion of control design they are substitutable either through **Microsoft.Extensions.DependencyInjection** configuration.
+All main components have interfaces which are extensible. Using the inversion of control design, they can be substituted on **Microsoft.Extensions.DependencyInjection** configuration. 
 
 Creating your custom toggle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Imagine that you need to create a toggle to enable features based on the user's browser (`User-Agent <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent>`_ header).
+Supose that you need to create a toggle to enable features based on the user's browser (`User-Agent <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent>`_ header).
 
-First step is implement the interface ``IToggle``::
+First, create a new toggle and implement the interface ``IToggle``::
 
     public class UserAgentBrowserToggle : IToggle
     {
@@ -31,7 +31,7 @@ To be able to specify for which browsers will be this feature enabled, you need 
         //code omited for brevity
     }
 
-If you want to an application (`Esquio UI <https://github.com/Xabaril/Esquio/tree/master/src/Esquio.UI>`_) be able to understand these fields and for example built an user interface in order to provide to the users a more friendly way to configure the toggles of a feature, you need to decorate the toggle with some attributes::
+If you want an application (`Esquio UI <https://github.com/Xabaril/Esquio/tree/master/src/Esquio.UI>`_) to be able to understand these fields (and for example built an user interface to provide users a more friendly way to configure the toggles of a feature), you need to decorate the toggle with some attributes::
 
     [DesignType(Description = "Toggle that is active depending on request browser information.")]
     [DesignTypeParameter(ParameterName = Browsers, ParameterType = "System.String", ParameterDescription = "Collection of browser names delimited by ';' character.")]
@@ -47,7 +47,7 @@ If you want to an application (`Esquio UI <https://github.com/Xabaril/Esquio/tre
     * **DesignType**: *Allow to add a friendly description for the toggle.*
     * **DesignTypeParameter**: *Allow to add a friendly description for the toggle's parameters.*
 
-Once we have define our attributes, it's time to use the services that our toggle will need to check if is active or not. In the constructor we can specify these services::
+Once we have defined our attributes, it's time to use the services that our toggle needs to determinate if it is active or not. We can specify these services in the constructor ::
 
     public UserAgentBrowserToggle(
         IRuntimeFeatureStore featureStore,
@@ -61,7 +61,7 @@ Once we have define our attributes, it's time to use the services that our toggl
 
 **Services**
 
-    * **IRuntimeFeatureStore**: We use this service to retrieve the feature. Once we have the feature, we can retrieve the toggle and her data (The parameters and their values).
+    * **IRuntimeFeatureStore**: We use this service to retrieve the feature. Once we have the feature, we can retrieve the toggle and its data (The parameters and their values).
     * **IHttpContextAccessor**: To access the HttpContext.
     * **ILogger<T>**: To log whatever you want.
 
@@ -115,4 +115,4 @@ Finally, we can register our custom toggle using the method ``RegisterTogglesFro
 
 As you can see, Esquio provides a flexible way to customize as you need.
 
-You can see this sample completed and much more in this `repository <https://github.com/Xabaril/Esquio.Contrib>`_ and of course, any PR is welcome.
+You can see this full sample and much more in this `repository <https://github.com/Xabaril/Esquio.Contrib>`_ and of course, any PR is welcomed ;)
