@@ -29,6 +29,7 @@ using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
 using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
 using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -111,7 +112,7 @@ namespace Esquio.UI.Client.Services
         private readonly HttpClient _httpClient;
         private readonly ILogger<EsquioHttpClient> _logger;
 
-        public EsquioHttpClient(HttpClient httpClient,ILogger<EsquioHttpClient> logger)
+        public EsquioHttpClient(HttpClient httpClient, ILogger<EsquioHttpClient> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -152,6 +153,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, "An exception is throwed when trying to get the products list from server.!");
@@ -181,6 +186,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<DetailsProductResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -212,6 +221,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
@@ -242,6 +255,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to update product {updateProductRequest}.!");
@@ -268,6 +285,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -299,6 +320,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add {addDeploymentRequest} to product {productName}. !");
@@ -325,6 +350,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -369,6 +398,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get feature list on product {productName}.!");
@@ -398,6 +431,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<DetailsFeatureResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -429,6 +466,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get state of {featureName} on product {productName}.!");
@@ -456,6 +497,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to rolled out feature {featureName} on product {productName}.!");
@@ -481,6 +526,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -508,6 +557,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
 
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -537,6 +590,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -568,6 +625,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to update feature {updateFeatureRequest} on product {productName}!");
@@ -594,6 +655,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -623,6 +688,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<MyResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -667,6 +736,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get users permission list.!");
@@ -696,6 +769,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -727,6 +804,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
@@ -753,6 +834,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -783,6 +868,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<DetailsPermissionResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -828,6 +917,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get api keys.!");
@@ -862,6 +955,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<AddApiKeyResponse>(responseContent);
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add new api key {addApiKeyRequest.Name}.!");
@@ -889,6 +986,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
 
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -920,6 +1021,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get the tags list on feature {featureName} on product {productName} from server.!");
@@ -950,6 +1055,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add tag {addTagRequest}.!");
@@ -976,6 +1085,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1021,6 +1134,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get audit information!.");
@@ -1050,6 +1167,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<KnownTypesToggleResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1081,6 +1202,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get the toggle Known types!.");
@@ -1111,6 +1236,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add toggle {addToggleRequest}.!");
@@ -1137,6 +1266,10 @@ namespace Esquio.UI.Client.Services
                     {
                         return true;
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1166,6 +1299,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<DetailsToggleResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1197,6 +1334,10 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to add toggle parameter {addParameterToggleRequest}.!");
@@ -1226,6 +1367,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<List<DetailsReleaseResponse>>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1257,6 +1402,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
@@ -1285,6 +1434,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<SuccessStatisticResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
@@ -1315,6 +1468,10 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
                     _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
@@ -1343,6 +1500,10 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<PlotStatisticsResponse>(
                             content, new JsonSerializerSettings());
                     }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
