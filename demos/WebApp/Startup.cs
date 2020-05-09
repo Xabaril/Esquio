@@ -85,7 +85,9 @@ namespace WebApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseMiniProfiler()
+            app
+                .UseForwardedHeaders()
+                .UseMiniProfiler()
                 .UseCors()
                 .UseCookiePolicy()
                 .UseStaticFiles()
