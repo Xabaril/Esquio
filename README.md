@@ -14,7 +14,8 @@ Esquio Azure DevOps extensions are built in top of the Esquio API, in the case y
 
 Additionally, if you need it, Esquio has a full UI developed, so you can be able to handle all your Toggles in it, making it fairly simple to use and manage.
 
-Founded and maintained by [Unai Zorrila Castro](https://twitter.com/_unaizc_), [Luis Ruiz Pavon](https://twitter.com/luisruizpavon), [Quique Fdez Guerra](https://twitter.com/CKGrafico) and [Luis Fraile](https://twitter.com/lfraile).
+Maintained by [awesome community contributors](https://github.com/Xabaril/Esquio/graphs/contributors).
+
 
 For project documentation, please visit [readthedocs](https://esquio.readthedocs.io).
 
