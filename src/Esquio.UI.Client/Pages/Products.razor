@@ -37,7 +37,7 @@
                         </CardTitle>
                         <CardBody Context="product">
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
-                                <Editable Value="@product.Description"
+                                <Editable @key="@product.Name" Value="@product.Description"
                                           Type="Editable.EditableType.TextArea"
                                           EmptyText="Add a product description"
                                           OnChange="@((description) => Update(product.Name, product.Name, description))" />
