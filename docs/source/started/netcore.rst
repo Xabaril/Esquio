@@ -3,7 +3,7 @@ Getting started with Esquio in .NET Core
 
 In this article, we are going to see how easy it is to use Esquio in your .NET Core application using the NuGet packages provided by Xabaril.
 
-> In `samples/ConsoleApp <https://github.com/Xabaril/Esquio/tree/master/samples/ConsoleApp>`_ you'll find a complete Esquio example in ASP.NET Core.
+> In `samples/GettingStarted.ConsoleApp <https://github.com/Xabaril/Esquio/tree/master/samples/GettingStarted.ConsoleApp>`_ you'll find a complete Esquio example in ASP.NET Core.
 
 Create a folder for your new project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -41,7 +41,7 @@ or using Powershell or Package Manager::
 Setup
 ^^^^^
 
-In the Program.cs change the Main method to async::
+In the Program.cs, change the Main method to async::
 
         static async Task Main(string[] args)
 
@@ -99,7 +99,7 @@ Check if "Colored" feature for the "Console" project is enabled and set the back
           Console.BackgroundColor = ConsoleColor.Blue;
         }
 
-Finally write a message to check it::
+Finally, write a message to check it::
 
         Console.WriteLine("Welcome to Esquio!");
         Console.Read();
@@ -107,7 +107,7 @@ Finally write a message to check it::
 Test the application
 ^^^^^^^^^^^^^^^^^^^^
 
-Test the app from your machine running::
+Test the app on your computer running::
 
         dotnet run
 
@@ -117,7 +117,7 @@ To disable the feature, change the ``appsettings.json``::
 
         "Enabled": false
 
-Test again the app:
+And test again the app:
 
 .. image:: ../images/consoleapp2.png
 

@@ -75,7 +75,6 @@ So, let's open our ``appsettings.json`` file. To help us in this task, we can us
 
 Add the content below to your ``appsettings.json`` file::
 
-```json
         {
           "Esquio": {
             "Products": [
@@ -92,7 +91,6 @@ Add the content below to your ``appsettings.json`` file::
             ]
           }
         }
-```
 
 By default, ``Esquio`` will be the root element. However, you could change it on adding the configurationStore::
 
@@ -102,7 +100,6 @@ With this configuration, we are defining a new ``feature`` named ``HiddenGem``, 
 
 In order to test it, let's use the current endpoint already defined on the method ``Configure`` on the class ``Startup``. We can attach feature metadata to an endpoint using the route mappings configuration fluent API ``RequireFeature`` method::
 
-```csharp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
@@ -110,7 +107,6 @@ In order to test it, let's use the current endpoint already defined on the metho
                     await context.Response.WriteAsync("Hello World!");
                 }).RequireFeature("HiddenGem");
             });
-```
 
 This method will filter if the endpoint can be executed depending on feature(s) state. If the configured feature is enabled this endpoint is executed, if not, by default a NotFound result is obtained.
 
@@ -120,7 +116,6 @@ So, if we run the project with this configuration, we will reach this endpoint:
 
 However, let's modify the configuration file again, setting ``Enabled`` property to false, and refresh the browser::
 
-```json
                 "Features": [
                   {
                     "Name": "HiddenGem",
@@ -128,7 +123,6 @@ However, let's modify the configuration file again, setting ``Enabled`` property
                     "Toggles": []
                   }
                 ]
-```
 
 .. image:: ../images/tutorial-intro-notfound.png
 
@@ -144,7 +138,6 @@ We can configurate what would be the result of evaluating a feature that cannot 
 
 So, let's back again to the ``ConfigureServices`` and set the behaviour of `NotFound` and `OnError` to `SetDisable`. This is the value by default, so for the moment these configuration doesn't change anything. Add also a new fallback endpoint to verify if the fallback is executed or not::
 
-```csharp
             services
                 .AddEsquio(options =>
                 {
@@ -155,7 +148,6 @@ So, let's back again to the ``ConfigureServices`` and set the behaviour of `NotF
                 {
                     await context.Response.WriteAsync("Hello World! , the feature is disabled and endpoint fallback is executed!");
                 }))
-```
 
 On `Configure` method, let's modify the endpoint to call to require a feature that has not been configured (`NotExistingFeature` instead of `HiddenGem`)::
 
@@ -175,25 +167,21 @@ If you launch again the project, you will get the fallback message:
 
 We could also use any already defined fallback actions, instead of creating the request delegate directly. In this case, on fallback we want to be redirected to Google page::
 
-```csharp
                 .AddEsquio(options =>
                 {
                     options.ConfigureNotFoundBehavior(NotFoundBehavior.SetDisabled);
                     options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
                 })
                 .AddEndpointFallback(EndpointFallbackAction.RedirectTo("https://www.google.com"))
-```
 
 In case we would like ``Esquio`` to evaluate as enabled a feature that doesn't exist, we can change `NotFound` behaviour::
 
-```csharp
             services
                 .AddEsquio(options =>
                 {
                     options.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled);
                     options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
                 })
-```
 
 If we run the project, we get again our normal endpoint:
 

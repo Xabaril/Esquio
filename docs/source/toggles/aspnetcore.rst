@@ -3,14 +3,18 @@ Esquio ASP.NET Core toggles
 
 In addition to the toggles that Esquio provides out of the box, Esquio.AspNetCore provides more toggles to work with ASP.NET Core applications.
 
-ClaimValueToggle
-^^^^^^^^^^^^^^^^
-This toggle allows you to enabled features depending on the current claims of logged in users.
+Identity Claim Value
+^^^^^^^^^^^^^^^^^^^^
+This toggle enables its feature if the identity claim of the current user exists and its value is in the list.
+
+**Type**
+
+    * Esquio.Toggles.ClaimValueToggle
 
 **Parameters**
 
-    * ClaimType: *The claim type used to check value.*
-    * ClaimValues: *The claim value to check, multiple items separated by ';'.*
+    * ClaimType: *The claim type name.*
+    * ClaimValues: *The claim values to activate this toggle separated by ';' character.*
 
 ::
 
@@ -29,14 +33,49 @@ This toggle allows you to enabled features depending on the current claims of lo
                     ]
                 }
 
-GradualRolloutClaimValueToggle
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This toggle allows you gradually enabled features to a percentage of logged in users. Stickiness is based on the claim type value. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
+
+Client IP Address
+^^^^^^^^^^^^^^^^^
+This toggle enables its feature if the client IP address is in the list.
+
+**Type** 
+
+    * Esquio.Toggles.ClientIpAddressToggle
 
 **Parameters**
 
-    * Percentage: *The percentage (0-100) you want to enable the feature toggle for.*
-    * ClaimType: *The claim type used to get value to rollout.*
+    * IpAddresses: *The IP addresses to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "SecretZoneMatch",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.ClientIpAddressToggle",
+                            "Parameters": 
+                            {
+                                "ClaimType": "IpAddresses",
+                                "ClaimValues": "11.22.44.88;11.22.33.44"
+                            }
+                        }
+                    ]
+                }
+
+Partial rollout by Identity Claim value
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This toggle enables its feature The claim exists and its value falls within the percentage created by Esquio Partitioner. 
+Stickiness is based on the claim type value. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.GradualRolloutClaimValueToggle  
+
+**Parameters**
+
+    * Percentage: *The percentage of users that activates this toggle. Percentage from 0 to 100.*
+    * ClaimType: *The identity claim type used whom value is used by Esquio Partitioner.*
 
 ::
 
@@ -45,7 +84,7 @@ This toggle allows you gradually enabled features to a percentage of logged in u
                     "Enabled": true,
                     "Toggles": [
                         {
-                            "Type": "Esquio.Toggles.GradualRolloutClaimValueToggle",
+                            "Type": "Esquio.AspNetCore.Toggles.GradualRolloutClaimValueToggle",
                             "Parameters": 
                             {
                                 "Percentage": 50,
@@ -55,14 +94,20 @@ This toggle allows you gradually enabled features to a percentage of logged in u
                     ]
                 }
 
-GradualRolloutHeaderValueToggle
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This toggle allows you gradually enabled features to a percentage of logged in users. Stickiness is based on the HTTP header value. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
+Partial rollout by Http Header value
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This toggle enables its feature when the request header exists and its value falls within percentage created by Esquio Partitioner. 
+Stickiness is based on the HTTP header value. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ that guarantees to the user get the same experience across many devices and also assures that a user which is among the first 30% will also be among the first 50% of the users. 
+
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.GradualRolloutHeaderValueToggle
 
 **Parameters**
 
-    * Percentage: *The percentage (0-100) you want to enable the feature toggle for.*
-    * HeaderName: *he name of the header used to get the value to rollout.*
+    * Percentage: *The percentage of users that activates this toggle. Percentage from 0 to 100.*
+    * HeaderName: *The header name used whom value is used by Esquio Partitioner.*
 
 ::
 
@@ -81,13 +126,18 @@ This toggle allows you gradually enabled features to a percentage of logged in u
                     ]
                 }
 
-GradualRolloutSessionToggle
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This toggle allows you gradually enabled features to a percentage of user sessions (authenticated or not). Stickiness is based on the ASP.NET Core SessionId value. 
+Partial rollout by Http Session Id
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This toggle enables its feature if the session identifier falls within percentage created by Esquio Partitioner.
+Stickiness is based on the ASP.NET Core SessionId value. 
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.GradualRolloutSessionToggle
 
 **Parameters**
 
-    * Percentage: *The percentage (0-100) you want to enable the feature toggle for.*
+    * Percentage: *The percentage of sessions that activates this toggle. Percentage from 0 to 100.*
 
 ::
 
@@ -96,7 +146,7 @@ This toggle allows you gradually enabled features to a percentage of user sessio
                     "Enabled": true,
                     "Toggles": [
                         {
-                            "Type": "Esquio.Toggles.GradualRolloutSessionToggle",
+                            "Type": "Esquio.AspNetCore.Toggles.GradualRolloutSessionToggle",
                             "Parameters": 
                             {
                                 "Percentage": 50
@@ -104,3 +154,96 @@ This toggle allows you gradually enabled features to a percentage of user sessio
                         }
                     ]
                 }
+
+Partial rollout by UserName
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This toggle allows the current user name falls within percentage created by Esquio Partitioner.
+Stickiness is based on the user name. Esquio uses `Jenkins hash function <https://en.wikipedia.org/wiki/Jenkins_hash_function>`_ which guarantees the user gets the same experience across many devices and also ensures that a user who is among the first 30% will also be among the first 50% of users. 
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.GradualRolloutUserNameToggle
+
+**Parameters**
+
+    * Percentage: *The percentage of users that activates this toggle. Percentage from 0 to 100.*
+
+::
+
+                {
+                    "Name": "DarkMode",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.GradualRolloutUserNameToggle",
+                            "Parameters": 
+                            {
+                                "Percentage": 50
+                            }
+                        }
+                    ]
+                }
+
+
+
+UserNameToggle
+^^^^^^^^^^^^^^
+This toggle allows you to enabled features to a specific set of logged in users.
+
+**Type** 
+
+    * 
+
+**Parameters**
+
+    * Users: *The collection of user(s) to activate it separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.UserNameToggle",
+                            "Parameters": 
+                            {
+                                "Users": "betauser;beta"
+                            }
+                        }
+                    ]
+                }
+
+RoleNameToggle
+^^^^^^^^^^^^^^
+This toggle allows you to enabled features to a specific set of logged in users that belong to a specific role.
+
+**Type** 
+
+    * 
+
+**Parameters**
+
+    * Users: *The collection of role(s) to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.Toggles.RoleNameToggle",
+                            "Parameters": 
+                            {
+                                "Users": "betauser;beta"
+                            }
+                        }
+                    ]
+                }
+
+
+
+
+
+
