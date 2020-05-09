@@ -86,7 +86,6 @@ namespace WebApp
             }
 
             app
-                .UseForwardedHeaders()
                 .UseMiniProfiler()
                 .UseCors()
                 .UseCookiePolicy()

@@ -49,16 +49,14 @@ namespace Esquio.AspNetCore.Toggles
 
         private async Task<string> GetCurrentCountry()
         {
-            var remoteIpAddress = _contextAccessor.HttpContext
-                 .Connection
-                 .RemoteIpAddress;
+            var remoteIpAddress = GetRemoteIpAddress();
 
-            var remoteIp = (long)(uint)IPAddress.NetworkToHostOrder(
+            var ip = (long)(uint)IPAddress.NetworkToHostOrder(
                 BitConverter.ToInt32(remoteIpAddress.GetAddressBytes(), 0));
 
             var httpClient = _httpClientFactory.CreateClient();
 
-            var response = await httpClient.GetAsync($"https://ip2c.org/{remoteIp}");
+            var response = await httpClient.GetAsync($"https://ip2c.org/{ip}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -79,6 +77,47 @@ namespace Esquio.AspNetCore.Toggles
             }
 
             return null;
+        }
+
+        private IPAddress GetRemoteIpAddress()
+        {
+            var request = _contextAccessor
+                .HttpContext
+                .Request;
+
+            var header = request
+                .Headers
+                .FirstOrDefault(h => h.Key == "CF-Connecting-IP").Value;
+
+            if (header == default(StringValues))
+            {
+                header = request
+                    .Headers
+                    .FirstOrDefault(h => h.Key == "X-Forwarded-For").Value;
+            }
+
+            if (header != default(StringValues))
+            {
+                var headerValue = header.First();
+                var ip = string.Empty;
+
+                if ( headerValue.IndexOf(',') > 0)
+                {
+                    ip =  headerValue.Split(',')[0];
+                }
+                else
+                {
+                    ip = headerValue;
+                }
+
+                return IPAddress.Parse(ip);
+            }
+            else
+            {
+                return _contextAccessor.HttpContext
+                    .Connection
+                    .RemoteIpAddress;
+            }
         }
     }
 }
