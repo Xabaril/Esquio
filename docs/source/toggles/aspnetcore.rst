@@ -184,19 +184,18 @@ Stickiness is based on the user name. Esquio uses `Jenkins hash function <https:
                     ]
                 }
 
-
-
-UserNameToggle
-^^^^^^^^^^^^^^
-This toggle allows you to enabled features to a specific set of logged in users.
+Http Header value
+^^^^^^^^^^^^^^^^^
+This toggle enables its feature if the request header exists and its value its in the list.
 
 **Type** 
 
-    * 
+    * Esquio.AspNetCore.Toggles.HeaderValueToggle
 
 **Parameters**
 
-    * Users: *The collection of user(s) to activate it separated by ';' character.*
+    * HeaderName: *The header name.*
+    * HeaderValues: *The header values to activate this toggle separated by ';' character.*
 
 ::
 
@@ -205,26 +204,27 @@ This toggle allows you to enabled features to a specific set of logged in users.
                     "Enabled": true,
                     "Toggles": [
                         {
-                            "Type": "Esquio.Toggles.UserNameToggle",
+                            "Type": "Esquio.AspNetCore.Toggles.HeaderValueToggle",
                             "Parameters": 
                             {
-                                "Users": "betauser;beta"
+                                "HeaderName": "Accept-Language",
+                                "HeaderValues": "en-US;es-ES"
                             }
                         }
                     ]
                 }
 
-RoleNameToggle
-^^^^^^^^^^^^^^
-This toggle allows you to enabled features to a specific set of logged in users that belong to a specific role.
+Environment
+^^^^^^^^^^^
+This toggle enables its feature if the host execution environment and its value is in the list.
 
 **Type** 
 
-    * 
+    * Esquio.AspNetCore.Toggles.HostEnvironmentToggle
 
 **Parameters**
 
-    * Users: *The collection of role(s) to activate this toggle separated by ';' character.*
+    * Environments: *The ASP.NET Core host environments to activate this toggle separated by ';' character.*
 
 ::
 
@@ -233,7 +233,92 @@ This toggle allows you to enabled features to a specific set of logged in users 
                     "Enabled": true,
                     "Toggles": [
                         {
-                            "Type": "Esquio.Toggles.RoleNameToggle",
+                            "Type": "Esquio.AspNetCore.Toggles.HostEnvironmentToggle",
+                            "Parameters": 
+                            {
+                                "Environments": "Staging;Production"
+                            }
+                        }
+                    ]
+                }
+
+Host name
+^^^^^^^^^
+This toggle enables its feature if the hostname of the client instance is in the list.
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.HostNameToggle
+
+**Parameters**
+
+    * HostNames: *The request connection hostnames values to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.HostNameToggle",
+                            "Parameters": 
+                            {
+                                "Environments": "mycompany.org;en.domain.com"
+                            }
+                        }
+                    ]
+                }
+
+
+Country
+^^^^^^^
+This toggle enables its feature if the request country is in the list (Ip geolocation through https://ip2c.org service).
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.Ip2CountryToggle
+
+**Parameters**
+
+    * Countries: *The request country values (two letters, ISO 3166) to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.Ip2CountryToggle",
+                            "Parameters": 
+                            {
+                                "Environments": "ES;IT"
+                            }
+                        }
+                    ]
+                }
+
+Identity Role
+^^^^^^^^^^^^^
+This toggle enables its feature if the identity role is in the list.
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.RoleNameToggle
+
+**Parameters**
+
+    * Roles: *The identity role values to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.RoleNameToggle",
                             "Parameters": 
                             {
                                 "Users": "betauser;beta"
@@ -242,6 +327,90 @@ This toggle allows you to enabled features to a specific set of logged in users 
                     ]
                 }
 
+Server IP
+^^^^^^^^^
+This toggle enables its feature if the host IP address is in the list.
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.ServerIpAddressToggle
+
+**Parameters**
+
+    * IpAddresses: *The host IP adddresses to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.ServerIpAddressToggle",
+                            "Parameters": 
+                            {
+                                "Users": "11.22.44.88;11.22.33.44"
+                            }
+                        }
+                    ]
+                }
+
+Server IP
+^^^^^^^^^
+This toggle enables its feature if the request user agent browser is in the list.
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.UserAgentToggle
+
+**Parameters**
+
+    * Browsers: *The user agents to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.UserAgentToggle",
+                            "Parameters": 
+                            {
+                                "Users": "Mozilla/5.0;Chrome/81.0.4"
+                            }
+                        }
+                    ]
+                }
+
+
+Identity name
+^^^^^^^^^^^^^
+This toggle enables its feature if the identity name is in the list.
+
+**Type** 
+
+    * Esquio.AspNetCore.Toggles.UserNameToggle
+
+**Parameters**
+
+    * Users: *The identity names to activate this toggle separated by ';' character.*
+
+::
+
+                {
+                    "Name": "MinutesProgressBar",
+                    "Enabled": true,
+                    "Toggles": [
+                        {
+                            "Type": "Esquio.AspNetCore.Toggles.UserNameToggle",
+                            "Parameters": 
+                            {
+                                "Users": "betauser;beta"
+                            }
+                        }
+                    ]
+                }
 
 
 

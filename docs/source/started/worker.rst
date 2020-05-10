@@ -10,7 +10,7 @@ In this sample, a different message will be shown according with the state of th
 Create the project
 ^^^^^^^^^^^^^^^^^^
 
-To create the project type the following command using the .NET Core CLI::
+To create the project, type the following command using the .NET Core CLI::
 
         dotnet new worker -n GettingStarted.Worker
         cd GettingStarted.Worker
@@ -19,7 +19,7 @@ To create the project type the following command using the .NET Core CLI::
 Installation
 ^^^^^^^^^^^^
 
-To install Esquio type the following command::
+To install Esquio, type the following command::
 
         dotnet add package Esquio
         dotnet add package Esquio.Configuration.Store
@@ -30,7 +30,7 @@ or using Powershell or Package Manager::
         Install-Package Esquio
         Install-Package Esquio.Configuration.Store
 
-> In addition to Esquio package, it going to install the specific package for using ``configuration`` as the Esquio store.
+> In addition to Esquio package, it will install the specific package for using ``configuration`` as the Esquio store.
 
 Setup
 ^^^^^
@@ -65,7 +65,7 @@ Modify the ``appsettings.json`` file to the project and add the content below::
     ]
   }
 
-Let's consume this feature. In the ``Worker.cs``, create a new property ``scopeFactory`` and change the Worker method to receive it as a parameter::
+Let's consume this feature. In the ``Worker.cs``, create a new property ``scopeFactory`` and change the ``Worker`` method to receive it as a parameter::
 
         private readonly ILogger<Worker> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
@@ -152,7 +152,7 @@ Or using the method `Do` where you can explictly define both states in different
 Test the application
 ^^^^^^^^^^^^^^^^^^^^
 
-Test the app from your machine running::
+Test the app on your computer running::
 
         dotnet run
 
@@ -162,6 +162,6 @@ To enable the feature, change the ``appsettings.json``::
 
         "Enabled": true
 
-Test again the app:
+And test again the app:
 
 .. image:: ../images/worker-enabled.png
