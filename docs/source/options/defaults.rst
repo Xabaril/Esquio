@@ -6,21 +6,21 @@ Esquio allows to configure the Product and Deployment using specifed methods on 
 ConfigureDefaultProductName
 ^^^^^^^^^^^^^^^
 
-Allow to configure default Product name to use, the default value is 'default'::
+Allow to configure default Product name to use, the default value is 'default' ::
 
           services.AddEsquio(setup=>
-            {
-                setup.ConfigureDefaultProductName("default");
-            });
+          {
+               setup.ConfigureDefaultProductName("default");
+          });
      
 
 ConfigureDefaultDeploymentName
 ^^^^^^^^^^^^^^^^
 
-Allow to configure default Deployment name to use, the default value is 'Tests'::
+Allow to configure default Deployment name to use, the default value is 'Tests' ::
 
           services.AddEsquio(setup=>
-            {
-                setup.ConfigureDefaultDeploymentName("Tests");
-            });
+          {
+               setup.ConfigureDefaultDeploymentName("Tests");
+          });
      

@@ -6,12 +6,12 @@ Esquio allows to cache, at scoped level ( the request on ASP.NET Core), the eval
 UseScopedEvaluation
 ^^^^^^^^^^^^^^^
 
-Allow to set the use of scoped evaluation results, on ASP.NET Core the scope is the request and the results are stored on the HTTP Context Items property::
+Allow to set the use of scoped evaluation results, on ASP.NET Core the scope is the request and the results are stored on the HTTP Context Items property ::
 
           services.AddEsquio(setup=>
-            {
-                setup.UseScopedEvaluation(useScopedEvaluation: true);
-            });
+          {
+               setup.UseScopedEvaluation(useScopedEvaluation: true);
+          });
      
 Customize Scoped Evaluation Holder
 ^^^^^^^^^^^^^^^
