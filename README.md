@@ -45,6 +45,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Videos
 
-NetCore y Feature Flags **(Spanish)**
+ASP.NET Community Standup - May 12th 2020 - Esquio Feature Toggles
+
+[![ASP.NET Community Standup - May 12th 2020 - Esquio Feature Toggles](https://img.youtube.com/vi/qotnVlgYd8c/0.jpg)](https://youtu.be/qotnVlgYd8c?list=PL1rZQsJPBU2St9-Mz1Kaa7rofciyrwWVx&t=225)
+
+MeetUp | NetCore y Feature Flags(Spanish)
 
 [![MeetUp | NetCore y Feature Flags(Spanish)](https://img.youtube.com/vi/VCGZZOFaPL0/0.jpg)](https://www.youtube.com/watch?v=VCGZZOFaPL0)
