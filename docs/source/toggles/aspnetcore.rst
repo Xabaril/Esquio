@@ -355,7 +355,7 @@ This toggle enables its feature if the host IP address is in the list.
                     ]
                 }
 
-Server IP
+User Agent Toggle
 ^^^^^^^^^
 This toggle enables its feature if the request user agent browser is in the list.
 
