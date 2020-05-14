@@ -54,7 +54,9 @@ namespace Esquio.UI.Host
                 {
                     options.ForwardDefaultSelector = context =>
                     {
-                        var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
+                        var bearer = context.Request
+                            .Headers["Authorization"]
+                            .FirstOrDefault();
 
                         if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
                         {
