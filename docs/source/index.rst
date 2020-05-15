@@ -55,6 +55,7 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
    :caption: Stores
 
    stores/configuration
+   stores/http
 
 .. toctree::
    :maxdepth: 3
