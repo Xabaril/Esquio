@@ -5,8 +5,10 @@ using System.Text.Json;
 
 namespace System
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class StringExtensions
     {
+
         public static JsonSerializerOptions _serializationOptions = new JsonSerializerOptions()
         {
             AllowTrailingCommas = true,
@@ -54,4 +56,5 @@ namespace System
             public Dictionary<string, Dictionary<string, string>> Toggles { get; set; } = new Dictionary<string, Dictionary<string, string>>();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

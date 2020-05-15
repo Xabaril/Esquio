@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Toggles
 {
+    /// <summary>
+    /// A binary <see cref="IToggle"/> that is active depending on request ip.
+    /// </summary>
     [DesignType(Description = "The request country is in the list (Ip geolocation through https://ip2c.org service).", FriendlyName = "Country")]
     [DesignTypeParameter(ParameterName = Countries, ParameterType = EsquioConstants.SEMICOLON_LIST_PARAMETER_TYPE, ParameterDescription = "The request country values (two letters, ISO 3166) to activate this toggle separated by ';' character.")]
     public class Ip2CountryToggle
@@ -20,12 +23,18 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="httpContextAccessor">The http context accessor.</param>
+        /// <param name="httpClientFactory">The http client factory.</param>
         public Ip2CountryToggle(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory)
         {
             _contextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
+        ///<inheritdoc/>
         public async ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
             var allowedCountries = context.Data[Countries]?.ToString();

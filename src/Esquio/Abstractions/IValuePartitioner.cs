@@ -10,7 +10,7 @@
         /// Assign the logical partition for <paramref name="value"/> on <paramref name="partitions"/> buckets.
         /// </summary>
         /// <param name="value">The value to be assigned on partition.</param>
-        /// <param name="entityPartitionCount">The number of partitions to use.</param>
+        /// <param name="partitions">The number of partitions to use.</param>
         /// <returns>The resoved bucket for specified value.</returns>
         short ResolvePartition(string value, short partitions = 100);
     }

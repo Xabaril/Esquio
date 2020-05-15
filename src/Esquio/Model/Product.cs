@@ -13,6 +13,10 @@ namespace Esquio.Model
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The name of the product to create.</param>
         public Product(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));

@@ -278,7 +278,7 @@ namespace Esquio.Diagnostics
         /// <param name="productName">The product name.</param>
         /// <param name="deploymentName">The deployment name.</param>
         /// <param name="toggleType">The toggle type executed.</param>
-        /// <param name="active"`>The activation toggle state.</param>
+        /// <param name="active">The activation toggle state.</param>
         public ToggleEvaluatedEventData(Guid correlationId, string featureName, string productName, string deploymentName, string toggleType, bool active)
         {
             CorrelationId = correlationId;

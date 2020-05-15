@@ -14,13 +14,14 @@ namespace Esquio.Abstractions
         /// </summary>
         /// <param name="featureName">The feature name.</param>
         /// <param name="enabled">The feature and product evaluation result.</param>
-        /// <returns>A <see cref="Task{bool}"/> that complete when finished, yielding True if session contain a previous evaluation result, else False.</returns>
+        /// <returns>A Task{bool} that complete when finished, yielding True if session contain a previous evaluation result, else False.</returns>
         Task<bool> TryGetAsync(string featureName, out bool enabled);
 
         /// <summary>
         /// Set evaluation result into this session store.
         /// </summary>
         /// <param name="featureName">The feature name.</param>
+        /// <param name="enabled">The feature state.</param>
         /// <returns>A <see cref="Task"/> that complete when finished.</returns>
         Task SetAsync(string featureName, bool enabled);
     }

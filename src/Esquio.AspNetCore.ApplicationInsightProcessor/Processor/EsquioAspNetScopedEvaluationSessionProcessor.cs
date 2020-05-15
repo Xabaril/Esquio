@@ -9,18 +9,26 @@ using System.Linq;
 
 namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 {
+    /// <summary>
+    /// Esquio Telemetry processor.
+    /// </summary>
     public sealed class EsquioAspNetScopedEvaluationSessionProcessor
         : ITelemetryProcessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITelemetryProcessor _next;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="next">The next processor on the chain.</param>
+        /// <param name="httpContextAccessor">The http conteext accessor.</param>
         public EsquioAspNetScopedEvaluationSessionProcessor(ITelemetryProcessor next, IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
-
+        ///<inheritdoc/>
         public void Process(ITelemetry item)
         {
             AddEsquioProperties(item);

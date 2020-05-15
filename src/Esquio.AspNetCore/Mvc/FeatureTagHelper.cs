@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Mvc
 {
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// Razor <see cref="ITagHelper"/> for enable or disable  content depending on a feature evaluation result.
     /// </summary>
@@ -67,7 +69,7 @@ namespace Esquio.AspNetCore.Mvc
             _featuresService = featuresService ?? throw new ArgumentNullException(nameof(featuresService));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
-
+        
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             _diagnostics.FeatureTagHelperBegin(Names);
@@ -161,4 +163,5 @@ namespace Esquio.AspNetCore.Mvc
             }
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

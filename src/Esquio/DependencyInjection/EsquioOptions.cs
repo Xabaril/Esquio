@@ -94,7 +94,6 @@ namespace Esquio.DependencyInjection
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <param name="type"/> is defined.
         /// </summary>
-        /// <param name="type">The type defined on assembly to be added.</param>
         /// <returns>The same configuration to be chained.</returns>
         public EsquioOptions RegisterTogglesFromAssemblyContaining(Type type)
         {

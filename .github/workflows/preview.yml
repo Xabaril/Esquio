@@ -52,17 +52,33 @@ jobs:
         nuget-version: latest
     - name: Publish Esquio AspNetCore nuget
       run: dotnet nuget push ./artifacts/Esquio.AspNetCore.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Esquio AspNetCore symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Esquio nuget
       run: dotnet nuget push ./artifacts/Esquio.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Esquio symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Application Insights nuget
       run: dotnet nuget push ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Application Insights symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.AspNetCore.ApplicationInsightProcessor.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Http Store  nuget
       run: dotnet nuget push ./artifacts/Esquio.Http.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Http Store symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.Http.Store.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Configuration Store nuget
       run: dotnet nuget push ./artifacts/Esquio.Configuration.Store.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Configuration Store symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.Configuration.Store.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Blazor WebAssembly nuget
       run: dotnet nuget push ./artifacts/Esquio.Blazor.WebAssembly.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Blazor WebAssembly symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.Blazor.WebAssembly.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish MiniProfiler nuget
       run: dotnet nuget push ./artifacts/Esquio.MiniProfiler.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish MiniProfiler symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.MiniProfiler.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Cli nuget
       run: dotnet nuget push ./artifacts/Esquio.Cli.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Cli symbols nuget
+      run: dotnet nuget push ./artifacts/Esquio.Cli.*.snupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
