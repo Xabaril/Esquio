@@ -7,7 +7,7 @@ jobs:
   build:
     env:
       BUILD_CONFIG: Release
-      VERSION_SUFFIX: -preview${{ github.run_id }}
+      VERSION_SUFFIX: -rc1.${{ github.run_number }}
     name: Build
     runs-on: ubuntu-latest
     services:
