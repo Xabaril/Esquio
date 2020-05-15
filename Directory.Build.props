@@ -4,8 +4,8 @@
   <!-- Disable Sourcelink on non Windows machines due to a bug -->
   <!-- https://github.com/dotnet/sourcelink/issues/119 -->
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-    <EnableSourceLink>false</EnableSourceLink>
-    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <!-- <EnableSourceLink>false</EnableSourceLink>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries> -->
   </PropertyGroup>
   <ItemGroup>
    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
