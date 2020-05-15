@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package information">
-    <PackageLicenseUrl>https://github.com/Xabaril/Esquio/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/xabaril/Esquio</PackageProjectUrl>
     <RepositoryUrl>https://github.com/xabaril/Esquio</RepositoryUrl>
     <Authors>Xabaril Contributors</Authors>
@@ -16,7 +16,8 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>true</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>true;.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
