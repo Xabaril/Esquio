@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "esquio-extensions-canary",
-    "version": "2.1.0",
+    "version": "3.0.4",
     "name": "Esquio extensions (canary)",
     "description": "Esquio extensions for Azure DevOps",
     "publisher": "xabaril",
@@ -170,6 +170,69 @@
                     },
                     {
                         "name": "EsquioToggleDetailedV2",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features/$(featureName)/toggles/$(toggleType)",
+                        "resultSelector": "jsonpath:$.parameters[*]"
+                    }
+                ],
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                        "headers": [
+                            {
+                                "name": "x-api-key",
+                                "value": "{{endpoint.apitoken}}"
+                            }
+                        ]
+                    }
+                ],
+                "helpMarkDown": "<a href=\"https://esquio.readthedocs.io\" target=\"_blank\"><b>Learn More about Esquio</b></a>"
+            }
+        },      {
+            "id": "service-endpoint-v3",
+            "description": "Service endpoint type for Esquio connections (V3)",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "esquio-v3",
+                "icons": {
+                    "default": "icons/xabaril-endpoint-icon.png",
+                    "wide": "icons/xabaril.png"
+                },
+                "displayName": "Esquio API connection V3",
+                "url": {
+                    "displayName": "Esquio API Url",
+                    "helpText": "Url for the Esquio API to connect to."
+                },
+                "dataSources": [
+                    {
+                        "name": "TestConnection",
+                        "endpointUrl": "{{endpoint.url}}/api/products",
+                        "resultSelector": "jsonpath:$.items[*]"
+                    },
+                    {
+                        "name": "EsquioProductsV3",
+                        "endpointUrl": "{{endpoint.url}}/api/products",
+                        "resultSelector": "jsonpath:$.items[*]"
+                    },                    
+                    {
+                        "name": "EsquioDeploymentsV3",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)",
+                        "resultSelector": "jsonpath:$.deployments[*]"
+                    },
+                    {
+                        "name": "EsquioFlagsV3",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features",
+                        "resultSelector": "jsonpath:$.items[*]"
+                    },
+                    {
+                        "name": "EsquioFlagDetailedV3",
+                        "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features/$(featureName)",
+                        "resultSelector": "jsonpath:$.toggles[*]"
+                    },
+                    {
+                        "name": "EsquioToggleDetailedV3",
                         "endpointUrl": "{{endpoint.url}}/api/products/$(productName)/features/$(featureName)/toggles/$(toggleType)",
                         "resultSelector": "jsonpath:$.parameters[*]"
                     }
