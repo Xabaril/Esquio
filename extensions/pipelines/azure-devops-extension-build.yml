@@ -6,15 +6,8 @@ variables:
   extensionid: esquio-extensions
   packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
 
-
-# trigger:
-#   branches:
-#     include:
-#     - master
-#   paths:
-#     include: 
-#     - extensions/*
 trigger: none
+pr: none
 
 steps:
 - task: TfxInstaller@1
@@ -51,6 +44,21 @@ steps:
     pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV2'
     taskName: 'set toggle parameter'
 
+- template: templates/azure-task-build-template.yml  
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollback-feature/rollback-featureV3'
+    taskName: rollback
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/rollout-feature/rollout-featureV3'
+    taskName: rollout
+
+- template: templates/azure-task-build-template.yml
+  parameters:
+    pathToExtension: 'extensions/azure-devops/set-toggle-parameter/set-toggle-parameterV3'
+    taskName: 'set toggle parameter'
+
 - task: ExtensionVersion@1
   inputs:
     connectTo: 'VsTeam'
@@ -75,11 +83,3 @@ steps:
     vsixFile: '$(packagefile)'
     updateTasksVersion: false
     extensionVisibility: 'public'
-
-# - task: 'b86cdd2a-0579-4d40-b28f-18197ffaf520@1'
-#   inputs:
-#     connectTo: 'VsTeam'
-#     connectedServiceName: '$(marketplaceConnection)'
-#     method: 'id'
-#     publisherId: '$(publisher)'
-#     extensionId: '$(extensionid)'
