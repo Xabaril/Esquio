@@ -8,11 +8,11 @@ Esquio Http store connects against a Http Api that has been previously deployed 
 UI Deployment
 -------------
 
-You need a database to store the information. For demo usage, you can use `build/docker-compose-infraestructure.yaml` to run a SQL image on 5433 port::
+* You need a database to store the information. For demo usage, you can use `build/docker-compose-infraestructure.yaml` to run a SQL image on 5433 port::
 
   docker-compose -f ./build/docker-compose-infraestructure.yaml up
 
-You need a OpenId provider. For demo usage, you can use ``https://demo.identityserver.io/``.
+* You need also an OpenId provider. For demo usage, you can use ``https://demo.identityserver.io/``.
 
 On ``https://hub.docker.com/r/xabarilcoding/esquioui`` you can find Esquio UI docker images. 
 
