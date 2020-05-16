@@ -6,7 +6,17 @@ variables:
   extensionid: esquio-extensions
   packagefile: '$(Build.ArtifactStagingDirectory)/Esquio-$(Extension.Version).vsix'
 
-trigger: none
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include: 
+    - extensions/*
+  tags:
+    include:
+      - azops-release-*
+
 pr: none
 
 steps:
