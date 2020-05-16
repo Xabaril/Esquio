@@ -120,7 +120,7 @@ And apply it with the command::
 
 
 Installation
-^^^^^^^^^^^^
+-------------
 
 Install ``Esquio.AspNetCore`` package, typing the following command using the .NET Core CLI::
 
