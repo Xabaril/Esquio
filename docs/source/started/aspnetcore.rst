@@ -126,6 +126,30 @@ However, let's modify the configuration file again, setting ``Enabled`` property
 
 .. image:: ../images/tutorial-intro-notfound.png
 
+Creating a client endpoint
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+> In `samples/GettingStarted.AspNetCore.ClientEndpoint <https://github.com/Xabaril/Esquio/tree/master/samples/GettingStarted.AspNetCore.ClientEndpoint>`_ you'll find this example in ASP.NET Core.
+
+
+You can query Esquio with your own api request. To enable this endpoint, from the previous code, let's come back to the ``Configure`` method of the ``Startup`` class::
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello World!");
+                }).RequireFeature("HiddenGem");
+
+                endpoints.MapEsquio();
+            });
+
+With ``MapEsquio`` a new endpoint is mapped that can  be used to get the activation state of any configured feature. An Uri pattern can be specify, if not, ``esquio`` would be the default pattern.
+
+So, after running your project, you can open a browser and go to ``/esquio?featureName=HiddenGem``:
+
+.. image:: ../images/esquio-client-endpoint.png
+
 
 Exploring more options
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -186,12 +210,6 @@ In case we would like ``Esquio`` to evaluate as enabled a feature that doesn't e
 If we run the project, we get again our normal endpoint:
 
 .. image:: ../images/tutorial-intro-success.png
-
-
-
-
-
-
 
 
 
