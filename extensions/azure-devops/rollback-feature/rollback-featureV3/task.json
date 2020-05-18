@@ -1,0 +1,86 @@
+{
+  "id": "DA5DD5F1-7C95-4700-B616-3D213054ED85",
+  "name": "esquio-rollback-feature",
+  "friendlyName": "Rollback feature with Esquio",
+  "description": "Use this task to rollback features with Esquio",
+  "helpMarkDown": "",
+  "category": "Utility",
+  "author": "xabaril",
+  "version": {
+    "Major": 3,
+    "Minor": 0,
+    "Patch": 4
+  },
+  "instanceNameFormat": "Esquio rollback feature",
+  "inputs": [
+    {
+      "name": "EsquioService",
+      "type": "connectedService:esquio-v3",
+      "label": "Esquio service endpoint (V3)",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Select the esquio end point to use. If needed, click on 'manage', and add a new service endpoint of type 'Esquio'"
+    },
+    {
+      "name": "productName",
+      "type": "pickList",
+      "label": "Esquio product",
+      "required": true,
+      "helpMarkDown": "Select the name of the product for the feature.",
+      "properties": {
+        "EditableOptions": "True"
+      }
+    },
+    {
+      "name": "deploymentName",
+      "type": "pickList",
+      "label": "Esquio deployment name",
+      "required": true,
+      "helpMarkDown": "Select the name of the deployment for the feature to rollback.",
+      "properties": {
+        "EditableOptions": "True"
+      }
+    },
+    {
+      "name": "featureName",
+      "type": "pickList",
+      "label": "Esquio feature",
+      "required": true,
+      "helpMarkDown": "Select the name of the feature to rollback.",
+      "properties": {
+        "EditableOptions": "True"
+      }
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "productName",
+      "endpointId": "$(EsquioService)",
+      "dataSourceName": "EsquioProductsV3",
+      "resultTemplate": "{ \"Value\":\"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+    },
+    {
+      "target": "deploymentName",
+      "endpointId": "$(EsquioService)",
+      "dataSourceName": "EsquioDeploymentsV3",
+      "parameters": {
+        "productName": "$(productName)"
+      },
+      "resultTemplate": "{ \"Value\":\"{{{name}}}\", \"DisplayValue\":\"{{{name}}}\"}"
+    },
+    {
+      "target": "featureName",
+      "endpointId": "$(EsquioService)",
+      "dataSourceName": "EsquioFlagsV3",
+      "parameters": {
+        "productName": "$(productName)"
+      },
+      "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\":\"{{{description}}}\"}"
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "index.js"
+    }
+  }
+}

@@ -28,7 +28,7 @@ Once you enter all the values you can click on *Verify connection* to check if t
 
 ## Task versioning
 
-As with the service connection the tasks has a v1.0 and a v2.0 depending on which version of Esquio you are using, when adding them to your pipelines be sure to use the right version, using *@1* or *@2* at the end of the task name.
+As with the service connection the tasks depending on which version of Esquio you are using (v1.0, v2.0, v3.0), when adding them to your pipelines be sure to use the right version, using *@1*, *@2*, or *@3* at the end of the task name.
 
 ## Rollout feature with Esquio task
 
@@ -37,8 +37,9 @@ As with the service connection the tasks has a v1.0 and a v2.0 depending on whic
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to enable. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0 and v3.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio deployment:** New for v3.0. Allows you to select in which deployment to rollout the feature.
+- **Esquio feature:** Picklist to select the Esquio feature desired to enable. In v2.0 and v3.0, instead of the numeric *id* we use the feature name from Esquio.
 
 ## Rollback feature with Esquio task
 
@@ -47,8 +48,9 @@ Parameters for this task are:
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0 and v3.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio deployment:** New for v3.0. Allows you to select in which deployment to rollback the feature.
+- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0 and v3.0, instead of the numeric *id* we use the feature name from Esquio.
 
 ## Set toggle parameter with Esquio
 
@@ -57,8 +59,9 @@ Parameters for this task are:
 Parameters for this task are:
 
 - **Esquio service endpoint:** This is a picklist to select the desired Esquio Service Connection.
-- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0, instead of the numeric *id* we use the product name from Esquio.
-- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0, instead of the numeric *id* we use the feature name from Esquio.
-- **Esquio toggle:** Picklist for Esquio toggle for the feature to set a particular parameter. In v2.0, instead of the numeric *id* we use the toggle type name from Esquio.
-- **Esquio parameter:** Picklist for the Esquio parameter, associated with the toggle, to set the value. In v2.0, instead of the numeric *id* we use the parameter name from Esquio.
+- **Esquio Product:** Picklist to select any of the configured products in Esquio. In v2.0 and v3.0, instead of the numeric *id* we use the product name from Esquio.
+- **Esquio deployment:** New for v3.0. Allows you to select in which deployment to set the parameter for the toggle.
+- **Esquio feature:** Picklist to select the Esquio feature desired to rollback. In v2.0 and v3.0, instead of the numeric *id* we use the feature name from Esquio.
+- **Esquio toggle:** Picklist for Esquio toggle for the feature to set a particular parameter. In v2.0 and v3.0, instead of the numeric *id* we use the toggle type name from Esquio.
+- **Esquio parameter:** Picklist for the Esquio parameter, associated with the toggle, to set the value. In v2.0 and v3.0, instead of the numeric *id* we use the parameter name from Esquio.
 - **Esquio parameter value:** New value for the Esquio Toggle parameter.
