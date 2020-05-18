@@ -1,7 +1,7 @@
 Esquio CLI
 ==========
 
-**Esquio.CLI** is a simple crossplattform *dotnet tool* that allow you to interact with *Esquio UI* from the command line. This tool can be used from build or release pipelines on Azure DevOps, Github Actions etc.
+**Esquio.CLI** is a simple crossplattform *dotnet tool* that allows you to interact with *Esquio UI* from the command line. This tool can be used from build or release pipelines on Azure DevOps, Github Actions etc.
 
 To install **Esquio.CLI** open a console window and type the following command using the *.NET Core CLI*::
 
