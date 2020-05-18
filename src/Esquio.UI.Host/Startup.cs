@@ -30,18 +30,17 @@ namespace Esquio.UI.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCors()
                 .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>()
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddResponseCompression(options =>
                 {
                     options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                         new[] { MediaTypeNames.Application.Octet });
-                });
-
-            services
-                 .AddSwaggerGen()
-                 .AddApplicationInsightsTelemetry()
-                 .AddAuthentication(options =>
+                })
+                .AddSwaggerGen()
+                .AddApplicationInsightsTelemetry()
+                .AddAuthentication(options =>
                  {
                      options.DefaultScheme = "secured";
                      options.DefaultChallengeScheme = "secured";
@@ -55,7 +54,9 @@ namespace Esquio.UI.Host
                 {
                     options.ForwardDefaultSelector = context =>
                     {
-                        var bearer = context.Request.Headers["Authorization"].FirstOrDefault();
+                        var bearer = context.Request
+                            .Headers["Authorization"]
+                            .FirstOrDefault();
 
                         if (bearer != null && bearer.StartsWith(JwtBearerDefaults.AuthenticationScheme))
                         {
@@ -78,13 +79,27 @@ namespace Esquio.UI.Host
                  {
                      appBuilder.AddClientBlazorConfiguration();
                      appBuilder.UseResponseCompression();
-                     
+
                      if (env.IsDevelopment())
                      {
                          appBuilder.UseDeveloperExceptionPage();
                      }
 
-                     return appBuilder.UseDefaultFiles().UseStaticFiles();
+                     return appBuilder
+                        .UseCors(builder=>
+                         {
+                             var configuredOrigins = Configuration.GetValue<string>("Cors:Origins");
+
+                             if (!string.IsNullOrEmpty(configuredOrigins))
+                             {
+                                 var allowedOrigins = configuredOrigins.Split(',');
+
+                                 builder.WithOrigins(allowedOrigins)
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod();
+                             }
+
+                         }).UseDefaultFiles().UseStaticFiles();
                  },
                 postConfigure: appBuilder =>
                  {
@@ -105,5 +120,5 @@ namespace Esquio.UI.Host
         }
     }
 
-    
+
 }

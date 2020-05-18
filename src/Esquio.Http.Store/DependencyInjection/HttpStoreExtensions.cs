@@ -18,9 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Add Esquio configuration using  store that connect with HTTP API on any  Esquio UI deployment.
         /// </summary>
         /// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
-        /// <param name="baseAddress">The Esquio UI HTTP API base address.</param>
-        /// <param name="apiKey">The Esquio UI HTTP valid api key.</param>
-        /// <param name="configurer">The action to configure default settings for internal Entity Framework Context.[Optional].</param>
+        /// <param name="setup">The action to configure.</param>
         /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
         public static IEsquioBuilder AddHttpStore(this IEsquioBuilder builder, Action<HttpStoreOptions> setup)
         {

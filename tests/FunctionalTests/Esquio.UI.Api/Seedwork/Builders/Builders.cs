@@ -50,9 +50,9 @@
             return new ApiKeyBuilder();
         }
 
-        public static RingEntityBuilder Ring()
+        public static DeploymentEntityBuilder Deployment()
         {
-            return new RingEntityBuilder();
+            return new DeploymentEntityBuilder();
         }
     }
 }

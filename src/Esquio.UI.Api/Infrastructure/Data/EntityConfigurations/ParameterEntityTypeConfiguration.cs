@@ -25,11 +25,15 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                .IsRequired()
                .HasMaxLength(200);
 
+            builder.Property(p => p.DeploymentName)
+               .IsRequired()
+               .HasMaxLength(200);
+
             builder.Property(p => p.Value)
               .IsRequired()
               .HasMaxLength(4000);
 
-            builder.HasAlternateKey(p => new { p.Name, p.RingName, p.ToggleEntityId });
+            builder.HasAlternateKey(p => new { p.Name, p.DeploymentName, p.ToggleEntityId });
         }
     }
 }

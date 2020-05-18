@@ -24,17 +24,17 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
             _storeOptions = storeOptions.Value;
         }
 
-
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<FeatureEntity> Features { get; set; }
         public DbSet<ToggleEntity> Toggles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<ParameterEntity> Parameters { get; set; }
-        public DbSet<FeatureTagEntity> FeatureTagEntities { get; set; }
+        public DbSet<FeatureTagEntity> FeatureTags { get; set; }
+        public DbSet<FeatureStateEntity> FeatureStates { get; set; }
         public DbSet<ApiKeyEntity> ApiKeys { get; set; }
         public DbSet<HistoryEntity> History { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
-        public DbSet<RingEntity> Rings { get; set; }
+        public DbSet<DeploymentEntity> Deployments { get; set; }
         public DbSet<MetricEntity> Metrics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -153,9 +153,9 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
             {
                 return product?.Name ?? UNKNOWN;
             }
-            else if (entry.Entity is RingEntity ring)
+            else if (entry.Entity is DeploymentEntity deployment)
             {
-                return ring.ProductEntity?.Name ?? UNKNOWN;
+                return deployment.ProductEntity?.Name ?? UNKNOWN;
             }
             else if (entry.Entity is FeatureEntity feature)
             {

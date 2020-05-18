@@ -17,7 +17,7 @@ namespace Esquio.Abstractions
         /// <param name="enabled">Action to be executed when <paramref name="featureName"/> is enabled. </param>
         /// <param name="disabled">Action to be executed when <paramref name="featureName"/> is not enabled.</param>
         /// <param name="cancellationToken"> A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
-        /// <returns>A <see cref="Task"/> that complete when <paramref name="active"/> or <paramref name="disabled"/> is executed.</returns>
+        /// <returns>A <see cref="Task"/> that complete when is executed.</returns>
         public static async Task Do(this IFeatureService featureService, string featureName, Action enabled, Action disabled, CancellationToken cancellationToken = default)
         {
             if (await featureService.IsEnabledAsync(featureName, cancellationToken))
@@ -39,7 +39,7 @@ namespace Esquio.Abstractions
         /// <param name="enabled">Action to be executed when <paramref name="featureName"/> is active. </param>
         /// <param name="disabled">Action to be executed when <paramref name="featureName"/> is not active.</param>
         /// <param name="cancellationToken"> A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that complete when <paramref name="enabled"/> or <paramref name="disabled"/> is executed.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> that complete when is executed.</returns>
         public static async Task<TResult> Do<TResult>(this IFeatureService featureService, string featureName, Func<TResult> enabled, Func<TResult> disabled, CancellationToken cancellationToken = default)
         {
             if (await featureService.IsEnabledAsync(featureName, cancellationToken))

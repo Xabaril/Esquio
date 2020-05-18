@@ -21,7 +21,7 @@ namespace Esquio.AspNetCore.Toggles
         private readonly IHostEnvironment _hostEnvironment;
 
         /// <summary>
-        /// Create a new instace of <see cref="EnvironmentToggle"/>.
+        /// Create a new instace of <see cref="HostEnvironmentToggle"/>.
         /// </summary>
         /// <param name="hostEnvironment">The <see cref="IHostEnvironment"/> service to be used.</param>
         public HostEnvironmentToggle(IHostEnvironment hostEnvironment)

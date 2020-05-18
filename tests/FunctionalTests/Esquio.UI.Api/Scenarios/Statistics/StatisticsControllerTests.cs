@@ -40,8 +40,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
         public async Task get_configuration_statistics_response_configuration_statistics_when_success()
         {
             var permission = Builders.Permission()
-              .WithReaderPermission()
-              .Build();
+                .WithReaderPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
@@ -89,7 +89,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             statistics.TotalFeatures
                 .Should().Be(1);
 
-            statistics.TotalRings
+            statistics.TotalDeployments
                 .Should().Be(0);
 
             statistics.TotalToggles

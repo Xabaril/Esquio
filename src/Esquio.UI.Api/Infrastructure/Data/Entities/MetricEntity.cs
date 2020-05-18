@@ -10,7 +10,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public string FeatureName { get; set; }
 
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
         public string Kind { get; set; }
 

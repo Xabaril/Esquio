@@ -83,14 +83,14 @@ namespace Esquio.Diagnostics
         }
 
         [Event(3, Level = EventLevel.Error)]
-        public void FeatureEvaluationThrow(string featureName, string productName, string ringName, string error)
+        public void FeatureEvaluationThrow(string featureName, string productName, string deploymentName, string error)
         {
             Interlocked.Increment(ref _perSecondFeatureThrows);
-            WriteEvent(3, featureName, productName, ringName, error);
+            WriteEvent(3, featureName, productName, deploymentName, error);
         }
 
         [Event(4, Level = EventLevel.Informational)]
-        public void FeatureEvaluated(string featureName, string productName, string ringName, long elapsedMilliseconds)
+        public void FeatureEvaluated(string featureName, string productName, string deploymentName, long elapsedMilliseconds)
         {
             Interlocked.Increment(ref _perSecondFeatureEvaluations);
 
@@ -111,14 +111,14 @@ namespace Esquio.Diagnostics
                 counter?.WriteMetric(elapsedMilliseconds);
             }
 
-            WriteEvent(4, featureName, productName, ringName, elapsedMilliseconds);
+            WriteEvent(4, featureName, productName, deploymentName, elapsedMilliseconds);
         }
 
         [Event(5, Level = EventLevel.Error)]
-        public void FeatureEvaluationNotFound(string featureName, string productName, string ringName)
+        public void FeatureEvaluationNotFound(string featureName, string productName, string deploymentName)
         {
             Interlocked.Increment(ref _perSecondFeatureNotFound);
-            WriteEvent(5, featureName, productName, ringName);
+            WriteEvent(5, featureName, productName, deploymentName);
         }
 
 
@@ -135,10 +135,10 @@ namespace Esquio.Diagnostics
         }
 
         [Event(12, Level = EventLevel.Informational)]
-        public void ToggleEvaluated(string featureName, string productName, string ringName, string toggle, long elapsedMilliseconds)
+        public void ToggleEvaluated(string featureName, string productName, string deploymentName, string toggle, long elapsedMilliseconds)
         {
             Interlocked.Increment(ref _perSecondToggleEvaluations);
-            WriteEvent(12, featureName, productName, ringName, toggle, elapsedMilliseconds);
+            WriteEvent(12, featureName, productName, deploymentName, toggle, elapsedMilliseconds);
         }
 
         [Event(20, Level = EventLevel.Informational)]

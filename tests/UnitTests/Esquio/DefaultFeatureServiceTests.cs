@@ -194,7 +194,7 @@ namespace UnitTests.Esquio
             {
                 _defaultFeatures = defaultFeatures ?? throw new ArgumentNullException(nameof(defaultFeatures));
             }
-            public Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
+            public Task<Feature> FindFeatureAsync(string featureName, string productName, string deploymentName, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(_defaultFeatures.Where(f => f.Name == featureName)
                     .SingleOrDefault());

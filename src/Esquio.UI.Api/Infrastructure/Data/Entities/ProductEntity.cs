@@ -14,7 +14,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public ICollection<FeatureEntity> Features { get; set; }
 
-        public ICollection<RingEntity> Rings { get; set; }
+        public ICollection<DeploymentEntity> Deployments { get; set; }
 
         public ProductEntity(string name, string description = null)
         {
@@ -22,7 +22,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             Description = description;
 
             Features = new List<FeatureEntity>();
-            Rings = new List<RingEntity>();
+            Deployments = new List<DeploymentEntity>();
         }
     }
 }

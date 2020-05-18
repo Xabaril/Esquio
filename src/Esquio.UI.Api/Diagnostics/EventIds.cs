@@ -14,9 +14,9 @@ namespace Esquio.UI.Api.Diagnostics
         public static readonly EventId ToggleNotExist = new EventId(107, nameof(ToggleNotExist));
         public static readonly EventId FeatureTagAlreadyExist = new EventId(108, nameof(FeatureTagAlreadyExist));
         public static readonly EventId FeatureTagNotExist = new EventId(109, nameof(FeatureTagNotExist));
-        public static readonly EventId RingAlreadyExist = new EventId(110, nameof(RingAlreadyExist));
-        public static readonly EventId RingNotExist = new EventId(111, nameof(RingNotExist));
-        public static readonly EventId CantDeleteDefaultRing = new EventId(111, nameof(CantDeleteDefaultRing));
+        public static readonly EventId DeploymentAlreadyExist = new EventId(110, nameof(DeploymentAlreadyExist));
+        public static readonly EventId DeployemtnNotExist = new EventId(111, nameof(DeployemtnNotExist));
+        public static readonly EventId CantDeleteDefaultDeployment = new EventId(111, nameof(CantDeleteDefaultDeployment));
 
         public static readonly EventId ExecutingCommand = new EventId(201, nameof(ExecutingCommand));
         public static readonly EventId ExecutedCommand = new EventId(202, nameof(ExecutedCommand));

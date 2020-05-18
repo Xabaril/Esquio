@@ -14,9 +14,9 @@
                 {
                     return $"api/products?api-version=3.0";
                 }
-                public static string AddRing(string productName)
+                public static string AddDeployment(string productName)
                 {
-                    return $"api/products/{productName}/ring?api-version=3.0";
+                    return $"api/products/{productName}/deployment?api-version=3.0";
                 }
 
                 public static string Update(string productName)
@@ -28,9 +28,9 @@
                 {
                     return $"api/products/{name}?api-version=3.0";
                 }
-                public static string DeleteRing(string productName, string ringName)
+                public static string DeleteDeployment(string productName, string deploymentName)
                 {
-                    return $"api/products/{productName}/ring/{ringName}?api-version=3.0";
+                    return $"api/products/{productName}/deployment/{deploymentName}?api-version=3.0";
                 }
                 public static string Get(string name)
                 {
@@ -63,13 +63,13 @@
                 {
                     return $"api/products/{productName}/features/{featureName}?api-version=3.0";
                 }
-                public static string Rollout(string productName, string featureName)
+                public static string Rollout(string productName, string deploymentName, string featureName)
                 {
-                    return $"api/products/{productName}/features/{featureName}/rollout?api-version=3.0";
+                    return $"api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollout?api-version=3.0";
                 }
-                public static string Rollback(string productName, string featureName)
+                public static string Rollback(string productName, string deploymentName,string featureName)
                 {
-                    return $"api/products/{productName}/features/{featureName}/rollback?api-version=3.0";
+                    return $"api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollback?api-version=3.0";
                 }
 
                 public static string Archive(string productName, string featureName)
@@ -84,6 +84,10 @@
                 {
                     return $"api/products/{productName}/features/{featureName}?api-version=3.0";
                 }
+                public static string GetState(string productName, string featureName)
+                {
+                    return $"api/products/{productName}/features/{featureName}/state?api-version=3.0";
+                }
                 public static string List(string productName)
                 {
                     return $"api/products/{productName}/features";
@@ -96,9 +100,9 @@
 
             public static class Configuration
             {
-                public static string Get(string productName, string featureName, string ringName)
+                public static string Get(string productName, string featureName, string deployment)
                 {
-                    return $"api/configuration/product/{productName}/feature/{featureName}?ring={ringName}&api-version=3.0";
+                    return $"api/configuration/product/{productName}/feature/{featureName}?deployment={deployment}&api-version=3.0";
                 }
             }
 

@@ -37,7 +37,7 @@
                         </CardTitle>
                         <CardBody Context="product">
                             <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product" Cascading="true">
-                                <Editable Value="@product.Description"
+                                <Editable @key="@product.Name" Value="@product.Description"
                                           Type="Editable.EditableType.TextArea"
                                           EmptyText="Add a product description"
                                           OnChange="@((description) => Update(product.Name, product.Name, description))" />
@@ -79,8 +79,8 @@
             </div>
 
             <div class="form-group">
-                <label for="product-default-ring-name">Default Ring Name</label>
-                <InputText id="product-default-ring-name" class="form-control" @bind-Value="model.DefaultRingName" disabled="true" placeholder="Enter product default ring name" />
+                <label for="product-default-ring-name">Default Deployment Name</label>
+                <InputText id="product-default-ring-name" class="form-control" @bind-Value="model.DefaultDeploymentName" disabled="true" placeholder="Enter product default deployment name" />
             </div>
         </EditForm>
     </ModalBody>

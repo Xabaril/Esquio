@@ -9,7 +9,7 @@ namespace Esquio.CliTool.Command
 {
     [Command(Constants.ProductsCommandName, Description = Constants.ProductsDescriptionCommandName),
         Subcommand(typeof(AddCommand)),
-        Subcommand(typeof(AddRingCommand)),
+        Subcommand(typeof(AddDeploymentCommand)),
         Subcommand(typeof(RemoveCommand)),
         Subcommand(typeof(ListCommand))]
     internal class ProductsCommand
@@ -56,16 +56,16 @@ namespace Esquio.CliTool.Command
             }
         }
 
-        [Command("addring")]
-        private class AddRingCommand
+        [Command("add-deployment")]
+        private class AddDeploymentCommand
         {
             [Option("--product-name <PRODUCT-NAME>", Description = "The name of product to be added.")]
             [Required]
             public string ProductName { get; set; }
 
-            [Option("--ring <RING>", Description = "The ring name to be added on  product.")]
+            [Option("--deployment-name <DEPLOYMENT-NAME>", Description = "The DEPLOYMENT name to be added on  product.")]
             [Required]
-            public string Ring { get; set; }
+            public string Deployment { get; set; }
 
             [Option(Constants.UriParameter, Description = Constants.UriDescription)]
             public string Uri { get; set; } = Environment.GetEnvironmentVariable(Constants.UriEnvironmentVariable);
@@ -78,12 +78,12 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Products_AddRingAsync(ProductName,new AddRingRequest
+                await client.Products_AddDeploymentAsync(ProductName,new AddDeploymentRequest
                 {
-                    Name = Ring
+                    Name = Deployment
                 });
 
-                console.WriteLine($"The ring {Ring} was added succesfully on product {ProductName}.", Constants.SuccessColor);
+                console.WriteLine($"The deployment {Deployment} was added succesfully on product {ProductName}.", Constants.SuccessColor);
 
                 return 0;
             }

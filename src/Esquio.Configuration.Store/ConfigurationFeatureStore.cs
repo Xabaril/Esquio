@@ -22,7 +22,7 @@ namespace Esquio.Configuration.Store
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
         }
 
-        public Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName = null, CancellationToken cancellationToken = default)
+        public Task<Feature> FindFeatureAsync(string featureName, string productName, string deploymentName = null, CancellationToken cancellationToken = default)
         {
             _ = featureName ?? throw new ArgumentNullException(featureName);
             _ = productName ?? throw new ArgumentNullException(productName);

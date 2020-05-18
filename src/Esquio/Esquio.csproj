@@ -8,6 +8,7 @@
     <PackageId>Esquio</PackageId>
     <PackageVersion>$(esquio)</PackageVersion>
     <LangVersion>$(LangVersion)</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

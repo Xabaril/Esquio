@@ -19,6 +19,6 @@ namespace Esquio.UI.Api.Shared.Models.Toggles.Details
     {
         public string Name { get; set; }
         public string Value { get; set; }
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
     }
 }

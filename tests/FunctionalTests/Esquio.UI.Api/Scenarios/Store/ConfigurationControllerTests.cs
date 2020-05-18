@@ -27,7 +27,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
         public async Task response_unauthorized_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", deployment: EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
               .GetAsync();
 
             response.StatusCode
@@ -46,8 +46,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+            var defaultRing = Builders.Deployment()
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -55,7 +55,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings.Add(defaultRing);
+            product.Deployments.Add(defaultRing);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -84,7 +84,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", deployment: EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -96,7 +96,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");
@@ -119,20 +119,19 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .BeEquivalentTo("Development");
         }
 
-
         [Fact]
         [ResetDatabase]
-        public async Task response_ok_and_use_default_ring_if_not_specified()
+        public async Task response_ok_and_use_default_deployment_if_not_specified()
         {
             var permission = Builders.Permission()
-             .WithManagementPermission()
-             .Build();
+                .WithManagementPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+            var defaultRing = Builders.Deployment()
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
@@ -140,7 +139,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
+            product.Deployments
                 .Add(defaultRing);
 
             var feature = Builders.Feature()
@@ -170,7 +169,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: EsquioConstants.DEFAULT_RING_NAME))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", deployment: EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -182,7 +181,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");
@@ -207,7 +206,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
         [Fact]
         [ResetDatabase]
-        public async Task response_ok_and_use_spcified_ring_if_not_specified()
+        public async Task response_ok_and_use_deployment_if_not_specified()
         {
             var permission = Builders.Permission()
              .WithManagementPermission()
@@ -216,12 +215,12 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
             await _fixture.Given
                 .AddPermission(permission);
 
-            var defaultRing = Builders.Ring()
-                .WithName(EsquioConstants.DEFAULT_RING_NAME)
+            var defaultDeployment = Builders.Deployment()
+                .WithName(EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
                 .WithDefault(true)
                 .Build();
 
-            var productionRing = Builders.Ring()
+            var productionDeployment = Builders.Deployment()
                 .WithName("Production")
                 .WithDefault(false)
                 .Build();
@@ -230,11 +229,11 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                .WithName("fooproduct")
                .Build();
 
-            product.Rings
-                .Add(defaultRing);
+            product.Deployments
+                .Add(defaultDeployment);
 
-            product.Rings
-                .Add(productionRing);
+            product.Deployments
+                .Add(productionDeployment);
 
             var feature = Builders.Feature()
                 .WithName("barfeature")
@@ -244,23 +243,23 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
               .WithType("Esquio.Toggles.EnvironmentToggle,Esquio")
               .Build();
 
-            var defaultRingParameter = Builders.Parameter()
+            var defaultDeploymentParameter = Builders.Parameter()
                 .WithName("Environments")
                 .WithValue("Development")
-                .WithRingName(defaultRing.Name)
+                .WithRingName(defaultDeployment.Name)
                 .Build();
 
-            var productionRingParameter = Builders.Parameter()
+            var productionDeploymentParameter = Builders.Parameter()
                 .WithName("Environments")
                 .WithValue("Production")
-                .WithRingName(productionRing.Name)
+                .WithRingName(productionDeployment.Name)
                 .Build();
 
             toggle.Parameters
-                .Add(defaultRingParameter);
+                .Add(defaultDeploymentParameter);
 
             toggle.Parameters
-                .Add(productionRingParameter);
+                .Add(productionDeploymentParameter);
 
             feature.Toggles
                 .Add(toggle);
@@ -272,7 +271,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", ringName: productionRing.Name))
+              .CreateRequest(ApiDefinitions.V3.Configuration.Get(productName: "fooproduct", featureName: "barfeature", deployment: productionDeployment.Name))
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -284,7 +283,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
                 .ReadAs<DetailsConfigurationResponse>();
 
             content.Enabled
-                .Should().BeTrue();
+                .Should().BeFalse();
 
             content.FeatureName
                 .Should().Be("barfeature");

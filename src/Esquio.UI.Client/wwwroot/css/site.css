@@ -4,11 +4,6 @@ select.form-control:disabled {
     background-color: #f0f0f0;
 }
 
-pre {
-    border-radius: 0.3rem;
-    background-color: #f0f0f0;
-}
-
 label + p.description {
     font-size: 0.8rem;
     color: #969696;
@@ -39,6 +34,12 @@ a {
 .v-center {
     display: flex;
     align-items: center;
+}
+
+.spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.5rem;
 }
 
 /* Card Overrides*/

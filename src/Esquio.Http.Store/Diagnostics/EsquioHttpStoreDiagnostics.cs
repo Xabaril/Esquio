@@ -15,9 +15,9 @@ namespace Esquio.Http.Store.Diagnostics
             _logger = loggerFactory.CreateLogger("Esquio.Http.Store");
         }
 
-        public void FindFeature(string featureName, string productName, string ringName)
+        public void FindFeature(string featureName, string productName, string deploymentName)
         {
-            Log.FindFeature(_logger, featureName, productName, ringName);
+            Log.FindFeature(_logger, featureName, productName, deploymentName);
         }
 
         public void GetFeatureFromCache(string cacheEntry)
@@ -25,20 +25,25 @@ namespace Esquio.Http.Store.Diagnostics
             Log.FindFeatureFromCache(_logger, cacheEntry);
         }
 
-        public void FeatureExistOnCache(string cacheEntry)
+        public void FeatureIsOnCache(string cacheEntry)
         {
-            Log.FeatureExistOnCache(_logger, cacheEntry);
+            Log.FeatureIsOnCache(_logger, cacheEntry);
         }
 
-        public void GetFeatureFromStore(string featureName, string productName, string ringName)
+        public void FeatureIsNotOnCache(string cacheEntry)
         {
-            Log.FindFeatureFromStore(_logger, featureName, productName, ringName);
+            Log.FeatureIsNotOnCache(_logger, cacheEntry);
+        }
+
+        public void GetFeatureFromStore(string featureName, string productName, string deploymentName)
+        {
+            Log.FindFeatureFromStore(_logger, featureName, productName, deploymentName);
         }
 
 
-        public void FeatureNotExist(string featureName, string productName, string ringName)
+        public void FeatureNotExist(string featureName, string productName, string deploymentName)
         {
-            Log.FeatureNotExist(_logger, featureName, productName, ringName);
+            Log.FeatureNotExist(_logger, featureName, productName, deploymentName);
         }
 
         public void StoreRequestFailed(Uri request, HttpStatusCode statusCode)

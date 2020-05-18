@@ -1,7 +1,7 @@
 ﻿@inject ConfirmState  confirmState
 @implements IDisposable
 
-<IconButton Title="@Title" Icon="@Icon" OnClick="OnClick" />
+<IconButton @ref="iconButton" Title="@Title" Icon="@Icon" OnClick="OnClick" Spinner="true" />
 
 @code {
     [Parameter] public string Title { get; set; }
@@ -11,15 +11,19 @@
     [Parameter] public string ConfirmDescription { get; set; }
 
     private Guid actionId = Guid.NewGuid();
+    private IconButton iconButton;
 
     public void Dispose()
     {
         confirmState.OnConfirm -= _OnConfirm;
+        confirmState.OnCancel -= _OnCancel;
+
     }
 
     protected override void OnInitialized()
     {
         confirmState.OnConfirm += _OnConfirm;
+        confirmState.OnCancel += _OnCancel;
     }
 
     private void OnClick()
@@ -27,8 +31,18 @@
         confirmState.ShowConfirmModal(ConfirmTitle, ConfirmDescription, actionId);
     }
 
-    private void _OnConfirm(Guid actionId)
+    private async ValueTask _OnConfirm(Guid actionId)
     {
-        if (actionId == this.actionId) OnConfirm.InvokeAsync(null);
+        if (actionId != this.actionId) return;
+
+        await OnConfirm.InvokeAsync(null);
+        iconButton.Reset();
+        StateHasChanged();
+    }
+
+    private void _OnCancel()
+    {
+        iconButton.Reset();
+        StateHasChanged();
     }
 }

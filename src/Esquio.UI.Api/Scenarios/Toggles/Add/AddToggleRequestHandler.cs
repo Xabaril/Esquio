@@ -42,7 +42,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
                     var toggle = new ToggleEntity(feature.Id, request.ToggleType);
 
                     var allowedRings = await _storeDbContext
-                        .Rings
+                        .Deployments
                         .Where(p => p.ProductEntityId == feature.ProductEntityId)
                         .ToListAsync();
 
@@ -52,10 +52,10 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
 
                     var selectedRing = defaultRing;
 
-                    if (!string.IsNullOrEmpty(request.RingName))
+                    if (!string.IsNullOrEmpty(request.DeploymentName))
                     {
                         selectedRing = allowedRings
-                           .Where(r => r.Name == request.RingName)
+                           .Where(r => r.Name == request.DeploymentName)
                            .SingleOrDefault();
                     }
 
@@ -73,8 +73,8 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Add
                         return toggle.Id;
                     }
 
-                    Log.RingNotExist(_logger, request.RingName, request.ProductName);
-                    throw new InvalidOperationException($"Ring {request.RingName} does not exist for product {request.ProductName}.");
+                    Log.RingNotExist(_logger, request.DeploymentName, request.ProductName);
+                    throw new InvalidOperationException($"Deployment {request.DeploymentName} does not exist for product {request.ProductName}.");
                 }
 
                 Log.ToggleTypeAlreadyExist(_logger, request.ToggleType, feature.Name);

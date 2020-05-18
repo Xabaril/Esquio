@@ -8,7 +8,7 @@ namespace Esquio.UI.Api.Infrastructure.Metrics
 
         public string FeatureName { get; private set; }
 
-        public string RingName { get; private set; }
+        public string DeploymentName { get; private set; }
 
         public string Kind { get; private set; }
 
@@ -19,25 +19,25 @@ namespace Esquio.UI.Api.Infrastructure.Metrics
 
         }
 
-        public static ConfigurationRequestMetric FromSuccess(string productName, string featureName, string ringName)
+        public static ConfigurationRequestMetric FromSuccess(string productName, string featureName, string deploymentName)
         {
             return new ConfigurationRequestMetric()
             {
                 ProductName = productName,
                 FeatureName = featureName,
-                RingName = ringName,
+                DeploymentName = deploymentName,
                 RequestedAt = DateTime.UtcNow,
                 Kind = "Success"
             };
         }
 
-        public static ConfigurationRequestMetric FromNotFound(string productName, string featureName, string ringName)
+        public static ConfigurationRequestMetric FromNotFound(string productName, string featureName, string deploymentName)
         {
             return new ConfigurationRequestMetric()
             {
                 ProductName = productName,
                 FeatureName = featureName,
-                RingName = ringName,
+                DeploymentName = deploymentName,
                 RequestedAt = DateTime.UtcNow,
                 Kind = "NotFound"
             };

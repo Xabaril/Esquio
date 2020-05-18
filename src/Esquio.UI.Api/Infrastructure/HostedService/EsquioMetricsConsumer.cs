@@ -85,7 +85,7 @@ namespace Esquio.UI.Api.Infrastructure.HostedService
                             store.Metrics.AddRange(buffer.Select(item => new MetricEntity()
                             {
                                 ProductName = item.ProductName,
-                                RingName = item.RingName,
+                                DeploymentName = item.DeploymentName,
                                 FeatureName = item.FeatureName,
                                 DateTime = item.RequestedAt,
                                 Kind = item.Kind

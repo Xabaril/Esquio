@@ -10,6 +10,7 @@
     <PackageId>Esquio.Blazor.WebAssembly</PackageId>
     <PackageVersion>$(esquioblazorwasm)</PackageVersion>
     <LangVersion>$(LangVersion)</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -19,6 +19,7 @@ namespace Esquio.Toggles
         private const string EnvironmentVariable = nameof(EnvironmentVariable);
         private const string Values = nameof(Values);
 
+        /// <inheritdoc/>
         public ValueTask<bool> IsActiveAsync(ToggleExecutionContext  context, CancellationToken cancellationToken = default)
         {
             string environmentVariable = context.Data[EnvironmentVariable]?.ToString();

@@ -8,7 +8,7 @@ namespace Esquio.UI.Client.Services
         Product,
         Feature,
         Toggle,
-        Ring,
+        Deployment,
         Permission,
         ApiKeys,
         Audit

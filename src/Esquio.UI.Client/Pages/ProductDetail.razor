@@ -73,28 +73,10 @@
                                                       OnChange="@((description) => UpdateFeature(feature.Name, description))" />
                                         </Permission>
                                     </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
-                                        <td>
-                                            <Switch Title="Enable/Disable"
-                                                    Checked="feature.Enabled"
-                                                    OnChange="@(() => ToggleFeature(feature))">
-
-                                            </Switch>
-                                        </td>
-                                        <td class="table-component__action">
-                                            <ConfirmableAction Title="Rollout"
-                                                               Icon="fas fa-upload"
-                                                               OnConfirm="@(() => RolloutFeature(feature.Name))"
-                                                               ConfirmTitle="Rollout Feature"
-                                                               ConfirmDescription="@($"Are you sure you want to rollout the '{feature.Name}' feature?")" />
-                                        </td>
-                                        <td class="table-component__action">
-                                            <ConfirmableAction Title="Rolloff"
-                                                               Icon="fas fa-download"
-                                                               OnConfirm="@(() => RolloffFeature(feature.Name))"
-                                                               ConfirmTitle="Rolloff Feature"
-                                                               ConfirmDescription="@($"Are you sure you want to rolloff the '{feature.Name}' feature?")" />
-                                        </td>
                                         <td class="table-component__action">
                                             <ConfirmableAction Title="Archive"
                                                                Icon="fas fa-archive"
@@ -124,15 +106,15 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <PageTitle Title="Rings"
-                           Subtitle="Defined Rings on this product, Rings allow configure different Toggle values for each ring and test configurations on different ring/environments.">
+                <PageTitle Title="Deployments"
+                           Subtitle="Defined deployments (tenants, environments) on this product.">
                     <Icon>
                         <i class="fas fa-ring"></i>
                     </Icon>
                     <Actions>
-                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
-                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewRingModal">
-                                New Ring
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewDeploymentModal">
+                                New Deployment
                             </button>
                         </Permission>
                     </Actions>
@@ -145,34 +127,34 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <SingleTable Loader="RingsLoader" @ref="ringTable">
+                    <SingleTable Loader="DeploymentsLoader" @ref="deploymentTable">
                         <TableHeader>
                             <th class="table-col-4">Name</th>
                             <th></th>
-                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
                                 <th class="table-col-1"></th>
                             </Permission>
                         </TableHeader>
                         <TableBody Context="response">
-                            @foreach (var ring in response.Rings)
+                            @foreach (var deployment in response.Deployments)
                             {
                                 <tr>
                                     <td colspan="2">
-                                        @ring.Name
-                                        @if (ring.Default)
+                                        @deployment.Name
+                                        @if (deployment.Default)
                                         {
-                                            <span class="badge badge-info">default ring</span>
+                                            <span class="badge badge-info">default deployment</span>
                                         }
                                     </td>
-                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Ring">
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Deployment">
                                         <td class="table-component__action">
-                                            @if (!ring.Default)
+                                            @if (!deployment.Default)
                                             {
                                                 <ConfirmableAction Title="Delete"
                                                                    Icon="far fa-trash-alt"
-                                                                   OnConfirm="@(() => DeleteRing(ring.Name))"
-                                                                   ConfirmTitle="Delete Ring"
-                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{ring.Name}' ring?")" />
+                                                                   OnConfirm="@(() => DeleteDeployment(deployment.Name))"
+                                                                   ConfirmTitle="Delete Deployment"
+                                                                   ConfirmDescription="@($"Are you sure you want to delete the '{deployment.Name}' deployment?")" />
                                             }
                                         </td>
                                     </Permission>
@@ -209,21 +191,21 @@
     </ModalFooter>
 </Modal>
 
-<Modal Title="New Ring" Show="showNewRingModal" OnClose="CloseNewRingModal">
+<Modal Title="New Deployment" Show="showNewDeploymentModal" OnClose="CloseNewDeploymentModal">
     <ModalBody>
-        <EditForm EditContext="@newRingEditContext">
+        <EditForm EditContext="@newDeploymentEditContext">
             <FluentValidationValidator />
             <ValidationSummary />
 
             <div class="form-group">
-                <label for="ring-name">Name</label>
-                <InputText id="ring-name" class="form-control" @bind-Value="newRingModel.Name" placeholder="Enter ring name" />
+                <label for="deployment-name">Name</label>
+                <InputText id="deployment-name" class="form-control" @bind-Value="newDeploymentModel.Name" placeholder="Enter deployment name" />
             </div>
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseNewRingModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @onclick="AddNewRing" disabled="@newRingFormInvalid">Save changes</button>
+        <button type="button" class="btn btn-default" @onclick="CloseNewDeploymentModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @onclick="AddNewDeployment" disabled="@newDeploymentFormInvalid">Save changes</button>
     </ModalFooter>
 </Modal>
 
@@ -239,16 +221,16 @@
     private PaginatedTable<ListFeatureResponseDetail> featuresTable;
 
     //Rings form parameters
-    private bool showNewRingModal = false;
-    private bool newRingFormInvalid = true;
-    private AddRingRequest newRingModel;
-    private EditContext newRingEditContext;
-    private SingleTable<DetailsProductResponse> ringTable;
+    private bool showNewDeploymentModal = false;
+    private bool newDeploymentFormInvalid = true;
+    private AddDeploymentRequest newDeploymentModel;
+    private EditContext newDeploymentEditContext;
+    private SingleTable<DetailsProductResponse> deploymentTable;
 
     protected override void OnInitialized()
     {
         InitFeatureModel();
-        InitRingModel();
+        InitDeploymentModel();
 
         esquioState.SetBreadcrumb(
             new BreadcrumbItemViewModel { Title = "Home", Link = "#" },
@@ -290,58 +272,6 @@
     private Task<PaginatedResult<ListFeatureResponseDetail>> FeatureLoader(int pageIndex, int pageCount)
     {
         return esquioHttpClient.GetProductFeaturesList(ProductName, pageIndex, pageCount);
-    }
-
-    private async Task ToggleFeature(ListFeatureResponseDetail feature)
-    {
-        var request = new UpdateFeatureRequest
-        {
-            Name = feature.Name,
-            Description = feature.Description,
-            Enabled = !feature.Enabled
-        };
-
-        var result = await esquioHttpClient.ToggleFeature(ProductName, feature.Name, request);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Toggle Feature", "Feature successfully toggled!");
-        }
-        else
-        {
-            notifications.Error("Toggle Feature", "Error toggling the feature");
-        }
-    }
-
-    private async Task RolloutFeature(string featureName)
-    {
-        var result = await esquioHttpClient.RolloutFeature(ProductName, featureName);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Rollout Feature", "Feature successfully rolled-out!");
-        }
-        else
-        {
-            notifications.Error("Rollout Feature", "Error rolling-out the feature");
-        }
-    }
-
-    private async Task RolloffFeature(string featureName)
-    {
-        var result = await esquioHttpClient.RollbackFeature(ProductName, featureName);
-        await featuresTable.Reload();
-
-        if (result)
-        {
-            notifications.Success("Rollback Feature", "Feature successfully rolled-back!");
-        }
-        else
-        {
-            notifications.Error("Rollback Feature", "Error rolling-back the feature");
-        }
     }
 
     private async Task ArchiveFeature(string featureName)
@@ -392,68 +322,68 @@
         }
     }
 
-    private void InitRingModel()
+    private void InitDeploymentModel()
     {
-        newRingFormInvalid = true;
+        newDeploymentFormInvalid = true;
 
-        newRingModel = new AddRingRequest();
-        newRingEditContext = new EditContext(newRingModel);
-        newRingEditContext.OnValidationStateChanged += OnAddRingValidationChanged;
+        newDeploymentModel = new AddDeploymentRequest();
+        newDeploymentEditContext = new EditContext(newDeploymentModel);
+        newDeploymentEditContext.OnValidationStateChanged += OnAddRingValidationChanged;
 
     }
 
     private void OnAddRingValidationChanged(object sender, ValidationStateChangedEventArgs args)
     {
-        newRingFormInvalid = !newRingEditContext.IsValid();
+        newDeploymentFormInvalid = !newDeploymentEditContext.IsValid();
         StateHasChanged();
     }
 
-    private void OpenNewRingModal()
+    private void OpenNewDeploymentModal()
     {
-        showNewRingModal = true;
-        InitRingModel();
+        showNewDeploymentModal = true;
+        InitDeploymentModel();
 
-        esquioState.SetWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewDeploymentModal);
     }
 
-    private void CloseNewRingModal()
+    private void CloseNewDeploymentModal()
     {
-        showNewRingModal = false;
-        newRingEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
+        showNewDeploymentModal = false;
+        newDeploymentEditContext.OnValidationStateChanged -= OnAddRingValidationChanged;
 
-        esquioState.SetWindowModal(showNewRingModal);
+        esquioState.SetWindowModal(showNewDeploymentModal);
     }
 
-    private Task<DetailsProductResponse> RingsLoader()
+    private Task<DetailsProductResponse> DeploymentsLoader()
     {
         return esquioHttpClient.GetProduct(ProductName);
     }
 
-    private async Task AddNewRing()
+    private async Task AddNewDeployment()
     {
-        var result = await esquioHttpClient.AddProductRing(ProductName, newRingModel);
-        await ringTable.OnAdd();
+        var result = await esquioHttpClient.AddProductDeployment(ProductName, newDeploymentModel);
+        await deploymentTable.OnAdd();
 
-        CloseNewRingModal();
-        InitRingModel();
+        CloseNewDeploymentModal();
+        InitDeploymentModel();
 
         if (result)
         {
-            notifications.Success("Add Product Ring", "Product ring successfully added!");
+            notifications.Success("Add Product Deployment", "Product deployment successfully added!");
         }
         else
         {
-            notifications.Error("Add Product Ring", "Error adding the product ring");
+            notifications.Error("Add Product Deployment", "Error adding the product deplyment");
         }
     }
 
-    private async Task DeleteRing(string ringName)
+    private async Task DeleteDeployment(string deploymentName)
     {
-        var result = await esquioHttpClient.DeleteProductRing(ProductName, ringName);
-        await ringTable.OnDelete();
+        var result = await esquioHttpClient.DeleteProductDeployment(ProductName, deploymentName);
+        await deploymentTable.OnDelete();
 
-        CloseNewRingModal();
-        InitRingModel();
+        CloseNewDeploymentModal();
+        InitDeploymentModel();
 
         if (result)
         {
@@ -509,8 +439,7 @@
         new UpdateFeatureRequest
         {
             Name = featureName,
-            Description = featureDescription,
-            Enabled = feature.Enabled
+            Description = featureDescription
         });
 
         if (result)

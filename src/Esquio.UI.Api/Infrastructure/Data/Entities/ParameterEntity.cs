@@ -14,13 +14,13 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
 
         public string Value { get; set; }
 
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
 
-        public ParameterEntity(int toggleEntityId, string ringName,string name, string value)
+        public ParameterEntity(int toggleEntityId, string deploymentName,string name, string value)
         {
             ToggleEntityId = toggleEntityId;
-            RingName = ringName ?? throw new ArgumentNullException(nameof(ringName));
+            DeploymentName = deploymentName ?? throw new ArgumentNullException(nameof(deploymentName));
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Value = value ?? throw new ArgumentNullException(nameof(value));
         }

@@ -23,7 +23,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             Parameters = new List<ParameterEntity>();
         }
 
-        public void AddOrUpdateParameter(RingEntity currentRing, RingEntity defaultRing, string parameterName, string value)
+        public void AddOrUpdateParameter(DeploymentEntity currentRing, DeploymentEntity defaultDeployment, string parameterName, string value)
         {
             if (currentRing.ByDefault)
             {
@@ -31,37 +31,37 @@ namespace Esquio.UI.Api.Infrastructure.Data.Entities
             }
             else
             {
-                if (!HasParameter(defaultRing, parameterName))
+                if (!HasParameter(defaultDeployment, parameterName))
                 {
-                    AddOrUpdateParameter(defaultRing, parameterName, value);
+                    AddOrUpdateParameter(defaultDeployment, parameterName, value);
                 }
 
                 AddOrUpdateParameter(currentRing, parameterName, value);
             }
         }
 
-        void AddOrUpdateParameter(RingEntity ring, string parameterName, string value)
+        void AddOrUpdateParameter(DeploymentEntity deployment, string parameterName, string value)
         {
             var parameter = this.Parameters
-                .Where(p => p.Name == parameterName && p.RingName == ring.Name)
+                .Where(p => p.Name == parameterName && p.DeploymentName == deployment.Name)
                 .SingleOrDefault();
 
             if (parameter != null)
             {
                 parameter.Value = value;
-                parameter.RingName = ring.Name;
+                parameter.DeploymentName = deployment.Name;
             }
             else
             {
                 this.Parameters.Add(
-                    new ParameterEntity(Id, ring.Name, parameterName, value));
+                    new ParameterEntity(Id, deployment.Name, parameterName, value));
             }
         }
 
-        bool HasParameter(RingEntity ring, string parameterName)
+        bool HasParameter(DeploymentEntity deployment, string parameterName)
         {
             return this.Parameters
-                .Where(p => p.Name == parameterName && p.RingName == ring.Name)
+                .Where(p => p.Name == parameterName && p.DeploymentName == deployment.Name)
                 .Any();
         }
     }

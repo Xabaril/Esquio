@@ -27,9 +27,9 @@ namespace Esquio.UI.Api.Scenarios.Store
         [Route("product/{productName}/feature/{featureName}")]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(DetailsConfigurationResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<DetailsConfigurationResponse>> Get([FromRoute]DetailsConfigurationRequest request, [FromQuery] string ring, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<DetailsConfigurationResponse>> Get([FromRoute]DetailsConfigurationRequest request, [FromQuery] string deployment, CancellationToken cancellationToken = default)
         {
-            request.RingName = ring;
+            request.DeploymentName = deployment;
 
             var feature = await _mediator.Send(request, cancellationToken);
 

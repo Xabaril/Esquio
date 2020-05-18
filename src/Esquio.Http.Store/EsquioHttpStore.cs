@@ -29,21 +29,21 @@ namespace Esquio.Http.Store
             _options = options.Value;
         }
 
-        public async Task<Feature> FindFeatureAsync(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
+        public async Task<Feature> FindFeatureAsync(string featureName, string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
             _ = featureName ?? throw new ArgumentNullException(nameof(featureName));
             _ = productName ?? throw new ArgumentNullException(nameof(productName));
-            _ = ringName ?? throw new ArgumentNullException(nameof(ringName));
+            _ = deploymentName ?? throw new ArgumentNullException(nameof(deploymentName));
 
-            _diagnostics.FindFeature(featureName, productName, ringName);
+            _diagnostics.FindFeature(featureName, productName, deploymentName);
 
-            var featureConfiguration = await GetFeatureConfiguration(featureName, productName, ringName);
+            var featureConfiguration = await GetFeatureConfiguration(featureName, productName, deploymentName);
 
             return featureConfiguration?
                 .ToFeature();
         }
 
-        private async Task<string> GetFeatureConfiguration(string featureName, string productName, string ringName, CancellationToken cancellationToken = default)
+        private async Task<string> GetFeatureConfiguration(string featureName, string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
             if (_options.CacheEnabled)
             {
@@ -53,7 +53,7 @@ namespace Esquio.Http.Store
                     throw new InvalidOperationException("HttpStore is configured with CacheEnabled = true but IDistributedCache is not registered.");
                 }
 
-                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, ringName, "3.0");
+                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, deploymentName, "3.0");
 
                 var featureConfiguration = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
@@ -61,15 +61,15 @@ namespace Esquio.Http.Store
 
                 if (featureConfiguration != null)
                 {
-                    _diagnostics.FeatureExistOnCache(cacheKey);
+                    _diagnostics.FeatureIsOnCache(cacheKey);
 
                     return featureConfiguration;
                 }
                 else
                 {
-                    _diagnostics.FeatureNotExist(featureName, productName, ringName);
+                    _diagnostics.FeatureIsNotOnCache(cacheKey);
 
-                    featureConfiguration = await GetFeatureFromServer(productName, featureName, ringName, cancellationToken);
+                    featureConfiguration = await GetFeatureFromServer(productName, featureName, deploymentName, cancellationToken);
 
                     if (featureConfiguration != null)
                     {
@@ -85,19 +85,19 @@ namespace Esquio.Http.Store
             }
             else
             {
-                return await GetFeatureFromServer(productName, featureName, ringName, cancellationToken);
+                return await GetFeatureFromServer(productName, featureName, deploymentName, cancellationToken);
             }
         }
 
-        private async Task<string> GetFeatureFromServer(string productName, string featureName, string ringName, CancellationToken cancellationToken = default)
+        private async Task<string> GetFeatureFromServer(string productName, string featureName, string deploymentName, CancellationToken cancellationToken = default)
         {
-            _diagnostics.GetFeatureFromStore(featureName, productName, ringName);
+            _diagnostics.GetFeatureFromStore(featureName, productName, deploymentName);
 
             var httpClient = _httpClientFactory
                    .CreateClient(EsquioConstants.ESQUIO);
 
             var response = await httpClient
-                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?ringName={ringName}&api-version=3.0", cancellationToken);
+                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?deployment={deploymentName}&api-version=3.0", cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
@@ -105,7 +105,7 @@ namespace Esquio.Http.Store
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                _diagnostics.FeatureNotExist(featureName, productName, ringName);
+                _diagnostics.FeatureNotExist(featureName, productName, deploymentName);
                 return null;
             }
             else
@@ -118,7 +118,7 @@ namespace Esquio.Http.Store
 
     internal static class CacheKeyCreator
     {
-        public static string GetCacheKey(string productName, string featureName, string ringName, string version)
-            => $"esquio:{version}:product:{productName}:ring:{ringName}:feature:{featureName}";
+        public static string GetCacheKey(string productName, string featureName, string deploymentName, string version)
+            => $"esquio:{version}:product:{productName}:deployment:{deploymentName}:feature:{featureName}";
     }
 }

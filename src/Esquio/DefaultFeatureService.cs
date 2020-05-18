@@ -34,7 +34,7 @@ namespace Esquio
         {
             var enabled = true;
             var correlationId = Guid.NewGuid();
-            var ringName = _options.DefaultRingName;
+            var deploymentName = _options.DefaultDeploymentName;
             var productName = _options.DefaultProductName;
 
             try
@@ -43,7 +43,7 @@ namespace Esquio
                     &&
                     await _session.TryGetAsync(featureName, out var sessionResult))
                 {
-                    _diagnostics.FeatureEvaluationFromSession(featureName, productName, ringName);
+                    _diagnostics.FeatureEvaluationFromSession(featureName, productName, deploymentName);
                     enabled = sessionResult;
                 }
                 else
@@ -51,7 +51,7 @@ namespace Esquio
                     // if evaluation session is not enabled ( true by default ) or this product/feature combination
                     // is not on the session store, evaluate it again!
 
-                    enabled = await GetRuntimeEvaluationResult(featureName, productName, ringName, correlationId, cancellationToken);
+                    enabled = await GetRuntimeEvaluationResult(featureName, productName, deploymentName, correlationId, cancellationToken);
                     if (_options.ScopedEvaluationEnabled)
                     {
                         // if session is enabled, set product/feature on the store to be reused
@@ -63,7 +63,7 @@ namespace Esquio
             }
             catch (Exception exception)
             {
-                _diagnostics.FeatureEvaluationThrow(correlationId, featureName, productName, ringName, exception);
+                _diagnostics.FeatureEvaluationThrow(correlationId, featureName, productName, deploymentName, exception);
 
                 if (_options.OnErrorBehavior == OnErrorBehavior.Throw)
                 {
@@ -74,25 +74,25 @@ namespace Esquio
             }
         }
 
-        private async Task<bool> GetRuntimeEvaluationResult(string featureName, string productName, string ringName, Guid correlationId, CancellationToken cancellationToken = default)
+        private async Task<bool> GetRuntimeEvaluationResult(string featureName, string productName, string deploymentName, Guid correlationId, CancellationToken cancellationToken = default)
         {
             var totalTime = ValueStopwatch.StartNew();
             var enabled = true;
 
-            _diagnostics.BeginFeatureEvaluation(correlationId, featureName, productName, ringName);
+            _diagnostics.BeginFeatureEvaluation(correlationId, featureName, productName, deploymentName);
 
             var feature = await _featureStore
-                .FindFeatureAsync(featureName, productName, ringName, cancellationToken);
+                .FindFeatureAsync(featureName, productName, deploymentName, cancellationToken);
 
             if (feature == null)
             {
-                _diagnostics.FeatureEvaluationNotFound(correlationId, featureName, productName, ringName);
+                _diagnostics.FeatureEvaluationNotFound(correlationId, featureName, productName, deploymentName);
                 return _options.NotFoundBehavior == NotFoundBehavior.SetEnabled;
             }
 
             if (!feature.IsEnabled)
             {
-                _diagnostics.FeatureEvaluationDisabled(featureName, productName, ringName);
+                _diagnostics.FeatureEvaluationDisabled(featureName, productName, deploymentName);
                 enabled = false;
             }
             else
@@ -103,7 +103,7 @@ namespace Esquio
                 {
                     var toggleCorrelationId = Guid.NewGuid();
 
-                    _diagnostics.BeginTogglevaluation(toggleCorrelationId, featureName, productName, ringName, toggle.Type);
+                    _diagnostics.BeginTogglevaluation(toggleCorrelationId, featureName, productName, deploymentName, toggle.Type);
 
                     var active = false;
                     var evaluationTime = ValueStopwatch.StartNew();
@@ -114,16 +114,16 @@ namespace Esquio
                     if (toggleInstance != null)
                     {
                         active = await toggleInstance.IsActiveAsync(
-                            ToggleExecutionContext.FromToggle(featureName, productName, ringName, toggle),
+                            ToggleExecutionContext.FromToggle(featureName, productName, deploymentName, toggle),
                             cancellationToken);
                     }
 
-                    _diagnostics.Togglevaluation(featureName, productName, ringName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
-                    _diagnostics.EndTogglevaluation(toggleCorrelationId, featureName, productName, ringName, toggle.Type, active);
+                    _diagnostics.Togglevaluation(featureName, productName, deploymentName, toggle.Type, (long)evaluationTime.GetElapsedTime().TotalMilliseconds);
+                    _diagnostics.EndTogglevaluation(toggleCorrelationId, featureName, productName, deploymentName, toggle.Type, active);
 
                     if (!active)
                     {
-                        _diagnostics.ToggleNotActive(featureName, productName, ringName, toggle.Type);
+                        _diagnostics.ToggleNotActive(featureName, productName, deploymentName, toggle.Type);
 
                         enabled = false;
                         break;
@@ -131,7 +131,7 @@ namespace Esquio
                 }
             }
 
-            _diagnostics.EndFeatureEvaluation(correlationId, featureName, productName, ringName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
+            _diagnostics.EndFeatureEvaluation(correlationId, featureName, productName, deploymentName, (long)totalTime.GetElapsedTime().TotalMilliseconds, enabled);
             return enabled;
         }
     }

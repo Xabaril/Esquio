@@ -8,6 +8,7 @@
 @inject IPolicyBuilder policyBuilder
 @inject EsquioState esquioState
 @inject IEsquioHttpClient esquioHttpClient
+@inject ILogger<Authentication> logger
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed" OnLogOutSucceeded="OnUserLogedout">
 </RemoteAuthenticatorView>
@@ -45,7 +46,7 @@
 
         if (my != null)
         {
-            Log.Warning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
+            logger.LogWarning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
 
             var authenticationState =  await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
@@ -64,7 +65,7 @@
         }
         else
         {
-            Log.Warning("User is not allowed to use Esquio App because subject is not configured.");
+            logger.LogWarning("User is not allowed to use Esquio App because subject is not configured.");
 
             notAllowed();
         }

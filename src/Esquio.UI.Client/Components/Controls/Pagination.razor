@@ -27,33 +27,94 @@
 else
 {
     <ul class="pagination pagination-sm float-right">
-        <li class="page-item@(CurrentPage == 0 ? " disabled" : "")">
+        <li class="page-item@(FirstClass())">
             <a class="page-link"
                href="#"
+               title="First"
+               style="user-select: none;"
                @onclick="OnFirst"
                @onclick:preventDefault>
-                «
+                &lt;
             </a>
         </li>
-        @for (int i = 1; i <= TotalPages; i++)
-        {
-            // See: https://github.com/dotnet/aspnetcore/issues/16809
-            var index = i - 1;
-            <li class="page-item">
-                <a class="page-link"
-                   href="#"
-                   @onclick="@(() => OnPageClick(index))"
-                   @onclick:preventDefault>
-                    @i
-                </a>
-            </li>
-        }
-        <li class="page-item@(TotalPages == CurrentPage + 1 ? " disabled" : "")">
+        <li class="page-item@(FirstClass())">
             <a class="page-link"
                href="#"
+               title="Previous"
+               style="user-select: none;"
+               @onclick="@(() => OnPageClick(CurrentPage - 1))"
+               @onclick:preventDefault>
+                &laquo;
+            </a>
+        </li>
+        @if (false)
+        {
+            // Use of local variables in for loops because of closures
+            // See: https://github.com/dotnet/aspnetcore/issues/16809
+        }
+        @if (TotalPages < VISIBLE_PAGES)
+        {
+            @for (int i = 1; i <= TotalPages; i++)
+            {
+                var index = i - 1;
+                <PaginationItem Page="@i"
+                                CurrentPage="@CurrentPage"
+                                OnClick="@(() => OnPageClick(index))" />
+            }
+        }
+        else
+        {
+            if (TotalPages - CurrentPage > VISIBLE_PAGES)
+            {
+                @for (int i = CurrentPage + 1; i <= CurrentPage + (VISIBLE_PAGES / 2); i++)
+                {
+                    var index = i - 1;
+                    <PaginationItem Page="@i"
+                                    CurrentPage="@CurrentPage"
+                                    OnClick="@(() => OnPageClick(index))" />
+                }
+                <li class="page-item">
+                    <a class="page-link" style="vertical-align: bottom;">
+                        &#8230;
+                    </a>
+                </li>
+                @for (int i = TotalPages - ((VISIBLE_PAGES / 2) - 1); i <= TotalPages; i++)
+                {
+                    var index = i - 1;
+                    <PaginationItem Page="@i"
+                                    CurrentPage="@CurrentPage"
+                                    OnClick="@(() => OnPageClick(index))" />
+                }
+            }
+            else
+            {
+                @for (int i = TotalPages - (VISIBLE_PAGES - 1); i <= TotalPages; i++)
+                {
+                    var index = i - 1;
+                    <PaginationItem Page="@i"
+                                    CurrentPage="@CurrentPage"
+                                    OnClick="@(() => OnPageClick(index))" />
+                }
+            }
+        }
+        <li class="page-item@(LastClass())">
+            <a class="page-link"
+               href="#"
+               title="Next"
+               style="user-select: none;"
+               @onclick="@(() => OnPageClick(CurrentPage + 1))"
+               @onclick:preventDefault>
+                &raquo;
+            </a>
+        </li>
+        <li class="page-item@(LastClass())">
+            <a class="page-link"
+               href="#"
+               title="Last"
+               style="user-select: none;"
                @onclick="OnLast"
                @onclick:preventDefault>
-                »
+                &gt;
             </a>
         </li>
     </ul>
@@ -67,5 +128,10 @@ else
     [Parameter] public EventCallback OnLast { get; set; }
     [Parameter] public EventCallback<int> OnPage { get; set; }
 
+    private const int VISIBLE_PAGES = 6;
+
     private Task OnPageClick(int page) => OnPage.InvokeAsync(page);
+    private string FirstClass() => DisabledClass(CurrentPage == 0);
+    private string LastClass() => DisabledClass(TotalPages == CurrentPage + 1);
+    private string DisabledClass(bool value) => value ? " disabled" : string.Empty;
 }

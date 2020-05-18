@@ -17,10 +17,10 @@ namespace Esquio.UI.Api.Shared.Models.Toggles.Add
                .MinimumLength(5)
                .MaximumLength(200);
 
-            RuleFor(x => x.RingName)
+            RuleFor(x => x.DeploymentName)
                .MinimumLength(5)
                .MaximumLength(200)
-               .When(r=>!string.IsNullOrEmpty(r.RingName));
+               .When(r=>!string.IsNullOrEmpty(r.DeploymentName));
 
             this.RuleFor(pr => pr.ToggleType)
                 .NotEmpty();

@@ -8,8 +8,6 @@ namespace Esquio.UI.Api.Shared.Models.Features.Details
 
         public string Description { get; set; }
 
-        public bool Enabled { get; set; }
-
         public List<ToggleDetail> Toggles { get; set; }
     }
 

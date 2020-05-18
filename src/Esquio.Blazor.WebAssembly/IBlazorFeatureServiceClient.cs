@@ -10,11 +10,22 @@ using System.Threading.Tasks;
 
 namespace Esquio.Blazor.WebAssembly
 {
+    /// <summary>
+    /// The blazor service client.
+    /// </summary>
     public interface IBlazorFeatureServiceClient
     {
+        /// <summary>
+        /// Check if the feature is enabled.
+        /// </summary>
+        /// <param name="featureName">The feature name to use.</param>
+        /// <returns>A Task{bool} that complete when service finished, yielding True if feature <paramref name="featureName"/> is enabled on application.</returns>
         Task<bool> IsEnabledAsync(string featureName);
     }
 
+    /// <summary>
+    /// Default blazor feature service client.
+    /// </summary>
     public class BlazorFeatureServiceClient
         : IBlazorFeatureServiceClient
     {
@@ -22,6 +33,12 @@ namespace Esquio.Blazor.WebAssembly
         private readonly IOptions<BlazorFeatureServiceOptions> _options;
         private readonly ILogger<BlazorFeatureServiceClient> _logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="httpClient">The http client to use.</param>
+        /// <param name="options">Default Blazor feature service options.</param>
+        /// <param name="logger">The logger to use.</param>
         public BlazorFeatureServiceClient(HttpClient httpClient, IOptions<BlazorFeatureServiceOptions> options, ILogger<BlazorFeatureServiceClient> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
@@ -29,6 +46,7 @@ namespace Esquio.Blazor.WebAssembly
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        ///<inheritdoc/>
         public async Task<bool> IsEnabledAsync(string featureName)
         {
             try

@@ -22,9 +22,9 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Builders
             return this;
         }
 
-        public ParameterEntityBuilder WithRingName(string ringName)
+        public ParameterEntityBuilder WithRingName(string deploymentName)
         {
-            _ringName = ringName;
+            _ringName = deploymentName;
             return this;
         }
         public ParameterEntityBuilder WithToggle(ToggleEntity toggle)

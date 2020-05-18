@@ -3,9 +3,11 @@ using System;
 
 namespace Esquio.AspNetCore.Diagnostics
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class EsquioAspNetCoreDiagnostics
     {
         private readonly ILogger _logger;
+
 
         public EsquioAspNetCoreDiagnostics(ILoggerFactory loggerFactory)
         {
@@ -62,4 +64,5 @@ namespace Esquio.AspNetCore.Diagnostics
             Log.EsquioMiddlewareSuccess(_logger);
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

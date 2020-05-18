@@ -144,7 +144,6 @@
     [Parameter] public string FeatureName { get; set; }
 
     private string selectedRing;
-    private string selectedAssembly;
     private bool showAddToggleModal = false;
     private KnownTypesToggleResponse knownTypes;
     private RevealToggleResponse revealedToggle;
@@ -230,7 +229,7 @@
         {
             ProductName = ProductName,
             FeatureName = FeatureName,
-            RingName = selectedRing,
+            DeploymentName = selectedRing,
             ToggleType = selectedToggle.Type,
             Parameters = parameters
                 .Values

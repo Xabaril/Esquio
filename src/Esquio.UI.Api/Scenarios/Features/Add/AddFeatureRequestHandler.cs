@@ -39,7 +39,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Add
 
                 if (existingFeature == null)
                 {
-                    var feature = new FeatureEntity(product.Id, request.Name, request.Enabled, request.Archived, request.Description);
+                    var feature = new FeatureEntity(product.Id, request.Name, request.Archived, request.Description);
                     _storeDbContext.Add(feature);
 
                     await _storeDbContext.SaveChangesAsync(cancellationToken);

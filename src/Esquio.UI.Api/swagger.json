@@ -425,7 +425,7 @@
         }
       }
     },
-    "/api/products/{productName}/features/{featureName}/rollout": {
+    "/api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollout": {
       "put": {
         "tags": [
           "Features"
@@ -435,6 +435,13 @@
           {
             "type": "string",
             "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -467,7 +474,7 @@
         }
       }
     },
-    "/api/products/{productName}/features/{featureName}/rollback": {
+    "/api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollback": {
       "put": {
         "tags": [
           "Features"
@@ -477,6 +484,13 @@
           {
             "type": "string",
             "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -536,6 +550,52 @@
             "description": ""
           },
           "403": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/products/{productName}/features/{featureName}/state": {
+      "get": {
+        "tags": [
+          "Features"
+        ],
+        "operationId": "Features_GetState",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "featureName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/StateFeatureResponse"
+            }
+          },
+          "404": {
             "description": ""
           },
           "400": {
@@ -930,12 +990,12 @@
         }
       }
     },
-    "/api/Products/{productName}/ring/{ringName}": {
+    "/api/Products/{productName}/deployment/{deploymentName}": {
       "delete": {
         "tags": [
           "Products"
         ],
-        "operationId": "Products_DeleteRing",
+        "operationId": "Products_DeleteDeployment",
         "parameters": [
           {
             "type": "string",
@@ -946,7 +1006,7 @@
           },
           {
             "type": "string",
-            "name": "ringName",
+            "name": "deploymentName",
             "in": "path",
             "required": true,
             "x-nullable": false
@@ -965,12 +1025,12 @@
         }
       }
     },
-    "/api/Products/{productName}/ring": {
+    "/api/Products/{productName}/deployment": {
       "post": {
         "tags": [
           "Products"
         ],
-        "operationId": "Products_AddRing",
+        "operationId": "Products_AddDeployment",
         "parameters": [
           {
             "type": "string",
@@ -984,7 +1044,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AddRingRequest"
+              "$ref": "#/definitions/AddDeploymentRequest"
             },
             "x-nullable": true
           }
@@ -1080,7 +1140,7 @@
           },
           {
             "type": "string",
-            "name": "ring",
+            "name": "deployment",
             "in": "query",
             "required": true,
             "x-nullable": true
@@ -1628,7 +1688,6 @@
     "AddFeatureRequest": {
       "type": "object",
       "required": [
-        "enabled",
         "archived"
       ],
       "properties": {
@@ -1638,9 +1697,6 @@
         "description": {
           "type": "string"
         },
-        "enabled": {
-          "type": "boolean"
-        },
         "archived": {
           "type": "boolean"
         }
@@ -1648,35 +1704,23 @@
     },
     "UpdateFeatureRequest": {
       "type": "object",
-      "required": [
-        "enabled"
-      ],
       "properties": {
         "name": {
           "type": "string"
         },
         "description": {
           "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
         }
       }
     },
     "DetailsFeatureResponse": {
       "type": "object",
-      "required": [
-        "enabled"
-      ],
       "properties": {
         "name": {
           "type": "string"
         },
         "description": {
           "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
         },
         "toggles": {
           "type": "array",
@@ -1711,6 +1755,35 @@
         },
         "value": {
           "type": "string"
+        }
+      }
+    },
+    "StateFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StateFeatureResponseDetail"
+          }
+        }
+      }
+    },
+    "StateFeatureResponseDetail": {
+      "type": "object",
+      "required": [
+        "default",
+        "enabled"
+      ],
+      "properties": {
+        "deploymentName": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
         }
       }
     },
@@ -1893,15 +1966,15 @@
         "description": {
           "type": "string"
         },
-        "rings": {
+        "deployments": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/RingResponseDetail"
+            "$ref": "#/definitions/DeploymentResponseDetail"
           }
         }
       }
     },
-    "RingResponseDetail": {
+    "DeploymentResponseDetail": {
       "type": "object",
       "required": [
         "default"
@@ -1924,7 +1997,7 @@
         "description": {
           "type": "string"
         },
-        "defaultRingName": {
+        "defaultDeploymentName": {
           "type": "string"
         }
       }
@@ -1940,7 +2013,7 @@
         }
       }
     },
-    "AddRingRequest": {
+    "AddDeploymentRequest": {
       "type": "object",
       "properties": {
         "name": {
@@ -1976,9 +2049,6 @@
           "type": "string"
         },
         "featureName": {
-          "type": "string"
-        },
-        "ringName": {
           "type": "string"
         }
       }
@@ -2037,7 +2107,7 @@
         "value": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         }
       }
@@ -2114,7 +2184,7 @@
         "featureName": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         },
         "toggleType": {
@@ -2137,7 +2207,7 @@
         "featureName": {
           "type": "string"
         },
-        "ringName": {
+        "deploymentName": {
           "type": "string"
         },
         "toggleType": {

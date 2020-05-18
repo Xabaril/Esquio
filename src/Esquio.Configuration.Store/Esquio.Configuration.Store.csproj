@@ -8,6 +8,7 @@
     <PackageId>Esquio.Configuration.Store</PackageId>
     <PackageVersion>$(esquioconfigurationstore)</PackageVersion>
     <LangVersion>$(LangVersion)</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

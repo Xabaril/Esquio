@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Shared.Models.Features.Rollback;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,19 +27,35 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
         {
             var feature = await _storeDbContext
                 .Features
-                .Include(f => f.ProductEntity) //-> this is only needed for "history"
+                .Include(f => f.ProductEntity)  // -> this is only needed for "history"
                 .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
                 .Include(f => f.Toggles)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (feature != null)
+            var deployment = await _storeDbContext
+                .Deployments
+                .Include(r => r.ProductEntity)
+                .Where(r => r.Name == request.DeploymentName && r.ProductEntity.Name == request.ProductName)
+                .SingleOrDefaultAsync();
+
+            if (feature != null && deployment != null)
             {
-                feature.Enabled = false;
+                var currentState = await _storeDbContext.FeatureStates
+                    .Where(fs => fs.FeatureEntityId == feature.Id && fs.DeploymentEntityId == deployment.Id)
+                    .SingleOrDefaultAsync();
 
-                if (feature.Toggles.Any())
+                if (currentState != null)
                 {
-                    feature.Toggles.Clear();
-
+                    currentState.Enabled = false;
+                }
+                else
+                {
+                    _storeDbContext.FeatureStates.Add(new FeatureStateEntity()
+                    {
+                        DeploymentEntityId = deployment.Id,
+                        FeatureEntityId = feature.Id,
+                        Enabled = false
+                    });
                 }
 
                 await _storeDbContext.SaveChangesAsync(cancellationToken);
@@ -46,7 +63,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Rollback
             }
 
             Log.FeatureNotExist(_logger, request.FeatureName.ToString());
-            throw new InvalidOperationException("Feature does not exist in the store.");
+            throw new InvalidOperationException("Operation can't be performed because the combination feature product and deployment are not valid on this store.");
         }
     }
 }

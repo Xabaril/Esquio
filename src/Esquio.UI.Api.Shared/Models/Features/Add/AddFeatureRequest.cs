@@ -10,8 +10,6 @@ namespace Esquio.UI.Api.Shared.Models.Features.Add
 
         public string Description { get; set; }
 
-        public bool Enabled { get; set; }
-
         public bool Archived { get; set; }
     }
 }

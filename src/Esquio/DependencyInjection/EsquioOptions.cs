@@ -29,19 +29,18 @@ namespace Esquio.DependencyInjection
             return this;
         }
 
-        internal string DefaultRingName = EsquioConstants.DEFAULT_RING_NAME;
+        internal string DefaultDeploymentName = EsquioConstants.DEFAULT_DEPLOYMENT_NAME;
 
         /// <summary>
-        /// Configure default ring name to be used
+        /// Configure default deployment name to be used
         /// </summary>
-        /// <param name="ringName">The ring name to be used.</param>
+        /// <param name="deploymentName">The deployment name to be used.</param>
         /// <returns></returns>
-        public EsquioOptions ConfigureDefaultRingName(string ringName)
+        public EsquioOptions ConfigureDefaultDeploymentName(string deploymentName)
         {
-            DefaultRingName = ringName ?? throw new ArgumentNullException(nameof(ringName));
+            DefaultDeploymentName = deploymentName ?? throw new ArgumentNullException(nameof(deploymentName));
             return this;
         }
-
 
         internal OnErrorBehavior OnErrorBehavior { get; set; } = OnErrorBehavior.SetDisabled;
 
@@ -95,7 +94,6 @@ namespace Esquio.DependencyInjection
         /// <summary>
         /// Register custom <see cref="Esquio.Abstractions.IToggle"/> defined in assembly on wich <param name="type"/> is defined.
         /// </summary>
-        /// <param name="type">The type defined on assembly to be added.</param>
         /// <returns>The same configuration to be chained.</returns>
         public EsquioOptions RegisterTogglesFromAssemblyContaining(Type type)
         {

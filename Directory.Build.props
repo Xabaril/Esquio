@@ -1,13 +1,10 @@
 ﻿<Project>
   <Import Project="build/dependencies.props" />
-
-  <!-- Disable Sourcelink on non Windows machines due to a bug -->
-  <!-- https://github.com/dotnet/sourcelink/issues/119 -->
-  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-    <EnableSourceLink>false</EnableSourceLink>
-    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
   <ItemGroup>
+   <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
 	 <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(microsoftsourcelinkgithub)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

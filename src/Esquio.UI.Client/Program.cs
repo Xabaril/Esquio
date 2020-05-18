@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -15,27 +15,20 @@ namespace Esquio.UI.Client
     {
         public static async Task Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-               .MinimumLevel.Warning()
-               .WriteTo.BrowserConsole()
-               .CreateLogger();
-
-            try
-            {
-                await ConfigureHost(args).Build().RunAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "An exception is throwed when creating the WASM host!");
-            }
+            await ConfigureHost(args).Build().RunAsync();
         }
 
         static WebAssemblyHostBuilder ConfigureHost(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddHttpClient<IEsquioHttpClient,EsquioHttpClient>( client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+            builder.RootComponents
+                .Add<App>("app");
+
+            builder.Logging
+                .SetMinimumLevel(LogLevel.Warning);
+
+            builder.Services.AddHttpClient<IEsquioHttpClient, EsquioHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
             builder.Services.AddOidcAuthentication(options =>

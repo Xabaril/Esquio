@@ -5,6 +5,7 @@ using Esquio.UI.Api.Shared.Models.Audit.List;
 using Esquio.UI.Api.Shared.Models.Features.Add;
 using Esquio.UI.Api.Shared.Models.Features.Details;
 using Esquio.UI.Api.Shared.Models.Features.List;
+using Esquio.UI.Api.Shared.Models.Features.State;
 using Esquio.UI.Api.Shared.Models.Features.Update;
 using Esquio.UI.Api.Shared.Models.GitHub.Release;
 using Esquio.UI.Api.Shared.Models.Permissions.Add;
@@ -13,7 +14,7 @@ using Esquio.UI.Api.Shared.Models.Permissions.List;
 using Esquio.UI.Api.Shared.Models.Permissions.My;
 using Esquio.UI.Api.Shared.Models.Permissions.Update;
 using Esquio.UI.Api.Shared.Models.Products.Add;
-using Esquio.UI.Api.Shared.Models.Products.AddRing;
+using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
@@ -28,8 +29,9 @@ using Esquio.UI.Api.Shared.Models.Toggles.AddParameter;
 using Esquio.UI.Api.Shared.Models.Toggles.Details;
 using Esquio.UI.Api.Shared.Models.Toggles.KnownTypes;
 using Esquio.UI.Api.Shared.Models.Toggles.Reveal;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,15 +51,15 @@ namespace Esquio.UI.Client.Services
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
         Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
-        Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default);
-        Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default);
+        Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addRingRequest, CancellationToken cancellationToken = default);
+        Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default);
 
         //->features
         Task<PaginatedResult<ListFeatureResponseDetail>> GetProductFeaturesList(string productName, int? pageIndex, int? pageCount, CancellationToken cancellationToken = default);
         Task<DetailsFeatureResponse> GetFeatureDetails(string productName, string featureName, CancellationToken cancellationToken = default);
-        Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
-        Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default);
-        Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default);
+        Task<StateFeatureResponse> GetFeatureState(string productName, string featureName, CancellationToken cancellationToken = default);
+        Task<bool> RolloutFeature(string productName, string deploymentName, string featureName, CancellationToken cancellationToken = default);
+        Task<bool> RollbackFeature(string productName, string deploymentName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> ArchiveFeature(string productName, string featureName, CancellationToken cancellationToken = default);
         Task<bool> AddFeature(string productName, AddFeatureRequest addFeatureRequest, CancellationToken cancellationToken = default);
         Task<bool> UpdateFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default);
@@ -108,10 +110,12 @@ namespace Esquio.UI.Client.Services
         const string DEFAULT_CONTENT_TYPE = "application/json";
 
         private readonly HttpClient _httpClient;
+        private readonly ILogger<EsquioHttpClient> _logger;
 
-        public EsquioHttpClient(HttpClient httpClient) 
+        public EsquioHttpClient(HttpClient httpClient, ILogger<EsquioHttpClient> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<PaginatedResult<ListProductResponseDetail>> GetProductsList(int? pageIndex, int? pageCount, CancellationToken cancellationToken = default)
@@ -149,9 +153,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, "An exception is throwed when trying to get the products list from server.!");
+                    _logger.LogError(exception, "An exception is throwed when trying to get the products list from server.!");
                 }
 
                 return null;
@@ -179,9 +187,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the product {productName} from the server.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the product {productName} from the server.!");
                 }
 
                 return null;
@@ -209,9 +221,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
                 }
 
                 return false;
@@ -239,9 +255,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to update product {updateProductRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to update product {updateProductRequest}.!");
                 }
 
                 return false;
@@ -266,27 +286,31 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete product {productName}.!");
                 }
 
                 return false;
             }
         }
 
-        public async Task<bool> AddProductRing(string productName, AddRingRequest addRingRequest, CancellationToken cancellationToken = default)
+        public async Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addDeploymentRequest, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri($"api/products/{productName}/ring", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployment", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
                 try
                 {
-                    var content = JsonConvert.SerializeObject(addRingRequest);
+                    var content = JsonConvert.SerializeObject(addDeploymentRequest);
                     request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
 
                     var response = await _httpClient.SendAsync(request, cancellationToken);
@@ -296,21 +320,25 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add {addRingRequest} to product {productName}. !");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add {addDeploymentRequest} to product {productName}. !");
                 }
 
                 return false;
             }
         }
 
-        public async Task<bool> DeleteProductRing(string productName, string ringName, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Delete;
-                request.RequestUri = new Uri($"api/products/{productName}/ring/{ringName}", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployment/{deploymentName}", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -323,9 +351,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete ring {ringName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete deployment {deploymentName} on product {productName}.!");
                 }
 
                 return false;
@@ -366,9 +398,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get feature list on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get feature list on product {productName}.!");
                 }
 
                 return null;
@@ -396,29 +432,64 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
                 }
 
                 return null;
             }
         }
 
-        public async Task<bool> ToggleFeature(string productName, string featureName, UpdateFeatureRequest updateFeatureRequest, CancellationToken cancellationToken = default)
+        public async Task<StateFeatureResponse> GetFeatureState(string productName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
-                request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}", UriKind.RelativeOrAbsolute);
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/state", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
                 try
                 {
-                    var content = JsonConvert.SerializeObject(updateFeatureRequest);
-                    request.Content = new StringContent(content, Encoding.UTF8, "application/json"); ;
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+
+                        return JsonConvert.DeserializeObject<StateFeatureResponse>(
+                            content, new JsonSerializerSettings());
+                    }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception, $"An exception is throwed when trying to get state of {featureName} on product {productName}.!");
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> RolloutFeature(string productName, string deploymentName, string featureName, CancellationToken cancellationToken = default)
+        {
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Put;
+                request.RequestUri = new Uri($"api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
                     var response = await _httpClient.SendAsync(request, cancellationToken);
 
                     if (response.IsSuccessStatusCode)
@@ -426,20 +497,24 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to toggle feature {featureName} on product {productName} with data {updateFeatureRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to rolled out feature {featureName} on product {productName}.!");
                 }
 
                 return false;
             }
         }
-        public async Task<bool> RolloutFeature(string productName, string featureName, CancellationToken cancellationToken = default)
+        public async Task<bool> RollbackFeature(string productName, string deploymentName, string featureName, CancellationToken cancellationToken = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollout", UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri($"api/products/{productName}/deployments/{deploymentName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
                 request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
 
@@ -452,35 +527,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
-                catch (Exception exception)
+                catch (AccessTokenNotAvailableException exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to rolled out feature {featureName} on product {productName}.!");
-                }
-
-                return false;
-            }
-        }
-        public async Task<bool> RollbackFeature(string productName, string featureName, CancellationToken cancellationToken = default)
-        {
-            using (var request = new HttpRequestMessage())
-            {
-                request.Method = HttpMethod.Put;
-                request.RequestUri = new Uri($"api/products/{productName}/features/{featureName}/rollback", UriKind.RelativeOrAbsolute);
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
-                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
-
-                try
-                {
-                    var response = await _httpClient.SendAsync(request, cancellationToken);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
+                    exception.Redirect();
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to rolled back feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to rolled back feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -505,9 +558,13 @@ namespace Esquio.UI.Client.Services
                     }
 
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to archive feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to archive feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -534,9 +591,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add new  feature {addFeatureRequest} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add new  feature {addFeatureRequest} on product {productName}.!");
                 }
 
                 return false;
@@ -564,9 +625,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to update feature {updateFeatureRequest} on product {productName}!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to update feature {updateFeatureRequest} on product {productName}!");
                 }
 
                 return false;
@@ -591,9 +656,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete feature {featureName} on product {productName}.!");
                 }
                 return false;
             }
@@ -620,9 +689,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the logged user!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the logged user!");
                 }
 
                 return null;
@@ -663,9 +736,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get users permission list.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get users permission list.!");
                 }
 
                 return null;
@@ -693,9 +770,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
                 }
 
                 return false;
@@ -723,9 +804,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
                 }
 
                 return false;
@@ -750,9 +835,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete permission for subject {subjectId}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete permission for subject {subjectId}.!");
                 }
 
                 return false;
@@ -780,9 +869,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the logged user.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the logged user.!");
                 }
 
                 return null;
@@ -824,9 +917,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get api keys.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get api keys.!");
                 }
 
                 return null;
@@ -858,9 +955,13 @@ namespace Esquio.UI.Client.Services
                         return JsonConvert.DeserializeObject<AddApiKeyResponse>(responseContent);
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add new api key {addApiKeyRequest.Name}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add new api key {addApiKeyRequest.Name}.!");
                 }
 
                 return null;
@@ -886,9 +987,13 @@ namespace Esquio.UI.Client.Services
                     }
 
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete api key {apiKeyName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete api key {apiKeyName}.!");
                 }
 
                 return false;
@@ -916,9 +1021,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the tags list on feature {featureName} on product {productName} from server.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the tags list on feature {featureName} on product {productName} from server.!");
                 }
 
                 return null;
@@ -946,9 +1055,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add tag {addTagRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add tag {addTagRequest}.!");
                 }
 
                 return false;
@@ -973,9 +1086,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete tag {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete tag {productName}.!");
                 }
 
                 return false;
@@ -1017,9 +1134,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get audit information!.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get audit information!.");
                 }
 
                 return null;
@@ -1047,9 +1168,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle Known types!.");
                 }
 
                 return null;
@@ -1077,9 +1202,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle Known types!.");
                 }
 
                 return null;
@@ -1107,9 +1236,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add toggle {addToggleRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add toggle {addToggleRequest}.!");
                 }
 
                 return false;
@@ -1134,9 +1267,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
                 }
                 return false;
             }
@@ -1163,9 +1300,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get the toggle {toggleType} details!.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle {toggleType} details!.");
                 }
 
                 return null;
@@ -1193,9 +1334,13 @@ namespace Esquio.UI.Client.Services
                         return true;
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to add toggle parameter {addParameterToggleRequest}.!");
+                    _logger.LogError(exception, $"An exception is throwed when trying to add toggle parameter {addParameterToggleRequest}.!");
                 }
 
                 return false;
@@ -1223,9 +1368,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get github release information!.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get github release information!.");
                 }
 
                 return null;
@@ -1238,7 +1387,7 @@ namespace Esquio.UI.Client.Services
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Get;
-                request.RequestUri = new Uri("api/statistics/configuration",UriKind.RelativeOrAbsolute);
+                request.RequestUri = new Uri("api/statistics/configuration", UriKind.RelativeOrAbsolute);
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
 
                 try
@@ -1253,9 +1402,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1282,9 +1435,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1311,9 +1468,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1340,9 +1501,13 @@ namespace Esquio.UI.Client.Services
                             content, new JsonSerializerSettings());
                     }
                 }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
                 catch (Exception exception)
                 {
-                    Log.Error(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
                 }
 
                 return null;

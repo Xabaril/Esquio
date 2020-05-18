@@ -32,6 +32,10 @@ namespace Esquio.CliTool.Command
             [Required]
             public string FeatureName { get; set; }
 
+            [Option("--deployment-name <DEPLOYMENT-NAME>", Description = "The deployment name on where this feature is rolled out.")]
+            [Required]
+            public string DeploymentName { get; set; }
+
             [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
             public bool NoPrompt { get; set; } = false;
 
@@ -60,7 +64,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Features_RolloutAsync(ProductName, FeatureName);
+                await client.Features_RolloutAsync(ProductName, DeploymentName, FeatureName);
 
                 console.WriteLine($"The feature {FeatureName} was rolled out.", Constants.SuccessColor);
 
@@ -79,6 +83,10 @@ namespace Esquio.CliTool.Command
             [Required]
             public string FeatureName { get; set; }
 
+            [Option("--deployment-name <DEPLOYMENT-NAME>", Description = "The deployment name on where the feature is rolled off.")]
+            [Required]
+            public string DeploymentName { get; set; }
+
             [Option(Constants.NoPromptParameter, Description = Constants.NoPromptDescription)]
             public bool NoPrompt { get; set; } = false;
 
@@ -107,7 +115,7 @@ namespace Esquio.CliTool.Command
                 var client = EsquioClientFactory.Instance
                     .Create(Uri, ApiKey);
 
-                await client.Features_RollbackAsync(ProductName, FeatureName);
+                await client.Features_RollbackAsync(ProductName, DeploymentName, FeatureName);
 
                 console.WriteLine($"The feature {FeatureName} was rolled off.", Constants.SuccessColor);
 

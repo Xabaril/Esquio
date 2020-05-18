@@ -14,7 +14,7 @@ namespace Esquio.UI.Client.Services
             PolicySubject.Product,
             PolicySubject.Feature,
             PolicySubject.Toggle,
-            PolicySubject.Ring,
+            PolicySubject.Deployment,
         };
 
         private readonly PolicySubject[] _allSubjects = new PolicySubject[]
@@ -22,7 +22,7 @@ namespace Esquio.UI.Client.Services
             PolicySubject.Product,
             PolicySubject.Feature,
             PolicySubject.Toggle,
-            PolicySubject.Ring,
+            PolicySubject.Deployment,
             PolicySubject.Permission,
             PolicySubject.ApiKeys,
             PolicySubject.Audit

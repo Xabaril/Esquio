@@ -28,9 +28,9 @@ namespace Esquio.CliTool.Command
             [Required]
             public string FeatureName { get; set; }
 
-            [Option("--ring-name <RING-NAME>", Description = "The parameter value.")]
+            [Option("--deployment-name <DEPLOYMENT-NAME>", Description = "The deployment name to configure this value")]
             [Required]
-            public string RingName { get; set; }
+            public string DeploymentName { get; set; }
 
             [Option("--toggle-type <TOGGLE-TYPE>", Description = "The toggle type.")]
             [Required]
@@ -63,7 +63,7 @@ namespace Esquio.CliTool.Command
                         ToggleType = ToggleType,
                         Name = ParameterName,
                         Value = ParameterValue,
-                        RingName = RingName
+                        DeploymentName = DeploymentName
                     });
 
                 console.WriteLine($"The parameter {ParameterName} with value {ParameterValue} was added or updated succesfully.", Constants.SuccessColor);

@@ -8,7 +8,7 @@ namespace Esquio.UI.Api.Shared.Models.Toggles.AddParameter
 
         public string FeatureName { get; set; }
 
-        public string RingName { get; set; }
+        public string DeploymentName { get; set; }
 
         public string ToggleType { get; set; }
 

@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.NotFoundBehavior = options.NotFoundBehavior;
                 opt.DefaultProductName = options.DefaultProductName;
                 opt.ScopedEvaluationEnabled = options.ScopedEvaluationEnabled;
-                opt.DefaultRingName = options.DefaultRingName;
+                opt.DefaultDeploymentName = options.DefaultDeploymentName;
             });
 
             builder.Services.AddScoped<IFeatureService, DefaultFeatureService>();

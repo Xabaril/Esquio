@@ -34,7 +34,7 @@ namespace MiniProfiler.Esquio
 
                 _featureEvaluations.Add(
                     data.CorrelationId,
-                    global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Feature Evaluation {data.Feature} on product {data.Product} with ring {data.Ring}", "Feature Evaluation"));
+                    global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Feature Evaluation {data.Feature} on product {data.Product} with deployment {data.Deployment}", "Feature Evaluation"));
             }
             else if (key == EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME)
             {
@@ -77,7 +77,7 @@ namespace MiniProfiler.Esquio
 
                 _toggleExecutions.Add(
                     data.CorrelationId,
-                    global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Toggle Execution {data.Feature}:{data.ToggleType} on product {data.Product} with ring {data.Ring}", "Toggle Execution"));
+                    global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Toggle Execution {data.Feature}:{data.ToggleType} on product {data.Product} with deployment {data.Deployment}", "Toggle Execution"));
             }
             else if (key == EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME)
             {

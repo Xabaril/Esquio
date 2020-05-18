@@ -96,6 +96,38 @@
                                     }
                                 </TableBody>
                             </SingleTable>
+
+                            <SingleTable Loader="StatesLoader" @ref="statesTable" SkeletonColumns="2" SkeletonActions="1">
+                                <TableHeader>
+                                    <th class="table-col-3">State by deployemnt</th>
+                                    <th></th>
+                                    <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                        <th class="table-col-1"></th>
+                                    </Permission>
+                                </TableHeader>
+                                <TableBody Context="response">
+                                    @foreach (var state in response.States)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                @state.DeploymentName
+                                                @if (state.Default)
+                                                {
+                                                    <span class="badge badge-info">default deployment</span>
+                                                }
+                                            </td>
+                                            <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Feature">
+                                                <td class="table-component__action">
+                                                    <Switch Title="Enable/Disable"
+                                                            Checked="state.Enabled"
+                                                            OnChange="@(() => ToggleState(state.Enabled,state.DeploymentName))">
+                                                    </Switch>
+                                                </td>
+                                            </Permission>
+                                        </tr>
+                                    }
+                                </TableBody>
+                            </SingleTable>
                         </div>
                     </div>
                 </div>
@@ -129,13 +161,13 @@
             <ModalBody>
                 <form role="form">
                     <div class="form-group">
-                        <label>Ring</label>
-                        <ProductRings ProductName="@ProductName" OnChange="OnRingChange" />
+                        <label>Deployment</label>
+                        <ProductRings ProductName="@ProductName" OnChange="OnDeploymentChange" />
                     </div>
-                    @if (editRing != default)
+                    @if (editDeployment != default)
                     {
-                        <fieldset @key="editRing">
-                            @foreach (var parameter in ringToggleParameters)
+                        <fieldset @key="editDeployment">
+                            @foreach (var parameter in deploymentToggleParameters)
                             {
                                 <ToggleParameter Parameter="parameter" OnParameterChange="OnParameterChange" />
                             }
@@ -157,14 +189,15 @@
 
 
     private SingleTable<DetailsFeatureResponse> togglesTable;
+    private SingleTable<StateFeatureResponse> statesTable;
 
     //Edit toggle parameters
     private bool showEditToggleModal = false;
     private DetailsToggleResponse editToggle;
-    private string editRing;
-    private string defaultRing;
+    private string editDeployment;
+    private string defaultDeployment;
     private IEnumerable<ToggleParameterViewModel> editToggleParameters;
-    private IEnumerable<ToggleParameterViewModel> ringToggleParameters;
+    private IEnumerable<ToggleParameterViewModel> deploymentToggleParameters;
     private IDictionary<string, AddParameterToggleRequest> editedToggleParameters;
 
     protected override void OnInitialized()
@@ -180,16 +213,21 @@
 
     private void ResetState()
     {
-        editRing = default;
-        defaultRing = default;
+        editDeployment = default;
+        defaultDeployment = default;
         editToggle = default;
-        ringToggleParameters = new List<ToggleParameterViewModel>();
+        deploymentToggleParameters = new List<ToggleParameterViewModel>();
         editedToggleParameters = new Dictionary<string, AddParameterToggleRequest>();
     }
 
     private Task<DetailsFeatureResponse> TogglesLoader()
     {
         return esquioHttpClient.GetFeatureDetails(ProductName, FeatureName);
+    }
+
+    private Task<StateFeatureResponse> StatesLoader()
+    {
+        return esquioHttpClient.GetFeatureState(ProductName, FeatureName);
     }
 
     private async Task DeleteToggle(string toggleType)
@@ -240,6 +278,32 @@
         }
     }
 
+    private async Task ToggleState(bool state, string deploymentName)
+    {
+        bool requestSuccess = false;
+
+        if (state)
+        {
+            requestSuccess = await esquioHttpClient.RollbackFeature(ProductName, deploymentName, FeatureName);
+        }
+        else
+        {
+            requestSuccess = await esquioHttpClient.RolloutFeature(ProductName, deploymentName, FeatureName);
+
+        }
+
+        await statesTable.Reload();
+
+        if (requestSuccess)
+        {
+            notifications.Success("Toggle State Feature", "Toggle state feature success!.");
+        }
+        else
+        {
+            notifications.Error("Toggle State  Feature", "Error toggling the state of this feature!.");
+        }
+    }
+
     private async Task EditToggle(string toggleType)
     {
         var details = esquioHttpClient.GetToggleDetails(ProductName, FeatureName, toggleType);
@@ -260,7 +324,7 @@
                     parameter.Name,
                     reveal.ClrType,
                     parameter.Value,
-                    parameter.RingName,
+                    parameter.DeploymentName,
                     index,
                     reveal.Description);
             });
@@ -268,10 +332,10 @@
         OpenModal();
     }
 
-    private IEnumerable<ToggleParameterViewModel> GetParametersByRing(string ringName)
+    private IEnumerable<ToggleParameterViewModel> GetParametersByDeployment(string deploymentName)
     {
-        var @default = editToggleParameters.Where(t => t.RingName == defaultRing).OrderBy(p => p.Order);
-        var parameters = editToggleParameters.Where(t => t.RingName == ringName).OrderBy(p => p.Order);
+        var @default = editToggleParameters.Where(t => t.DeploymentName == defaultDeployment).OrderBy(p => p.Order);
+        var parameters = editToggleParameters.Where(t => t.DeploymentName == deploymentName).OrderBy(p => p.Order);
 
         if (!parameters.Any())
         {
@@ -297,15 +361,15 @@
         ResetState();
     }
 
-    private void OnRingChange(string ring)
+    private void OnDeploymentChange(string deployment)
     {
-        editRing = ring;
-        if (defaultRing == default) defaultRing = ring;
-        ringToggleParameters = GetParametersByRing(ring);
+        editDeployment = deployment;
+        if (defaultDeployment == default) defaultDeployment = deployment;
+        deploymentToggleParameters = GetParametersByDeployment(deployment);
     }
 
     private ToggleParameterViewModel GetDefaultParameter(string name)
-        => editToggleParameters.Single(p => p.RingName == defaultRing && p.Name == name);
+        => editToggleParameters.Single(p => p.DeploymentName == defaultDeployment && p.Name == name);
 
     private void OnParameterChange(ToggleParameterViewModel parameter)
     {
@@ -315,7 +379,7 @@
         if (editedToggleParameters.ContainsKey(parameter.Name))
         {
             editedToggleParameters[parameter.Name].Value = parameter.Value;
-            editedToggleParameters[parameter.Name].RingName = editRing;
+            editedToggleParameters[parameter.Name].DeploymentName = editDeployment;
         }
         else
         {
@@ -323,7 +387,7 @@
             {
                 ProductName = ProductName,
                 FeatureName = FeatureName,
-                RingName = editRing,
+                DeploymentName = editDeployment,
                 ToggleType = editToggle.Type,
                 Name = parameter.Name,
                 Value = parameter.Value
@@ -372,8 +436,7 @@
         new UpdateFeatureRequest
         {
             Name = name,
-            Description = feature.Description,
-            Enabled = feature.Enabled
+            Description = feature.Description
         });
 
         // Sync feature name parameter

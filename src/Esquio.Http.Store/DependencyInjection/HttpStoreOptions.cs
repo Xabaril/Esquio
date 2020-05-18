@@ -2,6 +2,9 @@
 
 namespace Esquio.Http.Store.DependencyInjection
 {
+    /// <summary>
+    /// The http store options
+    /// </summary>
     public sealed class HttpStoreOptions
     {
         internal bool CacheEnabled = false;
@@ -12,6 +15,8 @@ namespace Esquio.Http.Store.DependencyInjection
         /// Configure if cache is enabled on distributed store.
         /// </summary>
         /// <param name="enabled">If True distributed store use default IDistributedStore configured on container. Else, cache is not enabled.</param>
+        /// <param name="absoluteExpirationRelativeToNow">The absolute expiration time.</param>
+        /// <param name="slidingExpiration">The sliding expiration time.</param>
         /// <returns>The same configuration to be chained.</returns>
         public HttpStoreOptions UseCache(bool enabled = false, TimeSpan? absoluteExpirationRelativeToNow = null, TimeSpan? slidingExpiration = null)
         {

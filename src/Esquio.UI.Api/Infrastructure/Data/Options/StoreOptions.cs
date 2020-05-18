@@ -58,11 +58,14 @@
         /// <summary>
         /// Get or set default table configuration for Rings.
         /// </summary>
-        public TableConfiguration Rings { get; set; } = new TableConfiguration("Rings");
+        public TableConfiguration Deployments { get; set; } = new TableConfiguration("Deployments");
 
         /// <summary>
         /// Get or set default table configuration for Rings.
         /// </summary>
         public TableConfiguration Metrics { get; set; } = new TableConfiguration("Metrics");
+
+
+        public TableConfiguration FeatureState { get; set; } = new TableConfiguration("FeatureStates");
     }
 }

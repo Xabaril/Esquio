@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Esquio.UI.Client.Services
 {
@@ -11,7 +12,8 @@ namespace Esquio.UI.Client.Services
         private Guid _actionId;
 
         public event Action OnConfirmModalActiveChange;
-        public event Action<Guid> OnConfirm;
+        public event Func<Guid, ValueTask> OnConfirm;
+        public event Action OnCancel;
 
         public ConfirmState(EsquioState esquioState)
         {
@@ -62,7 +64,11 @@ namespace Esquio.UI.Client.Services
             OnConfirmModalActiveChange?.Invoke();
         }
 
-        public void Cancel() => HideConfirmModal();
+        public void Cancel()
+        {
+            OnCancel?.Invoke();
+            HideConfirmModal();
+        }
 
         public void Confirm()
         {
