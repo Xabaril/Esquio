@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
-    <NetTestSdk>16.5.0</NetTestSdk>
+    <NetTestSdk>16.6.1</NetTestSdk>
     <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
@@ -27,63 +27,63 @@
 
   <PropertyGroup Label="Package Dependencies">
     <blazor>3.2.0-rc1.20223.4</blazor>
-    <blazorhttpclient>3.2.0-rc1.20217.1</blazorhttpclient>
+    <blazorhttpclient>3.2.0</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
-    <nswagmsbuild>13.3.0</nswagmsbuild>
-    <swashbuckleaspnetcore>5.3.1</swashbuckleaspnetcore>
+    <nswagmsbuild>13.5.0</nswagmsbuild>
+    <swashbuckleaspnetcore>5.4.1</swashbuckleaspnetcore>
     <buildbundlerminifier>3.2.447</buildbundlerminifier>
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 
     <microsoftcsharp>4.7.0 </microsoftcsharp>
-    <systemdiagnosticsdiagnosticsource>4.7.0</systemdiagnosticsdiagnosticsource>
-    <systemtextjson>4.7.1</systemtextjson>
+    <systemdiagnosticsdiagnosticsource>4.7.1</systemdiagnosticsdiagnosticsource>
+    <systemtextjson>4.7.2</systemtextjson>
 
-    <microsoftaspnetcoreauthenticationjwtbearer>3.1.3</microsoftaspnetcoreauthenticationjwtbearer>
+    <microsoftaspnetcoreauthenticationjwtbearer>3.1.4</microsoftaspnetcoreauthenticationjwtbearer>
     <microsoftaspnetcoremvcversioningapiexplorerversion>4.1.1</microsoftaspnetcoremvcversioningapiexplorerversion>
 
-    <microsoftextensionsdependencyinjectionabstractions>3.1.3</microsoftextensionsdependencyinjectionabstractions>
-    <microsoftextensionsprimitives>3.1.3</microsoftextensionsprimitives>
-    <microsoftextensionsoptions>3.1.3</microsoftextensionsoptions>
-    <microsoftextensionscachingmemory>3.1.3</microsoftextensionscachingmemory>
-    <microsoftextensionsconfigurationabstractions>3.1.3</microsoftextensionsconfigurationabstractions>
-    <microsoftextensionsconfigurationbinder>3.1.3</microsoftextensionsconfigurationbinder>
-    <microsoftextensionsconfigurationjson>3.1.3</microsoftextensionsconfigurationjson>
-    <microsoftextensionslogging>3.1.3</microsoftextensionslogging>
-    <microsoftextensionsloggingabstractions>3.1.3</microsoftextensionsloggingabstractions>
+    <microsoftextensionsdependencyinjectionabstractions>3.1.4</microsoftextensionsdependencyinjectionabstractions>
+    <microsoftextensionsprimitives>3.1.4</microsoftextensionsprimitives>
+    <microsoftextensionsoptions>3.1.4</microsoftextensionsoptions>
+    <microsoftextensionscachingmemory>3.1.4</microsoftextensionscachingmemory>
+    <microsoftextensionsconfigurationabstractions>3.1.4</microsoftextensionsconfigurationabstractions>
+    <microsoftextensionsconfigurationbinder>3.1.4</microsoftextensionsconfigurationbinder>
+    <microsoftextensionsconfigurationjson>3.1.4</microsoftextensionsconfigurationjson>
+    <microsoftextensionslogging>3.1.4</microsoftextensionslogging>
+    <microsoftextensionsloggingabstractions>3.1.4</microsoftextensionsloggingabstractions>
     <microsoftextensionsloggingconsole>3.1.3</microsoftextensionsloggingconsole>
-    <microsoftextensionshttp>3.1.3</microsoftextensionshttp>
-    <microsoftentityframeworkcore>3.1.3</microsoftentityframeworkcore>
-    <microsoftentityframeworkcorerelational>3.1.3</microsoftentityframeworkcorerelational>
-    <microsoftentityframeworkcoresqlserver>3.1.3</microsoftentityframeworkcoresqlserver>
-    <microsoftentityframeworkcoredesign>3.1.3</microsoftentityframeworkcoredesign>
-    <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
+    <microsoftextensionshttp>3.1.4</microsoftextensionshttp>
+    <microsoftentityframeworkcore>3.1.4</microsoftentityframeworkcore>
+    <microsoftentityframeworkcorerelational>3.1.4</microsoftentityframeworkcorerelational>
+    <microsoftentityframeworkcoresqlserver>3.1.4</microsoftentityframeworkcoresqlserver>
+    <microsoftentityframeworkcoredesign>3.1.4</microsoftentityframeworkcoredesign>
+    
 
     <serilogextensionslogging>3.0.1</serilogextensionslogging>
     <serilogsettingsconfiguration>3.1.0</serilogsettingsconfiguration>
     <serilogsinkscoloredconsole>3.0.1</serilogsinkscoloredconsole>
     <serilogsinksapplicationinsights>3.1.0</serilogsinksapplicationinsights>
 
-    <hellangmiddlewareproblemdetails>5.0.0</hellangmiddlewareproblemdetails>
+    <hellangmiddlewareproblemdetails>5.1.0</hellangmiddlewareproblemdetails>
     <mediatrextensionsmicrosoftdependencyinjection>8.0.0</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.6.2</fluentvalidationaspnetcore>
-    <microsoftapplicationinsights>2.13.1</microsoftapplicationinsights>
-    <microsoftapplicationinsightsaspnetcore>2.13.1</microsoftapplicationinsightsaspnetcore>
+    <microsoftapplicationinsights>2.14.0</microsoftapplicationinsights>
+    <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">
     <miniprofilershared>4.1.0</miniprofilershared>
     <miniprofiler>4.1.0</miniprofiler>
     <miniprofileraspnetcoremvc>4.1.0</miniprofileraspnetcoremvc>
-    <mcmastercommandlineutils>2.6.0</mcmastercommandlineutils>
+    <mcmastercommandlineutils>3.0.0</mcmastercommandlineutils>
   </PropertyGroup>
 
   <PropertyGroup Label="Testing Dependencies">
-    <microsoftextensionshosting>3.1.3</microsoftextensionshosting>
-    <microsoftaspnetcoretesthost>3.1.3</microsoftaspnetcoretesthost>
+    <microsoftextensionshosting>3.1.4</microsoftextensionshosting>
+    <microsoftaspnetcoretesthost>3.1.4</microsoftaspnetcoretesthost>
 
-    <microsoftentityframeworkcoreinmemory>3.1.3</microsoftentityframeworkcoreinmemory>
-    <microsoftentityframeworkcoresqlite>3.1.3</microsoftentityframeworkcoresqlite>
+    <microsoftentityframeworkcoreinmemory>3.1.4</microsoftentityframeworkcoreinmemory>
+    <microsoftentityframeworkcoresqlite>3.1.4</microsoftentityframeworkcoresqlite>
 
     <xunit>2.4.1</xunit>
     <xunitrunner>2.4.1</xunitrunner>
