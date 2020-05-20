@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Esquio.Blazor.WebAssembly
 {
     /// <summary>
-    /// The blazor service client.
+    /// The Blazor feature service client.
     /// </summary>
     public interface IBlazorFeatureServiceClient
     {
@@ -24,7 +24,7 @@ namespace Esquio.Blazor.WebAssembly
     }
 
     /// <summary>
-    /// Default blazor feature service client.
+    /// Default Blazor feature service client.
     /// </summary>
     public class BlazorFeatureServiceClient
         : IBlazorFeatureServiceClient
@@ -34,7 +34,7 @@ namespace Esquio.Blazor.WebAssembly
         private readonly ILogger<BlazorFeatureServiceClient> _logger;
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="httpClient">The http client to use.</param>
         /// <param name="options">Default Blazor feature service options.</param>
@@ -51,10 +51,8 @@ namespace Esquio.Blazor.WebAssembly
         {
             try
             {
-                var endpoint = _options?.Value.Endpoint ?? "Esquio";
-
                 var response = await _httpClient
-                    .GetFromJsonAsync<IEnumerable<EvaluationResponse>>($"{endpoint}?featureName={featureName}");
+                    .GetFromJsonAsync<IEnumerable<EvaluationResponse>>($"{_options?.Value.Endpoint}?featureName={featureName}");
 
                 if (response != null && response.Any())
                 {

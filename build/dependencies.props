@@ -20,13 +20,8 @@
     <esquioblazorwasm>3.0.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 
-  <PropertyGroup Label="Esquio Contrib Dependencies">
-    <esquiotoggleshttp>2.0.0</esquiotoggleshttp>
-    <esquiotogglesgeolocation>2.0.1</esquiotogglesgeolocation>
-  </PropertyGroup>
-
   <PropertyGroup Label="Package Dependencies">
-    <blazor>3.2.0-rc1.20223.4</blazor>
+    <blazor>3.2.0</blazor>
     <blazorhttpclient>3.2.0</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.5.0</nswagmsbuild>

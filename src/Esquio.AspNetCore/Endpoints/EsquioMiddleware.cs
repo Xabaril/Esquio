@@ -2,6 +2,7 @@
 using Esquio.AspNetCore.Diagnostics;
 using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Mime;
@@ -62,7 +63,6 @@ namespace Esquio.AspNetCore.Endpoints
             }
 
             diagnostics.EsquioMiddlewareSuccess();
-
             await WriteResponse(context, evaluationsResponse);
         }
 
