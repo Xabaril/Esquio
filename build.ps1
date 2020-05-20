@@ -31,11 +31,11 @@ $suffix = "-ci-local"
 $commitHash = $(git rev-parse --short HEAD)
 $buildSuffix = "$($suffix)-$($commitHash)"
 
-echo "build: Version suffix is $buildSuffix"
+Write-Output "build: Version suffix is $buildSuffix"
 
 exec { & dotnet build Esquio.sln -c Release --version-suffix=$buildSuffix -v q /nologo }
 	
-echo "Running unit tests"
+Write-Output "Running unit tests"
 
 try {
 
@@ -45,11 +45,11 @@ Push-Location -Path .\tests\UnitTests
         Pop-Location
 }
 
-echo "Starting docker containers"
+Write-Output "Starting docker containers"
 
 exec { & docker-compose -f build\docker-compose-infrastructure.yml up -d }
 
-echo "Running functional tests"
+Write-Output "Running functional tests"
 
 try {
 
@@ -59,7 +59,7 @@ Push-Location -Path .\tests\FunctionalTests
         Pop-Location
 }
 
-echo "Finalizing docker containers"
+Write-Output "Finalizing docker containers"
 exec { & docker-compose -f build\docker-compose-infrastructure.yml down }
 
 

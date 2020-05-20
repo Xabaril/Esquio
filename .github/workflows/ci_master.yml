@@ -25,7 +25,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.201
+        dotnet-version: 3.1.300
     - name: dotnet build
       run: dotnet build Esquio.sln -c $BUILD_CONFIG
     - name: dotnet test [UnitTests]

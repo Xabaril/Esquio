@@ -46,7 +46,7 @@
     <microsoftextensionsconfigurationjson>3.1.4</microsoftextensionsconfigurationjson>
     <microsoftextensionslogging>3.1.4</microsoftextensionslogging>
     <microsoftextensionsloggingabstractions>3.1.4</microsoftextensionsloggingabstractions>
-    <microsoftextensionsloggingconsole>3.1.3</microsoftextensionsloggingconsole>
+    <microsoftextensionsloggingconsole>3.1.4</microsoftextensionsloggingconsole>
     <microsoftextensionshttp>3.1.4</microsoftextensionshttp>
     <microsoftentityframeworkcore>3.1.4</microsoftentityframeworkcore>
     <microsoftentityframeworkcorerelational>3.1.4</microsoftentityframeworkcorerelational>

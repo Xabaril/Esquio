@@ -83,6 +83,7 @@ namespace Esquio.UI.Host
                      if (env.IsDevelopment())
                      {
                          appBuilder.UseDeveloperExceptionPage();
+                         appBuilder.UseWebAssemblyDebugging();
                      }
 
                      return appBuilder
