@@ -21,11 +21,11 @@ Docker
 
 To run locally, pull it typing::
 
- docker pull xabarilcoding/esquioui:3.0.100006574-preview
+  docker pull xabarilcoding/esquioui:3.0.0
 
 To run this image, you have to set several environment variables, indicating some database and OpenId server properties::
 
-  docker run xabarilcoding/esquioui:3.0.100006574-preview -p 9000:80 \
+  docker run xabarilcoding/esquioui:3.0.0 -p 9000:80 \
    -e ConnectionStrings__Esquio=<your-connection-string> \
    -e Security__OpenId__ClientId=<openid-clientid> \
    -e Security__OpenId__Audience=<openid-audience> \
@@ -91,7 +91,7 @@ Save the following yaml in a file named `esquio-ui.yaml`::
       spec:
         containers:
           - name: esquio-ui
-            image: "xabarilcoding/esquioui:3.0.100006574-preview"
+            image: "xabarilcoding/esquioui:3.0.0"
             imagePullPolicy: IfNotPresent
             env:
               - name: ASPNETCORE_ENVIRONMENT
