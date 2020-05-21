@@ -4,7 +4,7 @@ on:
     tags:       
       - ui-release-*  # Push events to release-* 
 env:
-  TAG: 3.0.${{ github.run_id }}
+  TAG: 3.0.0
   IMAGE_NAME: esquioui
   ESQUIO_REPO: xabarilcoding
 jobs:  
@@ -21,23 +21,3 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: ./build/UIDockerfile
         tags: "latest,${{ env.TAG }}"
-
-  docker_azure_deploy:
-    env:
-      APP_NAME: esquiodemoui
-    needs: docker_build_publish
-    name: DockerDeploy
-    runs-on: ubuntu-latest
-    steps:    
-    - uses: azure/login@v1
-      with:
-        creds: '${{ secrets.SPN_ESQUIO }}'
-    - name: Azure App Service Settings
-      uses: Azure/appservice-settings@v1
-      with:
-        app-name: ${{ env.APP_NAME }}     
-        app-settings-json: '${{ secrets.APPSETTINGS_ESQUIO_UI_APP }}'
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.APP_NAME }}
-        images: '${{ env.ESQUIO_REPO }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}'
