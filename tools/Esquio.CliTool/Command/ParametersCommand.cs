@@ -36,7 +36,7 @@ namespace Esquio.CliTool.Command
             [Required]
             public string ToggleType { get; set; }
 
-            [Option("--name <NAME>", Description = "The parameter value.")]
+            [Option("--name <NAME>", Description = "The parameter name.")]
             [Required]
             public string ParameterName { get; set; }
 
