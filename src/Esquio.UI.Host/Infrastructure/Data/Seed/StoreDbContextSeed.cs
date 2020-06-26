@@ -26,15 +26,10 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
 
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
-                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "1",
+                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "818727", //default alice user
                         ApplicationRole = ApplicationRole.Management
                     };
 
-                    var bobIdSvrPermission = new PermissionEntity()
-                    {
-                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "11",
-                        ApplicationRole = ApplicationRole.Reader
-                    };
 
                     var apiKeyPermission = new PermissionEntity()
                     {
@@ -42,12 +37,12 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
                         ApplicationRole = ApplicationRole.Reader
                     };
 
-                    context.Permissions.AddRange(aliceIdSvrPermission, bobIdSvrPermission);
+                    context.Permissions.AddRange(aliceIdSvrPermission);
 
                     context.SaveChanges();
                 }
 
-                
+
             };
         }
     }
