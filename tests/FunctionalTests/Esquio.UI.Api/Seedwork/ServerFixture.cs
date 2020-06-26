@@ -1,4 +1,5 @@
-﻿using Acheve.AspNetCore.TestHost.Security;
+﻿using System.Data.Common;
+using Acheve.AspNetCore.TestHost.Security;
 using Acheve.TestHost;
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
@@ -26,7 +27,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         static Checkpoint _checkpoint = new Checkpoint()
         {
             TablesToIgnore = new string[] { "__EFMigrationsHistory" },
-            WithReseed = true
+            WithReseed = true,
         };
 
         public TestServer TestServer { get; private set; }
@@ -34,7 +35,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         public Given Given { get; private set; }
 
 
-        private IHost _host;
+        private static IHost _host;
 
         public ServerFixture()
         {
@@ -75,20 +76,20 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             }
         }
 
-        public async Task ExecuteDbContextAsync(Func<StoreDbContext, Task> func)
-        {
-            await ExecuteScopeAsync(sp => func(sp.GetService<StoreDbContext>()));
-        }
+        public async Task ExecuteDbContextAsync(Func<StoreDbContext, Task> func) 
+            => await ExecuteScopeAsync(sp => func(sp.GetService<StoreDbContext>()));
 
         internal static void ResetDatabase()
         {
-            var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("appsettings.json", optional: true);
-
-            var connectionString = configurationBuilder.Build()
-                .GetConnectionString("Esquio");
-
-            var task = _checkpoint.Reset(connectionString);
+            // Get new scope
+            using var scope = _host.Services.GetService<IServiceScopeFactory>().CreateScope();
+            // Get fresh dbContext
+            using var context = scope.ServiceProvider.GetService<StoreDbContext>();
+            // Get Db Connection
+            context.Database.OpenConnection();
+            var connection = context.Database.GetDbConnection();
+            // Reset Db
+            var task = _checkpoint.Reset(connection);
             task.Wait();
         }
     }
@@ -135,7 +136,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                     };
                 })
                 .Services
-                .AddDbContext<StoreDbContext, StoreDbContext>(setup => setup.SetupDbStoreFromEnvironment(_configuration));
+                .AddEntityFramework(_configuration);
         }
 
         public void Configure(IApplicationBuilder app)
