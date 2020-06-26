@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Options;
 
-namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data
+namespace Esquio.UI.Npgsql.Data
 {
     public class DesignTimeContextFactory
         : IDesignTimeDbContextFactory<StoreDbContext>
@@ -13,10 +13,8 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<StoreDbContext>();
 
-            optionsBuilder.UseSqlServer("Server=tcp:localhost,5433;Initial Catalog=Esquio.UI.Tests;User Id=sa;Password=Password12!", options =>
-            {
-                options.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName);
-            });
+            optionsBuilder.UseNpgsql("Server=tcp:localhost,5432;Database=Esquio.UI.Tests;User Id=postgres;Password=postgres",
+                options => options.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName));
 
             var dbContextOptions = optionsBuilder.Options;
             var storeOptions = Options.Create(new StoreOptions());
