@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Esquio.UI.Store.Infrastructure.Data.Migrations
+namespace Esquio.UI.Store.Infrastructure.Data.SqlServer.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20200626214405_Initial")]
+    [Migration("20200626221728_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

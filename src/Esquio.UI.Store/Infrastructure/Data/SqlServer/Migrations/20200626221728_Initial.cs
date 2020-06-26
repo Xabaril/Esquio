@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Esquio.UI.Store.Infrastructure.Data.Migrations
+namespace Esquio.UI.Store.Infrastructure.Data.SqlServer.Migrations
 {
     public partial class Initial : Migration
     {
