@@ -68,7 +68,7 @@ namespace Esquio.UI.Host
                 });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddEntityFramework(Configuration["ConnectionStrings:Esquio"])
+                .AddEntityFramework(Configuration)
                 .AddHostedService<EsquioMetricsConsumer>();
         }
 

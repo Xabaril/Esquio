@@ -25,6 +25,7 @@ services:
             dockerfile: build/UIDockerfile
         environment:
             - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - Store__UseSqlServer=true
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
             - Security__OpenId__ClientId=interactive.public

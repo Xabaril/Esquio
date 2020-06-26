@@ -1,36 +1,37 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Data.Options;
-using Esquio.UI.Host;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEntityFramework(this IServiceCollection services, string connectionString, Action<StoreOptions> setup)
+        public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration, Action<StoreOptions> setup)
         {
             _ = services ?? throw new ArgumentNullException(nameof(services));
             _ = setup ?? throw new ArgumentNullException(nameof(setup));
+            services.Configure(setup);
 
-            services.Configure<StoreOptions>(setup);
-
-            return services.AddEntityFramework(connectionString);
+            return AddEntityFramework(services, configuration);
         }
 
-        public static IServiceCollection AddEntityFramework(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {
-            return services
-                .AddDbContext<StoreDbContext>(setup =>
-                {
-                    setup.UseSqlServer(connectionString, setup =>
-                    {
-                        setup.MaxBatchSize(10);
-                        setup.EnableRetryOnFailure();
+            _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-                        setup.MigrationsAssembly(typeof(Program).Assembly.FullName);
-                    });
-                });
+            if (Convert.ToBoolean(configuration["Store:UseSqlServer"]))
+            {
+                return services.AddEntityFrameworkSqlServer(configuration.GetConnectionString("Esquio"));
+            }
+            else if (Convert.ToBoolean(configuration["Store:UseNpgSql"]))
+            {
+                return services.AddEntityFrameworkNpgsql(configuration.GetConnectionString("EsquioNpgSql"));
+            }
+
+            throw new InvalidOperationException("Add EntityFramework requires either Store:UseSqlServer or Store:UseNpgsql to be set");
         }
     }
 }
