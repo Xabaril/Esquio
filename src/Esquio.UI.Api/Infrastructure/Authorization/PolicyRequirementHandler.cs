@@ -15,11 +15,11 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
         : AuthorizationHandler<PolicyRequirement>
     {
         private readonly ILogger<PolicyRequirementHandler> _logger;
-        private readonly StoreDbContext _IStoreDbContext;
+        private readonly StoreDbContext _storeDbContext;
 
         public PolicyRequirementHandler(StoreDbContext StoreDbContext, ILogger<PolicyRequirementHandler> logger)
         {
-            _IStoreDbContext = StoreDbContext ?? throw new ArgumentNullException(nameof(StoreDbContext));
+            _storeDbContext= StoreDbContext ?? throw new ArgumentNullException(nameof(StoreDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PolicyRequirement requirement)
@@ -31,7 +31,7 @@ namespace Esquio.UI.Api.Infrastructure.Authorization
 
                 if (subjectId != null)
                 {
-                    var currentPermission = await _IStoreDbContext.Permissions
+                    var currentPermission = await _storeDbContext.Permissions
                         .Where(p => p.SubjectId == subjectId)
                         .SingleOrDefaultAsync();
 
