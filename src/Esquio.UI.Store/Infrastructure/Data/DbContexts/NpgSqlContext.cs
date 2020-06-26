@@ -16,7 +16,8 @@ namespace Esquio.UI.Store.Infrastructure.Data.DbContexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
-            optionsBuilder.SetupDbStoreFromEnvironment(configBuilder.Build());
+            var connectionString = configBuilder.Build().GetConnectionString("EsquioNpgSql");
+            optionsBuilder.SetupNpgSql(connectionString);
         }
     }
 }

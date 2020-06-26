@@ -16,7 +16,8 @@ namespace Esquio.UI.Store.Infrastructure.Data
         {
             var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
             var optionsBuilder = new DbContextOptionsBuilder<StoreDbContext>();
-            optionsBuilder.SetupDbStoreFromEnvironment(configBuilder.Build());
+            var connectionString = configBuilder.Build().GetConnectionString("Esquio");
+            optionsBuilder.SetupSqlServer(connectionString);
 
             var dbContextOptions = optionsBuilder.Options;
             var storeOptions = Options.Create(new StoreOptions());
@@ -30,8 +31,9 @@ namespace Esquio.UI.Store.Infrastructure.Data
         public NpgSqlContext CreateDbContext(string[] args)
         {
             var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
-            var optionsBuilder = new DbContextOptionsBuilder<StoreDbContext>();
-            optionsBuilder.SetupDbStoreFromEnvironment(configBuilder.Build());
+            var optionsBuilder = new DbContextOptionsBuilder<NpgSqlContext>();
+            var connectionString = configBuilder.Build().GetConnectionString("EsquioNpgSql");
+            optionsBuilder.SetupNpgSql(connectionString);
 
             var dbContextOptions = optionsBuilder.Options;
             var storeOptions = Options.Create(new StoreOptions());
