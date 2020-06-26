@@ -9,7 +9,8 @@ COPY ./src ./src
 COPY ./demos ./demos
 COPY ./tools ./tools
 WORKDIR /src/demos/WebApp
-RUN dotnet build -c Release -o /app
+RUN dotnet restore -s https://repo.forge.lmig.com/api/nuget/nuget
+RUN dotnet build -c Release -o /app --no-restore
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
 FROM base AS final

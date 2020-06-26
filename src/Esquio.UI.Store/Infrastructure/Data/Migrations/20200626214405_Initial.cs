@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Esquio.UI.SqlServer.Infrastructure.Data.Migrations
+namespace Esquio.UI.Store.Infrastructure.Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -117,7 +117,7 @@ namespace Esquio.UI.SqlServer.Infrastructure.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    ByDefault = table.Column<bool>(nullable: false, defaultValueSql: "0"),
+                    ByDefault = table.Column<bool>(nullable: false),
                     ProductEntityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

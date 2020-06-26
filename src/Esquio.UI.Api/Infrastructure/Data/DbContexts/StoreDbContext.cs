@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
+﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Infrastructure.Data.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -14,11 +15,11 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 {
     public class StoreDbContext : DbContext
     {
-        const string UNKNOWN = nameof(UNKNOWN);
+        private const string UNKNOWN = nameof(UNKNOWN);
 
         private readonly StoreOptions _storeOptions;
 
-        public StoreDbContext(DbContextOptions<StoreDbContext> dbContextOptions, IOptions<StoreOptions> storeOptions)
+        public StoreDbContext(DbContextOptions dbContextOptions, IOptions<StoreOptions> storeOptions)
             : base(dbContextOptions)
         {
             _storeOptions = storeOptions.Value;
@@ -39,7 +40,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);
+            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);            
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, _storeOptions);
 
             base.OnModelCreating(modelBuilder);

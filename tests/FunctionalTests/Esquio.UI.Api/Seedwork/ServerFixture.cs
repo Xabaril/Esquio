@@ -4,6 +4,7 @@ using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Services;
 using Esquio.UI.Host.Infrastructure.Services;
+using Esquio.UI.Store.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -134,13 +135,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                     };
                 })
                 .Services
-                .AddDbContext<StoreDbContext>(setup =>
-                {
-                    setup.UseSqlServer(_configuration.GetConnectionString("Esquio"), opt =>
-                    {
-                        opt.MigrationsAssembly(typeof(ServerFixture).Assembly.FullName);
-                    });
-                });
+                .AddDbContext<StoreDbContext, StoreDbContext>(setup => setup.SetupDbStoreFromEnvironment(_configuration));
         }
 
         public void Configure(IApplicationBuilder app)

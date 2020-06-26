@@ -23,7 +23,7 @@ dotnet test ./tests/UnitTests/UnitTests.csproj
 echo "Starting docker containers"
 docker-compose -f build/docker-compose-infrastructure.yml up -d
 
-echo "Runing functional tests"
+echo "Running functional tests"
 dotnet test ./tests/FunctionalTests/FunctionalTests.csproj
 
 echo "Finalizing docker containers"

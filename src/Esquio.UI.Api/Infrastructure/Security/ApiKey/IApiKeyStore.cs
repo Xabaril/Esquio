@@ -17,12 +17,12 @@ namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
     internal class DefaultApiKeyStore
         : IApiKeyStore
     {
-        private readonly StoreDbContext _storeDbContext;
+        private readonly StoreDbContext _IStoreDbContext;
         private readonly ILogger<DefaultApiKeyStore> _logger;
 
-        public DefaultApiKeyStore(StoreDbContext storeDbContext, ILogger<DefaultApiKeyStore> logger)
+        public DefaultApiKeyStore(StoreDbContext StoreDbContext, ILogger<DefaultApiKeyStore> logger)
         {
-            _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
+            _IStoreDbContext = StoreDbContext ?? throw new ArgumentNullException(nameof(StoreDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -30,7 +30,7 @@ namespace Esquio.UI.Api.Infrastructure.Security.ApiKey
         {
             Log.ApiKeyStoreValidating(_logger);
 
-            var configuredKey = await _storeDbContext
+            var configuredKey = await _IStoreDbContext
                 .ApiKeys
                 .Where(ak => ak.Key == apiKey)
                 .SingleOrDefaultAsync();

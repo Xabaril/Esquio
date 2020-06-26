@@ -1,20 +1,21 @@
-﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
-using Esquio.UI.Api.Infrastructure.Data.Options;
+﻿using Esquio.UI.Api.Infrastructure.Data.Options;
+using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Esquio.UI.Npgsql.Data
+namespace Esquio.UI.Store.Infrastructure.Data
 {
     public class DesignTimeContextFactory
         : IDesignTimeDbContextFactory<StoreDbContext>
     {
         public StoreDbContext CreateDbContext(string[] args)
         {
+            var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
             var optionsBuilder = new DbContextOptionsBuilder<StoreDbContext>();
-
-            optionsBuilder.UseNpgsql("Server=tcp:localhost,5432;Database=Esquio.UI.Tests;User Id=postgres;Password=postgres",
-                options => options.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName));
+            optionsBuilder.SetupDbStoreFromEnvironment(configBuilder.Build());
 
             var dbContextOptions = optionsBuilder.Options;
             var storeOptions = Options.Create(new StoreOptions());

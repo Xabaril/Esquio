@@ -27,8 +27,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.EntityConfigurations
                 .HasMaxLength(200);
 
             builder.Property(p => p.ByDefault)
-                .IsRequired()
-                .HasDefaultValueSql("0");
+                .IsRequired();
 
             builder.HasOne(r => r.ProductEntity)
                 .WithMany(p => p.Deployments)

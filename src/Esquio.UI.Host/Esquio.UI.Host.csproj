@@ -22,7 +22,6 @@
     <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
     <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
-    <ProjectReference Include="..\Esquio.UI.SqlServer\Esquio.UI.SqlServer.csproj" />
-    <ProjectReference Include="..\Esquio.UI.Npgsql\Esquio.UI.Npgsql.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Store\Esquio.UI.Store.csproj" />
   </ItemGroup>
   </Project>
