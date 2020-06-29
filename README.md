@@ -25,6 +25,21 @@ Esquio is built against the latest NET Core 3.
 * [Install](https://www.microsoft.com/net/download/core#/current) the [required](https://github.com/Xabaril/Esquio/blob/master/global.json) .NET Core SDK
 * Run [build.ps1](https://github.com/Xabaril/Esquio/blob/master/build.ps1) in the root of the repo.
 
+## How to run migrations
+### For SqlServer
+<code>dotnet ef migrations add *MigrationName* --context StoreDbContext --project src/Esquio.UI.Store</code>
+
+And to apply the migration: 
+<code>
+dotnet ef database update --context StoreDbContext --project src/Esquio.UI.Store
+</code>
+### For Postgres
+<code>dotnet ef migrations add *MigrationName*  --context NpgSqlContext --project src/Esquio.UI.Store</code>
+
+And to apply the migration: 
+<code>
+dotnet ef database update --context NpgSqlContext --project src/Esquio.UI.Store
+</code>
 
 ## Acknowledgements
 Esquio is built using the following great open source projects and free services:

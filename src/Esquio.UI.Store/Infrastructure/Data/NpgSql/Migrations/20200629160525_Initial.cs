@@ -9,11 +9,11 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "dbo");
+                name: "public");
 
             migrationBuilder.CreateTable(
                 name: "ApiKeys",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -29,7 +29,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "History",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -48,7 +48,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Metrics",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -66,7 +66,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -82,7 +82,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Products",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -97,7 +97,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tags",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -112,13 +112,13 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Deployments",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    ByDefault = table.Column<bool>(nullable: false),
+                    ByDefault = table.Column<bool>(nullable: false, defaultValueSql: "false"),
                     ProductEntityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -127,7 +127,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_Deployments_Products_ProductEntityId",
                         column: x => x.ProductEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -135,7 +135,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Features",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -151,7 +151,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_Features_Products_ProductEntityId",
                         column: x => x.ProductEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -159,7 +159,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "FeatureStates",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     FeatureEntityId = table.Column<int>(nullable: false),
@@ -172,14 +172,14 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_FeatureStates_Deployments_DeploymentEntityId",
                         column: x => x.DeploymentEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Deployments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FeatureStates_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -187,7 +187,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "FeatureTags",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     FeatureEntityId = table.Column<int>(nullable: false),
@@ -199,14 +199,14 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_FeatureTags_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FeatureTags_Tags_TagEntityId",
                         column: x => x.TagEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -214,7 +214,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Toggles",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -229,7 +229,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_Toggles_Features_FeatureEntityId",
                         column: x => x.FeatureEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Features",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -237,7 +237,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Parameters",
-                schema: "dbo",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -254,7 +254,7 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
                     table.ForeignKey(
                         name: "FK_Parameters_Toggles_ToggleEntityId",
                         column: x => x.ToggleEntityId,
-                        principalSchema: "dbo",
+                        principalSchema: "public",
                         principalTable: "Toggles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -262,78 +262,78 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiKeys_Key",
-                schema: "dbo",
+                schema: "public",
                 table: "ApiKeys",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiKeys_Name",
-                schema: "dbo",
+                schema: "public",
                 table: "ApiKeys",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deployments_ProductEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "Deployments",
                 column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Features_ProductEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "Features",
                 column: "ProductEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeatureStates_DeploymentEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "FeatureStates",
                 column: "DeploymentEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeatureTags_TagEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "FeatureTags",
                 column: "TagEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Metrics_DateTime",
-                schema: "dbo",
+                schema: "public",
                 table: "Metrics",
                 column: "DateTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Parameters_ToggleEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "Parameters",
                 column: "ToggleEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Permissions_SubjectId",
-                schema: "dbo",
+                schema: "public",
                 table: "Permissions",
                 column: "SubjectId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
-                schema: "dbo",
+                schema: "public",
                 table: "Products",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Name",
-                schema: "dbo",
+                schema: "public",
                 table: "Tags",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Toggles_FeatureEntityId",
-                schema: "dbo",
+                schema: "public",
                 table: "Toggles",
                 column: "FeatureEntityId");
         }
@@ -342,51 +342,51 @@ namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ApiKeys",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "FeatureStates",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "FeatureTags",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "History",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Metrics",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Parameters",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Permissions",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Deployments",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Tags",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Toggles",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Features",
-                schema: "dbo");
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "Products",
-                schema: "dbo");
+                schema: "public");
         }
     }
 }
