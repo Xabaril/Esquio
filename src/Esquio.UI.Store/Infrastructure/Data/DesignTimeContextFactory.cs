@@ -36,7 +36,8 @@ namespace Esquio.UI.Store.Infrastructure.Data
             optionsBuilder.SetupNpgSql(connectionString);
 
             var dbContextOptions = optionsBuilder.Options;
-            var storeOptions = Options.Create(new StoreOptions());
+            // Public is the default schema for Postgres
+            var storeOptions = Options.Create(new StoreOptions{DefaultSchema = "public" });
 
             return new NpgSqlContext(dbContextOptions, storeOptions);
         }

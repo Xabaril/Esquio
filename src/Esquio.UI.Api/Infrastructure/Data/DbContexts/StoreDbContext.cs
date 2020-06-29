@@ -40,7 +40,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);            
+            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, _storeOptions);
 
             base.OnModelCreating(modelBuilder);
