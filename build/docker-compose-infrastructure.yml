@@ -8,3 +8,10 @@ services:
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Password12!
+    postgres:
+        image: postgres
+        restart: always
+        ports:
+            - 5434:5432
+        environment:
+            - POSTGRES_PASSWORD=Password12!

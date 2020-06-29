@@ -9,7 +9,7 @@ COPY ./src ./src
 COPY ./demos ./demos
 COPY ./tools ./tools
 WORKDIR /src/demos/WebApp
-RUN dotnet build -c Release -o /app
+RUN dotnet build -c Release -o /app 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
 FROM base AS final

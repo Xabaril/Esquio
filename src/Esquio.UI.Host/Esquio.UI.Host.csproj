@@ -13,9 +13,6 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(serilogsettingsconfiguration)" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="$(serilogsinksapplicationinsights)" />
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="$(serilogsinkscoloredconsole)" />
-    
-    
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
 
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(SwashbuckleAspNetCore)" />
@@ -25,5 +22,6 @@
     <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
     <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Store\Esquio.UI.Store.csproj" />
   </ItemGroup>
   </Project>

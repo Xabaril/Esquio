@@ -18,7 +18,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         private readonly StoreOptions _storeOptions;
 
-        public StoreDbContext(DbContextOptions<StoreDbContext> dbContextOptions, IOptions<StoreOptions> storeOptions)
+        public StoreDbContext(DbContextOptions dbContextOptions, IOptions<StoreOptions> storeOptions)
             : base(dbContextOptions)
         {
             _storeOptions = storeOptions.Value;

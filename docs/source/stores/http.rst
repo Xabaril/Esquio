@@ -27,6 +27,7 @@ To run this image, you have to set several environment variables, indicating som
 
   docker run xabarilcoding/esquioui:3.0.0 -p 9000:80 \
    -e ConnectionStrings__Esquio=<your-connection-string> \
+   -e Store__UseSqlServer=true
    -e Security__OpenId__ClientId=<openid-clientid> \
    -e Security__OpenId__Audience=<openid-audience> \
    -e Security__OpenId__Authority=<openid-authority> \
