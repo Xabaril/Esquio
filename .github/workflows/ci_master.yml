@@ -20,6 +20,13 @@ jobs:
           MSSQL_SA_PASSWORD: Password12!
         ports:
         - 5433:1433
+      postgres:
+        image: postgres
+        restart: always
+        ports:
+            - 5434:5432
+        environment:
+            - POSTGRES_PASSWORD=Password12!
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
@@ -32,6 +39,10 @@ jobs:
       run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet test [FunctionalTests]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet test [FunctionalTests-Postgres]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+      with:
+        Store:UseNpgSql=true
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]

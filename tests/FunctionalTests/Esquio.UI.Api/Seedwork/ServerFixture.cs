@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using Newtonsoft.Json;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork
 {
@@ -27,7 +28,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         static Checkpoint _checkpoint = new Checkpoint()
         {
             TablesToIgnore = new string[] { "__EFMigrationsHistory" },
-            WithReseed = true,
+            WithReseed = true
         };
 
         public TestServer TestServer { get; private set; }
@@ -36,6 +37,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 
 
         private static IHost _host;
+        private IDbAdapter _dbAdapter;
 
         public ServerFixture()
         {
@@ -53,9 +55,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 })
                 .ConfigureAppConfiguration((_, cfg) =>
                  {
-                     cfg.AddJsonFile("appsettings.json", optional: false);
+                     cfg.AddJsonFile("appsettings.json", optional: false).AddEnvironmentVariables();
+                     System.Console.WriteLine(cfg.Build().GetDebugView());
+                     _dbAdapter = Convert.ToBoolean(cfg.Build()["Store:UseNpgSql"]) ? DbAdapter.Postgres : DbAdapter.SqlServer;
+                     Console.WriteLine($"DB Adapter is {_dbAdapter}");
                  }).Build();
-
+            
             _host.StartAsync().Wait();
 
             _host.MigrateDbContext<StoreDbContext>((store, sp) =>
