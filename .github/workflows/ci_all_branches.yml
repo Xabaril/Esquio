@@ -35,4 +35,4 @@ jobs:
     - name: dotnet test [FunctionalTests-Postgres]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
-        Store__UseNpgSql=true
+        - Store__UseNpgSql=true
