@@ -56,6 +56,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                  {
                      cfg.AddJsonFile("appsettings.json", optional: false).AddEnvironmentVariables();
                      _checkpoint.DbAdapter = Convert.ToBoolean(cfg.Build()["Store:UseNpgSql"]) ? DbAdapter.Postgres : DbAdapter.SqlServer;
+                     Console.WriteLine($"Using DBAdapter {_checkpoint.DbAdapter}");
                  }).Build();
             
             _host.StartAsync().Wait();
