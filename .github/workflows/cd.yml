@@ -19,10 +19,9 @@ jobs:
         - 5433:
       postgres:
         image: postgres
-        restart: always
         ports:
             - 5434:5432
-        environment:
+        env:
             - POSTGRES_PASSWORD=Password12!
     steps:
     - uses: actions/checkout@v1
