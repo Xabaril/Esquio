@@ -112,9 +112,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
     {
         private IConfiguration _configuration;
 
-        public TestStartup(IConfiguration configuration)
+        public IWebHostEnvironment Environment { get; }
+
+        public TestStartup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _configuration = configuration;
+            Environment = environment;
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -143,7 +146,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                     };
                 })
                 .Services
-                .AddEntityFramework(_configuration);
+                .AddEntityFramework(_configuration, Environment);
         }
 
         public void Configure(IApplicationBuilder app)

@@ -20,12 +20,14 @@ namespace Esquio.UI.Host
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -68,7 +70,7 @@ namespace Esquio.UI.Host
                 });
 
             EsquioUIApiConfiguration.ConfigureServices(services)
-                .AddEntityFramework(Configuration)
+                .AddEntityFramework(Configuration, Environment)
                 .AddHostedService<EsquioMetricsConsumer>();
         }
 
