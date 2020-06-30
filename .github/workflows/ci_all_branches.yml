@@ -19,7 +19,7 @@ jobs:
         ports:
             - 5434:5432
         env:
-            - POSTGRES_PASSWORD=Password12!
+            POSTGRES_PASSWORD: Password12!
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
@@ -35,4 +35,4 @@ jobs:
     - name: dotnet test [FunctionalTests-Postgres]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
-        - Store__UseNpgSql=true
+        Store__UseNpgSql: true
