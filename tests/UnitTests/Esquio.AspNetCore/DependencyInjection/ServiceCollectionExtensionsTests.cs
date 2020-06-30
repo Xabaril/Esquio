@@ -7,6 +7,8 @@ using Xunit;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Store.Infrastructure.Data.DbContexts;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Hosting;
 
 namespace UnitTests.Esquio.AspNetCore.Extensions
 {
@@ -18,8 +20,9 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
 
         public addsquio_should(){
             ConfigurationBuilder = new ConfigurationBuilder();
-            Environment = new WebHostBuilder().UseEnvironment("Development").Build().Services.GetService<IWebHostEnvironment>();
             ServiceCollection = new ServiceCollection();
+            // Kinda hacky, but not sure how else to mock out the env...
+            Environment = new HostBuilder().ConfigureWebHost(h => h.UseEnvironment("Development")).Build().Services.GetService<IWebHostEnvironment>();
         }
         [Fact]
         public void include_mandatory_services_in_container()
