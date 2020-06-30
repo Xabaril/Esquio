@@ -33,3 +33,7 @@ jobs:
       run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
     - name: dotnet test [FunctionalTests]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+    - name: dotnet test [FunctionalTests-Postgres]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+      env:
+        Store__UseNpgSql=true

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,37 +26,17 @@ namespace Esquio.UI.Api.Scenarios.Statistics.TopFeatures
 
         public async Task<TopFeaturesStatisticsResponse> Handle(TopFeaturesStatisticsRequest request, CancellationToken cancellationToken)
         {
-            using (var command = _store.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText =
-@$"SELECT TOP 5 FeatureName as {nameof(TopFeaturesDetailsStatisticsResponse.FeatureName)},count(*) as {nameof(TopFeaturesDetailsStatisticsResponse.Requests)}
-FROM [dbo].[Metrics] WHERE DateTime > DATEADD(HOUR, -24,[DateTime])
-GROUP BY FeatureName
-ORDER BY COUNT(*) desc";
-
-                command.CommandType = CommandType.Text;
-
-                await command.Connection.OpenAsync();
-
-                using (var reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancellationToken))
-                {
-                    var response = new TopFeaturesStatisticsResponse();
-                    var details = new List<TopFeaturesDetailsStatisticsResponse>();
-
-                    while (await reader.ReadAsync(cancellationToken))
-                    {
-                        var item = new TopFeaturesDetailsStatisticsResponse()
-                        {
-                            FeatureName = reader.GetString(reader.GetOrdinal(nameof(TopFeaturesDetailsStatisticsResponse.FeatureName))),
-                            Requests = reader.GetInt32(reader.GetOrdinal(nameof(TopFeaturesDetailsStatisticsResponse.Requests))),
-                        };
-                        details.Add(item);
-                    }
-
-                    response.TopFeaturesDetails = details;
-                    return response;
-                }
-            }
+            var previousDay = DateTime.Now.AddDays(-1);
+            var featureDetails = await _store.Metrics.Where(m => m.DateTime > previousDay).GroupBy(f => f.FeatureName).Select(m => new TopFeaturesDetailsStatisticsResponse{
+                FeatureName = m.First().FeatureName,
+                Requests = m.Count()
+            })
+            .OrderByDescending(m => m.Requests)
+            .Take(5)
+            .ToListAsync();
+            return new TopFeaturesStatisticsResponse {
+                TopFeaturesDetails = featureDetails
+            };
         }
     }
 }

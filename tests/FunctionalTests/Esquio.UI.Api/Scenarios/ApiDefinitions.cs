@@ -186,6 +186,10 @@
                 {
                     return $"api/statistics/success?api-version=3.0";
                 }
+                public static string Top()
+                {
+                    return $"api/statistics/top?api-version=3.0";
+                }
             }
 
             public static class Permissions

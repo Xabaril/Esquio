@@ -16,12 +16,13 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
     {
         const string UNKNOWN = nameof(UNKNOWN);
 
-        private readonly StoreOptions _storeOptions;
+        public StoreOptions StoreOptions { get; }
+        public string DefaultSchema => StoreOptions.DefaultSchema;
 
         public StoreDbContext(DbContextOptions dbContextOptions, IOptions<StoreOptions> storeOptions)
             : base(dbContextOptions)
         {
-            _storeOptions = storeOptions.Value;
+            StoreOptions = storeOptions.Value;
         }
 
         public DbSet<ProductEntity> Products { get; set; }
@@ -39,8 +40,8 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(_storeOptions.DefaultSchema);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, _storeOptions);
+            modelBuilder.HasDefaultSchema(StoreOptions.DefaultSchema);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, StoreOptions);
 
             base.OnModelCreating(modelBuilder);
         }

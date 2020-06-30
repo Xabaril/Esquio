@@ -54,5 +54,10 @@
         {
             return new DeploymentEntityBuilder();
         }
+
+        public static MetricEntityBuilder Metric()
+        {
+            return new MetricEntityBuilder();
+        }
     }
 }

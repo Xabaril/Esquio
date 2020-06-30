@@ -55,5 +55,14 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 await db.SaveChangesAsync();
             });
         }
+
+         public async Task AddMetric(params MetricEntity[] metrics)
+        {
+            await _serverFixture.ExecuteDbContextAsync(async db =>
+            {
+                await db.AddRangeAsync(metrics);
+                await db.SaveChangesAsync();
+            });
+        }
     }
 }

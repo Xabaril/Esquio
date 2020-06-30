@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,38 +25,20 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Success
 
         public async Task<SuccessStatisticResponse> Handle(SuccessStatisticsRequest request, CancellationToken cancellationToken)
         {
-            using (var command = _store.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText =
-@$"SELECT (SUM(CASE WHEN Kind=N'Success' THEN 1 ELSE 0 END)*100)/COUNT(id) as {nameof(SuccessStatisticResponse.PercentageSuccess)} 
-FROM [dbo].[Metrics] WHERE DateTime > DATEADD(HOUR, -24,[DateTime])";
+            var oneDayPast = DateTime.Now.AddDays(-1);
+            var stats = new {
+                SuccessCount = await _store.Metrics.Where(m => m.DateTime > oneDayPast).SumAsync(
+                    m => m.Kind == "Success" ? 1 : 0),
+                CountTotal = await _store.Metrics.Where(m => m.DateTime > oneDayPast).CountAsync()
+            };
+            int percentage = 0;
+            // Sanity
+            if (stats.SuccessCount >= 0 && stats.CountTotal > 0)
+                percentage = (int)(stats.SuccessCount / (double)stats.CountTotal * 100.0);
 
-                command.CommandType = CommandType.Text;
-
-                await command.Connection.OpenAsync();
-
-                using (var reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancellationToken))
-                {
-                    if (await reader.ReadAsync(cancellationToken))
-                    {
-                        var percentageSuccess = 0;
-
-                        if (reader.GetValue(reader.GetOrdinal(nameof(SuccessStatisticResponse.PercentageSuccess))) != DBNull.Value)
-                        {
-                            percentageSuccess = reader.GetInt32(reader.GetOrdinal(nameof(SuccessStatisticResponse.PercentageSuccess)));
-                        }
-
-                        var response = new SuccessStatisticResponse()
-                        {
-                            PercentageSuccess = percentageSuccess
-                        };
-
-                        return response;
-                    }
-                }
-            }
-
-            return null;
+            return new SuccessStatisticResponse{ 
+                PercentageSuccess = percentage
+            };
         }
     }
 }

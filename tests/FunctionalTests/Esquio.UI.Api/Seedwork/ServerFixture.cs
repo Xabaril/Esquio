@@ -37,7 +37,6 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 
 
         private static IHost _host;
-        private IDbAdapter _dbAdapter;
 
         public ServerFixture()
         {
@@ -56,9 +55,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                 .ConfigureAppConfiguration((_, cfg) =>
                  {
                      cfg.AddJsonFile("appsettings.json", optional: false).AddEnvironmentVariables();
-                     System.Console.WriteLine(cfg.Build().GetDebugView());
-                     _dbAdapter = Convert.ToBoolean(cfg.Build()["Store:UseNpgSql"]) ? DbAdapter.Postgres : DbAdapter.SqlServer;
-                     Console.WriteLine($"DB Adapter is {_dbAdapter}");
+                     _checkpoint.DbAdapter = Convert.ToBoolean(cfg.Build()["Store:UseNpgSql"]) ? DbAdapter.Postgres : DbAdapter.SqlServer;
                  }).Build();
             
             _host.StartAsync().Wait();
@@ -93,7 +90,11 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             // Get Db Connection
             context.Database.OpenConnection();
             var connection = context.Database.GetDbConnection();
-            // Reset Db
+            // Reset Db            
+            if (_checkpoint.DbAdapter == DbAdapter.Postgres){
+                _checkpoint.WithReseed = false;
+                _checkpoint.SchemasToInclude = new string[] {"public"};
+            }
             var task = _checkpoint.Reset(connection);
             task.Wait();
         }
@@ -137,7 +138,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                             return ApiKeyAuthenticationDefaults.ApiKeyScheme;
                         }
 
-                        return TestServerDefaults.AuthenticationScheme; ;
+                        return TestServerDefaults.AuthenticationScheme;
                     };
                 })
                 .Services

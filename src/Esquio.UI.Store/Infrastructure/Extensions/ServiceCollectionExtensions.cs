@@ -42,6 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddEntityFrameworkNpgSql(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("EsquioNpgSql");
+            services.Configure<StoreOptions>(setup => setup.DefaultSchema = "public");
             return services.AddDbContext<StoreDbContext, NpgSqlContext>(builder => builder.SetupNpgSql(connectionString));
         }
         public static DbContextOptionsBuilder SetupSqlServer(this DbContextOptionsBuilder contextOptionsBuilder, string connectionString)
@@ -50,7 +51,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     setup.MaxBatchSize(10);
                     setup.EnableRetryOnFailure();
-
                     setup.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName);
                 });
         }
