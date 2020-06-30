@@ -42,6 +42,7 @@ jobs:
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build -v n
       env:
         Store__UseNpgSql: true
+        Store__UseSqlServer: false
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols
     - name: dotnet pack [Esquio.AspNetCore]

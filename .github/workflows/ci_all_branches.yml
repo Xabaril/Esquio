@@ -36,3 +36,4 @@ jobs:
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
         Store__UseNpgSql: true
+        Store__UseSqlServer: false
