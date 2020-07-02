@@ -166,34 +166,34 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             statistics.PercentageSuccess
                 .Should().Be(41);
         }
-        // [Fact]
-        // [ResetDatabase]
-        // public async Task get_top5_statistics_response()
-        // {
-        //     var permission = Builders.Permission()
-        //       .WithReaderPermission()
-        //       .Build();
+        [Fact]
+        [ResetDatabase]
+        public async Task get_top5_statistics_response()
+        {
+            var permission = Builders.Permission()
+              .WithReaderPermission()
+              .Build();
 
-        //     await _fixture.Given
-        //         .AddPermission(permission);
-        //     await _fixture.Given.AddMetric(SampleMetrics());
+            await _fixture.Given
+                .AddPermission(permission);
+            await _fixture.Given.AddMetric(SampleMetrics());
 
-        //     var response = await _fixture.TestServer
-        //       .CreateRequest(ApiDefinitions.V3.Statistics.Top())
-        //       .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
-        //       .GetAsync();
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Statistics.Top())
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .GetAsync();
 
-        //     response.StatusCode
-        //         .Should()
-        //         .Be(StatusCodes.Status200OK);
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
 
-        //     var topFeatures = await response.Content
-        //         .ReadAs<TopFeaturesStatisticsResponse>();
+            var topFeatures = await response.Content
+                .ReadAs<TopFeaturesStatisticsResponse>();
 
-        //     topFeatures.TopFeaturesDetails.Count().Should().Be(5);
-        //     topFeatures.TopFeaturesDetails.First().FeatureName.Should().Be("Feature2");
-        //     topFeatures.TopFeaturesDetails.First().Requests.Should().Be(4);
-        // }
+            topFeatures.TopFeaturesDetails.Count().Should().Be(5);
+            topFeatures.TopFeaturesDetails.First().FeatureName.Should().Be("Feature2");
+            topFeatures.TopFeaturesDetails.First().Requests.Should().Be(4);
+        }
         private MetricEntity[] SampleMetrics(){
             return new [] {
                 Builders.Metric().WithKind("Success").WithFeatureName("Feature1").WithDateTime(DateTime.Now.AddHours(-5)).Build(),

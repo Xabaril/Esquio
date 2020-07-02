@@ -35,8 +35,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Success
             // Sanity
             if (stats.SuccessCount >= 0 && stats.CountTotal > 0)
                 percentage = (int)(stats.SuccessCount / (double)stats.CountTotal * 100.0);
-            else
-                return null;
+
             return new SuccessStatisticResponse{ 
                 PercentageSuccess = percentage
             };

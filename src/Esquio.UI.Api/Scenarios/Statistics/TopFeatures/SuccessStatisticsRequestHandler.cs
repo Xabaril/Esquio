@@ -26,17 +26,30 @@ namespace Esquio.UI.Api.Scenarios.Statistics.TopFeatures
 
         public async Task<TopFeaturesStatisticsResponse> Handle(TopFeaturesStatisticsRequest request, CancellationToken cancellationToken)
         {
-            var previousDay = DateTime.Now.AddDays(-1);
-            var featureDetails = await _store.Metrics.Where(m => m.DateTime > previousDay).GroupBy(f => f.FeatureName).Select(m => new TopFeaturesDetailsStatisticsResponse{
-                FeatureName = m.First().FeatureName,
-                Requests = m.Count()
-            })
-            .OrderByDescending(m => m.Requests)
-            .Take(5)
-            .ToListAsync();
-            return new TopFeaturesStatisticsResponse {
-                TopFeaturesDetails = featureDetails
-            };
+            try
+            {
+                var previousDay = DateTime.Now.AddDays(-1);
+                var featureDetails = await _store.Metrics
+                                                .Where(m => m.DateTime > previousDay)
+                                                .GroupBy(m => m.FeatureName)
+                .Select(m => new TopFeaturesDetailsStatisticsResponse
+                {
+                    FeatureName = m.Key,
+                    Requests = m.Count()
+                })
+                .OrderByDescending(m => m.Requests)
+                .Take(5)
+                .ToListAsync();
+                return new TopFeaturesStatisticsResponse
+                {
+                    TopFeaturesDetails = featureDetails
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }
