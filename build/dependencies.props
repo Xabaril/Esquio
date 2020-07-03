@@ -8,16 +8,16 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>3.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>3.0.0$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>3.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>3.0.0$(VersionSuffix)</esquioconfigurationstore>
-    <esquiodatabasestore>3.0.0$(VersionSuffix)</esquiodatabasestore>
-    <esquioentityframeworkstore>3.0.0$(VersionSuffix)</esquioentityframeworkstore>
-    <esquiominiprofiler>3.0.0$(VersionSuffix)</esquiominiprofiler>
-    <esquiocli>3.0.0$(VersionSuffix)</esquiocli>
-    <esquiohttpstore>3.0.0$(VersionSuffix)</esquiohttpstore>
-    <esquioblazorwasm>3.0.0$(VersionSuffix)</esquioblazorwasm>
+    <esquio>3.1.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>3.1.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>3.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>3.1.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquiodatabasestore>3.1.0$(VersionSuffix)</esquiodatabasestore>
+    <esquioentityframeworkstore>3.1.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>3.1.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>3.1.0$(VersionSuffix)</esquiocli>
+    <esquiohttpstore>3.1.0$(VersionSuffix)</esquiohttpstore>
+    <esquioblazorwasm>3.1.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 
   <PropertyGroup Label="Package Dependencies">

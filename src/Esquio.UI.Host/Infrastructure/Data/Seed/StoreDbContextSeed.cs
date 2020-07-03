@@ -25,7 +25,7 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
 
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
-                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "818727", //default alice user
+                        SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "1", //default alice user
                         ApplicationRole = ApplicationRole.Management
                     };
 
