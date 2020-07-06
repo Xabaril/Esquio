@@ -14,9 +14,12 @@ namespace Esquio.UI.Store.Infrastructure.Data
     {
         public StoreDbContext CreateDbContext(string[] args)
         {
-            var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
+            var configBuilder = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.json");
+
             var optionsBuilder = new DbContextOptionsBuilder<StoreDbContext>();
-            var connectionString = configBuilder.Build().GetConnectionString("Esquio");
+            var connectionString = configBuilder.Build()["Data:ConnectionString"];
             optionsBuilder.SetupSqlServer(connectionString);
 
             var dbContextOptions = optionsBuilder.Options;
@@ -30,14 +33,19 @@ namespace Esquio.UI.Store.Infrastructure.Data
     {
         public NpgSqlContext CreateDbContext(string[] args)
         {
-            var configBuilder = new ConfigurationBuilder().AddEnvironmentVariables().AddJsonFile("appsettings.json");
+            var configBuilder = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.json");
+
             var optionsBuilder = new DbContextOptionsBuilder<NpgSqlContext>();
-            var connectionString = configBuilder.Build().GetConnectionString("EsquioNpgSql");
+
+            var connectionString = configBuilder.Build()["Data:ConnectionString"];
             optionsBuilder.SetupNpgSql(connectionString);
 
             var dbContextOptions = optionsBuilder.Options;
+
             // Public is the default schema for Postgres
-            var storeOptions = Options.Create(new StoreOptions{DefaultSchema = "public" });
+            var storeOptions = Options.Create(new StoreOptions { DefaultSchema = "public" });
 
             return new NpgSqlContext(dbContextOptions, storeOptions);
         }
