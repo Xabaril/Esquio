@@ -37,7 +37,7 @@ jobs:
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
         Data__Store: "SqlServer"
-        Data__ConnectionString: "Server=tcp:localhost,5433;Initial Catalog=Esquio.UI;User Id=sa;Password=Password12"
+        Data__ConnectionString: "Server=tcp:localhost,5433;Initial Catalog=Esquio.UI;User Id=sa;Password=Password12!"
     - name: dotnet test [FunctionalTests-Postgres]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
