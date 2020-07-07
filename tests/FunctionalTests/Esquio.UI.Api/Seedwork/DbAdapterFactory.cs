@@ -6,10 +6,10 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
     {
         public static IDbAdapter CreateFromProvider(string providerName)
         {
-            return providerName switch
+            return providerName.ToLowerInvariant() switch
             {
-                "SqlServer" => DbAdapter.SqlServer,
-                "Npgsql" => DbAdapter.Postgres,
+                "sqlserver" => DbAdapter.SqlServer,
+                "npgsql" => DbAdapter.Postgres,
                 _ => DbAdapter.SqlServer
             };
         }

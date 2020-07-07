@@ -23,7 +23,14 @@ dotnet test ./tests/UnitTests/UnitTests.csproj
 echo "Starting docker containers"
 docker-compose -f build/docker-compose-infrastructure.yml up -d
 
-echo "Runing functional tests"
+echo "Runing functional tests SqlServer"
+export Data__Store='SqlServer'
+export Data__ConnectionString='Server=tcp:localhost,5433;Initial Catalog=Esquio.UI.Tests;User Id=sa;Password=Password12!'
+dotnet test ./tests/FunctionalTests/FunctionalTests.csproj
+
+echo "Runing functional tests Postgress"
+export Data__Store='NpgSql'
+export Data__ConnectionString='Host=localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!'
 dotnet test ./tests/FunctionalTests/FunctionalTests.csproj
 
 echo "Finalizing docker containers"

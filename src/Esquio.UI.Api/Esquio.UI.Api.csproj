@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(microsoftentityframeworkcore)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(microsoftentityframeworkcorerelational)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(npgsqlentityframeworkcorepostgresql)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="$(microsoftaspnetcoremvcversioningapiexplorerversion)" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="$(fluentvalidationaspnetcore)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
@@ -34,6 +36,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Data\Migrations\SqlServer\" />
   </ItemGroup>
 
   <Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">

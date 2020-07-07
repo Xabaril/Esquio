@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Esquio.UI.Api.Infrastructure.Data.Migrations.NpgSql
+namespace Esquio.UI.Store.Infrastructure.Data.NpgSql.Migrations
 {
     public partial class Initial : Migration
     {

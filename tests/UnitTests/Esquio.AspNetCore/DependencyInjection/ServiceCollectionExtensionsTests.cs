@@ -1,5 +1,4 @@
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
-using Esquio.UI.Store.Infrastructure.Data.DbContexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

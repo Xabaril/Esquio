@@ -49,10 +49,24 @@ Write-Output "Starting docker containers"
 
 exec { & docker-compose -f build\docker-compose-infrastructure.yml up -d }
 
-Write-Output "Running functional tests"
+Write-Output "Running functional tests SqlServer"
 
 try {
 
+$env:Data__Store='SqlServer'
+$env:Data__ConnectionString='Server=tcp:localhost,5433;Initial Catalog=Esquio.UI.Tests;User Id=sa;Password=Password12!'
+Push-Location -Path .\tests\FunctionalTests
+        exec { & dotnet test}
+} finally {
+        Pop-Location
+}
+
+Write-Output "Running functional tests Postgress"
+
+try {
+
+$env:Data__Store='NpgSql'
+$env:Data__ConnectionString='Host=localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!'
 Push-Location -Path .\tests\FunctionalTests
         exec { & dotnet test}
 } finally {

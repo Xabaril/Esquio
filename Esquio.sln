@@ -77,8 +77,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.AspNetCore.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.AspNetCore.Mvc.ApplicationInsights", "samples\GettingStarted.AspNetCore.Mvc.ApplicationInsights\GettingStarted.AspNetCore.Mvc.ApplicationInsights.csproj", "{66B38F31-F08A-4A66-BB5E-417594478003}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esquio.UI.Store", "src\Esquio.UI.Store\Esquio.UI.Store.csproj", "{B6AE31DA-7D29-42B9-A2E5-17349914FBEA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -197,10 +195,6 @@ Global
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6AE31DA-7D29-42B9-A2E5-17349914FBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6AE31DA-7D29-42B9-A2E5-17349914FBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6AE31DA-7D29-42B9-A2E5-17349914FBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6AE31DA-7D29-42B9-A2E5-17349914FBEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,7 +228,6 @@ Global
 		{C398E2E1-3000-4FD2-8624-6963C8ECEA3B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{78B00EDF-CC4F-4014-BCEA-6807CB66FB2C} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{66B38F31-F08A-4A66-BB5E-417594478003} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
-		{B6AE31DA-7D29-42B9-A2E5-17349914FBEA} = {FA3A9027-8210-4ECE-8075-28EE8C481412}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}

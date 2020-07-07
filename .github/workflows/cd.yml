@@ -28,13 +28,21 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.300
+        dotnet-version: 3.1.301
     - name: dotnet build
       run: dotnet build Esquio.sln -c $BUILD_CONFIG
     - name: dotnet test [UnitTests]
       run: dotnet test ./tests/UnitTests/UnitTests.csproj -c $BUILD_CONFIG --no-build
-    - name: dotnet test [FunctionalTests]
+    - name: dotnet test [FunctionalTests-SqlServer]
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+      env:
+        Data__Store: "SqlServer"
+        Data__ConnectionString: "Server=tcp:localhost,5433;Initial Catalog=Esquio.UI;User Id=sa;Password=Password12"
+    - name: dotnet test [FunctionalTests-Postgres]
+      run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
+      env:
+        Data__Store: "NpgSql"
+        Data__ConnectionString: "localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!"
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.AspNetCore]
