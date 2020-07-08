@@ -165,13 +165,26 @@
 
     private async Task Update(string productName, string name, string description)
     {
-        var result = await esquioHttpClient.UpdateProduct(
-        productName,
-        new UpdateProductRequest
+        var request = new UpdateProductRequest()
         {
             Name = name,
             Description = description
-        });
+        };
+
+        var context = new EditContext(request);
+        context.AddFluentValidation();
+
+        if (!context.Validate())
+        {
+            var errors = String.Join(" ", context.GetValidationMessages());
+
+            notifications.Warning("Validation", errors);
+
+            return;
+        }
+
+
+        var result = await esquioHttpClient.UpdateProduct(productName, request);
 
         if (result)
         {
