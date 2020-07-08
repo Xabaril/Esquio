@@ -82,42 +82,6 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        /// <summary>
-        /// Add a new service depending on a feature state.
-        /// </summary>
-        /// <typeparam name="TService">The system type of the service.</typeparam>
-        /// <param name="services">The <see cref="IServiceCollection"/> used.</param>
-        /// <param name="featureName">The feature name to be evaluated.</param>
-        /// <param name="featureEnabled">The factory used to create the service implementation when the feature is enabled.</param>
-        /// <param name="featureDisabled">The factory used to create the service implementation when the feature is disabled.</param>
-        /// <param name="serviceLifetime">The service lifetime to set.</param>
-        /// <returns>The collection of configured services.</returns>
-        public static IServiceCollection Add<TService>(this IServiceCollection services,
-            string featureName,
-            Func<IServiceProvider, object> featureEnabled,
-            Func<IServiceProvider, object> featureDisabled,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
-        {
-            _ = featureName ?? throw new ArgumentNullException(nameof(featureName));
-            _ = featureEnabled ?? throw new ArgumentNullException(nameof(featureEnabled));
-            _ = featureDisabled ?? throw new ArgumentNullException(nameof(featureDisabled));
-
-            var descriptor = new ServiceDescriptor(typeof(TService), serviceProvider =>
-            {
-                var featureService = serviceProvider.GetService<IFeatureService>();
-
-                var enabled = featureService.IsEnabledAsync(featureName)
-                    .GetAwaiter()
-                    .GetResult();
-
-                return enabled ? featureEnabled(serviceProvider) : featureDisabled(serviceProvider);
-            }, serviceLifetime);
-
-            services.Add(descriptor);
-
-            return services;
-        }
-
         private static IServiceCollection AddScanResult(this IServiceCollection services, Type type, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             services.Add(
