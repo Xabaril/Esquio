@@ -43,7 +43,7 @@ jobs:
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
         Data__Store: "NpgSql"
-        Data__ConnectionString: "localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!"
+        Data__ConnectionString: "Host=localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!"
     - name: dotnet pack [Esquio]
       run: dotnet pack ./src/Esquio/Esquio.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [Esquio.AspNetCore]
