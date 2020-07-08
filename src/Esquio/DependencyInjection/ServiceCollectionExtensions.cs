@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -80,6 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
         private static IServiceCollection AddScanResult(this IServiceCollection services, Type type, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             services.Add(
@@ -90,6 +92,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
         private static IEnumerable<Type> FindTogglesInAssembly(Assembly assembly)
         {
             var exportedTypes = assembly.GetExportedTypes();
