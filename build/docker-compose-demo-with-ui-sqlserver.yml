@@ -24,10 +24,11 @@ services:
             context: ..
             dockerfile: build/UIDockerfile
         environment:
-            - ConnectionStrings__Esquio=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
-            - Store__UseSqlServer=true
+            - Data__ConnectionString=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - Data__Store=SqlServer
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
+            - Security__DefaultSubjectId=1
             - Security__OpenId__ClientId=interactive.public
             - Security__OpenId__Audience=api
             - Security__OpenId__Authority=https://demo.identityserver.io/
@@ -41,31 +42,4 @@ services:
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Password12!
-    ui-postgres:
-        image: ui
-        container_name: ui-postgres
-        depends_on: 
-            - postgres
-        ports:
-            - 8091:80
-        build:
-            context: ..
-            dockerfile: build/UIDockerfile
-        environment:
-            - ConnectionStrings__EsquioNpgSql=Host=postgres;Port=5432;Database=Esquio;User Id=postgres;Password=Password12!
-            - Store__UseNpgSql=true
-            - Serilog__MinimumLevel=Information
-            - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
-            - Security__OpenId__ClientId=interactive.public
-            - Security__OpenId__Audience=api
-            - Security__OpenId__Authority=https://demo.identityserver.io/
-            - Security__OpenId__ResponseType=code
-            - Security__OpenId__RequireHttpsMetadata=true
-    postgres:
-        image: postgres
-        restart: always
-        ports:
-            - 5434:5432
-        environment:
-            - POSTGRES_PASSWORD=Password12!
    
