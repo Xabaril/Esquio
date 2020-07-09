@@ -13,7 +13,9 @@ namespace Esquio.UI.Api.Shared.Models.Products.Update
                 .MaximumLength(200);
 
             RuleFor(x => x.Description)
-                .MaximumLength(2000);
+               .NotNull()
+               .MinimumLength(5)
+               .MaximumLength(2000);
         }
     }
 }

@@ -39,4 +39,4 @@ jobs:
       run: dotnet test ./tests/FunctionalTests/FunctionalTests.csproj -c $BUILD_CONFIG --no-build
       env:
         Data__Store: "NpgSql"
-        Data__ConnectionString: "localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!"
+        Data__ConnectionString: "Host=localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!"

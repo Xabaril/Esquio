@@ -22,7 +22,7 @@
 
   <PropertyGroup Label="Package Dependencies">
     <blazor>3.2.0</blazor>
-    <blazorhttpclient>3.2.0</blazorhttpclient>
+    <blazorhttpclient>3.2.1</blazorhttpclient>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.6.2</nswagmsbuild>
     <swashbuckleaspnetcore>5.5.1</swashbuckleaspnetcore>
@@ -60,7 +60,7 @@
     <serilogsinksapplicationinsights>3.1.0</serilogsinksapplicationinsights>
 
     <hellangmiddlewareproblemdetails>5.1.0</hellangmiddlewareproblemdetails>
-    <mediatrextensionsmicrosoftdependencyinjection>8.0.0</mediatrextensionsmicrosoftdependencyinjection>
+    <mediatrextensionsmicrosoftdependencyinjection>8.0.1</mediatrextensionsmicrosoftdependencyinjection>
     <fluentvalidationaspnetcore>8.6.2</fluentvalidationaspnetcore>
     <microsoftapplicationinsights>2.14.0</microsoftapplicationinsights>
     <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
