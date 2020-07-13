@@ -4,7 +4,7 @@ on:
     tags:       
       - internal-demo-release-*  # Push events to release-* 
 env:
-  TAG: 3.1.${{ github.run_id }}
+  TAG: 4.0.${{ github.run_id }}
   REGISTRY: esquio.azurecr.io
   ACR_REPO_APP: esquiodemointernalapp
   ACR_REPO_UI: esquiodemointernalui
