@@ -17,6 +17,10 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
             //override and fix incompatible configurations on my sql 
 
+            /*
+             * BLOB/TEXT column can't have a default value
+             * https://makandracards.com/makandra/49294-mysql-error-blob-text-column-can-t-have-a-default-value
+             */
             modelBuilder.Entity<PermissionEntity>().Property(p => p.ApplicationRole)
               .HasConversion<string>()
               .IsRequired();
