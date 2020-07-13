@@ -8,7 +8,7 @@
         /// <summary>
         /// Get or set default schema for store configuration tables.
         /// </summary>
-        public string DefaultSchema { get; set; } = "dbo";
+        public string DefaultSchema { get; set; }
 
         /// <summary>
         /// Get or set default table configuration for Products.

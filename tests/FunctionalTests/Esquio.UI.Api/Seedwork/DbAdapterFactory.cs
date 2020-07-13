@@ -10,6 +10,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
             {
                 "sqlserver" => DbAdapter.SqlServer,
                 "npgsql" => DbAdapter.Postgres,
+                "mysql" => DbAdapter.MySql,
                 _ => DbAdapter.SqlServer
             };
         }

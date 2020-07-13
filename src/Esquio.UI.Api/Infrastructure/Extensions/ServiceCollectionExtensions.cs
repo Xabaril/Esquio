@@ -74,6 +74,10 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return services.AddEntityFrameworkSqlServer(configuration, environment);
                     }
+                case "MySql":
+                    {
+                        return services.AddEntityFrameworkMySql(configuration, environment);
+                    }
 
                 default: throw new InvalidOperationException("Add EntityFramework requires either Data:Store:SqlServer or Data:Store:Npgsql to be set.");
             }
@@ -89,6 +93,12 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = configuration["Data:ConnectionString"];
             services.Configure<StoreOptions>(setup => setup.DefaultSchema = "public");
             return services.AddDbContext<StoreDbContext, NpgSqlContext>(builder => builder.SetupNpgSql(connectionString).SetupSensitiveLogging(environment));
+        }
+        public static IServiceCollection AddEntityFrameworkMySql(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            var connectionString = configuration["Data:ConnectionString"];
+            services.Configure<StoreOptions>(_=> { });
+            return services.AddDbContext<StoreDbContext, MySqlContext>(builder => builder.SetupMySql(connectionString).SetupSensitiveLogging(environment));
         }
         public static DbContextOptionsBuilder SetupSensitiveLogging(this DbContextOptionsBuilder optionsBuilder, IWebHostEnvironment environment)
         {
@@ -110,7 +120,16 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 setup.MaxBatchSize(10);
                 setup.EnableRetryOnFailure();
-                setup.MigrationsAssembly(typeof(NpgSqlDesignTimeContextFactory).Assembly.FullName);
+                setup.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName);
+            });
+        }
+        public static DbContextOptionsBuilder SetupMySql(this DbContextOptionsBuilder contextOptionsBuilder, string connectionString)
+        {
+            return contextOptionsBuilder.UseMySql(connectionString, setup =>
+            {
+                setup.MaxBatchSize(10);
+                setup.EnableRetryOnFailure();
+                setup.MigrationsAssembly(typeof(DesignTimeContextFactory).Assembly.FullName);
             });
         }
     }

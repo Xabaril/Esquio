@@ -41,4 +41,23 @@ namespace Esquio.UI.Store.Infrastructure.Data
             return new NpgSqlContext(dbContextOptions, storeOptions);
         }
     }
+
+    public class MySqlDesignTimeContextFactory
+       : IDesignTimeDbContextFactory<MySqlContext>
+    {
+        public MySqlContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<MySqlContext>();
+
+            //using default docker-compose connection string, only need for creating migrations on this project
+            optionsBuilder.SetupMySql("Server=localhost;Database=Esquio.UI.Tests;Uid=mysql;Pwd=Password12!;");
+
+            var dbContextOptions = optionsBuilder.Options;
+
+            // Public is the default schema for Postgres
+            var storeOptions = Options.Create(new StoreOptions { DefaultSchema = "" });
+
+            return new MySqlContext(dbContextOptions, storeOptions);
+        }
+    }
 }

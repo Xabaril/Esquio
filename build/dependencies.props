@@ -64,7 +64,9 @@
     <fluentvalidationaspnetcore>8.6.2</fluentvalidationaspnetcore>
     <microsoftapplicationinsights>2.14.0</microsoftapplicationinsights>
     <microsoftapplicationinsightsaspnetcore>2.14.0</microsoftapplicationinsightsaspnetcore>
+    
     <npgsqlentityframeworkcorepostgresql>3.1.4</npgsqlentityframeworkcorepostgresql>
+    <pomeloentityframeworkcoremysql>3.1.1</pomeloentityframeworkcoremysql>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">

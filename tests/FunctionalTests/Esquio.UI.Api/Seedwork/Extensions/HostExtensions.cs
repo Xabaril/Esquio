@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,6 +18,7 @@ namespace Microsoft.Extensions.Hosting
                 try
                 {
                     context.Database.EnsureDeleted();
+                    //context.Database.EnsureCreated();
                     context.Database.Migrate();
 
                     seeder(context, scope.ServiceProvider);

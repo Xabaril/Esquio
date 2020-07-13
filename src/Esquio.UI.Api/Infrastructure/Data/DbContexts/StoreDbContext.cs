@@ -17,6 +17,7 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
         const string UNKNOWN = nameof(UNKNOWN);
 
         public StoreOptions StoreOptions { get; }
+
         public string DefaultSchema => StoreOptions.DefaultSchema;
 
         public StoreDbContext(DbContextOptions dbContextOptions, IOptions<StoreOptions> storeOptions)
@@ -40,7 +41,11 @@ namespace Esquio.UI.Api.Infrastructure.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(StoreOptions.DefaultSchema);
+            if (!String.IsNullOrEmpty(StoreOptions.DefaultSchema))
+            {
+                modelBuilder.HasDefaultSchema(StoreOptions.DefaultSchema);
+            }
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly, StoreOptions);
 
             base.OnModelCreating(modelBuilder);
