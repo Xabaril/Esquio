@@ -23,6 +23,16 @@ jobs:
             - 5434:5432
         env:
             POSTGRES_PASSWORD: Password12!
+      mysql:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - 3306:3306
+        env:
+            MYSQL_ROOT_PASSWORD: Password12!
+            MYSQL_USER: mysql
+            MYSQL_PASSWORD: Password12!
+            MYSQL_ROOT_HOST: %
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
