@@ -91,7 +91,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
         }
 
         [Fact]
-        public async Task be_not_active_when_claim_type_and_value_are_successfully_configured_and_user_claims_contains_multiple_values_of_the_sample_type()
+        public async Task be_active_when_claim_type_and_value_are_successfully_configured_and_user_claims_contains_multiple_values_of_the_sample_type_and_one_value_is_configured()
         {
             var toggle = Build
                 .Toggle<ClaimValueToggle>()
@@ -125,7 +125,7 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
                     toggle));
 
             active.Should()
-                .BeFalse();
+                .BeTrue();
         }
 
     }

@@ -9,7 +9,7 @@
 
   <PropertyGroup Label="Esquio Versions">
     <esquio>3.1.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>3.1.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcore>3.1.1$(VersionSuffix)</esquioaspnetcore>
     <esquioaspnetcoreapplicationinsightsprocessor>3.1.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
     <esquioconfigurationstore>3.1.0$(VersionSuffix)</esquioconfigurationstore>
     <esquiodatabasestore>3.1.0$(VersionSuffix)</esquiodatabasestore>

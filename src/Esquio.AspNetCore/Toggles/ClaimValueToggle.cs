@@ -53,8 +53,11 @@ namespace Esquio.AspNetCore.Toggles
                     {
                         if (item != null)
                         {
-                            var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
-                            return new ValueTask<bool>(active);
+                            if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
+                            {
+                                return new ValueTask<bool>(true);
+                            }
+
                         }
                     }
                 }
