@@ -25,7 +25,6 @@ jobs:
             POSTGRES_PASSWORD: Password12!
       mysql:
         image: mysql
-        command: --default-authentication-plugin=mysql_native_password
         ports:
             - 3306:3306
         env:
