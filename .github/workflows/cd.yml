@@ -32,7 +32,6 @@ jobs:
             MYSQL_ROOT_PASSWORD: Password12!
             MYSQL_USER: mysql
             MYSQL_PASSWORD: Password12!
-            MYSQL_ROOT_HOST: %
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK

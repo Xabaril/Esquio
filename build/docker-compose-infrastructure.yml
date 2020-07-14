@@ -25,7 +25,6 @@ services:
             - MYSQL_ROOT_PASSWORD=Password12!
             - MYSQL_USER=mysql
             - MYSQL_PASSWORD=Password12!
-            - MYSQL_ROOT_HOST=%
     adminer:
            image: adminer
            restart: always
