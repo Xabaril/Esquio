@@ -73,6 +73,18 @@ Push-Location -Path .\tests\FunctionalTests
         Pop-Location
 }
 
+Write-Output "Running functional tests MySql"
+
+try {
+
+$env:Data__Store='MySql'
+$env:Data__ConnectionString='Server=127.0.0.1;Database=Esquio.UI.Tests;Uid=root;Pwd=Password12!'
+Push-Location -Path .\tests\FunctionalTests
+        exec { & dotnet test}
+} finally {
+        Pop-Location
+}
+
 Write-Output "Finalizing docker containers"
 exec { & docker-compose -f build\docker-compose-infrastructure.yml down }
 

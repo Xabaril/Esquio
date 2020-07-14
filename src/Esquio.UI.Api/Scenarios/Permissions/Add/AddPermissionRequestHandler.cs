@@ -37,10 +37,19 @@ namespace Esquio.UI.Api.Scenarios.Permissions.Add
                    .Add(new PermissionEntity()
                    {
                        SubjectId = request.SubjectId,
-                       ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true)
+                       ApplicationRole = Enum.Parse<ApplicationRole>(request.ActAs, ignoreCase: true),
+                       Kind = SubjectType.User
                    });
 
-                await _storeDbContext.SaveChangesAsync(cancellationToken);
+                try
+                {
+                    await _storeDbContext.SaveChangesAsync(cancellationToken);
+                }
+                catch(Exception ex)
+                {
+                    var log = ex.Message.ToString();
+                }
+                
                 return Unit.Value;
             }
 

@@ -33,6 +33,11 @@ export Data__Store='NpgSql'
 export Data__ConnectionString='Host=localhost;Port=5434;Database=Esquio.UI.Tests;User Id=postgres;Password=Password12!'
 dotnet test ./tests/FunctionalTests/FunctionalTests.csproj
 
+echo "Runing functional tests MySql"
+export Data__Store='MySql'
+export Data__ConnectionString='Server=127.0.0.1;Database=Esquio.UI.Tests;Uid=root;Pwd=Password12!'
+dotnet test ./tests/FunctionalTests/FunctionalTests.csproj
+
 echo "Finalizing docker containers"
 docker-compose -f build/docker-compose-infrastructure.yml down
 
