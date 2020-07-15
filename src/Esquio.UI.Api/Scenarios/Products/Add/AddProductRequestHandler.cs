@@ -36,7 +36,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Add
 
                 product.Deployments.Add(new DeploymentEntity(
                     productEntityId: product.Id,
-                    name: request.DefaultDeploymentName,
+                    name: request.DefaultDeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME,
                     byDefault: true));
 
                 _storeDbContext.Add(product);
