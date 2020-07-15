@@ -190,6 +190,11 @@
                 {
                     return $"api/statistics/top?api-version=3.0";
                 }
+
+                public static string Plot()
+                {
+                    return $"api/statistics/plot?api-version=3.0";
+                }
             }
 
             public static class Permissions
