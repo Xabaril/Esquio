@@ -4,6 +4,7 @@ using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Infrastructure.Metrics;
 using Esquio.UI.Api.Shared.Models.Configuration.Details;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -30,6 +31,11 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
 
         public async Task<DetailsConfigurationResponse> Handle(DetailsConfigurationRequest request, CancellationToken cancellationToken)
         {
+            var defaultDeployment = await _storeDbContext
+                .Deployments
+                .Where(d => d.ByDefault && d.ProductEntity.Name == request.ProductName)
+                .SingleOrDefaultAsync();
+
             var featureEntity = await _storeDbContext
                .Features
                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
