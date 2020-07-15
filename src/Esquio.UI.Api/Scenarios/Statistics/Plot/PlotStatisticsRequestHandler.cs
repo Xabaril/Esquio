@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.DbContexts;
+using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Shared.Models.Statistics.Plot;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,50 +28,53 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Plot
 
         public async Task<PlotStatisticsResponse> Handle(PlotStatisticsRequest request, CancellationToken cancellationToken)
         {
-            using (var command = _store.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText =
-@$"
-DECLARE @END DATETIME2  = GETDATE();
-DECLARE @START DATETIME2 = DATEADD(HOUR, -24, @END);
-WITH CTE_Dates AS
-(
-    SELECT @START AS cte_date
-    UNION ALL
-    SELECT DATEADD(SECOND, 30, cte_date) AS cte_date
-    FROM CTE_Dates
-    WHERE cte_date <= @END
-)
-SELECT CTE_Dates.cte_date as {nameof(PlotPointStatisticsResponse.Date)}, COUNT(Metrics.Id) AS {nameof(PlotPointStatisticsResponse.Value)}
-FROM CTE_Dates
-LEFT JOIN Metrics
-ON Metrics.[DateTime] BETWEEN cte_date AND DATEADD(SECOND, 30, cte_date)
-GROUP BY cte_date
-OPTION (MAXRECURSION 10000)
-";
-                command.CommandType = CommandType.Text;
-                await command.Connection.OpenAsync();
+            var oneDayPast = DateTime.Now.AddDays(-1);
 
-                using (var reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancellationToken))
+            var oneDayMetrics = await _store.Metrics
+                .Where(m => m.DateTime > oneDayPast)
+                .ToListAsync();
+
+            var groupsByTime = oneDayMetrics
+                .Select(metric =>
                 {
-                    var response = new PlotStatisticsResponse();
-                    var points = new List<PlotPointStatisticsResponse>(capacity: 1200); //points over 12 hours each 30 seconds aprox
+                    metric.DateTime = new DateTime(
+                        metric.DateTime.Year,
+                        metric.DateTime.Month,
+                        metric.DateTime.Day,
+                        metric.DateTime.Hour,
+                        metric.DateTime.Minute,
+                        metric.DateTime.Second < 30 ? 0 : 30);
 
-                    while (await reader.ReadAsync(cancellationToken))
-                    {
-                        var item = new PlotPointStatisticsResponse()
-                        {
-                            Date = reader.GetDateTime(reader.GetOrdinal(nameof(PlotPointStatisticsResponse.Date))),
-                            Value = reader.GetInt32(reader.GetOrdinal(nameof(PlotPointStatisticsResponse.Value))),
-                        };
+                    return metric;
+                }).GroupBy(m => m.DateTime).ToDictionary(m => m.Key, m => m.ToList());
 
-                        points.Add(item);
-                    }
+            var startDate = new DateTime(oneDayPast.Year, oneDayPast.Month, oneDayPast.Day, oneDayPast.Hour, oneDayPast.Minute, 0);
+            var now = DateTime.Now;
 
-                    response.Points = points;
-                    return response;
+            var points = new List<PlotPointStatisticsResponse>();
+
+            while(startDate < now )
+            {
+                var value = 0;
+
+                if (groupsByTime.ContainsKey(startDate))
+                {
+                    value = groupsByTime[startDate].Count();
                 }
+                
+                points.Add(new PlotPointStatisticsResponse()
+                {
+                    Date = startDate,
+                    Value = value
+                });
+
+                startDate = startDate.AddSeconds(30);
             }
+
+            return new PlotStatisticsResponse()
+            {
+                Points = points
+            };
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Esquio.UI.Api.Infrastructure.Data.Entities;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
+using Esquio.UI.Api.Shared.Models.Statistics.Plot;
 using Esquio.UI.Api.Shared.Models.Statistics.Success;
 using Esquio.UI.Api.Shared.Models.Statistics.TopFeatures;
 using FluentAssertions;
@@ -193,6 +194,35 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             topFeatures.TopFeaturesDetails.Count().Should().Be(5);
             topFeatures.TopFeaturesDetails.First().FeatureName.Should().Be("Feature2");
             topFeatures.TopFeaturesDetails.First().Requests.Should().Be(4);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task get_plot_statistics_response()
+        {
+            var permission = Builders.Permission()
+              .WithReaderPermission()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+            await _fixture.Given.AddMetric(SampleMetrics());
+
+            var response = await _fixture.TestServer
+              .CreateRequest(ApiDefinitions.V3.Statistics.Plot())
+              .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+              .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var plotResponse = await response.Content
+                .ReadAs<PlotStatisticsResponse>();
+
+            plotResponse.Should().NotBeNull();
+
+            plotResponse.Points.Count().Should().BeInRange(2880, 2885);
         }
         private MetricEntity[] SampleMetrics(){
             return new [] {
