@@ -8,6 +8,6 @@ namespace Esquio.UI.Api.Shared.Models.Products.Add
 
         public string Description { get; set; }
 
-        public string DefaultDeploymentName { get; set; } = "Tests";
+        public string DefaultDeploymentName { get; set; }
     }
 }
