@@ -63,6 +63,7 @@ namespace WebApp
                 .AddEsquio(setup=>
                 {
                     setup.UseScopedEvaluation(useScopedEvaluation: true);
+                    setup.ConfigureDefaultDeploymentName("Development");
                 })
                 .AddHttpStore(setup =>
                 {
