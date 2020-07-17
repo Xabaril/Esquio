@@ -2,6 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
     <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
+    <NetStandardMultiTarget>netstandard2.0;netstandard2.1</NetStandardMultiTarget>
     <NetTestSdk>16.6.1</NetTestSdk>
     <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>preview</LangVersion>
