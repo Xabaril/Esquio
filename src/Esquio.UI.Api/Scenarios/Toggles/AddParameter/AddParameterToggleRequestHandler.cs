@@ -40,27 +40,27 @@ namespace Esquio.UI.Api.Scenarios.Toggles.AddParameter
 
                 if (toggle != null)
                 {
-                    var allowedRings = await _storeDbContext
+                    var allowedDeployments = await _storeDbContext
                         .Deployments
                         .Where(p => p.ProductEntityId == feature.ProductEntityId)
                         .ToListAsync();
 
-                    var defaultRing = allowedRings
+                    var defaultDeployment = allowedDeployments
                            .Where(r => r.ByDefault)
                            .SingleOrDefault();
 
-                    var selectedRing = defaultRing;
+                    var selectedDeployment = defaultDeployment;
 
                     if (!string.IsNullOrEmpty(request.DeploymentName))
                     {
-                        selectedRing = allowedRings
+                        selectedDeployment = allowedDeployments
                            .Where(r => r.Name == request.DeploymentName)
                            .SingleOrDefault();
                     }
 
-                    if (selectedRing != null)
+                    if (selectedDeployment != null)
                     {
-                        toggle.AddOrUpdateParameter(selectedRing, defaultRing, request.Name, request.Value);
+                        toggle.AddOrUpdateParameter(selectedDeployment, defaultDeployment, request.Name, request.Value);
 
                         await _storeDbContext.SaveChangesAsync(cancellationToken);
                         return Unit.Value;

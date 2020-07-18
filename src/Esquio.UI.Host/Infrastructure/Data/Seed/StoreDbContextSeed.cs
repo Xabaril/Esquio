@@ -26,14 +26,16 @@ namespace Esquio.UI.Host.Infrastructure.Data.Seed
                     var aliceIdSvrPermission = new PermissionEntity()
                     {
                         SubjectId = configuration[DEFAULT_SUBJECT_ID_CONFIGURATION_KEY] ?? "1", //default alice user
-                        ApplicationRole = ApplicationRole.Management
+                        ApplicationRole = ApplicationRole.Management,
+                        Kind = SubjectType.User
                     };
 
 
                     var apiKeyPermission = new PermissionEntity()
                     {
                         SubjectId = DEFAULT_API_KEY,
-                        ApplicationRole = ApplicationRole.Reader
+                        ApplicationRole = ApplicationRole.Reader,
+                        Kind = SubjectType.Application
                     };
 
                     context.Permissions.AddRange(aliceIdSvrPermission);

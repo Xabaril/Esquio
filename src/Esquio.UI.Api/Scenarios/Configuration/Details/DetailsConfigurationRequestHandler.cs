@@ -25,57 +25,56 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
         {
             _storeDbContext = storeDbContext ?? throw new ArgumentNullException(nameof(storeDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _metricsClient = metricsClient;
+            _metricsClient = metricsClient ?? throw new ArgumentNullException(nameof(metricsClient));
         }
 
         public async Task<DetailsConfigurationResponse> Handle(DetailsConfigurationRequest request, CancellationToken cancellationToken)
         {
+            var defaultDeployment = await _storeDbContext
+                .Deployments
+                .Where(d => d.ByDefault && d.ProductEntity.Name == request.ProductName)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            var currentDeploymentName = request.DeploymentName ?? defaultDeployment.Name;
+
             var featureEntity = await _storeDbContext
-               .Features
-               .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
-               .Include(f=> f.FeatureStates)
+                .Features
+                .Where(f => f.Name == request.FeatureName && f.ProductEntity.Name == request.ProductName)
+                .Include(f => f.FeatureStates)
                    .ThenInclude(t => t.DeploymentEntity)
-               .Include(f => f.Toggles)
+                .Include(f => f.Toggles)
                    .ThenInclude(t => t.Parameters)
-               .SingleOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
 
             DetailsConfigurationResponse response = null;
             ConfigurationRequestMetric metric = null;
 
             if (featureEntity != null)
             {
-                metric = ConfigurationRequestMetric
-                    .FromSuccess(request.ProductName, request.FeatureName, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
-
-                response = CreateResponse(featureEntity, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
+                metric = ConfigurationRequestMetric.FromSuccess(request.ProductName, request.FeatureName, currentDeploymentName);
+                response = CreateResponse(featureEntity, currentDeploymentName, defaultDeployment.Name);
             }
             else
             {
-                metric = ConfigurationRequestMetric
-                    .FromNotFound(request.ProductName, request.FeatureName, request.DeploymentName ?? EsquioConstants.DEFAULT_DEPLOYMENT_NAME);
-
+                metric = ConfigurationRequestMetric.FromNotFound(request.ProductName, request.FeatureName, currentDeploymentName);
                 Log.FeatureNotExist(_logger, request.FeatureName);
             }
 
-            if (_metricsClient != null)
-            {
-                _metricsClient.Add(metric);
-            }
-
+            _metricsClient.Add(metric);
             return response;
         }
 
-        private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string deploymentName)
+        private DetailsConfigurationResponse CreateResponse(FeatureEntity featureEntity, string currentDeploymentName, string defaultDeploymentName)
         {
-            var ringState = featureEntity
+            var status = featureEntity
                 .FeatureStates
-                .Where(r => r.DeploymentEntity.Name == deploymentName)
+                .Where(r => r.DeploymentEntity.Name == currentDeploymentName)
                 .SingleOrDefault();
 
             var feature = new DetailsConfigurationResponse
             {
                 FeatureName = featureEntity.Name,
-                Enabled = ringState?.Enabled ?? false
+                Enabled = status?.Enabled ?? false
             };
 
             foreach (var toggleConfiguration in featureEntity.Toggles)
@@ -86,31 +85,31 @@ namespace Esquio.UI.Api.Scenarios.Configuration.Details
                 var groupingParameters = toggleConfiguration.Parameters
                     .GroupBy(g => g.DeploymentName);
 
-                var defaultRingParameters = groupingParameters
-                    .Where(g => g.Key == EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
+                var defaultDeploymentParameters = groupingParameters
+                    .Where(g => g.Key == defaultDeploymentName)
                     .SingleOrDefault();
 
-                if (defaultRingParameters != null
+                if (defaultDeploymentParameters != null
                     &&
-                    defaultRingParameters.Any())
+                    defaultDeploymentParameters.Any())
                 {
-                    foreach (var item in defaultRingParameters)
+                    foreach (var item in defaultDeploymentParameters)
                     {
                         parameters.Add(item.Name, item.Value);
                     }
                 }
 
-                if (deploymentName != EsquioConstants.DEFAULT_DEPLOYMENT_NAME)
+                if (currentDeploymentName != defaultDeploymentName)
                 {
-                    var selectedRingParameters = groupingParameters
-                        .Where(g => g.Key == deploymentName)
+                    var selectedDeploymentParameters = groupingParameters
+                        .Where(g => g.Key == currentDeploymentName)
                         .SingleOrDefault();
 
-                    if (selectedRingParameters != null
+                    if (selectedDeploymentParameters != null
                         &&
-                        selectedRingParameters.Any())
+                        selectedDeploymentParameters.Any())
                     {
-                        foreach (var item in selectedRingParameters)
+                        foreach (var item in selectedDeploymentParameters)
                         {
                             if (parameters.ContainsKey(item.Name))
                             {
