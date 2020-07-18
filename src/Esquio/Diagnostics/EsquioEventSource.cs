@@ -5,6 +5,7 @@ using System.Threading;
 
 namespace Esquio.Diagnostics
 {
+#if NETSTANDARD2_1
     /// <summary>
     /// Esquio EventSource class ETW and performance counters.
     /// https://devblogs.microsoft.com/dotnet/introducing-diagnostics-improvements-in-net-core-3-0/ 
@@ -160,4 +161,9 @@ namespace Esquio.Diagnostics
             WriteEvent(22, toggleTypeName);
         }
     }
+#elif NETSTANDARD2_0
+#else
+#error this code block does not match any of configured TFM on TargetFrameworks properties
+#endif
+
 }

@@ -1,26 +1,34 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+
+#if NETSTANDARD2_1
 using System.Diagnostics;
+#endif
 
 namespace Esquio.Diagnostics
 {
     internal class EsquioDiagnostics
     {
         private readonly ILogger _logger;
+
+#if NETSTANDARD2_1
         private readonly DiagnosticListener _listener;
+#endif
 
         public EsquioDiagnostics(ILoggerFactory loggerFactory)
         {
             _ = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
             _logger = loggerFactory.CreateLogger("Esquio");
+#if NETSTANDARD2_1
             _listener = new DiagnosticListener(EsquioConstants.ESQUIO_LISTENER_NAME);
+#endif
         }
 
         public void BeginFeatureEvaluation(Guid correlationId, string featureName, string productName, string deploymentName)
         {
             Log.FeatureServiceProcessingBegin(_logger, featureName, productName, deploymentName);
-
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationStart();
@@ -32,6 +40,7 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void FeatureEvaluationFromSession(string featureName, string productName, string deploymentName)
@@ -43,6 +52,7 @@ namespace Esquio.Diagnostics
         {
             Log.FeatureServiceNotFoundFeature(_logger, featureName, productName, deploymentName);
 
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationNotFound(featureName, productName, deploymentName);
@@ -55,22 +65,26 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void FeatureEvaluationDisabled(string featureName, string productName, string deploymentName)
         {
             Log.FeatureServiceDisabledFeature(_logger, featureName, productName, deploymentName);
 
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationStop();
             }
+#endif
         }
 
         public void FeatureEvaluationThrow(Guid correlationId, string featureName, string productName, string deploymentName, Exception exception)
         {
             Log.FeatureServiceProcessingFail(_logger, featureName, productName, deploymentName, exception);
 
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationThrow(featureName, productName, deploymentName, exception.ToString());
@@ -82,12 +96,14 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void EndFeatureEvaluation(Guid correlationId, string featureName, string productName, string deploymentName, long elapsedMilliseconds, bool enabled)
         {
             Log.FeatureServiceProcessingEnd(_logger, featureName, productName, deploymentName, enabled, elapsedMilliseconds);
 
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluated(featureName, productName, deploymentName, elapsedMilliseconds);
@@ -100,10 +116,12 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void BeginTogglevaluation(Guid correlationId, string featureName, string productName, string deploymentName, string toggleType)
         {
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStart();
@@ -115,14 +133,17 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void Togglevaluation(string featureName, string productName, string deploymentName, string toggle, long elapsedMilliseconds)
         {
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluated(featureName, productName, deploymentName, toggle, elapsedMilliseconds);
             }
+#endif
         }
 
         public void ToggleNotActive(string featureName, string productName, string deploymentName, string toggle)
@@ -132,6 +153,7 @@ namespace Esquio.Diagnostics
 
         public void EndTogglevaluation(Guid correlationId, string featureName, string productName, string deploymentName, string toggleType, bool active)
         {
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleEvaluationStop();
@@ -143,55 +165,63 @@ namespace Esquio.Diagnostics
             {
                 _listener.Write(EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME, payload);
             }
+#endif
         }
 
         public void BeginToggleActivation(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorResolveTypeBegin(_logger, toggleTypeName);
 
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStart();
             }
+#endif
         }
 
         public void ToggleActivationResolveTypeFromCache(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolvedFromCache(_logger, toggleTypeName);
-
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
             }
+#endif
         }
 
         public void ToggleActivationResolveType(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
-
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
             }
+#endif
         }
 
         public void ToggleActivationCantResolveType(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeCantResolved(_logger, toggleTypeName);
-
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationCantCreateInstance(toggleTypeName);
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
             }
+#endif
         }
 
         public void EndToggleActivation(string toggleTypeName)
         {
+#if NETSTANDARD2_1
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
             }
+#endif
         }
     }
 }
