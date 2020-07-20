@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(microsoftextensionsprimitives)" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(systemthreadingtaskextensions)" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
     <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
+    <NetStandardTargetVersion20>netstandard2.0</NetStandardTargetVersion20>
     <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
     <NetStandardMultiTarget>netstandard2.0;netstandard2.1</NetStandardMultiTarget>
     <NetTestSdk>16.6.1</NetTestSdk>
@@ -68,6 +69,8 @@
     
     <npgsqlentityframeworkcorepostgresql>3.1.4</npgsqlentityframeworkcorepostgresql>
     <pomeloentityframeworkcoremysql>3.1.1</pomeloentityframeworkcoremysql>
+
+    <systemthreadingtaskextensions>4.5.4</systemthreadingtaskextensions>
   </PropertyGroup>
 
   <PropertyGroup Label="Tools Dependencies">

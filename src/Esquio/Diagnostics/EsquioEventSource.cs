@@ -5,7 +5,6 @@ using System.Threading;
 
 namespace Esquio.Diagnostics
 {
-#if NETSTANDARD2_1
     /// <summary>
     /// Esquio EventSource class ETW and performance counters.
     /// https://devblogs.microsoft.com/dotnet/introducing-diagnostics-improvements-in-net-core-3-0/ 
@@ -23,7 +22,7 @@ namespace Esquio.Diagnostics
         long _perSecondFeatureNotFound;
         long _perSecondToggleEvaluations;
         long _perSecondActivationThrows;
-
+#if NETSTANDARD2_1
         IncrementingPollingCounter _featuresPerSecondCounter;
         IncrementingPollingCounter _featureThrowPerSecondCounter;
         IncrementingPollingCounter _featureNotFoundPerSecondCounter;
@@ -33,10 +32,12 @@ namespace Esquio.Diagnostics
         //-dinamic counters
 
         private readonly ConcurrentDictionary<string, EventCounter> _featureDynamicCounters;
+#endif
 
         public EsquioEventSource()
             : base("Esquio", EventSourceSettings.EtwSelfDescribingEventFormat)
         {
+#if NETSTANDARD2_1
             _featuresPerSecondCounter = new IncrementingPollingCounter(EsquioConstants.FEATURE_EVALUATION_PER_SECOND_COUNTER, this, () => _perSecondFeatureEvaluations)
             {
                 DisplayName = "Feature Evaluations",
@@ -68,6 +69,7 @@ namespace Esquio.Diagnostics
             };
 
             _featureDynamicCounters = new ConcurrentDictionary<string, EventCounter>();
+#endif
         }
 
 
@@ -99,6 +101,7 @@ namespace Esquio.Diagnostics
             {
                 var counterName = $"{featureName.Trim().ToLower()}-evaluation-time";
 
+#if NETSTANDARD2_1
                 if (!_featureDynamicCounters.TryGetValue(counterName, out EventCounter counter))
                 {
                     counter = new EventCounter(counterName, this)
@@ -110,6 +113,7 @@ namespace Esquio.Diagnostics
                 }
 
                 counter?.WriteMetric(elapsedMilliseconds);
+#endif
             }
 
             WriteEvent(4, featureName, productName, deploymentName, elapsedMilliseconds);
@@ -161,9 +165,4 @@ namespace Esquio.Diagnostics
             WriteEvent(22, toggleTypeName);
         }
     }
-#elif NETSTANDARD2_0
-#else
-#error this code block does not match any of configured TFM on TargetFrameworks properties
-#endif
-
 }

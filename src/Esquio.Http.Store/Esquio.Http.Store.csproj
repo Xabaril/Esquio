@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetStandardMultiTarget)</TargetFrameworks>
+    <TargetFramework>$(NetStandardTargetVersion20)</TargetFramework>
     <Description>Distributed store support for Esquio. For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Store;Distributed Store</PackageTags>
     <Version>$(esquiohttpstore)</Version>
