@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetStandardMultiTarget)</TargetFrameworks>
+    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
     <Description>Feature Toogles Library for .NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(esquio)</Version>
@@ -17,14 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(microsoftextensionsloggingabstractions)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(microsoftextensionsoptions)" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(microsoftextensionsprimitives)" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4"/>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" /> 
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" />
   </ItemGroup>
 
 </Project>
