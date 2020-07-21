@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="4.3.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="$(blazor)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />

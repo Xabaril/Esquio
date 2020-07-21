@@ -990,6 +990,45 @@
         }
       }
     },
+    "/api/Products/{productName}/export": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Export",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Products/{productName}/deployment/{deploymentName}": {
       "delete": {
         "tags": [

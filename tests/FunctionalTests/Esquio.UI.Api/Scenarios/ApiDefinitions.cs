@@ -36,6 +36,10 @@
                 {
                     return $"api/products/{name}?api-version=3.0";
                 }
+                public static string Export(string name)
+                {
+                    return $"api/products/{name}/export?api-version=3.0";
+                }
                 public static string List(int pageIndex = 0, int pageCount = 10)
                 {
                     return $"api/products?pageIndex={pageIndex}&pageCount={pageCount}&api-version=3.0";
