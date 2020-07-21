@@ -1010,7 +1010,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "$ref": "#/definitions/ExportProductResponse"
             }
           },
           "404": {
@@ -2024,6 +2024,14 @@
         },
         "default": {
           "type": "boolean"
+        }
+      }
+    },
+    "ExportProductResponse": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
         }
       }
     },

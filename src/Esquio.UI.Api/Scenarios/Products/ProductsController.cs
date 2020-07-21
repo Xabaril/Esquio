@@ -67,19 +67,15 @@ namespace Esquio.UI.Api.Scenarios.Products
         [HttpGet]
         [Authorize(Policies.Reader)]
         [Route("{productName:slug}/export")]
-        [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ExportProductResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DetailsProductResponse>> Export(string productName, CancellationToken cancellationToken = default)
         {
             var export = await _mediator.Send(new ExportProductRequest { ProductName = productName }, cancellationToken);
-           
-            return File(
-                fileContents: Encoding.UTF8.GetBytes(export.Content),
-                contentType: "application/octet-stream",
-                fileDownloadName: "product.json",
-                enableRangeProcessing: true);
+
+            return Ok(export);
         }
 
         [HttpPost]
