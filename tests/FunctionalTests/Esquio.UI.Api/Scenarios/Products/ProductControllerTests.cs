@@ -30,7 +30,71 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         }
 
         [Fact]
-        public async Task deletering_response_unauthorizaed_when_user_is_not_authenticated()
+        public async Task exportproduct_response_unauthorizaed_when_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Export("productname"))
+                .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task exportproduct_response_badrequest_when_product_does_not_exist()
+        {
+            var permission = Builders.Permission()
+                .WithReaderPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Export("productname"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task exportproduct_response_file_when_product_exist()
+        {
+            var permission = Builders.Permission()
+                .WithReaderPermission()
+                .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("fooproduct")
+                .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Export("fooproduct"))
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .GetAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+
+            var content = await response.Content.ReadAsStringAsync();
+        }
+
+
+        [Fact]
+        public async Task deletedeployment_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
                 .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "deploymentName"))
@@ -241,7 +305,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task addring_response_badrequest_if_ring_name_lower_than_5_characters()
+        public async Task adddeployment_response_badrequest_if_ring_name_lower_than_5_characters()
         {
             var permission = Builders.Permission()
                 .WithManagementPermission()

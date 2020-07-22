@@ -1,4 +1,15 @@
 ﻿(function () {
+
+    if (!window.exportProduct) {
+        window.exportProduct = function (json) {
+            let a = document.createElement('a');
+            let blob = new Blob([json], { 'type': "text/json" });
+            a.href = window.URL.createObjectURL(blob);
+            a.download = "product.json";
+            a.click();
+        };
+    }
+
     if (!window.beautyJson) {
         window.beautyJson = function (id, json) {
             const identifier = `#${id}`;

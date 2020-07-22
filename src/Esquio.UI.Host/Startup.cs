@@ -33,6 +33,7 @@ namespace Esquio.UI.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddHttpClient()
                 .AddCors()
                 .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>()
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
@@ -117,6 +118,8 @@ namespace Esquio.UI.Host
                      .UseSwaggerUI(setup =>
                      {
                          setup.EnableDeepLinking();
+                         setup.OAuthScopeSeparator(" ");
+                         setup.OAuthUsePkce();
 
                          foreach (var description in apiVersion.ApiVersionDescriptions)
                          {

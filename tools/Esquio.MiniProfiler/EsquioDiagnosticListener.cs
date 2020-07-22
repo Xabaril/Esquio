@@ -26,19 +26,17 @@ namespace MiniProfiler.Esquio
 
         public void OnNext(KeyValuePair<string, object> entry)
         {
-            var (key, value) = entry;
-
-            if (key == EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME)
+            if (entry.Key == EsquioConstants.ESQUIO_BEGINFEATURE_ACTIVITY_NAME)
             {
-                var data = value as FeatureEvaluatingEventData;
+                var data = entry.Value as FeatureEvaluatingEventData;
 
                 _featureEvaluations.Add(
                     data.CorrelationId,
                     global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Feature Evaluation {data.Feature} on product {data.Product} with deployment {data.Deployment}", "Feature Evaluation"));
             }
-            else if (key == EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME)
+            else if (entry.Key == EsquioConstants.ESQUIO_ENDFEATURE_ACTIVITY_NAME)
             {
-                var data = value as FeatureEvaluatedEventData;
+                var data = entry.Value as FeatureEvaluatedEventData;
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
@@ -46,9 +44,9 @@ namespace MiniProfiler.Esquio
                     timing?.Stop();
                 }
             }
-            else if (key == EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME)
+            else if (entry.Key == EsquioConstants.ESQUIO_NOTFOUNDFEATURE_ACTIVITY_NAME)
             {
-                var data = value as FeatureNotFoundEventData;
+                var data = entry.Value as FeatureNotFoundEventData;
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
@@ -57,9 +55,9 @@ namespace MiniProfiler.Esquio
                     timing?.Stop();
                 }
             }
-            else if (key == EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME)
+            else if (entry.Key == EsquioConstants.ESQUIO_THROWFEATURE_ACTIVITY_NAME)
             {
-                var data = value as FeatureThrowEventData;
+                var data = entry.Value as FeatureThrowEventData;
 
                 if (_featureEvaluations.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {
@@ -71,17 +69,17 @@ namespace MiniProfiler.Esquio
                     }
                 }
             }
-            else if (key == EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME)
+            else if (entry.Key == EsquioConstants.ESQUIO_BEGINTOGGLE_ACTIVITY_NAME)
             {
-                var data = value as ToggleEvaluatingEventData;
+                var data = entry.Value as ToggleEvaluatingEventData;
 
                 _toggleExecutions.Add(
                     data.CorrelationId,
                     global::StackExchange.Profiling.MiniProfiler.Current.CustomTiming(ListenerName, $"Esquio Toggle Execution {data.Feature}:{data.ToggleType} on product {data.Product} with deployment {data.Deployment}", "Toggle Execution"));
             }
-            else if (key == EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME)
+            else if (entry.Key == EsquioConstants.ESQUIO_ENDTOGGLE_ACTIVITY_NAME)
             {
-                var data = value as ToggleEvaluatedEventData;
+                var data = entry.Value as ToggleEvaluatedEventData;
 
                 if (_toggleExecutions.TryRemove(data.CorrelationId, out CustomTiming timing))
                 {

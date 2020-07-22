@@ -6,6 +6,7 @@
 @inject INotifications notifications
 @inject EsquioState  esquioState
 @inject NavigationManager navigation
+@inject IJSRuntime jsRuntime
 
 <PageTransition>
     <section class="content-header">
@@ -54,6 +55,9 @@
                                                    ConfirmTitle="Delete Product"
                                                    ConfirmDescription="@($"Are you sure you want to delete the '{product.Name}' product?")" />
                             </Permission>
+                            <IconButton Title="Export Product"
+                                        Icon="fa fa-download"
+                                        OnClick="@(e => Export(product.Name))" />
                         </CardFooter>
                     </PaginatedCards>
                 </div>
@@ -80,7 +84,7 @@
 
             <div class="form-group">
                 <label for="product-default-ring-name">Default Deployment Name</label>
-                <InputText id="product-default-ring-name" class="form-control" @bind-Value="model.DefaultDeploymentName"  placeholder="Enter product default deployment name (if null Tests is used)" />
+                <InputText id="product-default-ring-name" class="form-control" @bind-Value="model.DefaultDeploymentName" placeholder="Enter product default deployment name (if null Tests is used)" />
             </div>
         </EditForm>
     </ModalBody>
@@ -208,6 +212,21 @@
         else
         {
             notifications.Error("Delete Product", "Error deleting the product");
+        }
+    }
+
+    private async Task Export(string productName)
+    {
+        var result = await esquioHttpClient.ExportProduct(productName);
+
+        if (result != null)
+        {
+            await jsRuntime.InvokeVoidAsync("exportProduct", result.Content);
+            notifications.Success("Export Product", "Product exported, check your downloaded files!");
+        }
+        else
+        {
+            notifications.Error("Export Product", "Product export is empty!");
         }
     }
 }

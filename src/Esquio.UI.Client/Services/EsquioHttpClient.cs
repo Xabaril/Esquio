@@ -16,6 +16,7 @@ using Esquio.UI.Api.Shared.Models.Permissions.Update;
 using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
+using Esquio.UI.Api.Shared.Models.Products.Export;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
@@ -51,6 +52,7 @@ namespace Esquio.UI.Client.Services
         Task<bool> AddProduct(AddProductRequest addProductRequest, CancellationToken cancellationToken = default);
         Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
+        Task<ExportProductResponse> ExportProduct(string productName, CancellationToken cancellationToken = default);
         Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addRingRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default);
 
@@ -296,6 +298,38 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return false;
+            }
+        }
+
+        public async Task<ExportProductResponse> ExportProduct(string productName, CancellationToken cancellationToken = default)
+        {
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri($"api/products/{productName}/export", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<ExportProductResponse>(content, new JsonSerializerSettings());
+                    }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception, $"An exception is throwed when trying to delete product {productName}.!");
+                }
+
+                return null;
             }
         }
 

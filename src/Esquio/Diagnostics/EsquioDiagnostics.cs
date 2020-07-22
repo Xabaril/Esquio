@@ -20,7 +20,7 @@ namespace Esquio.Diagnostics
         public void BeginFeatureEvaluation(Guid correlationId, string featureName, string productName, string deploymentName)
         {
             Log.FeatureServiceProcessingBegin(_logger, featureName, productName, deploymentName);
-
+            
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluationStart();
@@ -87,7 +87,7 @@ namespace Esquio.Diagnostics
         public void EndFeatureEvaluation(Guid correlationId, string featureName, string productName, string deploymentName, long elapsedMilliseconds, bool enabled)
         {
             Log.FeatureServiceProcessingEnd(_logger, featureName, productName, deploymentName, enabled, elapsedMilliseconds);
-
+            
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.FeatureEvaluated(featureName, productName, deploymentName, elapsedMilliseconds);
@@ -158,7 +158,6 @@ namespace Esquio.Diagnostics
         public void ToggleActivationResolveTypeFromCache(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolvedFromCache(_logger, toggleTypeName);
-
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
@@ -168,7 +167,6 @@ namespace Esquio.Diagnostics
         public void ToggleActivationResolveType(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeIsResolved(_logger, toggleTypeName);
-
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationStop(toggleTypeName);
@@ -178,7 +176,6 @@ namespace Esquio.Diagnostics
         public void ToggleActivationCantResolveType(string toggleTypeName)
         {
             Log.DefaultToggleTypeActivatorTypeCantResolved(_logger, toggleTypeName);
-
             if (EsquioEventSource.Log.IsEnabled())
             {
                 EsquioEventSource.Log.ToggleActivationCantCreateInstance(toggleTypeName);

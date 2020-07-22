@@ -5,6 +5,8 @@ using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Delete;
 using Esquio.UI.Api.Shared.Models.Products.DeleteDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
+using Esquio.UI.Api.Shared.Models.Products.Export;
+using Esquio.UI.Api.Shared.Models.Products.Import;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
 using MediatR;
@@ -12,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net.Mime;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +40,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         [ProducesResponseType(typeof(PaginatedResult<ListProductResponseDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<PaginatedResult<ListProductResponseDetail>>> List([FromQuery]ListProductRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PaginatedResult<ListProductResponseDetail>>> List([FromQuery] ListProductRequest request, CancellationToken cancellationToken = default)
         {
             var list = await _mediator.Send(request, cancellationToken);
 
@@ -59,6 +63,34 @@ namespace Esquio.UI.Api.Scenarios.Products
                 return Ok(product);
             }
             return NotFound();
+        }
+
+        [HttpGet]
+        [Authorize(Policies.Reader)]
+        [Route("{productName:slug}/export")]
+        [ProducesResponseType(typeof(ExportProductResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ExportProductResponse>> Export(string productName, CancellationToken cancellationToken = default)
+        {
+            var export = await _mediator.Send(new ExportProductRequest { ProductName = productName }, cancellationToken);
+
+            return Ok(export);
+        }
+
+        [HttpPost]
+        [Authorize(Policies.Reader)]
+        [Route("import")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Import(ImportProductRequest request, CancellationToken cancellationToken = default)
+        {
+            await _mediator.Send(request, cancellationToken);
+
+            return Ok();
         }
 
         [HttpPost]

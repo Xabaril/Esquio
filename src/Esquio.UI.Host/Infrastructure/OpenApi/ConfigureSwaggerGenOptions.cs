@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using IdentityModel.Client;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -6,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Esquio.UI.Host.Infrastructure.OpenApi
 {
@@ -13,15 +15,22 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
     {
         private readonly IApiVersionDescriptionProvider _apiVersion;
         private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ConfigureSwaggerGenOptions(IConfiguration configuration, IApiVersionDescriptionProvider apiVersion)
+        public ConfigureSwaggerGenOptions(
+            IConfiguration configuration,
+            IApiVersionDescriptionProvider apiVersion,
+            IHttpClientFactory httpClientFactory)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _apiVersion = apiVersion ?? throw new ArgumentNullException(nameof(apiVersion));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
         public void Configure(SwaggerGenOptions options)
         {
+            var discoveryDocument = GetDiscoveryDocument();
+
             options.OperationFilter<AuthorizeOperationFilter>();
 
             options.DescribeAllParametersInCamelCase();
@@ -37,14 +46,15 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
                 Type = SecuritySchemeType.OAuth2,
                 Flows = new OpenApiOAuthFlows
                 {
-                    Implicit = new OpenApiOAuthFlow()
+                    AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri($"{_configuration["Security:OpenId:Authority"]}/connect/authorize"),
+                        AuthorizationUrl = new Uri(discoveryDocument.AuthorizeEndpoint),
+                        TokenUrl = new Uri(discoveryDocument.TokenEndpoint),
                         Scopes = new Dictionary<string, string>
                         {
-                            {_configuration["Security:OpenId:Audience"] , "Esquio UI HTTP Api"}
-                        }
-                    },
+                            { _configuration["Security:OpenId:Audience"] , "Esquio UI HTTP API" }
+                        },
+                    }
                 },
                 Description = "Esquio UI OpenId Security Scheme"
             });
@@ -76,5 +86,18 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
 
             return info;
         }
+
+        private DiscoveryDocumentResponse GetDiscoveryDocument()
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            var authority = _configuration["Security:OpenId:Authority"];
+
+            var discoveryDocument = httpClient.GetDiscoveryDocumentAsync(authority)
+                .GetAwaiter()
+                .GetResult();
+
+            return discoveryDocument;
+        }
+
     }
 }

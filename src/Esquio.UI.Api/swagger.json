@@ -990,6 +990,82 @@
         }
       }
     },
+    "/api/Products/{productName}/export": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Export",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "productName",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ExportProductResponse"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Products/import": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Import",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ImportProductRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Products/{productName}/deployment/{deploymentName}": {
       "delete": {
         "tags": [
@@ -1985,6 +2061,22 @@
         },
         "default": {
           "type": "boolean"
+        }
+      }
+    },
+    "ExportProductResponse": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "ImportProductRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
         }
       }
     },
