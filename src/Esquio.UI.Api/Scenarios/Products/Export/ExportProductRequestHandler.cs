@@ -30,6 +30,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Export
         public async Task<ExportProductResponse> Handle(ExportProductRequest request, CancellationToken cancellationToken)
         {
             var product = await _storeDbContext.Products
+                .Include(p => p.Deployments)
                 .Include(p => p.Features)
                     .ThenInclude(f => f.Toggles)
                         .ThenInclude(t => t.Parameters)

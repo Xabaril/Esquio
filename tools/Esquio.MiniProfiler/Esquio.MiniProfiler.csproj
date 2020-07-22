@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(NetStandardTargetVersion20)</TargetFramework>
+    <TargetFrameworks>$(NetStandardMultiTarget)</TargetFrameworks>
     <PackageLicenseUrl>$(PackageLicenseUrl)</PackageLicenseUrl>
     <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
     <Description>MiniProfiler profiling for Esquio.For more information see http://github.com/Xabaril/Esquio </Description>
