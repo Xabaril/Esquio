@@ -39,6 +39,7 @@ namespace Esquio.UI.Client
                     .GetValue<string>("Security:Audience");
 
                 options.ProviderOptions.DefaultScopes.Add(audience);
+                
             });
 
             builder.Services.AddAuthorizationCore(options =>
