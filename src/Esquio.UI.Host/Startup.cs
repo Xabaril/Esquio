@@ -53,9 +53,6 @@ namespace Esquio.UI.Host
                 .AddJwtBearer(options =>
                 {
                     Configuration.Bind("Security:OpenId", options);
-
-                    options.TokenValidationParameters.ValidateIssuer = false;
-                    options.TokenValidationParameters.ValidateAudience = false;
                 })
                 .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
                 {
