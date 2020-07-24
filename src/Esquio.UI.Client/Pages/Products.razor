@@ -18,7 +18,12 @@
                     </Icon>
                     <Actions>
                         <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
-                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenModal">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenImportProductModal">
+                                Import Product
+                            </button>&nbsp;
+                        </Permission>
+                        <Permission Requires="PolicyAction.Modify" Over="PolicySubject.Product">
+                            <button type="button" class="btn btn-primary btn-shadow" @onclick="OpenNewProductModal">
                                 New Product
                             </button>
                         </Permission>
@@ -66,7 +71,7 @@
     </section>
 </PageTransition>
 
-<Modal Title="New Product" Show="showModal" OnClose="CloseModal">
+<Modal Title="New Product" Show="showNewProductModel" OnClose="CloseNewProductModal">
     <ModalBody>
         <EditForm EditContext="@editContext">
             <FluentValidationValidator />
@@ -89,13 +94,30 @@
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <button type="button" class="btn btn-default" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" @onclick="CloseNewProductModal" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" @onclick="AddProduct" disabled="@formInvalid">Save changes</button>
     </ModalFooter>
 </Modal>
 
+<Modal Title="Import Product" Show="showImportProductModal" OnClose="CloseImportProductModal">
+    <ModalBody>
+        <div class="drag-drop-zone">
+            <InputFile OnChange="Import" />
+            @status
+        </div>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-default" @onclick="CloseImportProductModal" data-dismiss="modal">Close</button>
+    </ModalFooter>
+</Modal>
+
 @code {
-    private bool showModal = false;
+    const string DefaultStatus = "Drop a export product file here or click to choose a file!.";
+    const int MaxFileSize = 5 * 1024 * 1024; // 5MB
+    private string status = DefaultStatus;
+
+    private bool showNewProductModel = false;
+    private bool showImportProductModal = false;
 
     private bool formInvalid;
     private AddProductRequest model;
@@ -128,20 +150,34 @@
         StateHasChanged();
     }
 
-    private void OpenModal()
+    private void OpenNewProductModal()
     {
         InitModel();
-        showModal = true;
+        showNewProductModel = true;
 
-        esquioState.SetWindowModal(showModal);
+        esquioState.SetWindowModal(showNewProductModel);
     }
 
-    private void CloseModal()
+    private void OpenImportProductModal()
     {
-        showModal = false;
+        showImportProductModal = true;
+
+        esquioState.SetWindowModal(showImportProductModal);
+    }
+
+    private void CloseNewProductModal()
+    {
+        showNewProductModel = false;
         editContext.OnValidationStateChanged -= OnAddProductValidationChanged;
 
-        esquioState.SetWindowModal(showModal);
+        esquioState.SetWindowModal(showNewProductModel);
+    }
+
+    private void CloseImportProductModal()
+    {
+        showImportProductModal = false;
+
+        esquioState.SetWindowModal(showImportProductModal);
     }
 
     private Task<PaginatedResult<ListProductResponseDetail>> Loader(int pageIndex, int pageCount)
@@ -154,7 +190,7 @@
         var result = await esquioHttpClient.AddProduct(model);
         await cards.OnAdd();
 
-        CloseModal();
+        CloseNewProductModal();
         InitModel();
 
         if (result)
@@ -227,6 +263,47 @@
         else
         {
             notifications.Error("Export Product", "Product export is empty!");
+        }
+    }
+
+    private async Task Import(IFileListEntry[] files)
+    {
+        CloseImportProductModal();
+
+        var file = files.FirstOrDefault();
+        if (file == null)
+        {
+            return;
+        }
+        else if (file.Size > MaxFileSize)
+        {
+            notifications.Error("Import Product", $"That's too big. Max size: {MaxFileSize} bytes.");
+            status = $"That's too big. Max size: {MaxFileSize} bytes.";
+        }
+        else
+        {
+            status = "Loading...";
+
+            using (var reader = new StreamReader(file.Data))
+            {
+                var fileTextContents = await reader.ReadToEndAsync();
+                var importProductRequest = new ImportProductRequest()
+                {
+                    Content = fileTextContents
+                };
+
+                if ( await esquioHttpClient.ImportProduct(importProductRequest))
+                {
+                    await cards.OnAdd();
+                    notifications.Success("Import Product", "Product imported succesfully.!");
+                }
+                else
+                {
+                    notifications.Error("Import Product", $"The product can't be imported, please check if the file content is a valid product export!:");
+                }
+            }
+
+            status = DefaultStatus;
         }
     }
 }

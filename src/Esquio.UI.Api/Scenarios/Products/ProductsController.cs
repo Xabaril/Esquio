@@ -80,7 +80,7 @@ namespace Esquio.UI.Api.Scenarios.Products
         }
 
         [HttpPost]
-        [Authorize(Policies.Reader)]
+        [Authorize(Policies.Contributor)]
         [Route("import")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
