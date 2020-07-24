@@ -81,7 +81,8 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
             ServiceCollection
                 .AddLogging()
                 .AddEsquio(setup => setup.UseScopedEvaluation(false))
-                .AddAspNetCoreDefaultServices();
+                .AddAspNetCoreDefaultServices()
+                .AddConfigurationStore(ConfigurationBuilder.Build());
 
             var sp = ServiceCollection.BuildServiceProvider();
             var fs =sp.GetService<IFeatureService>();
