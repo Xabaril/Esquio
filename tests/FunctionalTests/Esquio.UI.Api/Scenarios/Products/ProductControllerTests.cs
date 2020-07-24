@@ -823,6 +823,60 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
         }
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_default_deployment_name_length_is_greater_than_200()
+        {
+            var permission = Builders.Permission()
+            .WithManagementPermission()
+            .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var productRequest = new AddProductRequest()
+            {
+                Name = "fooproduct",
+                Description = "some description",
+                DefaultDeploymentName = new string('d', 201)
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(productRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_default_deployment_name_length_is_lower_than_5()
+        {
+            var permission = Builders.Permission()
+            .WithManagementPermission()
+            .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var productRequest = new AddProductRequest()
+            {
+                Name = "fooproduct",
+                Description = "some description",
+                DefaultDeploymentName = new string('d', 4)
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(productRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
 
         [Fact]
         [ResetDatabase]
@@ -838,7 +892,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var productRequest = new AddProductRequest()
             {
                 Name = "fooproduct",
-                Description = "some description"
+                Description = "some description",
+                DefaultDeploymentName = "Tests"
             };
 
             var response = await _fixture.TestServer
