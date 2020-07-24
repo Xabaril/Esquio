@@ -3,6 +3,7 @@ using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
+using Esquio.UI.Api.Shared.Models.Products.Import;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
 using FluentAssertions;
@@ -27,6 +28,104 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public products_controller_should(ServerFixture serverFixture)
         {
             _fixture = serverFixture ?? throw new ArgumentNullException(nameof(serverFixture));
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task importproduct_response_ok_when_success()
+        {
+            var permission = Builders.Permission()
+              .WithContributorPermission()
+              .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(new ImportProductRequest()
+                {
+                    Content = "{\"Name\":\"default\",\"Description\":\"this is default product\",\"Features\":[{\"Name\":\"MatchScore\",\"Description\":\"show the match score on products\",\"Archived\":false,\"FeatureTags\":[],\"FeatureStates\":[],\"Toggles\":[{\"Type\":\"Esquio.Toggles.FromToToggle,Esquio\",\"Parameters\":[{\"Name\":\"From\",\"Value\":\"2020-07-13 09:36:23\",\"DeploymentName\":\"Tests\"},{\"Name\":\"To\",\"Value\":\"2020-07-29 09:36:25\",\"DeploymentName\":\"Tests\"}]}]}],\"Deployments\":[{\"Name\":\"Tests\",\"ByDefault\":true},{\"Name\":\"production\",\"ByDefault\":false}]}"
+                });
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status200OK);
+        }
+
+        [Fact]
+        public async Task importproduct_response_unauthorizaed_when_user_is_not_authenticated()
+        {
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .PostAsync();
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task importproduct_response_bad_request_if_product_to_import_already_exists()
+        {
+            var permission = Builders.Permission()
+               .WithContributorPermission()
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("default")
+                .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(new ImportProductRequest()
+                {
+                    Content = "{\"Name\":\"default\",\"Description\":\"this is default product\",\"Features\":[{\"Name\":\"MatchScore\",\"Description\":\"show the match score on products\",\"Archived\":false,\"FeatureTags\":[],\"FeatureStates\":[],\"Toggles\":[{\"Type\":\"Esquio.Toggles.FromToToggle,Esquio\",\"Parameters\":[{\"Name\":\"From\",\"Value\":\"2020-07-13 09:36:23\",\"DeploymentName\":\"Tests\"},{\"Name\":\"To\",\"Value\":\"2020-07-29 09:36:25\",\"DeploymentName\":\"Tests\"}]}]}],\"Deployments\":[{\"Name\":\"Tests\",\"ByDefault\":true},{\"Name\":\"production\",\"ByDefault\":false}]}"
+                });
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        [ResetDatabase]
+        public async Task importproduct_response_forbiden_if_user_is_not_authorized()
+        {
+            var permission = Builders.Permission()
+               .WithReaderPermission()
+               .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var product = Builders.Product()
+                .WithName("default")
+                .Build();
+
+            await _fixture.Given
+                .AddProduct(product);
+
+            var response = await _fixture.TestServer
+                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                .PostAsJsonAsync(new ImportProductRequest()
+                {
+                    Content = "{\"Id\":1,\"Name\":\"default\",\"Description\":\"this is default product\",\"Features\":[{\"Id\":1,\"Name\":\"MatchScore\",\"Description\":\"show the match score on products\",\"ProductEntityId\":1,\"Archived\":false,\"FeatureTags\":[],\"FeatureStates\":[],\"Toggles\":[{\"Id\":1,\"Type\":\"Esquio.Toggles.FromToToggle,Esquio\",\"FeatureEntityId\":1,\"Parameters\":[{\"Id\":1,\"ToggleEntityId\":1,\"Name\":\"From\",\"Value\":\"2020-07-13 09:36:23\",\"DeploymentName\":\"Tests\"},{\"Id\":2,\"ToggleEntityId\":1,\"Name\":\"To\",\"Value\":\"2020-07-29 09:36:25\",\"DeploymentName\":\"Tests\"}]}]}],\"Deployments\":[{\"Id\":1,\"Name\":\"Tests\",\"ByDefault\":true,\"ProductEntityId\":1},{\"Id\":2,\"Name\":\"production\",\"ByDefault\":false,\"ProductEntityId\":1}]}"
+                });
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status403Forbidden);
         }
 
         [Fact]
@@ -64,7 +163,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
 
         [Fact]
         [ResetDatabase]
-        public async Task exportproduct_response_file_when_product_exist()
+        public async Task exportproduct_response_ok_when_success()
         {
             var permission = Builders.Permission()
                 .WithReaderPermission()
@@ -724,6 +823,60 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .Should()
                 .Be(StatusCodes.Status400BadRequest);
         }
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_default_deployment_name_length_is_greater_than_200()
+        {
+            var permission = Builders.Permission()
+            .WithManagementPermission()
+            .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var productRequest = new AddProductRequest()
+            {
+                Name = "fooproduct",
+                Description = "some description",
+                DefaultDeploymentName = new string('d', 201)
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(productRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
+        [Fact]
+        [ResetDatabase]
+        public async Task add_response_badrequest_if_default_deployment_name_length_is_lower_than_5()
+        {
+            var permission = Builders.Permission()
+            .WithManagementPermission()
+            .Build();
+
+            await _fixture.Given
+                .AddPermission(permission);
+
+            var productRequest = new AddProductRequest()
+            {
+                Name = "fooproduct",
+                Description = "some description",
+                DefaultDeploymentName = new string('d', 4)
+            };
+
+            var response = await _fixture.TestServer
+                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
+                  .PostAsJsonAsync(productRequest);
+
+            response.StatusCode
+                .Should()
+                .Be(StatusCodes.Status400BadRequest);
+        }
 
         [Fact]
         [ResetDatabase]
@@ -739,7 +892,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             var productRequest = new AddProductRequest()
             {
                 Name = "fooproduct",
-                Description = "some description"
+                Description = "some description",
+                DefaultDeploymentName = "Tests"
             };
 
             var response = await _fixture.TestServer

@@ -1,17 +1,13 @@
 ﻿using Esquio.UI.Api.Diagnostics;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Esquio.UI.Api.Infrastructure.Data.Entities;
-using Esquio.UI.Api.Shared.Models.Products.Export;
 using Esquio.UI.Api.Shared.Models.Products.Import;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,9 +38,7 @@ namespace Esquio.UI.Api.Scenarios.Products.Import
 
             if (product == null)
             {
-                product = new ProductEntity(importObject.Name, importObject.Description);
-
-                _storeDbContext.Products.Add(product);
+                _storeDbContext.Products.Add(importObject);
                 await _storeDbContext.SaveChangesAsync();
 
                 return Unit.Value;

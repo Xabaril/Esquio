@@ -25,6 +25,7 @@
   <PropertyGroup Label="Package Dependencies">
     <blazor>3.2.1</blazor>
     <blazorhttpclient>3.2.1</blazorhttpclient>
+    <blazorinputfile>0.2.0</blazorinputfile>
     <microsoftsourcelinkgithub>1.0.0</microsoftsourcelinkgithub>
     <nswagmsbuild>13.6.2</nswagmsbuild>
     <swashbuckleaspnetcore>5.5.1</swashbuckleaspnetcore>

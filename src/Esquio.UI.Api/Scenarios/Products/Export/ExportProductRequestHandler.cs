@@ -6,10 +6,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +41,8 @@ namespace Esquio.UI.Api.Scenarios.Products.Export
             {
                 var serialization = JsonConvert.SerializeObject(product, typeof(ProductEntity), new JsonSerializerSettings()
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    ContractResolver = new ExportContractResolver()
                 });
 
                 return new ExportProductResponse()
@@ -52,6 +53,26 @@ namespace Esquio.UI.Api.Scenarios.Products.Export
 
             Log.ProductNotExist(_logger, request.ProductName);
             throw new InvalidOperationException($"The product {request.ProductName} does not exist.");
+        }
+
+        private class ExportContractResolver
+            : DefaultContractResolver
+        {
+            protected override IList<Newtonsoft.Json.Serialization.JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+            {
+                var defaultProperties = base.CreateProperties(type, memberSerialization);
+                var properties = new List<Newtonsoft.Json.Serialization.JsonProperty>();
+
+                foreach (var item in defaultProperties)
+                {
+                    if (!item.PropertyName.Contains("Id", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        properties.Add(item);
+                    }
+                }
+
+                return properties;
+            }
         }
     }
 }

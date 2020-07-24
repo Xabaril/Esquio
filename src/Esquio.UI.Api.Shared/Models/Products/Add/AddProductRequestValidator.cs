@@ -17,6 +17,11 @@ namespace Esquio.UI.Api.Shared.Models.Products.Add
                 .NotNull()
                 .MinimumLength(5)
                 .MaximumLength(2000);
+
+            RuleFor(x => x.DefaultDeploymentName)
+                .NotNull()
+                .MinimumLength(5)
+                .MaximumLength(200);
         }
     }
 }

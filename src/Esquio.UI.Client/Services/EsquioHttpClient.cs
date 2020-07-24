@@ -17,6 +17,7 @@ using Esquio.UI.Api.Shared.Models.Products.Add;
 using Esquio.UI.Api.Shared.Models.Products.AddDeployment;
 using Esquio.UI.Api.Shared.Models.Products.Details;
 using Esquio.UI.Api.Shared.Models.Products.Export;
+using Esquio.UI.Api.Shared.Models.Products.Import;
 using Esquio.UI.Api.Shared.Models.Products.List;
 using Esquio.UI.Api.Shared.Models.Products.Update;
 using Esquio.UI.Api.Shared.Models.Statistics.Configuration;
@@ -53,6 +54,7 @@ namespace Esquio.UI.Client.Services
         Task<bool> UpdateProduct(string productName, UpdateProductRequest updateProductRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProduct(string productName, CancellationToken cancellationToken = default);
         Task<ExportProductResponse> ExportProduct(string productName, CancellationToken cancellationToken = default);
+        Task<bool> ImportProduct(ImportProductRequest importProductRequest, CancellationToken cancellationToken = default);
         Task<bool> AddProductDeployment(string productName, AddDeploymentRequest addRingRequest, CancellationToken cancellationToken = default);
         Task<bool> DeleteProductDeployment(string productName, string deploymentName, CancellationToken cancellationToken = default);
 
@@ -330,6 +332,39 @@ namespace Esquio.UI.Client.Services
                 }
 
                 return null;
+            }
+        }
+        public async Task<bool> ImportProduct(ImportProductRequest importProductRequest, CancellationToken cancellationToken = default)
+        {
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri($"api/products/import", UriKind.RelativeOrAbsolute);
+                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(DEFAULT_CONTENT_TYPE));
+                request.Headers.Add(API_VERSION_HEADER_NAME, API_VERSION_HEADER_VALUE);
+
+                try
+                {
+                    var content = JsonConvert.SerializeObject(importProductRequest);
+                    request.Content = new StringContent(content, Encoding.UTF8, DEFAULT_CONTENT_TYPE);
+
+                    var response = await _httpClient.SendAsync(request, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                }
+                catch (AccessTokenNotAvailableException exception)
+                {
+                    exception.Redirect();
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception, $"An exception is throwed when trying to import a product.!");
+                }
+
+                return false;
             }
         }
 
