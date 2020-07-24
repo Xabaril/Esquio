@@ -2,7 +2,7 @@
 
 namespace Microsoft.AspNetCore.Builder
 {
-    public static class ApoBuilderExtensions
+    public static class ApiBuilderExtensions
     {
         public static IApplicationBuilder AddClientBlazorConfiguration(this IApplicationBuilder appBuilder)
         {
