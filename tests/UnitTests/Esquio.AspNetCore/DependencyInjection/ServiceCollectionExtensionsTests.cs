@@ -1,3 +1,4 @@
+using Esquio.Abstractions;
 using Esquio.UI.Api.Infrastructure.Data.DbContexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -73,6 +74,17 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
             _ = ServiceCollection.BuildServiceProvider();
             var dbContext = ServiceCollection.First(c => c.ServiceType == typeof(StoreDbContext));
             Assert.Equal(typeof(NpgSqlContext), dbContext.ImplementationType);
+        }
+        [Fact]
+        public void feature_service_does_not_throw()
+        {
+            ServiceCollection
+                .AddLogging()
+                .AddEsquio(setup => setup.UseScopedEvaluation(false))
+                .AddAspNetCoreDefaultServices();
+
+            var sp = ServiceCollection.BuildServiceProvider();
+            var fs =sp.GetService<IFeatureService>();
         }
     }
 }
