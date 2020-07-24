@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Esquio.Configuration.Store\Esquio.Configuration.Store.csproj" />
+    <ProjectReference Include="..\..\src\Esquio.Http.Store\Esquio.Http.Store.csproj" />
     <ProjectReference Include="..\..\src\Esquio.UI.Api\Esquio.UI.Api.csproj" />
   </ItemGroup>
 

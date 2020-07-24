@@ -73,6 +73,6 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
             _ = ServiceCollection.BuildServiceProvider();
             var dbContext = ServiceCollection.First(c => c.ServiceType == typeof(StoreDbContext));
             Assert.Equal(typeof(NpgSqlContext), dbContext.ImplementationType);
-        }
+        }        
     }
 }
