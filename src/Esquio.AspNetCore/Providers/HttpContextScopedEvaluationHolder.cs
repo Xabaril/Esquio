@@ -17,7 +17,7 @@ namespace Esquio.AspNetCore.Providers
         {
             _httpContextAccesor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
-            _httpContextAccesor.HttpContext
+            _httpContextAccesor.HttpContext?
                 .Items
                 .Add(EsquioConstants.ESQUIO, _evaluationResults);
         }
