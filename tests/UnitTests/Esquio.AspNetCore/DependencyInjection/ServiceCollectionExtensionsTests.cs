@@ -36,7 +36,9 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
                 .AddAspNetCoreDefaultServices()
                 .AddConfigurationStore(ConfigurationBuilder.Build());
 
-            _ = ServiceCollection.BuildServiceProvider();
+            var serviceProvider = ServiceCollection.BuildServiceProvider();
+
+            serviceProvider.GetRequiredService<IFeatureService>();
 
         }
         [Fact()]
@@ -74,18 +76,6 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
             _ = ServiceCollection.BuildServiceProvider();
             var dbContext = ServiceCollection.First(c => c.ServiceType == typeof(StoreDbContext));
             Assert.Equal(typeof(NpgSqlContext), dbContext.ImplementationType);
-        }
-        [Fact]
-        public void feature_service_does_not_throw()
-        {
-            ServiceCollection
-                .AddLogging()
-                .AddEsquio(setup => setup.UseScopedEvaluation(false))
-                .AddAspNetCoreDefaultServices()
-                .AddConfigurationStore(ConfigurationBuilder.Build());
-
-            var sp = ServiceCollection.BuildServiceProvider();
-            var fs =sp.GetService<IFeatureService>();
         }
     }
 }
