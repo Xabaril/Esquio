@@ -28,7 +28,8 @@ services:
             - Data__Store=MySql
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
-            - Security__DefaultSubjectId=1
+            - Security__DefaultUsers__0__ApplicationRole=Management
+            - Security__DefaultUsers__0__SubjectId=1
             - Security__OpenId__ClientId=interactive.public
             - Security__OpenId__Audience=api
             - Security__OpenId__Authority=https://demo.identityserver.io/

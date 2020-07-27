@@ -77,5 +77,17 @@ namespace UnitTests.Esquio.AspNetCore.Extensions
             var dbContext = ServiceCollection.First(c => c.ServiceType == typeof(StoreDbContext));
             Assert.Equal(typeof(NpgSqlContext), dbContext.ImplementationType);
         }
+        [Fact]
+        public void feature_service_does_not_throw()
+        {
+            ServiceCollection
+                .AddLogging()
+                .AddEsquio(setup => setup.UseScopedEvaluation(false))
+                .AddAspNetCoreDefaultServices()
+                .AddHttpStore(setup => setup.UseBaseAddress("https://baseAddress"));
+
+            var sp = ServiceCollection.BuildServiceProvider();
+            var fs =sp.GetService<IFeatureService>();
+        }
     }
 }

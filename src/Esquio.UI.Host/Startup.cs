@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using System.Net.Mime;
