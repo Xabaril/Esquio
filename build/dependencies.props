@@ -33,7 +33,7 @@
 
     <newtonsoftjson>12.0.3</newtonsoftjson>
 
-    <microsoftcsharp>4.7.0 </microsoftcsharp>
+    <microsoftcsharp>4.7.0</microsoftcsharp>
     <systemdiagnosticsdiagnosticsource>4.7.1</systemdiagnosticsdiagnosticsource>
     <systemtextjson>4.7.2</systemtextjson>
 
