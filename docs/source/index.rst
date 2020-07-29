@@ -64,7 +64,7 @@ Additionally, if you need it, Esquio has a full UI developed, so you can be able
    :hidden:
    :caption: UI
 
-   UI/deployment
+   ui/deployment
 
 .. toctree::
    :maxdepth: 3
