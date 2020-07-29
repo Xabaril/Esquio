@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(microsoftextensionsdependencyinjectionabstractions)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(microsoftextensionsloggingconsole)" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(systemdiagnosticsdiagnosticsource)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource"/>
   </ItemGroup>
 
   <ItemGroup>

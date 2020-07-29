@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>

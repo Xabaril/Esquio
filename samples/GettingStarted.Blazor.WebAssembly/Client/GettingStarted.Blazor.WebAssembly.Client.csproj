@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(blazor)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="$(blazor)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(blazor)" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="$(blazorhttpclient)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"  />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
 
   <ItemGroup>
