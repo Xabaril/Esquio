@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace Esquio.AspNetCore.Endpoints
@@ -8,16 +9,15 @@ namespace Esquio.AspNetCore.Endpoints
     /// </summary>
     public static class EndpointFallbackAction
     {
-
         /// <summary>
         /// Create a <see cref="Microsoft.AspNetCore.Http.RequestDelegate"/> with a redirect result to MVC action. 
         /// </summary>
         /// <param name="controllerName">The controller name used to create a redirect uri.</param>
         /// <param name="actionName">The action name used to create a redirect uri.</param>
         /// <returns>The <see cref="Microsoft.AspNetCore.Http.RequestDelegate"/> created with a redirect result.</returns>
-        public static RequestDelegate RedirectToAction(string controllerName, string actionName)
+        public static Func<PathString, RequestDelegate> RedirectAnyToAction(string controllerName, string actionName)
         {
-            return new RequestDelegate(context =>
+            return (_) => new RequestDelegate(context =>
             {
                 context.Response.Redirect($"{context.Request.Scheme}://{context.Request.Host}/{controllerName}/{actionName}");
 
@@ -30,9 +30,9 @@ namespace Esquio.AspNetCore.Endpoints
         /// </summary>
         /// <param name="uri">The redirect uri to be used.</param>
         /// <returns>The <see cref="Microsoft.AspNetCore.Http.RequestDelegate"/> created with a redirect result.</returns>
-        public static RequestDelegate RedirectTo(string uri)
+        public static Func<PathString, RequestDelegate> RedirectAnyTo(string uri)
         {
-            return new RequestDelegate(context =>
+            return (_) => new RequestDelegate(context =>
             {
                 context.Response.Redirect(uri);
 
@@ -44,9 +44,9 @@ namespace Esquio.AspNetCore.Endpoints
         /// Create a <see cref="Microsoft.AspNetCore.Http.RequestDelegate"/> with a NotFound status response. 
         /// </summary>
         /// <returns>The <see cref="Microsoft.AspNetCore.Http.RequestDelegate"/> created with NotFound response status.</returns>
-        public static RequestDelegate NotFound()
+        public static Func<PathString, RequestDelegate> NotFound()
         {
-            return new RequestDelegate(context =>
+            return (_) => new RequestDelegate(context =>
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
 

@@ -94,7 +94,6 @@ namespace Esquio.AspNetCore.Endpoints
                 else
                 {
                     _diagnostics.FeatureMatcherPolicyEndpointIsValid(endpoint.DisplayName);
-
                     valid = true;
                 }
 
@@ -110,19 +109,16 @@ namespace Esquio.AspNetCore.Endpoints
 
                 if (fallbackService != null)
                 {
-                    _diagnostics.FeatureMatcherPolicyExecutingFallbackEndpoint(httpContext.Request.Path);
+                    var requestPath = httpContext.Request.Path;
 
-                    httpContext.SetEndpoint(
-                        CreateFallbackEndpoint(fallbackService.RequestDelegate, fallbackService.EndpointDisplayName));
+                    _diagnostics.FeatureMatcherPolicyExecutingFallbackEndpoint(requestPath);
 
+                    var defaultEndPoint = fallbackService.CreateFallbackEndpoint(requestPath);
+
+                    httpContext.SetEndpoint(defaultEndPoint);
                     httpContext.Request.RouteValues = null;
                 }
             }
-        }
-
-        private Endpoint CreateFallbackEndpoint(RequestDelegate requestDelegate, string displayName = "fallbackEndpoint")
-        {
-            return new Endpoint(requestDelegate, EndpointMetadataCollection.Empty, displayName);
         }
     }
 }
