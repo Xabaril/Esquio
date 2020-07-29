@@ -22,24 +22,18 @@ For project documentation, please visit [readthedocs](https://esquio.readthedocs
 ## How to build
 Esquio is built against the latest NET Core 3.
 
-* [Install](https://www.microsoft.com/net/download/core#/current) the [required](https://github.com/Xabaril/Esquio/blob/master/global.json) .NET Core SDK
-* Run [build.ps1](https://github.com/Xabaril/Esquio/blob/master/build.ps1) in the root of the repo.
+* Run [install-sdk.ps1](https://github.com/Xabaril/Esquio/blob/master/install-sdk.ps1) or [install-sdk.sh](https://github.com/Xabaril/Esquio/blob/master/install-sdk.sh) to install required .NET Core SDK.
+* Run [build.ps1](https://github.com/Xabaril/Esquio/blob/master/build.ps1) or [build.sh](https://github.com/Xabaril/Esquio/blob/master/build.sh) in the root of the repo to restore package, build solution and run tests.
 
 ## How to run migrations
 ### For SqlServer
-<code>dotnet ef migrations add *MigrationName* --context StoreDbContext --project src/Esquio.UI.Store</code>
+<code>dotnet ef migrations add *MigrationName* --context StoreDbContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/SqlServer</code>
 
-And to apply the migration: 
-<code>
-dotnet ef database update --context StoreDbContext --project src/Esquio.UI.Store
-</code>
 ### For Postgres
-<code>dotnet ef migrations add *MigrationName*  --context NpgSqlContext --project src/Esquio.UI.Store</code>
+<code>dotnet ef migrations add *MigrationName* --context NpgSqlContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/NpgSql</code>
 
-And to apply the migration: 
-<code>
-dotnet ef database update --context NpgSqlContext --project src/Esquio.UI.Store
-</code>
+### For MySql
+<code>dotnet ef migrations add *MigrationName* --context MySqlContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/MySql</code>
 
 ## Acknowledgements
 Esquio is built using the following great open source projects and free services:
@@ -51,6 +45,8 @@ Esquio is built using the following great open source projects and free services
 * [MediatR](https://github.com/jbogard/MediatR)
 * [Problem Details](https://www.nuget.org/packages/Hellang.Middleware.ProblemDetails)
 * [Serilog](https://github.com/serilog/serilog)
+* [Swashbucke.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [Acheve](https://github.com/Xabaril/Acheve.TestHost)
 
 ..and last but not least a big thanks to all our [contributors](https://github.com/Xabaril/Esquio/graphs/contributors)!
 
