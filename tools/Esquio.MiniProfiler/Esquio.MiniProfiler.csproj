@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniProfiler.Shared" Version="$(miniprofilershared)" />
+    <PackageReference Include="MiniProfiler.Shared"/>
   </ItemGroup>
 
   <ItemGroup>

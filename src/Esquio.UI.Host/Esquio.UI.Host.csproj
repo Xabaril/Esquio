@@ -5,18 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="4.3.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="$(blazor)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(microsoftaspnetcoreauthenticationjwtbearer)" />
+    <PackageReference Include="IdentityModel"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
 
-    <PackageReference Include="Serilog.Extensions.Logging" Version="$(serilogextensionslogging)" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="$(serilogsettingsconfiguration)" />
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="$(serilogsinksapplicationinsights)" />
-    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="$(serilogsinkscoloredconsole)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoredesign)" />
+    <PackageReference Include="Serilog.Extensions.Logging"/>
+    <PackageReference Include="Serilog.Settings.Configuration"/>
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights"/>
+    <PackageReference Include="Serilog.Sinks.ColoredConsole"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
 
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="$(SwashbuckleAspNetCore)" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   
   <ItemGroup>
