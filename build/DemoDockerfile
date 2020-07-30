@@ -1,9 +1,10 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.5-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.6-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 FROM  mcr.microsoft.com/dotnet/core/sdk:3.1.302-buster AS build
 WORKDIR /src
 COPY ./Directory.Build.props ./Directory.Build.props
+COPY ./Directory.Build.targets ./Directory.Build.targets
 COPY ./build ./build
 COPY ./src ./src
 COPY ./demos ./demos

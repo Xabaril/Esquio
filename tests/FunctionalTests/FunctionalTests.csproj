@@ -18,20 +18,18 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     
-    <PackageReference Include="Acheve.TestHost" Version="$(achevetesthost)" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="$(microsoftaspnetcoremvcversioningapiexplorerversion)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="$(microsoftextensionsconfigurationjson)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(microsoftextensionslogging)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(NetTestSdk)" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(microsoftaspnetcoretesthost)" />
-    <PackageReference Include="FluentAssertions" Version="$(fluentassertions)" />
-    <PackageReference Include="Respawn" Version="$(respawn)" />
-    <PackageReference Include="xunit" Version="$(xunit)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(xunitrunner)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(microsoftentityframeworkcoresqlserver)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(microsoftentityframeworkcoresqlserver)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(microsoftentityframeworkcoresqlite)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(microsoftentityframeworkcoreinmemory)" />
+    <PackageReference Include="Acheve.TestHost" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
+    <PackageReference Include="Microsoft.Extensions.Logging"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost"  />
+    <PackageReference Include="FluentAssertions"/>
+    <PackageReference Include="Respawn"/>
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
   </ItemGroup>
 
   <ItemGroup>

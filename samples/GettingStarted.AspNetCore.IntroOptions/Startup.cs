@@ -16,20 +16,22 @@ namespace GettingStarted.AspNetCore.IntroOptions
         {
             _configuration = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEsquio(options=>
+            services.AddEsquio(options =>
             {
                 options.ConfigureDefaultProductName("default");
-                options.ConfigureNotFoundBehavior(NotFoundBehavior.SetEnabled);
+                options.ConfigureNotFoundBehavior(NotFoundBehavior.SetDisabled);
                 options.ConfigureOnErrorBehavior(OnErrorBehavior.SetDisabled);
             })
             .AddAspNetCoreDefaultServices()
-            .AddEndpointFallback(new RequestDelegate(async context =>
+            .AddEndpointFallback(requestPath => new RequestDelegate(async context =>
             {
-                await context.Response.WriteAsync("Hello World! , the feature is disabled and endpoint fallback is executed!");
-            })) //you can use EndpointFallbackAction.NotFound or EndpointFallbackAction.RedirectToAction instead create the request delegate directly
+                //requestPath is "/"
+                //you can use EndpointFallbackAction.NotFound or EndpointFallbackAction.RedirectAnyToAction, RedirectAnyTo instead create the request delegate directly
+                await context.Response.WriteAsync("Hello World!, the feature is disabled and endpoint fallback is executed!");
+            })) 
             .AddConfigurationStore(_configuration);
         }
 

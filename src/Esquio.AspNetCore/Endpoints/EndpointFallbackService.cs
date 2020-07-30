@@ -5,14 +5,18 @@ namespace Esquio.AspNetCore.Endpoints
 {
     internal class EndpointFallbackService
     {
-        public RequestDelegate RequestDelegate { get; private set; }
+        public Func<PathString, RequestDelegate> DefaultRequestDelegateCreator { get; private set; }
 
-        public string EndpointDisplayName { get; private set; }
-
-        public EndpointFallbackService(RequestDelegate requestDelegate, string endpointDisplayName = nameof(EndpointFallbackService))
+        public EndpointFallbackService(Func<PathString, RequestDelegate> defaultRequestDelegateCreator)
         {
-            RequestDelegate = requestDelegate ?? throw new ArgumentNullException(nameof(requestDelegate));
-            EndpointDisplayName = endpointDisplayName;
+            DefaultRequestDelegateCreator = defaultRequestDelegateCreator ?? throw new ArgumentNullException(nameof(defaultRequestDelegateCreator));
+        }
+
+        public Endpoint CreateFallbackEndpoint(PathString path)
+        {
+            var requestDelegate = DefaultRequestDelegateCreator(path);
+
+            return new Endpoint(requestDelegate, EndpointMetadataCollection.Empty, displayName: "EsquioFallbackEndpoint");
         }
     }
 }

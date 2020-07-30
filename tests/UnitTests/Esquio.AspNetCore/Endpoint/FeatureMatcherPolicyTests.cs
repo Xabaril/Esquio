@@ -46,6 +46,31 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
         }
 
         [Fact]
+        public async Task use_configured_fallback_endpoint_when_feature_is_disabled()
+        {
+            var response = await _fixture.TestServer
+                .CreateClient()
+                .GetAsync("http://localhost/scenarios/SingleEndPointWithFallback");
+
+            response.IsSuccessStatusCode
+                .Should().BeTrue();
+
+            (await response.Content.ReadAsStringAsync())
+                .Should().BeEquivalentTo("Endpoint fallback is executed!");
+        }
+
+        [Fact]
+        public async Task use_default_configured_fallback_endpoint_when_feature_is_disabled()
+        {
+            var response = await _fixture.TestServer
+                .CreateClient()
+                .GetAsync("http://localhost/scenarios/SingleEndPointWithNotFoundFallback");
+
+            response.StatusCode
+                .Should().Be(StatusCodes.Status404NotFound);
+        }
+
+        [Fact]
         public async Task use_endpoint_when_single_feature_is_active()
         {
             var response = await _fixture.TestServer

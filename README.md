@@ -2,6 +2,9 @@
 
 ![Esquio Build](https://github.com/xabaril/Esquio/workflows/Esquio%20Nightly%20Build/badge.svg?branch=master)
 
+[![Documentation Status](https://readthedocs.org/projects/esquio/badge/?version=latest)](https://esquio.readthedocs.io/en/latest/?badge=latest)
+
+
 ## About [Esquio](https://esquio.readthedocs.io) 
 
 Esquio is a [Feature Toggles (aka Feature Flags)](https://martinfowler.com/articles/feature-toggles.html) and A/B testing framework for .NET Core 3.0. Feature Toogle is a powerful technique that allows developers to deliver new functionality to users withouth changing code. Provides an alternative to to mantain multiples branches (aka feature branches), so any feature can be tested even before it is completed and ready for the release. We can release a version of our product with not production ready features. These non production ready features are hidden (toggled) for the broader set of users but can be enabled to any subset of testing or internal users we want them to try the features.We can use feature toogling to enable or disable features during run time.
@@ -22,24 +25,18 @@ For project documentation, please visit [readthedocs](https://esquio.readthedocs
 ## How to build
 Esquio is built against the latest NET Core 3.
 
-* [Install](https://www.microsoft.com/net/download/core#/current) the [required](https://github.com/Xabaril/Esquio/blob/master/global.json) .NET Core SDK
-* Run [build.ps1](https://github.com/Xabaril/Esquio/blob/master/build.ps1) in the root of the repo.
+* Run [install-sdk.ps1](https://github.com/Xabaril/Esquio/blob/master/install-sdk.ps1) or [install-sdk.sh](https://github.com/Xabaril/Esquio/blob/master/install-sdk.sh) to install required .NET Core SDK.
+* Run [build.ps1](https://github.com/Xabaril/Esquio/blob/master/build.ps1) or [build.sh](https://github.com/Xabaril/Esquio/blob/master/build.sh) in the root of the repo to restore package, build solution and run tests.
 
 ## How to run migrations
 ### For SqlServer
-<code>dotnet ef migrations add *MigrationName* --context StoreDbContext --project src/Esquio.UI.Store</code>
+<code>dotnet ef migrations add *MigrationName* --context StoreDbContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/SqlServer</code>
 
-And to apply the migration: 
-<code>
-dotnet ef database update --context StoreDbContext --project src/Esquio.UI.Store
-</code>
 ### For Postgres
-<code>dotnet ef migrations add *MigrationName*  --context NpgSqlContext --project src/Esquio.UI.Store</code>
+<code>dotnet ef migrations add *MigrationName* --context NpgSqlContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/NpgSql</code>
 
-And to apply the migration: 
-<code>
-dotnet ef database update --context NpgSqlContext --project src/Esquio.UI.Store
-</code>
+### For MySql
+<code>dotnet ef migrations add *MigrationName* --context MySqlContext --project src/Esquio.UI.Api --output-dir Infrastructure/Data/Migrations/MySql</code>
 
 ## Acknowledgements
 Esquio is built using the following great open source projects and free services:
@@ -51,6 +48,8 @@ Esquio is built using the following great open source projects and free services
 * [MediatR](https://github.com/jbogard/MediatR)
 * [Problem Details](https://www.nuget.org/packages/Hellang.Middleware.ProblemDetails)
 * [Serilog](https://github.com/serilog/serilog)
+* [Swashbucke.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [Acheve](https://github.com/Xabaril/Acheve.TestHost)
 
 ..and last but not least a big thanks to all our [contributors](https://github.com/Xabaril/Esquio/graphs/contributors)!
 

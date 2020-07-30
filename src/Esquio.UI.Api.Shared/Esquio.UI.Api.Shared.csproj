@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="$(fluentvalidationaspnetcore)" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(mediatrextensionsmicrosoftdependencyinjection)" />
+    <PackageReference Include="FluentValidation"/>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection"/>
   </ItemGroup>
-  
+
 </Project>

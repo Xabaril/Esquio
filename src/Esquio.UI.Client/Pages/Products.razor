@@ -187,6 +187,11 @@
 
     private async Task AddProduct()
     {
+        if ( String.IsNullOrEmpty(model.DefaultDeploymentName))
+        {
+            model.DefaultDeploymentName = "Tests";
+        }
+
         var result = await esquioHttpClient.AddProduct(model);
         await cards.OnAdd();
 

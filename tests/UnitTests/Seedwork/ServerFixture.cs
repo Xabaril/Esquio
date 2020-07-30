@@ -1,12 +1,15 @@
-﻿using Esquio.AspNetCore.Endpoints.Metadata;
+﻿using Esquio.AspNetCore.Endpoints;
+using Esquio.AspNetCore.Endpoints.Metadata;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace UnitTests.Seedwork
@@ -54,11 +57,30 @@ namespace UnitTests.Seedwork
         {
             services.AddMvc()
                 .Services
-                .AddEsquio(setup=>
+                .AddEsquio(setup =>
                 {
                     setup.RegisterTogglesFromAssembly(typeof(AllwaysOnToggle).Assembly);
                 })
                 .AddAspNetCoreDefaultServices()
+                .AddEndpointFallback(path =>
+                {
+                    if (path.Value.Contains("/scenarios/SingleEndPointWithFallback"))
+                    {
+                        return new RequestDelegate(async context =>
+                        {
+                            await context.Response.WriteAsync("Endpoint fallback is executed!");
+                        });
+                    }
+                    else
+                    {
+                        return new RequestDelegate(context =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+                            return Task.CompletedTask;
+                        });
+                    }
+                })
                 .AddConfigurationStore(_configuration, "Esquio");
         }
 
@@ -129,6 +151,18 @@ namespace UnitTests.Seedwork
 
         [FeatureFilter(Name = "Sample2")]
         public IActionResult SingleEndPointWithFeatureDisabled()
+        {
+            return Ok();
+        }
+
+        [FeatureFilter(Name = "Sample2")]
+        public IActionResult SingleEndPointWithFallback()
+        {
+            return Ok();
+        }
+
+        [FeatureFilter(Name = "Sample2")]
+        public IActionResult SingleEndPointWithNotFoundFallback()
         {
             return Ok();
         }

@@ -6,6 +6,7 @@ using Esquio.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -45,19 +46,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Register a new <see cref="RequestDelegate"/>to be used
         /// when a requested endpoint does not have candidates availables due a 
-        /// disabling evaluation result of any feature.
+        /// disabling evaluation result of any feature depending on the PathString.
         /// </summary>
         /// <param name="builder">The <see cref="IEsquioBuilder"/> used.</param>
-        /// <param name="requestDelegate">The request delegate to be used.</param>
+        /// <param name="requestDelegateCretor">The request delegate creator to be used.</param>
         /// <returns>A new <see cref="IEsquioBuilder"/> that can be chained for register services.</returns>
         /// <remarks>
         /// You can use <see cref="EndpointFallbackAction"/> to create easily new fallback actions.
         /// </remarks>
-        public static IEsquioBuilder AddEndpointFallback(this IEsquioBuilder builder, RequestDelegate requestDelegate)
+        public static IEsquioBuilder AddEndpointFallback(this IEsquioBuilder builder, Func<PathString,RequestDelegate> requestDelegateCretor)
         {
             builder.Services.TryAddSingleton(sp =>
             {
-                return new EndpointFallbackService(requestDelegate);
+                return new EndpointFallbackService(requestDelegateCretor);
             });
 
             return builder;

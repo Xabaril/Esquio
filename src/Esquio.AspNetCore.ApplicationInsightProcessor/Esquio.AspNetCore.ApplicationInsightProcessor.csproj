@@ -12,11 +12,10 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="$(microsoftapplicationinsights)" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(microsoftapplicationinsightsaspnetcore)" />
+    <PackageReference Include="Microsoft.ApplicationInsights"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
-
 </Project>

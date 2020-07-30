@@ -17,7 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
-	 <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(microsoftsourcelinkgithub)">
+	 <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(GitHubSourceLink)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

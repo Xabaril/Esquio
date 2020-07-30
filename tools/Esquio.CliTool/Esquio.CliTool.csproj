@@ -10,10 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="$(mcmastercommandlineutils)" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="$(microsoftextensionshttp)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(newtonsoftjson)" />
-    <PackageReference Include="NSwag.MSBuild" Version="$(nswagmsbuild)">
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils"/>
+    <PackageReference Include="Microsoft.Extensions.Http"/>
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="NSwag.MSBuild" >
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
