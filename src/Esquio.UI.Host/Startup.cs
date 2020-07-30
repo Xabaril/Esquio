@@ -1,6 +1,7 @@
 using Esquio.UI.Api;
 using Esquio.UI.Api.Infrastructure.HostedService;
 using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Api.Infrastructure.Settings;
 using Esquio.UI.Host.Infrastructure.OpenApi;
 using Esquio.UI.Host.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,7 +53,13 @@ namespace Esquio.UI.Host
                 .AddApiKey()
                 .AddJwtBearer(options =>
                 {
-                    Configuration.Bind("Security:OpenId", options);
+                    var securitySettings = new SecuritySettings();
+                    Configuration.Bind("Security", securitySettings);
+
+                    options.Audience = securitySettings.OpenId.Audience;
+                    options.Authority = securitySettings.OpenId.Authority;
+
+                    options.TokenValidationParameters.ValidateIssuer = false;
                 })
                 .AddPolicyScheme("secured", "Authorization Bearer or ApiKey", options =>
                 {
@@ -71,7 +78,7 @@ namespace Esquio.UI.Host
                     };
                 });
 
-            EsquioUIApiConfiguration.ConfigureServices(services)
+            EsquioUIApiConfiguration.ConfigureServices(services, Configuration)
                 .AddEntityFramework(Configuration, Environment)
                 .AddHostedService<EsquioMetricsConsumer>();
         }
@@ -91,7 +98,7 @@ namespace Esquio.UI.Host
                      }
 
                      return appBuilder
-                        .UseCors(builder=>
+                        .UseCors(builder =>
                          {
                              var configuredOrigins = Configuration.GetValue<string>("Cors:Origins");
 

@@ -140,7 +140,12 @@ namespace Esquio.UI.Api.Diagnostics
         {
             _apiKeyStoreKeyExist(logger, null);
         }
-        
+
+        public static void DefaultSubjectIsNull(ILogger logger)
+        {
+            _defaultSubjectIsNull(logger, null);
+        }
+
         private static readonly Action<ILogger, string, Exception> _apiKeyAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyAlreadyExist,
@@ -253,6 +258,10 @@ namespace Esquio.UI.Api.Diagnostics
           LogLevel.Information,
           EventIds.ApiKeyStoreKeyExist,
           "The api key *** exist on the store. A new identity is created using this information.");
+        private static readonly Action<ILogger, Exception> _defaultSubjectIsNull = LoggerMessage.Define(
+          LogLevel.Error,
+          EventIds.DefaultSubjectIsNull,
+          "The current subject is null on current user because the default subject claim is not configured.");
 
     }
 }

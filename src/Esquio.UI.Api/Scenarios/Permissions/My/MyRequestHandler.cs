@@ -14,7 +14,7 @@ namespace Esquio.UI.Api.Scenarios.Permissions.My
 {
     public class MyRequestHandler
         : IRequestHandler<MyRequest, MyResponse>
-    {
+    { 
         private readonly StoreDbContext _storeDbContext;
         private readonly ILogger<MyRequestHandler> _logger;
 

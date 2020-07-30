@@ -1,4 +1,5 @@
-﻿using Esquio.UI.Client.Infrastructure.Authorization;
+﻿using Esquio.UI.Api.Shared.Settings;
+using Esquio.UI.Client.Infrastructure.Authorization;
 using Esquio.UI.Client.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -31,16 +32,35 @@ namespace Esquio.UI.Client
             builder.Services.AddHttpClient<IEsquioHttpClient, EsquioHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-            builder.Services.AddOidcAuthentication(options =>
+            var isAzureAd = builder.Configuration
+                .GetValue<bool>("Security:IsAzureAd");
+
+            var authority = builder.Configuration.GetValue<string>("Security:Authority");
+            var clientId = builder.Configuration.GetValue<string>("Security:ClientId");
+            var scope = builder.Configuration.GetValue<string>("Security:Scope");
+            var responseType = builder.Configuration.GetValue<string>("Security:ResponseType");
+
+            if (isAzureAd)
             {
-                builder.Configuration.Bind("Security", options.ProviderOptions);
+                builder.Services.AddMsalAuthentication(options =>
+                {
+                    options.ProviderOptions.Authentication.Authority = authority;
+                    options.ProviderOptions.Authentication.ClientId = clientId; 
+                    //options.ProviderOptions.Authentication.RedirectUri = "https://localhost:44359/authentication/login-callback";
+                    options.ProviderOptions.DefaultAccessTokenScopes.Add(scope);
 
-                var audience = builder.Configuration
-                    .GetValue<string>("Security:Audience");
-
-                options.ProviderOptions.DefaultScopes.Add(audience);
-                
-            });
+                });
+            }
+            else
+            {
+                builder.Services.AddOidcAuthentication(options =>
+                {
+                    options.ProviderOptions.Authority = authority;
+                    options.ProviderOptions.ClientId = clientId;
+                    options.ProviderOptions.ResponseType = responseType;
+                    options.ProviderOptions.DefaultScopes.Add(scope);
+                });
+            }
 
             builder.Services.AddAuthorizationCore(options =>
             {

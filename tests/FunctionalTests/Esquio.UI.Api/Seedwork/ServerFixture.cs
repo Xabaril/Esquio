@@ -109,7 +109,7 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            EsquioUIApiConfiguration.ConfigureServices(services)
+            EsquioUIApiConfiguration.ConfigureServices(services,_configuration)
                 .AddSingleton<IDiscoverToggleTypesService, DiscoverToggleTypesService>()
                 .AddAuthorization()
                 .AddAuthentication(setup =>

@@ -1,4 +1,5 @@
-﻿using IdentityModel.Client;
+﻿using Esquio.UI.Api.Infrastructure.Settings;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,10 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
 
         public void Configure(SwaggerGenOptions options)
         {
-            var discoveryDocument = GetDiscoveryDocument();
+            var securitySettings = new SecuritySettings();
+            _configuration.Bind("Security", securitySettings);
+
+            var discoveryDocument = GetDiscoveryDocument(securitySettings);
 
             options.OperationFilter<AuthorizeOperationFilter>();
 
@@ -52,7 +56,7 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
                         TokenUrl = new Uri(discoveryDocument.TokenEndpoint),
                         Scopes = new Dictionary<string, string>
                         {
-                            { _configuration["Security:OpenId:Audience"] , "Esquio UI HTTP API" }
+                            { securitySettings.OpenId.Scope , "Esquio UI HTTP API" }
                         },
                     }
                 },
@@ -87,12 +91,26 @@ namespace Esquio.UI.Host.Infrastructure.OpenApi
             return info;
         }
 
-        private DiscoveryDocumentResponse GetDiscoveryDocument()
+        private DiscoveryDocumentResponse GetDiscoveryDocument(SecuritySettings settings)
         {
             var httpClient = _httpClientFactory.CreateClient();
-            var authority = _configuration["Security:OpenId:Authority"];
 
-            var discoveryDocument = httpClient.GetDiscoveryDocumentAsync(authority)
+            var authority = settings.OpenId.Authority;
+
+            if (settings.IsAzureAd)
+            {
+                authority = $"{settings.OpenId.Authority}/v2.0";
+            }
+
+            var request = new DiscoveryDocumentRequest()
+            {
+                Address = authority,
+                Policy = new DiscoveryPolicy()
+                {
+                    ValidateEndpoints = settings.IsAzureAd ? false : true
+                }
+            };
+            var discoveryDocument = httpClient.GetDiscoveryDocumentAsync(request)
                 .GetAwaiter()
                 .GetResult();
 
