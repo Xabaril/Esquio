@@ -3,6 +3,8 @@ using Esquio.UI.Api.Infrastructure.Behaviors;
 using Esquio.UI.Api.Infrastructure.Metrics;
 using Esquio.UI.Api.Infrastructure.Routes;
 using Esquio.UI.Api.Infrastructure.Serialization;
+using Esquio.UI.Api.Infrastructure.Services;
+using Esquio.UI.Api.Infrastructure.Settings;
 using Esquio.UI.Api.Shared.Models.Products.Add;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -19,9 +22,10 @@ namespace Esquio.UI.Api
 {
     public static class EsquioUIApiConfiguration
     {
-        public static IServiceCollection ConfigureServices(IServiceCollection services)
+        public static IServiceCollection ConfigureServices(IServiceCollection services,IConfiguration configuration)
         {
             return services
+                .Configure<SecuritySettings>(configuration.GetSection("Security"))
                 .AddAuthorization(setup =>
                 {
                     setup.AddPolicy(Policies.Reader, builder => builder.AddRequirements(new PolicyRequirement(Policies.Reader)));
@@ -30,6 +34,7 @@ namespace Esquio.UI.Api
                 })
                 .AddScoped<IAuthorizationHandler, PolicyRequirementHandler>()
                 .AddSingleton<EsquioMetricsClient>()
+                .AddSingleton<ISubjectClaimsPrincipalFactory,DefaultSubjectClaimsPrincipalFactory>()
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
                 .AddCustomProblemDetails()

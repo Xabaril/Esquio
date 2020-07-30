@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Api.Infrastructure.Authorization;
+using Esquio.UI.Api.Infrastructure.Services;
 using Esquio.UI.Api.Shared.Models;
 using Esquio.UI.Api.Shared.Models.Permissions.Add;
 using Esquio.UI.Api.Shared.Models.Permissions.Delete;
@@ -10,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Security.Claims;
 using System.Threading;
@@ -25,10 +27,12 @@ namespace Esquio.UI.Api.Scenarios.Permissions
         : Controller
     {
         private readonly IMediator _mediator;
+        private readonly ISubjectClaimsPrincipalFactory _subjectClaimsPrincipalFactory;
 
-        public PermissionsController(IMediator mediator)
+        public PermissionsController(IMediator mediator, ISubjectClaimsPrincipalFactory subjectClaimsPrincipalFactory)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _subjectClaimsPrincipalFactory = subjectClaimsPrincipalFactory ?? throw new ArgumentNullException(nameof(subjectClaimsPrincipalFactory));
         }
 
         [HttpGet]
@@ -40,7 +44,7 @@ namespace Esquio.UI.Api.Scenarios.Permissions
         {
             var response = await _mediator.Send(new MyRequest()
             {
-                SubjectId = User.GetSubjectId()
+                SubjectId = _subjectClaimsPrincipalFactory.GetSubject(User)
             }, cancellationToken);
 
             if (response.IsAuthorized)

@@ -36,5 +36,7 @@ namespace Esquio.UI.Api.Diagnostics
         public static readonly EventId ApiKeyAuthenticationDoesNotExist = new EventId(505, nameof(ApiKeyAuthenticationDoesNotExist));
         public static readonly EventId ApiKeyStoreValidating = new EventId(506, nameof(ApiKeyStoreValidating));
         public static readonly EventId ApiKeyStoreKeyExist = new EventId(506, nameof(ApiKeyStoreKeyExist));
+
+        public static readonly EventId DefaultSubjectIsNull = new EventId(601, nameof(DefaultSubjectIsNull));
     }
 }
