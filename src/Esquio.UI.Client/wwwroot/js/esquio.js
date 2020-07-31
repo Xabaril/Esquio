@@ -1,5 +1,19 @@
 ﻿(function () {
 
+
+    if (!window.addAuthenticationScript) {
+        window.addAuthenticationScript = function (isAzureAd) {
+            console.log("isAzureAd:" + isAzureAd);
+            if (isAzureAd)
+                console.log("que si que lo es");
+
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = isAzureAd ? "_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js" : "_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js";
+            $("head").append(script);
+        };
+    }
+
     if (!window.exportProduct) {
         window.exportProduct = function (json) {
             let a = document.createElement('a');
