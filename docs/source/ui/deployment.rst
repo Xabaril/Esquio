@@ -9,11 +9,7 @@ To simplify a local deployment we provide different *Docker compose* files locat
   docker-compose -f ./build/docker-compose-demo-with-ui-npgsql up --build
   docker-compose -f ./build/docker-compose-demo-with-ui-mysql up --build
 
-Supported Providers:
-AzureAd
-OpenId
-
-* You need an OpenId provider. For demo usage, you can use ``https://demo.identityserver.io/``.
+By default, a OpenId provider with ``https://demo.identityserver.io`` is used but you can change to use any other standard OpenId ( Auth0 etc ) or Azure AD.
 
 Docker
 ^^^^^^
@@ -33,15 +29,28 @@ To run this image, you have to set several environment variables, indicating som
    -e Security__DefaultUsers__0__SubjectId=<your-subject-id>
    -e Security__OpenId__ClientId=<openid-clientid> \
    -e Security__OpenId__Audience=<openid-audience> \
+   -e Security__OpenId__Scope=<openid-scope> \
    -e Security__OpenId__Authority=<openid-authority> \
    -e Security__OpenId__ResponseType=<openid-response-type> \
    -e Security__OpenId__IsAzure=<IsAzure>
 
-* Security__OpenId__ClientId: your client id (i.e. ``interactive.public``)
-* Security__OpenId__Audience: your security audience (i.e. ``api``)
-* Security__OpenId__Authority: your authority (i.e. ``https://demo.identityserver.io``)
-* Security__OpenId__ResponseType: your openid flow response type to use (i.e. ``code``) 
+* Security__OpenId__ClientId: your client id ``interactive.public on https://demo.identityserver.io``
+* Security__OpenId__Audience: your security audience, this value is used on AddJwtBeaer to validate Beaer Tokens ``api on https://demo.identityserver.io``
+* Security__OpenId__Scope: your security audience ``api on https://demo.identityserver.io``
+* Security__OpenId__Authority: your authority  ``https://demo.identityserver.io``
+* Security__OpenId__ResponseType: your openid flow response type to use ``code`` 
 * Security__OpenId__IsAzure: If you are using azure Ad as your provider this needs to be ``true``
+
+To configure Azure AD please follow existing docs on this like  `this
+<https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-azure-active-directory?view=aspnetcore-3.1>`_. An example of AAD configuration is:
+
+* Security__OpenId__ClientId: ``"762ed2b1-8107-44d5-9c9b-72c75749fb35"``
+* Security__OpenId__Audience: ``"c1cc1b6a-7580-49e5-8ab8-0f3cc9f97127"`` *remove the url prefix that AAD use api://*
+* Security__OpenId__Scope: ``c1cc1b6a-7580-49e5-8ab8-0f3cc9f97127/ui``
+* Security__OpenId__Authority: your authority  ``https://login.microsoftonline.com/bf3ae910-a895-44e6-aed1-0ed9601d9035``
+* Security__OpenId__ResponseType: ``code`` 
+* Security__OpenId__IsAzure: ``true``
+
 
 Kubernetes
 ^^^^^^^^^^
@@ -119,6 +128,8 @@ Save the following yaml in a file named `esquio-ui.yaml`::
                 value: "<your-openid-clientid>"
               - name: SECURITY__OPENID__AUDIENCE
                 value: "<openid-audience>"
+              - name: SECURITY__OPENID__SCOPE
+                value: "<openid-scope>"
               - name: SECURITY__OPENID__AUTHORITY
                 value: "<openid-authority>"                 
               - name: SECURITY__OPENID__RESPONSETYPE
