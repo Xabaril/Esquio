@@ -9,7 +9,11 @@ To simplify a local deployment we provide different *Docker compose* files locat
   docker-compose -f ./build/docker-compose-demo-with-ui-npgsql up --build
   docker-compose -f ./build/docker-compose-demo-with-ui-mysql up --build
 
-* You need also an OpenId provider. For demo usage, you can use ``https://demo.identityserver.io/``.
+Supported Providers:
+AzureAd
+OpenId
+
+* You need an OpenId provider. For demo usage, you can use ``https://demo.identityserver.io/``.
 
 Docker
 ^^^^^^
@@ -30,12 +34,14 @@ To run this image, you have to set several environment variables, indicating som
    -e Security__OpenId__ClientId=<openid-clientid> \
    -e Security__OpenId__Audience=<openid-audience> \
    -e Security__OpenId__Authority=<openid-authority> \
-   -e Security__OpenId__ResponseType=<openid-response-type> 
+   -e Security__OpenId__ResponseType=<openid-response-type> \
+   -e Security__OpenId__IsAzure=<IsAzure>
 
 * Security__OpenId__ClientId: your client id (i.e. ``interactive.public``)
 * Security__OpenId__Audience: your security audience (i.e. ``api``)
 * Security__OpenId__Authority: your authority (i.e. ``https://demo.identityserver.io``)
 * Security__OpenId__ResponseType: your openid flow response type to use (i.e. ``code``) 
+* Security__OpenId__IsAzure: If you are using azure Ad as your provider this needs to be ``true``
 
 Kubernetes
 ^^^^^^^^^^
@@ -116,7 +122,9 @@ Save the following yaml in a file named `esquio-ui.yaml`::
               - name: SECURITY__OPENID__AUTHORITY
                 value: "<openid-authority>"                 
               - name: SECURITY__OPENID__RESPONSETYPE
-                value: "<openid-response-type>"                                            
+                value: "<openid-response-type>"
+              - name: Security__OpenId__IsAzure
+                value: "<true/false>"
             ports:
               - name: http
                 containerPort: 80
