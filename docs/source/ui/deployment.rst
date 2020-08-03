@@ -44,6 +44,7 @@ To run this image, you have to set several environment variables, indicating som
 To configure Azure AD please follow existing docs on this like  `this
 <https://docs.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-azure-active-directory?view=aspnetcore-3.1>`_. An example of AAD configuration is:
 
+* Security__DefaultSubjectClaimType": ``"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"``,
 * Security__OpenId__ClientId: ``"762ed2b1-8107-44d5-9c9b-72c75749fb35"``
 * Security__OpenId__Audience: ``"c1cc1b6a-7580-49e5-8ab8-0f3cc9f97127"`` *remove the url prefix that AAD use api://*
 * Security__OpenId__Scope: ``c1cc1b6a-7580-49e5-8ab8-0f3cc9f97127/ui``
