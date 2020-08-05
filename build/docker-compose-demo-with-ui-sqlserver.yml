@@ -32,6 +32,7 @@ services:
             - Security__DefaultUsers__0__SubjectId=1
             - Security__OpenId__ClientId=interactive.public
             - Security__OpenId__Audience=api
+            - Security__OpenId__Scope=api
             - Security__OpenId__Authority=https://demo.identityserver.io/
             - Security__OpenId__ResponseType=code
             - Security__OpenId__RequireHttpsMetadata=true
