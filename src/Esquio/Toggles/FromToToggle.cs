@@ -31,12 +31,14 @@ namespace Esquio.Toggles
                 parseExactFormats, 
                 CultureInfo.InvariantCulture, 
                 DateTimeStyles.AssumeUniversal);
-
-            var toDate = DateTime.ParseExact(
-                context.Data[To].ToString(), 
-                parseExactFormats,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal);
+            DateTime toDate = DateTime.MaxValue;
+            if (context.Data.ContainsKey(To)){
+                toDate = DateTime.ParseExact(
+                    context.Data[To].ToString(), 
+                    parseExactFormats,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeUniversal);
+            }
 
             var now = DateTime.UtcNow;
 
