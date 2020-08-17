@@ -1,3 +1,4 @@
+using GettingStarted.AspNetCore.Toggles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,10 @@ namespace GettingStarted.AspNetCore.Toggles
         public void ConfigureServices(IServiceCollection services)
         {
             services
-               .AddEsquio()
+               .AddEsquio(setup=>
+               {
+                   setup.RegisterTogglesFromAssemblyContaining<OnToggle>();
+               })
                .AddAspNetCoreDefaultServices()
                .AddConfigurationStore(Configuration)
                .Services
