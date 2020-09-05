@@ -1,73 +1,38 @@
 ﻿@page "/authentication/{action}"
-@inject IAccessTokenProvider AuthenticationService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
-@inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
-
-@inject IPolicyBuilder policyBuilder
-@inject EsquioState esquioState
 @inject IEsquioHttpClient esquioHttpClient
+@inject SignOutSessionStateManager signOutManager
+@inject EsquioState esquioState
 @inject ILogger<Authentication> logger
+@inject NavigationManager navigation
+@inject AuthenticationStateProvider authenticationStateProvider;
 
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="IsUserAllowed" OnLogOutSucceeded="OnUserLogedout">
+<RemoteAuthenticatorView Action="@Action"  OnLogInSucceeded="LoginSucceeded" OnLogOutSucceeded="OnUserLogedout">
 </RemoteAuthenticatorView>
 
 @code{
+
     [Parameter] public string Action { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    void LoginSucceeded(RemoteAuthenticationState state)
     {
-        if (RemoteAuthenticationActions.IsAction(RemoteAuthenticationActions.LogIn, Action))
-        {
-            await EvaluateAuthorization(notAllowed: () =>
-            {
-                Navigation.NavigateTo("forbidden");
-            });
-        }
-    }
+        //clear initial state because user auth can be changed
+        //on runtime
 
-    async Task IsUserAllowed(RemoteAuthenticationState authenticationState)
-    {
-        await EvaluateAuthorization(notAllowed: () =>
+        if (esquioState.LoggedUser != null)
         {
-            authenticationState.ReturnUrl = "forbidden";
-        });
+            esquioState.ClearState();
+        }
+
+        //well, yeap redirection is always index and we check registered user
+        //on index initialization
+
+        state.ReturnUrl = "/";
     }
 
     void OnUserLogedout(RemoteAuthenticationState authenticationState)
     {
+        signOutManager.SetSignOutState();
         esquioState.ClearState();
-    }
-
-    async Task EvaluateAuthorization(Action notAllowed)
-    {
-        var my = await esquioHttpClient.GetMy();
-
-        if (my != null)
-        {
-            logger.LogWarning($"The current user authorization is  Authorized:{my.IsAuthorized} with Role:{my.ActAs}");
-
-            var authenticationState =  await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-            var loggedUser = new LoggedUserViewModel()
-            {
-                UserName = authenticationState.User.Identity.Name,
-                SubjectId = authenticationState.User.FindFirst("sub").Value,
-                ActAs = my.ActAs
-            };
-
-            var policy = policyBuilder.Build(my);
-
-            esquioState.ClearState();
-            esquioState.SetLoggedUser(loggedUser);
-            esquioState.SetPolicy(policy);
-        }
-        else
-        {
-            logger.LogWarning("User is not allowed to use Esquio App because subject is not configured.");
-
-            notAllowed();
-        }
     }
 }

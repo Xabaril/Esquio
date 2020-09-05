@@ -12,7 +12,7 @@
 
     <PackageReference Include="Serilog.Extensions.Logging"/>
     <PackageReference Include="Serilog.Settings.Configuration"/>
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights"/>
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" />
     <PackageReference Include="Serilog.Sinks.ColoredConsole"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
 

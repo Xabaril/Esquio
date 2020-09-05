@@ -2,9 +2,10 @@
 @attribute [Authorize(Policies.Reader)]
 @layout MainLayout
 
-@inject EsquioState State
+@inject EsquioState state
 @inject IEsquioHttpClient esquioHttpClient
 @inject IJSRuntime jsRuntime
+@inject NavigationManager navigation;
 
 <PageTransition>
     <div class="content-header">
@@ -127,11 +128,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        State.SetBreadcrumb(
-            new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
-            new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
+        if (await IsUserRegistered())
+        {
+            state.SetBreadcrumb(
+                new BreadcrumbItemViewModel { Title = "Home", Link = "/", Disabled = true },
+                new BreadcrumbItemViewModel { Title = "Dashboard", Active = true });
 
-        await Load();
+            await Load();
+        }
+        else
+        {
+            //well user is authenticated, policy requirements create the policy state
+            //but user is not registed as valid user on esquio database
+            navigation.NavigateTo("forbidden");
+        }
 
     }
 
@@ -141,6 +151,18 @@
         await LoadSucessStatistics();
         await LoadTopFeaturesStatistics();
         await LoadPlotStatistics();
+    }
+
+    private async Task<bool> IsUserRegistered()
+    {
+        var my = await esquioHttpClient.GetMy();
+
+        if (my == null || string.IsNullOrEmpty(my.ActAs))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private async Task LoadConfigurationStatistics()

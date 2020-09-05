@@ -1,4 +1,5 @@
 ﻿using Esquio.UI.Client.Services;
+using Esquio.UI.Client.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,29 +9,49 @@ namespace Esquio.UI.Client.Infrastructure.Authorization
 {
     class PolicyRequirementHandler : AuthorizationHandler<PolicyRequirement>
     {
+        private readonly IEsquioHttpClient _esquioHttpClient;
+        private readonly IPolicyBuilder _policyBuilder;
         private readonly EsquioState _state;
         private readonly ILogger<PolicyRequirementHandler> _logger;
 
-        public PolicyRequirementHandler(EsquioState state, ILogger<PolicyRequirementHandler> logger)
+        public PolicyRequirementHandler(
+            IEsquioHttpClient esquioHttpClient,
+            IPolicyBuilder policyBuilder,
+            EsquioState state,
+            ILogger<PolicyRequirementHandler> logger)
         {
+            _esquioHttpClient = esquioHttpClient ?? throw new ArgumentNullException(nameof(esquioHttpClient));
+            _policyBuilder = policyBuilder ?? throw new ArgumentNullException(nameof(policyBuilder));
             _state = state ?? throw new ArgumentNullException(nameof(_state));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PolicyRequirement requirement)
+        protected override  async Task HandleRequirementAsync(AuthorizationHandlerContext context, PolicyRequirement requirement)
         {
-            if (_state.LoggedUser == null)
+            if (context.User != null && _state.LoggedUser == null)
             {
-                _logger.LogError("Authorization failed because the logged user is not present.");
-                context.Fail();
-                return Task.CompletedTask;
-            }
+                var my = await _esquioHttpClient.GetMy();
 
-            if (string.IsNullOrEmpty(_state.LoggedUser.ActAs))
-            {
-                LogAuthorizationFailed(_state.LoggedUser.SubjectId, requirement.Permission);
-                context.Fail();
-                return Task.CompletedTask;
+                if ( my != null  && !String.IsNullOrEmpty(my.ActAs))
+                {
+                    var loggedUser = new LoggedUserViewModel()
+                    {
+                        UserName = context.User.Identity.Name,
+                        SubjectId = context.User.FindFirst("sub").Value,
+                        ActAs = my.ActAs
+                    };
+
+                    var policy = _policyBuilder.Build(my);
+
+                    _state.ClearState();
+                    _state.SetLoggedUser(loggedUser);
+                    _state.SetPolicy(policy);
+                }
+                else
+                {
+                    context.Fail();
+                    return;
+                }
             }
 
             var actAs = ActAs.From(_state.LoggedUser.ActAs);
@@ -50,8 +71,6 @@ namespace Esquio.UI.Client.Infrastructure.Authorization
             }
 
             context.Succeed(requirement);
-
-            return Task.CompletedTask;
         }
 
         private void LogAuthorizationFailed(string subjectId, string permission)
