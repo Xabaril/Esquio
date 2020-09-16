@@ -3,19 +3,19 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "3.1.5",
+      "version": "3.1.8",
       "commands": [
         "dotnet-ef"
       ]
     },
     "dotnet-counters": {
-      "version": "3.1.57502",
+      "version": "3.1.141901",
       "commands": [
         "dotnet-counters"
       ]
     },
     "dotnet-trace": {
-      "version": "3.1.57502",
+      "version": "3.1.141901",
       "commands": [
         "dotnet-trace"
       ]

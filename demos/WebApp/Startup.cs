@@ -64,6 +64,7 @@ namespace WebApp
                 {
                     setup.UseScopedEvaluation(useScopedEvaluation: true);
                 })
+                //.AddConfigurationStore(Configuration)
                 .AddHttpStore(setup =>
                 {
                     setup
