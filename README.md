@@ -4,7 +4,7 @@
 
 [![Documentation Status](https://readthedocs.org/projects/esquio/badge/?version=latest)](https://esquio.readthedocs.io/en/latest/?badge=latest)
 
-[![Blimp demo badge](https://kelda.io/demo-badge.svg?repo=https://github.com/Xabaril/Esquio)](https://kelda.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml)
+[![Blimp demo badge](https://blimpup.io/demo-badge.svg?repo=https://github.com/Xabaril/Esquio)](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml)
 
 ## About [Esquio](https://esquio.readthedocs.io) 
 
@@ -26,9 +26,9 @@ For project documentation, please visit [readthedocs](https://esquio.readthedocs
 
 ## Temporary demo environment
 
-If you want to play around with Esquio without running it locally, you can [boot a personal demo copy](https://kelda.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) from your browser without downloading or setting up anything.
+If you want to play around with Esquio without running it locally, you can [boot a personal demo copy](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) from your browser without downloading or setting up anything.
 
-Clicking the [link](https://kelda.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) boots this repo in the Blimp cloud, and creates a public URL for you to access it.
+Clicking the [link](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) boots this repo in the Blimp cloud, and creates a public URL for you to access it.
 
 To use the demo, you can follow along with [this presentation at the ASP.NET Community Standup](https://www.youtube.com/watch?v=qotnVlgYd8c&t=1093). You can skip the docker-compose step and simply use the "Connect" buttons in the sandbox to access the demo app and the Esquio UI.
 
