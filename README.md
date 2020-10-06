@@ -65,7 +65,8 @@ Esquio is built using the following great open source projects and free services
 
 ## Code of conduct
 
-This project has adopted the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/about/code-of-conduct/).
+This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
 
 ## Videos
 
