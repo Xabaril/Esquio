@@ -12,8 +12,8 @@
 
   <PropertyGroup Label="Esquio Versions">
     <esquio>4.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>4.0.0$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>4.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioaspnetcore>4.0.1$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>4.0.1$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
     <esquioconfigurationstore>4.0.0$(VersionSuffix)</esquioconfigurationstore>
     <esquiodatabasestore>4.0.0$(VersionSuffix)</esquiodatabasestore>
     <esquioentityframeworkstore>4.0.0$(VersionSuffix)</esquioentityframeworkstore>
