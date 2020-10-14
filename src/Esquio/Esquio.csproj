@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetStandardMultiTarget)</TargetFrameworks>
-    <Description>Feature Toogles Library for .NET Core.For more information see http://github.com/Xabaril/Esquio </Description>
+    <TargetFrameworks>$(NetFrameworkVersion)</TargetFrameworks>
+    <Description>Feature Toogles Library for .NET .For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(esquio)</Version>
     <PackageId>Esquio</PackageId>

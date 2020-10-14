@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
+    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
     <RazorLangVersion>$(RazorLangVersion)</RazorLangVersion>
     <RootNamespace>Esquio.Blazor.WebAssembly</RootNamespace>
     <Description>Esquio components and services for Blazor Wasm.For more information see http://github.com/Xabaril/Esquio </Description>

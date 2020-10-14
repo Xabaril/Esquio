@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace Esquio.UI.Client.Components.Validation
 {
+    //TODO: review validation context generics here 
     public static class EditContextFluentValidationExtensions
     {
         public static EditContext AddFluentValidation(this EditContext editContext)
@@ -42,7 +43,9 @@ namespace Esquio.UI.Client.Components.Validation
         private static void ValidateModel(EditContext editContext, ValidationMessageStore messages)
         {
             var validator = GetValidatorForModel(editContext.Model);
-            var validationResults = validator.Validate(editContext.Model);
+
+            var validationResults = validator.Validate(
+                new ValidationContext<object>(editContext.Model));
 
             messages.Clear();
 
@@ -57,7 +60,8 @@ namespace Esquio.UI.Client.Components.Validation
         private static void ValidateField(EditContext editContext, ValidationMessageStore messages, in FieldIdentifier fieldIdentifier)
         {
             var properties = new[] { fieldIdentifier.FieldName };
-            var context = new ValidationContext(fieldIdentifier.Model, new PropertyChain(), new MemberNameValidatorSelector(properties));
+
+            var context = new ValidationContext<object>(fieldIdentifier.Model, new PropertyChain(), new MemberNameValidatorSelector(properties));
 
             var validator = GetValidatorForModel(fieldIdentifier.Model);
             var validationResults = validator.Validate(context);

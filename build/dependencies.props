@@ -1,10 +1,7 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
-    <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
-    <NetStandardTargetVersion20>netstandard2.0</NetStandardTargetVersion20>
-    <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
-    <NetStandardMultiTarget>netstandard2.0;netstandard2.1</NetStandardMultiTarget>
-    <NetTestSdk>16.6.1</NetTestSdk>
+    <NetFrameworkVersion>net5.0</NetFrameworkVersion>
+    <NetTestSdk>16.8.0-preview-20200921-01</NetTestSdk>
     <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>preview</LangVersion>
     <GitHubSourceLink>1.0.0</GitHubSourceLink>

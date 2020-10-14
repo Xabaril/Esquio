@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <LangVersion>preview</LangVersion>
     <UserSecretsId>c04b3d87-8463-4ad4-a4e5-176d01da450d</UserSecretsId>
