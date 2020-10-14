@@ -28,6 +28,7 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
             _next = next;
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
+
         ///<inheritdoc/>
         public void Process(ITelemetry item)
         {
@@ -51,7 +52,7 @@ namespace Esquio.AspNetCore.ApplicationInsightProcessor.Processor
 
                 if (evaluation != null)
                 {
-                    var items = evaluation as Dictionary<string, bool>;
+                    var items = evaluation as IDictionary<string, bool>;
 
                     if (items != null)
                     {
