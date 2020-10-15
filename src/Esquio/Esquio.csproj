@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(NetFrameworkVersion)</TargetFrameworks>
+    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
     <Description>Feature Toogles Library for .NET .For more information see http://github.com/Xabaril/Esquio </Description>
     <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore</PackageTags>
     <Version>$(esquio)</Version>
@@ -12,13 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp"/>
+    <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
-    <PackageReference Include="Microsoft.Extensions.Options"/>
-    <PackageReference Include="Microsoft.Extensions.Primitives"/>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource"/>
-    <PackageReference Include="System.Threading.Tasks.Extensions"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" />
   </ItemGroup>
 
 </Project>

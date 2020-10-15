@@ -2,21 +2,21 @@
   <PropertyGroup Label="SDK Versions">
     <NetFrameworkVersion>net5.0</NetFrameworkVersion>
     <NetTestSdk>16.8.0-preview-20200921-01</NetTestSdk>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <!--<RazorLangVersion>3.0</RazorLangVersion>-->
     <LangVersion>preview</LangVersion>
     <GitHubSourceLink>1.0.0</GitHubSourceLink>
   </PropertyGroup>  
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>4.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>4.0.0$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>4.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>4.0.0$(VersionSuffix)</esquioconfigurationstore>
-    <esquiodatabasestore>4.0.0$(VersionSuffix)</esquiodatabasestore>
-    <esquioentityframeworkstore>4.0.0$(VersionSuffix)</esquioentityframeworkstore>
-    <esquiominiprofiler>4.0.0$(VersionSuffix)</esquiominiprofiler>
-    <esquiocli>4.0.0$(VersionSuffix)</esquiocli>
-    <esquiohttpstore>4.0.0$(VersionSuffix)</esquiohttpstore>
-    <esquioblazorwasm>4.0.0$(VersionSuffix)</esquioblazorwasm>
+    <esquio>5.0.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>5.0.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>5.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>5.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquiodatabasestore>5.0.0$(VersionSuffix)</esquiodatabasestore>
+    <esquioentityframeworkstore>5.0.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>5.0.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>5.0.0$(VersionSuffix)</esquiocli>
+    <esquiohttpstore>5.0.0$(VersionSuffix)</esquiohttpstore>
+    <esquioblazorwasm>5.0.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 </Project>
