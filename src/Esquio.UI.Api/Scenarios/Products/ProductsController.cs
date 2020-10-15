@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Products
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

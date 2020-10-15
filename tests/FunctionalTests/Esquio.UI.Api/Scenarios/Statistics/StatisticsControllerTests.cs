@@ -31,7 +31,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
         public async Task get_configuration_statistics_response_unauthorized_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Configuration())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Configuration())
               .GetAsync();
 
             response.StatusCode
@@ -76,7 +76,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             await _fixture.Given.AddProduct(product);
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Configuration())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Configuration())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -105,7 +105,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
         public async Task get_success_statistics_response_unauthorized_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Success())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Success())
               .GetAsync();
 
             response.StatusCode
@@ -126,7 +126,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Success())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Success())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -153,7 +153,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             await _fixture.Given.AddMetric(SampleMetrics());
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Success())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Success())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -180,7 +180,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             await _fixture.Given.AddMetric(SampleMetrics());
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Top())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Top())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 
@@ -209,7 +209,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
             await _fixture.Given.AddMetric(SampleMetrics());
 
             var response = await _fixture.TestServer
-              .CreateRequest(ApiDefinitions.V3.Statistics.Plot())
+              .CreateRequest(ApiDefinitions.V5.Statistics.Plot())
               .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
               .GetAsync();
 

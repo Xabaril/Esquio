@@ -32,7 +32,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task my_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.My())
                  .GetAsync();
 
             response.StatusCode
@@ -45,7 +45,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task my_response_forbidden_when_user_request_is_authenticated_but_user_does_not_have_permissions()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.My())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -66,7 +66,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.My())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -86,7 +86,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task list_response_unauthorized_if_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List())
                  .GetAsync();
 
             response.StatusCode
@@ -98,7 +98,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task details_response_unauthorized_if_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Details("some-subject-id"))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Details("some-subject-id"))
                  .GetAsync();
 
             response.StatusCode
@@ -118,7 +118,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Details("some-subject-id"))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Details("some-subject-id"))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -141,7 +141,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Details(subjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Details(subjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -164,7 +164,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Details(subjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Details(subjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -185,7 +185,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Details(permission.SubjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Details(permission.SubjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -207,7 +207,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task delete_response_unauthorized_if_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Delete("some-subjectid"))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Delete("some-subjectid"))
                  .DeleteAsync();
 
             response.StatusCode
@@ -227,7 +227,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Delete("some-subjectid"))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Delete("some-subjectid"))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .DeleteAsync();
 
@@ -250,7 +250,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Delete(subjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Delete(subjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .DeleteAsync();
 
@@ -273,7 +273,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Delete(subjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Delete(subjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .DeleteAsync();
 
@@ -294,7 +294,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Delete(permission.SubjectId))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Delete(permission.SubjectId))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .DeleteAsync();
 
@@ -315,7 +315,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List())
                  .GetAsync();
 
             response.StatusCode
@@ -335,7 +335,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List(pageCount: -1))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List(pageCount: -1))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -356,7 +356,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List(pageCount: 0))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List(pageCount: 0))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -377,7 +377,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List(pageIndex: -1))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List(pageIndex: -1))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -398,7 +398,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List(pageIndex: 0, pageCount: 10))
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List(pageIndex: 0, pageCount: 10))
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -436,7 +436,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.List())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.List())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
@@ -466,7 +466,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task add_response_unauthorized_if_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .PostAsJsonAsync(new AddPermissionRequest());
 
             response.StatusCode
@@ -486,7 +486,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .PostAsJsonAsync(new AddPermissionRequest());
 
@@ -507,7 +507,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .PostAsJsonAsync(new AddPermissionRequest()
                  {
@@ -534,7 +534,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .PutAsJsonAsync(new UpdatePermissionRequest());
 
@@ -547,7 +547,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
         public async Task update_response_unauthorized_if_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .PostAsJsonAsync(new UpdatePermissionRequest());
 
             response.StatusCode
@@ -579,7 +579,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Users
                 .AddPermission(requesterPermission, existingPermission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.Add())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.Add())
                  .WithIdentity(requesterIdentity)
                  .PutAsJsonAsync(new AddPermissionRequest()
                  {

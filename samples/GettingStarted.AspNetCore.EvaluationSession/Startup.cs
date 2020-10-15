@@ -54,7 +54,7 @@ namespace GettingStarted.AspNetCore.Mvc
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireFeature("HiddenGem");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Statistics
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [ApiController]
     [Route("api/[controller]")]
     public class StatisticsController : ControllerBase

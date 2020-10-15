@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Flags
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [ApiController]
     public class FeaturesController : ControllerBase
     {
