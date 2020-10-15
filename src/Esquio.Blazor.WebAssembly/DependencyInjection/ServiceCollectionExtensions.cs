@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services
                 .Configure(configure)
-                .AddSingleton<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
+                .AddScoped<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services
                 .Configure<BlazorFeatureServiceOptions>(_ => { })
-                .AddSingleton<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
+                .AddScoped<IBlazorFeatureServiceClient, BlazorFeatureServiceClient>();
         }
     }
 }

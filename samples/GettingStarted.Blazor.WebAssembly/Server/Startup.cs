@@ -19,13 +19,13 @@ namespace GettingStarted.Blazor.WebAssembly.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services
                 .AddEsquio()
                 .AddAspNetCoreDefaultServices()
-                .AddConfigurationStore(Configuration)
-                .Services
-                .AddControllersWithViews();
+                .AddConfigurationStore(Configuration);
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +51,7 @@ namespace GettingStarted.Blazor.WebAssembly.Server
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapEsquio();
                 endpoints.MapFallbackToFile("index.html");

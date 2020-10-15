@@ -54,7 +54,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
 
             var response = await _fixture.TestServer
                  .CreateRequest(ApiDefinitions.V5.Permissions.My())
-                 .AddHeader("X-API-VERSION", "5.0")
+                 .AddHeader("X-API-VERSION", Constants.DEFAULT_HTTPAPI_VERSION)
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
