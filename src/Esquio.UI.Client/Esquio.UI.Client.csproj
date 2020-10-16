@@ -8,6 +8,7 @@
     <PackageReference Include="System.Net.Http.Json" />
     <PackageReference Include="BlazorInputFile" />
     <PackageReference Include="BuildBundlerMinifier" />
+    <PackageReference Include="Newtonsoft.Json" />
 
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"  />
