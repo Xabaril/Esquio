@@ -110,7 +110,7 @@ namespace Esquio.UI.Client.Services
         : IEsquioHttpClient
     {
         const string API_VERSION_HEADER_NAME = "x-api-version";
-        const string API_VERSION_HEADER_VALUE = "3.0";
+        const string API_VERSION_HEADER_VALUE = "5.0";
         const string DEFAULT_CONTENT_TYPE = "application/json";
 
         private readonly HttpClient _httpClient;
