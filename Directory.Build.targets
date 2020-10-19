@@ -51,7 +51,7 @@
     <PackageReference Update="Respawn" Version="3.3.0" />
     <PackageReference Update="Acheve.TestHost" Version="3.0.0" />
     <PackageReference Update="FluentAssertions" Version="5.10.3" />
-    <PackageReference Update="FluentValidation" Version="9.3.0-preview2" />
+    <PackageReference Update="FluentValidation" Version="9.3.0-preview3" />
     <PackageReference Update="FluentValidation.AspNetCore" Version="9.3.0-preview2" />
     <PackageReference Update="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Update="Hellang.Middleware.ProblemDetails" Version="5.1.1" />

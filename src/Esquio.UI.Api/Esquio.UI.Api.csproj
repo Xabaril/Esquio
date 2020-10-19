@@ -42,6 +42,7 @@
     <Folder Include="Infrastructure\Data\Migrations\SqlServer\" />
   </ItemGroup>
 
+  <!--pending for .NET 5 support on nswag-->
   <!--<Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">
     <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Core30) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
     <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Core30) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />

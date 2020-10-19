@@ -19,8 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
+  <!--pending for nswag support on .net 5-->
+  <!--<Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
     <Exec Command="$(NSwagExe_Core30) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId" />
-  </Target>
+  </Target>-->
 
 </Project>
