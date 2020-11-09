@@ -19,7 +19,7 @@
     <esquioentityframeworkstore>4.0.0$(VersionSuffix)</esquioentityframeworkstore>
     <esquiominiprofiler>4.0.0$(VersionSuffix)</esquiominiprofiler>
     <esquiocli>4.0.0$(VersionSuffix)</esquiocli>
-    <esquiohttpstore>4.0.0$(VersionSuffix)</esquiohttpstore>
+    <esquiohttpstore>4.1.0$(VersionSuffix)</esquiohttpstore>
     <esquioblazorwasm>4.0.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 </Project>

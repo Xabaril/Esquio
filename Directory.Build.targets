@@ -32,6 +32,7 @@
     <PackageReference Update="Microsoft.Extensions.Primitives" Version="3.1.6" />
     <PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="3.1.6" />
     <PackageReference Update="Microsoft.Extensions.Http" Version="3.1.6" />
+    <PackageReference Update="Microsoft.Extensions.Http.Polly" Version="3.1.6"/>
     <PackageReference Update="Microsoft.Extensions.Hosting" Version="3.1.6" />
     <PackageReference Update="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
     <PackageReference Update="Microsoft.EntityFrameworkCore" Version="3.1.6" />
