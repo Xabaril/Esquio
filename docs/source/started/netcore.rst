@@ -94,7 +94,7 @@ Obtain a context for the ``IFeatureService``::
 
 Check if "Colored" feature for the "Console" project is enabled and set the background color of the console to blue::
 
-        if (await featureService.IsEnabledAsync("Colored", "Console"))
+        if (await featureService.IsEnabledAsync("Colored"))
         {
           Console.BackgroundColor = ConsoleColor.Blue;
         }

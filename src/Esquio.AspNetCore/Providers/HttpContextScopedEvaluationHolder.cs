@@ -1,6 +1,7 @@
 ﻿using Esquio.Abstractions;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace Esquio.AspNetCore.Providers
     internal sealed class HttpContextScopedEvaluationHolder
         : IScopedEvaluationHolder
     {
-        private readonly Dictionary<string, bool> _evaluationResults = new Dictionary<string, bool>();
+        private readonly ConcurrentDictionary<string, bool> _evaluationResults = new ConcurrentDictionary<string, bool>();
 
         private readonly IHttpContextAccessor _httpContextAccesor;
 
@@ -24,25 +25,13 @@ namespace Esquio.AspNetCore.Providers
 
         public Task SetAsync(string featureName, bool enabled)
         {
-            if ( !_evaluationResults.ContainsKey(featureName))
-            {
-                _evaluationResults.Add(featureName, enabled);
-            }
-
+            _evaluationResults.TryAdd(featureName, enabled);
             return Task.CompletedTask;
         }
 
         public Task<bool> TryGetAsync(string featureName, out bool enabled)
         {
-            enabled = false;
-
-            if ( _evaluationResults.ContainsKey(featureName))
-            {
-                enabled = _evaluationResults[featureName];
-                return Task.FromResult(true);
-            }
-
-            return Task.FromResult(false);
+            return Task.FromResult(_evaluationResults.TryGetValue(featureName, out enabled));
         }
     }
 }
