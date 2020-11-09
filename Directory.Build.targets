@@ -33,13 +33,13 @@
     <PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="5.0.0-rc.2.20475.5" />
     <PackageReference Update="Microsoft.Extensions.Http" Version="5.0.0-rc.2.20475.5" />
     <PackageReference Update="Microsoft.Extensions.Hosting" Version="5.0.0-rc.2.20475.5" />
-    <PackageReference Update="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0-preview.1" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0-preview.2" />
     <PackageReference Update="Microsoft.EntityFrameworkCore" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
-    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.1.20514.4" />
+    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2.ci.20201109015435+sha.83c699f" />
     
     <PackageReference Update="System.Text.Json" Version="5.0.0-rc.2.20475.5" />
     <PackageReference Update="System.Net.Http.Json" Version="5.0.0-rc.2.20475.5" />
