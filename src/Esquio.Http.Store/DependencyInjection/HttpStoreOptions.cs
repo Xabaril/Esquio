@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Esquio.Http.Store.DependencyInjection
 {
@@ -10,7 +11,6 @@ namespace Esquio.Http.Store.DependencyInjection
         internal bool CacheEnabled = false;
         internal TimeSpan? AbsoluteExpirationRelativeToNow = null;
         internal TimeSpan? SlidingExpiration = null;
-
         /// <summary>
         /// Configure if cache is enabled on distributed store.
         /// </summary>
@@ -28,7 +28,6 @@ namespace Esquio.Http.Store.DependencyInjection
         }
 
         internal Uri BaseAddress = null;
-
         /// <summary>
         /// Configure distributed store base address.
         /// </summary>
@@ -74,6 +73,19 @@ namespace Esquio.Http.Store.DependencyInjection
         public HttpStoreOptions SetTimeout(TimeSpan timeout)
         {
             Timeout = timeout;
+            return this;
+        }
+
+        internal Action<IHttpClientBuilder> EsquioHttpClientConfigurer;
+        /// <summary>
+        /// Allow to configure the HttpClient used internally on Esquio. You can setup your retry policies, inner handlers etc
+        /// here or register a new client with name "ESQUIO" and perform your custom setup.
+        /// </summary>
+        /// <param name="esquioHttpClientConfigurer">The action used to configure the internal HTTP Client used </param>
+        /// <returns>The same configuration to be chained</returns>
+        public HttpStoreOptions ConfigureHttpClient(Action<IHttpClientBuilder> esquioHttpClientConfigurer)
+        {
+            EsquioHttpClientConfigurer = esquioHttpClientConfigurer;
             return this;
         }
     }

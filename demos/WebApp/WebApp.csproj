@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc"/>
+    <PackageReference Include="Microsoft.Extensions.Http.Polly"/>
   </ItemGroup>
 
   <ItemGroup>

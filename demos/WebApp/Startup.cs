@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
+using Polly.Extensions.Http;
 using System;
+using System.Net.Http;
 using WebApp.Services;
 
 namespace WebApp
@@ -70,7 +73,11 @@ namespace WebApp
                     setup
                          .UseBaseAddress(Configuration["EsquioHttpStore:BaseAddress"])
                          .UseApiKey(Configuration["EsquioHttpStore:ApiKey"])
-                         .UseCache(enabled: true, absoluteExpirationRelativeToNow: TimeSpan.FromSeconds(10));
+                         .UseCache(enabled: true, absoluteExpirationRelativeToNow: TimeSpan.FromSeconds(10))
+                         .ConfigureHttpClient(httpClient=>
+                         {
+                             httpClient.AddPolicyHandler(GetRetryPolicy());
+                         });
                 })
                 .AddAspNetCoreDefaultServices()
                 .AddApplicationInsightProcessor();
@@ -102,6 +109,13 @@ namespace WebApp
                             name: "default",
                             pattern: "{controller=Match}/{action=Index}/{id?}");
                 });
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
         }
     }
 }

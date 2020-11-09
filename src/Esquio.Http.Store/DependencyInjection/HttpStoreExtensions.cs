@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     setup.CacheEnabled = options.CacheEnabled;
                 });
 
-            builder.Services
+            var httpClientBuilder = builder.Services
                 .AddHttpClient(EsquioConstants.ESQUIO, (serviceProvider, httpclient) =>
                  {
                      var options = serviceProvider.GetRequiredService<IOptions<HttpStoreOptions>>();
@@ -47,8 +47,14 @@ namespace Microsoft.Extensions.DependencyInjection
                      httpclient.DefaultRequestHeaders.Add(XAPIKEYHEADERNAME, options.Value.ApiKey);
                      httpclient.Timeout = options.Value.Timeout;
 
-                 })
-                .Services
+                 });
+
+            if ( options.EsquioHttpClientConfigurer != null )
+            {
+                options.EsquioHttpClientConfigurer(httpClientBuilder);
+            }
+
+            builder.Services
                 .AddDistributedMemoryCache()
                 .AddScoped<IRuntimeFeatureStore, EsquioHttpStore>()
                 .AddSingleton<EsquioHttpStoreDiagnostics>();
