@@ -1,8 +1,8 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
     <NetFrameworkVersion>net5.0</NetFrameworkVersion>
-    <NetTestSdk>16.8.0-preview-20200921-01</NetTestSdk>
-    <!--<RazorLangVersion>3.0</RazorLangVersion>-->
+    <NetStandardVersion>netstandard21</NetStandardVersion>
+    <NetTestSdk>16.8.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
     <GitHubSourceLink>1.0.0</GitHubSourceLink>
   </PropertyGroup>  
