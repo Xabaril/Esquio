@@ -294,7 +294,7 @@ The ``FeatureTagHelper`` supports ``Include`` and ``Exclude`` attributes:
     * Include: *A comma-separated list of feature names to be evaluated. If any feature is not active, this tag helper suppresses  the content.*
     * Exclude: *A comma-separated list of feature names to be evaluated. If any feature is active, this tag helper suppresses the content.*
 
-Make sure you include add the taghelper on your ``_ViewImports.cshtml`` file with:
+Make sure you add the taghelper on your ``_ViewImports.cshtml`` file with:
 
 .. code-block:: html
 
