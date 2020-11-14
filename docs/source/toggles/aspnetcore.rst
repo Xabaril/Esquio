@@ -264,7 +264,7 @@ This toggle enables its feature if the hostname of the client instance is in the
                             "Type": "Esquio.AspNetCore.Toggles.HostNameToggle",
                             "Parameters": 
                             {
-                                "Environments": "mycompany.org;en.domain.com"
+                                "HostNames": "mycompany.org;en.domain.com"
                             }
                         }
                     ]
@@ -293,7 +293,7 @@ This toggle enables its feature if the request country is in the list (Ip geoloc
                             "Type": "Esquio.AspNetCore.Toggles.Ip2CountryToggle",
                             "Parameters": 
                             {
-                                "Environments": "ES;IT"
+                                "Countries": "ES;IT"
                             }
                         }
                     ]
@@ -321,7 +321,7 @@ This toggle enables its feature if the identity role is in the list.
                             "Type": "Esquio.AspNetCore.Toggles.RoleNameToggle",
                             "Parameters": 
                             {
-                                "Users": "betauser;beta"
+                                "Roles": "betauser;beta"
                             }
                         }
                     ]
@@ -349,7 +349,7 @@ This toggle enables its feature if the host IP address is in the list.
                             "Type": "Esquio.AspNetCore.Toggles.ServerIpAddressToggle",
                             "Parameters": 
                             {
-                                "Users": "11.22.44.88;11.22.33.44"
+                                "IpAddresses": "11.22.44.88;11.22.33.44"
                             }
                         }
                     ]
@@ -379,7 +379,7 @@ This toggle enables its feature if the request user agent browser is in the list
                             "Type": "Esquio.AspNetCore.Toggles.UserAgentToggle",
                             "Parameters": 
                             {
-                                "Users": "Mozilla/5.0;Chrome/81.0.4"
+                                "Browsers": "Mozilla/5.0;Chrome/81.0.4"
                             }
                         }
                     ]
