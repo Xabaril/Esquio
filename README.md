@@ -4,8 +4,6 @@
 
 [![Documentation Status](https://readthedocs.org/projects/esquio/badge/?version=latest)](https://esquio.readthedocs.io/en/latest/?badge=latest)
 
-[![Blimp demo badge](https://blimpup.io/demo-badge.svg?repo=https://github.com/Xabaril/Esquio)](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml)
-
 ## About [Esquio](https://esquio.readthedocs.io) 
 
 Esquio is a [Feature Toggles (aka Feature Flags)](https://martinfowler.com/articles/feature-toggles.html) and A/B testing framework for .NET Core 3.0. Feature Toogle is a powerful technique that allows developers to deliver new functionality to users withouth changing code. Provides an alternative to to mantain multiples branches (aka feature branches), so any feature can be tested even before it is completed and ready for the release. We can release a version of our product with not production ready features. These non production ready features are hidden (toggled) for the broader set of users but can be enabled to any subset of testing or internal users we want them to try the features.We can use feature toogling to enable or disable features during run time.
@@ -23,14 +21,6 @@ Maintained by [awesome community contributors](https://github.com/Xabaril/Esquio
 
 For project documentation, please visit [readthedocs](https://esquio.readthedocs.io).
 
-
-## Temporary demo environment
-
-If you want to play around with Esquio without running it locally, you can [boot a personal demo copy](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) from your browser without downloading or setting up anything.
-
-Clicking the [link](https://blimpup.io/preview-env/?repo=https://github.com/Xabaril/Esquio&port=app:80&port=ui:80&composeFiles=build/docker-compose-demo-with-ui-sqlserver-with-reference-images.yml) boots this repo in the Blimp cloud, and creates a public URL for you to access it.
-
-To use the demo, you can follow along with [this presentation at the ASP.NET Community Standup](https://www.youtube.com/watch?v=qotnVlgYd8c&t=1093). You can skip the docker-compose step and simply use the "Connect" buttons in the sandbox to access the demo app and the Esquio UI.
 
 ## How to build
 Esquio is built against the latest NET Core 3.
