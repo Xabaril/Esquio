@@ -14,8 +14,6 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
 {
     public class claimvalue_toggle_tests
     {
-        #region Methods
-
         [Fact]
         public async Task be_active_when_claim_type_and_value_are_successfully_configured()
         {
@@ -167,6 +165,5 @@ namespace UnitTests.Esquio.AspNetCore.Toggles
             });
         }
 
-        #endregion Methods
     }
 }
