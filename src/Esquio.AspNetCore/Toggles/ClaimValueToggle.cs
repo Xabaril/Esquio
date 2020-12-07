@@ -17,10 +17,16 @@ namespace Esquio.AspNetCore.Toggles
     public class ClaimValueToggle
         : IToggle
     {
+        #region Fields
+
         internal const string ClaimType = nameof(ClaimType);
         internal const string ClaimValues = nameof(ClaimValues);
 
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Create a new instance
@@ -30,6 +36,11 @@ namespace Esquio.AspNetCore.Toggles
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
+
+        #endregion Constructors
+
+        #region Methods
+
         ///<inheritdoc/>
         public ValueTask<bool> IsActiveAsync(ToggleExecutionContext context, CancellationToken cancellationToken = default)
         {
@@ -53,14 +64,17 @@ namespace Esquio.AspNetCore.Toggles
                     {
                         if (item != null)
                         {
-                            var active = tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase);
-                            return new ValueTask<bool>(active);
+                            if (tokenizer.Contains(item, StringSegmentComparer.OrdinalIgnoreCase))
+                            {
+                                return new ValueTask<bool>(true);
+                            }
                         }
                     }
                 }
             }
-
             return new ValueTask<bool>(false);
         }
+
+        #endregion Methods
     }
 }

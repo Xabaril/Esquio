@@ -61,7 +61,7 @@ namespace WebApp.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following preview features are available for your evaluation. Help us make them better!.
+        ///   Looks up a localized string similar to The following preview features are available for your evaluation. Help us make them better.
         /// </summary>
         public static string Description {
             get {

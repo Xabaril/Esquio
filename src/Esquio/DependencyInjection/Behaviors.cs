@@ -6,7 +6,7 @@
     public enum OnErrorBehavior : short
     {
         /// <summary>
-        /// Re-throw the exception throwed when feature is evaluated.
+        /// Re-throw the exception thrown when feature is evaluated.
         /// </summary>
         Throw = 0,
 

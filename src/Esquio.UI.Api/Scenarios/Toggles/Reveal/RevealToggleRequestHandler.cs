@@ -67,7 +67,7 @@ namespace Esquio.UI.Api.Scenarios.Toggles.Reveal
             }
             catch
             {
-                throw new InvalidOperationException($"The toggle type {request.ToggleType} can't be revealed because unexpected exception is throwed.");
+                throw new InvalidOperationException($"The toggle type {request.ToggleType} can't be revealed because unexpected exception is thrown.");
             }
         }
     }

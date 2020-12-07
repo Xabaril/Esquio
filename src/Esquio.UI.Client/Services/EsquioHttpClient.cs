@@ -163,7 +163,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, "An exception is throwed when trying to get the products list from server.!");
+                    _logger.LogError(exception, "An exception is thrown when trying to get the products list from server.!");
                 }
 
                 return null;
@@ -197,7 +197,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the product {productName} from the server.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the product {productName} from the server.!");
                 }
 
                 return null;
@@ -231,7 +231,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add product {addProductRequest}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add product {addProductRequest}.!");
                 }
 
                 return false;
@@ -265,7 +265,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to update product {updateProductRequest}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to update product {updateProductRequest}.!");
                 }
 
                 return false;
@@ -296,7 +296,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete product {productName}.!");
                 }
 
                 return false;
@@ -328,7 +328,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete product {productName}.!");
                 }
 
                 return null;
@@ -361,7 +361,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to import a product.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to import a product.!");
                 }
 
                 return false;
@@ -395,7 +395,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add {addDeploymentRequest} to product {productName}. !");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add {addDeploymentRequest} to product {productName}. !");
                 }
 
                 return false;
@@ -426,7 +426,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete deployment {deploymentName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete deployment {deploymentName} on product {productName}.!");
                 }
 
                 return false;
@@ -473,7 +473,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get feature list on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get feature list on product {productName}.!");
                 }
 
                 return null;
@@ -507,7 +507,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the feature {featureName} on product {productName} from the server.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the feature {featureName} on product {productName} from the server.!");
                 }
 
                 return null;
@@ -541,7 +541,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get state of {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get state of {featureName} on product {productName}.!");
                 }
 
                 return null;
@@ -572,7 +572,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to rolled out feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to rolled out feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -602,7 +602,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to rolled back feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to rolled back feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -633,7 +633,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to archive feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to archive feature {featureName} on product {productName}.!");
                 }
 
                 return false;
@@ -666,7 +666,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add new  feature {addFeatureRequest} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add new  feature {addFeatureRequest} on product {productName}.!");
                 }
 
                 return false;
@@ -700,7 +700,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to update feature {updateFeatureRequest} on product {productName}!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to update feature {updateFeatureRequest} on product {productName}!");
                 }
 
                 return false;
@@ -731,7 +731,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete feature {featureName} on product {productName}.!");
                 }
                 return false;
             }
@@ -764,7 +764,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the logged user!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the logged user!");
                 }
 
                 return null;
@@ -811,7 +811,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get users permission list.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get users permission list.!");
                 }
 
                 return null;
@@ -845,7 +845,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add new permission for subject {addPermissionRequest.SubjectId} acting as {addPermissionRequest.ActAs}.!");
                 }
 
                 return false;
@@ -879,7 +879,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to update permission for subject {updatePermissionRequest.SubjectId} acting as {updatePermissionRequest.ActAs}.!");
                 }
 
                 return false;
@@ -910,7 +910,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete permission for subject {subjectId}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete permission for subject {subjectId}.!");
                 }
 
                 return false;
@@ -944,7 +944,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the logged user.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the logged user.!");
                 }
 
                 return null;
@@ -992,7 +992,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get api keys.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get api keys.!");
                 }
 
                 return null;
@@ -1030,7 +1030,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add new api key {addApiKeyRequest.Name}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add new api key {addApiKeyRequest.Name}.!");
                 }
 
                 return null;
@@ -1062,7 +1062,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete api key {apiKeyName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete api key {apiKeyName}.!");
                 }
 
                 return false;
@@ -1096,7 +1096,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the tags list on feature {featureName} on product {productName} from server.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the tags list on feature {featureName} on product {productName} from server.!");
                 }
 
                 return null;
@@ -1130,7 +1130,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add tag {addTagRequest}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add tag {addTagRequest}.!");
                 }
 
                 return false;
@@ -1161,7 +1161,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete tag {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete tag {productName}.!");
                 }
 
                 return false;
@@ -1209,7 +1209,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get audit information!.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get audit information.");
                 }
 
                 return null;
@@ -1243,7 +1243,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the toggle Known types.");
                 }
 
                 return null;
@@ -1277,7 +1277,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle Known types!.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the toggle Known types.");
                 }
 
                 return null;
@@ -1311,7 +1311,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add toggle {addToggleRequest}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add toggle {addToggleRequest}.!");
                 }
 
                 return false;
@@ -1342,7 +1342,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to delete toggle {toggleType} on feature {featureName} on product {productName}.!");
                 }
                 return false;
             }
@@ -1375,7 +1375,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get the toggle {toggleType} details!.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get the toggle {toggleType} details.");
                 }
 
                 return null;
@@ -1409,7 +1409,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to add toggle parameter {addParameterToggleRequest}.!");
+                    _logger.LogError(exception, $"An exception is thrown when trying to add toggle parameter {addParameterToggleRequest}.!");
                 }
 
                 return false;
@@ -1443,7 +1443,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get github release information!.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get github release information.");
                 }
 
                 return null;
@@ -1477,7 +1477,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1510,7 +1510,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1543,7 +1543,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get configuration statistics from server.");
                 }
 
                 return null;
@@ -1576,7 +1576,7 @@ namespace Esquio.UI.Client.Services
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"An exception is throwed when trying to get configuration statistics from server.");
+                    _logger.LogError(exception, $"An exception is thrown when trying to get configuration statistics from server.");
                 }
 
                 return null;
