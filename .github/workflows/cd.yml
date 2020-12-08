@@ -74,6 +74,8 @@ jobs:
       run: dotnet pack  ./tools/Esquio.CliTool/Esquio.CliTool.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.2
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       with:
         nuget-version: latest
     - name: Publish Esquio AspNetCore nuget
