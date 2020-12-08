@@ -66,6 +66,5 @@ namespace Esquio.AspNetCore.Toggles
             }
             return new ValueTask<bool>(false);
         }
-
     }
 }
