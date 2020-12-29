@@ -1,27 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
-    <TargetFramework>$(NetStandardTargetVersion21)</TargetFramework>
-    <RazorLangVersion>$(RazorLangVersion)</RazorLangVersion>
+    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="System.Net.Http.Json" />
     <PackageReference Include="BlazorInputFile" />
-
-    <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="3.2.0" />
-
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"  />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication"/>
-
     <PackageReference Include="BuildBundlerMinifier" />
     <PackageReference Include="Newtonsoft.Json" />
+
+    <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"  />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication"/>
+
+    
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Esquio.Blazor.WebAssembly\Esquio.Blazor.WebAssembly.csproj" />
     <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
     <ProjectReference Include="..\Esquio\Esquio.csproj" />
   </ItemGroup>
@@ -31,6 +28,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
-
 </Project>

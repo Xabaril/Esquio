@@ -30,7 +30,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task get_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Get(name: "fooname"))
                 .GetAsync();
 
             response.StatusCode
@@ -51,7 +51,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Get(name: "fooname"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -89,7 +89,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Get(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -124,7 +124,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Get(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Get(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -160,7 +160,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -216,7 +216,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List(pageIndex: 1, pageCount: 1))
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.List(pageIndex: 1, pageCount: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -256,7 +256,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -292,7 +292,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -327,7 +327,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey1, apiKey2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.List(pageIndex: 10, pageCount: 10))
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.List(pageIndex: 10, pageCount: 10))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -356,7 +356,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task add_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .PostAsync();
 
             response.StatusCode
@@ -382,7 +382,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -408,7 +408,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -435,7 +435,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -462,7 +462,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -514,7 +514,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -541,7 +541,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.ApiKeys.Add())
+                  .CreateRequest(ApiDefinitions.V5.ApiKeys.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(addApiKeyRequest);
 
@@ -565,7 +565,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
         public async Task delete_response_unauthorized_when_user_request_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Delete(name: "fooname"))
                 .DeleteAsync();
 
             response.StatusCode
@@ -585,7 +585,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(name: "fooname"))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Delete(name: "fooname"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -620,7 +620,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddPermission(apikeyPermission, permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Delete(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -649,7 +649,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.ApiKeys
                 .AddApiKey(apiKey);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.ApiKeys.Delete(apiKey.Name))
+                .CreateRequest(ApiDefinitions.V5.ApiKeys.Delete(apiKey.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 

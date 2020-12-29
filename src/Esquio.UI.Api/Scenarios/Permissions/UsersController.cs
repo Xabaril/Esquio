@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Permissions
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class PermissionsController

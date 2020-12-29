@@ -1,25 +1,22 @@
 <Project>
   <PropertyGroup Label="SDK Versions">
-    <NetStandardTargetVersion21>netstandard2.1</NetStandardTargetVersion21>
-    <NetStandardTargetVersion20>netstandard2.0</NetStandardTargetVersion20>
-    <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
-    <NetStandardMultiTarget>netstandard2.0;netstandard2.1</NetStandardMultiTarget>
-    <NetTestSdk>16.6.1</NetTestSdk>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <NetFrameworkVersion>net5.0</NetFrameworkVersion>
+    <NetStandardVersion>netstandard21</NetStandardVersion>
+    <NetTestSdk>16.8.0</NetTestSdk>
     <LangVersion>preview</LangVersion>
     <GitHubSourceLink>1.0.0</GitHubSourceLink>
   </PropertyGroup>  
 
   <PropertyGroup Label="Esquio Versions">
-    <esquio>4.0.0$(VersionSuffix)</esquio>
-    <esquioaspnetcore>4.0.2$(VersionSuffix)</esquioaspnetcore>
-    <esquioaspnetcoreapplicationinsightsprocessor>4.0.1$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
-    <esquioconfigurationstore>4.0.0$(VersionSuffix)</esquioconfigurationstore>
-    <esquiodatabasestore>4.0.0$(VersionSuffix)</esquiodatabasestore>
-    <esquioentityframeworkstore>4.0.0$(VersionSuffix)</esquioentityframeworkstore>
-    <esquiominiprofiler>4.0.0$(VersionSuffix)</esquiominiprofiler>
-    <esquiocli>4.0.0$(VersionSuffix)</esquiocli>
-    <esquiohttpstore>4.1.0$(VersionSuffix)</esquiohttpstore>
-    <esquioblazorwasm>4.0.0$(VersionSuffix)</esquioblazorwasm>
+    <esquio>5.0.0$(VersionSuffix)</esquio>
+    <esquioaspnetcore>5.0.0$(VersionSuffix)</esquioaspnetcore>
+    <esquioaspnetcoreapplicationinsightsprocessor>5.0.0$(VersionSuffix)</esquioaspnetcoreapplicationinsightsprocessor>
+    <esquioconfigurationstore>5.0.0$(VersionSuffix)</esquioconfigurationstore>
+    <esquiodatabasestore>5.0.0$(VersionSuffix)</esquiodatabasestore>
+    <esquioentityframeworkstore>5.0.0$(VersionSuffix)</esquioentityframeworkstore>
+    <esquiominiprofiler>5.0.0$(VersionSuffix)</esquiominiprofiler>
+    <esquiocli>5.0.0$(VersionSuffix)</esquiocli>
+    <esquiohttpstore>5.0.0$(VersionSuffix)</esquiohttpstore>
+    <esquioblazorwasm>5.0.0$(VersionSuffix)</esquioblazorwasm>
   </PropertyGroup>
 </Project>

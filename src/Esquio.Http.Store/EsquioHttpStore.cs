@@ -14,6 +14,8 @@ namespace Esquio.Http.Store
     internal class EsquioHttpStore
         : IRuntimeFeatureStore
     {
+        private const string DEFAULT_API_VERSION = "5.0";
+
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IDistributedCache _cache;
         private readonly HttpStoreOptions _options;
@@ -53,7 +55,7 @@ namespace Esquio.Http.Store
                     throw new InvalidOperationException("HttpStore is configured with CacheEnabled = true but IDistributedCache is not registered.");
                 }
 
-                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, deploymentName, "3.0");
+                var cacheKey = CacheKeyCreator.GetCacheKey(productName, featureName, deploymentName, DEFAULT_API_VERSION);
 
                 var featureConfiguration = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
@@ -97,7 +99,7 @@ namespace Esquio.Http.Store
                    .CreateClient(EsquioConstants.ESQUIO);
 
             var response = await httpClient
-                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?deployment={deploymentName}&api-version=3.0", cancellationToken);
+                .GetAsync($"api/configuration/product/{productName}/feature/{featureName}?deployment={deploymentName}&api-version={DEFAULT_API_VERSION}", cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {

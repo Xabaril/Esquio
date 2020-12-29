@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v13.9.0.0 (NJsonSchema v10.3.0.0 (Newtonsoft.Json v12.0.0.0))",
   "swagger": "2.0",
   "info": {
     "title": "My Title",
@@ -1641,6 +1641,7 @@
     },
     "ProblemDetails": {
       "type": "object",
+      "additionalProperties": {},
       "properties": {
         "type": {
           "type": "string"
@@ -1732,6 +1733,7 @@
         },
         {
           "type": "object",
+          "additionalProperties": {},
           "properties": {
             "errors": {
               "type": "object",

@@ -4,7 +4,7 @@ on:
     tags:       
       - ui-release-*  # Push events to release-* 
 env:
-  TAG: 4.0.0
+  TAG: 5.0.0
   IMAGE_NAME: esquioui
   ESQUIO_REPO: xabarilcoding
 jobs:  

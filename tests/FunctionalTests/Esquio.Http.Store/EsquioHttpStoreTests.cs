@@ -274,7 +274,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .Should()
                 .BeEquivalentTo(feature.Name);
 
-            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name,"3.0");
+            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name, Constants.DEFAULT_HTTPAPI_VERSION);
 
             var entry = await cache.GetStringAsync(cacheKey);
 
@@ -428,7 +428,7 @@ namespace FunctionalTests.Esquio.Http.Store
                 .Should()
                 .BeEquivalentTo(feature.Name);
 
-            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name,"3.0");
+            var cacheKey = CacheKeyCreator.GetCacheKey(product.Name, feature.Name, defaultRing.Name, "3.0");
 
             var entry = await cache.GetStringAsync(cacheKey);
 

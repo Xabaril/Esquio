@@ -38,17 +38,6 @@ namespace Esquio.UI.Api
                 .AddMediatR(typeof(EsquioUIApiConfiguration))
                     .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerMediatRBehavior<,>))
                 .AddCustomProblemDetails()
-                .AddApiVersioning(setup =>
-                {
-                    setup.DefaultApiVersion = new ApiVersion(3, 0);
-                    setup.ReportApiVersions = true;
-                    setup.AssumeDefaultVersionWhenUnspecified = true;
-                    setup.UseApiBehavior = true;
-                    setup.ApiVersionReader = ApiVersionReader.Combine(
-                        new QueryStringApiVersionReader(),
-                        new HeaderApiVersionReader(ApiConstants.ApiVersionHeaderName));
-                })
-                .AddVersionedApiExplorer()
                 .AddMvc()
                     .AddApplicationPart(typeof(EsquioUIApiConfiguration).Assembly)
                     .AddFluentValidation(setup => 
@@ -61,6 +50,17 @@ namespace Esquio.UI.Api
                         options.JsonSerializerOptions.Converters.Add(new NumberToStringConverter());
                     })
                 .Services
+                .AddApiVersioning(setup =>
+                {
+                    setup.DefaultApiVersion = new ApiVersion(5, 0);
+                    setup.ReportApiVersions = true;
+                    setup.AssumeDefaultVersionWhenUnspecified = true;
+                    setup.UseApiBehavior = true;
+                    setup.ApiVersionReader = ApiVersionReader.Combine(
+                        new QueryStringApiVersionReader(),
+                        new HeaderApiVersionReader(ApiConstants.ApiVersionHeaderName));
+                })
+                .AddVersionedApiExplorer()
                 .Configure<RouteOptions>(options =>
                 {
                     options.ConstraintMap.Add("slug", typeof(SlugRouteConstraint));

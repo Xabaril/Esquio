@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Toggles
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [ApiController]
     public class TogglesController : ControllerBase
     {

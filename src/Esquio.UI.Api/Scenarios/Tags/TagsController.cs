@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Scenarios.Tags
 {
     [Authorize]
-    [ApiVersion("3.0")]
+    [ApiVersion("5.0")]
     [ApiController]
     public class TagsController : ControllerBase
     {

@@ -3,24 +3,24 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
-    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
     <ToolCommandName>dotnet-esquio</ToolCommandName>
     <PackageId>Esquio.Cli</PackageId>
     <PackageVersion>$(esquiocli)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils"/>
-    <PackageReference Include="Microsoft.Extensions.Http"/>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NSwag.MSBuild" >
+    <PackageReference Include="NSwag.MSBuild">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
-    <Exec Command="$(NSwagExe_Core30) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId" />
+    <Exec Command="$(NSwagExe_Net50) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId" />
   </Target>
 
 </Project>

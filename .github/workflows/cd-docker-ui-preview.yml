@@ -4,7 +4,7 @@ on:
     tags:       
       - ui-preview-*  # Push events to release-* 
 env:
-  TAG: 4.0.${{ github.run_id }}-preview
+  TAG: 5.0.${{ github.run_id }}-preview
   IMAGE_NAME: esquioui
   ESQUIO_REPO: xabarilcoding
 jobs:  

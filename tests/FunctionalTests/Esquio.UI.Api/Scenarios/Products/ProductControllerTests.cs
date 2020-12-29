@@ -42,7 +42,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .CreateRequest(ApiDefinitions.V5.Product.Import())
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .PostAsJsonAsync(new ImportProductRequest()
                 {
@@ -58,7 +58,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task importproduct_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .CreateRequest(ApiDefinitions.V5.Product.Import())
                 .PostAsync();
 
             response.StatusCode
@@ -85,7 +85,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .CreateRequest(ApiDefinitions.V5.Product.Import())
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .PostAsJsonAsync(new ImportProductRequest()
                 {
@@ -116,7 +116,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Import())
+                .CreateRequest(ApiDefinitions.V5.Product.Import())
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .PostAsJsonAsync(new ImportProductRequest()
                 {
@@ -132,7 +132,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task exportproduct_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Export("productname"))
+                .CreateRequest(ApiDefinitions.V5.Product.Export("productname"))
                 .GetAsync();
 
             response.StatusCode
@@ -152,7 +152,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Export("productname"))
+                .CreateRequest(ApiDefinitions.V5.Product.Export("productname"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -180,7 +180,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Export("fooproduct"))
+                .CreateRequest(ApiDefinitions.V5.Product.Export("fooproduct"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .GetAsync();
 
@@ -196,7 +196,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task deletedeployment_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "deploymentName"))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment("productname", "deploymentName"))
                 .DeleteAsync();
 
             response.StatusCode
@@ -216,7 +216,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("productname", "deploymentName"))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment("productname", "deploymentName"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -237,7 +237,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment("fooproduct", "barring"))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment("fooproduct", "barring"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -265,7 +265,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, "barring"))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment(product.Name, "barring"))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -293,7 +293,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment(product.Name, EsquioConstants.DEFAULT_DEPLOYMENT_NAME))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -329,7 +329,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.DeleteDeployment(product.Name, deployment.Name))
+                .CreateRequest(ApiDefinitions.V5.Product.DeleteDeployment(product.Name, deployment.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .DeleteAsync();
 
@@ -342,7 +342,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task adddeployment_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment("productname"))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment("productname"))
                   .PostAsync();
 
             response.StatusCode
@@ -362,7 +362,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment("productname"))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment("productname"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsync();
 
@@ -390,7 +390,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -421,7 +421,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -452,7 +452,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -483,7 +483,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.AddDeployment(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.AddDeployment(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(new AddDeploymentRequest()
                   {
@@ -500,7 +500,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List())
+                  .CreateRequest(ApiDefinitions.V5.Product.List())
                   .GetAsync();
 
             response.StatusCode
@@ -527,7 +527,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List())
+                  .CreateRequest(ApiDefinitions.V5.Product.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -576,7 +576,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product1, product2);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List(pageIndex: 1, pageCount: 1))
+                  .CreateRequest(ApiDefinitions.V5.Product.List(pageIndex: 1, pageCount: 1))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -613,7 +613,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List())
+                  .CreateRequest(ApiDefinitions.V5.Product.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -643,7 +643,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task list_response_forbiden_when_user_is_authenticated_but_not_authorized()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List())
+                  .CreateRequest(ApiDefinitions.V5.Product.List())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -672,7 +672,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.List(pageIndex: 10, pageCount: 10))
+                  .CreateRequest(ApiDefinitions.V5.Product.List(pageIndex: 10, pageCount: 10))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -701,7 +701,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task add_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .PostAsync();
 
             response.StatusCode
@@ -734,7 +734,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -761,7 +761,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -788,7 +788,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -815,7 +815,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -842,7 +842,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -869,7 +869,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -897,7 +897,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -924,7 +924,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -952,7 +952,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -979,7 +979,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Add())
+                  .CreateRequest(ApiDefinitions.V5.Product.Add())
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PostAsJsonAsync(productRequest);
 
@@ -992,7 +992,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task get_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Get("product"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Get("product"))
                   .GetAsync();
 
             response.StatusCode
@@ -1012,7 +1012,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Get("product"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Get("product"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1040,7 +1040,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Get(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.Get(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1060,7 +1060,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task get_response_forbidden_if_user_is_not_authorized()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Get("product"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Get("product"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .GetAsync();
 
@@ -1073,7 +1073,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task delete_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Delete("product"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Delete("product"))
                   .DeleteAsync();
 
             response.StatusCode
@@ -1093,7 +1093,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Delete("fooproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Delete("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -1121,7 +1121,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Delete(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.Delete(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -1142,7 +1142,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Delete("fooproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Delete("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -1200,7 +1200,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
                 .AddProduct(product);
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Delete(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.Delete(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .DeleteAsync();
 
@@ -1213,7 +1213,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
         public async Task update_response_unauthorizaed_when_user_is_not_authenticated()
         {
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update("fooproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update("fooproduct"))
                   .PutAsync();
 
             response.StatusCode
@@ -1240,7 +1240,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update("barproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update("barproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -1265,7 +1265,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update("fooproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -1283,7 +1283,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update("fooproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update("fooproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -1310,7 +1310,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update("barproduct"))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update("barproduct"))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -1344,7 +1344,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                  .CreateRequest(ApiDefinitions.V3.Product.Update(product.Name))
+                  .CreateRequest(ApiDefinitions.V5.Product.Update(product.Name))
                   .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                   .PutAsJsonAsync(request);
 
@@ -1378,7 +1378,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Products
             };
 
             var response = await _fixture.TestServer
-                .CreateRequest(ApiDefinitions.V3.Product.Update(product.Name))
+                .CreateRequest(ApiDefinitions.V5.Product.Update(product.Name))
                 .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                 .PutAsJsonAsync(request);
 

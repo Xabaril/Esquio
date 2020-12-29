@@ -31,7 +31,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
+                 .CreateRequest(ApiDefinitions.V5.Permissions.My())
                  .AddHeader("X-API-VERSION", "X.X")
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
@@ -53,8 +53,8 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
                 .AddPermission(permission);
 
             var response = await _fixture.TestServer
-                 .CreateRequest(ApiDefinitions.V3.Permissions.My())
-                 .AddHeader("X-API-VERSION", "3.0")
+                 .CreateRequest(ApiDefinitions.V5.Permissions.My())
+                 .AddHeader("X-API-VERSION", Constants.DEFAULT_HTTPAPI_VERSION)
                  .WithIdentity(Builders.Identity().WithDefaultClaims().Build())
                  .GetAsync();
 
