@@ -39,8 +39,8 @@
     <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="5.0.0" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
-    <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
-    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2.ci.20201109015435+sha.83c699f" />
+    <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
+    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.3.ci.20201213213103+sha.c8647fc" />
 
     
     <PackageReference Update="System.Text.Json" Version="5.0.0" />
@@ -61,7 +61,7 @@
     <PackageReference Update="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Update="BlazorInputFile" Version="0.2.0" />
     <PackageReference Update="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Update="IdentityModel" Version="5.0.0-preview.0" />
+    <PackageReference Update="IdentityModel" Version="5.0.0-preview.1.2" />
     <PackageReference Update="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Update="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Update="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
