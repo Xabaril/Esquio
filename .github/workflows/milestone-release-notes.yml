@@ -15,7 +15,7 @@ jobs:
           OUTPUT_FOLDER: temp_release_notes
           USE_MILESTONE_TITLE: "true"
       - name: Upload Release Notes to Wiki
-        uses: docker://decathlon/wiki-page-creator-action:1.0.0
+        uses: docker://decathlon/wiki-page-creator-action:2.0.0
         env:
           ACTION_MAIL: xabarilcoding@outlook.com
           ACTION_NAME: Xabaril
