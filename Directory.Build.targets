@@ -41,7 +41,7 @@
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
     <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
-	<PackageReference Update="Microsoft.Data.SqlClient" Version="2.1.2" />
+    <PackageReference Update="Microsoft.Data.SqlClient" Version="2.1.2" />
 
     
     <PackageReference Update="System.Text.Json" Version="5.0.0" />
