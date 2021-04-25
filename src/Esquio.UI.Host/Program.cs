@@ -1,4 +1,6 @@
+using Esquio.UI.Host.Infrastructure.Configuration;
 using Esquio.UI.Host.Infrastructure.Data.Seed;
+using Esquio.UI.Host.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,11 @@ namespace Esquio.UI.Host
                     webBuilder.UseStartup<Startup>()
                          .ConfigureAppConfiguration((hostingContext, configuration) =>
                          {
+                             if (AzureAppConfiguration.Enabled)
+                             {
+                                 configuration.UseAzureAppConfiguration();
+                             }
+
                              Log.Logger = new LoggerConfiguration()
                                  .ReadFrom.Configuration(configuration.Build())
                                  .CreateLogger();

@@ -5,16 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel"/>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore"/>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="IdentityModel" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" />
 
-    <PackageReference Include="Serilog.Extensions.Logging"/>
-    <PackageReference Include="Serilog.Settings.Configuration"/>
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Settings.Configuration" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" />
-    <PackageReference Include="Serilog.Sinks.Console"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
 
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
