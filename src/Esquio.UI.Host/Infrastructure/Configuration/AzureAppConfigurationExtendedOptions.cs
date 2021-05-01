@@ -31,7 +31,7 @@ namespace Esquio.UI.Host.Infrastructure.Configuration
         public Uri Endpoint { get; set; }
 
         /// <summary>
-        /// Cache expiration time in seconds before a the values are refreshed. Must be greater than 1 second.
+        /// Cache expiration time in seconds before the values are refreshed. Must be greater than 1 second.
         /// </summary>
         public double CacheExpiration { get; set; }
 
