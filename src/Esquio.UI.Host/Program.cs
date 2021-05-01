@@ -31,10 +31,11 @@ namespace Esquio.UI.Host
                              if (appConfigurationOptions.Enabled)
                              {
                                  configurationBuilder.AddAzureAppConfiguration(appConfigurationOptions);
+                                 configuration = configurationBuilder.Build();
                              }
 
                              Log.Logger = new LoggerConfiguration()
-                                 .ReadFrom.Configuration(configurationBuilder.Build())
+                                 .ReadFrom.Configuration(configuration)
                                  .CreateLogger();
                          })
                         .ConfigureLogging((hostingContext, logging) =>
