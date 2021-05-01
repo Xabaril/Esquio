@@ -8,31 +8,31 @@ namespace Esquio.UI.Host.Infrastructure.Extensions
 {
     public static class IConfigurationBuilderExtensions
     {
-        public static IConfigurationBuilder UseAzureAppConfiguration(this IConfigurationBuilder builder)
+        public static IConfigurationBuilder AddAzureAppConfiguration(this IConfigurationBuilder builder, AzureAppConfigurationExtendedOptions extendedOptions)
         {
-            Action<AzureAppConfigurationOptions> setupConfig = AzureAppConfiguration.UseConnectionString switch
+            Action<AzureAppConfigurationOptions> setupConfig = extendedOptions.UseConnectionString switch
             {
-                true => options => options.Connect(AzureAppConfiguration.ConnectionString),
-                false => options => options.Connect(new Uri(AzureAppConfiguration.ManagedIdentityEndpoint),
-                                                    new ManagedIdentityCredential(AzureAppConfiguration.ClientId))
+                true => options => options.Connect(extendedOptions.ConnectionString),
+                false => options => options.Connect(extendedOptions.Endpoint,
+                                                    new ManagedIdentityCredential(extendedOptions.ClientId))
             };
 
             builder.AddAzureAppConfiguration(options =>
             {
                 setupConfig(options);
 
-                if (AzureAppConfiguration.UseCacheExpiration)
+                if (extendedOptions.UseCacheExpiration)
                 {
                     options.ConfigureRefresh(config =>
                     {
-                        config.SetCacheExpiration(TimeSpan.FromSeconds(AzureAppConfiguration.CacheExpiration));
+                        config.SetCacheExpiration(TimeSpan.FromSeconds(extendedOptions.CacheExpiration));
                     });
                 }
 
-                if (AzureAppConfiguration.UseLabel)
+                foreach (var label in extendedOptions.Labels)
                 {
-                    options.Select(KeyFilter.Any, AzureAppConfiguration.Label);
-                };
+                    options.Select(KeyFilter.Any, label);
+                }
 
             });
 

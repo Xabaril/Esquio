@@ -1,7 +1,7 @@
-using Esquio.UI.Host.Infrastructure.Configuration;
 using Esquio.UI.Host.Infrastructure.Data.Seed;
 using Esquio.UI.Host.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -23,15 +23,18 @@ namespace Esquio.UI.Host
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                         .ConfigureAppConfiguration((hostingContext, configuration) =>
+                         .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                          {
-                             if (AzureAppConfiguration.Enabled)
+                             var configuration = configurationBuilder.Build();
+                             var appConfigurationOptions = configuration.GetAzureAppConfigurationOptions();
+
+                             if (appConfigurationOptions.Enabled)
                              {
-                                 configuration.UseAzureAppConfiguration();
+                                 configurationBuilder.AddAzureAppConfiguration(appConfigurationOptions);
                              }
 
                              Log.Logger = new LoggerConfiguration()
-                                 .ReadFrom.Configuration(configuration.Build())
+                                 .ReadFrom.Configuration(configurationBuilder.Build())
                                  .CreateLogger();
                          })
                         .ConfigureLogging((hostingContext, logging) =>
