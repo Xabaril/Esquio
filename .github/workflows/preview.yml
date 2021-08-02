@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       sql-server:
-        image: microsoft/mssql-server-linux
+        image: mcr.microsoft.com/mssql/server:2019-latest
         env:
           ACCEPT_EULA: Y
           MSSQL_SA_PASSWORD: Password12!

@@ -39,7 +39,7 @@ services:
             - Security__OpenId__ResponseType=code
             - Security__OpenId__RequireHttpsMetadata=true
     sqlserver:
-        image: microsoft/mssql-server-linux
+        image: mcr.microsoft.com/mssql/server:2019-latest
         restart: always
         ports:
             - 5433:1433

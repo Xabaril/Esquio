@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       sql-server:
-        image: microsoft/mssql-server-linux
+        image: mcr.microsoft.com/mssql/server:2019-latest
         env:
           ACCEPT_EULA: Y
           MSSQL_SA_PASSWORD: Password12!
@@ -34,7 +34,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/actions/setup-dotnet@v1.8.1
       with:
         dotnet-version: 5.0.100
     - name: dotnet build
