@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>Esquio.UI.Web-3fa21dad-5056-4803-90e3-58c69123dcaa</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Esquio.UI.Deployment\Esquio.UI.Deployment.csproj" />
+  </ItemGroup>
+
+</Project>
