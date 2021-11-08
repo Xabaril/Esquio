@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>Esquio UI deployment package</Description>
+    <PackageTags>Esquio;Features;Flags;Toggles;AB Testing;AspNetCore;Deployment</PackageTags>
+    <Version>$(esquioaspnetcore)</Version>
+    <PackageId>Esquio.UI.Deployment</PackageId>
+    <PackageVersion>$(esquioaspnetcore)</PackageVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityModel" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Settings.Configuration" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Esquio.AspNetCore\Esquio.AspNetCore.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Api\Esquio.UI.Api.csproj" />
+    <ProjectReference Include="..\Esquio.UI.Client\Esquio.UI.Client.csproj" />
+  </ItemGroup>
+
+</Project>
