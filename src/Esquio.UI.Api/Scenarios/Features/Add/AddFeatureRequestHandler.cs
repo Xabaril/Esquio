@@ -49,7 +49,7 @@ namespace Esquio.UI.Api.Scenarios.Flags.Add
                 else
                 {
                     Log.FeatureNameAlreadyExist(_logger, request.Name);
-                    throw new InvalidOperationException($"A feature with the same name already exist on the store.");
+                    throw new InvalidOperationException($"A feature with the same name already exist in the store.");
                 }
             }
             else

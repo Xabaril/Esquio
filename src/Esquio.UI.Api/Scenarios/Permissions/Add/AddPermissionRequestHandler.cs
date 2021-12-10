@@ -54,7 +54,7 @@ namespace Esquio.UI.Api.Scenarios.Permissions.Add
             }
 
             Log.SubjectIdAlreadyExist(_logger, request.SubjectId);
-            throw new InvalidOperationException("The permission for this SubjectId already exits on the store.");
+            throw new InvalidOperationException("The permission for this SubjectId already exits in the store.");
         }
     }
 }

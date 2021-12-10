@@ -153,27 +153,27 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, string, Exception> _productAlreadyExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.ProductAlreadyExist,
-           "The product with name {productName} already exist in the store and can't be created.");
+           "The product {productName} already exist in the store and can't be created.");
         private static readonly Action<ILogger, string, Exception> _featureNameAlreadyExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.FeatureAlreadyExist,
-            "A feature with name {featureName} already exist in the store and can't be created.");
+            "A feature {featureName} already exist in the store and can't be created.");
         private static readonly Action<ILogger, string, Exception> _apiKeyNotExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ApiKeyNotExist,
-            "The ApiKey with identifier {apiKeyId} does not exist in database and can't be deleted.");
+            "The ApiKey with Id {apiKeyId} does not exist in the store and can't be deleted.");
         private static readonly Action<ILogger, string, Exception> _productNotExist = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.ProductNotExist,
-            "The product with identifier {product} does not exist in database.");
+            "The product {product} does not exist in the store.");
         private static readonly Action<ILogger, string, Exception> _featureNotExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.FeatureNotExist,
-           "The feature with identifier {feature} does not exist in database.");
+           "The feature {feature} does not exist in the store.");
         private static readonly Action<ILogger, string, Exception> _toggleNotExist = LoggerMessage.Define<string>(
           LogLevel.Warning,
           EventIds.ToggleNotExist,
-          "The toggle with identifier {toggle} does not exist in database.");
+          "The toggle {toggle} does not exist in the store.");
         private static readonly Action<ILogger, string, string, Exception> _toggleAlreadyExist = LoggerMessage.Define<string, string>(
            LogLevel.Warning,
            EventIds.ToggleAlreadyExist,
@@ -181,19 +181,19 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, string, string, Exception> _featureTagNotExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.FeatureTagNotExist,
-          "The feature association between feature {feature} and tag {tag} does not exist.");
+          "The association between feature {feature} and tag {tag} does not exist.");
         private static readonly Action<ILogger, string, string, Exception> _featureTagAlreadyExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.FeatureAlreadyExist,
-          "The feature with id {featureId} already have association with tag {tag}.");
+          "The feature with id {featureId} already has association with tag {tag}.");
         private static readonly Action<ILogger, string, Exception> _executingCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.ExecutingCommand,
-            "Executing command with name {commandName}.");
+            "Executing command named {commandName}.");
         private static readonly Action<ILogger, string, Exception> _executedCommand = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.ExecutedCommand,
-            "Executed  command with name {commandName}.");
+            "Executed  command named {commandName}.");
         private static readonly Action<ILogger, string, Exception> _authorizationFail = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.AuthorizationFailed,
@@ -209,7 +209,7 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, string, Exception> _subjectIdAlreadyExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.SubjectIdAlreadyExist,
-           "The subject id {subjectId} already exist on the store.");
+           "The subject id {subjectId} already exist in the store.");
         private static readonly Action<ILogger, string, Exception> _myIsNotAuthorized = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.SubjectIdAlreadyExist,
@@ -217,19 +217,19 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, string, Exception> _subjectIdDoesNotExist = LoggerMessage.Define<string>(
            LogLevel.Warning,
            EventIds.SubjectIdDoesNotExist,
-           "The subject id {subjectId} does not exist on the store.");
+           "The subject id {subjectId} does not exist in the store.");
         private static readonly Action<ILogger, string, string, Exception> _deploymentAlreadyExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.DeploymentAlreadyExist,
-          "The deployment with name {deployment} already exist for product {product} in the store and can't be created.");
+          "The deployment {deployment} already exists for product {product} in the store and can't be created.");
         private static readonly Action<ILogger, string, string, Exception> _deploymentNotExist = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.DeployemtnNotExist,
-          "The deployment with name {deployment} does not exist for product {product} in the store.");
+          "The deployment {deployment} does not exist for product {product} in the store.");
         private static readonly Action<ILogger, string, string, Exception> _cantDeleteDefaultDeployment = LoggerMessage.Define<string, string>(
           LogLevel.Warning,
           EventIds.CantDeleteDefaultDeployment,
-          "The deployment with name {deployment} is default deployment for product {product} and can't be deleted.");
+          "The deployment {deployment} is the default deployment for product {product} and can't be deleted.");
         private static readonly Action<ILogger, Exception> _apiKeyAuthenticationBegin = LoggerMessage.Define(
             LogLevel.Information,
             EventIds.ApiKeyAuthenticationBegin,
@@ -253,11 +253,11 @@ namespace Esquio.UI.Api.Diagnostics
         private static readonly Action<ILogger, Exception> _apiKeyStoreValidating = LoggerMessage.Define(
            LogLevel.Debug,
            EventIds.ApiKeyStoreValidating,
-           "Validating the api key *** on the store.");
+           "Validating the api key *** in the store.");
         private static readonly Action<ILogger, Exception> _apiKeyStoreKeyExist = LoggerMessage.Define(
           LogLevel.Information,
           EventIds.ApiKeyStoreKeyExist,
-          "The api key *** exist on the store. A new identity is created using this information.");
+          "The api key *** exist in the store. A new identity is created using this information.");
         private static readonly Action<ILogger, Exception> _defaultSubjectIsNull = LoggerMessage.Define(
           LogLevel.Error,
           EventIds.DefaultSubjectIsNull,

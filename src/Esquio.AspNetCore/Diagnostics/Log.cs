@@ -69,19 +69,19 @@ namespace Esquio.AspNetCore.Diagnostics
         private static readonly Action<ILogger, string, Exception> _featureTagHelperBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperBeginProcess,
-            "FeatureTagHelper begin check if {featureName} is enabled.");
+            "FeatureTagHelper begin check if the feature {featureName} is enabled.");
         private static readonly Action<ILogger, string, Exception> _featureTagHelperClearContent = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.FeatureTagHelperClearContent,
-            "FeatureTagHelper is clearing inner content because {featureName} is not enabled.");
+            "FeatureTagHelper is clearing inner content because the feature {featureName} is not enabled.");
         private static readonly Action<ILogger, string, Exception> _esquioMiddlewareThrow = LoggerMessage.Define<string>(
             LogLevel.Error,
             EventIds.EsquioMiddlewareThrow,
-            "Esquio middleware throw exception when evaluating {featureName}.");
+            "Esquio middleware throw exception when evaluating the feature {featureName}.");
         private static readonly Action<ILogger, string, Exception> _esquioMiddlewareEvaluateFeature = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareEvaluateFeature,
-            "Evaluating {featureName} for product on Esquio middleware.");
+            "Evaluating the feature {featureName} in Esquio middleware.");
         private static readonly Action<ILogger, Exception> _esquioMiddlewareSuccess = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.EsquioMiddlewareSuccess,
