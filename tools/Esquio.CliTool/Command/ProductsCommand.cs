@@ -83,7 +83,7 @@ namespace Esquio.CliTool.Command
                     Name = Deployment
                 });
 
-                console.WriteLine($"The deployment {Deployment} was added succesfully on product {ProductName}.", Constants.SuccessColor);
+                console.WriteLine($"The deployment {Deployment} was added succesfully to product {ProductName}.", Constants.SuccessColor);
 
                 return 0;
             }

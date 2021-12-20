@@ -23,16 +23,16 @@ namespace Esquio.Configuration.Store.Diagnostics
         private static readonly Action<ILogger, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotExist,
-            "The feature with name {featureName} is not configured for application {product}.");
+            "The feature {featureName} is not configured for product {product}.");
 
         private static readonly Action<ILogger, string, string, Exception> _featureExist = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FeatureExist,
-            "The feature with name {featureName} is configured for application {product}.");
+            "The feature {featureName} is configured for product {product}.");
 
         private static readonly Action<ILogger, string, string, Exception> _beginFindFeature = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.FindFeature,
-            "The store is trying to find feature {featureName} for product {product} on the store.");
+            "Trying to find the feature {featureName} for product {product} in the store.");
     }
 }

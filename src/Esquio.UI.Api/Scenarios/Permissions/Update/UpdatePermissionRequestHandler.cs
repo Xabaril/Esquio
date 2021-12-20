@@ -39,7 +39,7 @@ namespace Esquio.UI.Api.Scenarios.Permissions.Update
             }
 
             Log.SubjectIdDoesNotExist(_logger, request.SubjectId);
-            throw new InvalidOperationException("SubjectId does not exist on the store.");
+            throw new InvalidOperationException("SubjectId does not exist in the store.");
         }
     }
 }

@@ -53,37 +53,37 @@ namespace Esquio.Diagnostics
         private static readonly Action<ILogger, string, string, string, Exception> _featureServiceBegin = LoggerMessage.Define<string, string, string>(
             LogLevel.Debug,
             EventIds.DefaultFeatureServiceBegin,
-            "Running DefaultFeatureService to check {featureName}-{productName}-{deploymentName}.");
+            "Running DefaultFeatureService to check feature {featureName} for product {productName}({deploymentName}).");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureServiceFromSession = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             EventIds.DefaultFeatureServiceFromSession,
-            "DefaultFeatureService use stored session result for {featureName}-{productName}-{deploymentName}.");
+            "DefaultFeatureService use stored session result for feature {featureName} for product {productName}({deploymentName}).");
 
         private static readonly Action<ILogger, string, string, string, bool, long, Exception> _featureServiceEnd = LoggerMessage.Define<string, string, string, bool, long>(
             LogLevel.Debug,
             EventIds.DefaultFeatureServiceEnd,
-            "DefaultFeatureService evaluate {featureName}-{productName}-{deploymentName} with result Enabled:{enabled} on {elapsedMilliseconds} ms.");
+            "DefaultFeatureService evaluate feature {featureName} for product {productName}({deploymentName}) with result Enabled:{enabled} on {elapsedMilliseconds} ms.");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureServiceNotFound = LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotFound,
-            "The feature {feature}-{productName}-{deploymentName} is not configured in the store.");
+            "The feature {feature} for product {productName}({deploymentName}) does not exist in the store.");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureServiceDisabled = LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             EventIds.FeatureDisabled,
-            "The feature {feature}-{productName}-{deploymentName} is disabled on the store.");
+            "The feature {feature} for product {productName}({deploymentName}) is disabled in the store.");
 
         private static readonly Action<ILogger, string, string, string, string, Exception> _toggleIsNotActive = LoggerMessage.Define<string, string, string, string>(
            LogLevel.Debug,
            EventIds.ToggleNotActive,
-           "The feature {feature}-{productName}-{deploymentName} has {toggle} not active.");
+           "The feature {feature} for product {productName}({deploymentName}) has {toggle} not active.");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureServiceThrow = LoggerMessage.Define<string, string, string>(
             LogLevel.Error,
             EventIds.DefaultFeatureServiceThrows,
-            "DefaultFeatureService threw an unhandled exception checking {featureName}-{productName}-{deploymentName}.");
+            "DefaultFeatureService threw an unhandled exception checking feature {featureName} for product {productName}({deploymentName}).");
 
         private static readonly Action<ILogger, string, Exception> _defaultToggleTypeActivatorResolveTypeBegin = LoggerMessage.Define<string>(
             LogLevel.Debug,

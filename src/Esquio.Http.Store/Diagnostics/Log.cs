@@ -48,7 +48,7 @@ namespace Esquio.Http.Store.Diagnostics
         private static readonly Action<ILogger, string, string, string, Exception> _findFeature = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             EventIds.FindFeature,
-            "Http store trying to find feature with name {featureName} for product {productName}({deploymentName}).");
+            "Trying to find feature with name {featureName} for product {productName}({deploymentName}) in the http store.");
 
         private static readonly Action<ILogger, string, Exception> _findFeatureFromCache = LoggerMessage.Define<string>(
            LogLevel.Information,
@@ -68,17 +68,17 @@ namespace Esquio.Http.Store.Diagnostics
         private static readonly Action<ILogger, string, string, string, Exception> _findFeatureFromStore = LoggerMessage.Define<string, string, string>(
           LogLevel.Information,
           EventIds.FindFeatureFromStore,
-          "Finding feature from store with name {featureName} for product {productName}({deploymentName}).");
+          "Finding feature {featureName} for product {productName}({deploymentName}) in the http store.");
 
         private static readonly Action<ILogger, string, string, string, Exception> _featureNotExist = LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             EventIds.FeatureNotExist,
-            "Feature with name {featureName} for product {productName}({deploymentName}) does not exist on the store.");
+            "Feature {featureName} for product {productName}({deploymentName}) does not exist in the http store.");
 
         private static readonly Action<ILogger, string, int, Exception> _storeRequestFailed = LoggerMessage.Define<string, int>(
           LogLevel.Error,
           EventIds.StoreRequestFailed,
-          "Request GET to Http store {request} throw with status code {statusCode}.");
+          "GET request {request} to Http store failed with status code {statusCode}.");
 
         private static readonly Action<ILogger, Exception> _distributedStoreIsNotConfigured = LoggerMessage.Define(
           LogLevel.Error,
