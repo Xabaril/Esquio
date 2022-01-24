@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Esquio.UI.Api.Infrastructure.Behaviors
 {
     public class LoggerMediatRBehavior<TRequest, TResponse>
-        : IPipelineBehavior<TRequest, TResponse>
+        : IPipelineBehavior<TRequest, TResponse> where TRequest: IRequest<TResponse>
     {
         private readonly ILoggerFactory _loggerFactory;
 

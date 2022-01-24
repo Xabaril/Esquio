@@ -46,8 +46,8 @@
   </ItemGroup>
 
   <Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">
-    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Net50) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
-    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Net50) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Net60) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
+    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Net60) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />
   </Target>
 
 </Project>
