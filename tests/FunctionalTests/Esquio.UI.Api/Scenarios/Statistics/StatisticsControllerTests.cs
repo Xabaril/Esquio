@@ -36,7 +36,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status401Unauthorized);
+                .Be(HttpStatusCode.Unauthorized);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var statistics = await response.Content
                 .ReadAs<ConfigurationStatisticsResponse>();
@@ -110,7 +110,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status401Unauthorized);
+                .Be(HttpStatusCode.Unauthorized);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var statistics = await response.Content
                 .ReadAs<SuccessStatisticResponse>();
@@ -159,7 +159,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var statistics = await response.Content
                 .ReadAs<SuccessStatisticResponse>();
@@ -186,7 +186,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var topFeatures = await response.Content
                 .ReadAs<TopFeaturesStatisticsResponse>();
@@ -215,7 +215,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var plotResponse = await response.Content
                 .ReadAs<PlotStatisticsResponse>();

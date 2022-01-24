@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using UnitTests.Seedwork;
 using Xunit;
@@ -29,7 +29,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -59,7 +59,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -90,7 +90,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -131,7 +131,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -171,7 +171,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -201,7 +201,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();
@@ -229,7 +229,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<IEnumerable<EsquioResponse>>();

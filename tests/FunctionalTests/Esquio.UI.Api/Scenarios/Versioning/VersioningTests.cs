@@ -5,6 +5,7 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -38,7 +39,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status400BadRequest);
+                .Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -60,7 +61,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
         }
 
         [Fact]
@@ -81,7 +82,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Versioning
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
         }
 
     }

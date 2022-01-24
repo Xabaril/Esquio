@@ -31,7 +31,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status401Unauthorized);
+                .Be(HttpStatusCode.Unauthorized);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status403Forbidden);
+                .Be(HttpStatusCode.Forbidden);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<PaginatedResult<ListAuditResponseDetail>>();
@@ -157,7 +157,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Audit
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<PaginatedResult<ListAuditResponseDetail>>();

@@ -7,6 +7,7 @@ using FunctionalTests.Esquio.UI.Api.Seedwork.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -32,7 +33,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status401Unauthorized);
+                .Be(HttpStatusCode.Unauthorized);
         }
 
         [Fact]
@@ -90,7 +91,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<DetailsConfigurationResponse>();
@@ -175,7 +176,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<DetailsConfigurationResponse>();
@@ -277,7 +278,7 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Store
 
             response.StatusCode
                 .Should()
-                .Be(StatusCodes.Status200OK);
+                .Be(HttpStatusCode.OK);
 
             var content = await response.Content
                 .ReadAs<DetailsConfigurationResponse>();

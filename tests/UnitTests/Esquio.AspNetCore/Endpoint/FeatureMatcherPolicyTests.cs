@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using UnitTests.Seedwork;
 using Xunit;
@@ -67,7 +68,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .GetAsync("http://localhost/scenarios/SingleEndPointWithNotFoundFallback");
 
             response.StatusCode
-                .Should().Be(StatusCodes.Status404NotFound);
+                .Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]
@@ -106,7 +107,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .GetAsync("http://localhost/scenarios/SingleEndPointWithFeatureDisabled");
 
             response.StatusCode
-                .Should().Be(StatusCodes.Status404NotFound);
+                .Should().Be(HttpStatusCode.NotFound);
         }
         [Fact]
         public async Task get_404_when_one_feature_is_disabled()
@@ -116,7 +117,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .GetAsync("http://localhost/scenarios/SingleEndPointWithOneFeatureDisabled");
 
             response.StatusCode
-                .Should().Be(StatusCodes.Status404NotFound);
+                .Should().Be(HttpStatusCode.NotFound);
         }
     }
 }
