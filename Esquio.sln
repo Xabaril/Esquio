@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8303C07B-6EC4-419C-9193-E4F6EDE57150}"
 EndProject
@@ -76,6 +76,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.AspNetCore.EvaluationSession", "samples\GettingStarted.AspNetCore.EvaluationSession\GettingStarted.AspNetCore.EvaluationSession.csproj", "{78B00EDF-CC4F-4014-BCEA-6807CB66FB2C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.AspNetCore.Mvc.ApplicationInsights", "samples\GettingStarted.AspNetCore.Mvc.ApplicationInsights\GettingStarted.AspNetCore.Mvc.ApplicationInsights.csproj", "{66B38F31-F08A-4A66-BB5E-417594478003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.AspNetCore.MinimalApi", "samples\GettingStarted.AspNetCore.MinimalApi\GettingStarted.AspNetCore.MinimalApi.csproj", "{9F4A1F42-296E-4757-95EF-93D3795274A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,6 +197,10 @@ Global
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66B38F31-F08A-4A66-BB5E-417594478003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4A1F42-296E-4757-95EF-93D3795274A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4A1F42-296E-4757-95EF-93D3795274A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4A1F42-296E-4757-95EF-93D3795274A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4A1F42-296E-4757-95EF-93D3795274A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,6 +234,7 @@ Global
 		{C398E2E1-3000-4FD2-8624-6963C8ECEA3B} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{78B00EDF-CC4F-4014-BCEA-6807CB66FB2C} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 		{66B38F31-F08A-4A66-BB5E-417594478003} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
+		{9F4A1F42-296E-4757-95EF-93D3795274A3} = {29B9FABC-D65A-4635-A2A6-458AE458C251}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {012ABB24-4701-4BF2-9577-7619D3BAD62A}
