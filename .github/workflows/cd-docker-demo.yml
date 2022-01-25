@@ -4,7 +4,7 @@ on:
     tags:       
       - demo-release-*  # Push events to release-* 
 env:
-  TAG: 5.0.${{ github.run_id }}
+  TAG: 6.0.${{ github.run_id }}
   REGISTRY: esquio.azurecr.io
   ACR_REPO: esquiodemoapp
 jobs:  
