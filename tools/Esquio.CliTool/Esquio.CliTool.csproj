@@ -1,26 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <PackAsTool>true</PackAsTool>
-    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
-    <ToolCommandName>dotnet-esquio</ToolCommandName>
-    <PackageId>Esquio.Cli</PackageId>
-    <PackageVersion>$(esquiocli)</PackageVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<PackAsTool>true</PackAsTool>
+		<TargetFramework>$(NetFrameworkVersion)</TargetFramework>
+		<ToolCommandName>dotnet-esquio</ToolCommandName>
+		<PackageId>Esquio.Cli</PackageId>
+		<PackageVersion>$(esquiocli)</PackageVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" />
-    <PackageReference Include="Microsoft.Extensions.Http" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NSwag.MSBuild">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="McMaster.Extensions.CommandLineUtils" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="NSwag.MSBuild">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
-    <Exec Command="$(NSwagExe_Net50) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId" />
-  </Target>
+	<Target Name="CreateServicesFromControllers" AfterTargets="BeforeBuild">
+		<Exec Command="$(NSwagExe_Net60) openapi2csclient /input:../../src/Esquio.UI.Api/swagger.json /classname:EsquioClient /namespace:Esquio.CliTool.Internal /output:internal/EsquioClient.cs /OperationGenerationMode:SingleClientFromOperationId /ArrayType:System.Collections.ObjectModel.Collection" />
+	</Target>
 
 </Project>

@@ -23,14 +23,12 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
 {
     public class ServerFixture
     {
-        static Checkpoint _checkpoint = new Checkpoint();
+        private static Checkpoint _checkpoint;
+        private static IHost _host;
 
         public TestServer TestServer { get; private set; }
 
         public Given Given { get; private set; }
-
-
-        private static IHost _host;
 
         public ServerFixture()
         {
@@ -52,7 +50,11 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork
                         .AddEnvironmentVariables();
 
                      var configuration = configurationBuilder.Build();
-                     _checkpoint.DbAdapter = DbAdapterFactory.CreateFromProvider(configuration["Data:Store"]);
+
+                     _checkpoint = new Checkpoint()
+                     {
+                         DbAdapter = DbAdapterFactory.CreateFromProvider(configuration["Data:Store"])
+                     };
                  }).Build();
 
             _host.StartAsync().Wait();

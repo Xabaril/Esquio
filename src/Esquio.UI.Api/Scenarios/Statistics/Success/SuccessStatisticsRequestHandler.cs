@@ -25,18 +25,25 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Success
 
         public async Task<SuccessStatisticResponse> Handle(SuccessStatisticsRequest request, CancellationToken cancellationToken)
         {
-            var oneDayPast = DateTime.Now.AddDays(-1);
-            var stats = new {
-                SuccessCount = await _store.Metrics.Where(m => m.DateTime > oneDayPast).SumAsync(
-                    m => m.Kind == "Success" ? 1 : 0),
+            var oneDayPast = DateTime.UtcNow.AddDays(-1);
+
+            var stats = new
+            {
+                SuccessCount = await _store.Metrics.Where(m => m.DateTime > oneDayPast).SumAsync(m => m.Kind == "Success" ? 1 : 0),
                 CountTotal = await _store.Metrics.Where(m => m.DateTime > oneDayPast).CountAsync()
             };
-            int percentage = 0;
-            // Sanity
-            if (stats.SuccessCount >= 0 && stats.CountTotal > 0)
-                percentage = (int)(stats.SuccessCount / (double)stats.CountTotal * 100.0);
 
-            return new SuccessStatisticResponse{ 
+            int percentage = 0;
+
+            // Sanity
+
+            if (stats.SuccessCount >= 0 && stats.CountTotal > 0)
+            {
+                percentage = (int)(stats.SuccessCount / (double)stats.CountTotal * 100.0);
+            }
+
+            return new SuccessStatisticResponse
+            {
                 PercentageSuccess = percentage
             };
         }

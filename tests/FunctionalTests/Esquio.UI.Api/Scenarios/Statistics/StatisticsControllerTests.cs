@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -201,12 +202,14 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
         public async Task get_plot_statistics_response()
         {
             var permission = Builders.Permission()
-              .WithReaderPermission()
-              .Build();
+                .WithReaderPermission()
+                .Build();
 
             await _fixture.Given
                 .AddPermission(permission);
-            await _fixture.Given.AddMetric(SampleMetrics());
+
+            await _fixture.Given
+                .AddMetric(SampleMetrics());
 
             var response = await _fixture.TestServer
               .CreateRequest(ApiDefinitions.V5.Statistics.Plot())
@@ -226,25 +229,25 @@ namespace FunctionalTests.Esquio.UI.Api.Scenarios.Statistics
         }
         private MetricEntity[] SampleMetrics(){
             return new [] {
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature1").WithDateTime(DateTime.Now.AddHours(-5)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature1").WithDateTime(DateTime.Now.AddHours(-4)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature1").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.Now.AddHours(-5)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.Now.AddHours(-4)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.Now.AddHours(-5)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.Now.AddHours(-4)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.Now.AddHours(-5)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.Now.AddHours(-4)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.Now.AddHours(-5)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.Now.AddHours(-4)).Build(),
-                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.Now.AddHours(-3)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.Now.AddHours(-22)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.Now.AddHours(-24)).Build(),
-                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.Now.AddHours(-25)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature1").WithDateTime(DateTime.UtcNow.AddHours(-5)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature1").WithDateTime(DateTime.UtcNow.AddHours(-4)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature1").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.UtcNow.AddHours(-5)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.UtcNow.AddHours(-4)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature2").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.UtcNow.AddHours(-5)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.UtcNow.AddHours(-4)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature3").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.UtcNow.AddHours(-5)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.UtcNow.AddHours(-4)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature4").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.UtcNow.AddHours(-5)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.UtcNow.AddHours(-4)).Build(),
+                Builders.Metric().WithKind("Failure").WithFeatureName("Feature5").WithDateTime(DateTime.UtcNow.AddHours(-3)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.UtcNow.AddHours(-22)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.UtcNow.AddHours(-24)).Build(),
+                Builders.Metric().WithKind("Success").WithFeatureName("Feature6").WithDateTime(DateTime.UtcNow.AddHours(-25)).Build(),
             };
             
         }

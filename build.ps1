@@ -54,7 +54,7 @@ Write-Output "Running functional tests SqlServer"
 try {
 
 $env:Data__Store='SqlServer'
-$env:Data__ConnectionString='Server=tcp:localhost,5433;Initial Catalog=Esquio.UI.Tests;User Id=sa;Password=Password12!'
+$env:Data__ConnectionString='Server=tcp:localhost,5433;Initial Catalog=Esquio.UI.Tests;User Id=sa;Password=Password12!;Encrypt=False'
 Push-Location -Path .\tests\FunctionalTests
         exec { & dotnet test}
 } finally {

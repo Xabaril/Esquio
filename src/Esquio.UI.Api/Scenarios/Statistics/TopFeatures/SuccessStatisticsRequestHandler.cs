@@ -28,18 +28,20 @@ namespace Esquio.UI.Api.Scenarios.Statistics.TopFeatures
         {
             try
             {
-                var previousDay = DateTime.Now.AddDays(-1);
+                var previousDay = DateTime.UtcNow.AddDays(-1);
+
                 var featureDetails = await _store.Metrics
-                                                .Where(m => m.DateTime > previousDay)
-                                                .GroupBy(m => m.FeatureName)
-                .Select(m => new TopFeaturesDetailsStatisticsResponse
-                {
-                    FeatureName = m.Key,
-                    Requests = m.Count()
-                })
-                .OrderByDescending(m => m.Requests)
-                .Take(5)
-                .ToListAsync();
+                    .Where(m => m.DateTime > previousDay)
+                    .GroupBy(m => m.FeatureName)
+                    .Select(m => new TopFeaturesDetailsStatisticsResponse
+                    {
+                        FeatureName = m.Key,
+                        Requests = m.Count()
+                    })
+                    .OrderByDescending(m => m.Requests)
+                    .Take(5)
+                    .ToListAsync();
+
                 return new TopFeaturesStatisticsResponse
                 {
                     TopFeaturesDetails = featureDetails
@@ -47,7 +49,6 @@ namespace Esquio.UI.Api.Scenarios.Statistics.TopFeatures
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 return null;
             }
         }

@@ -68,7 +68,7 @@ namespace UnitTests.Esquio.AspNetCore.Endpoint
                 .GetAsync("http://localhost/scenarios/SingleEndPointWithNotFoundFallback");
 
             response.StatusCode
-                .Should().Be(HttpStatusCode.OK);
+                .Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]

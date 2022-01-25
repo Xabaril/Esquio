@@ -1,53 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>$(NetFrameworkVersion)</TargetFramework>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>$(NetFrameworkVersion)</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Scenarios\Parameters\**" />
-    <EmbeddedResource Remove="Scenarios\Parameters\**" />
-    <None Remove="Scenarios\Parameters\**" />
-    <Compile Remove="Infrastructure\Policies.cs" />
-    <None Include="Infrastructure\Authorization\Policies.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Scenarios\Parameters\**" />
+		<EmbeddedResource Remove="Scenarios\Parameters\**" />
+		<None Remove="Scenarios\Parameters\**" />
+		<Compile Remove="Infrastructure\Policies.cs" />
+		<None Include="Infrastructure\Authorization\Policies.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 
-    <PackageReference Include="Microsoft.Data.SqlClient" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
-    <PackageReference Include="FluentValidation.AspNetCore" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" />
-    <PackageReference Include="NSwag.MSBuild">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-   
+		<PackageReference Include="Microsoft.Data.SqlClient" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+		<PackageReference Include="FluentValidation.AspNetCore" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
+		<PackageReference Include="Hellang.Middleware.ProblemDetails" />
+		<PackageReference Include="NSwag.MSBuild">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 
-  </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
-    <ProjectReference Include="..\Esquio\Esquio.csproj" />
-  </ItemGroup>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Data\Migrations\SqlServer\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Esquio.UI.Api.Shared\Esquio.UI.Api.Shared.csproj" />
+		<ProjectReference Include="..\Esquio\Esquio.csproj" />
+	</ItemGroup>
 
-  <Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">
-    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Net60) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
-    <Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Net60) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />
-  </Target>
+	<ItemGroup>
+		<Folder Include="Infrastructure\Data\Migrations\SqlServer\" />
+	</ItemGroup>
+
+	<Target Name="CreateServicesFromControllers" AfterTargets="AfterBuild">
+		<Exec Condition="'$(OS)' == 'Windows_NT'" Command="$(NSwagExe_Net60) webapi2openapi /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /ArrayType:System.Collections.ObjectModel.Collection /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths: %USERPROFILE%\\.nuget\\packages" />
+		<Exec Condition="'$(OS)' == 'Unix'" Command="$(NSwagExe_Net60) webapi2swagger /assembly:$(OutDir)$(ProjectName).dll /AspNetCore=true /ArrayType:System.Collections.ObjectModel.Collection /DefaultPropertyNameHandling:CamelCase /output:swagger.json /referencepaths:$HOME/.nuget/packages" />
+	</Target>
 
 </Project>

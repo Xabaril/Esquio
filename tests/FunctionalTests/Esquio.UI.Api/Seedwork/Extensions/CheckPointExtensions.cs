@@ -1,4 +1,5 @@
 ﻿using Respawn;
+using Respawn.Graph;
 using System;
 
 namespace FunctionalTests.Esquio.UI.Api.Seedwork.Extensions
@@ -11,23 +12,32 @@ namespace FunctionalTests.Esquio.UI.Api.Seedwork.Extensions
 
             if ( checkpoint.DbAdapter == DbAdapter.Postgres)
             {
-                checkpoint.TablesToIgnore = new string[] { "__EFMigrationsHistory" };
-                checkpoint.WithReseed = false;
-                checkpoint.SchemasToInclude = new string[] { "public" };
-               
+                checkpoint = new Checkpoint()
+                {
+                    DbAdapter = checkpoint.DbAdapter,
+                    TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+                    WithReseed = false,
+                    SchemasToInclude = new string[] { "public" }
+                };
             }
             else if (checkpoint.DbAdapter == DbAdapter.MySql)
             {
-                checkpoint.WithReseed = false;
-                checkpoint.TablesToIgnore = new string[] { "__EFMigrationsHistory" };
-                //checkpoint.TablesToInclude = new string[] { "ApiKeys" };
-
+                checkpoint = new Checkpoint()
+                {
+                    DbAdapter = checkpoint.DbAdapter,
+                    TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+                    WithReseed = false,
+                };
             }
             else
             {
                 //default is sql server configuration
-                checkpoint.TablesToIgnore = new string[] { "__EFMigrationsHistory" };
-                checkpoint.WithReseed = true;
+                checkpoint = new Checkpoint()
+                {
+                    DbAdapter = checkpoint.DbAdapter,
+                    TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+                    WithReseed = true,
+                };
             }
         }
     }

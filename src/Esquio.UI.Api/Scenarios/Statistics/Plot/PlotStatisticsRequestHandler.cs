@@ -28,7 +28,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Plot
 
         public async Task<PlotStatisticsResponse> Handle(PlotStatisticsRequest request, CancellationToken cancellationToken)
         {
-            var oneDayPast = DateTime.Now.AddDays(-1);
+            var oneDayPast = DateTime.UtcNow.AddDays(-1);
 
             var oneDayMetrics = await _store.Metrics
                 .Where(m => m.DateTime > oneDayPast)
@@ -49,7 +49,7 @@ namespace Esquio.UI.Api.Scenarios.Statistics.Plot
                 }).GroupBy(m => m.DateTime).ToDictionary(m => m.Key, m => m.ToList());
 
             var startDate = new DateTime(oneDayPast.Year, oneDayPast.Month, oneDayPast.Day, oneDayPast.Hour, oneDayPast.Minute, 0);
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             var points = new List<PlotPointStatisticsResponse>();
 
