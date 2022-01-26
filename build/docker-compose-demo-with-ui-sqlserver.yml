@@ -24,7 +24,7 @@ services:
             context: ..
             dockerfile: build/UIDockerfile
         environment:
-            - Data__ConnectionString=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!
+            - Data__ConnectionString=Server=tcp:sqlserver,1433;Initial Catalog=Esquio;User Id=sa;Password=Password12!;Encrypt=False
             - Data__Store=SqlServer
             - Serilog__MinimumLevel=Information
             - ApplicationInsights__InstrumentationKey=00000000-0000-0000-0000-000000000000
