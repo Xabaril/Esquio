@@ -30,6 +30,7 @@ namespace Esquio.UI.Client
 
             var isAzureAd = builder.Configuration.GetValue<bool>("Security:IsAzureAd");
             var authority = builder.Configuration.GetValue<string>("Security:Authority");
+            var audience = builder.Configuration.GetValue<string>("Security:Audience");
             var clientId = builder.Configuration.GetValue<string>("Security:ClientId");
             var scope = builder.Configuration.GetValue<string>("Security:Scope");
             var responseType = builder.Configuration.GetValue<string>("Security:ResponseType");
@@ -53,10 +54,11 @@ namespace Esquio.UI.Client
                     options.ProviderOptions.ClientId = clientId;
                     options.ProviderOptions.ResponseType = responseType;
                     options.ProviderOptions.DefaultScopes.Add(scope);
+                    options.ProviderOptions.AdditionalProviderParameters.Add(nameof(audience), audience);
                 });
             }
 
-           
+
             builder.Services.AddAuthorizationCore(options =>
             {
                 options.AddPolicy(Policies.Reader, builder => builder.AddRequirements(new PolicyRequirement(Policies.Reader)));
@@ -72,7 +74,7 @@ namespace Esquio.UI.Client
             builder.Services.AddScoped<IAuthorizationHandler, PolicyRequirementHandler>();
 
 
-            var host =  builder.Build();
+            var host = builder.Build();
 
             var jsRuntime = builder.Services.BuildServiceProvider().GetRequiredService<IJSRuntime>();
             await jsRuntime.InvokeVoidAsync("addAuthenticationScript", new object[] { isAzureAd });
